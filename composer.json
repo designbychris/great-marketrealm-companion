@@ -1,0 +1,10 @@
+{
+    "name": "greatmarketrealm/companion",
+    "type": "wordpress-plugin",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "GMR\\": "includes/"
+        }
+    }
+}
