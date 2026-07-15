@@ -14,3 +14,30 @@ Benefits:
 - Easier maintenance
 - Better scalability
 - Cleaner code
+
+
+# Architecture
+
+Core
+
+Database
+
+Repositories
+
+Models
+
+Services
+
+Frontend
+
+Admin
+
+Templates
+
+Repositories communicate with DatabaseManager.
+
+Views never query the database.
+
+Models contain data only.
+
+Services contain business logic.
