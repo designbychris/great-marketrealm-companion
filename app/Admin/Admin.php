@@ -17,13 +17,4 @@ class Admin {
 
 	}
 
-	public function dashboard(): void {
-
-		echo '<div class="wrap">';
-		echo '<h1>Great Marketrealm Companion</h1>';
-		echo '<p>Version 0.2.0-alpha1</p>';
-		echo '</div>';
-
-	}
-
 }
