@@ -11,7 +11,8 @@ if (! defined('ABSPATH')) {
 	exit;
 }
 
-define('GMRC_VERSION', '0.2.0-alpha1');
+define('GMRC_VERSION', '0.2.0-alpha2');
+define('GMRC_DB_VERSION', 1);
 define('GMRC_PLUGIN_FILE', __FILE__);
 define('GMRC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GMRC_PLUGIN_URL', plugin_dir_url(__FILE__));
