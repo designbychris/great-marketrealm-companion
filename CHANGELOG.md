@@ -19,6 +19,25 @@ The format is based on Keep a Changelog.
 
 ---
 
+## 0.2.0-alpha2
+
+Added
+
+- DatabaseManager
+- CharacterRepository
+- Character model
+- Seeder
+
+Changed
+
+- Admin architecture
+
+Fixed
+
+- Dashboard rendering
+
+---
+
 ## [0.2.0-alpha1]
 
 ### Added
