@@ -1,32 +1,76 @@
-# Release Checklist
+# Great Marketrealm Companion Release Checklist
 
-## Code
-- [ ] PHP syntax passes
+## Version
+
+Release:
+
+Date:
+
+Tag:
+
+---
+
+# Code Quality
+
+- [ ] PHP syntax checked
 - [ ] WordPress Coding Standards
+- [ ] Namespaces correct
+- [ ] Autoloader tested
 - [ ] No debug code
-- [ ] No TODOs left unintentionally
+- [ ] No commented-out code
 
-## Documentation
-- [ ] CHANGELOG updated
-- [ ] ROADMAP updated
+---
+
+# Database
+
+- [ ] Database version updated
+- [ ] Migrations created
+- [ ] Upgrade path tested
+- [ ] Fresh install tested
+
+---
+
+# Documentation
+
 - [ ] README updated
-- [ ] Architecture docs updated
+- [ ] CHANGELOG updated
+- [ ] ROADMAP reviewed
+- [ ] Architecture updated
+- [ ] Database documentation updated
 
-## Database
-- [ ] Migration created
-- [ ] Upgrade tested
+---
 
-## UI
+# UI
+
 - [ ] Desktop tested
 - [ ] Tablet tested
 - [ ] Mobile tested
+- [ ] Accessibility checked
 
-## Security
+---
+
+# WordPress
+
+- [ ] Plugin activation
+- [ ] Plugin deactivation
+- [ ] Plugin uninstall
+- [ ] Multisite check (future)
+
+---
+
+# Security
+
 - [ ] Nonces
 - [ ] Escaping
 - [ ] Sanitising
 - [ ] Capability checks
+- [ ] SQL prepared statements
 
-## Git
-- [ ] Version tag created
-- [ ] Release notes written
+---
+
+# GitHub
+
+- [ ] Milestone completed
+- [ ] Project board updated
+- [ ] Tag created
+- [ ] Release notes published
