@@ -17,6 +17,9 @@ class Plugin {
 
 		add_action('init', [$this, 'register_shortcodes']);
 
+		$updater = new Updater();
+		$updater->run();
+
 	}
 
 	public function register_admin(): void {
