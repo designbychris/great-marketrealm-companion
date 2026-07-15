@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<ruleset name="Great Marketrealm Companion">
+
+    <rule ref="WordPress"/>
+
+</ruleset>
