@@ -57,7 +57,10 @@ class View
             );
         }
 
-        extract($data, EXTR_SKIP);
+        protected static function extractData(array $data): void
+        {
+            extract($data, EXTR_SKIP);
+        }
 
         ob_start();
 
@@ -95,7 +98,10 @@ class View
             );
         }
 
-        extract($data, EXTR_SKIP);
+        protected static function extractData(array $data): void
+        {
+            extract($data, EXTR_SKIP);
+        }
 
         include $componentFile;
     }
