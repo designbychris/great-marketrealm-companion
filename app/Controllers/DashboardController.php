@@ -26,6 +26,11 @@ class DashboardController extends Controller
     /**
      * Constructor.
      */
+
+    /**
+     * TODO:
+     * Replace with Dependency Injection Container.
+     */
     public function __construct()
     {
         $this->characters = new CharacterRepository();
