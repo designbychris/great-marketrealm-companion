@@ -54,7 +54,7 @@ class DashboardController extends Controller
             [
                 'user'             => $user,
                 'characters'       => $characters,
-                'character_count'  => count($characters),
+                'character_count' => $this->characters->countByUser($userId),
                 'page_title'       => __('Dashboard', 'great-marketrealm-companion'),
             ]
         );
