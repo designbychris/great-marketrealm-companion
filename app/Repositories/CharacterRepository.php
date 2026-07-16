@@ -27,7 +27,7 @@ class CharacterRepository
     public function __construct()
     {
         global $wpdb;
-
+        $this->db = $wpdb;
         $this->table = $wpdb->prefix . 'gmrc_characters';
     }
 
@@ -40,7 +40,7 @@ class CharacterRepository
      */
     public function getByUser(int $userId): array
     {
-        global $wpdb;
+        protected wpdb $db;
 
         $results = $wpdb->get_results(
             $wpdb->prepare(
@@ -67,7 +67,7 @@ class CharacterRepository
      */
     public function getById(int $id): ?array
     {
-        global $wpdb;
+        protected wpdb $db;
 
         $character = $wpdb->get_row(
             $wpdb->prepare(
