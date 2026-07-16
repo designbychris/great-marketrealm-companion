@@ -4,6 +4,64 @@ defined('ABSPATH') || exit;
 
 $current_user = wp_get_current_user();
 
+/**
+ * Temporary navigation.
+ *
+ * TODO:
+ * Replace with Navigation::sidebar()
+ * once the Navigation helper has been created.
+ */
+$items = [
+    [
+        'label'  => __('Dashboard', 'great-marketrealm-companion'),
+        'icon'   => '🏠',
+        'url'    => '#',
+        'active' => true,
+    ],
+    [
+        'label'  => __('Characters', 'great-marketrealm-companion'),
+        'icon'   => '👤',
+        'url'    => '#',
+        'active' => false,
+    ],
+    [
+        'label'  => __('Inventory', 'great-marketrealm-companion'),
+        'icon'   => '🎒',
+        'url'    => '#',
+        'active' => false,
+    ],
+    [
+        'label'  => __('Journal', 'great-marketrealm-companion'),
+        'icon'   => '📖',
+        'url'    => '#',
+        'active' => false,
+    ],
+    [
+        'label'  => __('Campaigns', 'great-marketrealm-companion'),
+        'icon'   => '🗺',
+        'url'    => '#',
+        'active' => false,
+    ],
+    [
+        'label'  => __('Quests', 'great-marketrealm-companion'),
+        'icon'   => '⚔',
+        'url'    => '#',
+        'active' => false,
+    ],
+    [
+        'label'  => __('Compendium', 'great-marketrealm-companion'),
+        'icon'   => '📚',
+        'url'    => '#',
+        'active' => false,
+    ],
+    [
+        'label'  => __('Dice Roller', 'great-marketrealm-companion'),
+        'icon'   => '🎲',
+        'url'    => '#',
+        'active' => false,
+    ],
+];
+
 ?>
 
 <aside class="gmrc-sidebar">
@@ -12,9 +70,7 @@ $current_user = wp_get_current_user();
 
         <a href="#" class="gmrc-sidebar__logo">
 
-            <span class="gmrc-sidebar__logo-icon">
-                🍎
-            </span>
+            <span class="gmrc-sidebar__logo-icon">🍎</span>
 
             <div class="gmrc-sidebar__logo-text">
 
@@ -31,23 +87,17 @@ $current_user = wp_get_current_user();
     <div class="gmrc-sidebar__user">
 
         <div class="gmrc-sidebar__avatar">
-
             <?php echo get_avatar($current_user->ID, 60); ?>
-
         </div>
 
         <div class="gmrc-sidebar__user-details">
 
             <strong>
-
                 <?php echo esc_html($current_user->display_name); ?>
-
             </strong>
 
             <span>
-
-                Adventurer
-
+                <?php esc_html_e('Adventurer', 'great-marketrealm-companion'); ?>
             </span>
 
         </div>
@@ -58,53 +108,31 @@ $current_user = wp_get_current_user();
 
         <ul>
 
-            <li>
-                <a class="active" href="#">
-                    🏠 Dashboard
-                </a>
-            </li>
+            <?php foreach ($items as $item) : ?>
 
-            <li>
-                <a href="#">
-                    👤 Characters
-                </a>
-            </li>
+                <li>
 
-            <li>
-                <a href="#">
-                    🎒 Inventory
-                </a>
-            </li>
+                    <a
+                        href="<?php echo esc_url($item['url']); ?>"
+                        class="<?php echo $item['active'] ? 'is-active' : ''; ?>">
 
-            <li>
-                <a href="#">
-                    📖 Journal
-                </a>
-            </li>
+                        <span class="gmrc-sidebar__icon">
 
-            <li>
-                <a href="#">
-                    🗺 Campaigns
-                </a>
-            </li>
+                            <?php echo esc_html($item['icon']); ?>
 
-            <li>
-                <a href="#">
-                    ⚔ Quests
-                </a>
-            </li>
+                        </span>
 
-            <li>
-                <a href="#">
-                    📚 Compendium
-                </a>
-            </li>
+                        <span class="gmrc-sidebar__label">
 
-            <li>
-                <a href="#">
-                    🎲 Dice Roller
-                </a>
-            </li>
+                            <?php echo esc_html($item['label']); ?>
+
+                        </span>
+
+                    </a>
+
+                </li>
+
+            <?php endforeach; ?>
 
         </ul>
 
@@ -118,7 +146,9 @@ $current_user = wp_get_current_user();
 
                 <a href="#">
 
-                    ⚙ Settings
+                    ⚙
+
+                    <span><?php esc_html_e('Settings', 'great-marketrealm-companion'); ?></span>
 
                 </a>
 
@@ -128,7 +158,9 @@ $current_user = wp_get_current_user();
 
                 <a href="<?php echo esc_url(wp_logout_url(home_url())); ?>">
 
-                    🚪 Logout
+                    🚪
+
+                    <span><?php esc_html_e('Logout', 'great-marketrealm-companion'); ?></span>
 
                 </a>
 
