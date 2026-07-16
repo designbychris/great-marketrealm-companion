@@ -7,7 +7,7 @@ defined('ABSPATH') || exit;
 /**
  * Navigation Registry
  *
- * Registers and returns navigation items.
+ * Stores every registered navigation item.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.2.0-alpha3.1.2
@@ -15,32 +15,11 @@ defined('ABSPATH') || exit;
 class Navigation
 {
     /**
-     * Registered navigation items.
+     * Registered menu items.
      *
      * @var MenuItem[]
      */
     protected static array $items = [];
-
-    /**
-     * Boot the navigation.
-     *
-     * Registers the core navigation items.
-     *
-     * @return void
-     */
-    public static function boot(): void
-    {
-        if (! empty(self::$items)) {
-            return;
-        }
-
-        self::registerCoreItems();
-
-        /**
-         * Allow modules to register navigation.
-         */
-        do_action('gmrc_navigation_register');
-    }
 
     /**
      * Register a menu item.
@@ -49,37 +28,67 @@ class Navigation
      *
      * @return void
      */
-    public static function add(MenuItem $item): void
+    public static function register(MenuItem $item): void
     {
         self::$items[$item->getId()] = $item;
     }
 
     /**
-     * Return every navigation item.
+     * Return all navigation items.
      *
      * @return MenuItem[]
      */
     public static function all(): array
     {
-        self::boot();
-
-        uasort(
-            self::$items,
-            fn (MenuItem $a, MenuItem $b)
-                => $a->getSort() <=> $b->getSort()
-        );
+        self::sort();
 
         return self::$items;
     }
 
     /**
-     * Register the core application navigation.
+     * Find a navigation item.
+     *
+     * @param string $id
+     *
+     * @return MenuItem|null
+     */
+    public static function find(string $id): ?MenuItem
+    {
+        return self::$items[$id] ?? null;
+    }
+
+    /**
+     * Determine whether a menu item exists.
+     *
+     * @param string $id
+     *
+     * @return bool
+     */
+    public static function has(string $id): bool
+    {
+        return isset(self::$items[$id]);
+    }
+
+    /**
+     * Remove all registered items.
+     *
+     * Useful for testing or rebuilding navigation.
      *
      * @return void
      */
-    protected static function registerCoreItems(): void
+    public static function clear(): void
     {
-        self::add(
+        self::$items = [];
+    }
+
+    /**
+     * Register the platform navigation.
+     *
+     * @return void
+     */
+    public static function registerCore(): void
+    {
+        self::register(
             MenuItem::make('dashboard')
                 ->title(__('Dashboard', 'great-marketrealm-companion'))
                 ->icon('dashboard')
@@ -87,7 +96,7 @@ class Navigation
                 ->sort(10)
         );
 
-        self::add(
+        self::register(
             MenuItem::make('characters')
                 ->title(__('Characters', 'great-marketrealm-companion'))
                 ->icon('characters')
@@ -95,7 +104,7 @@ class Navigation
                 ->sort(20)
         );
 
-        self::add(
+        self::register(
             MenuItem::make('inventory')
                 ->title(__('Inventory', 'great-marketrealm-companion'))
                 ->icon('inventory')
@@ -103,7 +112,7 @@ class Navigation
                 ->sort(30)
         );
 
-        self::add(
+        self::register(
             MenuItem::make('journal')
                 ->title(__('Journal', 'great-marketrealm-companion'))
                 ->icon('journal')
@@ -111,7 +120,7 @@ class Navigation
                 ->sort(40)
         );
 
-        self::add(
+        self::register(
             MenuItem::make('campaigns')
                 ->title(__('Campaigns', 'great-marketrealm-companion'))
                 ->icon('campaigns')
@@ -119,7 +128,7 @@ class Navigation
                 ->sort(50)
         );
 
-        self::add(
+        self::register(
             MenuItem::make('quests')
                 ->title(__('Quests', 'great-marketrealm-companion'))
                 ->icon('quests')
@@ -127,7 +136,7 @@ class Navigation
                 ->sort(60)
         );
 
-        self::add(
+        self::register(
             MenuItem::make('compendium')
                 ->title(__('Compendium', 'great-marketrealm-companion'))
                 ->icon('compendium')
@@ -135,12 +144,31 @@ class Navigation
                 ->sort(70)
         );
 
-        self::add(
+        self::register(
             MenuItem::make('dice')
                 ->title(__('Dice Roller', 'great-marketrealm-companion'))
                 ->icon('dice')
                 ->route('dice')
                 ->sort(80)
+        );
+
+        /**
+         * Allow modules to register navigation items.
+         */
+        do_action('gmrc_navigation_register');
+    }
+
+    /**
+     * Sort menu items.
+     *
+     * @return void
+     */
+    protected static function sort(): void
+    {
+        uasort(
+            self::$items,
+            static fn (MenuItem $a, MenuItem $b)
+                => $a->getSort() <=> $b->getSort()
         );
     }
 }
