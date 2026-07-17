@@ -2,6 +2,9 @@
 
 namespace GreatMarketrealmCompanion\Core;
 
+use GreatMarketrealmCompanion\Providers\NavigationServiceProvider;
+use GreatMarketrealmCompanion\Providers\ServiceProvider;
+
 defined('ABSPATH') || exit;
 
 /**
@@ -24,7 +27,7 @@ class Kernel
      *
      * @var array<int, class-string<ServiceProvider>>
      */
-    protected array $providerClasses = [
+    protected array $coreProviders = [
         NavigationServiceProvider::class,
     ];
 
@@ -33,10 +36,12 @@ class Kernel
      *
      * @var ServiceProvider[]
      */
-    protected array $providers = [];
+    protected array $loadedProviders = [];
 
     /**
      * Constructor.
+     *
+     * @param Application $app Application instance.
      */
     public function __construct(Application $app)
     {
@@ -44,7 +49,7 @@ class Kernel
     }
 
     /**
-     * Boot the application.
+     * Boot the framework.
      */
     public function boot(): void
     {
@@ -63,9 +68,7 @@ class Kernel
     /**
      * Register a service provider.
      */
-    protected function register(
-    ServiceProvider $provider
-    ): void
+    protected function register(ServiceProvider $provider): void
     {
         $this->providers[] = $provider;
     
@@ -78,19 +81,12 @@ class Kernel
 
     protected function registerProviders(): void
     {
-            foreach ($this->providerClasses as $providerClass) {
-        
-                $this->register(
-                    new $providerClass($this->app)
-                );
-    
-                // $this->register(new NavigationServiceProvider($this->app));
-                // $this->register(new ViewServiceProvider($this->app));
-                // $this->register(new ModuleServiceProvider($this->app));
-                // $this->register(new RouteServiceProvider($this->app));
-        
-            }
+        foreach ($this->coreProviders as $providerClass) {
+            $this->register(
+                new $providerClass($this->app)
+            );
         }
+    }
 
     /**
      * Return registered providers.
