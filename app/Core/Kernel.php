@@ -20,11 +20,13 @@ class Kernel
     protected Application $app;
 
     /**
-     * Registered service providers.
+     * Core provider class names.
      *
-     * @var ServiceProvider[]
+     * @var array<int, class-string<ServiceProvider>>
      */
-    protected array $providers = [];
+    protected array $providerClasses = [
+        NavigationServiceProvider::class,
+    ];
 
     /**
      * Constructor.
@@ -74,6 +76,7 @@ class Kernel
         // These will be added over the next few milestones.
         //
         // $this->register(new NavigationServiceProvider($this->app));
+        $this->register(NavigationServiceProvider::class);
         // $this->register(new ViewServiceProvider($this->app));
         // $this->register(new ModuleServiceProvider($this->app));
         // $this->register(new RouteServiceProvider($this->app));
