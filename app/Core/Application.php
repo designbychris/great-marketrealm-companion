@@ -38,17 +38,25 @@ class Application
     public function __construct(string $version)
     {
         $this->version = $version;
-
+    
         $this->container = new Container();
-
+    
         /*
-         * Register the application itself.
+         * Register the application instance.
          */
         $this->container->instance(
             self::class,
             $this
         );
-
+    
+        /*
+         * Register the container instance.
+         */
+        $this->container->instance(
+            Container::class,
+            $this->container
+        );
+    
         $this->kernel = new Kernel($this);
     }
 
