@@ -49,45 +49,48 @@ class Kernel
     public function boot(): void
     {
         $this->registerProviders();
-
-        foreach ($this->providers as $provider) {
-            $provider->register();
-        }
-
+    
         foreach ($this->providers as $provider) {
             $provider->boot();
         }
-
-        /**
-         * Fires once the Great Marketrealm Companion
-         * has finished booting.
-         */
-        do_action('gmrc_booted', $this->app);
+    
+        do_action(
+            'gmrc_booted',
+            $this->app
+        );
     }
 
     /**
      * Register a service provider.
      */
-    public function register(ServiceProvider $provider): self
+    protected function register(
+    ServiceProvider $provider
+    ): void
     {
         $this->providers[] = $provider;
-
-        return $this;
+    
+        $provider->register();
     }
 
     /**
      * Register all core service providers.
      */
+
     protected function registerProviders(): void
     {
-        // These will be added over the next few milestones.
-        //
-        // $this->register(new NavigationServiceProvider($this->app));
-        $this->register(NavigationServiceProvider::class);
-        // $this->register(new ViewServiceProvider($this->app));
-        // $this->register(new ModuleServiceProvider($this->app));
-        // $this->register(new RouteServiceProvider($this->app));
-    }
+            foreach ($this->providerClasses as $providerClass) {
+        
+                $this->register(
+                    new $providerClass($this->app)
+                );
+    
+                // $this->register(new NavigationServiceProvider($this->app));
+                // $this->register(new ViewServiceProvider($this->app));
+                // $this->register(new ModuleServiceProvider($this->app));
+                // $this->register(new RouteServiceProvider($this->app));
+        
+            }
+        }
 
     /**
      * Return registered providers.
