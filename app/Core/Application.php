@@ -32,6 +32,9 @@ class Application
      */
     protected Kernel $kernel;
 
+    /**
+     * Register the core framework instances.
+     */
     protected function registerCoreInstances(): void
     {
         $this->container->instance(
