@@ -29,6 +29,13 @@ class Kernel
     ];
 
     /**
+     * Loaded provider instances.
+     *
+     * @var ServiceProvider[]
+     */
+    protected array $providers = [];
+
+    /**
      * Constructor.
      */
     public function __construct(Application $app)
