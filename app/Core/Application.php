@@ -33,33 +33,38 @@ class Application
     protected Kernel $kernel;
 
     /**
-     * Register the core framework instances.
-     */
-    protected function registerCoreInstances(): void
-    {
-        $this->container->instance(
-            self::class,
-            $this
-        );
-    
-        $this->container->instance(
-            Container::class,
-            $this->container
-        );
-    }
-
-    /**
      * Constructor.
      */
     public function __construct(string $version)
     {
         $this->version = $version;
-    
+
         $this->container = new Container();
-    
-        $this->registerCoreInstances();
-    
+
+        $this->registerBaseServices();
+
         $this->kernel = new Kernel($this);
+
+        $this->container->instance(
+            Kernel::class,
+            $this->kernel
+        );
+    }
+
+    /**
+     * Register the core framework services.
+     */
+    protected function registerBaseServices(): void
+    {
+        $this->container->instance(
+            self::class,
+            $this
+        );
+
+        $this->container->instance(
+            Container::class,
+            $this->container
+        );
     }
 
     /**
@@ -71,7 +76,7 @@ class Application
     }
 
     /**
-     * Return the framework kernel.
+     * Get the framework kernel.
      */
     public function kernel(): Kernel
     {
@@ -79,7 +84,7 @@ class Application
     }
 
     /**
-     * Return the dependency container.
+     * Get the dependency container.
      */
     public function container(): Container
     {
@@ -87,7 +92,7 @@ class Application
     }
 
     /**
-     * Resolve a service.
+     * Resolve a service from the container.
      */
     public function make(
         string $abstract,
@@ -100,7 +105,7 @@ class Application
     }
 
     /**
-     * Determine whether a service exists.
+     * Determine if a service has been registered.
      */
     public function has(string $abstract): bool
     {
@@ -108,7 +113,7 @@ class Application
     }
 
     /**
-     * Return the platform version.
+     * Get the platform version.
      */
     public function version(): string
     {
