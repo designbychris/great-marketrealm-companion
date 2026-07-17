@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: Great Marketrealm Companion
- * Description: The official companion plugin for the Great Marketrealm campaign setting.
- * Version: 0.2.0-alpha1
- * Author: Chris Mitchell (Design by Chris)
+ * Plugin Name: Great MarketRealm Companion
+ * Description: A modular RPG companion platform for the Great Marketrealm.
+ * Version: 0.2.0-alpha3.2
+ * Author: Marketrealm Studios
  * Text Domain: great-marketrealm-companion
  */
 
