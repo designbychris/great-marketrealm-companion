@@ -5,30 +5,55 @@ namespace GreatMarketrealmCompanion\Core;
 defined('ABSPATH') || exit;
 
 /**
- * Class Application
+ * Marketrealm Companion
  *
- * Entry point for the Great Marketrealm Companion Platform.
+ * Application
  *
- * @package GreatMarketrealmCompanion
+ * The central application object responsible for bootstrapping
+ * and coordinating the Marketrealm Companion Platform.
+ *
+ * @package MarketrealmCompanion
  * @since 0.2.0-alpha3.2
  */
 class Application
 {
+    /**
+     * Platform version.
+     */
+    protected string $version;
+
+    /**
+     * Dependency container.
+     */
+    protected Container $container;
+
     /**
      * Framework kernel.
      */
     protected Kernel $kernel;
 
     /**
-     * Create the application.
+     * Constructor.
      */
-    public function __construct()
+    public function __construct(string $version)
     {
+        $this->version = $version;
+
+        $this->container = new Container();
+
+        /*
+         * Register the application itself.
+         */
+        $this->container->instance(
+            self::class,
+            $this
+        );
+
         $this->kernel = new Kernel($this);
     }
 
     /**
-     * Boot the application.
+     * Boot the platform.
      */
     public function boot(): void
     {
@@ -36,10 +61,47 @@ class Application
     }
 
     /**
-     * Get the kernel.
+     * Return the framework kernel.
      */
     public function kernel(): Kernel
     {
         return $this->kernel;
+    }
+
+    /**
+     * Return the dependency container.
+     */
+    public function container(): Container
+    {
+        return $this->container;
+    }
+
+    /**
+     * Resolve a service.
+     */
+    public function make(
+        string $abstract,
+        array $parameters = []
+    ): mixed {
+        return $this->container->make(
+            $abstract,
+            $parameters
+        );
+    }
+
+    /**
+     * Determine whether a service exists.
+     */
+    public function has(string $abstract): bool
+    {
+        return $this->container->has($abstract);
+    }
+
+    /**
+     * Return the platform version.
+     */
+    public function version(): string
+    {
+        return $this->version;
     }
 }
