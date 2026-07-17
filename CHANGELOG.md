@@ -19,6 +19,22 @@ The format is based on Keep a Changelog.
 
 ---
 
+## [0.2.0-alpha3.2] - Unreleased
+
+### Added
+
+- Introduced the new dependency injection Container.
+- Added Application as the central platform object.
+- Registered core framework services.
+- Registered Application, Container and Kernel in the service container.
+
+### Changed
+
+- Simplified platform bootstrapping.
+- Improved framework architecture ready for service providers.
+
+ ---
+
 ## 0.2.0-alpha2
 
 Added
