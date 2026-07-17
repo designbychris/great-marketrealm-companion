@@ -32,6 +32,19 @@ class Application
      */
     protected Kernel $kernel;
 
+    protected function registerCoreInstances(): void
+    {
+        $this->container->instance(
+            self::class,
+            $this
+        );
+    
+        $this->container->instance(
+            Container::class,
+            $this->container
+        );
+    }
+
     /**
      * Constructor.
      */
@@ -41,21 +54,7 @@ class Application
     
         $this->container = new Container();
     
-        /*
-         * Register the application instance.
-         */
-        $this->container->instance(
-            self::class,
-            $this
-        );
-    
-        /*
-         * Register the container instance.
-         */
-        $this->container->instance(
-            Container::class,
-            $this->container
-        );
+        $this->registerCoreInstances();
     
         $this->kernel = new Kernel($this);
     }
