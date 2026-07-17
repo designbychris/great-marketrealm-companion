@@ -3,7 +3,7 @@
  * Plugin Name: Great MarketRealm Companion
  * Description: A modular D&D RPG companion platform for the Great MarketRealm setting.
  * Version: 0.2.0-alpha3.2
- * Author: Marketrealm Studios
+ * Author: MarketRealm Studios
  * Text Domain: great-marketrealm-companion
  */
 
