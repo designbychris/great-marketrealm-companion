@@ -86,17 +86,17 @@ class Navigation
             MenuItem::make(
                 'dashboard',
                 __('Dashboard', 'great-marketrealm-companion'),
-                'dashboard',
+                Icons::DASHBOARD,
                 'dashboard',
                 10
-            )
+            );
         );
     
         $this->add(
             MenuItem::make(
                 'characters',
                 __('Characters', 'great-marketrealm-companion'),
-                'users',
+                Icons::USERS,
                 'characters',
                 20
             )
@@ -106,7 +106,7 @@ class Navigation
             MenuItem::make(
                 'campaigns',
                 __('Campaigns', 'great-marketrealm-companion'),
-                'map',
+                Icons::MAP,
                 'campaigns',
                 30
             )
@@ -116,7 +116,7 @@ class Navigation
             MenuItem::make(
                 'settings',
                 __('Settings', 'great-marketrealm-companion'),
-                'settings',
+                Icons::SETTINGS,
                 'settings',
                 100
             )
