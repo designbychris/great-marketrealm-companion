@@ -28,7 +28,10 @@ class NavigationServiceProvider extends ServiceProvider
                 Navigation::class,
                 function (Container $container): Navigation {
 
-                    return new Navigation();
+                    return new Navigation(
+                        $container->make(PermissionManager::class),
+                        $container->make(EventDispatcher::class)
+                    );
 
                 }
             );
