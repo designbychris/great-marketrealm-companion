@@ -14,7 +14,7 @@ $navigation = $app->make(Navigation::class);
  *
  * This will eventually move into the routing system.
  */
-$current = $_GET['page'] ?? 'dashboard';
+$current = gmrc()->route()->current();
 
 ?>
 
