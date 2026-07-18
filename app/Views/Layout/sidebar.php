@@ -14,7 +14,11 @@ $navigation = $app->make(Navigation::class);
  *
  * This will eventually move into the routing system.
  */
-$current = gmrc()->route()->current();
+//$current = gmrc()->route()->current();
+
+$active = gmrc()->route()->is(
+    $item->route()
+);
 
 ?>
 
@@ -35,8 +39,8 @@ $current = gmrc()->route()->current();
                 <a
                     class="gmrc-sidebar__link<?php echo $active ? ' is-active' : ''; ?>" <?php if ($active) : ?>aria-current="page" <?php endif; ?>
                     href="<?php echo esc_url(
-                        admin_url(
-                            'admin.php?page=' . $item->route()
+                        gmrc()->route()->url(
+                            $item->route()
                         )
                     ); ?>"
                 >
