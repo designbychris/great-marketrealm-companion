@@ -33,7 +33,7 @@ $current = gmrc()->route()->current();
             <li class="gmrc-sidebar__item">
 
                 <a
-                    class="gmrc-sidebar__link<?php echo $active ? ' is-active' : ''; ?>"
+                    class="gmrc-sidebar__link<?php echo $active ? ' is-active' : ''; ?>" <?php if ($active) : ?>aria-current="page" <?php endif; ?>
                     href="<?php echo esc_url(
                         admin_url(
                             'admin.php?page=' . $item->route()
