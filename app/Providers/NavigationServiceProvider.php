@@ -8,13 +8,11 @@ use GreatMarketrealmCompanion\Core\Container;
 defined('ABSPATH') || exit;
 
 /**
- * Marketrealm Companion
+ * Navigation Service Provider.
  *
- * Navigation Service Provider
+ * Registers and boots the platform navigation service.
  *
- * Registers and boots the platform navigation.
- *
- * @package MarketrealmCompanion
+ * @package GreatMarketrealmCompanion
  * @since 0.2.0-alpha3.2
  */
 class NavigationServiceProvider extends ServiceProvider
@@ -28,7 +26,7 @@ class NavigationServiceProvider extends ServiceProvider
             ->container()
             ->singleton(
                 Navigation::class,
-                function (Container $container) {
+                function (Container $container): Navigation {
 
                     return new Navigation();
 
@@ -37,7 +35,7 @@ class NavigationServiceProvider extends ServiceProvider
     }
 
     /**
-     * Boot the provider.
+     * Boot services.
      */
     public function boot(): void
     {
@@ -49,7 +47,7 @@ class NavigationServiceProvider extends ServiceProvider
         $navigation->registerDefaults();
 
         /**
-         * Allow modules to extend navigation.
+         * Allow modules to extend the navigation.
          */
         do_action(
             'gmrc_navigation_register',
