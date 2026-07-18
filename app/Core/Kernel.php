@@ -29,6 +29,7 @@ class Kernel
      */
     protected array $coreProviders = [
         NavigationServiceProvider::class,
+        RouteServiceProvider::class,
     ];
 
     /**
