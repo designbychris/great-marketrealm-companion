@@ -1,24 +1,30 @@
 <?php
 
-namespace GreatMarketrealmCompanion\Core;
+namespace GreatMarketrealmCompanion\Providers;
+
+use GreatMarketrealmCompanion\Core\Application;
 
 defined('ABSPATH') || exit;
 
 /**
  * Base Service Provider.
  *
- * @package GreatMarketrealmCompanion
+ * All framework service providers extend this class.
+ *
+ * @package MarketrealmCompanion
  * @since 0.2.0-alpha3.2
  */
 abstract class ServiceProvider
 {
     /**
-     * The application instance.
+     * Application instance.
      */
     protected Application $app;
 
     /**
      * Constructor.
+     *
+     * @param Application $app Application instance.
      */
     public function __construct(Application $app)
     {
@@ -26,26 +32,12 @@ abstract class ServiceProvider
     }
 
     /**
-     * Register bindings.
+     * Register services.
      */
-    public function register(): void
-    {
-        //
-    }
+    abstract public function register(): void;
 
     /**
      * Boot services.
      */
-    public function boot(): void
-    {
-        //
-    }
-
-    /**
-     * Get the application instance.
-     */
-    public function app(): Application
-    {
-        return $this->app;
-    }
+    abstract public function boot(): void;
 }
