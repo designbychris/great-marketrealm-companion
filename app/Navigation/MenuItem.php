@@ -1,171 +1,80 @@
 <?php
 
-namespace GreatMarketrealmCompanion\Navigation;
+namespace GreatMarketrealmCompanion\Application\Navigation;
 
 defined('ABSPATH') || exit;
 
 /**
- * Class MenuItem
+ * Navigation Menu Item.
  *
- * Represents a single navigation item.
+ * Represents a single item within the platform navigation.
  *
- * @package GreatMarketrealmCompanion
- * @since 0.2.0-alpha3.1.2
+ * @package MarketrealmCompanion
+ * @since 0.2.0-alpha3.2
  */
 class MenuItem
 {
     /**
-     * Unique menu identifier.
+     * Constructor.
      *
-     * @var string
+     * @param string      $key       Unique menu key.
+     * @param string      $label     Display label.
+     * @param string      $icon      Icon identifier.
+     * @param string      $route     Route or page identifier.
+     * @param int         $sortOrder Sort order.
+     * @param string|null $parent    Parent menu key.
      */
-    protected string $id;
-
-    /**
-     * Menu title.
-     *
-     * @var string
-     */
-    protected string $title = '';
-
-    /**
-     * Icon name.
-     *
-     * References an SVG in assets/icons.
-     *
-     * @var string
-     */
-    protected string $icon = '';
-
-    /**
-     * Route name.
-     *
-     * @var string
-     */
-    protected string $route = '#';
-
-    /**
-     * Sort order.
-     *
-     * Lower numbers appear first.
-     *
-     * @var int
-     */
-    protected int $sort = 100;
-
-    /**
-     * Required permission.
-     *
-     * Null means visible to everyone.
-     *
-     * @var string|null
-     */
-    protected ?string $permission = null;
-
-    /**
-     * Optional badge.
-     *
-     * Examples:
-     * 3
-     * NEW
-     * BETA
-     *
-     * @var string|null
-     */
-    protected ?string $badge = null;
-
-    /**
-     * Create a new MenuItem.
-     */
-    public static function make(string $id): self
-    {
-        $item = new self();
-
-        $item->id = $id;
-
-        return $item;
+    public function __construct(
+        protected string $key,
+        protected string $label,
+        protected string $icon,
+        protected string $route,
+        protected int $sortOrder = 100,
+        protected ?string $parent = null,
+    ) {
     }
 
     /**
-     * Set the title.
+     * Create a new menu item.
      */
-    public function title(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
+    public static function make(
+        string $key,
+        string $label,
+        string $icon,
+        string $route,
+        int $sortOrder = 100,
+        ?string $parent = null,
+    ): self {
+        return new self(
+            $key,
+            $label,
+            $icon,
+            $route,
+            $sortOrder,
+            $parent
+        );
     }
 
     /**
-     * Set the icon.
+     * Get the menu key.
      */
-    public function icon(string $icon): self
+    public function key(): string
     {
-        $this->icon = $icon;
-
-        return $this;
+        return $this->key;
     }
 
     /**
-     * Set the route.
+     * Get the label.
      */
-    public function route(string $route): self
+    public function label(): string
     {
-        $this->route = $route;
-
-        return $this;
-    }
-
-    /**
-     * Set the sort order.
-     */
-    public function sort(int $sort): self
-    {
-        $this->sort = $sort;
-
-        return $this;
-    }
-
-    /**
-     * Set the required permission.
-     */
-    public function permission(?string $permission): self
-    {
-        $this->permission = $permission;
-
-        return $this;
-    }
-
-    /**
-     * Set the badge.
-     */
-    public function badge(?string $badge): self
-    {
-        $this->badge = $badge;
-
-        return $this;
-    }
-
-    /**
-     * Get the ID.
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    /**
-     * Get the title.
-     */
-    public function getTitle(): string
-    {
-        return $this->title;
+        return $this->label;
     }
 
     /**
      * Get the icon.
      */
-    public function getIcon(): string
+    public function icon(): string
     {
         return $this->icon;
     }
@@ -173,7 +82,7 @@ class MenuItem
     /**
      * Get the route.
      */
-    public function getRoute(): string
+    public function route(): string
     {
         return $this->route;
     }
@@ -181,24 +90,24 @@ class MenuItem
     /**
      * Get the sort order.
      */
-    public function getSort(): int
+    public function sortOrder(): int
     {
-        return $this->sort;
+        return $this->sortOrder;
     }
 
     /**
-     * Get the permission.
+     * Get the parent key.
      */
-    public function getPermission(): ?string
+    public function parent(): ?string
     {
-        return $this->permission;
+        return $this->parent;
     }
 
     /**
-     * Get the badge.
+     * Determine whether this item has a parent.
      */
-    public function getBadge(): ?string
+    public function hasParent(): bool
     {
-        return $this->badge;
+        return $this->parent !== null;
     }
 }
