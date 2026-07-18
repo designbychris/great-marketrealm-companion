@@ -1,93 +1,87 @@
 <?php
 
-namespace GreatMarketrealmCompanion\Navigation;
+namespace GreatMarketrealmCompanion\Application\Navigation;
 
 defined('ABSPATH') || exit;
 
 /**
- * Navigation Registry
+ * Navigation Registry.
  *
- * Stores every registered navigation item for the application.
+ * Stores the application's navigation items.
  *
- * @package GreatMarketrealmCompanion
- * @since 0.2.0-alpha3.1.2
+ * @package MarketrealmCompanion
+ * @since 0.2.0-alpha3.2
  */
 class Navigation
 {
     /**
-     * Registered menu items.
+     * Registered navigation items.
      *
      * @var MenuItem[]
      */
-    protected static array $items = [];
+    protected array $items = [];
 
     /**
-     * Register a navigation item.
+     * Add a navigation item.
      */
-    public static function register(MenuItem $item): void
+    public function add(MenuItem $item): self
     {
-        self::$items[$item->getId()] = $item;
+        $this->items[$item->key()] = $item;
+
+        return $this;
     }
 
     /**
-     * Return every registered item.
+     * Return all navigation items.
      *
      * @return MenuItem[]
      */
-    public static function all(): array
+    public function items(): array
     {
-        return self::sorted(self::$items);
+        return $this->items;
     }
 
     /**
-     * Find an item by ID.
+     * Determine if a navigation item exists.
      */
-    public static function find(string $id): ?MenuItem
+    public function has(string $key): bool
     {
-        return self::$items[$id] ?? null;
+        return isset($this->items[$key]);
     }
 
     /**
-     * Determine if an item exists.
+     * Get a navigation item.
      */
-    public static function has(string $id): bool
+    public function get(string $key): ?MenuItem
     {
-        return isset(self::$items[$id]);
+        return $this->items[$key] ?? null;
     }
 
     /**
-     * Remove every registered item.
-     *
-     * Useful during bootstrapping and testing.
+     * Remove a navigation item.
      */
-    public static function clear(): void
+    public function remove(string $key): self
     {
-        self::$items = [];
+        unset($this->items[$key]);
+
+        return $this;
     }
 
     /**
-     * Return the number of registered items.
+     * Remove all navigation items.
      */
-    public static function count(): int
+    public function clear(): self
     {
-        return count(self::$items);
+        $this->items = [];
+
+        return $this;
     }
 
     /**
-     * Sort menu items by sort order.
-     *
-     * @param MenuItem[] $items
-     *
-     * @return MenuItem[]
+     * Register the default platform navigation.
      */
-    protected static function sorted(array $items): array
+    public function registerDefaults(): void
     {
-        uasort(
-            $items,
-            static fn (MenuItem $a, MenuItem $b)
-                => $a->getSort() <=> $b->getSort()
-        );
-
-        return $items;
+        // Added in Package 3.2.1.6
     }
 }
