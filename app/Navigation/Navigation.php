@@ -82,6 +82,44 @@ class Navigation
      */
     public function registerDefaults(): void
     {
-        // Added in Package 3.2.1.6
+        $this->add(
+            MenuItem::make(
+                'dashboard',
+                __('Dashboard', 'great-marketrealm-companion'),
+                'dashboard',
+                'dashboard',
+                10
+            )
+        );
+    
+        $this->add(
+            MenuItem::make(
+                'characters',
+                __('Characters', 'great-marketrealm-companion'),
+                'users',
+                'characters',
+                20
+            )
+        );
+    
+        $this->add(
+            MenuItem::make(
+                'campaigns',
+                __('Campaigns', 'great-marketrealm-companion'),
+                'map',
+                'campaigns',
+                30
+            )
+        );
+    
+        $this->add(
+            MenuItem::make(
+                'settings',
+                __('Settings', 'great-marketrealm-companion'),
+                'settings',
+                'settings',
+                100
+            )
+        );
     }
 }
