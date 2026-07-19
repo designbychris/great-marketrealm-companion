@@ -1,16 +1,42 @@
 <?php
 
-public function register(): void
-{
-    $this->app
-        ->container()
-        ->singleton(
-            Router::class,
-            fn () => new Router()
-        );
-}
+namespace GreatMarketrealmCompanion\Providers;
 
-public function boot(): void
+use GreatMarketrealmCompanion\Application\Routing\Router;
+use GreatMarketrealmCompanion\Core\Container;
+
+defined('ABSPATH') || exit;
+
+/**
+ * Route Service Provider.
+ *
+ * Registers the routing service.
+ *
+ * @package MarketrealmCompanion
+ * @since 0.2.0-alpha3.2
+ */
+class RouteServiceProvider extends ServiceProvider
 {
-    //
+    /**
+     * Register services.
+     */
+    public function register(): void
+    {
+        $this->app
+            ->container()
+            ->singleton(
+                Router::class,
+                function (Container $container): Router {
+                    return new Router();
+                }
+            );
+    }
+
+    /**
+     * Boot services.
+     */
+    public function boot(): void
+    {
+        // Reserved for future routing events.
+    }
 }
