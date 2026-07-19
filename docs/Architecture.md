@@ -1,4 +1,28 @@
-# Architecture
+# Marketrealm Companion Architecture
+
+## Philosophy
+
+Marketrealm Companion is built around a small framework.
+
+The framework provides:
+
+- Dependency Injection
+- Service Providers
+- Routing
+- Navigation
+- Rendering
+
+Business functionality lives inside Modules.
+
+Modules never communicate directly.
+
+Instead they interact through framework services.
+
+The Core never knows about Characters.
+
+Characters never know about Campaigns.
+
+Everything communicates through Contracts.
 
 The plugin follows an object-oriented architecture.
 
