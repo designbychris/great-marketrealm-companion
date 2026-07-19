@@ -2,6 +2,9 @@
 
 namespace GreatMarketrealmCompanion\Core;
 
+use GreatMarketrealmCompanion\Application\Navigation\Navigation;
+use GreatMarketrealmCompanion\Application\Routing\Router;
+
 defined('ABSPATH') || exit;
 
 /**
@@ -118,5 +121,25 @@ class Application
     public function version(): string
     {
         return $this->version;
+    }
+
+    /**
+     * Return the navigation service.
+     */
+    public function navigation(): Navigation
+    {
+        return $this->make(
+            Navigation::class
+        );
+    }
+    
+    /**
+     * Return the routing service.
+     */
+    public function route(): Router
+    {
+        return $this->make(
+            Router::class
+        );
     }
 }
