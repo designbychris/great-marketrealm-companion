@@ -52,25 +52,19 @@ class Router
      * Dispatch a request.
      */
     public function dispatch(
-        string $method,
-        string $uri
+    string $httpMethod,
+    string $uri
     ): mixed {
-
-        $action = $this->routes[$method][$uri] ?? null;
-
-        if ($action === null) {
-            return null;
-        }
-
-        if (is_callable($action)) {
-            return $action();
-        }
-
-        [$controller, $method] = $action;
-
+    
+        $action = $this->routes[$httpMethod][$uri] ?? null;
+    
+        ...
+    
+        [$controller, $controllerMethod] = $action;
+    
         return $this->app
             ->make($controller)
-            ->{$method}();
+            ->{$controllerMethod}();
     }
 
     /**
@@ -79,5 +73,15 @@ class Router
     public function routes(): array
     {
         return $this->routes;
+    }
+
+    public function has(
+    string $httpMethod,
+    string $uri
+    ): bool
+    {
+        return isset(
+            $this->routes[$httpMethod][$uri]
+        );
     }
 }
