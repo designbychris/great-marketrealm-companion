@@ -75,6 +75,7 @@ class Router
         return $this->routes;
     }
 
+    /** Helps with dispatching **/
     public function has(
     string $httpMethod,
     string $uri
@@ -83,5 +84,11 @@ class Router
         return isset(
             $this->routes[$httpMethod][$uri]
         );
+    }
+
+    /** For debugging **/
+    public function dump(): array
+    {
+        return $this->routes;
     }
 }
