@@ -1,6 +1,6 @@
 <?php
 
-namespace GreatMarketrealmCompanion\Repositories;
+namespace GreatMarketrealmCompanion\Modules\Characters\Repositories;
 
 defined('ABSPATH') || exit;
 
@@ -14,6 +14,14 @@ defined('ABSPATH') || exit;
  */
 class CharacterRepository
 {
+
+    /**
+     * WordPress database connection.
+     *
+     * @var \wpdb
+     */
+    protected \wpdb $db;
+    
     /**
      * Database table.
      *
@@ -40,9 +48,8 @@ class CharacterRepository
      */
     public function getByUser(int $userId): array
     {
-        protected wpdb $db;
 
-        $results = $wpdb->get_results(
+        $results = $this->db->get_results(
             $wpdb->prepare(
                 "
                 SELECT *
@@ -67,8 +74,6 @@ class CharacterRepository
      */
     public function getById(int $id): ?array
     {
-        protected wpdb $db;
-
         $character = $wpdb->get_row(
             $wpdb->prepare(
                 "
