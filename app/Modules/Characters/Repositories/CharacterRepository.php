@@ -1,8 +1,8 @@
 <?php
 
 namespace GreatMarketrealmCompanion\Modules\Characters\Repositories;
-
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
+use GreatMarketrealmCompanion\Contracts\RepositoryInterface;
 
 defined('ABSPATH') || exit;
 
@@ -14,52 +14,44 @@ defined('ABSPATH') || exit;
  * @package MarketrealmCompanion
  * @since 0.3.0
  */
-class CharacterRepository
+class CharacterRepository implements RepositoryInterface
 {
-    /**
-     * Return all characters.
-     *
-     * @return Character[]
-     */
     public function all(): array
     {
-        // Placeholder until custom post type/data layer is implemented.
         return [];
     }
 
-    /**
-     * Find a character by ID.
-     */
     public function find(int $id): ?Character
     {
-        // Placeholder implementation.
         return null;
     }
 
-    /**
-     * Create a new character.
-     */
+    public function delete(int $id): bool
+    {
+        return true;
+    }
+
     public function create(Character $character): Character
     {
-        // Persistence will be added later.
         return $character;
     }
 
-    /**
-     * Update an existing character.
-     */
     public function update(Character $character): Character
     {
-        // Persistence will be added later.
         return $character;
     }
 
     /**
-     * Delete a character.
+     * Convert database data into a Character model.
      */
-    public function delete(Character $character): bool
+    protected function map(array $data): Character
     {
-        // Persistence will be added later.
-        return true;
+        return new Character(
+            id: (int) ($data['id'] ?? 0),
+            name: (string) ($data['name'] ?? ''),
+            race: (string) ($data['race'] ?? ''),
+            class: (string) ($data['class'] ?? ''),
+            level: (int) ($data['level'] ?? 1),
+        );
     }
 }
