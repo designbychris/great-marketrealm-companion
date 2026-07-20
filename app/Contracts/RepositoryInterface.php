@@ -7,11 +7,11 @@ defined('ABSPATH') || exit;
 /**
  * Repository Interface.
  *
- * Defines the contract for repository implementations.
+ * Defines the common contract for all repositories.
  *
- * Repositories are responsible for persisting and retrieving
- * domain models. They should hide the underlying storage
- * mechanism from the rest of the application.
+ * Repositories are responsible for retrieving and
+ * persisting domain models whilst hiding the underlying
+ * storage implementation.
  *
  * @package MarketrealmCompanion
  * @since 0.3.0
@@ -28,22 +28,12 @@ interface RepositoryInterface
     /**
      * Find an entity by its identifier.
      *
-     * Returns null when the entity cannot be found.
+     * Returns null if the entity cannot be found.
      */
     public function find(int $id): ?object;
 
     /**
-     * Persist a new entity.
-     */
-    public function create(object $entity): object;
-
-    /**
-     * Persist changes to an existing entity.
-     */
-    public function update(object $entity): object;
-
-    /**
      * Delete an entity.
      */
-    public function delete(object $entity): bool;
+    public function delete(int $id): bool;
 }
