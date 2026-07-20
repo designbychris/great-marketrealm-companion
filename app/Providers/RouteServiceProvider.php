@@ -2,7 +2,6 @@
 
 namespace GreatMarketrealmCompanion\Providers;
 
-use GreatMarketrealmCompanion\Core\Application;
 use GreatMarketrealmCompanion\Core\Routing\Router;
 
 defined('ABSPATH') || exit;
@@ -10,7 +9,7 @@ defined('ABSPATH') || exit;
 /**
  * Route Service Provider.
  *
- * Registers the application's routes.
+ * Registers the application's routing services.
  *
  * @package MarketrealmCompanion
  * @since 0.3.0
@@ -37,23 +36,27 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Load all route definitions.
+     * Load all application route files.
      */
     protected function loadRoutes(): void
     {
         $router = $this->app->make(Router::class);
 
-        $routes = GMRC_PATH .
-            'app/Modules/Characters/Routes.php';
+        $routeFiles = [
+            GMRC_PATH . 'app/Modules/Characters/Routes.php',
+        ];
 
-        if (! file_exists($routes)) {
-            return;
-        }
+        foreach ($routeFiles as $routeFile) {
 
-        $register = require $routes;
+            if (! file_exists($routeFile)) {
+                continue;
+            }
 
-        if (is_callable($register)) {
-            $register($router);
+            $register = require $routeFile;
+
+            if (is_callable($register)) {
+                $register($router);
+            }
         }
     }
 }
