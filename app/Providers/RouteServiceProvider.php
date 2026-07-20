@@ -46,16 +46,24 @@ class RouteServiceProvider extends ServiceProvider
             GMRC_PATH . 'app/Modules/Characters/Routes.php',
         ];
 
+        //$routeFiles = $this->discoverRoutes();
+        //protected function discoverRoutes(): array
+        //{
+        //    return glob(
+        //        GMRC_PATH . 'app/Modules/*/Routes.php'
+        //    );
+        //}
+
         foreach ($routeFiles as $routeFile) {
 
             if (! file_exists($routeFile)) {
                 continue;
             }
 
-            $register = require $routeFile;
+            $routeRegistrar = require $routeFile;
 
-            if (is_callable($register)) {
-                $register($router);
+            if (is_callable($routeRegistrar)) {
+                $routeRegistrar($router);
             }
         }
     }
