@@ -2,18 +2,18 @@
 
 namespace GreatMarketrealmCompanion\Providers;
 
-use GreatMarketrealmCompanion\Application\Routing\Router;
-use GreatMarketrealmCompanion\Core\Container;
+use GreatMarketrealmCompanion\Core\Application;
+use GreatMarketrealmCompanion\Core\Routing\Router;
 
 defined('ABSPATH') || exit;
 
 /**
  * Route Service Provider.
  *
- * Registers the routing service.
+ * Registers the application's routes.
  *
  * @package MarketrealmCompanion
- * @since 0.2.0-alpha3.2
+ * @since 0.3.0
  */
 class RouteServiceProvider extends ServiceProvider
 {
@@ -22,32 +22,38 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app
-            ->container()
-            ->singleton(
-                Router::class,
-                function (Container $container): Router {
-                    return new Router();
-                }
-            );
+        $this->app->container()->singleton(
+            Router::class,
+            fn () => new Router($this->app)
+        );
     }
 
     /**
-     * Boot services.
+     * Boot the provider.
      */
     public function boot(): void
     {
-        // Reserved for future routing events.
+        $this->loadRoutes();
     }
 
-    protected function registerRoutes(): void
+    /**
+     * Load all route definitions.
+     */
+    protected function loadRoutes(): void
     {
-        $path = GMRC_PATH . 'app/Modules/Characters/Routes.php';
-    
-        if (file_exists($path)) {
-            $routes = require $path;
-    
-            $routes($this->app->make(Router::class));
+        $router = $this->app->make(Router::class);
+
+        $routes = GMRC_PATH .
+            'app/Modules/Characters/Routes.php';
+
+        if (! file_exists($routes)) {
+            return;
+        }
+
+        $register = require $routes;
+
+        if (is_callable($register)) {
+            $register($router);
         }
     }
 }
