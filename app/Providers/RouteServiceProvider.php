@@ -39,4 +39,15 @@ class RouteServiceProvider extends ServiceProvider
     {
         // Reserved for future routing events.
     }
+
+    protected function registerRoutes(): void
+    {
+        $path = GMRC_PATH . 'app/Modules/Characters/Routes.php';
+    
+        if (file_exists($path)) {
+            $routes = require $path;
+    
+            $routes($this->app->make(Router::class));
+        }
+    }
 }
