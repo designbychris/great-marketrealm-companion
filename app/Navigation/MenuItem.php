@@ -1,6 +1,6 @@
 <?php
 
-namespace GreatMarketrealmCompanion\Application\Navigation;
+namespace GreatMarketrealmCompanion\Navigation;
 
 defined('ABSPATH') || exit;
 
