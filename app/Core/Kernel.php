@@ -3,7 +3,8 @@
 namespace GreatMarketrealmCompanion\Core;
 
 use GreatMarketrealmCompanion\Providers\NavigationServiceProvider;
-use GreatMarketrealmCompanion\Providers\ServiceProvider;
+use GreatMarketrealmCompanion\Providers\RouteServiceProvider;
+use GreatMarketrealmCompanion\Providers\ViewServiceProvider;
 
 defined('ABSPATH') || exit;
 
