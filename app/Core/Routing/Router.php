@@ -2,25 +2,13 @@
 
 namespace GreatMarketrealmCompanion\Core\Routing;
 
-use GreatMarketrealmCompanion\Core\Application;
+use GreatMarketrealmCompanion\Core\Container;
+use RuntimeException;
 
 defined('ABSPATH') || exit;
 
-/**
- * Router.
- *
- * Registers and dispatches application routes.
- *
- * @package MarketrealmCompanion
- * @since 0.3.0
- */
 class Router
 {
-    /**
-     * Application instance.
-     */
-    protected Application $app;
-
     /**
      * Registered routes.
      *
@@ -28,67 +16,81 @@ class Router
      */
     protected array $routes = [];
 
-    /**
-     * Constructor.
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
+    public function __construct(
+        protected Container $container
+    ) {
     }
 
     /**
      * Register a GET route.
      */
-    public function get(
-        string $uri,
-        callable|array $action
-    ): self {
-        $this->routes['GET'][$uri] = $action;
-
-        return $this;
+    public function get(string $path, callable|array $handler): void
+    {
+        $this->routes['GET'][$this->normalisePath($path)] = $handler;
     }
 
     /**
-     * Dispatch a request.
+     * Dispatch the current request.
      */
     public function dispatch(
-    string $httpMethod,
-    string $uri
+        ?string $httpMethod = null,
+        ?string $requestUri = null
     ): mixed {
-    
-        $action = $this->routes[$httpMethod][$uri] ?? null;
-    
-        ...
-    
-        [$controller, $controllerMethod] = $action;
-    
-        return $this->app
-            ->make($controller)
-            ->{$controllerMethod}();
-    }
+        $httpMethod ??= $_SERVER['REQUEST_METHOD'] ?? 'GET';
+        $requestUri ??= $_SERVER['REQUEST_URI'] ?? '/';
 
-    /**
-     * Return registered routes.
-     */
-    public function routes(): array
-    {
-        return $this->routes;
-    }
+        $path = parse_url($requestUri, PHP_URL_PATH);
 
-    /** Helps with dispatching **/
-    public function has(
-    string $httpMethod,
-    string $uri
-    ): bool
-    {
-        return isset(
-            $this->routes[$httpMethod][$uri]
+        if (! is_string($path)) {
+            $path = '/';
+        }
+
+        $path = $this->normalisePath($path);
+
+        if (! isset($this->routes[$httpMethod][$path])) {
+            throw new RuntimeException(
+                sprintf('No route registered for [%s %s].', $httpMethod, $path)
+            );
+        }
+
+        return $this->runHandler(
+            $this->routes[$httpMethod][$path]
         );
     }
 
-    /** For debugging **/
-    public function dump(): array
+    /**
+     * Execute a route handler.
+     */
+    protected function runHandler(callable|array $handler): mixed
     {
-        return $this->routes;
+        if (is_callable($handler)) {
+            return $handler();
+        }
+
+        [$controllerClass, $controllerMethod] = $handler;
+
+        $controller = $this->container->make($controllerClass);
+
+        return $controller->{$controllerMethod}();
+    }
+
+    /**
+     * Check whether a route exists.
+     */
+    public function has(string $httpMethod, string $path): bool
+    {
+        return isset(
+            $this->routes[strtoupper($httpMethod)][$this->normalisePath($path)]
+        );
+    }
+
+    /**
+     * Normalise a route path.
+     */
+    protected function normalisePath(string $path): string
+    {
+        $path = '/' . trim($path, '/');
+
+        return $path === '/' ? '/' : rtrim($path, '/');
     }
 }
