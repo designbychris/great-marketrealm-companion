@@ -30,7 +30,9 @@ class ViewServiceProvider extends ServiceProvider
         $this->app->container()->singleton(
             ViewFactory::class,
             fn () => new ViewFactory(
-                $this->app->make(ViewFinder::class)
+                $this->app->container()->make(
+                    ViewFinder::class
+                )
             )
         );
     }
