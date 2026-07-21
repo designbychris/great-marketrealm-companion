@@ -17,19 +17,27 @@ defined('ABSPATH') || exit;
  */
 class CharacterController
 {
+    protected CharacterRepository $characters;
+
+    protected ViewFactory $views;
+
     public function __construct(
-        protected CharacterRepository $repository
+        CharacterRepository $characters,
+        ViewFactory $views
     ) {
+        $this->characters = $characters;
+        $this->views = $views;
     }
 
     public function index(): string
     {
-        return Page::make('characters.index')
-            ->title(__('Characters', 'great-marketrealm-companion'))
-            ->layout('app')
-            ->with([
-                'characters' => $this->repository->all(),
-            ])
-            ->render();
+        return $this->views->render(
+            View::make(
+                'characters.index',
+                [
+                    'characters' => $this->characters->all(),
+                ]
+            )
+        );
     }
 }
