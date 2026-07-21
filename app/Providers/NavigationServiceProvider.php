@@ -4,6 +4,7 @@ namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Navigation\Navigation;
 use GreatMarketrealmCompanion\Core\Container;
+use GreatMarketrealmCompanion\Permissions\PermissionManager;
 
 defined('ABSPATH') || exit;
 
