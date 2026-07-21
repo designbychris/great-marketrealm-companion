@@ -4,6 +4,7 @@ namespace GreatMarketrealmCompanion\Core;
 
 use GreatMarketrealmCompanion\Providers\NavigationServiceProvider;
 use GreatMarketrealmCompanion\Providers\RouteServiceProvider;
+use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Providers\ViewServiceProvider;
 
 defined('ABSPATH') || exit;
@@ -14,7 +15,7 @@ defined('ABSPATH') || exit;
  * Coordinates the platform boot process.
  *
  * @package GreatMarketrealmCompanion
- * @since 0.2.0-alpha3.2
+ * @since 0.3.0
  */
 class Kernel
 {
@@ -57,11 +58,11 @@ class Kernel
     public function boot(): void
     {
         $this->registerProviders();
-    
-        foreach ($this->providers as $provider) {
+
+        foreach ($this->loadedProviders as $provider) {
             $provider->boot();
         }
-    
+
         do_action(
             'gmrc_booted',
             $this->app
@@ -73,15 +74,14 @@ class Kernel
      */
     protected function register(ServiceProvider $provider): void
     {
-        $this->providers[] = $provider;
-    
+        $this->loadedProviders[] = $provider;
+
         $provider->register();
     }
 
     /**
      * Register all core service providers.
      */
-
     protected function registerProviders(): void
     {
         foreach ($this->coreProviders as $providerClass) {
@@ -92,12 +92,12 @@ class Kernel
     }
 
     /**
-     * Return registered providers.
+     * Return the loaded providers.
      *
      * @return ServiceProvider[]
      */
     public function providers(): array
     {
-        return $this->providers;
+        return $this->loadedProviders;
     }
 }
