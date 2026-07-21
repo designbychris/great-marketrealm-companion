@@ -2,7 +2,8 @@
 
 namespace GreatMarketrealmCompanion\Modules\Characters\Controllers;
 
-use GreatMarketrealmCompanion\Http\Page;
+use GreatMarketrealmCompanion\Core\View\View;
+use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 
 defined('ABSPATH') || exit;
