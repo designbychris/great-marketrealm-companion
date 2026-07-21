@@ -22,11 +22,26 @@ class Router
     }
 
     /**
-     * Register a GET route.
+     * Register a GET and POST route.
      */
     public function get(string $path, callable|array $handler): void
     {
-        $this->routes['GET'][$this->normalisePath($path)] = $handler;
+        $this->addRoute('GET', $path, $handler);
+    }
+    
+    public function post(string $path, callable|array $handler): void
+    {
+        $this->addRoute('POST', $path, $handler);
+    }
+    
+    protected function addRoute(
+        string $httpMethod,
+        string $path,
+        callable|array $handler
+    ): void {
+        $this->routes[strtoupper($httpMethod)][
+            $this->normalisePath($path)
+        ] = $handler;
     }
 
     /**
