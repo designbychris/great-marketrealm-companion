@@ -22,7 +22,7 @@ class Router
     }
 
     /**
-     * Register a GET and POST route.
+     * Register a GET, POST, PUT, PATCH and DELETE route.
      */
     public function get(string $path, callable|array $handler): void
     {
@@ -32,6 +32,21 @@ class Router
     public function post(string $path, callable|array $handler): void
     {
         $this->addRoute('POST', $path, $handler);
+    }
+    
+    public function put(string $path, callable|array $handler): void
+    {
+        $this->addRoute('PUT', $path, $handler);
+    }
+    
+    public function patch(string $path, callable|array $handler): void
+    {
+        $this->addRoute('PATCH', $path, $handler);
+    }
+    
+    public function delete(string $path, callable|array $handler): void
+    {
+        $this->addRoute('DELETE', $path, $handler);
     }
     
     protected function addRoute(
