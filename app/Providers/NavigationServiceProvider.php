@@ -9,19 +9,18 @@ defined('ABSPATH') || exit;
 
 class NavigationServiceProvider extends ServiceProvider
 {
-    /**
-     * Register navigation services.
-     */
     public function register(): void
     {
-        $this->app->singleton(
+        $container = $this->app->container();
+
+        $container->singleton(
             PermissionManager::class,
             static function (): PermissionManager {
                 return new PermissionManager();
             }
         );
 
-        $this->app->singleton(
+        $container->singleton(
             Navigation::class,
             function (): Navigation {
                 return new Navigation(
@@ -31,9 +30,6 @@ class NavigationServiceProvider extends ServiceProvider
         );
     }
 
-    /**
-     * Boot navigation services.
-     */
     public function boot(): void
     {
         $navigation = $this->app->make(Navigation::class);
