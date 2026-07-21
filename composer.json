@@ -1,10 +1,23 @@
 {
-    "name": "greatmarketrealm/companion",
+    "name": "marketrealmstudios/great-marketrealm-companion",
+    "description": "A modular Dungeons & Dragons companion platform for the Great Marketrealm.",
     "type": "wordpress-plugin",
-    "require": {},
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Marketrealm Studios"
+        }
+    ],
+    "require": {
+        "php": "^8.2"
+    },
     "autoload": {
         "psr-4": {
-            "GMR\\": "includes/"
+            "GreatMarketrealmCompanion\\": "app/"
         }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
     }
 }
