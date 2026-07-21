@@ -89,7 +89,7 @@ class Navigation
                 Icons::DASHBOARD,
                 'dashboard',
                 10
-            );
+            )
         );
     
         $this->add(
