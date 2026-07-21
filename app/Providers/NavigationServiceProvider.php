@@ -2,7 +2,7 @@
 
 namespace GreatMarketrealmCompanion\Providers;
 
-use GreatMarketrealmCompanion\app\Navigation\Navigation;
+use GreatMarketrealmCompanion\Application\Navigation\Navigation;
 use GreatMarketrealmCompanion\Core\Container;
 
 defined('ABSPATH') || exit;
