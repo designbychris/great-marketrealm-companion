@@ -1,13 +1,10 @@
 <?php
 
-namespace GreatMarketrealmCompanion\Providers;
-
-use GreatMarketrealmCompanion\Navigation\Navigation;
-use GreatMarketrealmCompanion\Permissions\PermissionManager;
+namespace GreatMarketrealmCompanion\Permissions;
 
 defined('ABSPATH') || exit;
 
-class NavigationServiceProvider extends ServiceProvider
+class PermissionManager
 {
     public function register(): void
     {
