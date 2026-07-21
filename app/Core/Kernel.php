@@ -6,6 +6,7 @@ use GreatMarketrealmCompanion\Providers\NavigationServiceProvider;
 use GreatMarketrealmCompanion\Providers\RouteServiceProvider;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Providers\ViewServiceProvider;
+use GreatMarketrealmCompanion\Providers\FrontendServiceProvider;
 
 defined('ABSPATH') || exit;
 
@@ -33,6 +34,7 @@ class Kernel
         NavigationServiceProvider::class,
         RouteServiceProvider::class,
         ViewServiceProvider::class,
+        FrontendServiceProvider::class,
     ];
 
     /**
