@@ -12,6 +12,7 @@ defined('ABSPATH') || exit;
 define('GMRC_VERSION', '0.3.0-alpha');
 define('GMRC_PATH', plugin_dir_path(__FILE__));
 define('GMRC_URL', plugin_dir_url(__FILE__));
+define('GMRC_PLUGIN_FILE', __FILE__);
 
 require GMRC_PATH . 'vendor/autoload.php';
 
