@@ -3,59 +3,41 @@
 namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Navigation\Navigation;
-use GreatMarketrealmCompanion\Core\Container;
 use GreatMarketrealmCompanion\Permissions\PermissionManager;
 
 defined('ABSPATH') || exit;
 
-/**
- * Navigation Service Provider.
- *
- * Registers and boots the platform navigation service.
- *
- * @package GreatMarketrealmCompanion
- * @since 0.2.0-alpha3.2
- */
 class NavigationServiceProvider extends ServiceProvider
 {
     /**
-     * Register services.
+     * Register navigation services.
      */
     public function register(): void
     {
-        $this->app
-            ->container()
-            ->singleton(
-                Navigation::class,
-                function (Container $container): Navigation {
+        $this->app->singleton(
+            PermissionManager::class,
+            static function (): PermissionManager {
+                return new PermissionManager();
+            }
+        );
 
-                    return new Navigation(
-                        $container->make(PermissionManager::class),
-                        $container->make(EventDispatcher::class)
-                    );
-
-                }
-            );
+        $this->app->singleton(
+            Navigation::class,
+            function (): Navigation {
+                return new Navigation(
+                    $this->app->make(PermissionManager::class)
+                );
+            }
+        );
     }
 
     /**
-     * Boot services.
+     * Boot navigation services.
      */
     public function boot(): void
     {
-        /** @var Navigation $navigation */
-        $navigation = $this->app->make(
-            Navigation::class
-        );
+        $navigation = $this->app->make(Navigation::class);
 
-        $navigation->registerDefaults();
-
-        /**
-         * Allow modules to extend the navigation.
-         */
-        do_action(
-            'gmrc_navigation_register',
-            $navigation
-        );
+        // Register navigation items here.
     }
 }
