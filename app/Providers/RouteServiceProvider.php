@@ -23,7 +23,9 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->app->container()->singleton(
             Router::class,
-            fn () => new Router($this->app)
+            fn (): Router => new Router(
+                $this->app->container()
+            )
         );
     }
 
@@ -46,16 +48,7 @@ class RouteServiceProvider extends ServiceProvider
             GMRC_PATH . 'app/Modules/Characters/Routes.php',
         ];
 
-        //$routeFiles = $this->discoverRoutes();
-        //protected function discoverRoutes(): array
-        //{
-        //    return glob(
-        //        GMRC_PATH . 'app/Modules/*/Routes.php'
-        //    );
-        //}
-
         foreach ($routeFiles as $routeFile) {
-
             if (! file_exists($routeFile)) {
                 continue;
             }
