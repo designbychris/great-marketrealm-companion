@@ -7,6 +7,8 @@ use GreatMarketrealmCompanion\Providers\RouteServiceProvider;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Providers\ViewServiceProvider;
 use GreatMarketrealmCompanion\Providers\FrontendServiceProvider;
+use GreatMarketrealmCompanion\Modules\Characters\CharactersServiceProvider;
+use GreatMarketrealmCompanion\Modules\Dashboard\DashboardServiceProvider;
 
 defined('ABSPATH') || exit;
 
@@ -32,8 +34,12 @@ class Kernel
      */
     protected array $coreProviders = [
         NavigationServiceProvider::class,
-        RouteServiceProvider::class,
         ViewServiceProvider::class,
+    
+        DashboardServiceProvider::class,
+        CharactersServiceProvider::class,
+    
+        RouteServiceProvider::class,
         FrontendServiceProvider::class,
     ];
 
