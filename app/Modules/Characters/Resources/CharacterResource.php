@@ -4,6 +4,10 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Resources;
 
 use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController;
 use GreatMarketrealmCompanion\Resources\Resource;
+use GreatMarketrealmCompanion\Modules\Characters\Pages\CreateCharacterPage;
+use GreatMarketrealmCompanion\Modules\Characters\Pages\EditCharacterPage;
+use GreatMarketrealmCompanion\Modules\Characters\Pages\ListCharactersPage;
+use GreatMarketrealmCompanion\Modules\Characters\Pages\ViewCharacterPage;
 
 defined('ABSPATH') || exit;
 
@@ -57,5 +61,15 @@ class CharacterResource extends Resource
     public function controller(): string
     {
         return CharacterController::class;
+    }
+
+    public function pages(): array
+    {
+        return [
+            ListCharactersPage::class,
+            CreateCharacterPage::class,
+            ViewCharacterPage::class,
+            EditCharacterPage::class,
+        ];
     }
 }
