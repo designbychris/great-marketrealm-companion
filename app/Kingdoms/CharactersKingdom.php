@@ -4,6 +4,7 @@ namespace GreatMarketrealmCompanion\Kingdoms;
 
 use GreatMarketrealmCompanion\Modules\Characters\CharactersServiceProvider;
 use GreatMarketrealmCompanion\Modules\Characters\Resources\CharacterResource;
+use GreatMarketrealmCompanion\Navigation\Icons;
 use GreatMarketrealmCompanion\Navigation\MenuItem;
 use GreatMarketrealmCompanion\Navigation\Navigation;
 
@@ -38,12 +39,16 @@ class CharactersKingdom extends Kingdom
     public function registerNavigation(
         Navigation $navigation
     ): void {
+        if ($navigation->has($this->key())) {
+            return;
+        }
+
         $navigation->add(
             MenuItem::make(
                 'characters',
                 'Characters',
-                'users',
-                '/characters',
+                Icons::USERS,
+                'characters',
                 20
             )
         );
