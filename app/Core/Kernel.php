@@ -2,14 +2,13 @@
 
 namespace GreatMarketrealmCompanion\Core;
 
+use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
+use GreatMarketrealmCompanion\Providers\FrontendServiceProvider;
+use GreatMarketrealmCompanion\Providers\KingdomServiceProvider;
 use GreatMarketrealmCompanion\Providers\NavigationServiceProvider;
 use GreatMarketrealmCompanion\Providers\RouteServiceProvider;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Providers\ViewServiceProvider;
-use GreatMarketrealmCompanion\Providers\FrontendServiceProvider;
-use GreatMarketrealmCompanion\Modules\Characters\CharactersServiceProvider;
-use GreatMarketrealmCompanion\Modules\Dashboard\DashboardServiceProvider;
-use GreatMarketrealmCompanion\Providers\KingdomServiceProvider;
 
 defined('ABSPATH') || exit;
 
