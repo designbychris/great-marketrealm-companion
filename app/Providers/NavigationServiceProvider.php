@@ -7,6 +7,14 @@ use GreatMarketrealmCompanion\Permissions\PermissionManager;
 
 defined('ABSPATH') || exit;
 
+/**
+ * Navigation Service Provider.
+ *
+ * Registers and configures application navigation.
+ *
+ * @package GreatMarketrealmCompanion
+ * @since 0.3.0
+ */
 class NavigationServiceProvider extends ServiceProvider
 {
     public function register(): void
@@ -22,18 +30,18 @@ class NavigationServiceProvider extends ServiceProvider
 
         $container->singleton(
             Navigation::class,
-            function (): Navigation {
-                return new Navigation(
-                    $this->app->make(PermissionManager::class)
-                );
+            static function (): Navigation {
+                return new Navigation();
             }
         );
     }
 
     public function boot(): void
     {
-        $navigation = $this->app->make(Navigation::class);
+        $navigation = $this->app->make(
+            Navigation::class
+        );
 
-        // Register navigation items here.
+        $navigation->registerDefaults();
     }
 }
