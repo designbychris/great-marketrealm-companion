@@ -70,4 +70,14 @@ class CharactersKingdom extends Kingdom
             )
         );
     }
+
+    /**
+     * Resources contributed by the Characters Kingdom.
+     */
+    public function resources(): array
+    {
+        return [
+            CharacterResource::class,
+        ];
+    }
 }
