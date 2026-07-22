@@ -2,54 +2,193 @@
 
 defined('ABSPATH') || exit;
 
-$componentsPath = GMRC_PATH . 'resources/views/components/';
+$currentUser = wp_get_current_user();
 
-?><!DOCTYPE html>
-<html <?php language_attributes(); ?>>
+?>
 
-<head>
+<div class="gmrc-app-shell">
 
-    <meta charset="<?php bloginfo('charset'); ?>">
+    <aside class="gmrc-sidebar">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1">
+        <div class="gmrc-sidebar__header">
 
-    <title>
-        <?php
-        echo esc_html(
-            $pageTitle ?? get_bloginfo('name')
-        );
-        ?>
-    </title>
+            <a
+                href="<?php echo esc_url(
+                    remove_query_arg('gmrc_route', get_permalink())
+                ); ?>"
+                class="gmrc-brand"
+            >
 
-    <?php wp_head(); ?>
+                <span
+                    class="gmrc-brand__mascot"
+                    aria-hidden="true"
+                >
+                    🍆
+                </span>
 
-</head>
+                <span class="gmrc-brand__text">
 
-<body <?php body_class('gmrc-app'); ?>>
+                    <strong>
+                        Great Marketrealm Companion
+                    </strong>
 
-<?php wp_body_open(); ?>
+                    <small>
+                        Keeper of the Kingdoms
+                    </small>
 
-<div class="gmrc-app">
+                </span>
 
-    <?php
-    $header = $componentsPath . 'header.php';
+            </a>
 
-    if (file_exists($header)) {
-        require $header;
-    }
-    ?>
+        </div>
 
-    <div class="gmrc-container">
+        <nav
+            class="gmrc-navigation"
+            aria-label="Companion navigation"
+        >
 
-        <?php
-        $sidebar = $componentsPath . 'sidebar.php';
+            <?php foreach ($navigation ?? [] as $item) : ?>
 
-        if (file_exists($sidebar)) {
-            require $sidebar;
-        }
-        ?>
+                <?php
+                $classes = [
+                    'gmrc-navigation__item',
+                ];
+
+                if (! empty($item['active'])) {
+                    $classes[] = 'is-active';
+                }
+
+                if (empty($item['enabled'])) {
+                    $classes[] = 'is-disabled';
+                }
+                ?>
+
+                <?php if (! empty($item['enabled'])) : ?>
+
+                    <a
+                        href="<?php echo esc_url($item['url']); ?>"
+                        class="<?php echo esc_attr(
+                            implode(' ', $classes)
+                        ); ?>"
+                        <?php
+                        echo ! empty($item['active'])
+                            ? 'aria-current="page"'
+                            : '';
+                        ?>
+                    >
+
+                        <span
+                            class="gmrc-navigation__icon"
+                            aria-hidden="true"
+                        >
+                            <?php echo wp_kses_post($item['icon']); ?>
+                        </span>
+
+                        <span>
+                            <?php echo esc_html($item['label']); ?>
+                        </span>
+
+                    </a>
+
+                <?php else : ?>
+
+                    <span
+                        class="<?php echo esc_attr(
+                            implode(' ', $classes)
+                        ); ?>"
+                        aria-disabled="true"
+                    >
+
+                        <span
+                            class="gmrc-navigation__icon"
+                            aria-hidden="true"
+                        >
+                            <?php echo wp_kses_post($item['icon']); ?>
+                        </span>
+
+                        <span>
+                            <?php echo esc_html($item['label']); ?>
+                        </span>
+
+                        <small>
+                            Soon
+                        </small>
+
+                    </span>
+
+                <?php endif; ?>
+
+            <?php endforeach; ?>
+
+        </nav>
+
+        <div class="gmrc-sidebar__footer">
+
+            <span>
+                <?php echo esc_html($currentUser->display_name); ?>
+            </span>
+
+            <small>
+                Adventurer
+            </small>
+
+        </div>
+
+    </aside>
+
+    <div class="gmrc-app-main">
+
+        <header class="gmrc-topbar">
+
+            <div>
+
+                <p class="gmrc-topbar__eyebrow">
+                    Great Marketrealm Companion
+                </p>
+
+                <h1 class="gmrc-topbar__title">
+                    <?php echo esc_html(
+                        $pageTitle ?? 'Dashboard'
+                    ); ?>
+                </h1>
+
+            </div>
+
+            <div class="gmrc-user-badge">
+
+                <div class="gmrc-user-badge__avatar">
+                    <?php
+                    echo esc_html(
+                        strtoupper(
+                            substr(
+                                $currentUser->display_name ?: 'A',
+                                0,
+                                1
+                            )
+                        )
+                    );
+                    ?>
+                </div>
+
+                <div class="gmrc-user-badge__details">
+
+                    <strong>
+                        <?php
+                        echo esc_html(
+                            $currentUser->display_name
+                        );
+                        ?>
+                    </strong>
+
+                    <small>
+                        Adventurer
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>
 
         <main class="gmrc-content">
 
@@ -59,18 +198,4 @@ $componentsPath = GMRC_PATH . 'resources/views/components/';
 
     </div>
 
-    <?php
-    $footer = $componentsPath . 'footer.php';
-
-    if (file_exists($footer)) {
-        require $footer;
-    }
-    ?>
-
 </div>
-
-<?php wp_footer(); ?>
-
-</body>
-
-</html>
