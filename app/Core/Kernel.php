@@ -9,13 +9,15 @@ use GreatMarketrealmCompanion\Providers\NavigationServiceProvider;
 use GreatMarketrealmCompanion\Providers\RouteServiceProvider;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Providers\ViewServiceProvider;
+use RuntimeException;
 
 defined('ABSPATH') || exit;
 
 /**
- * Framework Kernel.
+ * Application Kernel.
  *
- * Coordinates the platform boot process.
+ * Coordinates registration and booting of framework
+ * and Kingdom service providers.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.3.0
@@ -23,12 +25,14 @@ defined('ABSPATH') || exit;
 class Kernel
 {
     /**
-     * Application instance.
+     * Registered provider instances.
+     *
+     * @var array<int, ServiceProvider>
      */
-    protected Application $app;
+    protected array $providers = [];
 
     /**
-     * Providers required before Kingdoms can be registered.
+     * Providers required before Kingdom registration.
      *
      * @var array<int, class-string<ServiceProvider>>
      */
@@ -37,9 +41,9 @@ class Kernel
         NavigationServiceProvider::class,
         ViewServiceProvider::class,
     ];
-    
+
     /**
-     * Providers registered after individual Kingdom providers.
+     * Providers registered after Kingdom providers.
      *
      * @var array<int, class-string<ServiceProvider>>
      */
@@ -49,68 +53,98 @@ class Kernel
     ];
 
     /**
-     * Loaded provider instances.
-     *
-     * @var ServiceProvider[]
+     * Create the application Kernel.
      */
-    protected array $loadedProviders = [];
-
-    /**
-     * Constructor.
-     *
-     * @param Application $app Application instance.
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
+    public function __construct(
+        protected Application $app
+    ) {
     }
 
     /**
-     * Boot the framework.
+     * Boot the application.
      */
     public function boot(): void
     {
-        $this->registerProviders();
-
-        foreach ($this->loadedProviders as $provider) {
-            $provider->boot();
-        }
-
-        do_action(
-            'gmrc_booted',
-            $this->app
+        $this->registerProviders(
+            $this->foundationProviders
         );
+
+        $this->registerKingdomProviders();
+
+        $this->registerProviders(
+            $this->applicationProviders
+        );
+
+        $this->bootProviders();
     }
 
     /**
-     * Register a service provider.
+     * Register a collection of providers.
+     *
+     * @param array<int, class-string<ServiceProvider>> $providers
      */
-    protected function register(ServiceProvider $provider): void
-    {
-        $this->loadedProviders[] = $provider;
-
-        $provider->register();
-    }
-
-    /**
-     * Register all core service providers.
-     */
-    protected function registerProviders(): void
-    {
-        foreach ($this->coreProviders as $providerClass) {
-            $this->register(
-                new $providerClass($this->app)
+    protected function registerProviders(
+        array $providers
+    ): void {
+        foreach ($providers as $providerClass) {
+            $this->registerProvider(
+                $providerClass
             );
         }
     }
 
     /**
-     * Return the loaded providers.
-     *
-     * @return ServiceProvider[]
+     * Register providers contributed by Kingdoms.
      */
-    public function providers(): array
+    protected function registerKingdomProviders(): void
     {
-        return $this->loadedProviders;
+        $registry = $this->app->make(
+            KingdomRegistry::class
+        );
+
+        foreach ($registry->providers() as $providerClass) {
+            $this->registerProvider(
+                $providerClass
+            );
+        }
+    }
+
+    /**
+     * Register one service provider.
+     *
+     * @param class-string<ServiceProvider> $providerClass
+     */
+    protected function registerProvider(
+        string $providerClass
+    ): void {
+        if (! is_subclass_of(
+            $providerClass,
+            ServiceProvider::class
+        )) {
+            throw new RuntimeException(
+                sprintf(
+                    'Invalid service provider: %s',
+                    $providerClass
+                )
+            );
+        }
+
+        $provider = new $providerClass(
+            $this->app
+        );
+
+        $provider->register();
+
+        $this->providers[] = $provider;
+    }
+
+    /**
+     * Boot every registered provider.
+     */
+    protected function bootProviders(): void
+    {
+        foreach ($this->providers as $provider) {
+            $provider->boot();
+        }
     }
 }
