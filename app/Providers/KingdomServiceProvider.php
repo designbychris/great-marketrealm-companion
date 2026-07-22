@@ -47,9 +47,13 @@ class KingdomServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        /*
-         * Kingdom providers, routes, and navigation will be
-         * connected in the next stages.
-         */
+        $registry = $this->app->make(
+            KingdomRegistry::class
+        );
+    
+        error_log(
+            'GMRC Kingdoms registered: '
+            . implode(', ', array_keys($registry->all()))
+        );
     }
 }
