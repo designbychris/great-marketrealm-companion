@@ -2,83 +2,42 @@
 
 defined('ABSPATH') || exit;
 
-$current_user = wp_get_current_user();
-
-/**
- * Temporary navigation.
- *
- * TODO:
- * Replace with Navigation::sidebar()
- * once the Navigation helper has been created.
- */
-$items = [
-    [
-        'label'  => __('Dashboard', 'great-marketrealm-companion'),
-        'icon'   => '🏠',
-        'url'    => '#',
-        'active' => true,
-    ],
-    [
-        'label'  => __('Characters', 'great-marketrealm-companion'),
-        'icon'   => '👤',
-        'url'    => '#',
-        'active' => false,
-    ],
-    [
-        'label'  => __('Inventory', 'great-marketrealm-companion'),
-        'icon'   => '🎒',
-        'url'    => '#',
-        'active' => false,
-    ],
-    [
-        'label'  => __('Journal', 'great-marketrealm-companion'),
-        'icon'   => '📖',
-        'url'    => '#',
-        'active' => false,
-    ],
-    [
-        'label'  => __('Campaigns', 'great-marketrealm-companion'),
-        'icon'   => '🗺',
-        'url'    => '#',
-        'active' => false,
-    ],
-    [
-        'label'  => __('Quests', 'great-marketrealm-companion'),
-        'icon'   => '⚔',
-        'url'    => '#',
-        'active' => false,
-    ],
-    [
-        'label'  => __('Compendium', 'great-marketrealm-companion'),
-        'icon'   => '📚',
-        'url'    => '#',
-        'active' => false,
-    ],
-    [
-        'label'  => __('Dice Roller', 'great-marketrealm-companion'),
-        'icon'   => '🎲',
-        'url'    => '#',
-        'active' => false,
-    ],
-];
+$currentUser = wp_get_current_user();
 
 ?>
 
 <aside class="gmrc-sidebar">
 
-    <div class="gmrc-sidebar__brand">
+    <div class="gmrc-sidebar__header">
 
-        <a href="#" class="gmrc-sidebar__logo">
+        <a
+            class="gmrc-brand"
+            href="<?php echo esc_url(
+                remove_query_arg(
+                    'gmrc_route',
+                    get_permalink()
+                )
+            ); ?>"
+        >
 
-            <span class="gmrc-sidebar__logo-icon">🍎</span>
+            <span
+                class="gmrc-brand__icon"
+                aria-hidden="true"
+            >
+                🍆
+            </span>
 
-            <div class="gmrc-sidebar__logo-text">
+            <span class="gmrc-brand__text">
 
-                <strong>Great Marketrealm</strong>
+                <strong>
+                    Great Marketrealm
+                </strong>
 
-                <span>Companion</span>
+                <span>
+                    Companion
+                </span>
 
-            </div>
+            </span>
 
         </a>
 
@@ -87,86 +46,149 @@ $items = [
     <div class="gmrc-sidebar__user">
 
         <div class="gmrc-sidebar__avatar">
-            <?php echo get_avatar($current_user->ID, 60); ?>
+
+            <?php
+            echo get_avatar(
+                $currentUser->ID,
+                48
+            );
+            ?>
+
         </div>
 
         <div class="gmrc-sidebar__user-details">
 
             <strong>
-                <?php echo esc_html($current_user->display_name); ?>
+                <?php
+                echo esc_html(
+                    $currentUser->display_name
+                );
+                ?>
             </strong>
 
             <span>
-                <?php esc_html_e('Adventurer', 'great-marketrealm-companion'); ?>
+                Adventurer
             </span>
 
         </div>
 
     </div>
 
-    <nav class="gmrc-sidebar__nav">
+    <nav
+        class="gmrc-navigation"
+        aria-label="Companion navigation"
+    >
 
-        <ul>
+        <?php foreach ($navigation ?? [] as $item) : ?>
 
-            <?php foreach ($items as $item) : ?>
+            <?php
+            $classes = [
+                'gmrc-navigation__item',
+            ];
 
-                <li>
+            if (! empty($item['active'])) {
+                $classes[] = 'is-active';
+            }
 
-                    <a
-                        href="<?php echo esc_url($item['url']); ?>"
-                        class="<?php echo $item['active'] ? 'is-active' : ''; ?>">
+            if (empty($item['enabled'])) {
+                $classes[] = 'is-disabled';
+            }
+            ?>
 
-                        <span class="gmrc-sidebar__icon">
+            <?php if (! empty($item['enabled'])) : ?>
 
-                            <?php echo esc_html($item['icon']); ?>
+                <a
+                    href="<?php echo esc_url(
+                        $item['url']
+                    ); ?>"
+                    class="<?php echo esc_attr(
+                        implode(' ', $classes)
+                    ); ?>"
+                    <?php
+                    echo ! empty($item['active'])
+                        ? 'aria-current="page"'
+                        : '';
+                    ?>
+                >
 
-                        </span>
+                    <span
+                        class="gmrc-navigation__icon"
+                        aria-hidden="true"
+                    >
+                        <?php
+                        echo wp_kses_post(
+                            $item['icon']
+                        );
+                        ?>
+                    </span>
 
-                        <span class="gmrc-sidebar__label">
+                    <span class="gmrc-navigation__label">
+                        <?php
+                        echo esc_html(
+                            $item['label']
+                        );
+                        ?>
+                    </span>
 
-                            <?php echo esc_html($item['label']); ?>
+                </a>
 
-                        </span>
+            <?php else : ?>
 
-                    </a>
+                <span
+                    class="<?php echo esc_attr(
+                        implode(' ', $classes)
+                    ); ?>"
+                    aria-disabled="true"
+                >
 
-                </li>
+                    <span
+                        class="gmrc-navigation__icon"
+                        aria-hidden="true"
+                    >
+                        <?php
+                        echo wp_kses_post(
+                            $item['icon']
+                        );
+                        ?>
+                    </span>
 
-            <?php endforeach; ?>
+                    <span class="gmrc-navigation__label">
+                        <?php
+                        echo esc_html(
+                            $item['label']
+                        );
+                        ?>
+                    </span>
 
-        </ul>
+                </span>
+
+            <?php endif; ?>
+
+        <?php endforeach; ?>
 
     </nav>
 
     <div class="gmrc-sidebar__footer">
 
-        <ul>
+        <a
+            href="<?php echo esc_url(
+                wp_logout_url(home_url())
+            ); ?>"
+            class="gmrc-navigation__item"
+        >
 
-            <li>
+            <span
+                class="gmrc-navigation__icon"
+                aria-hidden="true"
+            >
+                ↪
+            </span>
 
-                <a href="#">
+            <span class="gmrc-navigation__label">
+                Logout
+            </span>
 
-                    ⚙
-
-                    <span><?php esc_html_e('Settings', 'great-marketrealm-companion'); ?></span>
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="<?php echo esc_url(wp_logout_url(home_url())); ?>">
-
-                    🚪
-
-                    <span><?php esc_html_e('Logout', 'great-marketrealm-companion'); ?></span>
-
-                </a>
-
-            </li>
-
-        </ul>
+        </a>
 
     </div>
 
