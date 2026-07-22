@@ -4,21 +4,13 @@ namespace GreatMarketrealmCompanion\Kingdoms;
 
 use GreatMarketrealmCompanion\Core\Application;
 use GreatMarketrealmCompanion\Navigation\Navigation;
-use GreatMarketrealmCompanion\Providers\ServiceProvider;
 
 defined('ABSPATH') || exit;
 
 /**
  * Base Kingdom.
  *
- * Represents a self-contained Marketrealm Companion module.
- *
- * Each Kingdom may provide:
- *
- * - A service provider
- * - Route files
- * - Navigation items
- * - Future Kingdom-specific configuration
+ * Represents a modular area of the application.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.3.0
@@ -26,44 +18,27 @@ defined('ABSPATH') || exit;
 abstract class Kingdom
 {
     /**
-     * Application instance.
+     * Create the Kingdom.
      */
-    protected Application $app;
-
-    /**
-     * Constructor.
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
+    public function __construct(
+        protected Application $app
+    ) {
     }
 
     /**
-     * Return the Kingdom's unique key.
-     *
-     * Examples:
-     *
-     * dashboard
-     * characters
-     * campaigns
+     * Unique Kingdom key.
      */
     abstract public function key(): string;
 
     /**
-     * Return the Kingdom's service provider class.
+     * Kingdom service provider.
      *
-     * @return class-string<ServiceProvider>
+     * @return class-string
      */
     abstract public function provider(): string;
 
     /**
-     * Return the Kingdom's route files.
-     *
-     * A Kingdom may return multiple route files later, such as:
-     *
-     * - Routes.php
-     * - ApiRoutes.php
-     * - AdminRoutes.php
+     * Route files contributed by the Kingdom.
      *
      * @return array<int, string>
      */
@@ -73,41 +48,28 @@ abstract class Kingdom
     }
 
     /**
-     * Register the Kingdom's navigation items.
-     *
-     * Kingdoms without navigation may leave this method untouched.
-     */
-    public function registerNavigation(
-        Navigation $navigation
-    ): void {
-        // No navigation items by default.
-    }
-
-    /**
-     * Return the application instance.
-     */
-    protected function app(): Application
-    {
-        return $this->app;
-    }
-
-    /**
      * Resource classes contributed by the Kingdom.
      *
      * @return array<int, class-string<\GreatMarketrealmCompanion\Resources\Resource>>
      */
-    public function routes(): array
-    {
-        return [];
-    }
-    
     public function resources(): array
     {
         return [];
     }
-    
+
+    /**
+     * Register navigation items contributed by the Kingdom.
+     */
     public function registerNavigation(
         Navigation $navigation
     ): void {
+    }
+
+    /**
+     * Access the application instance.
+     */
+    protected function app(): Application
+    {
+        return $this->app;
     }
 }
