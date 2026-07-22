@@ -23,33 +23,59 @@ $version   = defined('GMRC_VERSION') ? GMRC_VERSION : '0.3.0';
         </div>
 
         <nav class="gmrc-navigation" aria-label="Companion navigation">
-            <a
-                class="gmrc-navigation__item is-active"
-                href="#"
-                aria-current="page"
-            >
-                <span class="gmrc-navigation__icon" aria-hidden="true">⌂</span>
-                <span>Dashboard</span>
-            </a>
-
-            <span class="gmrc-navigation__item is-disabled">
-                <span class="gmrc-navigation__icon" aria-hidden="true">♙</span>
-                <span>Characters</span>
-                <small>Soon</small>
-            </span>
-
-            <span class="gmrc-navigation__item is-disabled">
-                <span class="gmrc-navigation__icon" aria-hidden="true">◇</span>
-                <span>Campaigns</span>
-                <small>Soon</small>
-            </span>
-
-            <span class="gmrc-navigation__item is-disabled">
-                <span class="gmrc-navigation__icon" aria-hidden="true">★</span>
-                <span>Achievements</span>
-                <small>Soon</small>
-            </span>
-        </nav>
+        <?php foreach ($navigation as $item) : ?>
+            <?php if ($item['enabled']) : ?>
+                <a
+                    class="gmrc-navigation__item<?php echo $item['active'] ? ' is-active' : ''; ?>"
+                    href="<?php echo esc_url($item['url']); ?>"
+                    <?php if ($item['active']) : ?>
+                        aria-current="page"
+                    <?php endif; ?>
+                >
+                    <span
+                        class="gmrc-navigation__icon"
+                        aria-hidden="true"
+                    >
+                        <?php
+                        echo wp_kses_post(
+                            $item['icon']
+                        );
+                        ?>
+                    </span>
+    
+                    <span>
+                        <?php echo esc_html($item['label']); ?>
+                    </span>
+                </a>
+            <?php else : ?>
+                <span class="gmrc-navigation__item is-disabled">
+                    <span
+                        class="gmrc-navigation__icon"
+                        aria-hidden="true"
+                    >
+                        <?php
+                        echo wp_kses_post(
+                            $item['icon']
+                        );
+                        ?>
+                    </span>
+    
+                    <span>
+                        <?php echo esc_html($item['label']); ?>
+                    </span>
+    
+                    <small>
+                        <?php
+                        esc_html_e(
+                            'Soon',
+                            'great-marketrealm-companion'
+                        );
+                        ?>
+                    </small>
+                </span>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </nav>
 
         <footer class="gmrc-sidebar__footer">
             <span>Marketrealm Companion</span>
