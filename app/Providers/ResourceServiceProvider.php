@@ -40,11 +40,11 @@ class ResourceServiceProvider extends ServiceProvider
         $resources = $this->app->make(
             ResourceRegistry::class
         );
-
+    
         $kingdoms = $this->app->make(
             KingdomRegistry::class
         );
-
+    
         foreach ($kingdoms->resourceClasses() as $resourceClass) {
             $resources->add(
                 $this->createResource(
@@ -52,15 +52,7 @@ class ResourceServiceProvider extends ServiceProvider
                 )
             );
         }
-
-        $router = $this->app->make(
-            Router::class
-        );
-
-        $resources->registerRoutes(
-            $router
-        );
-
+    
         do_action(
             'gmrc_resources_registered',
             $resources
