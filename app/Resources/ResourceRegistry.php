@@ -2,6 +2,8 @@
 
 namespace GreatMarketrealmCompanion\Resources;
 
+use GreatMarketrealmCompanion\Core\Routing\Router;
+
 use InvalidArgumentException;
 
 defined('ABSPATH') || exit;
@@ -85,7 +87,7 @@ class ResourceRegistry
      * Register routes for every Resource.
      */
     public function registerRoutes(
-        \GreatMarketrealmCompanion\Core\Routing\Router $router
+        Router $router
     ): void {
         foreach ($this->resources as $resource) {
             $resource->registerRoutes(
