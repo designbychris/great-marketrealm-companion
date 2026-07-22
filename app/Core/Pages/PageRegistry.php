@@ -1,0 +1,75 @@
+<?php
+
+namespace GreatMarketrealmCompanion\Core\Pages;
+
+use GreatMarketrealmCompanion\Resources\Resource;
+use InvalidArgumentException;
+use RuntimeException;
+
+defined('ABSPATH') || exit;
+
+class PageRegistry
+{
+    /**
+     * @var array<string, Page>
+     */
+    protected array $pages = [];
+
+    public function register(
+        Resource $resource,
+        string $pageClass
+    ): void {
+        if (! is_subclass_of($pageClass, Page::class)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    '%s must extend %s.',
+                    $pageClass,
+                    Page::class
+                )
+            );
+        }
+
+        /** @var Page $page */
+        $page = new $pageClass($resource);
+
+        if ($this->has($page->key())) {
+            throw new RuntimeException(
+                sprintf(
+                    'Page "%s" is already registered.',
+                    $page->key()
+                )
+            );
+        }
+
+        $this->pages[$page->key()] = $page;
+    }
+
+    public function registerResource(
+        Resource $resource
+    ): void {
+        foreach ($resource->pages() as $pageClass) {
+            $this->register(
+                $resource,
+                $pageClass
+            );
+        }
+    }
+
+    public function has(string $key): bool
+    {
+        return isset($this->pages[$key]);
+    }
+
+    public function get(string $key): ?Page
+    {
+        return $this->pages[$key] ?? null;
+    }
+
+    /**
+     * @return array<string, Page>
+     */
+    public function all(): array
+    {
+        return $this->pages;
+    }
+}
