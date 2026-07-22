@@ -5,14 +5,15 @@ namespace GreatMarketrealmCompanion\Providers;
 use GreatMarketrealmCompanion\Kingdoms\CharactersKingdom;
 use GreatMarketrealmCompanion\Kingdoms\DashboardKingdom;
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
+use GreatMarketrealmCompanion\Navigation\Navigation;
 
 defined('ABSPATH') || exit;
 
 /**
  * Kingdom Service Provider.
  *
- * Registers the Kingdom registry and the Kingdoms installed
- * within Marketrealm Companion.
+ * Registers the Kingdom registry and coordinates the Kingdoms
+ * installed within Marketrealm Companion.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.3.0
@@ -47,6 +48,26 @@ class KingdomServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Kingdom boot coordination will be added shortly.
+        $registry = $this->app->make(
+            KingdomRegistry::class
+        );
+
+        $navigation = $this->app->make(
+            Navigation::class
+        );
+
+        $registry->registerNavigation(
+            $navigation
+        );
+
+        /**
+         * Fires after installed Kingdoms have registered
+         * their navigation contributions.
+         */
+        do_action(
+            'gmrc_kingdoms_navigation_registered',
+            $registry,
+            $navigation
+        );
     }
 }
