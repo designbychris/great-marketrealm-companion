@@ -5,6 +5,7 @@ namespace GreatMarketrealmCompanion\Core;
 use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
 use GreatMarketrealmCompanion\Navigation\Navigation;
+use GreatMarketrealmCompanion\Resources\ResourceRegistry;
 
 defined('ABSPATH') || exit;
 
@@ -151,6 +152,16 @@ class Application
     {
         return $this->make(
             KingdomRegistry::class
+        );
+    }
+
+    /**
+     * Access the application Resource registry.
+     */
+    public function resources(): ResourceRegistry
+    {
+        return $this->make(
+            ResourceRegistry::class
         );
     }
 }
