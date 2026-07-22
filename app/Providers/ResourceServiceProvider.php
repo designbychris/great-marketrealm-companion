@@ -2,7 +2,6 @@
 
 namespace GreatMarketrealmCompanion\Providers;
 
-use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
 use GreatMarketrealmCompanion\Resources\Resource;
 use GreatMarketrealmCompanion\Resources\ResourceRegistry;
