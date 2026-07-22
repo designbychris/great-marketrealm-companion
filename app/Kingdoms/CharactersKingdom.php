@@ -37,10 +37,12 @@ class CharactersKingdom extends Kingdom
         Navigation $navigation
     ): void {
         $navigation->add(
-            new MenuItem(
+            MenuItem::make(
                 'characters',
                 'Characters',
-                '/characters'
+                'users',
+                '/characters',
+                20
             )
         );
     }
