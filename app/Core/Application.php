@@ -2,9 +2,9 @@
 
 namespace GreatMarketrealmCompanion\Core;
 
-use GreatMarketrealmCompanion\Application\Navigation\Navigation;
-use GreatMarketrealmCompanion\Application\Routing\Router;
+use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
+use GreatMarketrealmCompanion\Navigation\Navigation;
 
 defined('ABSPATH') || exit;
 
