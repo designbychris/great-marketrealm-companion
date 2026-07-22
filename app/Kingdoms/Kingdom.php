@@ -90,4 +90,24 @@ abstract class Kingdom
     {
         return $this->app;
     }
+
+    /**
+     * Resource classes contributed by the Kingdom.
+     *
+     * @return array<int, class-string<\GreatMarketrealmCompanion\Resources\Resource>>
+     */
+    public function routes(): array
+    {
+        return [];
+    }
+    
+    public function resources(): array
+    {
+        return [];
+    }
+    
+    public function registerNavigation(
+        Navigation $navigation
+    ): void {
+    }
 }
