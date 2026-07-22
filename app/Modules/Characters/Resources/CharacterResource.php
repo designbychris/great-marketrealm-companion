@@ -5,6 +5,8 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Resources;
 use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController;
 use GreatMarketrealmCompanion\Resources\Resource;
 
+class CharacterResource extends Resource
+
 defined('ABSPATH') || exit;
 
 /**
