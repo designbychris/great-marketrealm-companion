@@ -66,23 +66,33 @@ class Router
         ?string $httpMethod = null,
         ?string $requestUri = null
     ): mixed {
-        $httpMethod ??= $_SERVER['REQUEST_METHOD'] ?? 'GET';
+        $httpMethod = strtoupper(
+            $httpMethod ?? ($_SERVER['REQUEST_METHOD'] ?? 'GET')
+        );
+    
         $requestUri ??= $_SERVER['REQUEST_URI'] ?? '/';
-
-        $path = parse_url($requestUri, PHP_URL_PATH);
-
+    
+        $path = parse_url(
+            $requestUri,
+            PHP_URL_PATH
+        );
+    
         if (! is_string($path)) {
             $path = '/';
         }
-
+    
         $path = $this->normalisePath($path);
-
+    
         if (! isset($this->routes[$httpMethod][$path])) {
             throw new RuntimeException(
-                sprintf('No route registered for [%s %s].', $httpMethod, $path)
+                sprintf(
+                    'No route registered for [%s %s].',
+                    $httpMethod,
+                    $path
+                )
             );
         }
-
+    
         return $this->runHandler(
             $this->routes[$httpMethod][$path]
         );
