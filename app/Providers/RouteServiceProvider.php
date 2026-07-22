@@ -11,14 +11,11 @@ defined('ABSPATH') || exit;
  *
  * Registers the application's routing services.
  *
- * @package MarketrealmCompanion
+ * @package GreatMarketrealmCompanion
  * @since 0.3.0
  */
 class RouteServiceProvider extends ServiceProvider
 {
-    /**
-     * Register services.
-     */
     public function register(): void
     {
         $this->app->container()->singleton(
@@ -29,9 +26,6 @@ class RouteServiceProvider extends ServiceProvider
         );
     }
 
-    /**
-     * Boot the provider.
-     */
     public function boot(): void
     {
         $this->loadRoutes();
@@ -42,9 +36,12 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function loadRoutes(): void
     {
-        $router = $this->app->make(Router::class);
+        $router = $this->app->make(
+            Router::class
+        );
 
         $routeFiles = [
+            GMRC_PATH . 'app/Modules/Dashboard/Routes.php',
             GMRC_PATH . 'app/Modules/Characters/Routes.php',
         ];
 
