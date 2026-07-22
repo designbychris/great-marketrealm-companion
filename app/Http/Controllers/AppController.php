@@ -208,7 +208,7 @@ class AppController
     ): string {
 
         $layout = GMRC_PATH .
-            'app/Views/layouts/app.php';
+            'resources/views/layouts/app.php';
 
         if (! file_exists($layout)) {
             return '<p>Layout not found.</p>';
