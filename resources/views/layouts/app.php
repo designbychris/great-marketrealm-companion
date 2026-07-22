@@ -2,7 +2,7 @@
 
 defined('ABSPATH') || exit;
 
-use GreatMarketrealmCompanion\View\View;
+$componentsPath = GMRC_PATH . 'resources/views/components/';
 
 ?><!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -16,15 +16,11 @@ use GreatMarketrealmCompanion\View\View;
         content="width=device-width, initial-scale=1">
 
     <title>
-
         <?php
-
         echo esc_html(
-            $page_title ?? get_bloginfo('name')
+            $pageTitle ?? get_bloginfo('name')
         );
-
         ?>
-
     </title>
 
     <?php wp_head(); ?>
@@ -37,25 +33,39 @@ use GreatMarketrealmCompanion\View\View;
 
 <div class="gmrc-app">
 
-    <?php View::component('header'); ?>
+    <?php
+    $header = $componentsPath . 'header.php';
+
+    if (file_exists($header)) {
+        require $header;
+    }
+    ?>
 
     <div class="gmrc-container">
 
-        <?php View::component('sidebar'); ?>
+        <?php
+        $sidebar = $componentsPath . 'sidebar.php';
+
+        if (file_exists($sidebar)) {
+            require $sidebar;
+        }
+        ?>
 
         <main class="gmrc-content">
 
-            <?php
-
-            echo $content;
-
-            ?>
+            <?php echo $content; ?>
 
         </main>
 
     </div>
 
-    <?php View::component('footer'); ?>
+    <?php
+    $footer = $componentsPath . 'footer.php';
+
+    if (file_exists($footer)) {
+        require $footer;
+    }
+    ?>
 
 </div>
 
