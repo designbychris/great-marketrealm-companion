@@ -1,9 +1,11 @@
 <?php
 
+use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController;
 
-return static function ($router): void {
+defined('ABSPATH') || exit;
 
+return static function (Router $router): void {
     $router->get(
         '/characters',
         [CharacterController::class, 'index']
@@ -38,5 +40,4 @@ return static function ($router): void {
         '/characters/{id}',
         [CharacterController::class, 'destroy']
     );
-
 };
