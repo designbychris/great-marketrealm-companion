@@ -60,11 +60,6 @@ class KingdomServiceProvider extends ServiceProvider
             $navigation
         );
 
-        error_log(
-            'GMRC navigation items: '
-            . implode(', ', array_keys($navigation->items()))
-        );
-
         /**
          * Fires after installed Kingdoms have registered
          * their navigation contributions.
