@@ -2,29 +2,30 @@
 
 namespace GreatMarketrealmCompanion\Providers;
 
+use GreatMarketrealmCompanion\Core\Routing\Router;
+use GreatMarketrealmCompanion\Core\View\View;
+use GreatMarketrealmCompanion\Core\View\ViewFactory;
+use GreatMarketrealmCompanion\Navigation\MenuItem;
+use GreatMarketrealmCompanion\Navigation\Navigation;
+use RuntimeException;
+
 defined('ABSPATH') || exit;
 
 /**
  * Front-end Service Provider.
  *
- * Registers the Marketrealm Companion application shell.
+ * Connects WordPress to the Marketrealm Companion application.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.3.0
  */
 class FrontendServiceProvider extends ServiceProvider
 {
-    /**
-     * Register front-end services.
-     */
     public function register(): void
     {
-        // No container bindings are required yet.
+        // No additional bindings are required.
     }
 
-    /**
-     * Boot front-end functionality.
-     */
     public function boot(): void
     {
         add_action(
@@ -39,7 +40,7 @@ class FrontendServiceProvider extends ServiceProvider
     }
 
     /**
-     * Load Companion front-end assets.
+     * Load Companion assets.
      */
     public function enqueueAssets(): void
     {
@@ -56,32 +57,185 @@ class FrontendServiceProvider extends ServiceProvider
     }
 
     /**
-     * Render the Companion application.
+     * Render the application.
      */
     public function renderApp(): string
     {
-        $dashboardView = GMRC_PATH
-            . 'app/Modules/Dashboard/Views/index.php';
+        $route = $this->requestedRoute();
+        $router = $this->app->make(Router::class);
 
-        $layoutView = GMRC_PATH
-            . 'app/Views/layouts/app.php';
+        try {
+            $content = $router->dispatch(
+                'GET',
+                '/' . $route
+            );
 
-        if (
-            ! file_exists($dashboardView)
-            || ! file_exists($layoutView)
-        ) {
-            return '<p>Marketrealm Companion views could not be loaded.</p>';
+            $pageTitle = $this->pageTitle($route);
+        } catch (RuntimeException $exception) {
+            $content = $this->renderNotFound($route);
+            $pageTitle = __('Not Found', 'great-marketrealm-companion');
         }
 
-        $content = $this->captureView($dashboardView);
-
-        return $this->captureView(
-            $layoutView,
+        return $this->renderLayout(
             [
-                'pageTitle' => 'Dashboard',
-                'content'   => $content,
+                'pageTitle'   => $pageTitle,
+                'content'     => $content,
+                'currentRoute' => $route,
+                'navigation'  => $this->navigationItems(
+                    $router,
+                    $route
+                ),
             ]
         );
+    }
+
+    /**
+     * Return the requested application route.
+     */
+    protected function requestedRoute(): string
+    {
+        $route = isset($_GET['gmrc_route'])
+            ? sanitize_key(wp_unslash($_GET['gmrc_route']))
+            : 'dashboard';
+
+        return $route !== ''
+            ? $route
+            : 'dashboard';
+    }
+
+    /**
+     * Build layout-ready navigation data.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    protected function navigationItems(
+        Router $router,
+        string $currentRoute
+    ): array {
+        $navigation = $this->app->make(
+            Navigation::class
+        );
+
+        $items = array_values(
+            $navigation->items()
+        );
+
+        usort(
+            $items,
+            static fn (MenuItem $first, MenuItem $second): int =>
+                $first->sortOrder() <=> $second->sortOrder()
+        );
+
+        return array_map(
+            function (MenuItem $item) use (
+                $router,
+                $currentRoute
+            ): array {
+                $route = $item->route();
+                $enabled = $router->has(
+                    'GET',
+                    '/' . $route
+                );
+
+                return [
+                    'key'     => $item->key(),
+                    'label'   => $item->label(),
+                    'icon'    => $item->icon(),
+                    'route'   => $route,
+                    'url'     => $this->routeUrl($route),
+                    'enabled' => $enabled,
+                    'active'  => $route === $currentRoute,
+                ];
+            },
+            $items
+        );
+    }
+
+    /**
+     * Create an application route URL.
+     */
+    protected function routeUrl(string $route): string
+    {
+        $baseUrl = get_permalink();
+
+        if (! is_string($baseUrl)) {
+            $baseUrl = home_url('/companion/');
+        }
+
+        if ($route === 'dashboard') {
+            return remove_query_arg(
+                'gmrc_route',
+                $baseUrl
+            );
+        }
+
+        return add_query_arg(
+            'gmrc_route',
+            $route,
+            $baseUrl
+        );
+    }
+
+    /**
+     * Resolve a page title from its navigation item.
+     */
+    protected function pageTitle(string $route): string
+    {
+        $navigation = $this->app->make(
+            Navigation::class
+        );
+
+        foreach ($navigation->items() as $item) {
+            if ($item->route() === $route) {
+                return $item->label();
+            }
+        }
+
+        return ucfirst($route);
+    }
+
+    /**
+     * Render the Companion not-found screen.
+     */
+    protected function renderNotFound(
+        string $route
+    ): string {
+        $views = $this->app->make(
+            ViewFactory::class
+        );
+
+        return $views->render(
+            View::make(
+                'dashboard.not-found',
+                [
+                    'requestedRoute' => $route,
+                ]
+            )
+        );
+    }
+
+    /**
+     * Render the shared application layout.
+     *
+     * @param array<string, mixed> $data Layout variables.
+     */
+    protected function renderLayout(
+        array $data
+    ): string {
+        $layout = GMRC_PATH
+            . 'app/Views/layouts/app.php';
+
+        if (! file_exists($layout)) {
+            return '<p>Marketrealm Companion layout could not be loaded.</p>';
+        }
+
+        extract($data, EXTR_SKIP);
+
+        ob_start();
+
+        require $layout;
+
+        return (string) ob_get_clean();
     }
 
     /**
@@ -96,25 +250,9 @@ class FrontendServiceProvider extends ServiceProvider
         global $post;
 
         return $post instanceof \WP_Post
-            && has_shortcode($post->post_content, 'gmrc_app');
-    }
-
-    /**
-     * Capture a PHP view and return its HTML.
-     *
-     * @param string               $viewPath View file path.
-     * @param array<string, mixed> $data     View variables.
-     */
-    protected function captureView(
-        string $viewPath,
-        array $data = []
-    ): string {
-        extract($data, EXTR_SKIP);
-
-        ob_start();
-
-        require $viewPath;
-
-        return (string) ob_get_clean();
+            && has_shortcode(
+                $post->post_content,
+                'gmrc_app'
+            );
     }
 }
