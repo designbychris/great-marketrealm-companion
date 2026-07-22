@@ -28,19 +28,22 @@ class Kernel
     protected Application $app;
 
     /**
-     * Core provider class names.
+     * Providers required before Kingdoms can be registered.
      *
      * @var array<int, class-string<ServiceProvider>>
      */
-    protected array $coreProviders = [
+    protected array $foundationProviders = [
         KingdomServiceProvider::class,
-    
         NavigationServiceProvider::class,
         ViewServiceProvider::class,
+    ];
     
-        DashboardServiceProvider::class,
-        CharactersServiceProvider::class,
-    
+    /**
+     * Providers registered after individual Kingdom providers.
+     *
+     * @var array<int, class-string<ServiceProvider>>
+     */
+    protected array $applicationProviders = [
         RouteServiceProvider::class,
         FrontendServiceProvider::class,
     ];
