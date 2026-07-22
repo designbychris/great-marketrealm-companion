@@ -5,22 +5,20 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Resources;
 use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController;
 use GreatMarketrealmCompanion\Resources\Resource;
 
-class CharacterResource extends Resource
-
 defined('ABSPATH') || exit;
 
 /**
  * Character Resource.
  *
- * Defines the application behaviour for managing characters.
+ * Represents characters managed by the Characters Kingdom.
  *
- * @package GreatMarketrealmCompanion
+ * @package MarketrealmCompanion
  * @since 0.4.0
  */
 class CharacterResource extends Resource
 {
     /**
-     * Unique Resource key.
+     * Get the unique Resource key.
      */
     public function key(): string
     {
@@ -28,7 +26,7 @@ class CharacterResource extends Resource
     }
 
     /**
-     * Singular display name.
+     * Get the singular display name.
      */
     public function singularName(): string
     {
@@ -36,7 +34,7 @@ class CharacterResource extends Resource
     }
 
     /**
-     * Plural display name.
+     * Get the plural display name.
      */
     public function pluralName(): string
     {
@@ -44,7 +42,7 @@ class CharacterResource extends Resource
     }
 
     /**
-     * Base route prefix.
+     * Get the base route prefix.
      */
     public function routePrefix(): string
     {
@@ -52,7 +50,9 @@ class CharacterResource extends Resource
     }
 
     /**
-     * Resource controller.
+     * Get the Resource controller.
+     *
+     * @return class-string
      */
     public function controller(): string
     {
