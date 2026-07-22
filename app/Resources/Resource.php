@@ -130,4 +130,12 @@ abstract class Resource
             ? '/'
             : rtrim($prefix, '/');
     }
+
+    /**
+     * @return array<class-string<\GreatMarketrealmCompanion\Core\Pages\Page>>
+     */
+    public function pages(): array
+    {
+        return [];
+    }
 }
