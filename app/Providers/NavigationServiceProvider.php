@@ -3,45 +3,38 @@
 namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Navigation\Navigation;
-use GreatMarketrealmCompanion\Permissions\PermissionManager;
 
 defined('ABSPATH') || exit;
 
 /**
  * Navigation Service Provider.
  *
- * Registers and configures application navigation.
+ * Registers the application's navigation service.
+ *
+ * Navigation items are contributed by individual Kingdoms rather
+ * than being hard-coded inside the Navigation service.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.3.0
  */
 class NavigationServiceProvider extends ServiceProvider
 {
+    /**
+     * Register navigation services.
+     */
     public function register(): void
     {
-        $container = $this->app->container();
-
-        $container->singleton(
-            PermissionManager::class,
-            static function (): PermissionManager {
-                return new PermissionManager();
-            }
-        );
-
-        $container->singleton(
+        $this->app->container()->singleton(
             Navigation::class,
-            static function (): Navigation {
-                return new Navigation();
-            }
+            static fn (): Navigation => new Navigation()
         );
     }
 
+    /**
+     * Boot navigation services.
+     */
     public function boot(): void
     {
-        $navigation = $this->app->make(
-            Navigation::class
-        );
-
-        $navigation->registerDefaults();
+        // Kingdoms register their navigation separately.
     }
 }
