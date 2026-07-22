@@ -47,13 +47,6 @@ class KingdomServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $registry = $this->app->make(
-            KingdomRegistry::class
-        );
-    
-        error_log(
-            'GMRC Kingdoms registered: '
-            . implode(', ', array_keys($registry->all()))
-        );
+        // Kingdom boot coordination will be added shortly.
     }
 }
