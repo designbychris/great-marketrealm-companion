@@ -7,6 +7,7 @@ use GreatMarketrealmCompanion\Providers\FrontendServiceProvider;
 use GreatMarketrealmCompanion\Providers\KingdomServiceProvider;
 use GreatMarketrealmCompanion\Providers\NavigationServiceProvider;
 use GreatMarketrealmCompanion\Providers\ResourceServiceProvider;
+//use GreatMarketrealmCompanion\Providers\PageServiceProvider;
 use GreatMarketrealmCompanion\Providers\RouteServiceProvider;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Providers\ViewServiceProvider;
@@ -52,6 +53,8 @@ class Kernel
     protected array $applicationProviders = [
         RouteServiceProvider::class,
         ResourceServiceProvider::class,
+        PageServiceProvider::class,
+        RouteServiceProvider::class,
         FrontendServiceProvider::class,
     ];
 
