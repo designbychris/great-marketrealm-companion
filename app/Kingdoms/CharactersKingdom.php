@@ -45,9 +45,7 @@ class CharactersKingdom extends Kingdom
      */
     public function routes(): array
     {
-        return [
-            GMRC_PATH . 'app/Modules/Characters/Routes.php',
-        ];
+        return [];
     }
 
     /**
