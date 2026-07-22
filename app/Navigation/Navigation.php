@@ -5,52 +5,45 @@ namespace GreatMarketrealmCompanion\Navigation;
 defined('ABSPATH') || exit;
 
 /**
- * Navigation Registry.
+ * Navigation collection.
  *
- * Stores the application's navigation items.
+ * Stores navigation items registered by installed Kingdoms.
  *
- * @package MarketrealmCompanion
- * @since 0.2.0-alpha3.2
+ * The Navigation service does not know which Kingdoms exist.
+ * Each Kingdom is responsible for contributing its own items.
+ *
+ * @package GreatMarketrealmCompanion
+ * @since 0.3.0
  */
 class Navigation
 {
     /**
      * Registered navigation items.
      *
-     * @var MenuItem[]
+     * @var array<string, MenuItem>
      */
     protected array $items = [];
 
     /**
      * Add a navigation item.
      */
-    public function add(MenuItem $item): self
+    public function add(MenuItem $item): void
     {
         $this->items[$item->key()] = $item;
-
-        return $this;
     }
 
     /**
-     * Return all navigation items.
-     *
-     * @return MenuItem[]
-     */
-    public function items(): array
-    {
-        return $this->items;
-    }
-
-    /**
-     * Determine if a navigation item exists.
+     * Determine whether an item has been registered.
      */
     public function has(string $key): bool
     {
-        return isset($this->items[$key]);
+        return isset(
+            $this->items[$key]
+        );
     }
 
     /**
-     * Get a navigation item.
+     * Return a navigation item by key.
      */
     public function get(string $key): ?MenuItem
     {
@@ -60,66 +53,36 @@ class Navigation
     /**
      * Remove a navigation item.
      */
-    public function remove(string $key): self
+    public function remove(string $key): void
     {
-        unset($this->items[$key]);
+        unset(
+            $this->items[$key]
+        );
+    }
 
-        return $this;
+    /**
+     * Return all registered navigation items.
+     *
+     * @return array<string, MenuItem>
+     */
+    public function items(): array
+    {
+        return $this->items;
     }
 
     /**
      * Remove all navigation items.
      */
-    public function clear(): self
+    public function clear(): void
     {
         $this->items = [];
-
-        return $this;
     }
 
     /**
-     * Register the default platform navigation.
+     * Return the number of registered navigation items.
      */
-    public function registerDefaults(): void
+    public function count(): int
     {
-        $this->add(
-            MenuItem::make(
-                'dashboard',
-                __('Dashboard', 'great-marketrealm-companion'),
-                Icons::DASHBOARD,
-                'dashboard',
-                10
-            )
-        );
-    
-        $this->add(
-            MenuItem::make(
-                'characters',
-                __('Characters', 'great-marketrealm-companion'),
-                Icons::USERS,
-                'characters',
-                20
-            )
-        );
-    
-        $this->add(
-            MenuItem::make(
-                'campaigns',
-                __('Campaigns', 'great-marketrealm-companion'),
-                Icons::MAP,
-                'campaigns',
-                30
-            )
-        );
-    
-        $this->add(
-            MenuItem::make(
-                'settings',
-                __('Settings', 'great-marketrealm-companion'),
-                Icons::SETTINGS,
-                'settings',
-                100
-            )
-        );
+        return count($this->items);
     }
 }
