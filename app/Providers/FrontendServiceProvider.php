@@ -2,12 +2,12 @@
 
 namespace GreatMarketrealmCompanion\Providers;
 
+use GreatMarketrealmCompanion\Core\Container;
 use GreatMarketrealmCompanion\Core\Routing\Router;
-use GreatMarketrealmCompanion\Core\View\View;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
-use GreatMarketrealmCompanion\Navigation\MenuItem;
+use GreatMarketrealmCompanion\Http\Controllers\AppController;
 use GreatMarketrealmCompanion\Navigation\Navigation;
-use RuntimeException;
+use WP_Post;
 
 defined('ABSPATH') || exit;
 
@@ -15,17 +15,34 @@ defined('ABSPATH') || exit;
  * Front-end Service Provider.
  *
  * Connects WordPress to the Marketrealm Companion application.
+ * WordPress-specific hooks remain here, while application request
+ * handling is delegated to the AppController.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.3.0
  */
 class FrontendServiceProvider extends ServiceProvider
 {
+    /**
+     * Register front-end services.
+     */
     public function register(): void
     {
-        // No additional bindings are required.
+        $this->app->container()->bind(
+            AppController::class,
+            static function (Container $container): AppController {
+                return new AppController(
+                    $container->make(Router::class),
+                    $container->make(ViewFactory::class),
+                    $container->make(Navigation::class)
+                );
+            }
+        );
     }
 
+    /**
+     * Register WordPress front-end hooks.
+     */
     public function boot(): void
     {
         add_action(
@@ -40,7 +57,7 @@ class FrontendServiceProvider extends ServiceProvider
     }
 
     /**
-     * Load Companion assets.
+     * Load the Companion application assets.
      */
     public function enqueueAssets(): void
     {
@@ -57,189 +74,27 @@ class FrontendServiceProvider extends ServiceProvider
     }
 
     /**
-     * Render the application.
-     */
-    public function renderApp(): string
-    {
-        $route = $this->requestedRoute();
-        $router = $this->app->make(Router::class);
-
-        try {
-            $content = $router->dispatch(
-                'GET',
-                '/' . $route
-            );
-
-            $pageTitle = $this->pageTitle($route);
-        } catch (RuntimeException $exception) {
-            $content = $this->renderNotFound($route);
-            $pageTitle = __('Not Found', 'great-marketrealm-companion');
-        }
-
-        return $this->renderLayout(
-            [
-                'pageTitle'   => $pageTitle,
-                'content'     => $content,
-                'currentRoute' => $route,
-                'navigation'  => $this->navigationItems(
-                    $router,
-                    $route
-                ),
-            ]
-        );
-    }
-
-    /**
-     * Return the requested application route.
-     */
-    protected function requestedRoute(): string
-    {
-        $route = isset($_GET['gmrc_route'])
-            ? sanitize_key(wp_unslash($_GET['gmrc_route']))
-            : 'dashboard';
-
-        return $route !== ''
-            ? $route
-            : 'dashboard';
-    }
-
-    /**
-     * Build layout-ready navigation data.
+     * Render the Companion application shortcode.
      *
-     * @return array<int, array<string, mixed>>
-     */
-    protected function navigationItems(
-        Router $router,
-        string $currentRoute
-    ): array {
-        $navigation = $this->app->make(
-            Navigation::class
-        );
-
-        $items = array_values(
-            $navigation->items()
-        );
-
-        usort(
-            $items,
-            static fn (MenuItem $first, MenuItem $second): int =>
-                $first->sortOrder() <=> $second->sortOrder()
-        );
-
-        return array_map(
-            function (MenuItem $item) use (
-                $router,
-                $currentRoute
-            ): array {
-                $route = $item->route();
-                $enabled = $router->has(
-                    'GET',
-                    '/' . $route
-                );
-
-                return [
-                    'key'     => $item->key(),
-                    'label'   => $item->label(),
-                    'icon'    => $item->icon(),
-                    'route'   => $route,
-                    'url'     => $this->routeUrl($route),
-                    'enabled' => $enabled,
-                    'active'  => $route === $currentRoute,
-                ];
-            },
-            $items
-        );
-    }
-
-    /**
-     * Create an application route URL.
-     */
-    protected function routeUrl(string $route): string
-    {
-        $baseUrl = get_permalink();
-
-        if (! is_string($baseUrl)) {
-            $baseUrl = home_url('/companion/');
-        }
-
-        if ($route === 'dashboard') {
-            return remove_query_arg(
-                'gmrc_route',
-                $baseUrl
-            );
-        }
-
-        return add_query_arg(
-            'gmrc_route',
-            $route,
-            $baseUrl
-        );
-    }
-
-    /**
-     * Resolve a page title from its navigation item.
-     */
-    protected function pageTitle(string $route): string
-    {
-        $navigation = $this->app->make(
-            Navigation::class
-        );
-
-        foreach ($navigation->items() as $item) {
-            if ($item->route() === $route) {
-                return $item->label();
-            }
-        }
-
-        return ucfirst($route);
-    }
-
-    /**
-     * Render the Companion not-found screen.
-     */
-    protected function renderNotFound(
-        string $route
-    ): string {
-        $views = $this->app->make(
-            ViewFactory::class
-        );
-
-        return $views->render(
-            View::make(
-                'dashboard.not-found',
-                [
-                    'requestedRoute' => $route,
-                ]
-            )
-        );
-    }
-
-    /**
-     * Render the shared application layout.
+     * The attributes and content parameters are retained for compatibility
+     * with the WordPress shortcode callback API.
      *
-     * @param array<string, mixed> $data Layout variables.
+     * @param array<string, mixed> $attributes Shortcode attributes.
+     * @param string|null          $content    Enclosed shortcode content.
      */
-    protected function renderLayout(
-        array $data
+    public function renderApp(
+        array $attributes = [],
+        ?string $content = null
     ): string {
-        $layout = GMRC_PATH
-            . 'app/Views/layouts/app.php';
+        unset($attributes, $content);
 
-        if (! file_exists($layout)) {
-            return '<p>Marketrealm Companion layout could not be loaded.</p>';
-        }
-
-        extract($data, EXTR_SKIP);
-
-        ob_start();
-
-        require $layout;
-
-        return (string) ob_get_clean();
+        return $this->app
+            ->make(AppController::class)
+            ->handle();
     }
 
     /**
-     * Determine whether the current page contains the Companion.
+     * Determine whether the current page contains the Companion shortcode.
      */
     protected function isCompanionPage(): bool
     {
@@ -249,10 +104,13 @@ class FrontendServiceProvider extends ServiceProvider
 
         global $post;
 
-        return $post instanceof \WP_Post
-            && has_shortcode(
-                $post->post_content,
-                'gmrc_app'
-            );
+        if (! $post instanceof WP_Post) {
+            return false;
+        }
+
+        return has_shortcode(
+            $post->post_content,
+            'gmrc_app'
+        );
     }
 }
