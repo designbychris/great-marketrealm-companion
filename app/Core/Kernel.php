@@ -6,9 +6,11 @@ use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
 use GreatMarketrealmCompanion\Providers\FrontendServiceProvider;
 use GreatMarketrealmCompanion\Providers\KingdomServiceProvider;
 use GreatMarketrealmCompanion\Providers\NavigationServiceProvider;
+use GreatMarketrealmCompanion\Providers\ResourceServiceProvider;
 use GreatMarketrealmCompanion\Providers\RouteServiceProvider;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Providers\ViewServiceProvider;
+
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -49,6 +51,7 @@ class Kernel
      */
     protected array $applicationProviders = [
         RouteServiceProvider::class,
+        ResourceServiceProvider::class,
         FrontendServiceProvider::class,
     ];
 
