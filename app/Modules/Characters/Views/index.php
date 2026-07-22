@@ -2,44 +2,55 @@
 
 defined('ABSPATH') || exit;
 
+$characters = $characters ?? [];
 ?>
 
-<section class="gmrc-page">
-
-    <header class="gmrc-page__header">
-
-        <h1>Characters Kingdom</h1>
-
-        <p>
-            Welcome to the Characters Kingdom.
+<section class="gmrc-characters">
+    <header class="gmrc-page-header">
+        <p class="gmrc-eyebrow">
+            Characters Kingdom
         </p>
 
+        <h1>Your adventurers</h1>
+
+        <p>
+            Create and manage the heroes who journey through the Great
+            Marketrealm.
+        </p>
     </header>
 
-    <main class="gmrc-page__content">
+    <?php if ($characters === []) : ?>
+        <section class="gmrc-empty-state">
+            <div class="gmrc-empty-state__icon" aria-hidden="true">
+                ♙
+            </div>
 
-        <?php if (empty($characters)) : ?>
+            <div>
+                <h2>No adventurers have arrived yet</h2>
 
-            <p>
-                No characters have been created yet.
-            </p>
+                <p>
+                    Your first character will appear here once the character
+                    creator opens its gates.
+                </p>
 
-        <?php else : ?>
-
-            <ul>
-
-                <?php foreach ($characters as $character) : ?>
-
-                    <li>
-                        <?= esc_html($character->name()); ?>
-                    </li>
-
-                <?php endforeach; ?>
-
-            </ul>
-
-        <?php endif; ?>
-
-    </main>
-
+                <button
+                    class="gmrc-button"
+                    type="button"
+                    disabled
+                >
+                    Create a character — coming soon
+                </button>
+            </div>
+        </section>
+    <?php else : ?>
+        <div class="gmrc-character-grid">
+            <?php foreach ($characters as $character) : ?>
+                <article class="gmrc-character-card">
+                    <h2>
+                        <?php echo esc_html($character->name()); ?>
+                    </h2>
+                </article>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
 </section>
