@@ -86,18 +86,24 @@ class KingdomRegistry
     }
 
     /**
-     * Return all Kingdom service provider classes.
+     * Return all Kingdom service providers.
      *
-     * @return array<int, class-string<ServiceProvider>>
+     * @return array<int, class-string>
      */
     public function providers(): array
     {
+        $providers = [];
+    
+        foreach ($this->kingdoms as $kingdom) {
+            $provider = $kingdom->provider();
+    
+            if ($provider !== '') {
+                $providers[] = $provider;
+            }
+        }
+    
         return array_values(
-            array_map(
-                static fn (Kingdom $kingdom): string =>
-                    $kingdom->provider(),
-                $this->kingdoms
-            )
+            array_unique($providers)
         );
     }
 
