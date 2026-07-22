@@ -167,6 +167,12 @@ a.gmrc-navigation__item:hover {
     font-size: 17px;
 }
 
+.gmrc-navigation__icon svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
 .gmrc-sidebar__footer {
     margin-top: auto;
     padding: 24px 10px 4px;
