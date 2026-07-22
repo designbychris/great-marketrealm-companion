@@ -164,4 +164,24 @@ class KingdomRegistry
     {
         $this->kingdoms = [];
     }
+
+    /**
+     * Return Resource classes contributed by Kingdoms.
+     *
+     * @return array<int, class-string<\GreatMarketrealmCompanion\Resources\Resource>>
+     */
+    public function resourceClasses(): array
+    {
+        $resources = [];
+    
+        foreach ($this->kingdoms as $kingdom) {
+            foreach ($kingdom->resources() as $resourceClass) {
+                $resources[] = $resourceClass;
+            }
+        }
+    
+        return array_values(
+            array_unique($resources)
+        );
+    }
 }
