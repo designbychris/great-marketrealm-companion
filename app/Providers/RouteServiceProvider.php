@@ -26,7 +26,9 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->app->container()->singleton(
             Router::class,
-            static fn (): Router => new Router()
+            fn (): Router => new Router(
+                $this->app->container()
+            )
         );
     }
 
@@ -50,9 +52,6 @@ class RouteServiceProvider extends ServiceProvider
             );
         }
 
-        /**
-         * Fires after all Kingdom routes have been registered.
-         */
         do_action(
             'gmrc_kingdom_routes_registered',
             $router,
