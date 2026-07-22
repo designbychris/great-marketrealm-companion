@@ -63,7 +63,7 @@ class DashboardKingdom extends Kingdom
         $navigation->add(
             MenuItem::make(
                 'dashboard',
-                __('Dashboard', 'great-marketrealm-companion'),
+                __('Dashboard'),
                 Icons::DASHBOARD,
                 'dashboard',
                 10
