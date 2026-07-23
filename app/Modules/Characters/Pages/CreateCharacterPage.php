@@ -3,6 +3,7 @@
 namespace GreatMarketrealmCompanion\Modules\Characters\Pages;
 
 use GreatMarketrealmCompanion\Core\Pages\Page;
+use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController;
 
 defined('ABSPATH') || exit;
 
@@ -21,5 +22,13 @@ class CreateCharacterPage extends Page
     public function route(): string
     {
         return '/characters/create';
+    }
+
+    public function handler(): array
+    {
+        return [
+            CharacterController::class,
+            'create',
+        ];
     }
 }
