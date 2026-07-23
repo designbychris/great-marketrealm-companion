@@ -4,6 +4,7 @@ namespace GreatMarketrealmCompanion\Core\Routing;
 
 use GreatMarketrealmCompanion\Core\Container;
 use GreatMarketrealmCompanion\Core\Http\Request;
+use GreatMarketrealmCompanion\Core\Http\Response;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -149,10 +150,16 @@ class Router
             );
         }
 
-        return $this->runHandler(
+        $result = $this->runHandler(
             $route['handler'],
             $route['parameters']
         );
+        
+        if ($result instanceof Response) {
+            $result->send();
+        }
+        
+        return $result;
     }
 
     /**
@@ -200,21 +207,6 @@ class Router
         string $routePath
     ): string {
         $pattern = preg_replace_callback(
-            '/\{([a-zA-Z_][a-zA-Z0-9_]*)\}/',
-            static function (array $matches): string {
-                return sprintf(
-                    '(?P<%s>[^/]+)',
-                    $matches[1]
-                );
-            },
-            preg_quote($routePath, '#')
-        );
-
-        /*
-         * preg_quote also escapes the braces, so restore
-         * parameter replacement when needed.
-         */
-        $pattern = preg_replace_callback(
             '/\\\\\{([a-zA-Z_][a-zA-Z0-9_]*)\\\\\}/',
             static function (array $matches): string {
                 return sprintf(
@@ -224,7 +216,7 @@ class Router
             },
             preg_quote($routePath, '#')
         );
-
+    
         return '#^' . $pattern . '$#';
     }
 
