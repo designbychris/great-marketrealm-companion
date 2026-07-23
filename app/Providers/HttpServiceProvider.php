@@ -4,7 +4,7 @@ namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
-use GreatMarketrealmCompanion\Core\ServiceProvider;
+use GreatMarketrealmCompanion\Core\Providers\ServiceProvider;
 
 defined('ABSPATH') || exit;
 
