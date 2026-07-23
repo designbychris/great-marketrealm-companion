@@ -19,7 +19,7 @@ class ViewCharacterPage extends Page
         return 'View Character';
     }
 
-    public function route(): string
+    public function path(): string
     {
         return '/characters/{id}';
     }
