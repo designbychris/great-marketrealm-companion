@@ -11,6 +11,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Core\Http\Request;
+use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
 
 defined('ABSPATH') || exit;
 
@@ -85,6 +86,9 @@ class CharactersServiceProvider extends ServiceProvider
                     ),
                     $container->make(
                         Request::class
+                    ),
+                    $container->make(
+                        ResponseFactory::class
                     )
                 )
         );
