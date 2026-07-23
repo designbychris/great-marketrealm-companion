@@ -77,6 +77,17 @@ class PageRegistry
         $page->registerRoute($router);
     }
 
+    /**
+     * Register every discovered Page.
+     */
+    public function registerRoutes(
+        Router $router
+    ): void {
+        foreach ($this->pages as $page) {
+            $page->registerRoute($router);
+        }
+    }
+
     public function has(string $key): bool
     {
         return isset($this->pages[$key]);
