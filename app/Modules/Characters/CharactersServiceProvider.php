@@ -4,6 +4,9 @@ namespace GreatMarketrealmCompanion\Modules\Characters;
 
 use GreatMarketrealmCompanion\Core\Container;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
+use GreatMarketrealmCompanion\Modules\Characters\Actions\CreateCharacterAction;
+use GreatMarketrealmCompanion\Modules\Characters\Actions\DeleteCharacterAction;
+use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
@@ -26,19 +29,51 @@ class CharactersServiceProvider extends ServiceProvider
 
         $container->singleton(
             CharacterRepository::class,
-            static function (): CharacterRepository {
-                return new CharacterRepository();
-            }
+            static fn (): CharacterRepository =>
+                new CharacterRepository()
+        );
+
+        $container->bind(
+            CreateCharacterAction::class,
+            static fn (Container $container): CreateCharacterAction =>
+                new CreateCharacterAction(
+                    $container->make(
+                        CharacterRepository::class
+                    )
+                )
+        );
+
+        $container->bind(
+            UpdateCharacterAction::class,
+            static fn (Container $container): UpdateCharacterAction =>
+                new UpdateCharacterAction(
+                    $container->make(
+                        CharacterRepository::class
+                    )
+                )
+        );
+
+        $container->bind(
+            DeleteCharacterAction::class,
+            static fn (Container $container): DeleteCharacterAction =>
+                new DeleteCharacterAction(
+                    $container->make(
+                        CharacterRepository::class
+                    )
+                )
         );
 
         $container->bind(
             CharacterController::class,
-            static function (Container $container): CharacterController {
-                return new CharacterController(
-                    $container->make(CharacterRepository::class),
-                    $container->make(ViewFactory::class)
-                );
-            }
+            static fn (Container $container): CharacterController =>
+                new CharacterController(
+                    $container->make(
+                        CharacterRepository::class
+                    ),
+                    $container->make(
+                        ViewFactory::class
+                    )
+                )
         );
     }
 
