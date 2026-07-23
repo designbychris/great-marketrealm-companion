@@ -35,8 +35,6 @@
     min-height: 720px;
     margin: 50px 0;
     overflow: hidden;
-    border: 1px solid var(--gmrc-border);
-    border-radius: var(--gmrc-radius-large);
     background: var(--gmrc-cream-100);
     color: var(--gmrc-text);
     font-family:
@@ -45,7 +43,6 @@
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
-    box-shadow: var(--gmrc-shadow);
 }
 
 .gmrc-sidebar {
