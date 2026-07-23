@@ -5,6 +5,7 @@ namespace GreatMarketrealmCompanion\Providers;
 use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
 use GreatMarketrealmCompanion\Core\Http\Request;
+use GreatMarketrealmCompanion\Core\Providers\ServiceProvider;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
