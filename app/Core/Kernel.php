@@ -51,7 +51,6 @@ class Kernel
      * @var array<int, class-string<ServiceProvider>>
      */
     protected array $applicationProviders = [
-        RouteServiceProvider::class,
         ResourceServiceProvider::class,
         PageServiceProvider::class,
         RouteServiceProvider::class,
