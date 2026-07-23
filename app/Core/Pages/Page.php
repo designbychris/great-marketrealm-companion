@@ -59,7 +59,7 @@ abstract class Page
         }
 
         $router->{$method}(
-            $this->route(),
+            $this->path(),
             $this->handler()
         );
     }
