@@ -30,7 +30,7 @@ class Router
      * Create the router.
      */
     public function __construct(
-        protected Container $container
+        protected Container $container,
         protected Request $request
     ) {
     }
