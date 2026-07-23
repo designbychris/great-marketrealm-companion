@@ -53,6 +53,7 @@ class Kernel
     protected array $applicationProviders = [
         ResourceServiceProvider::class,
         PageServiceProvider::class,
+        HttpServiceProvider::class,
         RouteServiceProvider::class,
         FrontendServiceProvider::class,
     ];
