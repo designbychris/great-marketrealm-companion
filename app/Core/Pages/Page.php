@@ -19,7 +19,7 @@ abstract class Page
 
     abstract public function title(): string;
 
-    abstract public function route(): string;
+    abstract public function path(): string;
 
     /**
      * The route handler for this Page.
