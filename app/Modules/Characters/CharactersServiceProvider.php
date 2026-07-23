@@ -10,6 +10,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
+use GreatMarketrealmCompanion\Core\Http\Request;
 
 defined('ABSPATH') || exit;
 
@@ -81,6 +82,9 @@ class CharactersServiceProvider extends ServiceProvider
                     ),
                     $container->make(
                         DeleteCharacterAction::class
+                    ),
+                    $container->make(
+                        Request::class
                     )
                 )
         );
