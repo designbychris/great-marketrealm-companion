@@ -11,6 +11,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\Http\RedirectResponse;
+use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
 
 defined('ABSPATH') || exit;
 
@@ -30,7 +31,8 @@ class CharacterController
         protected CreateCharacterAction $createCharacter,
         protected UpdateCharacterAction $updateCharacter,
         protected DeleteCharacterAction $deleteCharacter,
-        protected Request $request
+        protected Request $request,
+        protected ResponseFactory $responses
     ) {
     }
 
@@ -68,9 +70,8 @@ class CharacterController
             $character
         );
     
-        return new RedirectResponse(
-            home_url('/characters'),
-            303
+        return $this->responses->redirect(
+            '/characters'
         );
     }
 
