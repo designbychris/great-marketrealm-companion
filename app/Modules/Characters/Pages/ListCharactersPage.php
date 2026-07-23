@@ -19,7 +19,7 @@ class ListCharactersPage extends Page
         return 'Characters';
     }
 
-    public function route(): string
+    public function path(): string
     {
         return '/characters';
     }
