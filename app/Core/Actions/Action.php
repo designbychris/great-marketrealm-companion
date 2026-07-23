@@ -14,10 +14,5 @@ defined('ABSPATH') || exit;
  */
 abstract class Action
 {
-    /**
-     * Execute the Action.
-     */
-    abstract public function handle(
-        mixed ...$arguments
-    ): mixed;
+    // Concrete Actions define their own typed handle() method.
 }
