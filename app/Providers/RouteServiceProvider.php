@@ -2,7 +2,6 @@
 
 namespace GreatMarketrealmCompanion\Providers;
 
-use GreatMarketrealmCompanion\Core\Pages\PageRegistry;
 use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
 use RuntimeException;
@@ -52,20 +51,6 @@ class RouteServiceProvider extends ServiceProvider
                 $router
             );
         }
-
-        $pages = $this->app->make(
-            PageRegistry::class
-        );
-
-        error_log(
-            'PageRegistry ID (RouteServiceProvider): ' .
-            spl_object_id($pages)
-        );
-
-        $pages->registerRoute(
-            'characters.index',
-            $router
-        );
 
         do_action(
             'gmrc_kingdom_routes_registered',
