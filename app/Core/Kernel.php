@@ -120,8 +120,14 @@ class Kernel
      * @param class-string<ServiceProvider> $providerClass
      */
     protected function registerProvider(
-        string $providerClass
+    string $providerClass
     ): void {
+        if (isset(
+            $this->registeredProviderClasses[$providerClass]
+        )) {
+            return;
+        }
+    
         if (! is_subclass_of(
             $providerClass,
             ServiceProvider::class
@@ -133,14 +139,18 @@ class Kernel
                 )
             );
         }
-
+    
         $provider = new $providerClass(
             $this->app
         );
-
+    
         $provider->register();
-
+    
         $this->providers[] = $provider;
+    
+        $this->registeredProviderClasses[
+            $providerClass
+        ] = true;
     }
 
     /**
@@ -157,4 +167,11 @@ class Kernel
             $provider->boot();
         }
     }
-}
+
+    /**
+     * Registered provider classes.
+     *
+     * @var array<class-string<ServiceProvider>, bool>
+     */
+    protected array $registeredProviderClasses = [];
+    }
