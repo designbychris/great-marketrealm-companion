@@ -4,6 +4,7 @@ namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
+use GreatMarketrealmCompanion\Core\Http\Request;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -27,7 +28,10 @@ class RouteServiceProvider extends ServiceProvider
         $this->app->container()->singleton(
             Router::class,
             fn (): Router => new Router(
-                $this->app->container()
+                $this->app->container(),
+                $this->app->make(
+                    Request::class
+                )
             )
         );
     }
