@@ -75,6 +75,12 @@ class CharactersServiceProvider extends ServiceProvider
                     ),
                     $container->make(
                         CreateCharacterAction::class
+                    ),
+                    $container->make(
+                        UpdateCharacterAction::class
+                    ),
+                    $container->make(
+                        DeleteCharacterAction::class
                     )
                 )
         );
