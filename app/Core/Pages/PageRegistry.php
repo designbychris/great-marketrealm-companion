@@ -3,6 +3,7 @@
 namespace GreatMarketrealmCompanion\Core\Pages;
 
 use GreatMarketrealmCompanion\Resources\Resource;
+use GreatMarketrealmCompanion\Core\Routing\Router;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -53,6 +54,27 @@ class PageRegistry
                 $pageClass
             );
         }
+    }
+
+    /**
+     * Register one Page route.
+     */
+    public function registerRoute(
+        string $key,
+        Router $router
+    ): void {
+        $page = $this->get($key);
+    
+        if ($page === null) {
+            throw new RuntimeException(
+                sprintf(
+                    'Page "%s" is not registered.',
+                    $key
+                )
+            );
+        }
+    
+        $page->registerRoute($router);
     }
 
     public function has(string $key): bool
