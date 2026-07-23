@@ -43,9 +43,5 @@ class PageServiceProvider extends ServiceProvider
             $router
         );
 
-        error_log(
-            'GMRC pages: ' .
-            implode(', ', array_keys($pages->all()))
-        );
     }
 }
