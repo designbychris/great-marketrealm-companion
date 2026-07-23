@@ -4,6 +4,8 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Controllers;
 
 use GreatMarketrealmCompanion\Core\View\View;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
+use GreatMarketrealmCompanion\Modules\Characters\Actions\CreateCharacterAction;
+use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 
 defined('ABSPATH') || exit;
@@ -18,18 +20,16 @@ defined('ABSPATH') || exit;
  */
 class CharacterController
 {
-    protected CharacterRepository $characters;
-
-    protected ViewFactory $views;
-
     public function __construct(
-        CharacterRepository $characters,
-        ViewFactory $views
+        protected CharacterRepository $characters,
+        protected ViewFactory $views,
+        protected CreateCharacterAction $createCharacter
     ) {
-        $this->characters = $characters;
-        $this->views = $views;
     }
 
+    /**
+     * Display all Characters.
+     */
     public function index(): string
     {
         return $this->views->render(
@@ -39,6 +39,55 @@ class CharacterController
                     'characters' => $this->characters->all(),
                 ]
             )
+        );
+    }
+
+    /**
+     * Store a new Character.
+     */
+    public function store(): Character
+    {
+        $character = new Character(
+            name: $this->postString('name'),
+            race: $this->postString('race'),
+            class: $this->postString('class'),
+            level: $this->postInteger('level', 1),
+        );
+
+        return $this->createCharacter->handle(
+            $character
+        );
+    }
+
+    /**
+     * Retrieve and sanitise a string from the request.
+     */
+    protected function postString(
+        string $key,
+        string $default = ''
+    ): string {
+        if (! isset($_POST[$key])) {
+            return $default;
+        }
+
+        return sanitize_text_field(
+            wp_unslash($_POST[$key])
+        );
+    }
+
+    /**
+     * Retrieve an integer from the request.
+     */
+    protected function postInteger(
+        string $key,
+        int $default = 0
+    ): int {
+        if (! isset($_POST[$key])) {
+            return $default;
+        }
+
+        return absint(
+            wp_unslash($_POST[$key])
         );
     }
 }
