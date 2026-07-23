@@ -10,6 +10,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Core\Http\Request;
+use GreatMarketrealmCompanion\Core\Http\RedirectResponse;
 
 defined('ABSPATH') || exit;
 
@@ -51,7 +52,7 @@ class CharacterController
     /**
      * Store a new Character.
      */
-    public function store(): Character
+    public function store(): RedirectResponse
     {
         $character = new Character(
             name: $this->request->string('name'),
@@ -60,11 +61,16 @@ class CharacterController
             level: $this->request->integer(
                 'level',
                 1
-            ),
+            )
         );
     
-        return $this->createCharacter->handle(
+        $this->createCharacter->handle(
             $character
+        );
+    
+        return new RedirectResponse(
+            home_url('/characters'),
+            303
         );
     }
 
