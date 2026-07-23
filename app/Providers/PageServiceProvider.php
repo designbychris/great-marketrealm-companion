@@ -38,8 +38,7 @@ class PageServiceProvider extends ServiceProvider
             Router::class
         );
 
-        $pages->registerRoute(
-            'characters.index',
+        $pages->registerRoutes(
             $router
         );
 
