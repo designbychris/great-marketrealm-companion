@@ -3,7 +3,7 @@
 namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Core\Pages\PageRegistry;
-use GreatMarketrealmCompanion\Core\ServiceProvider;
+use GreatMarketrealmCompanion\Core\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Resources\ResourceRegistry;
 
 defined('ABSPATH') || exit;
