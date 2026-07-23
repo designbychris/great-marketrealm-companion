@@ -3,6 +3,7 @@
 namespace GreatMarketrealmCompanion\Core\Routing;
 
 use GreatMarketrealmCompanion\Core\Container;
+use GreatMarketrealmCompanion\Core\Http\Request;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -30,6 +31,7 @@ class Router
      */
     public function __construct(
         protected Container $container
+        protected Request $request
     ) {
     }
 
@@ -125,21 +127,12 @@ class Router
     ): mixed {
         $httpMethod = strtoupper(
             $httpMethod
-            ?? ($_SERVER['REQUEST_METHOD'] ?? 'GET')
+            ?? $this->request->method()
         );
-
-        $requestUri ??= $_SERVER['REQUEST_URI'] ?? '/';
-
-        $path = parse_url(
-            $requestUri,
-            PHP_URL_PATH
-        );
-
-        if (! is_string($path)) {
-            $path = '/';
-        }
-
-        $path = $this->normalisePath($path);
+        
+        $path = $requestUri !== null
+            ? $this->pathFromUri($requestUri)
+            : $this->request->path();
 
         $route = $this->matchRoute(
             $httpMethod,
@@ -287,4 +280,25 @@ class Router
             ? '/'
             : rtrim($path, '/');
     }
+
+    /**
+     * Extract and normalise a path from a request URI.
+     */
+    protected function pathFromUri(
+        string $requestUri
+    ): string {
+        $path = parse_url(
+            $requestUri,
+            PHP_URL_PATH
+        );
+    
+        if (! is_string($path)) {
+            return '/';
+        }
+    
+        return $this->normalisePath(
+            $path
+        );
+    }
+
 }
