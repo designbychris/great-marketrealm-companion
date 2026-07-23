@@ -9,6 +9,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Actions\DeleteCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
+use GreatMarketrealmCompanion\Core\Http\Request;
 
 defined('ABSPATH') || exit;
 
@@ -27,7 +28,8 @@ class CharacterController
         protected ViewFactory $views,
         protected CreateCharacterAction $createCharacter,
         protected UpdateCharacterAction $updateCharacter,
-        protected DeleteCharacterAction $deleteCharacter
+        protected DeleteCharacterAction $deleteCharacter,
+        protected Request $request
     ) {
     }
 
@@ -52,12 +54,15 @@ class CharacterController
     public function store(): Character
     {
         $character = new Character(
-            name: $this->postString('name'),
-            race: $this->postString('race'),
-            class: $this->postString('class'),
-            level: $this->postInteger('level', 1),
+            name: $this->request->string('name'),
+            race: $this->request->string('race'),
+            class: $this->request->string('class'),
+            level: $this->request->integer(
+                'level',
+                1
+            ),
         );
-
+    
         return $this->createCharacter->handle(
             $character
         );
@@ -66,14 +71,18 @@ class CharacterController
     /**
      * Update an existing Character.
      */
-    public function update(string $id): Character
-    {
+    public function update(
+        string $id
+    ): Character {
         $character = new Character(
             id: absint($id),
-            name: $this->postString('name'),
-            race: $this->postString('race'),
-            class: $this->postString('class'),
-            level: $this->postInteger('level', 1),
+            name: $this->request->string('name'),
+            race: $this->request->string('race'),
+            class: $this->request->string('class'),
+            level: $this->request->integer(
+                'level',
+                1
+            ),
         );
     
         return $this->updateCharacter->handle(
@@ -91,35 +100,4 @@ class CharacterController
         );
     }
 
-    /**
-     * Retrieve and sanitise a string from the request.
-     */
-    protected function postString(
-        string $key,
-        string $default = ''
-    ): string {
-        if (! isset($_POST[$key])) {
-            return $default;
-        }
-
-        return sanitize_text_field(
-            wp_unslash($_POST[$key])
-        );
-    }
-
-    /**
-     * Retrieve an integer from the request.
-     */
-    protected function postInteger(
-        string $key,
-        int $default = 0
-    ): int {
-        if (! isset($_POST[$key])) {
-            return $default;
-        }
-
-        return absint(
-            wp_unslash($_POST[$key])
-        );
-    }
 }
