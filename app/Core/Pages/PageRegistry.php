@@ -106,11 +106,4 @@ class PageRegistry
         return $this->pages;
     }
 
-    public function registerRoutes(
-    Router $router
-    ): void {
-        foreach ($this->pages as $page) {
-            $page->registerRoute($router);
-        }
-    }
 }
