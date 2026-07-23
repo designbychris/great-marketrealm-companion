@@ -149,6 +149,11 @@ class Kernel
     protected function bootProviders(): void
     {
         foreach ($this->providers as $provider) {
+            error_log(
+                'GMRC booting provider: ' .
+                get_class($provider)
+            );
+    
             $provider->boot();
         }
     }
