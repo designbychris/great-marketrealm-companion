@@ -3,7 +3,6 @@
 namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Core\Pages\PageRegistry;
-use GreatMarketrealmCompanion\Core\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Resources\ResourceRegistry;
 
 defined('ABSPATH') || exit;
@@ -12,7 +11,7 @@ class PageServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->singleton(
+        $this->app->container()->singleton(
             PageRegistry::class,
             static fn (): PageRegistry => new PageRegistry()
         );
