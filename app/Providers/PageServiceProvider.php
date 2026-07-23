@@ -3,6 +3,7 @@
 namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Core\Pages\PageRegistry;
+use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Resources\ResourceRegistry;
 
 defined('ABSPATH') || exit;
@@ -22,19 +23,25 @@ class PageServiceProvider extends ServiceProvider
         $pages = $this->app->make(
             PageRegistry::class
         );
-        
-        error_log(
-            'PageRegistry ID (PageServiceProvider): ' .
-            spl_object_id($pages)
-        );    
 
         $resources = $this->app->make(
             ResourceRegistry::class
         );
 
         foreach ($resources->all() as $resource) {
-            $pages->registerResource($resource);
+            $pages->registerResource(
+                $resource
+            );
         }
+
+        $router = $this->app->make(
+            Router::class
+        );
+
+        $pages->registerRoute(
+            'characters.index',
+            $router
+        );
 
         error_log(
             'GMRC pages: ' .
