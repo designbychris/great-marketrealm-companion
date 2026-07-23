@@ -31,5 +31,10 @@ class PageServiceProvider extends ServiceProvider
         foreach ($resources->all() as $resource) {
             $pages->registerResource($resource);
         }
+
+        error_log(
+            'GMRC pages: ' .
+            implode(', ', array_keys($pages->all()))
+        );
     }
 }
