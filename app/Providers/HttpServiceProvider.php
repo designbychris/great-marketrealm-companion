@@ -4,7 +4,6 @@ namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
-use GreatMarketrealmCompanion\Providers\ServiceProvider;
 
 defined('ABSPATH') || exit;
 
@@ -34,5 +33,13 @@ class HttpServiceProvider extends ServiceProvider
             static fn (): ResponseFactory =>
                 new ResponseFactory()
         );
+    }
+
+    /**
+     * Boot HTTP services.
+     */
+    public function boot(): void
+    {
+        //
     }
 }
