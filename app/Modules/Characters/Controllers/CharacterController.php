@@ -5,6 +5,8 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Controllers;
 use GreatMarketrealmCompanion\Core\View\View;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\Characters\Actions\CreateCharacterAction;
+use GreatMarketrealmCompanion\Modules\Characters\Actions\DeleteCharacterAction;
+use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 
@@ -23,7 +25,9 @@ class CharacterController
     public function __construct(
         protected CharacterRepository $characters,
         protected ViewFactory $views,
-        protected CreateCharacterAction $createCharacter
+        protected CreateCharacterAction $createCharacter,
+        protected UpdateCharacterAction $updateCharacter,
+        protected DeleteCharacterAction $deleteCharacter
     ) {
     }
 
@@ -56,6 +60,34 @@ class CharacterController
 
         return $this->createCharacter->handle(
             $character
+        );
+    }
+
+    /**
+     * Update an existing Character.
+     */
+    public function update(string $id): Character
+    {
+        $character = new Character(
+            id: absint($id),
+            name: $this->postString('name'),
+            race: $this->postString('race'),
+            class: $this->postString('class'),
+            level: $this->postInteger('level', 1),
+        );
+    
+        return $this->updateCharacter->handle(
+            $character
+        );
+    }
+    
+    /**
+     * Delete an existing Character.
+     */
+    public function destroy(string $id): bool
+    {
+        return $this->deleteCharacter->handle(
+            absint($id)
         );
     }
 
