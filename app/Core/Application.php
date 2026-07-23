@@ -2,6 +2,8 @@
 
 namespace GreatMarketrealmCompanion\Core;
 
+use GreatMarketrealmCompanion\Core\Http\Request;
+use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
 use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
 use GreatMarketrealmCompanion\Navigation\Navigation;
@@ -162,6 +164,36 @@ class Application
     {
         return $this->make(
             ResourceRegistry::class
+        );
+    }
+
+    /**
+     * Retrieve the current HTTP request.
+     */
+    public function request(): Request
+    {
+        return $this->make(
+            Request::class
+        );
+    }
+    
+    /**
+     * Retrieve the HTTP response factory.
+     */
+    public function response(): ResponseFactory
+    {
+        return $this->make(
+            ResponseFactory::class
+        );
+    }
+    
+    /**
+     * Retrieve the application router.
+     */
+    public function router(): Router
+    {
+        return $this->make(
+            Router::class
         );
     }
 }
