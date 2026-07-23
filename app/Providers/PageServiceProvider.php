@@ -22,6 +22,11 @@ class PageServiceProvider extends ServiceProvider
         $pages = $this->app->make(
             PageRegistry::class
         );
+        
+        error_log(
+            'PageRegistry ID (PageServiceProvider): ' .
+            spl_object_id($pages)
+        );    
 
         $resources = $this->app->make(
             ResourceRegistry::class
