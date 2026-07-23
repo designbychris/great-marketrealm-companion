@@ -19,7 +19,7 @@ class EditCharacterPage extends Page
         return 'Edit Character';
     }
 
-    public function route(): string
+    public function path(): string
     {
         return '/characters/{id}/edit';
     }
