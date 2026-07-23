@@ -29,15 +29,13 @@ class PageServiceProvider extends ServiceProvider
         );
 
         foreach ($resources->all() as $resource) {
-            $pages->registerResource(
-                $resource
-            );
+            $pages->registerResource($resource);
         }
-
+        
         $router = $this->app->make(
             Router::class
         );
-
+        
         $pages->registerRoutes(
             $router
         );
