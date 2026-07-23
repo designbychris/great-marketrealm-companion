@@ -57,6 +57,11 @@ class RouteServiceProvider extends ServiceProvider
             PageRegistry::class
         );
 
+        error_log(
+            'PageRegistry ID (RouteServiceProvider): ' .
+            spl_object_id($pages)
+        );
+
         $pages->registerRoute(
             'characters.index',
             $router
