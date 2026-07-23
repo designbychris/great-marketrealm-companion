@@ -72,6 +72,9 @@ class CharactersServiceProvider extends ServiceProvider
                     ),
                     $container->make(
                         ViewFactory::class
+                    ),
+                    $container->make(
+                        CreateCharacterAction::class
                     )
                 )
         );
