@@ -19,7 +19,7 @@ class CreateCharacterPage extends Page
         return 'Create Character';
     }
 
-    public function route(): string
+    public function path(): string
     {
         return '/characters/create';
     }
