@@ -11,6 +11,7 @@ use GreatMarketrealmCompanion\Providers\PageServiceProvider;
 use GreatMarketrealmCompanion\Providers\RouteServiceProvider;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Providers\ViewServiceProvider;
+use GreatMarketrealmCompanion\Providers\HttpServiceProvider;
 
 use RuntimeException;
 
