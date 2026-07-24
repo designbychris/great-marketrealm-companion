@@ -2,6 +2,7 @@
 
 namespace GreatMarketrealmCompanion\Providers;
 
+use GreatMarketrealmCompanion\Core\Exceptions\ExceptionHandler;
 use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
 
@@ -22,16 +23,18 @@ class HttpServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->container()->singleton(
+        $this->app->singleton(
             Request::class,
-            static fn (): Request =>
-                Request::capture()
+            static fn (): Request => Request::capture()
         );
-
-        $this->app->container()->singleton(
+        
+        $this->app->singleton(
             ResponseFactory::class,
-            static fn (): ResponseFactory =>
-                new ResponseFactory()
+            static fn (): ResponseFactory => new ResponseFactory()
+        );
+        
+        $this->app->singleton(
+            ExceptionHandler::class
         );
     }
 
