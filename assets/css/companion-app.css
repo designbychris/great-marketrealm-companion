@@ -33,7 +33,6 @@
     display: grid;
     grid-template-columns: 280px minmax(0, 1fr);
     min-height: 720px;
-    margin: 50px 0;
     overflow: hidden;
     background:rgba(248,244,234,0.7);
     color: var(--gmrc-text);
