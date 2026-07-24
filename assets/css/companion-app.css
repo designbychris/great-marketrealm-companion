@@ -535,8 +535,6 @@ a.gmrc-navigation__item:hover {
     .gmrc-app-shell {
         grid-template-columns: 1fr;
         min-height: auto;
-        margin: 25px 0;
-        border-radius: 18px;
     }
 
     .gmrc-sidebar {
