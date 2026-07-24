@@ -2,6 +2,9 @@
 
 namespace GreatMarketrealmCompanion\Modules\Characters\Controllers;
 
+use GreatMarketrealmCompanion\Core\Http\RedirectResponse;
+use GreatMarketrealmCompanion\Core\Http\Request;
+use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
 use GreatMarketrealmCompanion\Core\View\View;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\Characters\Actions\CreateCharacterAction;
@@ -9,9 +12,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Actions\DeleteCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
-use GreatMarketrealmCompanion\Core\Http\Request;
-use GreatMarketrealmCompanion\Core\Http\RedirectResponse;
-use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
+use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequest;
 
 defined('ABSPATH') || exit;
 
@@ -54,22 +55,13 @@ class CharacterController
     /**
      * Store a new Character.
      */
-    public function store(): RedirectResponse
-    {
-        $character = new Character(
-            name: $this->request->string('name'),
-            race: $this->request->string('race'),
-            class: $this->request->string('class'),
-            level: $this->request->integer(
-                'level',
-                1
-            )
-        );
-    
+    public function store(
+        StoreCharacterRequest $request
+    ): RedirectResponse {
         $this->createCharacter->handle(
-            $character
+            $request->toCharacter()
         );
-    
+
         return $this->responses->redirect(
             '/characters'
         );
@@ -91,12 +83,12 @@ class CharacterController
                 1
             ),
         );
-    
+
         return $this->updateCharacter->handle(
             $character
         );
     }
-    
+
     /**
      * Delete an existing Character.
      */
@@ -106,5 +98,4 @@ class CharacterController
             absint($id)
         );
     }
-
 }
