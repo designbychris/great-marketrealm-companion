@@ -97,7 +97,46 @@ class Application
     {
         return $this->container;
     }
-
+    
+    /**
+     * Register a service binding.
+     */
+    public function bind(
+        string $abstract,
+        mixed $concrete = null
+    ): void {
+        $this->container->bind(
+            $abstract,
+            $concrete
+        );
+    }
+    
+    /**
+     * Register a shared service.
+     */
+    public function singleton(
+        string $abstract,
+        mixed $concrete = null
+    ): void {
+        $this->container->singleton(
+            $abstract,
+            $concrete
+        );
+    }
+    
+    /**
+     * Register an existing service instance.
+     */
+    public function instance(
+        string $abstract,
+        mixed $instance
+    ): void {
+        $this->container->instance(
+            $abstract,
+            $instance
+        );
+    }
+    
     /**
      * Resolve a service from the container.
      */
