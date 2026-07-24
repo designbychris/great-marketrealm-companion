@@ -4,7 +4,7 @@ namespace GreatMarketrealmCompanion\Core\Exceptions;
 
 use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
 use GreatMarketrealmCompanion\Core\Session\FlashStore;
-use GreatMarketrealmCompanion\Exceptions\ValidationException;
+use GreatMarketrealmCompanion\Core\Http\Validation\ValidationException;
 use Throwable;
 
 defined('ABSPATH') || exit;
