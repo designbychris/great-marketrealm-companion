@@ -23,16 +23,16 @@ defined('ABSPATH') || exit;
 class Container
 {
     /**
-     * Factory bindings.
+     * Service bindings.
      *
-     * @var array<string, callable>
+     * @var array<string, callable|string>
      */
     protected array $bindings = [];
-
+    
     /**
-     * Singleton factories.
+     * Singleton bindings.
      *
-     * @var array<string, callable>
+     * @var array<string, callable|string>
      */
     protected array $singletons = [];
 
@@ -51,19 +51,41 @@ class Container
     protected array $resolving = [];
 
     /**
-     * Register a factory binding.
+     * Register a service binding.
+     *
+     * When no concrete implementation is supplied, the abstract
+     * class itself will be resolved through auto-wiring.
      */
-    public function bind(string $abstract, callable $factory): void
-    {
-        $this->bindings[$abstract] = $factory;
+    public function bind(
+        string $abstract,
+        callable|string|null $concrete = null
+    ): void {
+        $this->bindings[$abstract] = $concrete
+            ?? $abstract;
+    
+        unset(
+            $this->singletons[$abstract],
+            $this->instances[$abstract]
+        );
     }
 
     /**
      * Register a singleton binding.
+     *
+     * When no concrete implementation is supplied, the abstract
+     * class itself will be resolved through auto-wiring.
      */
-    public function singleton(string $abstract, callable $factory): void
-    {
-        $this->singletons[$abstract] = $factory;
+    public function singleton(
+        string $abstract,
+        callable|string|null $concrete = null
+    ): void {
+        $this->singletons[$abstract] = $concrete
+            ?? $abstract;
+    
+        unset(
+            $this->bindings[$abstract],
+            $this->instances[$abstract]
+        );
     }
 
     /**
@@ -89,18 +111,18 @@ class Container
             return $this->instances[$abstract];
         }
 
-        if (isset($this->singletons[$abstract])) {
-            $this->instances[$abstract] = ($this->singletons[$abstract])(
-                $this,
+       if (isset($this->singletons[$abstract])) {
+            $this->instances[$abstract] = $this->resolveBinding(
+                $this->singletons[$abstract],
                 $parameters
             );
-
+        
             return $this->instances[$abstract];
         }
-
+        
         if (isset($this->bindings[$abstract])) {
-            return ($this->bindings[$abstract])(
-                $this,
+            return $this->resolveBinding(
+                $this->bindings[$abstract],
                 $parameters
             );
         }
@@ -117,6 +139,31 @@ class Container
                 'Nothing has been registered for [%s].',
                 $abstract
             )
+        );
+    }
+
+    /**
+     * Resolve a registered binding.
+     *
+     * @param callable|string        $concrete
+     * @param array<string, mixed>   $parameters
+     *
+     * @throws ContainerException
+     */
+    protected function resolveBinding(
+        callable|string $concrete,
+        array $parameters = []
+    ): mixed {
+        if (is_callable($concrete)) {
+            return $concrete(
+                $this,
+                $parameters
+            );
+        }
+    
+        return $this->build(
+            $concrete,
+            $parameters
         );
     }
 
@@ -225,7 +272,7 @@ class Container
             )
         );
     }
-
+    
     /**
      * Determine if an abstract has been registered.
      */
