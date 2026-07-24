@@ -46,8 +46,6 @@ class Container
     /**
      * Classes currently being resolved.
      *
-     * Used to detect circular dependencies.
-     *
      * @var array<int, string>
      */
     protected array $resolving = [];
@@ -90,30 +88,30 @@ class Container
         if (isset($this->instances[$abstract])) {
             return $this->instances[$abstract];
         }
-    
+
         if (isset($this->singletons[$abstract])) {
             $this->instances[$abstract] = ($this->singletons[$abstract])(
                 $this,
                 $parameters
             );
-    
+
             return $this->instances[$abstract];
         }
-    
+
         if (isset($this->bindings[$abstract])) {
             return ($this->bindings[$abstract])(
                 $this,
                 $parameters
             );
         }
-    
+
         if (class_exists($abstract)) {
             return $this->build(
                 $abstract,
                 $parameters
             );
         }
-    
+
         throw new ContainerException(
             sprintf(
                 'Nothing has been registered for [%s].',
@@ -142,11 +140,11 @@ class Container
                 )
             );
         }
-    
+
         $reflection = new ReflectionClass(
             $concrete
         );
-    
+
         if (! $reflection->isInstantiable()) {
             throw new ContainerException(
                 sprintf(
@@ -155,25 +153,25 @@ class Container
                 )
             );
         }
-    
+
         $constructor = $reflection->getConstructor();
-    
+
         if ($constructor === null) {
             return $reflection->newInstance();
         }
-    
+
         $this->resolving[] = $concrete;
-    
+
         try {
             $dependencies = [];
-    
+
             foreach ($constructor->getParameters() as $parameter) {
                 $dependencies[] = $this->resolveDependency(
                     $parameter,
                     $parameters
                 );
             }
-    
+
             return $reflection->newInstanceArgs(
                 $dependencies
             );
@@ -194,13 +192,13 @@ class Container
         array $parameters
     ): mixed {
         $name = $parameter->getName();
-    
+
         if (array_key_exists($name, $parameters)) {
             return $parameters[$name];
         }
-    
+
         $type = $parameter->getType();
-    
+
         if (
             $type instanceof ReflectionNamedType
             && ! $type->isBuiltin()
@@ -209,15 +207,15 @@ class Container
                 $type->getName()
             );
         }
-    
+
         if ($parameter->isDefaultValueAvailable()) {
             return $parameter->getDefaultValue();
         }
-    
+
         if ($parameter->allowsNull()) {
             return null;
         }
-    
+
         throw new ContainerException(
             sprintf(
                 'Unable to resolve parameter [$%s] while building [%s].',
