@@ -1,6 +1,6 @@
 <?php
 
-namespace GreatMarketrealmCompanion\Core\Http\Validation;
+namespace GreatMarketrealmCompanion\Exceptions;
 
 use RuntimeException;
 
@@ -9,7 +9,11 @@ defined('ABSPATH') || exit;
 /**
  * Validation Exception.
  *
- * Thrown when submitted input fails validation.
+ * Thrown when submitted request data fails validation.
+ *
+ * The exception carries both the validation errors and the
+ * submitted input so the exception handler can flash them
+ * before redirecting the user back to the form.
  *
  * @package MarketrealmCompanion
  * @since 0.7.0
@@ -17,24 +21,17 @@ defined('ABSPATH') || exit;
 class ValidationException extends RuntimeException
 {
     /**
-     * Validation errors.
-     *
-     * @var array<string, array<int, string>>
-     */
-    protected array $errors;
-
-    /**
-     * Create a new validation exception.
+     * Create a validation exception.
      *
      * @param array<string, array<int, string>> $errors
+     * @param array<string, mixed>              $oldInput
      */
     public function __construct(
-        array $errors,
-        string $message = 'The submitted data was invalid.'
+        protected array $errors,
+        protected array $oldInput = [],
+        string $message = 'The submitted data failed validation.'
     ) {
         parent::__construct($message);
-
-        $this->errors = $errors;
     }
 
     /**
@@ -48,21 +45,65 @@ class ValidationException extends RuntimeException
     }
 
     /**
-     * Determine whether a field has an error.
+     * Determine whether an error exists for a field.
      */
     public function has(string $field): bool
     {
-        return isset($this->errors[$field]);
+        return isset($this->errors[$field])
+            && $this->errors[$field] !== [];
     }
 
     /**
-     * Retrieve the first error for a field.
+     * Retrieve the first validation error for a field.
      */
     public function first(
         string $field,
-        string $default = ''
-    ): string {
-        return $this->errors[$field][0]
+        ?string $default = null
+    ): ?string {
+        $errors = $this->errors[$field] ?? [];
+
+        if (! is_array($errors)) {
+            return is_string($errors)
+                ? $errors
+                : $default;
+        }
+
+        $first = $errors[0] ?? $default;
+
+        return is_string($first)
+            ? $first
+            : $default;
+    }
+
+    /**
+     * Retrieve the submitted form input.
+     *
+     * @return array<string, mixed>
+     */
+    public function oldInput(): array
+    {
+        return $this->oldInput;
+    }
+
+    /**
+     * Determine whether submitted input contains a field.
+     */
+    public function hasOldInput(string $field): bool
+    {
+        return array_key_exists(
+            $field,
+            $this->oldInput
+        );
+    }
+
+    /**
+     * Retrieve a submitted input value.
+     */
+    public function old(
+        string $field,
+        mixed $default = null
+    ): mixed {
+        return $this->oldInput[$field]
             ?? $default;
     }
 }
