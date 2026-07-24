@@ -7,6 +7,11 @@ defined('ABSPATH') || exit;
 
 return static function (Router $router): void {
 
+    $router->get(
+        '/characters/create',
+        [CharacterController::class, 'create']
+    );
+
     $router->post(
         '/characters',
         [CharacterController::class, 'store']
