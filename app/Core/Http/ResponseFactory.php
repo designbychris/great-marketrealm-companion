@@ -51,6 +51,27 @@ class ResponseFactory
     }
 
     /**
+     * Create a redirect response to the previous page.
+     */
+    public function redirectBack(
+        string $fallback = '/'
+    ): RedirectResponse {
+        $destination = wp_get_referer();
+    
+        if (
+            ! is_string($destination)
+            || $destination === ''
+        ) {
+            $destination = $fallback;
+        }
+    
+        return $this->redirect(
+            $destination,
+            303
+        );
+    }
+
+    /**
      * Create a JSON response.
      *
      * @param array<string, string> $headers
