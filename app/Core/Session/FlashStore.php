@@ -7,7 +7,7 @@ defined('ABSPATH') || exit;
 /**
  * Flash Store.
  *
- * Stores temporary data for the next request.
+ * Stores temporary data for the following request.
  *
  * @package MarketrealmCompanion
  * @since 0.7.0
@@ -15,60 +15,103 @@ defined('ABSPATH') || exit;
 class FlashStore
 {
     /**
-     * Session key.
+     * Session storage key.
      */
     protected const KEY = 'gmrc_flash';
 
     /**
-     * Store flash data.
+     * Create the flash store.
+     */
+    public function __construct(
+        protected SessionStore $session
+    ) {
+    }
+
+    /**
+     * Age the flash data at the beginning of a request.
+     *
+     * Previously available data is removed and newly flashed
+     * data becomes available for the current request.
+     */
+    public function age(): void
+    {
+        $flash = $this->store();
+
+        $flash['old'] = $flash['new'];
+        $flash['new'] = [];
+
+        $this->save($flash);
+    }
+
+    /**
+     * Store data for the following request.
      */
     public function put(
         string $key,
         mixed $value
     ): void {
-        $_SESSION[self::KEY][$key] = $value;
+        $flash = $this->store();
+
+        $flash['new'][$key] = $value;
+
+        $this->save($flash);
     }
 
     /**
-     * Determine whether a key exists.
+     * Determine whether flash data is available.
      */
-    public function has(
-        string $key
-    ): bool {
-        return isset(
-            $_SESSION[self::KEY][$key]
+    public function has(string $key): bool
+    {
+        $flash = $this->store();
+
+        return array_key_exists(
+            $key,
+            $flash['old']
         );
     }
 
     /**
-     * Retrieve flash data.
+     * Retrieve flash data for the current request.
      */
     public function get(
         string $key,
         mixed $default = null
     ): mixed {
-        if (! $this->has($key)) {
-            return $default;
-        }
+        $flash = $this->store();
 
-        $value = $_SESSION[self::KEY][$key];
+        return $flash['old'][$key] ?? $default;
+    }
 
-        unset(
-            $_SESSION[self::KEY][$key]
+    /**
+     * Retrieve and remove flash data.
+     */
+    public function pull(
+        string $key,
+        mixed $default = null
+    ): mixed {
+        $value = $this->get(
+            $key,
+            $default
         );
+
+        $this->forget($key);
 
         return $value;
     }
 
     /**
-     * Remove a key.
+     * Remove a flash value.
      */
-    public function forget(
-        string $key
-    ): void {
+    public function forget(string $key): void
+    {
+        $flash = $this->store();
+
         unset(
-            $_SESSION[self::KEY][$key]
+            $flash['old'][$key],
+            $flash['new'][$key]
         );
+
+        $this->save($flash);
     }
 
     /**
@@ -76,8 +119,49 @@ class FlashStore
      */
     public function clear(): void
     {
-        unset(
-            $_SESSION[self::KEY]
+        $this->session->forget(
+            self::KEY
+        );
+    }
+
+    /**
+     * Retrieve the flash storage structure.
+     *
+     * @return array{
+     *     old: array<string, mixed>,
+     *     new: array<string, mixed>
+     * }
+     */
+    protected function store(): array
+    {
+        $flash = $this->session->get(
+            self::KEY,
+            []
+        );
+
+        return [
+            'old' => is_array($flash['old'] ?? null)
+                ? $flash['old']
+                : [],
+            'new' => is_array($flash['new'] ?? null)
+                ? $flash['new']
+                : [],
+        ];
+    }
+
+    /**
+     * Persist the flash storage structure.
+     *
+     * @param array{
+     *     old: array<string, mixed>,
+     *     new: array<string, mixed>
+     * } $flash
+     */
+    protected function save(array $flash): void
+    {
+        $this->session->put(
+            self::KEY,
+            $flash
         );
     }
 }
