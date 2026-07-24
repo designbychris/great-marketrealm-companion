@@ -79,36 +79,107 @@ class Container
     /**
      * Resolve an object from the container.
      *
+     * @param array<string, mixed> $parameters
+     *
      * @throws ContainerException
      */
-    public function make(string $abstract, array $parameters = []): mixed
-    {
+    public function make(
+        string $abstract,
+        array $parameters = []
+    ): mixed {
         if (isset($this->instances[$abstract])) {
             return $this->instances[$abstract];
         }
-
+    
         if (isset($this->singletons[$abstract])) {
             $this->instances[$abstract] = ($this->singletons[$abstract])(
                 $this,
                 $parameters
             );
-
+    
             return $this->instances[$abstract];
         }
-
+    
         if (isset($this->bindings[$abstract])) {
             return ($this->bindings[$abstract])(
                 $this,
                 $parameters
             );
         }
-
+    
+        if (class_exists($abstract)) {
+            return $this->build(
+                $abstract,
+                $parameters
+            );
+        }
+    
         throw new ContainerException(
             sprintf(
                 'Nothing has been registered for [%s].',
                 $abstract
             )
         );
+    }
+
+    /**
+     * Build a concrete class using constructor injection.
+     *
+     * @param class-string         $concrete
+     * @param array<string, mixed> $parameters
+     *
+     * @throws ContainerException
+     */
+    protected function build(
+        string $concrete,
+        array $parameters = []
+    ): object {
+        if (in_array($concrete, $this->resolving, true)) {
+            throw new ContainerException(
+                sprintf(
+                    'Circular dependency detected while resolving [%s].',
+                    $concrete
+                )
+            );
+        }
+    
+        $reflection = new ReflectionClass(
+            $concrete
+        );
+    
+        if (! $reflection->isInstantiable()) {
+            throw new ContainerException(
+                sprintf(
+                    'Class [%s] is not instantiable.',
+                    $concrete
+                )
+            );
+        }
+    
+        $constructor = $reflection->getConstructor();
+    
+        if ($constructor === null) {
+            return $reflection->newInstance();
+        }
+    
+        $this->resolving[] = $concrete;
+    
+        try {
+            $dependencies = [];
+    
+            foreach ($constructor->getParameters() as $parameter) {
+                $dependencies[] = $this->resolveDependency(
+                    $parameter,
+                    $parameters
+                );
+            }
+    
+            return $reflection->newInstanceArgs(
+                $dependencies
+            );
+        } finally {
+            array_pop($this->resolving);
+        }
     }
 
     /**
