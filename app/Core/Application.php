@@ -112,19 +112,6 @@ class Application
     }
     
     /**
-     * Register a shared service.
-     */
-    public function singleton(
-        string $abstract,
-        mixed $concrete = null
-    ): void {
-        $this->container->singleton(
-            $abstract,
-            $concrete
-        );
-    }
-    
-    /**
      * Register an existing service instance.
      */
     public function instance(
