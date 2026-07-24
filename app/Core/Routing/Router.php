@@ -3,8 +3,14 @@
 namespace GreatMarketrealmCompanion\Core\Routing;
 
 use GreatMarketrealmCompanion\Core\Container;
+use GreatMarketrealmCompanion\Core\Http\FormRequest;
 use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\Http\Response;
+use ReflectionFunction;
+use ReflectionFunctionAbstract;
+use ReflectionMethod;
+use ReflectionNamedType;
+use ReflectionParameter;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -231,19 +237,152 @@ class Router
     ): mixed {
         if (is_array($handler)) {
             [$controllerClass, $controllerMethod] = $handler;
-
+    
             $controller = $this->container->make(
                 $controllerClass
             );
-
+    
+            $reflection = new ReflectionMethod(
+                $controller,
+                $controllerMethod
+            );
+    
+            $arguments = $this->resolveArguments(
+                $reflection,
+                $parameters
+            );
+    
             return $controller->{$controllerMethod}(
-                ...array_values($parameters)
+                ...$arguments
             );
         }
-
-        return $handler(
-            ...array_values($parameters)
+    
+        $reflection = new ReflectionFunction(
+            $handler
         );
+    
+        $arguments = $this->resolveArguments(
+            $reflection,
+            $parameters
+        );
+    
+        return $handler(...$arguments);
+    }
+
+    /**
+     * Resolve arguments for a route handler.
+     *
+     * @param array<string, string> $routeParameters
+     *
+     * @return array<int, mixed>
+     */
+    protected function resolveArguments(
+        ReflectionFunctionAbstract $reflection,
+        array $routeParameters
+    ): array {
+        $arguments = [];
+    
+        foreach ($reflection->getParameters() as $parameter) {
+            $arguments[] = $this->resolveParameter(
+                $parameter,
+                $routeParameters
+            );
+        }
+    
+        return $arguments;
+    }
+
+    /**
+     * Resolve a route handler parameter.
+     *
+     * @param array<string, string> $routeParameters
+     */
+    protected function resolveParameter(
+        ReflectionParameter $parameter,
+        array $routeParameters
+    ): mixed {
+        $type = $parameter->getType();
+    
+        if ($type instanceof ReflectionNamedType && ! $type->isBuiltin()) {
+            return $this->resolveClassParameter(
+                $type->getName()
+            );
+        }
+    
+        $name = $parameter->getName();
+    
+        if (array_key_exists($name, $routeParameters)) {
+            return $this->castRouteParameter(
+                $routeParameters[$name],
+                $type
+            );
+        }
+    
+        if ($parameter->isDefaultValueAvailable()) {
+            return $parameter->getDefaultValue();
+        }
+    
+        if ($parameter->allowsNull()) {
+            return null;
+        }
+    
+        throw new RuntimeException(
+            sprintf(
+                'Unable to resolve route parameter [%s].',
+                $name
+            )
+        );
+    }
+
+    /**
+     * Resolve a class-typed handler parameter.
+     */
+    protected function resolveClassParameter(
+        string $className
+    ): object {
+        if (is_a($className, FormRequest::class, true)) {
+            return $this->resolveFormRequest(
+                $className
+            );
+        }
+    
+        if ($className === Request::class) {
+            return $this->request;
+        }
+    
+        if ($this->container->has($className)) {
+            return $this->container->make(
+                $className
+            );
+        }
+    
+        throw new RuntimeException(
+            sprintf(
+                'Unable to resolve handler dependency [%s].',
+                $className
+            )
+        );
+    }
+
+    /**
+     * Resolve and validate a form request.
+     *
+     * @param class-string<FormRequest> $requestClass
+     */
+    protected function resolveFormRequest(
+        string $requestClass
+    ): FormRequest {
+        $request = new $requestClass();
+    
+        if (! $request->isAuthorized()) {
+            throw new RuntimeException(
+                'This request is not authorised.'
+            );
+        }
+    
+        $request->validated();
+    
+        return $request;
     }
 
     /**
@@ -258,6 +397,28 @@ class Router
                 $this->normalisePath($path)
             ]
         );
+    }
+
+    /**
+     * Cast a route parameter to its declared type.
+     */
+    protected function castRouteParameter(
+        string $value,
+        ?\ReflectionType $type
+    ): mixed {
+        if (! $type instanceof ReflectionNamedType) {
+            return $value;
+        }
+    
+        return match ($type->getName()) {
+            'int' => (int) $value,
+            'float' => (float) $value,
+            'bool' => filter_var(
+                $value,
+                FILTER_VALIDATE_BOOLEAN
+            ),
+            default => $value,
+        };
     }
 
     /**
