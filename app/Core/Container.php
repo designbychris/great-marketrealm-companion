@@ -183,6 +183,52 @@ class Container
     }
 
     /**
+     * Resolve a constructor dependency.
+     *
+     * @param array<string, mixed> $parameters
+     *
+     * @throws ContainerException
+     */
+    protected function resolveDependency(
+        ReflectionParameter $parameter,
+        array $parameters
+    ): mixed {
+        $name = $parameter->getName();
+    
+        if (array_key_exists($name, $parameters)) {
+            return $parameters[$name];
+        }
+    
+        $type = $parameter->getType();
+    
+        if (
+            $type instanceof ReflectionNamedType
+            && ! $type->isBuiltin()
+        ) {
+            return $this->make(
+                $type->getName()
+            );
+        }
+    
+        if ($parameter->isDefaultValueAvailable()) {
+            return $parameter->getDefaultValue();
+        }
+    
+        if ($parameter->allowsNull()) {
+            return null;
+        }
+    
+        throw new ContainerException(
+            sprintf(
+                'Unable to resolve parameter [$%s] while building [%s].',
+                $name,
+                $parameter->getDeclaringClass()?->getName()
+                    ?? 'unknown class'
+            )
+        );
+    }
+
+    /**
      * Determine if an abstract has been registered.
      */
     public function has(string $abstract): bool
