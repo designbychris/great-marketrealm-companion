@@ -112,6 +112,45 @@ class Application
     }
 
     /**
+     * Register a shared service in the container.
+     */
+    public function singleton(
+        string $abstract,
+        mixed $concrete = null
+    ): void {
+        $this->container->singleton(
+            $abstract,
+            $concrete
+        );
+    }
+    
+    /**
+     * Register a service binding in the container.
+     */
+    public function bind(
+        string $abstract,
+        mixed $concrete = null
+    ): void {
+        $this->container->bind(
+            $abstract,
+            $concrete
+        );
+    }
+    
+    /**
+     * Register an existing service instance.
+     */
+    public function instance(
+        string $abstract,
+        mixed $instance
+    ): void {
+        $this->container->instance(
+            $abstract,
+            $instance
+        );
+    }
+
+    /**
      * Determine if a service has been registered.
      */
     public function has(string $abstract): bool
