@@ -69,13 +69,14 @@ class Validator
                 $rules
             );
         }
-
+    
         if (! empty($this->errors)) {
             throw new ValidationException(
-                $this->errors
+                $this->errors,
+                $this->input
             );
         }
-
+    
         return new ValidatedInput(
             $this->validated
         );
