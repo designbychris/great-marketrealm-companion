@@ -99,19 +99,6 @@ class Application
     }
     
     /**
-     * Register a service binding.
-     */
-    public function bind(
-        string $abstract,
-        mixed $concrete = null
-    ): void {
-        $this->container->bind(
-            $abstract,
-            $concrete
-        );
-    }
-    
-    /**
      * Register an existing service instance.
      */
     public function instance(
@@ -160,19 +147,6 @@ class Application
         $this->container->bind(
             $abstract,
             $concrete
-        );
-    }
-    
-    /**
-     * Register an existing service instance.
-     */
-    public function instance(
-        string $abstract,
-        mixed $instance
-    ): void {
-        $this->container->instance(
-            $abstract,
-            $instance
         );
     }
 
