@@ -3,6 +3,9 @@
 namespace GreatMarketrealmCompanion\Core;
 
 use GreatMarketrealmCompanion\Exceptions\ContainerException;
+use ReflectionClass;
+use ReflectionNamedType;
+use ReflectionParameter;
 
 defined('ABSPATH') || exit;
 
