@@ -44,6 +44,15 @@ class Container
     protected array $instances = [];
 
     /**
+     * Classes currently being resolved.
+     *
+     * Used to detect circular dependencies.
+     *
+     * @var array<int, string>
+     */
+    protected array $resolving = [];
+
+    /**
      * Register a factory binding.
      */
     public function bind(string $abstract, callable $factory): void
