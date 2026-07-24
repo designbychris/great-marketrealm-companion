@@ -4,15 +4,15 @@ namespace GreatMarketrealmCompanion\Core;
 
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
 use GreatMarketrealmCompanion\Providers\FrontendServiceProvider;
+use GreatMarketrealmCompanion\Providers\HttpServiceProvider;
 use GreatMarketrealmCompanion\Providers\KingdomServiceProvider;
 use GreatMarketrealmCompanion\Providers\NavigationServiceProvider;
-use GreatMarketrealmCompanion\Providers\ResourceServiceProvider;
 use GreatMarketrealmCompanion\Providers\PageServiceProvider;
+use GreatMarketrealmCompanion\Providers\ResourceServiceProvider;
 use GreatMarketrealmCompanion\Providers\RouteServiceProvider;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
+use GreatMarketrealmCompanion\Providers\SessionServiceProvider;
 use GreatMarketrealmCompanion\Providers\ViewServiceProvider;
-use GreatMarketrealmCompanion\Providers\HttpServiceProvider;
-
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -36,11 +36,19 @@ class Kernel
     protected array $providers = [];
 
     /**
+     * Registered provider classes.
+     *
+     * @var array<class-string<ServiceProvider>, bool>
+     */
+    protected array $registeredProviderClasses = [];
+
+    /**
      * Providers required before Kingdom registration.
      *
      * @var array<int, class-string<ServiceProvider>>
      */
     protected array $foundationProviders = [
+        SessionServiceProvider::class,
         KingdomServiceProvider::class,
         NavigationServiceProvider::class,
         ViewServiceProvider::class,
@@ -122,14 +130,14 @@ class Kernel
      * @param class-string<ServiceProvider> $providerClass
      */
     protected function registerProvider(
-    string $providerClass
+        string $providerClass
     ): void {
         if (isset(
             $this->registeredProviderClasses[$providerClass]
         )) {
             return;
         }
-    
+
         if (! is_subclass_of(
             $providerClass,
             ServiceProvider::class
@@ -141,15 +149,15 @@ class Kernel
                 )
             );
         }
-    
-        $provider = new $providerClass(
-            $this->app
+
+        $provider = $this->app->make(
+            $providerClass
         );
-    
+
         $provider->register();
-    
+
         $this->providers[] = $provider;
-    
+
         $this->registeredProviderClasses[
             $providerClass
         ] = true;
@@ -164,11 +172,4 @@ class Kernel
             $provider->boot();
         }
     }
-
-    /**
-     * Registered provider classes.
-     *
-     * @var array<class-string<ServiceProvider>, bool>
-     */
-    protected array $registeredProviderClasses = [];
-    }
+}
