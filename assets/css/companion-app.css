@@ -35,7 +35,7 @@
     min-height: 720px;
     margin: 50px 0;
     overflow: hidden;
-    background: var(--gmrc-cream-100);
+    background:rgba(248,244,234,0.8);
     color: var(--gmrc-text);
     font-family:
         system-ui,
