@@ -3,6 +3,7 @@
 namespace GreatMarketrealmCompanion\Core\Routing;
 
 use GreatMarketrealmCompanion\Core\Container;
+use GreatMarketrealmCompanion\Core\Exceptions\ExceptionHandler;
 use GreatMarketrealmCompanion\Core\Http\FormRequest;
 use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\Http\Response;
@@ -12,6 +13,7 @@ use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
 use RuntimeException;
+use Throwable;
 
 defined('ABSPATH') || exit;
 
@@ -132,39 +134,45 @@ class Router
         ?string $httpMethod = null,
         ?string $requestUri = null
     ): mixed {
-        $httpMethod = strtoupper(
-            $httpMethod
-            ?? $this->request->method()
-        );
-        
-        $path = $requestUri !== null
-            ? $this->pathFromUri($requestUri)
-            : $this->request->path();
-
-        $route = $this->matchRoute(
-            $httpMethod,
-            $path
-        );
-
-        if ($route === null) {
-            throw new RuntimeException(
-                sprintf(
-                    'No route registered for [%s %s].',
-                    $httpMethod,
-                    $path
-                )
+        try {
+            $httpMethod = strtoupper(
+                $httpMethod
+                ?? $this->request->method()
             );
+    
+            $path = $requestUri !== null
+                ? $this->pathFromUri($requestUri)
+                : $this->request->path();
+    
+            $route = $this->matchRoute(
+                $httpMethod,
+                $path
+            );
+    
+            if ($route === null) {
+                throw new RuntimeException(
+                    sprintf(
+                        'No route registered for [%s %s].',
+                        $httpMethod,
+                        $path
+                    )
+                );
+            }
+    
+            $result = $this->runHandler(
+                $route['handler'],
+                $route['parameters']
+            );
+        } catch (Throwable $exception) {
+            $result = $this->container
+                ->make(ExceptionHandler::class)
+                ->handle($exception);
         }
-
-        $result = $this->runHandler(
-            $route['handler'],
-            $route['parameters']
-        );
-        
+    
         if ($result instanceof Response) {
             $result->send();
         }
-        
+    
         return $result;
     }
 
@@ -372,7 +380,18 @@ class Router
     protected function resolveFormRequest(
         string $requestClass
     ): FormRequest {
-        $request = new $requestClass();
+        $request = $this->container->make(
+            $requestClass
+        );
+    
+        if (! $request instanceof FormRequest) {
+            throw new RuntimeException(
+                sprintf(
+                    'Resolved request [%s] must extend FormRequest.',
+                    $requestClass
+                )
+            );
+        }
     
         if (! $request->isAuthorized()) {
             throw new RuntimeException(
