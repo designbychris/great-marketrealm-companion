@@ -150,6 +150,14 @@ class Router
                 $httpMethod,
                 $path
             );
+
+            error_log(
+                sprintf(
+                    'Dispatching route: [%s %s]',
+                    $httpMethod,
+                    $path
+                )
+            );
     
             if ($route === null) {
                 throw new RuntimeException(
