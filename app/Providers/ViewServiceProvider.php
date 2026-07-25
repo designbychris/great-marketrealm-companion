@@ -23,18 +23,21 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->container()->singleton(
+        $this->app->singleton(
             ViewFinder::class,
-            fn () => new ViewFinder()
+            function (): ViewFinder {
+                return new ViewFinder();
+            }
         );
 
-        $this->app->container()->singleton(
+        $this->app->singleton(
             ViewFactory::class,
-            fn () => new ViewFactory(
-                $this->app->container()->make(
-                    ViewFinder::class
-                )
-            )
+            function ($app): ViewFactory {
+                return new ViewFactory(
+                    $app->make(ViewFinder::class),
+                    $app->make(FlashStore::class)
+                );
+            }
         );
     }
 
