@@ -10,6 +10,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
+use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Core\Session\FlashStore;
 use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
@@ -100,6 +101,12 @@ class CharactersServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        // Character module boot logic will live here later.
+        $routes = require __DIR__ . '/Routes.php';
+    
+        $routes(
+            $this->app
+                ->container()
+                ->make(Router::class)
+        );
     }
 }
