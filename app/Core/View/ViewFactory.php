@@ -2,6 +2,8 @@
 
 namespace GreatMarketrealmCompanion\Core\View;
 
+use GreatMarketrealmCompanion\Core\Session\FlashStore;
+
 defined('ABSPATH') || exit;
 
 /**
@@ -15,17 +17,12 @@ defined('ABSPATH') || exit;
 class ViewFactory
 {
     /**
-     * View finder.
-     */
-    protected ViewFinder $finder;
-
-    /**
-     * Constructor.
+     * Create the view factory.
      */
     public function __construct(
-        ViewFinder $finder
+        protected ViewFinder $finder,
+        protected FlashStore $flash
     ) {
-        $this->finder = $finder;
     }
 
     /**
@@ -34,13 +31,15 @@ class ViewFactory
     public function render(
         View $view
     ): string {
-
         $path = $this->finder->find(
             $view->name()
         );
 
         extract(
-            $view->data(),
+            array_merge(
+                $this->sharedData(),
+                $view->data()
+            ),
             EXTR_SKIP
         );
 
@@ -49,5 +48,22 @@ class ViewFactory
         require $path;
 
         return ob_get_clean();
+    }
+
+    /**
+     * Retrieve data shared with every view.
+     *
+     * @return array<string, mixed>
+     */
+    protected function sharedData(): array
+    {
+        return [
+            'old' => $this->flash->old(),
+            'errors' => $this->flash->errors(),
+            'flash' => [
+                'success' => $this->flash->success(),
+                'error' => $this->flash->error(),
+            ],
+        ];
     }
 }
