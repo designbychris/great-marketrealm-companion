@@ -101,14 +101,6 @@ class CharactersServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        error_log('CharactersServiceProvider boot() fired');
-        
-        $routes = require __DIR__ . '/Routes.php';
-    
-        $routes(
-            $this->app
-                ->container()
-                ->make(Router::class)
-        );
+        // Character module boot logic will live here later.
     }
 }
