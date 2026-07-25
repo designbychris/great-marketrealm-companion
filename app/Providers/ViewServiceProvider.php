@@ -2,6 +2,7 @@
 
 namespace GreatMarketrealmCompanion\Providers;
 
+use GreatMarketrealmCompanion\Core\Session\FlashStore;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Core\View\ViewFinder;
 
