@@ -33,13 +33,7 @@ $characters = $characters ?? [];
                     creator opens its gates.
                 </p>
 
-                <button
-                    class="gmrc-button"
-                    type="button"
-                    disabled
-                >
-                    Create a character — coming soon
-                </button>
+                <a class="gmrc-button" href="<?php echo esc_url(home_url('/characters/create')); ?>">Create your first character</a>
             </div>
         </section>
     <?php else : ?>
