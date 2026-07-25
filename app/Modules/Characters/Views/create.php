@@ -255,14 +255,7 @@ $levelError = $fieldError('level');
                 Create character
             </button>
 
-            <a
-                class="gmrc-button gmrc-button--secondary"
-                href="<?php echo esc_url(
-                    home_url('/characters')
-                ); ?>"
-            >
-                Cancel
-            </a>
+            <a class="gmrc-button gmrc-button--secondary" href="<?php echo esc_url(add_query_arg('gmrc_route', 'characters', home_url('/') ) ); ?>" >Cancel</a>
         </div>
     </form>
 </section>
