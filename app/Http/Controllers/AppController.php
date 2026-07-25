@@ -58,7 +58,7 @@ class AppController
 
         try {
             $content = $this->router->dispatch(
-                'GET',
+                null,
                 '/' . $route
             );
 
@@ -157,7 +157,7 @@ class AppController
                         '/' . $route
                     ),
 
-                    'active' => $route === $currentRoute,
+                    'active' => $route === $currentRoute || str_starts_with( $currentRoute, $route . '/' ),
 
                 ];
 
