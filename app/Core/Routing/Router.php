@@ -143,6 +143,8 @@ class Router
             $path = $requestUri !== null
                 ? $this->pathFromUri($requestUri)
                 : $this->request->path();
+
+            $path = $this->normalisePath($path);
     
             $route = $this->matchRoute(
                 $httpMethod,
