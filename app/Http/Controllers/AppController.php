@@ -93,9 +93,22 @@ class AppController
     protected function requestedRoute(): string
     {
         $route = isset($_GET['gmrc_route'])
-            ? sanitize_key(wp_unslash($_GET['gmrc_route']))
+            ? sanitize_text_field(
+                wp_unslash($_GET['gmrc_route'])
+            )
             : 'dashboard';
-
+    
+        $route = preg_replace(
+            '#[^a-zA-Z0-9/_-]#',
+            '',
+            $route
+        );
+    
+        $route = trim(
+            is_string($route) ? $route : '',
+            '/'
+        );
+    
         return $route !== ''
             ? $route
             : 'dashboard';
