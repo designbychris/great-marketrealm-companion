@@ -5,6 +5,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Controllers;
 use GreatMarketrealmCompanion\Core\Http\RedirectResponse;
 use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
+use GreatMarketrealmCompanion\Core\Session\FlashStore;
 use GreatMarketrealmCompanion\Core\View\View;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\Characters\Actions\CreateCharacterAction;
@@ -33,7 +34,8 @@ class CharacterController
         protected UpdateCharacterAction $updateCharacter,
         protected DeleteCharacterAction $deleteCharacter,
         protected Request $request,
-        protected ResponseFactory $responses
+        protected ResponseFactory $responses,
+        protected FlashStore $flash
     ) {
     }
 
@@ -53,6 +55,22 @@ class CharacterController
     }
 
     /**
+     * Display the Character creation form.
+     */
+    public function create(): string
+    {
+        return $this->views->render(
+            View::make(
+                'characters.create',
+                [
+                    'old' => $this->flash->old(),
+                    'errors' => $this->flash->errors(),
+                ]
+            )
+        );
+    }
+
+    /**
      * Store a new Character.
      */
     public function store(
@@ -61,7 +79,11 @@ class CharacterController
         $this->createCharacter->handle(
             $request->toCharacter()
         );
-
+    
+        $this->flash->success(
+            'Your character has entered the Marketrealm!'
+        );
+    
         return $this->responses->redirect(
             '/characters'
         );
