@@ -33,7 +33,7 @@ $characters = $characters ?? [];
                     creator opens its gates.
                 </p>
 
-                <a class="gmrc-button" href="<?php echo esc_url(home_url('/characters/create')); ?>">Create your first character</a>
+                <a class="gmrc-button" action="<?php echo esc_url(add_query_arg('gmrc_route', 'characters', home_url('/') ) ); ?>">Create your first character</a>
             </div>
         </section>
     <?php else : ?>
