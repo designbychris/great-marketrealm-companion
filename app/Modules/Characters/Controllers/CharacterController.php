@@ -84,7 +84,7 @@ class CharacterController
             add_query_arg(
                 'gmrc_route',
                 'characters',
-                home_url('/')
+                home_url('/companion/')
             )
         );
     }
