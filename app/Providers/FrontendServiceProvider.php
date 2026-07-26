@@ -7,6 +7,7 @@ use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Http\Controllers\AppController;
 use GreatMarketrealmCompanion\Navigation\Navigation;
+use GreatMarketrealmCompanion\Core\Http\Response;
 use WP_Post;
 
 defined('ABSPATH') || exit;
@@ -79,19 +80,14 @@ class FrontendServiceProvider extends ServiceProvider
             return;
         }
     
-        error_log(
-            sprintf(
-                'FrontendServiceProvider handling request: [%s %s]',
-                $method,
-                $_SERVER['REQUEST_URI'] ?? 'unknown'
-            )
-        );
-    
-        $this->app
+        $result = $this->app
             ->make(AppController::class)
             ->handle();
     
-        exit;
+        if ($result instanceof Response) {
+            $result->send();
+            exit;
+        }
     }
 
     
