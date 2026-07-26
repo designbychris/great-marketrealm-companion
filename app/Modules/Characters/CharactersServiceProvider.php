@@ -100,6 +100,31 @@ class CharactersServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        // Character module boot logic will live here later.
+        add_action(
+            'init',
+            [$this, 'registerPostType']
+        );
+    }
+
+    public function registerPostType(): void
+    {
+        register_post_type(
+            'gmrc_character',
+            [
+                'labels' => [
+                    'name'          => 'Characters',
+                    'singular_name' => 'Character',
+                ],
+                'public'              => false,
+                'show_ui'             => false,
+                'show_in_rest'        => false,
+                'supports'            => [
+                    'title',
+                    'author',
+                ],
+                'capability_type'      => 'post',
+                'map_meta_cap'         => true,
+            ]
+        );
     }
 }
