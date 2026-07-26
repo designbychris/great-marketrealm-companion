@@ -94,7 +94,11 @@ $levelError = $fieldError('level');
     <form
         class="gmrc-form gmrc-character-form"
         action="<?php echo esc_url(
-            home_url('/characters')
+            add_query_arg(
+                'gmrc_route',
+                'characters',
+                home_url('/')
+            )
         ); ?>"
         method="post"
         novalidate
