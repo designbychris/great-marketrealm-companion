@@ -54,6 +54,17 @@ class AppController
      */
     public function handle(): string
     {
+        error_log(
+            sprintf(
+                'AppController::handle() entered — method: %s, URI: %s, gmrc_route: %s',
+                $_SERVER['REQUEST_METHOD'] ?? 'unknown',
+                $_SERVER['REQUEST_URI'] ?? 'unknown',
+                isset($_GET['gmrc_route'])
+                    ? wp_unslash($_GET['gmrc_route'])
+                    : 'not set'
+            )
+        );    
+        
         $route = $this->requestedRoute();
 
         try {
