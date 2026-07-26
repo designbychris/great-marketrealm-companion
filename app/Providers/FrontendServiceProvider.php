@@ -46,16 +46,55 @@ class FrontendServiceProvider extends ServiceProvider
     public function boot(): void
     {
         add_action(
+            'template_redirect',
+            [$this, 'handleApplicationRequest']
+        );
+    
+        add_action(
             'wp_enqueue_scripts',
             [$this, 'enqueueAssets']
         );
-
+    
         add_shortcode(
             'gmrc_app',
             [$this, 'renderApp']
         );
     }
 
+
+    /**
+     * Handle non-GET Companion requests before template output.
+     */
+    public function handleApplicationRequest(): void
+    {
+        if (! $this->isCompanionPage()) {
+            return;
+        }
+    
+        $method = strtoupper(
+            $_SERVER['REQUEST_METHOD'] ?? 'GET'
+        );
+    
+        if ($method === 'GET') {
+            return;
+        }
+    
+        error_log(
+            sprintf(
+                'FrontendServiceProvider handling request: [%s %s]',
+                $method,
+                $_SERVER['REQUEST_URI'] ?? 'unknown'
+            )
+        );
+    
+        $this->app
+            ->make(AppController::class)
+            ->handle();
+    
+        exit;
+    }
+
+    
     /**
      * Load the Companion application assets.
      */
