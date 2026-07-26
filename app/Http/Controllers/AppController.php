@@ -69,7 +69,7 @@ class AppController
         $route = $this->requestedRoute();
     
         try {
-            $content = $this->router->dispatch(
+            $result = $this->router->dispatch(
                 null,
                 '/' . $route
             );
@@ -77,8 +77,10 @@ class AppController
             if ($result instanceof Response) {
                 return $result;
             }
-
-            $content = $result;
+    
+            $content = is_string($result)
+                ? $result
+                : '';
     
             $pageTitle = $this->pageTitle($route);
         } catch (RuntimeException $exception) {
@@ -110,7 +112,6 @@ class AppController
             ]
         );
     }
-
     /**
      * Determine requested route.
      */
