@@ -72,7 +72,7 @@ class CharacterController
     public function store(
         StoreCharacterRequest $request
     ): RedirectResponse {
-        $this->createCharacter->handle(
+        $character = $this->createCharacter->handle(
             $request->toCharacter()
         );
     
@@ -81,7 +81,11 @@ class CharacterController
         );
     
         return $this->responses->redirect(
-            '/characters'
+            add_query_arg(
+                'gmrc_route',
+                'characters',
+                home_url('/')
+            )
         );
     }
 
