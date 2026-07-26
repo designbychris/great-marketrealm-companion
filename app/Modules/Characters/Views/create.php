@@ -97,7 +97,7 @@ $levelError = $fieldError('level');
             add_query_arg(
                 'gmrc_route',
                 'characters',
-                home_url('/')
+                home_url('/companion/')
             )
         ); ?>"
         method="post"
