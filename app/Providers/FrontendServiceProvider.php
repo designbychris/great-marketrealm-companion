@@ -96,6 +96,18 @@ class FrontendServiceProvider extends ServiceProvider
     
             exit;
         }
+
+        error_log(print_r($_POST, true));
+
+        error_log(
+            'Nonce exists: ' .
+            (isset($_POST['gmrc_nonce']) ? 'yes' : 'no')
+        );
+        
+        error_log(
+            'Nonce value: ' .
+            ($_POST['gmrc_nonce'] ?? 'missing')
+        );
     
         if (
             ! isset($_POST['gmrc_nonce'])
