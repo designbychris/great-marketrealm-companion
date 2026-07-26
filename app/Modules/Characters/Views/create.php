@@ -94,15 +94,22 @@ $levelError = $fieldError('level');
     <form
         class="gmrc-form gmrc-character-form"
         action="<?php echo esc_url(
-            add_query_arg(
-                'gmrc_route',
-                'characters',
-                home_url('/companion/')
-            )
+            admin_url('admin-post.php')
         ); ?>"
         method="post"
         novalidate
     >
+        <input
+            type="hidden"
+            name="action"
+            value="gmrc_app_request"
+        >
+    
+        <input
+            type="hidden"
+            name="gmrc_route"
+            value="characters"
+        >
         <?php wp_nonce_field(
             'gmrc_create_character',
             '_gmrc_nonce'
