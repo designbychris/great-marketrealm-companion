@@ -143,9 +143,9 @@ class Router
             $path = $requestUri !== null
                 ? $this->pathFromUri($requestUri)
                 : $this->request->path();
-            
+    
             $path = $this->normalisePath($path);
-            
+    
             error_log(
                 sprintf(
                     'Attempting dispatch: [%s %s]',
@@ -153,12 +153,12 @@ class Router
                     $path
                 )
             );
-            
+    
             $route = $this->matchRoute(
                 $httpMethod,
                 $path
             );
-
+    
             error_log(
                 sprintf(
                     'Dispatching route: [%s %s]',
@@ -177,21 +177,15 @@ class Router
                 );
             }
     
-            $result = $this->runHandler(
+            return $this->runHandler(
                 $route['handler'],
                 $route['parameters']
             );
         } catch (Throwable $exception) {
-            $result = $this->container
+            return $this->container
                 ->make(ExceptionHandler::class)
                 ->handle($exception);
         }
-    
-        if ($result instanceof Response) {
-            return $result;
-        }
-    
-        return $result;
     }
 
     /**
