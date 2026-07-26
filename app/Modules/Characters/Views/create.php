@@ -262,4 +262,23 @@ $levelError = $fieldError('level');
             <a class="gmrc-button gmrc-button--secondary" href="<?php echo esc_url(add_query_arg('gmrc_route', 'characters', home_url('/companion/') ) ); ?>" >Cancel</a>
         </div>
     </form>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('.gmrc-character-form');
+    
+        if (!form) {
+            console.log('GMRC form not found');
+            return;
+        }
+    
+        console.log('GMRC form found:', form);
+        console.log('Form action:', form.action);
+        console.log('Form method:', form.method);
+    
+        form.addEventListener('submit', function () {
+            console.log('GMRC form submit event fired');
+        });
+    });
+    </script>
 </section>
