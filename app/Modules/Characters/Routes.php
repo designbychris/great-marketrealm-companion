@@ -24,6 +24,10 @@ return static function (Router $router): void {
         [CharacterController::class, 'store']
     );
 
+    error_log(
+        'POST /characters route registered'
+    );
+
     $router->put(
         '/characters/{id}',
         [CharacterController::class, 'update']
