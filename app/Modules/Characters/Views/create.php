@@ -286,8 +286,9 @@ $levelError = $fieldError('level');
         console.log('Form action:', form.action);
         console.log('Form method:', form.method);
     
-        form.addEventListener('submit', function () {
-            console.log('GMRC form submit event fired');
+        form.addEventListener('submit', function (e) {
+            console.log('Submitting to:', form.action);
+            console.log('Method:', form.method);
         });
     });
     </script>
