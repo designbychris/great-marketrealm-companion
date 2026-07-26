@@ -47,11 +47,6 @@ class FrontendServiceProvider extends ServiceProvider
     public function boot(): void
     {
         add_action(
-            'template_redirect',
-            [$this, 'handleApplicationRequest']
-        );
-    
-        add_action(
             'wp_enqueue_scripts',
             [$this, 'enqueueAssets']
         );
