@@ -143,9 +143,17 @@ class Router
             $path = $requestUri !== null
                 ? $this->pathFromUri($requestUri)
                 : $this->request->path();
-
+            
             $path = $this->normalisePath($path);
-    
+            
+            error_log(
+                sprintf(
+                    'Attempting dispatch: [%s %s]',
+                    $httpMethod,
+                    $path
+                )
+            );
+            
             $route = $this->matchRoute(
                 $httpMethod,
                 $path
