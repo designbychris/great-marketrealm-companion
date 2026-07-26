@@ -17,6 +17,18 @@ $characters = $characters ?? [];
             Create and manage the heroes who journey through the Great
             Marketrealm.
         </p>
+        <a
+            class="gmrc-button"
+            href="<?php echo esc_url(
+                add_query_arg(
+                    'gmrc_route',
+                    'characters/create',
+                    home_url('/companion/')
+                )
+            ); ?>"
+        >
+            Create another character
+        </a>
     </header>
 
     <?php if ($characters === []) : ?>
