@@ -60,33 +60,59 @@ class FrontendServiceProvider extends ServiceProvider
             'gmrc_app',
             [$this, 'renderApp']
         );
+
+        add_action(
+            'admin_post_gmrc_app_request',
+            [$this, 'handleApplicationRequest']
+        );
+    
+        add_action(
+            'admin_post_nopriv_gmrc_app_request',
+            [$this, 'handleApplicationRequest']
+        );
     }
 
 
     /**
-     * Handle non-GET Companion requests before template output.
+     * Handle a Companion application form request.
      */
     public function handleApplicationRequest(): void
     {
-        if (! $this->isCompanionPage()) {
-            return;
-        }
-    
-        $method = strtoupper(
-            $_SERVER['REQUEST_METHOD'] ?? 'GET'
-        );
-    
-        if ($method === 'GET') {
-            return;
-        }
-    
         error_log(
             sprintf(
-                'Frontend handling Companion request: [%s %s]',
-                $method,
-                $_SERVER['REQUEST_URI'] ?? 'unknown'
+                'GMRC admin-post request — method: %s, route: %s',
+                $_SERVER['REQUEST_METHOD'] ?? 'unknown',
+                isset($_POST['gmrc_route'])
+                    ? sanitize_text_field(
+                        wp_unslash($_POST['gmrc_route'])
+                    )
+                    : 'not set'
             )
         );
+    
+        if (
+            ! isset($_POST['gmrc_nonce'])
+            || ! wp_verify_nonce(
+                sanitize_text_field(
+                    wp_unslash($_POST['gmrc_nonce'])
+                ),
+                'gmrc_create_character'
+            )
+        ) {
+            wp_die(
+                esc_html__(
+                    'The form request could not be verified.',
+                    'great-marketrealm-companion'
+                ),
+                esc_html__(
+                    'Invalid request',
+                    'great-marketrealm-companion'
+                ),
+                [
+                    'response' => 403,
+                ]
+            );
+        }
     
         $result = $this->app
             ->make(AppController::class)
@@ -96,6 +122,9 @@ class FrontendServiceProvider extends ServiceProvider
             $result->send();
             exit;
         }
+    
+        echo $result; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        exit;
     }
 
     
