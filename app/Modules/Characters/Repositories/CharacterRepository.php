@@ -18,27 +18,48 @@ class CharacterRepository implements RepositoryInterface
 {
     public function all(): array
     {
-        return [];
+        $posts = get_posts([
+            'post_type'      => 'gmrc_character',
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
+            'author'         => get_current_user_id(),
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+        ]);
+
+        return array_map(
+            fn (\WP_Post $post): Character => $this->mapPost($post),
+            $posts
+        );
     }
 
     public function find(int $id): ?Character
     {
-        return null;
+        $post = get_post($id);
+
+        if (
+            ! $post instanceof \WP_Post
+            || $post->post_type !== 'gmrc_character'
+        ) {
+            return null;
+        }
+
+        return $this->mapPost($post);
     }
 
     public function delete(int $id): bool
     {
-        return true;
+        return wp_delete_post($id, true) !== false;
     }
 
     public function create(Character $character): Character
     {
-        return $character;
+        // wp_insert_post() implementation goes here.
     }
 
     public function update(Character $character): Character
     {
-        return $character;
+        // wp_update_post() and update_post_meta() go here.
     }
 
     /**
