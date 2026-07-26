@@ -55,14 +55,20 @@ class AppController
      */
     public function handle(): string|Response
     {
+        $routeInput = $_POST['gmrc_route']
+            ?? $_GET['gmrc_route']
+            ?? 'not set';
+        
         error_log(
             sprintf(
                 'AppController::handle() entered — method: %s, URI: %s, gmrc_route: %s',
                 $_SERVER['REQUEST_METHOD'] ?? 'unknown',
                 $_SERVER['REQUEST_URI'] ?? 'unknown',
-                isset($_GET['gmrc_route'])
-                    ? wp_unslash($_GET['gmrc_route'])
-                    : 'not set'
+                is_scalar($routeInput)
+                    ? sanitize_text_field(
+                        wp_unslash((string) $routeInput)
+                    )
+                    : 'invalid'
             )
         );
     
@@ -112,16 +118,23 @@ class AppController
             ]
         );
     }
+    
     /**
      * Determine requested route.
      */
     protected function requestedRoute(): string
     {
-        $route = isset($_GET['gmrc_route'])
-            ? sanitize_text_field(
+        if (isset($_POST['gmrc_route'])) {
+            $route = sanitize_text_field(
+                wp_unslash($_POST['gmrc_route'])
+            );
+        } elseif (isset($_GET['gmrc_route'])) {
+            $route = sanitize_text_field(
                 wp_unslash($_GET['gmrc_route'])
-            )
-            : 'dashboard';
+            );
+        } else {
+            $route = 'dashboard';
+        }
     
         $route = preg_replace(
             '#[^a-zA-Z0-9/_-]#',
