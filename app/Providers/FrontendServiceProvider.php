@@ -77,15 +77,18 @@ class FrontendServiceProvider extends ServiceProvider
             $_SERVER['REQUEST_METHOD'] ?? 'GET'
         );
     
+        $route = isset($_POST['gmrc_route'])
+            && is_scalar($_POST['gmrc_route'])
+                ? sanitize_text_field(
+                    wp_unslash((string) $_POST['gmrc_route'])
+                )
+                : 'not set';
+    
         error_log(
             sprintf(
                 'GMRC admin-post request — method: %s, route: %s',
                 $method,
-                isset($_POST['gmrc_route'])
-                    ? sanitize_text_field(
-                        wp_unslash($_POST['gmrc_route'])
-                    )
-                    : 'not set'
+                $route
             )
         );
     
@@ -96,25 +99,46 @@ class FrontendServiceProvider extends ServiceProvider
     
             exit;
         }
-
-        error_log(print_r($_POST, true));
-
+    
+        $submittedNonce = isset($_POST['gmrc_nonce'])
+            && is_scalar($_POST['gmrc_nonce'])
+                ? sanitize_text_field(
+                    wp_unslash((string) $_POST['gmrc_nonce'])
+                )
+                : '';
+    
+        error_log(
+            'POST keys: ' .
+            implode(', ', array_keys($_POST))
+        );
+    
         error_log(
             'Nonce exists: ' .
-            (isset($_POST['gmrc_nonce']) ? 'yes' : 'no')
+            ($submittedNonce !== '' ? 'yes' : 'no')
         );
-        
+    
         error_log(
             'Nonce value: ' .
-            ($_POST['gmrc_nonce'] ?? 'missing')
+            ($submittedNonce !== '' ? $submittedNonce : 'missing')
+        );
+    
+        error_log(
+            'Nonce verification result: ' .
+            (
+                $submittedNonce !== ''
+                && wp_verify_nonce(
+                    $submittedNonce,
+                    'gmrc_create_character'
+                )
+                    ? 'valid'
+                    : 'invalid'
+            )
         );
     
         if (
-            ! isset($_POST['gmrc_nonce'])
+            $submittedNonce === ''
             || ! wp_verify_nonce(
-                sanitize_text_field(
-                    wp_unslash($_POST['gmrc_nonce'])
-                ),
+                $submittedNonce,
                 'gmrc_create_character'
             )
         ) {
@@ -145,7 +169,6 @@ class FrontendServiceProvider extends ServiceProvider
         echo $result; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         exit;
     }
-
     
     /**
      * Load the Companion application assets.
