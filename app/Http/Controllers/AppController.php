@@ -53,7 +53,7 @@ class AppController
     /**
      * Handle the application request.
      */
-    public function handle(): string
+    public function handle(): string|Response
     {
         error_log(
             sprintf(
@@ -74,9 +74,11 @@ class AppController
                 '/' . $route
             );
     
-            if ($content instanceof Response) {
-                return '';
+            if ($result instanceof Response) {
+                return $result;
             }
+
+            $content = $result;
     
             $pageTitle = $this->pageTitle($route);
         } catch (RuntimeException $exception) {
