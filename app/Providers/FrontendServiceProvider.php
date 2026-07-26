@@ -73,10 +73,14 @@ class FrontendServiceProvider extends ServiceProvider
      */
     public function handleApplicationRequest(): void
     {
+        $method = strtoupper(
+            $_SERVER['REQUEST_METHOD'] ?? 'GET'
+        );
+    
         error_log(
             sprintf(
                 'GMRC admin-post request — method: %s, route: %s',
-                $_SERVER['REQUEST_METHOD'] ?? 'unknown',
+                $method,
                 isset($_POST['gmrc_route'])
                     ? sanitize_text_field(
                         wp_unslash($_POST['gmrc_route'])
@@ -84,6 +88,14 @@ class FrontendServiceProvider extends ServiceProvider
                     : 'not set'
             )
         );
+    
+        if ($method !== 'POST') {
+            wp_safe_redirect(
+                home_url('/companion/')
+            );
+    
+            exit;
+        }
     
         if (
             ! isset($_POST['gmrc_nonce'])
