@@ -80,6 +80,14 @@ class FrontendServiceProvider extends ServiceProvider
             return;
         }
     
+        error_log(
+            sprintf(
+                'Frontend handling Companion request: [%s %s]',
+                $method,
+                $_SERVER['REQUEST_URI'] ?? 'unknown'
+            )
+        );
+    
         $result = $this->app
             ->make(AppController::class)
             ->handle();
