@@ -110,10 +110,13 @@ $levelError = $fieldError('level');
             name="gmrc_route"
             value="characters"
         >
-        <?php wp_nonce_field(
+
+        <?php
+        wp_nonce_field(
             'gmrc_create_character',
-            '_gmrc_nonce'
-        ); ?>
+            'gmrc_nonce'
+        );
+        ?>
 
         <div class="gmrc-form-field">
             <label for="character-name">
