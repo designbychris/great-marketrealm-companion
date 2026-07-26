@@ -61,11 +61,7 @@ class CharacterController
     {
         return $this->views->render(
             View::make(
-                'characters.create',
-                [
-                    'old' => $this->flash->old(),
-                    'errors' => $this->flash->errors(),
-                ]
+                'characters.create'
             )
         );
     }
