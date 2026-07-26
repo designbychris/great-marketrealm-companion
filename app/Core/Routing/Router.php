@@ -188,7 +188,7 @@ class Router
         }
     
         if ($result instanceof Response) {
-            $result->send();
+            return $result;
         }
     
         return $result;
