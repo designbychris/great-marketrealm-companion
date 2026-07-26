@@ -7,6 +7,7 @@ use GreatMarketrealmCompanion\Core\View\View;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Navigation\MenuItem;
 use GreatMarketrealmCompanion\Navigation\Navigation;
+use GreatMarketrealmCompanion\Core\Http\Response;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -63,19 +64,26 @@ class AppController
                     ? wp_unslash($_GET['gmrc_route'])
                     : 'not set'
             )
-        );    
-        
+        );
+    
         $route = $this->requestedRoute();
-
+    
         try {
             $content = $this->router->dispatch(
                 null,
                 '/' . $route
             );
-
+    
+            if ($content instanceof Response) {
+                return '';
+            }
+    
             $pageTitle = $this->pageTitle($route);
-        } catch (RuntimeException) {
-
+        } catch (RuntimeException $exception) {
+            error_log(
+                'GMRC route error: ' . $exception->getMessage()
+            );
+    
             $content = $this->views->render(
                 View::make(
                     'dashboard.not-found',
@@ -84,10 +92,13 @@ class AppController
                     ]
                 )
             );
-
-            $pageTitle = __('Not Found', 'great-marketrealm-companion');
+    
+            $pageTitle = __(
+                'Not Found',
+                'great-marketrealm-companion'
+            );
         }
-
+    
         return $this->renderLayout(
             [
                 'pageTitle'    => $pageTitle,
