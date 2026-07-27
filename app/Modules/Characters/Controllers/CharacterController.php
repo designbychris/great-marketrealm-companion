@@ -14,6 +14,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequest;
+use GreatMarketrealmCompanion\Services\Auby\Auby;
+use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
 
 defined('ABSPATH') || exit;
 
@@ -36,6 +38,7 @@ class CharacterController
         protected Request $request,
         protected ResponseFactory $responses,
         protected FlashStore $flash
+        protected Auby $auby
     ) {
     }
 
