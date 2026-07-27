@@ -65,7 +65,7 @@ $companionUrl = home_url('/companion/');
             <?php foreach ($characters as $character) : ?>
                 <?php
                 require GMRC_PATH
-                    . 'app/Views/components/adventurer-card.php';
+                    . 'app/Views/Components/adventurer-card.php';
                 ?>
             <?php endforeach; ?>
 
