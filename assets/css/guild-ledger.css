@@ -65,7 +65,7 @@
 .guild-ledger {
 	position: relative;
 	width: 100%;
-	padding: clamp(1rem, 3vw, 2.5rem);
+	padding: clamp(1.25rem, 3vw, 2.5rem);
 	color: var(--gmrc-ink);
 	font-family: var(--gmrc-font-ui);
 	background:
