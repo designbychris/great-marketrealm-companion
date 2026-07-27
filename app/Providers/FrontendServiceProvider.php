@@ -185,6 +185,13 @@ class FrontendServiceProvider extends ServiceProvider
             [],
             GMRC_VERSION
         );
+
+        wp_enqueue_style(
+            'gmrc-guild-ledger',
+            GMRC_URL . 'assets/css/guild-ledger.css',
+            [],
+            GMRC_VERSION
+        );
     }
 
     /**
