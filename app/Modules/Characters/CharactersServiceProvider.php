@@ -13,6 +13,7 @@ use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Core\Session\FlashStore;
 use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
+use GreatMarketrealmCompanion\Services\Auby\Auby;
 
 defined('ABSPATH') || exit;
 
@@ -93,6 +94,9 @@ class CharactersServiceProvider extends ServiceProvider
                     ),
                     $container->make(
                         FlashStore::class
+                    ),
+                    $container->make(
+                        Auby::class
                     )
                 )
         );
