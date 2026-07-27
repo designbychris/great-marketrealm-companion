@@ -714,10 +714,12 @@
  */
 .guild-page:has(.ledger-spine--left) .guild-page__content {
 	padding-left: clamp(2rem, 4vw, 3.5rem);
+	padding-right:1rem;
 }
 
 .guild-page:has(.ledger-spine--right) .guild-page__content {
 	padding-right: clamp(2rem, 4vw, 3.5rem);
+	padding-left:1rem;
 }
 
 @media (max-width: 700px) {
