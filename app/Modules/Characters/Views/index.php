@@ -51,149 +51,150 @@ $companionUrl = home_url('/companion/');
                     the Great Marketrealm.
                 </p>
 
-                <a
-                    class="gmrc-button"
-                    href="<?php echo esc_url(
-                        add_query_arg(
-                            'gmrc_route',
-                            'characters/create',
-                            $companionUrl
-                        )
-                    ); ?>"
-                >
-                    Create your first character
-                </a>
             </div>
         </section>
     <?php else : ?>
-        <div class="gmrc-character-grid">
-            <?php foreach ($characters as $character) : ?>
-                <?php
-                $characterId = $character->id();
+    <div class="gmrc-character-grid">
+        <?php foreach ($characters as $character) : ?>
+            <?php
+            $characterId = $character->id();
 
-                $viewUrl = add_query_arg(
-                    'gmrc_route',
-                    sprintf(
-                        'characters/%d',
-                        $characterId
-                    ),
-                    $companionUrl
-                );
+            $viewUrl = add_query_arg(
+                'gmrc_route',
+                sprintf(
+                    'characters/%d',
+                    $characterId
+                ),
+                $companionUrl
+            );
 
-                $editUrl = add_query_arg(
-                    'gmrc_route',
-                    sprintf(
-                        'characters/%d/edit',
-                        $characterId
-                    ),
-                    $companionUrl
-                );
-                ?>
+            $editUrl = add_query_arg(
+                'gmrc_route',
+                sprintf(
+                    'characters/%d/edit',
+                    $characterId
+                ),
+                $companionUrl
+            );
 
-                <article class="gmrc-character-card">
-                    <div class="gmrc-character-card__portrait">
-                        <div
-                            class="gmrc-character-card__portrait-placeholder"
-                            aria-hidden="true"
-                        >
-                            <?php
-                            echo esc_html(
-                                strtoupper(
-                                    substr(
-                                        $character->name(),
-                                        0,
-                                        1
-                                    )
-                                )
-                            );
-                            ?>
-                        </div>
+            $initial = strtoupper(
+                substr(
+                    $character->name(),
+                    0,
+                    1
+                )
+            );
+            ?>
 
-                        <span class="gmrc-character-card__level">
-                            Level
-                            <?php echo esc_html(
-                                (string) $character->level()
-                            ); ?>
+            <article class="gmrc-character-card">
+                <div class="gmrc-character-card__visual">
+                    <div
+                        class="gmrc-character-card__portrait"
+                        aria-hidden="true"
+                    >
+                        <?php echo esc_html($initial); ?>
+                    </div>
+
+                    <span class="gmrc-character-card__level">
+                        Level
+                        <?php echo esc_html(
+                            (string) $character->level()
+                        ); ?>
+                    </span>
+                </div>
+
+                <div class="gmrc-character-card__body">
+                    <p class="gmrc-character-card__kingdom">
+                        Marketrealm adventurer
+                    </p>
+
+                    <h2 class="gmrc-character-card__name">
+                        <?php echo esc_html(
+                            $character->name()
+                        ); ?>
+                    </h2>
+
+                    <p class="gmrc-character-card__summary">
+                        Level
+                        <?php echo esc_html(
+                            (string) $character->level()
+                        ); ?>
+
+                        <?php echo esc_html(
+                            $character->race()
+                        ); ?>
+
+                        <?php echo esc_html(
+                            $character->class()
+                        ); ?>
+                    </p>
+
+                    <div
+                        class="gmrc-character-card__divider"
+                        aria-hidden="true"
+                    ></div>
+
+                    <div class="gmrc-character-card__features">
+                        <span>
+                            <strong>Character sheet</strong>
+                            Ready to explore
+                        </span>
+
+                        <span>
+                            <strong>Inventory</strong>
+                            Coming soon
+                        </span>
+
+                        <span>
+                            <strong>Achievements</strong>
+                            Coming soon
                         </span>
                     </div>
+                </div>
 
-                    <div class="gmrc-character-card__content">
-                        <p class="gmrc-character-card__eyebrow">
-                            Adventurer
-                        </p>
+                <footer class="gmrc-character-card__footer">
+                    <a
+                        class="gmrc-button gmrc-character-card__primary"
+                        href="<?php echo esc_url($viewUrl); ?>"
+                    >
+                        View character
+                    </a>
 
-                        <h2 class="gmrc-character-card__title">
-                            <?php echo esc_html(
-                                $character->name()
-                            ); ?>
-                        </h2>
+                    <a
+                        class="gmrc-character-card__edit"
+                        href="<?php echo esc_url($editUrl); ?>"
+                    >
+                        Edit
+                    </a>
+                </footer>
+            </article>
+        <?php endforeach; ?>
 
-                        <dl class="gmrc-character-card__details">
-                            <div>
-                                <dt>Race</dt>
-
-                                <dd>
-                                    <?php echo esc_html(
-                                        $character->race()
-                                    ); ?>
-                                </dd>
-                            </div>
-
-                            <div>
-                                <dt>Class</dt>
-
-                                <dd>
-                                    <?php echo esc_html(
-                                        $character->class()
-                                    ); ?>
-                                </dd>
-                            </div>
-                        </dl>
-                    </div>
-
-                    <footer class="gmrc-character-card__actions">
-                        <a
-                            class="gmrc-button gmrc-button--small"
-                            href="<?php echo esc_url($viewUrl); ?>"
-                        >
-                            View
-                        </a>
-
-                        <a
-                            class="gmrc-button gmrc-button--secondary gmrc-button--small"
-                            href="<?php echo esc_url($editUrl); ?>"
-                        >
-                            Edit
-                        </a>
-                    </footer>
-                </article>
-            <?php endforeach; ?>
-
-            <a
-                class="gmrc-character-card gmrc-character-card--create"
-                href="<?php echo esc_url(
-                    add_query_arg(
-                        'gmrc_route',
-                        'characters/create',
-                        $companionUrl
-                    )
-                ); ?>"
+        <a
+            class="gmrc-character-card gmrc-character-card--create"
+            href="<?php echo esc_url(
+                add_query_arg(
+                    'gmrc_route',
+                    'characters/create',
+                    $companionUrl
+                )
+            ); ?>"
+        >
+            <span
+                class="gmrc-character-card--create__icon"
+                aria-hidden="true"
             >
-                <span
-                    class="gmrc-character-card--create__icon"
-                    aria-hidden="true"
-                >
-                    +
-                </span>
+                +
+            </span>
 
-                <span>
-                    <strong>Create another character</strong>
+            <span class="gmrc-character-card--create__content">
+                <strong>Create a character</strong>
 
-                    <small>
-                        Bring a new adventurer into the Marketrealm.
-                    </small>
-                </span>
-            </a>
-        </div>
-    <?php endif; ?>
+                <small>
+                    Bring another hero into the Great Marketrealm.
+                </small>
+            </span>
+        </a>
+    </div>
+<?php endif; ?>
 </section>
