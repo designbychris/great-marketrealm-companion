@@ -30,8 +30,8 @@ ob_start();
 
     <?php
 
-	use GMRC\Services\Auby\Auby;
-	use GMRC\Services\Auby\QuoteCategories;
+	use GMRC\app\Services\Auby\Auby;
+	use GMRC\app\Services\Auby\QuoteCategories;
 	
 	$auby = new Auby();
 	
