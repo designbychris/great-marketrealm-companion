@@ -12,19 +12,20 @@ $companionUrl = home_url('/companion/');
 
 
 <section class="gmrc-characters">
-    <header class="gmrc-page-header">
-        <p class="gmrc-eyebrow">
-            Characters Kingdom
-        </p>
-
-        <h1>Your adventurers</h1>
-
-        <p>
-            Create and manage the heroes who journey through the Great
-            Marketrealm.
-        </p>
-
-    </header>
+    <?php
+    $ledger = 'The Guild Ledger';
+    $volume = 'Volume I';
+    $title = "The Adventurer's Register";
+    $description =
+        'Every hero recorded within these pages has a story waiting '
+        . 'to unfold. Open an existing entry or inscribe a new '
+        . 'adventurer before their journey begins.';
+    $level = 1;
+    $ornament = '✦';
+    
+    require GMRC_PATH
+        . 'app/Views/Components/chapter-heading.php';
+    ?>
 
         <?php if ($characters === []) : ?>
 
