@@ -5,11 +5,9 @@ defined('ABSPATH') || exit;
 $characters = $characters ?? [];
 
 $companionUrl = home_url('/companion/');
-?>
-<div class="guild-ledger">
-    <div class="guild-ledger__pages guild-ledger__pages--single">
-        <section class="guild-page guild-page--single">
 
+ob_start();
+?>
 
 <section class="gmrc-characters">
     <?php
@@ -26,6 +24,20 @@ $companionUrl = home_url('/companion/');
     require GMRC_PATH
         . 'app/Views/components/furniture/chapter-heading.php';
     ?>
+
+    <?php
+	(function (): void {
+		$quote =
+			'Every hero begins with a name, and every legend begins '
+			. 'with a page.';
+		$author = 'Auby';
+		$image = '';
+		$variant = 'default';
+
+		require GMRC_PATH
+			. 'app/Views/components/furniture/auby-note.php';
+	})();
+	?>
 
         <?php if ($characters === []) : ?>
 
@@ -100,6 +112,10 @@ $companionUrl = home_url('/companion/');
 
     <?php endif; ?>
 </section>
-</section>
-</div>
-</div>
+<?php
+$content = ob_get_clean();
+$side = 'single';
+$class = 'guild-page--single';
+$spine = true;
+require GMRC_PATH
+    . 'app/Views/components/furniture/guild-page.php'; 
