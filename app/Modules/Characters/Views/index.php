@@ -140,3 +140,6 @@ $ledger_content = ob_get_clean();
 $content = $ledger_content;
 $layout = 'single';
 $class = 'gmrc-character-ledger';
+
+require GMRC_PATH
+    . 'app/Views/components/furniture/guild-ledger.php';
