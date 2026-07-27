@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-use GMRC\Services\Auby\Quote;
+use GreatMarketrealmCompanion\Services\Auby\Quote;
+
+defined('ABSPATH') || exit;
 
 /**
  * Expected variables:
