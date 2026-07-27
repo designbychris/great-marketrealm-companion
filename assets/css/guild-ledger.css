@@ -56,6 +56,7 @@
 
 	--gmrc-transition:
 		180ms ease;
+	--ledger-gutter: 2rem;
 }
 
 /* =========================================================
@@ -544,6 +545,15 @@
 .guild-page__content {
 	position: relative;
 	z-index: 2;
+	padding: var(--ledger-gutter);
+}
+
+.guild-page--has-spine .guild-page__content{
+    padding:
+        var(--ledger-gutter)
+        var(--ledger-gutter)
+        var(--ledger-gutter)
+        calc(var(--ledger-gutter) + 42px);
 }
 
 .ledger-spine {
@@ -763,7 +773,7 @@
 			auto-fit,
 			minmax(min(100%, 24rem), 1fr)
 		);
-	gap: clamp(1.25rem, 3vw, 2rem);
+	gap: 1.5rem;
 }
 
 
