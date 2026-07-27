@@ -1,6 +1,8 @@
 <?php
 
-namespace GreatMarketrealmCompanion\Exceptions;
+declare(strict_types=1);
+
+namespace GreatMarketrealmCompanion\Core\Http\Validation;
 
 use RuntimeException;
 
