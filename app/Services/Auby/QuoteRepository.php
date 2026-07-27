@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GMRC\Services\Auby;
+namespace GreatMarketrealmCompanion\Services\Auby;
 
 final class QuoteRepository
 {
