@@ -30,17 +30,12 @@ ob_start();
 
     <?php
 
-	use GreatMarketrealmCompanion\Services\Auby\Auby;
-	use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
-	
-	$auby = new Auby();
-	
-	$quote = $auby->for(
-	    QuoteCategories::REGISTER
+	echo $this->component(
+	    'components.furniture.auby-note',
+	    [
+	        'quote' => $aubyQuote,
+	    ]
 	);
-	
-	require GMRC_PLUGIN_PATH
-	    . 'app/Views/components/furniture/auby-note.php';
 	?>
 
         <?php if ($characters === []) : ?>
