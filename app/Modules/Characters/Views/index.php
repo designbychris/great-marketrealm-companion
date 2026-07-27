@@ -6,6 +6,10 @@ $characters = $characters ?? [];
 
 $companionUrl = home_url('/companion/');
 ?>
+<div class="guild-ledger">
+    <div class="guild-ledger__pages guild-ledger__pages--single">
+        <section class="guild-page guild-page--single">
+
 
 <section class="gmrc-characters">
     <header class="gmrc-page-header">
@@ -197,3 +201,6 @@ $companionUrl = home_url('/companion/');
     </div>
 <?php endif; ?>
 </section>
+</section>
+</div>
+</div>
