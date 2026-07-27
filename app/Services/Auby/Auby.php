@@ -8,12 +8,9 @@ defined('ABSPATH') || exit;
 
 final class Auby
 {
-    private QuoteRepository $quotes;
-
     public function __construct(
-        ?QuoteRepository $quotes = null
+        private QuoteRepository $quotes
     ) {
-        $this->quotes = $quotes ?? new QuoteRepository();
     }
 
     public function note(
