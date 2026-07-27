@@ -65,24 +65,19 @@
 .guild-ledger {
 	position: relative;
 	width: 100%;
-
-	padding:1.25rem;
 	color: var(--gmrc-ink);
 	font-family: var(--gmrc-font-ui);
-	background:
-		radial-gradient(
-			circle at top left,
-			rgba(255, 255, 255, 0.08),
-			transparent 36%
-		),
-		linear-gradient(
-			145deg,
-			var(--gmrc-leather-light),
-			var(--gmrc-leather-dark)
-		);
-	border: 1px solid rgba(41, 24, 19, 0.75);
-	border-radius: 0.75rem;
-	box-shadow: var(--gmrc-shadow-page);
+	background: linear-gradient(
+        180deg,
+        #5b392d 0%,
+        #4a2d22 100%
+    );
+
+    padding: 18px;
+    border-radius: 14px;
+    box-shadow:
+        inset 0 1px rgba(255,255,255,.12),
+        0 15px 40px rgba(0,0,0,.25);
 }
 
 .guild-ledger::before {
@@ -127,21 +122,28 @@
 		);
 }
 
+/* ==========================================
+   Guild Page
+   ========================================== */
+
 .guild-page {
-	position: relative;
-	min-width: 0;
-	padding: clamp(1.5rem, 4vw, 3.5rem);
-	overflow: hidden;
-	background:
-		linear-gradient(
-			rgba(255, 255, 255, 0.08),
-			rgba(90, 58, 25, 0.04)
-		),
-		var(--gmrc-parchment);
-	box-shadow: var(--gmrc-shadow-inset);
+    position: relative;
+    background: #f7e8c2;
+    border-radius: 8px;
+
+    /* Remove the heavy frame */
+    border: none;
+
+    /* Let the paper float */
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.18),
+        inset 0 0 35px rgba(255,255,255,.25),
+        inset 0 0 60px rgba(120,80,25,.08);
+
+    overflow: visible;
 }
 
-.guild-page::before {
+/*.guild-page::before {
 	position: absolute;
 	inset: 0;
 	pointer-events: none;
@@ -159,7 +161,7 @@
 			transparent 2px
 		);
 	background-size: 4.5rem 4.5rem, 5.5rem 5.5rem;
-}
+}*/
 
 .guild-page > * {
 	position: relative;
