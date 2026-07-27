@@ -41,7 +41,7 @@ if (!empty($class)) {
         $position = 'left';
 
         require GMRC_PATH
-            . 'app/Views/Furniture/ledger-spine.php';
+            . 'app/Views/furniture/ledger-spine.php';
         ?>
 
     <?php endif; ?>
