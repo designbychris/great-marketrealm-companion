@@ -89,88 +89,41 @@ $companionUrl = home_url('/companion/');
             );
             ?>
 
-            <article class="gmrc-character-card">
-                <div class="gmrc-character-card__visual">
-                    <div
-                        class="gmrc-character-card__portrait"
-                        aria-hidden="true"
-                    >
-                        <?php echo esc_html($initial); ?>
-                    </div>
-
-                    <span class="gmrc-character-card__level">
-                        Level
-                        <?php echo esc_html(
-                            (string) $character->level()
-                        ); ?>
-                    </span>
-                </div>
-
-                <div class="gmrc-character-card__body">
-                    <p class="gmrc-character-card__kingdom">
-                        Marketrealm adventurer
-                    </p>
-
-                    <h2 class="gmrc-character-card__name">
-                        <?php echo esc_html(
-                            $character->name()
-                        ); ?>
-                    </h2>
-
-                    <p class="gmrc-character-card__summary">
-                        Level
-                        <?php echo esc_html(
-                            (string) $character->level()
-                        ); ?>
-
-                        <?php echo esc_html(
-                            $character->race()
-                        ); ?>
-
-                        <?php echo esc_html(
-                            $character->class()
-                        ); ?>
-                    </p>
-
-                    <div
-                        class="gmrc-character-card__divider"
-                        aria-hidden="true"
-                    ></div>
-
-                    <div class="gmrc-character-card__features">
-                        <span>
-                            <strong>Character sheet</strong>
-                            Ready to explore
-                        </span>
-
-                        <span>
-                            <strong>Inventory</strong>
-                            Coming soon
-                        </span>
-
-                        <span>
-                            <strong>Achievements</strong>
-                            Coming soon
-                        </span>
-                    </div>
-                </div>
-
-                <footer class="gmrc-character-card__footer">
-                    <a
-                        class="gmrc-button gmrc-character-card__primary"
-                        href="<?php echo esc_url($viewUrl); ?>"
-                    >
-                        View character
-                    </a>
-
-                    <a
-                        class="gmrc-character-card__edit"
-                        href="<?php echo esc_url($editUrl); ?>"
-                    >
-                        Edit
-                    </a>
-                </footer>
-            </article>
+            <div class="adventurer-register">
+            <?php foreach ($characters as $character) : ?>
+                <?php
+                require GMRC_PATH
+                    . 'app/Views/components/adventurer-card.php';
+                ?>
+            <?php endforeach; ?>
+        
+            <a
+                class="adventurer-create-entry"
+                href="<?php echo esc_url(
+                    add_query_arg(
+                        'gmrc_route',
+                        'characters/create',
+                        $companionUrl
+                    )
+                ); ?>"
+            >
+                <span
+                    class="adventurer-create-entry__icon"
+                    aria-hidden="true"
+                >
+                    ✒
+                </span>
+        
+                <span class="adventurer-create-entry__content">
+                    <strong>Inscribe a New Adventurer</strong>
+        
+                    <small>
+                        Prepare a fresh page for another hero of the
+                        Great Marketrealm.
+                    </small>
+                </span>
+            </a>
+        </div>
         <?php endforeach; ?>
 
         <a
