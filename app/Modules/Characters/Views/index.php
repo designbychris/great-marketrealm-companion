@@ -6,6 +6,9 @@ $characters = $characters ?? [];
 
 $companionUrl = home_url('/companion/');
 
+/*
+ * Capture the Character Register content.
+ */
 ob_start();
 ?>
 
@@ -113,9 +116,27 @@ ob_start();
     <?php endif; ?>
 </section>
 <?php
-$content = ob_get_clean();
+
+$character_content = ob_get_clean();
+
+/*
+ * Capture the rendered Guild Page.
+ */
+ob_start();
+
+$content = $character_content;
 $side = 'single';
-$class = 'guild-page--single';
+$class = 'gmrc-character-register';
 $spine = true;
+
 require GMRC_PATH
-    . 'app/Views/components/furniture/guild-page.php'; 
+	. 'app/Views/components/furniture/guild-page.php';
+
+$ledger_content = ob_get_clean();
+
+/*
+ * Render the outer Guild Ledger.
+ */
+$content = $ledger_content;
+$layout = 'single';
+$class = 'gmrc-character-ledger';
