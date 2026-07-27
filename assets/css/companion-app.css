@@ -514,6 +514,200 @@ a.gmrc-navigation__item:hover {
     margin-top: 20px;
 }
 
+.gmrc-character-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(260px, 1fr)
+    );
+    gap: 24px;
+    margin-top: 32px;
+}
+
+.gmrc-character-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    overflow: hidden;
+    border: 1px solid rgba(52, 47, 104, 0.14);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 14px 35px rgba(17, 25, 40, 0.12);
+    text-decoration: none;
+}
+
+.gmrc-character-card__portrait {
+    position: relative;
+    display: grid;
+    min-height: 180px;
+    place-items: center;
+    padding: 24px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(52, 47, 104, 0.96),
+            rgba(83, 72, 145, 0.86)
+        );
+}
+
+.gmrc-character-card__portrait-placeholder {
+    display: grid;
+    width: 96px;
+    height: 96px;
+    place-items: center;
+    border: 4px solid rgba(255, 255, 255, 0.65);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.gmrc-character-card__level {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    padding: 7px 11px;
+    background: #dedc00;
+    color: #111928;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.gmrc-character-card__content {
+    flex: 1;
+    padding: 24px;
+}
+
+.gmrc-character-card__eyebrow {
+    margin: 0 0 6px;
+    color: #342f68;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.gmrc-character-card__title {
+    margin: 0 0 22px;
+    color: #111928;
+    font-size: 28px;
+    line-height: 1.1;
+}
+
+.gmrc-character-card__details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0;
+}
+
+.gmrc-character-card__details div {
+    min-width: 0;
+}
+
+.gmrc-character-card__details dt {
+    margin-bottom: 3px;
+    color: rgba(17, 25, 40, 0.62);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.gmrc-character-card__details dd {
+    margin: 0;
+    color: #111928;
+    font-size: 16px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.gmrc-character-card__actions {
+    display: flex;
+    gap: 10px;
+    padding: 0 24px 24px;
+}
+
+.gmrc-button--small {
+    padding: 10px 16px;
+    font-size: 14px;
+}
+
+.gmrc-button--secondary {
+    border: 1px solid #342f68;
+    background: transparent;
+    color: #342f68;
+}
+
+.gmrc-character-card--create {
+    align-items: center;
+    justify-content: center;
+    min-height: 360px;
+    padding: 32px;
+    border: 2px dashed rgba(52, 47, 104, 0.35);
+    background: rgba(255, 255, 255, 0.48);
+    color: #342f68;
+    text-align: center;
+    transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background-color 180ms ease;
+}
+
+.gmrc-character-card--create:hover,
+.gmrc-character-card--create:focus-visible {
+    transform: translateY(-3px);
+    border-color: #342f68;
+    background: rgba(255, 255, 255, 0.78);
+}
+
+.gmrc-character-card--create__icon {
+    display: grid;
+    width: 72px;
+    height: 72px;
+    margin-bottom: 18px;
+    place-items: center;
+    border-radius: 50%;
+    background: #342f68;
+    color: #ffffff;
+    font-size: 42px;
+    line-height: 1;
+}
+
+.gmrc-character-card--create strong,
+.gmrc-character-card--create small {
+    display: block;
+}
+
+.gmrc-character-card--create strong {
+    margin-bottom: 8px;
+    font-size: 20px;
+}
+
+.gmrc-character-card--create small {
+    color: rgba(17, 25, 40, 0.66);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+    .gmrc-character-card__details {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-character-card__actions {
+        flex-direction: column;
+    }
+
+    .gmrc-character-card__actions .gmrc-button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
 @media (max-width: 560px) {
     .gmrc-empty-state {
         grid-template-columns: 1fr;
