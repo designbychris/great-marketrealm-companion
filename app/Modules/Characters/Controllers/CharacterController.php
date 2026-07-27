@@ -37,7 +37,7 @@ class CharacterController
         protected DeleteCharacterAction $deleteCharacter,
         protected Request $request,
         protected ResponseFactory $responses,
-        protected FlashStore $flash
+        protected FlashStore $flash,
         protected Auby $auby
     ) {
     }
