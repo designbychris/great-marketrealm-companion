@@ -9,7 +9,7 @@ defined('ABSPATH') || exit;
 /**
  * View Factory.
  *
- * Renders application views.
+ * Renders application views and reusable components.
  *
  * @package MarketrealmCompanion
  * @since 0.3.0
@@ -28,9 +28,8 @@ class ViewFactory
     /**
      * Render a view.
      */
-    public function render(
-        View $view
-    ): string {
+    public function render(View $view): string
+    {
         $path = $this->finder->find(
             $view->name()
         );
@@ -47,7 +46,31 @@ class ViewFactory
 
         require $path;
 
-        return ob_get_clean();
+        return (string) ob_get_clean();
+    }
+
+    /**
+     * Render a reusable view component.
+     *
+     * Example:
+     *
+     * echo $this->component(
+     *     'components.furniture.auby-note',
+     *     ['quote' => $quote]
+     * );
+     *
+     * @param array<string, mixed> $data
+     */
+    public function component(
+        string $name,
+        array $data = []
+    ): string {
+        return $this->render(
+            View::make(
+                $name,
+                $data
+            )
+        );
     }
 
     /**
