@@ -34,5 +34,25 @@ if (!empty($class)) {
 ?>
 
 <section class="<?php echo esc_attr(implode(' ', array_filter($classes))); ?>">
-	<?php echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+
+    <?php if ($spine) : ?>
+
+        <?php
+        $position = 'left';
+
+        require GMRC_PATH
+            . 'app/Views/Furniture/ledger-spine.php';
+        ?>
+
+    <?php endif; ?>
+
+    <div class="guild-page__content">
+
+        <?php
+        echo $content;
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        ?>
+
+    </div>
+
 </section>
