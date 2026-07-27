@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-namespace GMRC\Services\Auby;
+namespace GreatMarketrealmCompanion\Services\Auby;
+use GreatMarketrealmCompanion\Services\Auby\Auby;
 
 final class Auby
 {
