@@ -24,7 +24,7 @@ $companionUrl = home_url('/companion/');
     $ornament = '✦';
     
     require GMRC_PATH
-        . 'app/Views/Components/chapter-heading.php';
+        . 'app/Views/components/furniture/chapter-heading.php';
     ?>
 
         <?php if ($characters === []) : ?>
@@ -66,7 +66,7 @@ $companionUrl = home_url('/companion/');
             <?php foreach ($characters as $character) : ?>
                 <?php
                 require GMRC_PATH
-                    . 'app/Views/Components/adventurer-card.php';
+                    . 'app/Views/components/entries/adventurer-entry.php';
                 ?>
             <?php endforeach; ?>
 
