@@ -337,6 +337,561 @@
 	outline-offset: 3px;
 }
 
+
+
+/* =========================================================
+   Adventurer register
+   ========================================================= */
+
+.adventurer-register {
+	display: grid;
+	grid-template-columns:
+		repeat(
+			auto-fit,
+			minmax(min(100%, 24rem), 1fr)
+		);
+	gap: clamp(1.25rem, 3vw, 2rem);
+}
+
+
+/* =========================================================
+   Adventurer card
+   ========================================================= */
+
+.adventurer-card {
+	position: relative;
+	display: grid;
+	grid-template-columns: minmax(8rem, 34%) minmax(0, 1fr);
+	min-width: 0;
+	overflow: hidden;
+	background:
+		linear-gradient(
+			135deg,
+			rgba(255, 255, 255, 0.18),
+			transparent 45%
+		),
+		rgba(255, 250, 232, 0.52);
+	border: 1px solid rgba(117, 82, 43, 0.42);
+	border-radius: var(--gmrc-component-radius);
+	box-shadow:
+		0 0.75rem 1.5rem rgba(71, 45, 24, 0.12),
+		inset 0 0 1.75rem rgba(117, 82, 43, 0.08);
+	transition:
+		transform var(--gmrc-transition),
+		box-shadow var(--gmrc-transition),
+		border-color var(--gmrc-transition);
+}
+
+.adventurer-card::before {
+	position: absolute;
+	z-index: 0;
+	inset: 0.35rem;
+	pointer-events: none;
+	content: "";
+	border: 1px solid rgba(173, 137, 80, 0.25);
+	border-radius: calc(
+		var(--gmrc-component-radius) - 0.1rem
+	);
+}
+
+.adventurer-card:hover {
+	transform: translateY(-0.2rem);
+	border-color: rgba(117, 82, 43, 0.62);
+	box-shadow:
+		0 1rem 2rem rgba(71, 45, 24, 0.17),
+		inset 0 0 1.75rem rgba(117, 82, 43, 0.08);
+}
+
+.adventurer-card__visual,
+.adventurer-card__content {
+	position: relative;
+	z-index: 1;
+}
+
+.adventurer-card__visual {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 0;
+	padding: 2.75rem 1.25rem 1.5rem;
+	background:
+		linear-gradient(
+			180deg,
+			rgba(86, 53, 97, 0.1),
+			rgba(188, 140, 53, 0.08)
+		);
+	border-right: 1px solid rgba(117, 82, 43, 0.3);
+}
+
+.adventurer-card__content {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.adventurer-card__heading {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--gmrc-space-md);
+}
+
+.adventurer-card__identity {
+	min-width: 0;
+}
+
+.adventurer-card__kicker {
+	margin: 0 0 0.2rem;
+	color: var(--gmrc-aubergine);
+	font-family: var(--gmrc-font-ui);
+	font-size: 0.68rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.adventurer-card__name {
+	margin: 0;
+	color: var(--gmrc-ink);
+	font-family: var(--gmrc-font-book);
+	font-size: clamp(1.85rem, 4vw, 2.75rem);
+	font-weight: 700;
+	line-height: 0.98;
+	overflow-wrap: anywhere;
+}
+
+.adventurer-card__name a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.adventurer-card__name a:hover {
+	color: var(--gmrc-aubergine);
+}
+
+.adventurer-card__title {
+	margin: 0.5rem 0 0;
+	color: var(--gmrc-ink-light);
+	font-family: var(--gmrc-font-book);
+	font-size: 1.05rem;
+	font-style: italic;
+	line-height: 1.35;
+}
+
+.adventurer-card__ingredients {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-bottom: var(--gmrc-space-md);
+}
+
+.adventurer-card__features {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0;
+	margin: auto 0 0;
+	padding: var(--gmrc-space-md) 0;
+	border-top: 1px solid rgba(117, 82, 43, 0.24);
+	border-bottom: 1px solid rgba(117, 82, 43, 0.24);
+}
+
+.adventurer-card__feature {
+	min-width: 0;
+	padding: 0 var(--gmrc-space-sm);
+}
+
+.adventurer-card__feature:first-child {
+	padding-left: 0;
+}
+
+.adventurer-card__feature:last-child {
+	padding-right: 0;
+}
+
+.adventurer-card__feature + .adventurer-card__feature {
+	border-left: 1px solid rgba(117, 82, 43, 0.22);
+}
+
+.adventurer-card__feature dt,
+.adventurer-card__feature dd {
+	margin: 0;
+}
+
+.adventurer-card__feature dt {
+	color: var(--gmrc-ink);
+	font-family: var(--gmrc-font-book);
+	font-size: 1rem;
+	font-weight: 700;
+	line-height: 1.15;
+}
+
+.adventurer-card__feature dd {
+	margin-top: 0.25rem;
+	color: var(--gmrc-ink-light);
+	font-size: 0.72rem;
+	line-height: 1.4;
+}
+
+.adventurer-card__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--gmrc-space-sm);
+	margin-top: var(--gmrc-space-md);
+}
+
+/* =========================================================
+   Portrait frame
+   ========================================================= */
+
+.portrait-frame {
+	width: 100%;
+	max-width: 10rem;
+	margin: 0;
+	text-align: center;
+}
+
+.portrait-frame__inner {
+	position: relative;
+	display: grid;
+	place-items: center;
+	aspect-ratio: 4 / 5;
+	padding: 0.65rem;
+	background:
+		linear-gradient(
+			145deg,
+			var(--gmrc-harvest-gold),
+			#795528
+		);
+	border: 2px solid rgba(61, 38, 19, 0.72);
+	box-shadow:
+		0 0.65rem 1.2rem rgba(52, 34, 19, 0.22),
+		inset 0 0 0 0.25rem rgba(255, 236, 176, 0.24);
+}
+
+.portrait-frame__inner::before {
+	position: absolute;
+	inset: 0.55rem;
+	content: "";
+	background:
+		radial-gradient(
+			circle at 50% 35%,
+			rgba(255, 255, 255, 0.16),
+			transparent 50%
+		),
+		var(--gmrc-aubergine);
+	border: 1px solid rgba(61, 38, 19, 0.55);
+}
+
+.portrait-frame__initials {
+	position: relative;
+	z-index: 1;
+	color: var(--gmrc-flour-white);
+	font-family: var(--gmrc-font-book);
+	font-size: clamp(2.75rem, 7vw, 4.5rem);
+	font-weight: 700;
+	line-height: 1;
+	text-shadow: 0 0.15rem 0.2rem rgba(35, 20, 14, 0.35);
+}
+
+.portrait-frame__caption {
+	margin-top: 0.65rem;
+	color: var(--gmrc-ink-light);
+	font-family: var(--gmrc-font-book);
+	font-size: 0.76rem;
+	font-style: italic;
+	line-height: 1.2;
+}
+
+/* =========================================================
+   Ledger bookmark
+   ========================================================= */
+
+.ledger-bookmark {
+	position: absolute;
+	z-index: 3;
+	top: 0;
+	left: 1rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	min-width: 3.25rem;
+	padding: 0.55rem 0.55rem 1rem;
+	color: var(--gmrc-flour-white);
+	background: var(--gmrc-aubergine);
+	box-shadow: 0 0.25rem 0.5rem rgba(43, 25, 20, 0.2);
+	clip-path: polygon(
+		0 0,
+		100% 0,
+		100% 82%,
+		50% 100%,
+		0 82%
+	);
+}
+
+.ledger-bookmark__label {
+	font-size: 0.52rem;
+	font-weight: 700;
+	letter-spacing: 0.09em;
+	line-height: 1;
+	text-transform: uppercase;
+}
+
+.ledger-bookmark__value {
+	margin-top: 0.18rem;
+	font-family: var(--gmrc-font-book);
+	font-size: 1.25rem;
+	line-height: 1;
+}
+
+/* =========================================================
+   Guild seal
+   ========================================================= */
+
+.guild-seal {
+	flex: 0 0 auto;
+	display: grid;
+	place-items: center;
+	width: 3.25rem;
+	aspect-ratio: 1;
+	padding: 0.3rem;
+	color: #f6d98b;
+	background:
+		radial-gradient(
+			circle at 38% 30%,
+			#b95769,
+			var(--gmrc-beetroot) 55%,
+			#54202c
+		);
+	border-radius: 50%;
+	box-shadow:
+		0 0.3rem 0.55rem rgba(68, 31, 34, 0.26),
+		inset 0.15rem 0.2rem 0.25rem rgba(255, 255, 255, 0.18),
+		inset -0.15rem -0.2rem 0.25rem rgba(61, 13, 24, 0.32);
+	transform: rotate(-5deg);
+}
+
+.guild-seal__inner {
+	display: grid;
+	place-items: center;
+	width: 100%;
+	aspect-ratio: 1;
+	font-size: 1.2rem;
+	border: 1px dashed rgba(246, 217, 139, 0.7);
+	border-radius: 50%;
+}
+
+/*
+ * These can become genuinely unique class seals later.
+ */
+
+.guild-seal--paladin,
+.guild-seal--cleaver-saint {
+	background:
+		radial-gradient(
+			circle at 38% 30%,
+			#b95769,
+			var(--gmrc-beetroot) 55%,
+			#54202c
+		);
+}
+
+.guild-seal--druid {
+	background:
+		radial-gradient(
+			circle at 38% 30%,
+			#83976a,
+			var(--gmrc-sage) 55%,
+			#38452d
+		);
+}
+
+.guild-seal--wizard {
+	background:
+		radial-gradient(
+			circle at 38% 30%,
+			#765385,
+			var(--gmrc-aubergine) 55%,
+			#33203c
+		);
+}
+
+/* =========================================================
+   Ingredient badges
+   ========================================================= */
+
+.ingredient-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	min-height: 2rem;
+	padding: 0.35rem 0.7rem;
+	color: var(--gmrc-ink);
+	font-family: var(--gmrc-font-ui);
+	font-size: 0.72rem;
+	font-weight: 600;
+	line-height: 1.2;
+	background: rgba(255, 250, 232, 0.62);
+	border: 1px solid rgba(117, 82, 43, 0.34);
+	border-radius: 999px;
+	box-shadow: inset 0 0 0.75rem rgba(117, 82, 43, 0.06);
+}
+
+.ingredient-badge__label {
+	color: var(--gmrc-aubergine);
+	font-size: 0.58rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.ingredient-badge--race {
+	border-color: rgba(98, 116, 77, 0.48);
+}
+
+.ingredient-badge--class {
+	border-color: rgba(86, 53, 97, 0.45);
+}
+
+/* =========================================================
+   Ledger actions
+   ========================================================= */
+
+.wax-button,
+.paper-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 2.75rem;
+	font-family: var(--gmrc-font-ui);
+	font-size: 0.78rem;
+	font-weight: 700;
+	line-height: 1.2;
+	text-decoration: none;
+	transition:
+		transform var(--gmrc-transition),
+		box-shadow var(--gmrc-transition),
+		background-color var(--gmrc-transition);
+}
+
+.wax-button {
+	gap: 0.5rem;
+	padding: 0.55rem 1rem 0.55rem 0.65rem;
+	color: var(--gmrc-flour-white);
+	background:
+		linear-gradient(
+			180deg,
+			#9f4457,
+			var(--gmrc-beetroot)
+		);
+	border: 1px solid #5f2130;
+	border-radius: 0.2rem;
+	box-shadow:
+		0 0.3rem 0.6rem rgba(67, 28, 36, 0.2),
+		inset 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.wax-button__seal {
+	display: grid;
+	place-items: center;
+	width: 1.75rem;
+	aspect-ratio: 1;
+	color: #f7d889;
+	background: rgba(76, 22, 34, 0.35);
+	border: 1px dashed rgba(247, 216, 137, 0.7);
+	border-radius: 50%;
+}
+
+.wax-button:hover {
+	color: var(--gmrc-flour-white);
+	transform: translateY(-0.1rem);
+	box-shadow:
+		0 0.5rem 0.8rem rgba(67, 28, 36, 0.25),
+		inset 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.paper-button {
+	padding: 0.55rem 0.9rem;
+	color: var(--gmrc-aubergine);
+	background: rgba(255, 250, 232, 0.65);
+	border: 1px solid rgba(86, 53, 97, 0.38);
+	border-radius: 0.2rem;
+}
+
+.paper-button:hover {
+	color: var(--gmrc-aubergine-dark);
+	background: rgba(255, 250, 232, 0.95);
+}
+
+.recipe-divider--compact {
+	margin: var(--gmrc-space-md) 0;
+}
+
+.recipe-divider--compact .recipe-divider__ornament {
+	font-size: 0.8rem;
+}
+
+/* =========================================================
+   Adventurer card responsive layout
+   ========================================================= */
+
+@media (max-width: 700px) {
+	.adventurer-card {
+		grid-template-columns: 1fr;
+	}
+
+	.adventurer-card__visual {
+		padding: 3.25rem 1.25rem 1.5rem;
+		border-right: 0;
+		border-bottom: 1px solid rgba(117, 82, 43, 0.3);
+	}
+
+	.portrait-frame {
+		max-width: 8.5rem;
+	}
+
+	.adventurer-card__features {
+		grid-template-columns: 1fr;
+	}
+
+	.adventurer-card__feature {
+		padding: var(--gmrc-space-sm) 0;
+	}
+
+	.adventurer-card__feature:first-child {
+		padding-top: 0;
+	}
+
+	.adventurer-card__feature:last-child {
+		padding-bottom: 0;
+	}
+
+	.adventurer-card__feature + .adventurer-card__feature {
+		border-top: 1px solid rgba(117, 82, 43, 0.22);
+		border-left: 0;
+	}
+}
+
+@media (max-width: 430px) {
+	.adventurer-card__heading {
+		align-items: center;
+	}
+
+	.guild-seal {
+		width: 2.75rem;
+	}
+
+	.adventurer-card__actions {
+		align-items: stretch;
+		flex-direction: column;
+	}
+
+	.wax-button,
+	.paper-button {
+		width: 100%;
+	}
+}
+
 /* =========================================================
    Responsive layout
    ========================================================= */
