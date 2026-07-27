@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GMRC\Services\Auby;
+namespace GreatMarketrealmCompanion\Services\Auby;
 
 use Countable;
 use IteratorAggregate;
