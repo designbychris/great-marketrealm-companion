@@ -14,6 +14,7 @@ use GreatMarketrealmCompanion\Core\Session\FlashStore;
 use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
+use GreatMarketrealmCompanion\Services\Auby\QuoteRepository;
 
 defined('ABSPATH') || exit;
 
@@ -67,6 +68,10 @@ class CharactersServiceProvider extends ServiceProvider
                 )
         );
 
+        $container->singleton(
+            QuoteRepository::class
+        );
+        
         $container->singleton(
             Auby::class
         );
