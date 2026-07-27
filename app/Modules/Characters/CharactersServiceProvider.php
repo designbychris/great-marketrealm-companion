@@ -67,38 +67,12 @@ class CharactersServiceProvider extends ServiceProvider
                 )
         );
 
+        $container->singleton(
+            Auby::class
+        );
+
         $container->bind(
-            CharacterController::class,
-            static fn (Container $container): CharacterController =>
-                new CharacterController(
-                    $container->make(
-                        CharacterRepository::class
-                    ),
-                    $container->make(
-                        ViewFactory::class
-                    ),
-                    $container->make(
-                        CreateCharacterAction::class
-                    ),
-                    $container->make(
-                        UpdateCharacterAction::class
-                    ),
-                    $container->make(
-                        DeleteCharacterAction::class
-                    ),
-                    $container->make(
-                        Request::class
-                    ),
-                    $container->make(
-                        ResponseFactory::class
-                    ),
-                    $container->make(
-                        FlashStore::class
-                    ),
-                    $container->make(
-                        Auby::class
-                    )
-                )
+            CharacterController::class
         );
     }
 
