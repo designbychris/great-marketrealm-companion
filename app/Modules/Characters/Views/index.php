@@ -28,6 +28,21 @@ ob_start();
         . 'app/Views/components/furniture/chapter-heading.php';
     ?>
 
+	<?php
+	/*
+	echo $this->component(
+	    'components.furniture.auby-note',
+	    [
+	        'quote' => $aubyQuote,
+	    ]
+	);
+	*/
+
+	echo '<pre>';
+	var_dump($aubyQuote);
+	echo '</pre>';
+	?>
+
         <?php if ($characters === []) : ?>
 
         <section class="gmrc-empty-state">
