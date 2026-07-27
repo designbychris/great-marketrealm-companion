@@ -52,6 +52,10 @@ class CharacterController
                 'characters.index',
                 [
                     'characters' => $this->characters->all(),
+    
+                    'aubyQuote' => $this->auby->for(
+                        QuoteCategories::REGISTER
+                    ),
                 ]
             )
         );
