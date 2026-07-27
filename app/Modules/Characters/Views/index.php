@@ -29,17 +29,18 @@ ob_start();
     ?>
 
     <?php
-	(function (): void {
-		$quote =
-			'Every hero begins with a name, and every legend begins '
-			. 'with a page.';
-		$author = 'Auby';
-		$image = '';
-		$variant = 'default';
 
-		require GMRC_PATH
-			. 'app/Views/components/furniture/auby-note.php';
-	})();
+	use GMRC\Services\Auby\Auby;
+	use GMRC\Services\Auby\QuoteCategories;
+	
+	$auby = new Auby();
+	
+	$quote = $auby->for(
+	    QuoteCategories::REGISTER
+	);
+	
+	require GMRC_PLUGIN_PATH
+	    . 'app/Views/components/furniture/auby-note.php';
 	?>
 
         <?php if ($characters === []) : ?>
