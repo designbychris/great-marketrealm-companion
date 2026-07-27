@@ -29,18 +29,12 @@ ob_start();
     ?>
 
 	<?php
-	/*
 	echo $this->component(
 	    'components.furniture.auby-note',
 	    [
 	        'quote' => $aubyQuote,
 	    ]
 	);
-	*/
-
-	echo '<pre>';
-	var_dump($aubyQuote);
-	echo '</pre>';
 	?>
 
         <?php if ($characters === []) : ?>
