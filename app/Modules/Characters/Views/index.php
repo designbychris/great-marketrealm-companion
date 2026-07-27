@@ -26,7 +26,8 @@ $companionUrl = home_url('/companion/');
 
     </header>
 
-    <?php if ($characters === []) : ?>
+        <?php if ($characters === []) : ?>
+
         <section class="gmrc-empty-state">
             <div
                 class="gmrc-empty-state__icon"
@@ -42,57 +43,61 @@ $companionUrl = home_url('/companion/');
                     Create your first hero and begin their journey through
                     the Great Marketrealm.
                 </p>
+
                 <a
-            class="gmrc-button"
-            href="<?php echo esc_url(
-                add_query_arg(
-                    'gmrc_route',
-                    'characters/create',
-                    $companionUrl
-                )
-            ); ?>"
-        >
-            Create your first character
-        </a>
+                    class="gmrc-button"
+                    href="<?php echo esc_url(
+                        add_query_arg(
+                            'gmrc_route',
+                            'characters/create',
+                            $companionUrl
+                        )
+                    ); ?>"
+                >
+                    Create your first character
+                </a>
             </div>
         </section>
+
     <?php else : ?>
-    <div class="adventurer-register">
-    <?php foreach ($characters as $character) : ?>
-        <?php
-        require GMRC_PATH
-            . 'app/Views/components/adventurer-card.php';
-        ?>
-    <?php endforeach; ?>
 
-    <a
-        class="adventurer-create-entry"
-        href="<?php echo esc_url(
-            add_query_arg(
-                'gmrc_route',
-                'characters/create',
-                $companionUrl
-            )
-        ); ?>"
-    >
-        <span
-            class="adventurer-create-entry__icon"
-            aria-hidden="true"
-        >
-            ✒
-        </span>
+        <div class="adventurer-register">
+            <?php foreach ($characters as $character) : ?>
+                <?php
+                require GMRC_PATH
+                    . 'app/Views/components/adventurer-card.php';
+                ?>
+            <?php endforeach; ?>
 
-        <span class="adventurer-create-entry__content">
-            <strong>Inscribe a New Adventurer</strong>
+            <a
+                class="adventurer-create-entry"
+                href="<?php echo esc_url(
+                    add_query_arg(
+                        'gmrc_route',
+                        'characters/create',
+                        $companionUrl
+                    )
+                ); ?>"
+            >
+                <span
+                    class="adventurer-create-entry__icon"
+                    aria-hidden="true"
+                >
+                    ✒
+                </span>
 
-            <small>
-                Prepare a fresh page for another hero of the
-                Great Marketrealm.
-            </small>
-        </span>
-    </a>
-</div>
-<?php endif; ?>
+                <span class="adventurer-create-entry__content">
+                    <strong>Inscribe a New Adventurer</strong>
+
+                    <small>
+                        Prepare a fresh page for another hero of the
+                        Great Marketrealm.
+                    </small>
+                </span>
+            </a>
+        </div>
+
+    <?php endif; ?>
 </section>
 </section>
 </div>
