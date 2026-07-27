@@ -554,11 +554,331 @@
 	outline-offset: 3px;
 }
 
-/* =========================================================
-   Auby Note
-   ========================================================= */
+/* ==========================================================================
+   Auby's Note
+   ========================================================================== */
 
-.auby-note{display:flex;gap:2rem;align-items:center;margin:0 auto 4rem;padding:2rem;max-width:900px;background:rgba(255,250,235,.55);border-left: 5px solid var(--gmrc-harvest-gold);}
+.auby-note {
+    --auby-note-rotation: 0deg;
+
+    position: relative;
+    width: min(100%, 720px);
+    margin: 2rem auto 2.75rem;
+    transform: rotate(var(--auby-note-rotation));
+    transform-origin: 50% 0;
+}
+
+.auby-note--rotation--1 {
+    --auby-note-rotation: -0.45deg;
+}
+
+.auby-note--rotation-0 {
+    --auby-note-rotation: 0deg;
+}
+
+.auby-note--rotation-1 {
+    --auby-note-rotation: 0.45deg;
+}
+
+.auby-note__paper {
+    position: relative;
+    min-height: 150px;
+    padding: 2.25rem 6rem 1.75rem 2.75rem;
+    overflow: hidden;
+    isolation: isolate;
+
+    background:
+        radial-gradient(
+            circle at 16% 10%,
+            rgba(255, 250, 223, 0.75),
+            transparent 34%
+        ),
+        linear-gradient(
+            165deg,
+            #f7e7ba 0%,
+            #efd7a1 55%,
+            #e5c98e 100%
+        );
+
+    border: 1px solid rgba(112, 72, 34, 0.34);
+
+    box-shadow:
+        0 12px 22px rgba(59, 35, 18, 0.18),
+        0 2px 3px rgba(59, 35, 18, 0.12),
+        inset 0 0 24px rgba(111, 72, 32, 0.08);
+
+    clip-path: polygon(
+        0.5% 2%,
+        17% 0.5%,
+        35% 1.2%,
+        52% 0%,
+        73% 1.1%,
+        99% 0.4%,
+        99.4% 22%,
+        100% 46%,
+        99.3% 72%,
+        100% 98.4%,
+        78% 99.2%,
+        57% 98.6%,
+        36% 100%,
+        17% 98.8%,
+        0.4% 99.5%,
+        0.8% 76%,
+        0% 53%,
+        0.7% 25%
+    );
+}
+
+.auby-note__paper::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    content: "";
+    pointer-events: none;
+
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            rgba(75, 45, 20, 0.025) 0,
+            rgba(75, 45, 20, 0.025) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+
+    mix-blend-mode: multiply;
+}
+
+.auby-note__paper::after {
+    position: absolute;
+    inset: 8px;
+    z-index: -1;
+    content: "";
+    pointer-events: none;
+
+    border: 1px solid rgba(121, 79, 38, 0.12);
+    border-radius: 45% 50% 47% 52% / 2% 3% 2% 3%;
+}
+
+.auby-note__pin {
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    z-index: 5;
+    width: 26px;
+    height: 30px;
+    transform: translateX(-50%);
+}
+
+.auby-note__pin-head {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 21px;
+    height: 21px;
+    transform: translateX(-50%);
+    border: 2px solid #714719;
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #ffe2a0,
+            #c88b32 48%,
+            #744716 100%
+        );
+
+    box-shadow:
+        0 2px 3px rgba(55, 29, 9, 0.4),
+        inset 0 1px 2px rgba(255, 244, 194, 0.7);
+}
+
+.auby-note__pin-shadow {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    width: 18px;
+    height: 8px;
+    transform: translateX(-40%) rotate(-8deg);
+    border-radius: 50%;
+    background: rgba(63, 36, 14, 0.2);
+    filter: blur(2px);
+}
+
+.auby-note__writing {
+    position: relative;
+    z-index: 2;
+}
+
+.auby-note__quote,
+.auby-note__correction {
+    max-width: 540px;
+    margin: 0;
+
+    color: #493323;
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+    font-size: clamp(1.25rem, 2vw, 1.65rem);
+    font-style: italic;
+    font-weight: 600;
+    line-height: 1.48;
+    letter-spacing: 0.01em;
+}
+
+.auby-note__signature {
+    margin: 0.75rem 0 0;
+    padding-right: 2rem;
+    color: #5b394f;
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    font-weight: 700;
+    text-align: right;
+}
+
+.auby-note__quill {
+    position: absolute;
+    right: 0.65rem;
+    bottom: -1.6rem;
+    z-index: 3;
+    width: 105px;
+    transform: rotate(11deg);
+    transform-origin: 70% 90%;
+    filter: drop-shadow(2px 5px 3px rgba(57, 29, 10, 0.25));
+}
+
+.auby-quill {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.auby-note__coffee-stain {
+    position: absolute;
+    top: 14px;
+    right: 130px;
+    z-index: 0;
+    display: none;
+    width: 94px;
+    height: 94px;
+    border: 7px solid rgba(112, 61, 25, 0.13);
+    border-right-color: rgba(112, 61, 25, 0.05);
+    border-bottom-color: rgba(112, 61, 25, 0.08);
+    border-radius: 50%;
+    transform: rotate(-12deg) scaleY(0.72);
+    filter: blur(0.4px);
+}
+
+.auby-note__coffee-stain::before {
+    position: absolute;
+    inset: 8px;
+    content: "";
+    border: 2px solid rgba(112, 61, 25, 0.07);
+    border-radius: inherit;
+}
+
+.auby-note--coffee-stained .auby-note__coffee-stain {
+    display: block;
+}
+
+.auby-note__ink-blot {
+    position: absolute;
+    bottom: 22px;
+    left: 18px;
+    z-index: 1;
+    display: none;
+    width: 7px;
+    height: 7px;
+    border-radius: 55% 45% 60% 40%;
+    background: rgba(55, 32, 43, 0.68);
+    transform: rotate(21deg);
+}
+
+.auby-note__ink-blot::before,
+.auby-note__ink-blot::after {
+    position: absolute;
+    content: "";
+    border-radius: 50%;
+    background: inherit;
+}
+
+.auby-note__ink-blot::before {
+    top: -5px;
+    left: 7px;
+    width: 3px;
+    height: 3px;
+}
+
+.auby-note__ink-blot::after {
+    top: 8px;
+    left: -5px;
+    width: 2px;
+    height: 2px;
+}
+
+.auby-note--ink-blotted .auby-note__ink-blot {
+    display: block;
+}
+
+.auby-note__crossed-out {
+    position: relative;
+    display: block;
+    width: fit-content;
+    margin-bottom: 0.65rem;
+    color: rgba(73, 51, 35, 0.76);
+}
+
+.auby-note__crossed-out::after {
+    position: absolute;
+    top: 52%;
+    right: -4px;
+    left: -5px;
+    height: 2px;
+    content: "";
+    background: rgba(73, 51, 35, 0.82);
+    transform: rotate(-1.5deg);
+    box-shadow: 0 3px 0 rgba(73, 51, 35, 0.42);
+}
+
+.auby-note__corrected-text {
+    display: block;
+}
+
+@media (max-width: 700px) {
+    .auby-note__paper {
+        min-height: 175px;
+        padding:
+            2.25rem
+            1.75rem
+            5rem;
+    }
+
+    .auby-note__quill {
+        right: 0.8rem;
+        bottom: -2rem;
+        width: 90px;
+    }
+
+    .auby-note__signature {
+        padding-right: 4rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .auby-note,
+    .auby-note *,
+    .auby-note *::before,
+    .auby-note *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
 
 /* =========================================================
    Ledger spine
