@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Services\Auby;
-use GreatMarketrealmCompanion\Services\Auby\Auby;
+
+defined('ABSPATH') || exit;
 
 final class Auby
 {
