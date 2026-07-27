@@ -1,0 +1,23 @@
+:root {
+    --gmrc-parchment: #f3e5bd;
+    --gmrc-parchment-light: #fbf3d7;
+    --gmrc-parchment-dark: #d3b980;
+
+    --gmrc-leather: #4a2d22;
+    --gmrc-leather-dark: #2b1914;
+
+    --gmrc-aubergine: #54305f;
+    --gmrc-harvest-gold: #c3943e;
+    --gmrc-sage: #667a4f;
+    --gmrc-beetroot: #8a3445;
+    --gmrc-ink: #33261d;
+
+    --gmrc-page-radius: 8px;
+    --gmrc-component-radius: 5px;
+
+    --gmrc-shadow-page:
+        0 18px 45px rgba(43, 25, 20, 0.25);
+
+    --gmrc-font-book: "Cormorant Garamond", Georgia, serif;
+    --gmrc-font-ui: "Poppins", Arial, sans-serif;
+}
