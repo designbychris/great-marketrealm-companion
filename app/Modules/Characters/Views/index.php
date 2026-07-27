@@ -20,18 +20,6 @@ $companionUrl = home_url('/companion/');
             Marketrealm.
         </p>
 
-        <a
-            class="gmrc-button"
-            href="<?php echo esc_url(
-                add_query_arg(
-                    'gmrc_route',
-                    'characters/create',
-                    $companionUrl
-                )
-            ); ?>"
-        >
-            Create another character
-        </a>
     </header>
 
     <?php if ($characters === []) : ?>
@@ -50,7 +38,18 @@ $companionUrl = home_url('/companion/');
                     Create your first hero and begin their journey through
                     the Great Marketrealm.
                 </p>
-
+                <a
+            class="gmrc-button"
+            href="<?php echo esc_url(
+                add_query_arg(
+                    'gmrc_route',
+                    'characters/create',
+                    $companionUrl
+                )
+            ); ?>"
+        >
+            Create your first character
+        </a>
             </div>
         </section>
     <?php else : ?>
