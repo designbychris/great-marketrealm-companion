@@ -233,6 +233,147 @@
 }
 
 /* =========================================================
+   Chapter heading
+   ========================================================= */
+
+.chapter-heading {
+	position: relative;
+	max-width: 52rem;
+	margin: 0 auto clamp(2rem, 5vw, 3.5rem);
+	padding: clamp(0.5rem, 2vw, 1.25rem) 0;
+	color: var(--gmrc-ink);
+	text-align: center;
+}
+
+.chapter-heading__crest {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 0.9rem;
+}
+
+.chapter-heading__crest-ring {
+	display: grid;
+	place-items: center;
+	width: 3rem;
+	aspect-ratio: 1;
+	color: var(--gmrc-harvest-gold);
+	font-family: var(--gmrc-font-book);
+	font-size: 1.1rem;
+	background:
+		radial-gradient(
+			circle,
+			rgba(255, 250, 232, 0.85),
+			rgba(207, 179, 119, 0.2)
+		);
+	border: 1px solid rgba(173, 137, 80, 0.62);
+	border-radius: 50%;
+	box-shadow:
+		inset 0 0 0 0.25rem rgba(255, 250, 232, 0.35),
+		0 0.25rem 0.6rem rgba(71, 45, 24, 0.12);
+}
+
+.chapter-heading__ledger {
+	margin: 0;
+	color: var(--gmrc-aubergine);
+	font-family: var(--gmrc-font-ui);
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	line-height: 1.3;
+	text-transform: uppercase;
+}
+
+.chapter-heading__divider {
+	display: grid;
+	grid-template-columns: minmax(1rem, 1fr) auto minmax(1rem, 1fr);
+	align-items: center;
+	gap: 0.8rem;
+	width: min(100%, 36rem);
+	margin: 1rem auto 1.25rem;
+	color: var(--gmrc-harvest-gold);
+}
+
+.chapter-heading__divider > span:not(
+	.chapter-heading__divider-ornament
+) {
+	height: 1px;
+	background:
+		linear-gradient(
+			to right,
+			transparent,
+			rgba(173, 137, 80, 0.8)
+		);
+}
+
+.chapter-heading__divider > span:last-child {
+	background:
+		linear-gradient(
+			to left,
+			transparent,
+			rgba(173, 137, 80, 0.8)
+		);
+}
+
+.chapter-heading__divider-ornament {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-family: var(--gmrc-font-book);
+	font-size: 0.9rem;
+}
+
+.chapter-heading__volume {
+	margin: 0 0 0.45rem;
+	color: var(--gmrc-ink-light);
+	font-family: var(--gmrc-font-book);
+	font-size: 0.95rem;
+	font-style: italic;
+	letter-spacing: 0.08em;
+	line-height: 1.3;
+}
+
+.chapter-heading__title {
+	margin: 0;
+	color: var(--gmrc-ink);
+	font-family: var(--gmrc-font-book);
+	font-size: clamp(2.5rem, 7vw, 5rem);
+	font-weight: 700;
+	letter-spacing: -0.025em;
+	line-height: 0.96;
+	text-wrap: balance;
+}
+
+.chapter-heading__description {
+	max-width: 42rem;
+	margin: 1.2rem auto 0;
+	color: var(--gmrc-ink-light);
+	font-family: var(--gmrc-font-ui);
+	font-size: clamp(0.9rem, 2vw, 1rem);
+	line-height: 1.75;
+	text-wrap: balance;
+}
+
+@media (max-width: 600px) {
+	.chapter-heading {
+		margin-bottom: 2rem;
+	}
+
+	.chapter-heading__crest-ring {
+		width: 2.65rem;
+	}
+
+	.chapter-heading__divider {
+		gap: 0.55rem;
+		margin-top: 0.85rem;
+	}
+
+	.chapter-heading__title {
+		font-size: clamp(2.35rem, 13vw, 3.75rem);
+	}
+}
+
+
+/* =========================================================
    Guild section heading
    ========================================================= */
 
