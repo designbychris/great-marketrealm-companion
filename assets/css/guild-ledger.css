@@ -124,7 +124,24 @@
 
 .guild-page {
     position: relative;
-    background: radial-gradient(circle at top,rgba(255,255,255,.18),transparent 60%), #f8e8c4;
+    background:
+		radial-gradient(
+            ellipse at top,
+            rgba(255,255,255,.22),
+            transparent 60%
+        ),
+
+        radial-gradient(
+            ellipse at bottom,
+            rgba(180,130,55,.06),
+            transparent 70%
+        ),
+
+        linear-gradient(
+            180deg,
+            #f6e7bf 0%,
+            #f2deac 100%
+        );
     outline: 1px solid rgba(125,80,25,.08);
     border-radius: 12px;
 
@@ -138,6 +155,16 @@
         inset 0 0 60px rgba(120,80,25,.08);
 	margin-left: 22px;
     overflow: visible;
+}
+
+.guild-page::before{
+    opacity:.18;
+    background-image:
+        radial-gradient(
+            rgba(150,110,45,.18) .5px,
+            transparent .6px
+        );
+    background-size:18px 18px;
 }
 
 /*.guild-page::after{
