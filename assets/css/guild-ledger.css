@@ -140,7 +140,7 @@
     overflow: visible;
 }
 
-.guild-page::after{
+/*.guild-page::after{
 
     content:"";
 
@@ -190,7 +190,7 @@
     z-index:-1;
 }
 
-/*.guild-page::before {
+.guild-page::before {
 	position: absolute;
 	inset: 0;
 	pointer-events: none;
