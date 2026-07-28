@@ -1,0 +1,211 @@
+/**
+ * Great Marketrealm Companion
+ * Ledger Motion
+ */
+
+@keyframes gmrc-page-settle {
+    from {
+        opacity: 0;
+        transform:
+            translateY(14px)
+            rotateX(1.5deg);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateY(0)
+            rotateX(0);
+    }
+}
+
+@keyframes gmrc-note-arrive {
+    0% {
+        opacity: 0;
+        transform:
+            translateY(-18px)
+            rotate(-2deg);
+    }
+
+    65% {
+        opacity: 1;
+        transform:
+            translateY(2px)
+            rotate(0.4deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform:
+            translateY(0)
+            rotate(var(--auby-note-rotation, -0.5deg));
+    }
+}
+
+@keyframes gmrc-ink-reveal {
+    from {
+        opacity: 0;
+        filter: blur(1.5px);
+    }
+
+    to {
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+@keyframes gmrc-quill-rest {
+    0%,
+    100% {
+        transform: rotate(8deg);
+    }
+
+    50% {
+        transform:
+            translateY(-2px)
+            rotate(10deg);
+    }
+}
+
+@keyframes gmrc-seal-press {
+    0% {
+        opacity: 0;
+        transform:
+            scale(1.35)
+            rotate(-8deg);
+    }
+
+    68% {
+        opacity: 1;
+        transform:
+            scale(0.94)
+            rotate(2deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform:
+            scale(1)
+            rotate(0);
+    }
+}
+
+@keyframes gmrc-gold-glimmer {
+    0%,
+    100% {
+        filter: brightness(1);
+    }
+
+    50% {
+        filter: brightness(1.16);
+    }
+}
+
+/*
+ * Reusable motion classes
+ */
+.guild-motion-page-settle {
+    animation:
+        gmrc-page-settle
+        var(--gmrc-duration-page)
+        var(--gmrc-ease-settle)
+        both;
+}
+
+.guild-motion-note-arrive {
+    animation:
+        gmrc-note-arrive
+        620ms
+        var(--gmrc-ease-settle)
+        both;
+}
+
+.guild-motion-ink-reveal {
+    animation:
+        gmrc-ink-reveal
+        var(--gmrc-duration-slow)
+        var(--gmrc-ease-standard)
+        both;
+}
+
+.guild-motion-seal-press {
+    animation:
+        gmrc-seal-press
+        480ms
+        var(--gmrc-ease-press)
+        both;
+}
+
+.guild-motion-glimmer {
+    animation:
+        gmrc-gold-glimmer
+        2.8s
+        ease-in-out
+        infinite;
+}
+
+/*
+ * Interactive physical movement
+ */
+.guild-pressable {
+    transition:
+        transform var(--gmrc-duration-fast)
+        var(--gmrc-ease-standard),
+        box-shadow var(--gmrc-duration-fast)
+        var(--gmrc-ease-standard);
+}
+
+.guild-pressable:hover {
+    transform: translateY(-2px);
+}
+
+.guild-pressable:active {
+    transform: translateY(1px);
+}
+
+/*
+ * Auby note sequencing
+ */
+.auby-note.guild-motion-note-arrive
+.auby-note__quote {
+    animation:
+        gmrc-ink-reveal
+        520ms
+        300ms
+        var(--gmrc-ease-standard)
+        both;
+}
+
+.auby-note.guild-motion-note-arrive
+.auby-note__signature {
+    animation:
+        gmrc-ink-reveal
+        420ms
+        720ms
+        var(--gmrc-ease-standard)
+        both;
+}
+
+.auby-note.guild-motion-note-arrive
+.auby-note__quill {
+    animation:
+        gmrc-quill-rest
+        3.2s
+        1.1s
+        ease-in-out
+        infinite;
+}
+
+/*
+ * Accessibility
+ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
