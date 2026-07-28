@@ -795,6 +795,94 @@
     }
 }
 
+
+/* =========================================================
+   Ledger section
+   ========================================================= */
+
+.ledger-section {
+    position: relative;
+    margin-block: 3rem;
+}
+
+.ledger-section::before,
+.ledger-section::after {
+    content: "";
+
+    display: block;
+    width: min(100%, 640px);
+    height: 1px;
+    margin-inline: auto;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(82, 48, 27, 0.55) 18%,
+            rgba(82, 48, 27, 0.55) 82%,
+            transparent
+        );
+}
+
+.ledger-section::before {
+    margin-bottom: 1.75rem;
+}
+
+.ledger-section::after {
+    margin-top: 2rem;
+}
+
+.ledger-section__header {
+    width: min(100%, 760px);
+    margin-inline: auto;
+    text-align: center;
+}
+
+.ledger-section__eyebrow {
+    margin: 0 0 0.35rem;
+
+    color: #7a5738;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.ledger-section__title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+
+    margin: 0;
+
+    color: #4a2f20;
+
+    font-family: Georgia, serif;
+    font-size: clamp(1.7rem, 4vw, 2.6rem);
+    line-height: 1.1;
+}
+
+.ledger-section__ornament {
+    color: #a87a2f;
+    font-size: 0.65em;
+}
+
+.ledger-section__description {
+    max-width: 620px;
+    margin: 0.85rem auto 0;
+
+    color: #624934;
+
+    font-size: 1rem;
+    line-height: 1.65;
+}
+
+.ledger-section__body {
+    margin-top: 1.75rem;
+}
+
 /* =========================================================
    Ledger spine
    ========================================================= */
