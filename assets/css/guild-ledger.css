@@ -771,34 +771,27 @@
 }
 
 @media (max-width: 700px) {
-    .auby-note__paper {
-        min-height: 175px;
-        padding:
-            2.25rem
-            1.75rem
-            5rem;
+    .auby-note {
+        width: calc(100% - 1rem);
+        margin-block: 1.5rem 2rem;
     }
 
-    .auby-note__quill {
-        right: 0.8rem;
-        bottom: -2rem;
-        width: 90px;
+    .auby-note__paper {
+        min-height: 170px;
+        padding:
+            2.75rem
+            2rem
+            5.5rem;
     }
 
     .auby-note__signature {
-        padding-right: 4rem;
+        text-align: left;
     }
-}
 
-@media (prefers-reduced-motion: reduce) {
-    .auby-note,
-    .auby-note *,
-    .auby-note *::before,
-    .auby-note *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-        transition-duration: 0.01ms !important;
+    .auby-note__quill {
+        right: 1.25rem;
+        bottom: -0.4rem;
+        width: 78px;
     }
 }
 
