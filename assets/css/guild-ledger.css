@@ -884,6 +884,141 @@
 }
 
 /* =========================================================
+   Illuminated heading
+   ========================================================= */
+
+.illuminated-heading {
+
+    text-align:center;
+
+    margin:3rem auto 2.5rem;
+
+}
+
+.illuminated-heading__subtitle{
+
+    margin:0;
+
+    text-transform:uppercase;
+
+    letter-spacing:.18em;
+
+    font-size:.75rem;
+
+    color:#86633f;
+
+    font-weight:700;
+
+}
+
+.illuminated-heading__title{
+
+    margin:.5rem 0 .75rem;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-end;
+
+    gap:.2rem;
+
+    color:#43291c;
+
+}
+
+.illuminated-heading__initial{
+
+    font-family:"Cinzel Decorative", serif;
+
+    font-size:4.25rem;
+
+    line-height:.8;
+
+    color:#7b1f24;
+
+    text-shadow:
+
+        1px 1px 0 #f5d788,
+
+        2px 2px 0 rgba(80,40,20,.15);
+
+}
+
+.illuminated-heading__text{
+
+    font-family:"Cinzel", serif;
+
+    font-size:2rem;
+
+    line-height:1;
+
+    margin-bottom:.35rem;
+
+}
+
+.illuminated-heading__rule{
+
+    position:relative;
+
+    width:min(500px,100%);
+
+    margin:auto;
+
+}
+
+.illuminated-heading__rule::before,
+
+.illuminated-heading__rule::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:50%;
+
+    width:42%;
+
+    height:1px;
+
+    background:
+
+        linear-gradient(
+
+            to right,
+
+            transparent,
+
+            #9a7748
+
+        );
+
+}
+
+.illuminated-heading__rule::after{
+
+    right:0;
+
+    transform:scaleX(-1);
+
+}
+
+.illuminated-heading__rule span{
+
+    display:inline-block;
+
+    color:#a57b2f;
+
+    font-size:1rem;
+
+    padding:0 .75rem;
+
+    background:transparent;
+
+}
+
+
+/* =========================================================
    Ledger spine
    ========================================================= */
 
