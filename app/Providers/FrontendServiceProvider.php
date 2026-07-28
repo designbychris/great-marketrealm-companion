@@ -192,6 +192,13 @@ class FrontendServiceProvider extends ServiceProvider
             [],
             GMRC_VERSION
         );
+
+        wp_enqueue_style(
+            'gmrc-caveat',
+            'https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap',
+            [],
+            null
+        );
     }
 
     /**
