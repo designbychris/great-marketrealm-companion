@@ -74,11 +74,16 @@ ob_start();
 
         <div class="adventurer-register">
             <?php foreach ($characters as $character) : ?>
-                <?php
-                require GMRC_PATH
-                    . 'app/Views/components/entries/adventurer-entry.php';
-                ?>
-            <?php endforeach; ?>
+			    <?php
+			    echo $this->component(
+			        'components.entries.adventurer-entry',
+			        [
+			            'character'    => $character,
+			            'companionUrl' => $companionUrl,
+			        ]
+			    );
+			    ?>
+			<?php endforeach; ?>
 
             <a
                 class="adventurer-create-entry"
@@ -113,6 +118,17 @@ ob_start();
 <?php
 
 $character_content = ob_get_clean();
+
+echo $this->component(
+    'components.furniture.ledger-section',
+    [
+        'eyebrow'     => 'Guild Register',
+        'title'       => 'Your Adventurers',
+        'description' => 'Every recorded hero has a page waiting to be opened.',
+        'ornament'    => '✦',
+        'content'     => $registerContent,
+    ]
+);
 
 /*
  * Capture the rendered Guild Page.
