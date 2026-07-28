@@ -1,0 +1,194 @@
+/**
+ * Great Marketrealm Companion
+ * Scribe Typography
+ */
+
+.gmrc-companion {
+    color: var(--gmrc-ink);
+    font-family: var(--gmrc-font-body);
+    font-size: var(--gmrc-text-md);
+    line-height: var(--gmrc-leading-body);
+}
+
+.gmrc-companion h1,
+.gmrc-companion h2,
+.gmrc-companion h3,
+.gmrc-companion h4,
+.gmrc-companion h5,
+.gmrc-companion h6 {
+    margin-block:
+        0
+        var(--gmrc-space-4);
+
+    color: var(--gmrc-ink-strong);
+    font-family: var(--gmrc-font-heading);
+    font-weight: 700;
+    line-height: var(--gmrc-leading-heading);
+    text-wrap: balance;
+}
+
+.gmrc-companion h1 {
+    font-size:
+        clamp(
+            2.25rem,
+            6vw,
+            var(--gmrc-text-4xl)
+        );
+}
+
+.gmrc-companion h2 {
+    font-size:
+        clamp(
+            1.75rem,
+            4vw,
+            var(--gmrc-text-3xl)
+        );
+}
+
+.gmrc-companion h3 {
+    font-size:
+        clamp(
+            1.4rem,
+            3vw,
+            var(--gmrc-text-2xl)
+        );
+}
+
+.gmrc-companion h4 {
+    font-size: var(--gmrc-text-xl);
+}
+
+.gmrc-companion p {
+    margin-block:
+        0
+        var(--gmrc-space-4);
+}
+
+.gmrc-companion p:last-child {
+    margin-bottom: 0;
+}
+
+.gmrc-companion strong {
+    color: var(--gmrc-ink-strong);
+    font-weight: 700;
+}
+
+.gmrc-companion small {
+    font-size: var(--gmrc-text-sm);
+    line-height: 1.45;
+}
+
+.gmrc-companion a {
+    color: var(--gmrc-purple-700);
+    text-decoration-color:
+        color-mix(
+            in srgb,
+            var(--gmrc-purple-600) 45%,
+            transparent
+        );
+
+    text-underline-offset: 0.16em;
+
+    transition:
+        color var(--gmrc-duration-fast)
+        var(--gmrc-ease-standard),
+        text-decoration-color var(--gmrc-duration-fast)
+        var(--gmrc-ease-standard);
+}
+
+.gmrc-companion a:hover {
+    color: var(--gmrc-wax-600);
+    text-decoration-color: currentColor;
+}
+
+.gmrc-companion a:focus-visible {
+    border-radius: var(--gmrc-radius-small);
+    outline: none;
+    box-shadow: var(--gmrc-shadow-focus);
+}
+
+/*
+ * Display text
+ */
+.guild-display-text {
+    color: var(--gmrc-ink-strong);
+    font-family: var(--gmrc-font-display);
+    font-size:
+        clamp(
+            2rem,
+            5vw,
+            var(--gmrc-text-4xl)
+        );
+
+    font-weight: 700;
+    letter-spacing: var(--gmrc-tracking-tight);
+    line-height: var(--gmrc-leading-tight);
+}
+
+/*
+ * Chapter and section labels
+ */
+.guild-eyebrow {
+    margin: 0;
+
+    color: var(--gmrc-ink-muted);
+    font-family: var(--gmrc-font-ui);
+    font-size: var(--gmrc-text-xs);
+    font-weight: 700;
+    letter-spacing: var(--gmrc-tracking-wider);
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+/*
+ * Handwritten notes
+ */
+.scribe-handwriting {
+    color: var(--gmrc-ink);
+    font-family: var(--gmrc-font-handwritten);
+    font-size:
+        clamp(
+            1.5rem,
+            3vw,
+            2.35rem
+        );
+
+    font-weight: 600;
+    line-height: 1.15;
+}
+
+/*
+ * Entry metadata
+ */
+.guild-entry-number,
+.guild-metadata {
+    color: var(--gmrc-ink-muted);
+    font-family: var(--gmrc-font-ui);
+    font-size: var(--gmrc-text-xs);
+    font-weight: 700;
+    letter-spacing: var(--gmrc-tracking-wide);
+    text-transform: uppercase;
+}
+
+/*
+ * Optional illuminated initial
+ */
+.scribe-drop-cap::first-letter {
+    float: left;
+
+    margin:
+        0.06em
+        0.12em
+        0
+        0;
+
+    color: var(--gmrc-wax-600);
+    font-family: var(--gmrc-font-display);
+    font-size: 3.5em;
+    font-weight: 700;
+    line-height: 0.8;
+
+    text-shadow:
+        1px 1px 0 var(--gmrc-gold-light),
+        2px 2px 0 rgba(54, 31, 18, 0.14);
+}
