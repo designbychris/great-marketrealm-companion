@@ -1,0 +1,237 @@
+/**
+ * Great Marketrealm Companion
+ * Guild Ledger Design Tokens
+ */
+
+:root {
+    /*
+     * Colour: parchment
+     */
+    --gmrc-parchment-50: #fffaf0;
+    --gmrc-parchment-100: #f9edcf;
+    --gmrc-parchment-200: #f2dfb2;
+    --gmrc-parchment-300: #e7ca91;
+    --gmrc-parchment-400: #d3ad70;
+    --gmrc-parchment-500: #b98a4f;
+
+    /*
+     * Colour: ink
+     */
+    --gmrc-ink-strong: #321f17;
+    --gmrc-ink: #4a3022;
+    --gmrc-ink-soft: #6b4c37;
+    --gmrc-ink-muted: #876b55;
+    --gmrc-ink-faded: rgba(74, 48, 34, 0.55);
+
+    /*
+     * Colour: guild purple
+     */
+    --gmrc-purple-100: #eadcf0;
+    --gmrc-purple-300: #b992c9;
+    --gmrc-purple-500: #74458a;
+    --gmrc-purple-600: #603773;
+    --gmrc-purple-700: #492958;
+    --gmrc-purple-800: #35203f;
+
+    /*
+     * Colour: wax
+     */
+    --gmrc-wax-100: #e8b9b3;
+    --gmrc-wax-400: #a94d50;
+    --gmrc-wax-500: #843638;
+    --gmrc-wax-600: #6d292d;
+    --gmrc-wax-700: #4f1c21;
+
+    /*
+     * Colour: brass and gold
+     */
+    --gmrc-gold-light: #e8cf84;
+    --gmrc-gold: #b88a37;
+    --gmrc-gold-dark: #79551f;
+    --gmrc-brass-light: #d5ad59;
+    --gmrc-brass: #9a6d2e;
+    --gmrc-brass-dark: #62431c;
+
+    /*
+     * Colour: leather
+     */
+    --gmrc-leather-light: #936040;
+    --gmrc-leather: #68412d;
+    --gmrc-leather-dark: #3d271d;
+
+    /*
+     * Colour: status
+     */
+    --gmrc-success: #536f45;
+    --gmrc-warning: #a16b24;
+    --gmrc-danger: #813333;
+    --gmrc-info: #4b6377;
+
+    /*
+     * Typography families
+     *
+     * Replace these with your chosen font families where required.
+     */
+    --gmrc-font-display:
+        "Cinzel Decorative",
+        "Cinzel",
+        Georgia,
+        serif;
+
+    --gmrc-font-heading:
+        "Cinzel",
+        Georgia,
+        serif;
+
+    --gmrc-font-body:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    --gmrc-font-ui:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    --gmrc-font-handwritten:
+        "Caveat",
+        "Segoe Print",
+        "Bradley Hand",
+        cursive;
+
+    /*
+     * Typography sizes
+     */
+    --gmrc-text-xs: 0.75rem;
+    --gmrc-text-sm: 0.875rem;
+    --gmrc-text-base: 1rem;
+    --gmrc-text-md: 1.125rem;
+    --gmrc-text-lg: 1.375rem;
+    --gmrc-text-xl: 1.75rem;
+    --gmrc-text-2xl: 2.25rem;
+    --gmrc-text-3xl: 3rem;
+    --gmrc-text-4xl: 4rem;
+
+    /*
+     * Line heights
+     */
+    --gmrc-leading-tight: 1.1;
+    --gmrc-leading-heading: 1.25;
+    --gmrc-leading-body: 1.65;
+    --gmrc-leading-loose: 1.85;
+
+    /*
+     * Letter spacing
+     */
+    --gmrc-tracking-tight: -0.02em;
+    --gmrc-tracking-normal: 0;
+    --gmrc-tracking-wide: 0.08em;
+    --gmrc-tracking-wider: 0.16em;
+
+    /*
+     * Spacing
+     */
+    --gmrc-space-1: 0.25rem;
+    --gmrc-space-2: 0.5rem;
+    --gmrc-space-3: 0.75rem;
+    --gmrc-space-4: 1rem;
+    --gmrc-space-5: 1.25rem;
+    --gmrc-space-6: 1.5rem;
+    --gmrc-space-8: 2rem;
+    --gmrc-space-10: 2.5rem;
+    --gmrc-space-12: 3rem;
+    --gmrc-space-16: 4rem;
+    --gmrc-space-20: 5rem;
+
+    /*
+     * Layout
+     */
+    --gmrc-page-width: 1180px;
+    --gmrc-reading-width: 760px;
+    --gmrc-content-width: 920px;
+
+    --gmrc-page-gutter:
+        clamp(
+            1.25rem,
+            4vw,
+            4rem
+        );
+
+    --gmrc-section-spacing:
+        clamp(
+            2.5rem,
+            6vw,
+            5rem
+        );
+
+    /*
+     * Borders
+     */
+    --gmrc-border-thin: 1px;
+    --gmrc-border-medium: 2px;
+    --gmrc-border-heavy: 4px;
+
+    --gmrc-border-ink:
+        rgba(74, 48, 34, 0.28);
+
+    --gmrc-border-gold:
+        rgba(184, 138, 55, 0.72);
+
+    /*
+     * Radius
+     *
+     * The Ledger generally avoids modern rounded cards.
+     */
+    --gmrc-radius-small: 2px;
+    --gmrc-radius-medium: 5px;
+    --gmrc-radius-round: 999px;
+
+    /*
+     * Shadows
+     */
+    --gmrc-shadow-soft:
+        0 8px 18px rgba(54, 31, 18, 0.12);
+
+    --gmrc-shadow-paper:
+        0 18px 32px rgba(54, 31, 18, 0.2),
+        0 4px 8px rgba(54, 31, 18, 0.12);
+
+    --gmrc-shadow-raised:
+        0 22px 42px rgba(45, 25, 15, 0.26);
+
+    --gmrc-shadow-inset:
+        inset 0 0 32px rgba(92, 55, 24, 0.1);
+
+    --gmrc-shadow-focus:
+        0 0 0 3px var(--gmrc-parchment-100),
+        0 0 0 6px var(--gmrc-purple-600);
+
+    /*
+     * Motion
+     */
+    --gmrc-duration-fast: 140ms;
+    --gmrc-duration-normal: 240ms;
+    --gmrc-duration-slow: 420ms;
+    --gmrc-duration-page: 700ms;
+
+    --gmrc-ease-standard:
+        cubic-bezier(0.2, 0.7, 0.2, 1);
+
+    --gmrc-ease-settle:
+        cubic-bezier(0.16, 1, 0.3, 1);
+
+    --gmrc-ease-press:
+        cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /*
+     * Layering
+     */
+    --gmrc-z-page: 1;
+    --gmrc-z-decoration: 2;
+    --gmrc-z-content: 3;
+    --gmrc-z-note: 10;
+    --gmrc-z-navigation: 50;
+    --gmrc-z-modal: 100;
+}
