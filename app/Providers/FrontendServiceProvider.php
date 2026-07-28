@@ -67,6 +67,31 @@ class FrontendServiceProvider extends ServiceProvider
         );
     }
 
+    <?php
+
+    $foundationStyles = [
+        'guild-tokens',
+        'scribe-typography',
+        'parchment',
+        'ledger-motion',
+        'guild-ornaments',
+    ];
+    
+    $previousHandle = [];
+    
+    foreach ($foundationStyles as $style) {
+        $handle = 'gmrc-' . $style;
+    
+        wp_enqueue_style(
+            $handle,
+            GMRC_URL . 'assets/css/foundation/' . $style . '.css',
+            $previousHandle,
+            GMRC_VERSION
+        );
+    
+        $previousHandle = [$handle];
+    }
+
 
     /**
      * Handle a Companion application form request.
