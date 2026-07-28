@@ -67,32 +67,6 @@ class FrontendServiceProvider extends ServiceProvider
         );
     }
 
-    <?php
-
-    $foundationStyles = [
-        'guild-tokens',
-        'scribe-typography',
-        'parchment',
-        'ledger-motion',
-        'guild-ornaments',
-    ];
-    
-    $previousHandle = [];
-    
-    foreach ($foundationStyles as $style) {
-        $handle = 'gmrc-' . $style;
-    
-        wp_enqueue_style(
-            $handle,
-            GMRC_URL . 'assets/css/foundation/' . $style . '.css',
-            $previousHandle,
-            GMRC_VERSION
-        );
-    
-        $previousHandle = [$handle];
-    }
-
-
     /**
      * Handle a Companion application form request.
      */
@@ -203,26 +177,69 @@ class FrontendServiceProvider extends ServiceProvider
         if (! $this->isCompanionPage()) {
             return;
         }
+    
+        $this->enqueueFoundation();
+    
+        $this->enqueueFonts();
+    
+        $this->enqueueTheme();
+    }
 
-        wp_enqueue_style(
-            'gmrc-companion-app',
-            GMRC_URL . 'assets/css/companion-app.css',
-            [],
-            GMRC_VERSION
-        );
+    protected function enqueueFoundation(): void
+    {
+        $styles = [
+            'guild-tokens',
+            'scribe-typography',
+            'parchment',
+            'ledger-motion',
+            'guild-ornaments',
+        ];
+    
+        $dependencies = [];
+    
+        foreach ($styles as $style) {
+    
+            $handle = 'gmrc-' . $style;
+    
+            wp_enqueue_style(
+                $handle,
+                GMRC_URL . 'assets/css/foundation/' . $style . '.css',
+                $dependencies,
+                GMRC_VERSION
+            );
+    
+            $dependencies = [$handle];
+        }
+    }
 
-        wp_enqueue_style(
-            'gmrc-guild-ledger',
-            GMRC_URL . 'assets/css/guild-ledger.css',
-            [],
-            GMRC_VERSION
-        );
-
+    protected function enqueueFonts(): void
+    {
         wp_enqueue_style(
             'gmrc-caveat',
             'https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap',
             [],
             null
+        );
+    }
+
+    protected function enqueueTheme(): void
+    {
+        wp_enqueue_style(
+            'gmrc-guild-ledger',
+            GMRC_URL . 'assets/css/guild-ledger.css',
+            [
+                'gmrc-guild-ornaments',
+            ],
+            GMRC_VERSION
+        );
+    
+        wp_enqueue_style(
+            'gmrc-companion-app',
+            GMRC_URL . 'assets/css/companion-app.css',
+            [
+                'gmrc-guild-ledger',
+            ],
+            GMRC_VERSION
         );
     }
 
