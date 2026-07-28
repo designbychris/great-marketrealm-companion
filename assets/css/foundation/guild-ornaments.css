@@ -1,0 +1,254 @@
+/**
+ * Great Marketrealm Companion
+ * Guild Ornaments
+ */
+
+/*
+ * Ornamental divider
+ */
+.guild-ornament-rule {
+    display: flex;
+    align-items: center;
+    gap: var(--gmrc-space-4);
+
+    width: min(100%, 640px);
+    margin:
+        var(--gmrc-space-8)
+        auto;
+
+    color: var(--gmrc-gold-dark);
+}
+
+.guild-ornament-rule::before,
+.guild-ornament-rule::after {
+    content: "";
+
+    flex: 1;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--gmrc-border-gold)
+        );
+}
+
+.guild-ornament-rule::after {
+    transform: scaleX(-1);
+}
+
+.guild-ornament-rule__symbol {
+    display: inline-grid;
+    place-items: center;
+
+    min-width: 1.4em;
+
+    color: var(--gmrc-gold);
+    font-family: var(--gmrc-font-display);
+    line-height: 1;
+}
+
+/*
+ * Simple flourish
+ */
+.guild-flourish {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gmrc-space-3);
+
+    color: var(--gmrc-brass);
+}
+
+.guild-flourish::before,
+.guild-flourish::after {
+    content: "•";
+
+    color: var(--gmrc-gold-dark);
+    font-size: 0.55em;
+}
+
+/*
+ * Illuminated initial tile
+ */
+.guild-illuminated-initial {
+    position: relative;
+
+    display: inline-grid;
+    place-items: center;
+
+    width: 1.15em;
+    height: 1.15em;
+    padding: 0.08em;
+
+    color: var(--gmrc-wax-600);
+
+    background:
+        radial-gradient(
+            circle at center,
+            var(--gmrc-parchment-50),
+            var(--gmrc-gold-light)
+        );
+
+    border:
+        2px solid
+        var(--gmrc-gold-dark);
+
+    box-shadow:
+        inset 0 0 0 2px
+        rgba(255, 249, 221, 0.55),
+        2px 3px 0
+        rgba(74, 48, 34, 0.14);
+
+    font-family: var(--gmrc-font-display);
+    font-size: 1.8em;
+    line-height: 1;
+}
+
+.guild-illuminated-initial::before,
+.guild-illuminated-initial::after {
+    content: "❦";
+
+    position: absolute;
+
+    color: var(--gmrc-purple-600);
+    font-size: 0.18em;
+}
+
+.guild-illuminated-initial::before {
+    top: 0.25em;
+    left: 0.2em;
+
+    transform: rotate(-35deg);
+}
+
+.guild-illuminated-initial::after {
+    right: 0.2em;
+    bottom: 0.2em;
+
+    transform: rotate(145deg);
+}
+
+/*
+ * Decorative corner
+ */
+.guild-ornamented-corners {
+    position: relative;
+}
+
+.guild-ornamented-corners::before,
+.guild-ornamented-corners::after {
+    content: "❧";
+
+    position: absolute;
+    z-index: var(--gmrc-z-decoration);
+
+    color: var(--gmrc-gold-dark);
+    font-size: 1.2rem;
+    line-height: 1;
+
+    pointer-events: none;
+}
+
+.guild-ornamented-corners::before {
+    top: var(--gmrc-space-4);
+    left: var(--gmrc-space-4);
+
+    transform: rotate(-45deg);
+}
+
+.guild-ornamented-corners::after {
+    right: var(--gmrc-space-4);
+    bottom: var(--gmrc-space-4);
+
+    transform: rotate(135deg);
+}
+
+/*
+ * Ink rule
+ */
+.guild-ink-rule {
+    width: min(100%, 760px);
+    height: 1px;
+    margin:
+        var(--gmrc-space-8)
+        auto;
+
+    border: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--gmrc-ink-faded) 18%,
+            var(--gmrc-ink-faded) 82%,
+            transparent
+        );
+}
+
+/*
+ * Brass pin
+ */
+.guild-pin {
+    display: inline-block;
+
+    width: 22px;
+    height: 22px;
+
+    border:
+        2px solid
+        var(--gmrc-brass-dark);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 34% 30%,
+            #fff5c9 0 8%,
+            var(--gmrc-brass-light) 22%,
+            var(--gmrc-brass) 58%,
+            var(--gmrc-brass-dark) 100%
+        );
+
+    box-shadow:
+        0 4px 5px rgba(55, 31, 10, 0.3),
+        inset -2px -3px 4px rgba(76, 39, 7, 0.28);
+}
+
+/*
+ * Decorative label
+ */
+.guild-cartouche {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gmrc-space-3);
+
+    padding:
+        var(--gmrc-space-2)
+        var(--gmrc-space-5);
+
+    color: var(--gmrc-ink-strong);
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--gmrc-parchment-50),
+            var(--gmrc-parchment-200)
+        );
+
+    border:
+        1px solid
+        var(--gmrc-border-gold);
+
+    box-shadow:
+        inset 0 0 0 2px
+        rgba(255, 251, 233, 0.44),
+        var(--gmrc-shadow-soft);
+
+    font-family: var(--gmrc-font-heading);
+    font-size: var(--gmrc-text-sm);
+    font-weight: 700;
+    letter-spacing: var(--gmrc-tracking-wide);
+    text-transform: uppercase;
+}
