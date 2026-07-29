@@ -1,0 +1,41 @@
+/**
+ * Great Marketrealm Companion
+ * Character Inscription Form
+ */
+
+.character-inscription-form {
+    display: grid;
+    gap: var(--gmrc-space-8);
+}
+
+.character-inscription-form__grid {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap:
+        var(--gmrc-space-6)
+        var(--gmrc-space-8);
+}
+
+.character-inscription-form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--gmrc-space-4);
+
+    padding-top: var(--gmrc-space-6);
+
+    border-top:
+        1px solid
+        var(--gmrc-border-ink);
+}
+
+@media (max-width: 760px) {
+    .character-inscription-form__grid {
+        grid-template-columns: 1fr;
+    }
+}
