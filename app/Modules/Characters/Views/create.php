@@ -247,12 +247,18 @@ $levelError = $fieldError('level');
         </div>
 
         <div class="gmrc-form-actions">
-            <button
-                class="gmrc-button"
-                type="submit"
-            >
-                Create character
-            </button>
+            <?php
+            echo $this->component(
+                'components.controls.wax-button',
+                [
+                    'label'   => 'Record Adventurer',
+                    'type'    => 'submit',
+                    'symbol'  => '✦',
+                    'variant' => 'wax',
+                    'size'    => 'large',
+                ]
+            );
+            ?>
 
             <a class="gmrc-button gmrc-button--secondary" href="<?php echo esc_url(add_query_arg('gmrc_route', 'characters', home_url('/companion/') ) ); ?>" >Cancel</a>
         </div>
