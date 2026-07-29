@@ -1,0 +1,135 @@
+/**
+ * Great Marketrealm Companion
+ * Ledger Ribbon
+ */
+
+.ledger-ribbon {
+    --ledger-ribbon-main: var(--gmrc-purple-600);
+    --ledger-ribbon-dark: var(--gmrc-purple-800);
+    --ledger-ribbon-text: var(--gmrc-parchment-50);
+
+    position: relative;
+    z-index: var(--gmrc-z-decoration);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gmrc-space-2);
+
+    min-height: 2.5rem;
+    padding:
+        var(--gmrc-space-2)
+        var(--gmrc-space-6);
+
+    color: var(--ledger-ribbon-text);
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--ledger-ribbon-main),
+            var(--ledger-ribbon-dark)
+        );
+
+    border:
+        1px solid
+        color-mix(
+            in srgb,
+            var(--ledger-ribbon-dark) 80%,
+            black
+        );
+
+    box-shadow:
+        0 5px 8px rgba(54, 31, 18, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+
+    font-family: var(--gmrc-font-heading);
+    font-size: var(--gmrc-text-sm);
+    font-weight: 700;
+    letter-spacing: var(--gmrc-tracking-wide);
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.ledger-ribbon::before,
+.ledger-ribbon::after {
+    content: "";
+
+    position: absolute;
+    bottom: -0.55rem;
+
+    z-index: -1;
+
+    width: 1rem;
+    height: 0.85rem;
+
+    background: var(--ledger-ribbon-dark);
+}
+
+.ledger-ribbon::before {
+    left: 0.15rem;
+
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        100% 100%
+    );
+}
+
+.ledger-ribbon::after {
+    right: 0.15rem;
+
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        0 100%
+    );
+}
+
+.ledger-ribbon--top-left {
+    position: absolute;
+    top: var(--gmrc-space-5);
+    left: calc(var(--gmrc-space-3) * -1);
+}
+
+.ledger-ribbon--top-right {
+    position: absolute;
+    top: var(--gmrc-space-5);
+    right: calc(var(--gmrc-space-3) * -1);
+}
+
+.ledger-ribbon--inline {
+    position: relative;
+}
+
+.ledger-ribbon--wax {
+    --ledger-ribbon-main: var(--gmrc-wax-500);
+    --ledger-ribbon-dark: var(--gmrc-wax-700);
+}
+
+.ledger-ribbon--gold {
+    --ledger-ribbon-main: var(--gmrc-gold);
+    --ledger-ribbon-dark: var(--gmrc-gold-dark);
+    --ledger-ribbon-text: var(--gmrc-ink-strong);
+}
+
+.ledger-ribbon--leather {
+    --ledger-ribbon-main: var(--gmrc-leather);
+    --ledger-ribbon-dark: var(--gmrc-leather-dark);
+}
+
+.ledger-ribbon__icon {
+    color: var(--gmrc-gold-light);
+    line-height: 1;
+}
+
+@media (max-width: 700px) {
+    .ledger-ribbon--top-left,
+    .ledger-ribbon--top-right {
+        position: relative;
+        top: auto;
+        right: auto;
+        left: auto;
+
+        margin-bottom: var(--gmrc-space-4);
+    }
+}
