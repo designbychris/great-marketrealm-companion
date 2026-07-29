@@ -15,6 +15,7 @@ use GreatMarketrealmCompanion\Providers\SessionServiceProvider;
 use GreatMarketrealmCompanion\Providers\ViewServiceProvider;
 use GreatMarketrealmCompanion\Providers\GuildServiceProvider;
 use GreatMarketrealmCompanion\Providers\RegistryServiceProvider;
+use GreatMarketrealmCompanion\Providers\DefinitionServiceProvider;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -66,6 +67,7 @@ class Kernel
         PageServiceProvider::class,
         HttpServiceProvider::class,
         RouteServiceProvider::class,
+        DefinitionServiceProvider::class,
         FrontendServiceProvider::class,
         GuildServiceProvider::class,
         RegistryServiceProvider::class,
