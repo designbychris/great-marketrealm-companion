@@ -6,6 +6,12 @@ namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
 
+/**
+ * @var iterable          $characters
+ * @var string            $companionUrl
+ * @var GuildSealRegistry $sealRegistry
+ */
+
 defined('ABSPATH') || exit;
 
 /**
