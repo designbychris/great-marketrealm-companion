@@ -16,6 +16,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepositor
 use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequest;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
+use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
 
 defined('ABSPATH') || exit;
 
