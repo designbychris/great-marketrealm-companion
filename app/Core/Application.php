@@ -216,16 +216,6 @@ class Application
             Request::class
         );
     }
-    
-    /**
-     * Retrieve the HTTP response factory.
-     */
-    public function response(): ResponseFactory
-    {
-        return $this->make(
-            ResponseFactory::class
-        );
-    }
 
     /**
      * Return the Definitions service.
@@ -234,6 +224,16 @@ class Application
     {
         return $this->make(
             Definitions::class
+        );
+    }
+    
+    /**
+     * Retrieve the HTTP response factory.
+     */
+    public function response(): ResponseFactory
+    {
+        return $this->make(
+            ResponseFactory::class
         );
     }
     
