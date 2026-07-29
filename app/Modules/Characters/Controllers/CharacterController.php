@@ -74,17 +74,22 @@ class CharacterController
      */
     public function create(): string
     {
-        return Page::make('characters.create')
-            ->title('Create an Adventurer')
-            ->layout('app')
-            ->with([
-                'old'          => [],
-                'errors'       => [],
-                'flash'        => [],
-                'raceOptions'  => $this->raceRegistry->options(),
-                'classOptions' => $this->classRegistry->options(),
-            ])
-            ->render();
+        return $this->views->render(
+            View::make(
+                'characters.create',
+                [
+                    'old' => [],
+                    'errors' => [],
+                    'flash' => [],
+                    'raceOptions' => $this
+                        ->raceRegistry
+                        ->options(),
+                    'classOptions' => $this
+                        ->classRegistry
+                        ->options(),
+                ]
+            )
+        );
     }
 
     /**
