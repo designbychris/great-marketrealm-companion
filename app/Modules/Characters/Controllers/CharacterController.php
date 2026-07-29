@@ -17,6 +17,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequest;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
 use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
+use GreatMarketrealmCompanion\Services\Characters\ClassRegistry;
+use GreatMarketrealmCompanion\Services\Characters\RaceRegistry;
 
 defined('ABSPATH') || exit;
 
@@ -40,7 +42,9 @@ class CharacterController
         protected ResponseFactory $responses,
         protected FlashStore $flash,
         protected Auby $auby,
-        protected GuildSealRegistry $sealRegistry
+        protected GuildSealRegistry $sealRegistry,
+        protected RaceRegistry $raceRegistry,
+        protected ClassRegistry $classRegistry
     ) {
     }
 
