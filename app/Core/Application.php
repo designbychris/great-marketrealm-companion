@@ -8,6 +8,7 @@ use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
 use GreatMarketrealmCompanion\Navigation\Navigation;
 use GreatMarketrealmCompanion\Resources\ResourceRegistry;
+use GreatMarketrealmCompanion\Services\Definitions\Definitions;
 
 defined('ABSPATH') || exit;
 
@@ -223,6 +224,16 @@ class Application
     {
         return $this->make(
             ResponseFactory::class
+        );
+    }
+
+    /**
+     * Return the Definitions service.
+     */
+    public function definitions(): Definitions
+    {
+        return $this->make(
+            Definitions::class
         );
     }
     
