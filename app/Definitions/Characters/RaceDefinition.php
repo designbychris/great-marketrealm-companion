@@ -4,82 +4,79 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Definitions\Characters;
 
-use GreatMarketrealmCompanion\Definitions\Definition;
+defined('ABSPATH') || exit;
 
 /**
- * Fluent definition for a playable race.
+ * Race Definition.
+ *
+ * Describes a playable race within the Great Marketrealm.
+ *
+ * @since 0.3.0
  */
-final class RaceDefinition extends Definition
+final class RaceDefinition extends CharacterDefinition
 {
+    /**
+     * Set the race's walking speed.
+     */
     public function speed(int $speed): static
     {
-        return $this->setAttribute(
+        $this->setAttribute(
             'speed',
             $speed
         );
+
+        return $this;
     }
 
+    /**
+     * Set the race's size.
+     */
     public function size(string $size): static
     {
-        return $this->setAttribute(
+        $this->setAttribute(
             'size',
             $size
         );
+
+        return $this;
     }
 
-    public function language(string $language): static
+    /**
+     * Set the race's typical lifespan.
+     */
+    public function lifespan(string $lifespan): static
     {
-        return $this->addToAttribute(
-            'languages',
-            $language
-        );
-    }
-
-    public function trait(string $trait): static
-    {
-        return $this->addToAttribute(
-            'traits',
-            $trait
-        );
-    }
-
-    public function resistance(string $damageType): static
-    {
-        return $this->addToAttribute(
-            'resistances',
-            $damageType
-        );
-    }
-
-    public function proficiency(string $proficiency): static
-    {
-        return $this->addToAttribute(
-            'proficiencies',
-            $proficiency
-        );
-    }
-
-    public function lifespan(int $years): static
-    {
-        return $this->setAttribute(
+        $this->setAttribute(
             'lifespan',
-            $years
+            $lifespan
         );
+
+        return $this;
     }
 
-    public function creatureType(string $type): static
+    /**
+     * Set the race's creature type.
+     */
+    public function creatureType(string $creatureType): static
     {
-        return $this->setAttribute(
+        $this->setAttribute(
             'creature_type',
-            $type
+            $creatureType
         );
+
+        return $this;
     }
 
-    public function darkvision(int $range = 60): static
+    /**
+     * Set the race's darkvision distance.
+     */
+    public function darkvision(int $distance): static
     {
-        return $this->setAttribute(
+        $this->setAttribute(
             'darkvision',
-            $range
+            $distance
         );
+
+        return $this;
     }
 }
