@@ -228,12 +228,18 @@ $guildSeal = $sealRegistry->for($class);
             );
             ?>
 
-            <a
-                class="paper-button"
-                href="<?php echo esc_url($editUrl); ?>"
-            >
-                Edit Adventurer
-            </a>
+            <?php
+            echo $this->component(
+                'components.controls.paper-button',
+                [
+                    'label'   => 'Edit Adventurer',
+                    'href'    => $editUrl,
+                    'symbol'  => '✎',
+                    'variant' => 'parchment',
+                    'size'    => 'medium',
+                ]
+            );
+            ?>
         </footer>
     </div>
 </article>
