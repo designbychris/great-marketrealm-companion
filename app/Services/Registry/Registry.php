@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Services\Registry;
 
+use GreatMarketrealmCompanion\Definitions\Definition;
+use InvalidArgumentException;
+
 /**
  * Base class for application registries.
  */
@@ -52,6 +55,17 @@ abstract class Registry
     }
 
     /**
+     * Register a game-content definition.
+     */
+    protected function registerDefinition(
+        Definition $definition
+    ): void {
+        $this->add(
+            $definition->toRegistryItem()
+        );
+    }
+
+    /**
      * Register multiple registry items.
      *
      * @param array<int, RegistryItem> $items
@@ -60,7 +74,7 @@ abstract class Registry
     {
         foreach ($items as $item) {
             if (! $item instanceof RegistryItem) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'Every item passed to registerMany() must be a RegistryItem.'
                 );
             }
@@ -70,10 +84,36 @@ abstract class Registry
     }
 
     /**
-     * Add or replace an item at runtime.
+     * Register multiple game-content definitions.
+     *
+     * @param array<int, Definition> $definitions
      */
-    public function set(RegistryItem $item): void
-    {
+    protected function registerDefinitions(
+        array $definitions
+    ): void {
+        foreach ($definitions as $definition) {
+            if (! $definition instanceof Definition) {
+                throw new InvalidArgumentException(
+                    'Every item passed to registerDefinitions() must be a Definition.'
+                );
+            }
+
+            $this->registerDefinition($definition);
+        }
+    }
+
+    /**
+     * Add or replace a registry item or definition at runtime.
+     */
+    public function set(
+        RegistryItem|Definition $item
+    ): void {
+        if ($item instanceof Definition) {
+            $this->registerDefinition($item);
+
+            return;
+        }
+
         $this->add($item);
     }
 
@@ -87,8 +127,7 @@ abstract class Registry
 
     public function get(string $key): ?RegistryItem
     {
-        return $this->items[$key]
-            ?? null;
+        return $this->items[$key] ?? null;
     }
 
     public function has(string $key): bool
