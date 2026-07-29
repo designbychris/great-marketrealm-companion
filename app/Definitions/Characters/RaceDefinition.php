@@ -6,16 +6,11 @@ namespace GreatMarketrealmCompanion\Definitions\Characters;
 
 use GreatMarketrealmCompanion\Definitions\Definition;
 
+/**
+ * Fluent definition for a playable race.
+ */
 final class RaceDefinition extends Definition
 {
-    public function description(string $description): static
-    {
-        return $this->setAttribute(
-            'description',
-            $description
-        );
-    }
-
     public function speed(int $speed): static
     {
         return $this->setAttribute(
@@ -85,30 +80,6 @@ final class RaceDefinition extends Definition
         return $this->setAttribute(
             'darkvision',
             $range
-        );
-    }
-
-    public function icon(string $icon): static
-    {
-        return $this->setAttribute(
-            'icon',
-            $icon
-        );
-    }
-
-    public function portrait(string $portrait): static
-    {
-        return $this->setAttribute(
-            'portrait',
-            $portrait
-        );
-    }
-
-    public function colour(string $colour): static
-    {
-        return $this->setAttribute(
-            'colour',
-            $colour
         );
     }
 }
