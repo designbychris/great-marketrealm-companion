@@ -1667,7 +1667,6 @@
    Ledger actions
    ========================================================= */
 
-.wax-button,
 .paper-button {
 	display: inline-flex;
 	align-items: center;
@@ -1682,42 +1681,6 @@
 		transform var(--gmrc-transition),
 		box-shadow var(--gmrc-transition),
 		background-color var(--gmrc-transition);
-}
-
-.wax-button {
-	gap: 0.5rem;
-	padding: 0.55rem 1rem 0.55rem 0.65rem;
-	color: var(--gmrc-flour-white);
-	background:
-		linear-gradient(
-			180deg,
-			#9f4457,
-			var(--gmrc-beetroot)
-		);
-	border: 1px solid #5f2130;
-	border-radius: 0.2rem;
-	box-shadow:
-		0 0.3rem 0.6rem rgba(67, 28, 36, 0.2),
-		inset 0 1px rgba(255, 255, 255, 0.18);
-}
-
-.wax-button__seal {
-	display: grid;
-	place-items: center;
-	width: 1.75rem;
-	aspect-ratio: 1;
-	color: #f7d889;
-	background: rgba(76, 22, 34, 0.35);
-	border: 1px dashed rgba(247, 216, 137, 0.7);
-	border-radius: 50%;
-}
-
-.wax-button:hover {
-	color: var(--gmrc-flour-white);
-	transform: translateY(-0.1rem);
-	box-shadow:
-		0 0.5rem 0.8rem rgba(67, 28, 36, 0.25),
-		inset 0 1px rgba(255, 255, 255, 0.18);
 }
 
 .paper-button {
@@ -1873,7 +1836,6 @@
 		flex-direction: column;
 	}
 
-	.wax-button,
 	.paper-button {
 		width: 100%;
 	}
