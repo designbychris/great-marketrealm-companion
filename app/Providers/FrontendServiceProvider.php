@@ -253,6 +253,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'handle' => 'gmrc-character-inscription-form',
                 'path'   => 'modules/characters/character-inscription-form.css',
             ],
+            [
+                'handle' => 'gmrc-wax-button',
+                'path'   => 'components/controls/wax-button.css',
+            ],
         ];
     
         foreach ($components as $component) {
