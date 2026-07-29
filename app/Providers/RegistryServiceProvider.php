@@ -15,16 +15,17 @@ final class RegistryServiceProvider extends ServiceProvider
 
         $container->singleton(
             RaceRegistry::class,
-            static function (): RaceRegistry {
-                return new RaceRegistry();
-            }
+            static fn () => new RaceRegistry()
         );
 
         $container->singleton(
             ClassRegistry::class,
-            static function (): ClassRegistry {
-                return new ClassRegistry();
-            }
+            static fn () => new ClassRegistry()
         );
+    }
+
+    public function boot(): void
+    {
+        // Nothing to boot yet.
     }
 }
