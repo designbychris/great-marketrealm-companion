@@ -120,26 +120,18 @@ $sealModifier = $class !== ''
 
     <div class="adventurer-card__content">
         <div class="adventurer-card__heading">
-            <div
-                class="<?php echo esc_attr(
-                    implode(
-                        ' ',
-                        array(
-                            'guild-seal',
-                            $sealModifier,
-                        )
-                    )
-                ); ?>"
-                role="img"
-                aria-label="<?php echo esc_attr($sealLabel); ?>"
-            >
-                <span
-                    class="guild-seal__inner"
-                    aria-hidden="true"
-                >
-                    ✦
-                </span>
-            </div>
+            <?php
+            echo $this->component(
+                'components.media.guild-seal',
+                [
+                    'symbol'  => '✦',
+                    'label'   => $sealLabel,
+                    'variant' => 'wax',
+                    'size'    => 'medium',
+                    'class'   => $sealModifier,
+                ]
+            );
+            ?>
 
             <div class="adventurer-card__identity">
                 <p class="adventurer-card__kicker">
