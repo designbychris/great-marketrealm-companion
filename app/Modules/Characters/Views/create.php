@@ -8,6 +8,14 @@ $old = is_array($old ?? null)
 
 $errors = $errors ?? null;
 
+$raceOptions = is_array($raceOptions ?? null)
+    ? $raceOptions
+    : [];
+
+$classOptions = is_array($classOptions ?? null)
+    ? $classOptions
+    : [];
+
 /**
  * Retrieve the first validation error for a field.
  */
