@@ -6,14 +6,19 @@
  *
  * @var object $character    Character model.
  * @var string $companionUrl Base Companion URL.
+ * @var GuildSealRegistry $sealRegistry
  */
+
+use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
 
 defined('ABSPATH') || exit;
 
 if (
     ! isset($character) ||
     ! is_object($character) ||
-    ! isset($companionUrl)
+    ! isset($companionUrl) ||
+    ! isset($sealRegistry) ||
+    ! $sealRegistry instanceof GuildSealRegistry
 ) {
     return;
 }
@@ -65,21 +70,7 @@ $displayTitleParts = array_filter(
 
 $displayTitle = implode(' · ', $displayTitleParts);
 
-$sealLabel = $class !== ''
-    ? sprintf('%s Guild Seal', $class)
-    : 'Adventurer Guild Seal';
-
-/*
- * Create a safe class name for future class-specific seal styling.
- *
- * Example:
- * "Cleaver Saint" becomes "guild-seal--cleaver-saint".
- */
-$sealModifier = $class !== ''
-    ? 'guild-seal--' . sanitize_html_class(
-        sanitize_title($class)
-    )
-    : 'guild-seal--adventurer';
+$guildSeal = $sealRegistry->for($class);
 ?>
 
 <article class="adventurer-card">
@@ -123,13 +114,7 @@ $sealModifier = $class !== ''
             <?php
             echo $this->component(
                 'components.media.guild-seal',
-                [
-                    'symbol'  => '✦',
-                    'label'   => $sealLabel,
-                    'variant' => 'wax',
-                    'size'    => 'medium',
-                    'class'   => $sealModifier,
-                ]
+                $guildSeal
             );
             ?>
 
