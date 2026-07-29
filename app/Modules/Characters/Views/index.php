@@ -79,6 +79,7 @@ ob_start();
 			        'components.entries.adventurer-entry',
 			        [
 			            'character'    => $character,
+						'sealRegistry' => $sealRegistry,
 			            'companionUrl' => $companionUrl,
 			        ]
 			    );
