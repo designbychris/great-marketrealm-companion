@@ -5,149 +5,152 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Services\Characters;
 
 use GreatMarketrealmCompanion\Services\Registry\Registry;
-use GreatMarketrealmCompanion\Services\Registry\RegistryItem;
 
 final class ClassRegistry extends Registry
 {
     protected function register(): void
     {
-        $this->addClass(
+        $this->registerItem(
             key: 'artificer',
             name: 'Artificer',
-            hitDie: 'd8',
-            primaryAbility: 'Intelligence',
-            spellcaster: true,
-            guildSeal: 'artificer',
+            attributes: [
+                'hit_die'         => 'd8',
+                'primary_ability' => 'Intelligence',
+                'spellcaster'     => true,
+                'guild_seal'      => 'artificer',
+            ],
         );
 
-        $this->addClass(
+        $this->registerItem(
             key: 'barbarian',
             name: 'Barbarian',
-            hitDie: 'd12',
-            primaryAbility: 'Strength',
-            spellcaster: false,
-            guildSeal: 'barbarian',
+            attributes: [
+                'hit_die'         => 'd12',
+                'primary_ability' => 'Strength',
+                'spellcaster'     => false,
+                'guild_seal'      => 'barbarian',
+            ],
         );
 
-        $this->addClass(
+        $this->registerItem(
             key: 'bard',
             name: 'Bard',
-            hitDie: 'd8',
-            primaryAbility: 'Charisma',
-            spellcaster: true,
-            guildSeal: 'bard',
+            attributes: [
+                'hit_die'         => 'd8',
+                'primary_ability' => 'Charisma',
+                'spellcaster'     => true,
+                'guild_seal'      => 'bard',
+            ],
         );
 
-        $this->addClass(
+        $this->registerItem(
             key: 'cleric',
             name: 'Cleric',
-            hitDie: 'd8',
-            primaryAbility: 'Wisdom',
-            spellcaster: true,
-            guildSeal: 'cleric',
+            attributes: [
+                'hit_die'         => 'd8',
+                'primary_ability' => 'Wisdom',
+                'spellcaster'     => true,
+                'guild_seal'      => 'cleric',
+            ],
         );
 
-        $this->addClass(
+        $this->registerItem(
             key: 'druid',
             name: 'Druid',
-            hitDie: 'd8',
-            primaryAbility: 'Wisdom',
-            spellcaster: true,
-            guildSeal: 'druid',
+            attributes: [
+                'hit_die'         => 'd8',
+                'primary_ability' => 'Wisdom',
+                'spellcaster'     => true,
+                'guild_seal'      => 'druid',
+            ],
         );
 
-        $this->addClass(
+        $this->registerItem(
             key: 'fighter',
             name: 'Fighter',
-            hitDie: 'd10',
-            primaryAbility: 'Strength or Dexterity',
-            spellcaster: false,
-            guildSeal: 'fighter',
+            attributes: [
+                'hit_die'         => 'd10',
+                'primary_ability' => 'Strength or Dexterity',
+                'spellcaster'     => false,
+                'guild_seal'      => 'fighter',
+            ],
         );
 
-        $this->addClass(
+        $this->registerItem(
             key: 'monk',
             name: 'Monk',
-            hitDie: 'd8',
-            primaryAbility: 'Dexterity and Wisdom',
-            spellcaster: false,
-            guildSeal: 'monk',
+            attributes: [
+                'hit_die'         => 'd8',
+                'primary_ability' => 'Dexterity and Wisdom',
+                'spellcaster'     => false,
+                'guild_seal'      => 'monk',
+            ],
         );
 
-        $this->addClass(
+        $this->registerItem(
             key: 'paladin',
             name: 'Paladin',
-            hitDie: 'd10',
-            primaryAbility: 'Strength and Charisma',
-            spellcaster: true,
-            guildSeal: 'paladin',
+            attributes: [
+                'hit_die'         => 'd10',
+                'primary_ability' => 'Strength and Charisma',
+                'spellcaster'     => true,
+                'guild_seal'      => 'paladin',
+            ],
         );
 
-        $this->addClass(
+        $this->registerItem(
             key: 'ranger',
             name: 'Ranger',
-            hitDie: 'd10',
-            primaryAbility: 'Dexterity and Wisdom',
-            spellcaster: true,
-            guildSeal: 'ranger',
+            attributes: [
+                'hit_die'         => 'd10',
+                'primary_ability' => 'Dexterity and Wisdom',
+                'spellcaster'     => true,
+                'guild_seal'      => 'ranger',
+            ],
         );
 
-        $this->addClass(
+        $this->registerItem(
             key: 'rogue',
             name: 'Rogue',
-            hitDie: 'd8',
-            primaryAbility: 'Dexterity',
-            spellcaster: false,
-            guildSeal: 'rogue',
+            attributes: [
+                'hit_die'         => 'd8',
+                'primary_ability' => 'Dexterity',
+                'spellcaster'     => false,
+                'guild_seal'      => 'rogue',
+            ],
         );
 
-        $this->addClass(
+        $this->registerItem(
             key: 'sorcerer',
             name: 'Sorcerer',
-            hitDie: 'd6',
-            primaryAbility: 'Charisma',
-            spellcaster: true,
-            guildSeal: 'sorcerer',
+            attributes: [
+                'hit_die'         => 'd6',
+                'primary_ability' => 'Charisma',
+                'spellcaster'     => true,
+                'guild_seal'      => 'sorcerer',
+            ],
         );
 
-        $this->addClass(
+        $this->registerItem(
             key: 'warlock',
             name: 'Warlock',
-            hitDie: 'd8',
-            primaryAbility: 'Charisma',
-            spellcaster: true,
-            guildSeal: 'warlock',
+            attributes: [
+                'hit_die'         => 'd8',
+                'primary_ability' => 'Charisma',
+                'spellcaster'     => true,
+                'guild_seal'      => 'warlock',
+            ],
         );
 
-        $this->addClass(
+        $this->registerItem(
             key: 'wizard',
             name: 'Wizard',
-            hitDie: 'd6',
-            primaryAbility: 'Intelligence',
-            spellcaster: true,
-            guildSeal: 'wizard',
-        );
-    }
-
-    private function addClass(
-        string $key,
-        string $name,
-        string $hitDie,
-        string $primaryAbility,
-        bool $spellcaster,
-        string $guildSeal
-    ): void {
-        $this->add(
-            new RegistryItem(
-                key: $key,
-                name: $name,
-                attributes: [
-                    'hit_die'         => $hitDie,
-                    'primary_ability' => $primaryAbility,
-                    'spellcaster'     => $spellcaster,
-                    'guild_seal'      => $guildSeal,
-                ],
-            )
+            attributes: [
+                'hit_die'         => 'd6',
+                'primary_ability' => 'Intelligence',
+                'spellcaster'     => true,
+                'guild_seal'      => 'wizard',
+            ],
         );
     }
 }
