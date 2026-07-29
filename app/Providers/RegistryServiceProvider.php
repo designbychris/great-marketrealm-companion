@@ -12,28 +12,25 @@ defined('ABSPATH') || exit;
 /**
  * Registry Service Provider.
  *
- * Registers the application's character registries.
+ * Registers services belonging to the Registry domain.
  *
- * @package MarketrealmCompanion
  * @since 0.3.0
  */
 final class RegistryServiceProvider extends ServiceProvider
 {
     /**
-     * Register registry services.
+     * Register Registry services.
      */
     public function register(): void
     {
-        $container = $this->app->container();
-
-        $container->singleton(
+        $this->app->container()->singleton(
             RaceRegistry::class,
             static function (): RaceRegistry {
                 return new RaceRegistry();
             }
         );
 
-        $container->singleton(
+        $this->app->container()->singleton(
             ClassRegistry::class,
             static function (): ClassRegistry {
                 return new ClassRegistry();
@@ -42,10 +39,9 @@ final class RegistryServiceProvider extends ServiceProvider
     }
 
     /**
-     * Boot registry services.
+     * Boot Registry services.
      */
     public function boot(): void
     {
-        // Registries currently require no boot-time behaviour.
     }
 }
