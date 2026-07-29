@@ -121,7 +121,7 @@ $classes = array_filter([
                 <option
                     value=""
                     <?php selected($value, ''); ?>
-                    <?php disabled($required && $value === ''); ?>
+                    <?php disabled($required); ?>
                 >
                     <?php echo esc_html($placeholder); ?>
                 </option>
