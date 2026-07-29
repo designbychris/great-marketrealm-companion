@@ -1,0 +1,145 @@
+/**
+ * Great Marketrealm Companion
+ * Guild Seal
+ */
+
+.guild-seal {
+    --guild-seal-size: 3.6rem;
+    --guild-seal-main: var(--gmrc-wax-500);
+    --guild-seal-dark: var(--gmrc-wax-700);
+    --guild-seal-light: var(--gmrc-wax-100);
+
+    position: relative;
+
+    display: inline-grid;
+    place-items: center;
+
+    width: var(--guild-seal-size);
+    height: var(--guild-seal-size);
+
+    flex: 0 0 auto;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 28%,
+            var(--guild-seal-light),
+            var(--guild-seal-main) 34%,
+            var(--guild-seal-dark) 76%
+        );
+
+    box-shadow:
+        0 6px 9px rgba(54, 31, 18, 0.24),
+        inset -4px -5px 7px rgba(54, 31, 18, 0.24),
+        inset 3px 3px 5px rgba(255, 245, 220, 0.18);
+
+    transform: rotate(-3deg);
+}
+
+.guild-seal::before,
+.guild-seal::after {
+    content: "";
+
+    position: absolute;
+
+    z-index: -1;
+
+    width: 56%;
+    height: 56%;
+
+    background: var(--guild-seal-dark);
+
+    border-radius:
+        45%
+        55%
+        42%
+        58%;
+
+    opacity: 0.88;
+}
+
+.guild-seal::before {
+    top: -4%;
+    left: -6%;
+
+    transform: rotate(28deg);
+}
+
+.guild-seal::after {
+    right: -5%;
+    bottom: -6%;
+
+    transform: rotate(-22deg);
+}
+
+.guild-seal__rim {
+    display: grid;
+    place-items: center;
+
+    width: 73%;
+    height: 73%;
+
+    border:
+        2px solid
+        rgba(63, 29, 22, 0.5);
+
+    border-radius: 50%;
+
+    box-shadow:
+        inset 0 0 0 2px
+        rgba(255, 237, 207, 0.13);
+}
+
+.guild-seal__inner {
+    display: grid;
+    place-items: center;
+
+    width: 72%;
+    height: 72%;
+
+    color: rgba(255, 235, 207, 0.88);
+
+    border:
+        1px solid
+        rgba(72, 34, 25, 0.46);
+
+    border-radius: 50%;
+
+    font-family: var(--gmrc-font-display);
+    font-size: calc(var(--guild-seal-size) * 0.28);
+    line-height: 1;
+
+    text-shadow:
+        1px 1px 0 rgba(67, 29, 23, 0.45);
+}
+
+.guild-seal--small {
+    --guild-seal-size: 2.5rem;
+}
+
+.guild-seal--medium {
+    --guild-seal-size: 3.6rem;
+}
+
+.guild-seal--large {
+    --guild-seal-size: 5.25rem;
+}
+
+.guild-seal--purple {
+    --guild-seal-main: var(--gmrc-purple-600);
+    --guild-seal-dark: var(--gmrc-purple-800);
+    --guild-seal-light: var(--gmrc-purple-300);
+}
+
+.guild-seal--gold {
+    --guild-seal-main: var(--gmrc-gold);
+    --guild-seal-dark: var(--gmrc-gold-dark);
+    --guild-seal-light: var(--gmrc-gold-light);
+}
+
+.guild-seal--ink {
+    --guild-seal-main: var(--gmrc-ink-soft);
+    --guild-seal-dark: var(--gmrc-ink-strong);
+    --guild-seal-light: var(--gmrc-ink-muted);
+}
