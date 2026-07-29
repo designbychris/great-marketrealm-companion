@@ -215,21 +215,18 @@ $guildSeal = $sealRegistry->for($class);
         </dl>
 
         <footer class="adventurer-card__actions">
-            <a
-                class="wax-button"
-                href="<?php echo esc_url($viewUrl); ?>"
-            >
-                <span
-                    class="wax-button__seal"
-                    aria-hidden="true"
-                >
-                    ✦
-                </span>
-
-                <span class="wax-button__label">
-                    Open Ledger
-                </span>
-            </a>
+            <?php
+            echo $this->component(
+                'components.controls.wax-button',
+                [
+                    'label'   => 'Open Ledger',
+                    'href'    => $viewUrl,
+                    'symbol'  => '✦',
+                    'variant' => 'wax',
+                    'size'    => 'medium',
+                ]
+            );
+            ?>
 
             <a
                 class="paper-button"
