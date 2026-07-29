@@ -66,6 +66,12 @@ $nameError = $fieldError('name');
 $raceError = $fieldError('race');
 $classError = $fieldError('class');
 $levelError = $fieldError('level');
+
+$charactersUrl = add_query_arg(
+    'gmrc_route',
+    'characters',
+    home_url('/companion/')
+);
 ?>
 
 <section class="gmrc-character-creator">
@@ -260,7 +266,18 @@ $levelError = $fieldError('level');
             );
             ?>
 
-            <a class="gmrc-button gmrc-button--secondary" href="<?php echo esc_url(add_query_arg('gmrc_route', 'characters', home_url('/companion/') ) ); ?>" >Cancel</a>
+            <?php
+            echo $this->component(
+                'components.controls.paper-button',
+                [
+                    'label'   => 'Return to Register',
+                    'href'    => $charactersUrl,
+                    'symbol'  => '‹',
+                    'variant' => 'parchment',
+                    'size'    => 'large',
+                ]
+            );
+            ?>
         </div>
     </form>
 
