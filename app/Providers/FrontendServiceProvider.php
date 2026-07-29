@@ -249,6 +249,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'handle' => 'gmrc-ink-checkbox',
                 'path'   => 'components/controls/ink-checkbox.css',
             ],
+            [
+                'handle' => 'gmrc-character-inscription-form',
+                'path'   => 'modules/characters/character-inscription-form.css',
+            ],
         ];
     
         foreach ($components as $component) {
