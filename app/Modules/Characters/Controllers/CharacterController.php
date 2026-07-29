@@ -39,7 +39,8 @@ class CharacterController
         protected Request $request,
         protected ResponseFactory $responses,
         protected FlashStore $flash,
-        protected Auby $auby
+        protected Auby $auby,
+        protected GuildSealRegistry $sealRegistry
     ) {
     }
 
@@ -57,6 +58,8 @@ class CharacterController
                     'aubyQuote' => $this->auby->for(
                         QuoteCategories::REGISTER
                     ),
+
+                'sealRegistry' => $this->sealRegistry,
                 ]
             )
         );
