@@ -119,35 +119,20 @@ $levelError = $fieldError('level');
         ?>
 
         <div class="gmrc-form-field">
-            <label for="character-name">
-                Character name
-                <span aria-hidden="true">*</span>
-            </label>
-
-            <input
-                id="character-name"
-                name="name"
-                type="text"
-                value="<?php echo esc_attr(
-                    $old['name'] ?? ''
-                ); ?>"
-                maxlength="100"
-                autocomplete="off"
-                required
-                <?php if ($nameError !== null) : ?>
-                    aria-invalid="true"
-                    aria-describedby="character-name-error"
-                <?php endif; ?>
-            >
-
-            <?php if ($nameError !== null) : ?>
-                <p
-                    id="character-name-error"
-                    class="gmrc-form-error"
-                >
-                    <?php echo esc_html($nameError); ?>
-                </p>
-            <?php endif; ?>
+            <?php
+            echo $this->component(
+                'components.controls.scribe-input',
+                [
+                    'name'         => 'name',
+                    'label'        => 'Character name',
+                    'value'        => $old['name'] ?? '',
+                    'required'     => true,
+                    'autocomplete' => 'off',
+                    'placeholder'  => 'Record the adventurer\'s name',
+                    'error'        => $nameError,
+                ]
+            );
+            ?>
         </div>
 
         <div class="gmrc-form-field">
