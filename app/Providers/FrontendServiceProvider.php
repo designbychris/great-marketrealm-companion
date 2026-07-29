@@ -237,6 +237,18 @@ class FrontendServiceProvider extends ServiceProvider
                 'handle' => 'gmrc-ledger-ribbon',
                 'path'   => 'components/furniture/ledger-ribbon.css',
             ],
+            [
+                'handle' => 'gmrc-scribe-input',
+                'path'   => 'components/controls/scribe-input.css',
+            ],
+            [
+                'handle' => 'gmrc-parchment-select',
+                'path'   => 'components/controls/parchment-select.css',
+            ],
+            [
+                'handle' => 'gmrc-ink-checkbox',
+                'path'   => 'components/controls/ink-checkbox.css',
+            ],
         ];
     
         foreach ($components as $component) {
