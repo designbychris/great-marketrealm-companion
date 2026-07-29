@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Services\Characters\ClassRegistry;
 use GreatMarketrealmCompanion\Services\Characters\RaceRegistry;
+use GreatMarketrealmCompanion\Services\Definitions\Definitions;
 
 defined('ABSPATH') || exit;
 
