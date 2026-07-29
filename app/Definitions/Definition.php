@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Definitions;
 
-use GreatMarketrealmCompanion\Services\Registry\Registry;
 use GreatMarketrealmCompanion\Services\Registry\RegistryItem;
 
 /**
  * Base class for fluent game-content definitions.
+ *
+ * Definitions describe game content but know nothing about
+ * how or where that content is stored.
  */
 abstract class Definition
 {
@@ -17,17 +19,14 @@ abstract class Definition
      */
     protected array $attributes = [];
 
-    private bool $registered = false;
-
     public function __construct(
-        protected Registry $registry,
         protected string $key,
         protected string $name
     ) {
     }
 
     /**
-     * Set an attribute on the definition.
+     * Set an attribute.
      */
     protected function setAttribute(
         string $key,
@@ -39,9 +38,7 @@ abstract class Definition
     }
 
     /**
-     * Add a value to an array-based attribute.
-     *
-     * Useful for traits, languages, proficiencies and similar values.
+     * Append a value to an array attribute.
      */
     protected function addToAttribute(
         string $key,
@@ -60,25 +57,53 @@ abstract class Definition
         return $this;
     }
 
-    /**
-     * Register this definition with its registry.
-     */
-    final public function register(): void
-    {
-        if ($this->registered) {
-            return;
-        }
+    /*
+    |--------------------------------------------------------------------------
+    | Common Definition Attributes
+    |--------------------------------------------------------------------------
+    */
 
-        $this->registry->set(
-            new RegistryItem(
-                key: $this->key,
-                name: $this->name,
-                attributes: $this->attributes,
-            )
+    public function description(
+        string $description
+    ): static {
+        return $this->setAttribute(
+            'description',
+            $description
         );
-
-        $this->registered = true;
     }
+
+    public function icon(
+        string $icon
+    ): static {
+        return $this->setAttribute(
+            'icon',
+            $icon
+        );
+    }
+
+    public function portrait(
+        string $portrait
+    ): static {
+        return $this->setAttribute(
+            'portrait',
+            $portrait
+        );
+    }
+
+    public function colour(
+        string $colour
+    ): static {
+        return $this->setAttribute(
+            'colour',
+            $colour
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Information
+    |--------------------------------------------------------------------------
+    */
 
     public function key(): string
     {
@@ -91,15 +116,36 @@ abstract class Definition
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string,mixed>
      */
     public function attributes(): array
     {
         return $this->attributes;
     }
 
-    public function isRegistered(): bool
+    /**
+     * Convert the definition into a RegistryItem.
+     */
+    public function toRegistryItem(): RegistryItem
     {
-        return $this->registered;
+        return new RegistryItem(
+            key: $this->key,
+            name: $this->name,
+            attributes: $this->attributes,
+        );
+    }
+
+    /**
+     * Convert the definition into an array.
+     *
+     * @return array<string,mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'key' => $this->key,
+            'name' => $this->name,
+            'attributes' => $this->attributes,
+        ];
     }
 }
