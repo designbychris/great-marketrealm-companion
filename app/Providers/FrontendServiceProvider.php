@@ -179,10 +179,10 @@ class FrontendServiceProvider extends ServiceProvider
         }
     
         $this->enqueueFoundation();
-    
         $this->enqueueFonts();
-    
+        $this->enqueueComponents();
         $this->enqueueTheme();
+
     }
 
     protected function enqueueFoundation(): void
@@ -220,6 +220,37 @@ class FrontendServiceProvider extends ServiceProvider
             [],
             null
         );
+    }
+
+    protected function enqueueComponents(): void
+    {
+        $components = [
+            [
+                'handle' => 'gmrc-margin-note',
+                'path'   => 'components/furniture/margin-note.css',
+            ],
+            [
+                'handle' => 'gmrc-guild-seal',
+                'path'   => 'components/media/guild-seal.css',
+            ],
+            [
+                'handle' => 'gmrc-ledger-ribbon',
+                'path'   => 'components/furniture/ledger-ribbon.css',
+            ],
+        ];
+    
+        foreach ($components as $component) {
+            wp_enqueue_style(
+                $component['handle'],
+                GMRC_URL
+                    . 'assets/css/'
+                    . $component['path'],
+                [
+                    'gmrc-guild-ornaments',
+                ],
+                GMRC_VERSION
+            );
+        }
     }
 
     protected function enqueueTheme(): void
