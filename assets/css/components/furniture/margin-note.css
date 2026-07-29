@@ -1,0 +1,162 @@
+/**
+ * Great Marketrealm Companion
+ * Margin Note
+ */
+
+.margin-note {
+    --margin-note-ink: var(--gmrc-ink-soft);
+    --margin-note-rotation: -1deg;
+
+    position: relative;
+
+    width: min(100%, 18rem);
+    margin-block: var(--gmrc-space-6);
+    padding:
+        var(--gmrc-space-5)
+        var(--gmrc-space-5)
+        var(--gmrc-space-4);
+
+    color: var(--margin-note-ink);
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 1.55rem,
+            rgba(74, 48, 34, 0.09) 1.55rem,
+            rgba(74, 48, 34, 0.09) calc(1.55rem + 1px)
+        ),
+        linear-gradient(
+            145deg,
+            rgba(255, 250, 240, 0.74),
+            rgba(242, 223, 178, 0.68)
+        );
+
+    border-left:
+        2px solid
+        color-mix(
+            in srgb,
+            var(--margin-note-ink) 35%,
+            transparent
+        );
+
+    transform: rotate(var(--margin-note-rotation));
+
+    box-shadow:
+        4px 7px 12px rgba(54, 31, 18, 0.08);
+}
+
+.margin-note::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at 82% 16%,
+            rgba(107, 62, 27, 0.08),
+            transparent 18%
+        );
+}
+
+.margin-note--left {
+    float: left;
+    clear: left;
+
+    margin-right: var(--gmrc-space-8);
+    margin-left: calc(var(--gmrc-space-8) * -1);
+
+    --margin-note-rotation: -1.2deg;
+}
+
+.margin-note--right {
+    float: right;
+    clear: right;
+
+    margin-right: calc(var(--gmrc-space-8) * -1);
+    margin-left: var(--gmrc-space-8);
+
+    --margin-note-rotation: 1deg;
+}
+
+.margin-note--inline {
+    float: none;
+
+    width: min(100%, 32rem);
+    margin-inline: auto;
+
+    --margin-note-rotation: -0.4deg;
+}
+
+.margin-note--purple {
+    --margin-note-ink: var(--gmrc-purple-700);
+}
+
+.margin-note--wax {
+    --margin-note-ink: var(--gmrc-wax-600);
+}
+
+.margin-note--faded {
+    --margin-note-ink: var(--gmrc-ink-muted);
+
+    opacity: 0.84;
+}
+
+.margin-note__mark {
+    position: absolute;
+    top: var(--gmrc-space-3);
+    right: var(--gmrc-space-3);
+
+    color: var(--gmrc-gold);
+    font-size: var(--gmrc-text-sm);
+}
+
+.margin-note__title {
+    margin: 0 0 var(--gmrc-space-2);
+
+    color: inherit;
+    font-family: var(--gmrc-font-heading);
+    font-size: var(--gmrc-text-sm);
+    font-weight: 700;
+    letter-spacing: var(--gmrc-tracking-wide);
+    text-transform: uppercase;
+}
+
+.margin-note__content {
+    position: relative;
+
+    margin: 0;
+
+    font-family: var(--gmrc-font-handwritten);
+    font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.margin-note__author {
+    position: relative;
+
+    margin:
+        var(--gmrc-space-3)
+        0
+        0;
+
+    color: inherit;
+    font-family: var(--gmrc-font-handwritten);
+    font-size: var(--gmrc-text-lg);
+    font-weight: 600;
+    text-align: right;
+}
+
+@media (max-width: 1100px) {
+    .margin-note--left,
+    .margin-note--right {
+        float: none;
+
+        width: min(100%, 32rem);
+        margin-inline: auto;
+    }
+}
