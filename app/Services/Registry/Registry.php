@@ -24,9 +24,49 @@ abstract class Registry
      */
     abstract protected function register(): void;
 
+    /**
+     * Add a registry item.
+     */
     protected function add(RegistryItem $item): void
     {
         $this->items[$item->key()] = $item;
+    }
+
+    /**
+     * Register an item using its key, name and attributes.
+     *
+     * @param array<string, mixed> $attributes
+     */
+    protected function registerItem(
+        string $key,
+        string $name,
+        array $attributes = []
+    ): void {
+        $this->add(
+            new RegistryItem(
+                key: $key,
+                name: $name,
+                attributes: $attributes,
+            )
+        );
+    }
+
+    /**
+     * Register multiple registry items.
+     *
+     * @param array<int, RegistryItem> $items
+     */
+    protected function registerMany(array $items): void
+    {
+        foreach ($items as $item) {
+            if (! $item instanceof RegistryItem) {
+                throw new \InvalidArgumentException(
+                    'Every item passed to registerMany() must be a RegistryItem.'
+                );
+            }
+
+            $this->add($item);
+        }
     }
 
     /**
