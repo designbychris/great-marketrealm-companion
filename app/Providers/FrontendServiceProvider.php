@@ -257,6 +257,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'handle' => 'gmrc-wax-button',
                 'path'   => 'components/controls/wax-button.css',
             ],
+            [
+                'handle' => 'gmrc-paper-button',
+                'path'   => 'components/controls/paper-button.css',
+            ],
         ];
     
         foreach ($components as $component) {
