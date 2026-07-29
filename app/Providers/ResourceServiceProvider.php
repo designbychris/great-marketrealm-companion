@@ -5,6 +5,7 @@ namespace GreatMarketrealmCompanion\Providers;
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
 use GreatMarketrealmCompanion\Resources\Resource;
 use GreatMarketrealmCompanion\Resources\ResourceRegistry;
+
 use RuntimeException;
 
 defined('ABSPATH') || exit;
