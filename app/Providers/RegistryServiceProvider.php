@@ -12,36 +12,24 @@ defined('ABSPATH') || exit;
 
 /**
  * Registry Service Provider.
- *
- * Registers services belonging to the Registry domain.
- *
- * @since 0.3.0
  */
 final class RegistryServiceProvider extends ServiceProvider
 {
-    /**
-     * Register Registry services.
-     */
     public function register(): void
     {
         $this->app->container()->singleton(
             RaceRegistry::class,
-            static function (): RaceRegistry {
-                return new RaceRegistry();
-            }
+            fn (): RaceRegistry => new RaceRegistry(
+                $this->app->make(Definitions::class)
+            )
         );
 
         $this->app->container()->singleton(
             ClassRegistry::class,
-            static function (): ClassRegistry {
-                return new ClassRegistry();
-            }
+            fn (): ClassRegistry => new ClassRegistry()
         );
     }
 
-    /**
-     * Boot Registry services.
-     */
     public function boot(): void
     {
     }
