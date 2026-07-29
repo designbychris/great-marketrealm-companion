@@ -6,7 +6,13 @@ $old = is_array($old ?? null)
     ? $old
     : [];
 
-$errors = $errors ?? null;
+$errors = is_array($errors ?? null)
+    ? $errors
+    : [];
+
+$flash = is_array($flash ?? null)
+    ? $flash
+    : [];
 
 $raceOptions = is_array($raceOptions ?? null)
     ? $raceOptions
