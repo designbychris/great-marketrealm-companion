@@ -7,6 +7,13 @@ namespace GreatMarketrealmCompanion\Services\Characters;
 use GreatMarketrealmCompanion\Services\Definitions\Definitions;
 use GreatMarketrealmCompanion\Services\Registry\Registry;
 
+defined('ABSPATH') || exit;
+
+/**
+ * Registry of playable Marketrealm races.
+ *
+ * @since 0.3.0
+ */
 final class RaceRegistry extends Registry
 {
     public function __construct(
