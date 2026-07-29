@@ -9,14 +9,23 @@ use GreatMarketrealmCompanion\Definitions\Characters\RaceDefinition;
 defined('ABSPATH') || exit;
 
 /**
- * The Scriptorium.
+ * The Definitions Service.
  *
- * Provides the central authoring API for game-content definitions.
+ * Provides the central entry point for creating and authoring
+ * game-content definitions.
  *
  * @since 0.3.0
  */
 final class Definitions
 {
+    /**
+     * Create a new Scriptorium authoring session.
+     */
+    public function scriptorium(): Scriptorium
+    {
+        return new Scriptorium($this);
+    }
+
     /**
      * Create a race definition.
      */
@@ -26,7 +35,7 @@ final class Definitions
     ): RaceDefinition {
         return new RaceDefinition(
             key: $key,
-            name: $name,
+            name: $name
         );
     }
 }
