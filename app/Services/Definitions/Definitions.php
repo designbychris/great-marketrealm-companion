@@ -6,14 +6,20 @@ namespace GreatMarketrealmCompanion\Services\Definitions;
 
 use GreatMarketrealmCompanion\Definitions\Characters\RaceDefinition;
 
+defined('ABSPATH') || exit;
+
 /**
- * Creates game-content definitions.
+ * The Scriptorium.
  *
- * This service provides the main authoring API for races,
- * classes, monsters, spells and other game content.
+ * Provides the central authoring API for game-content definitions.
+ *
+ * @since 0.3.0
  */
 final class Definitions
 {
+    /**
+     * Create a race definition.
+     */
     public function race(
         string $key,
         string $name
