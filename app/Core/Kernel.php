@@ -54,6 +54,7 @@ class Kernel
      */
     protected array $foundationProviders = [
         SessionServiceProvider::class,
+        HttpServiceProvider::class,
         KingdomServiceProvider::class,
         ModuleServiceProvider::class,
         NavigationServiceProvider::class,
@@ -68,7 +69,6 @@ class Kernel
     protected array $applicationProviders = [
         ResourceServiceProvider::class,
         PageServiceProvider::class,
-        HttpServiceProvider::class,
         RouteServiceProvider::class,
         DefinitionServiceProvider::class,
         FrontendServiceProvider::class,
