@@ -64,6 +64,38 @@ final class ContainerTest extends TestCase
             $second
         );
     }
+    
+    public function testBindingReturnsNewInstances(): void
+    {
+        $container = new Container();
+    
+        $container->bind(
+            TestService::class
+        );
+    
+        $first = $container->make(
+            TestService::class
+        );
+    
+        $second = $container->make(
+            TestService::class
+        );
+    
+        $this->assertNotSame(
+            $first,
+            $second
+        );
+    
+        $this->assertInstanceOf(
+            TestService::class,
+            $first
+        );
+    
+        $this->assertInstanceOf(
+            TestService::class,
+            $second
+        );
+    }
 }
 
 /**
