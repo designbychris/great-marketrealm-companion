@@ -320,6 +320,7 @@ final class RouterTest extends TestCase
             '/missing-route'
         );
     }
+}
 
 final class TestController
 {
