@@ -7,6 +7,7 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Router;
 use GreatMarketrealmCompanion\Core\Container;
 use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\Routing\Router;
+use GreatMarketrealmCompanion\Core\Http\Response;
 use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase
@@ -305,18 +306,6 @@ final class RouterTest extends TestCase
             'delete',
             $router->dispatch('DELETE', '/characters/1')
         );
-    }
-
-    public function testRouterHandlesUnmatchedRoute(): void
-    {
-        $router = $this->makeRouter();
-    
-        $result = $router->dispatch(
-            'GET',
-            '/missing-route'
-        );
-    
-        $this->assertNotNull($result);
     }
 
     public function testRouterReturnsNotFoundResponseForUnmatchedRoute(): void
