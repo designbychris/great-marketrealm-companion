@@ -33,7 +33,9 @@ final class RegistryServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             ClassRegistry::class,
-            static fn (): ClassRegistry => new ClassRegistry()
+            fn (): ClassRegistry => new ClassRegistry(
+                $this->app->definitions()
+            )
         );
     }
 
