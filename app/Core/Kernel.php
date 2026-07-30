@@ -1,23 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GreatMarketrealmCompanion\Core;
 
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
+use GreatMarketrealmCompanion\Providers\CodexServiceProvider;
+use GreatMarketrealmCompanion\Providers\DefinitionServiceProvider;
 use GreatMarketrealmCompanion\Providers\FrontendServiceProvider;
+use GreatMarketrealmCompanion\Providers\GuildServiceProvider;
 use GreatMarketrealmCompanion\Providers\HttpServiceProvider;
 use GreatMarketrealmCompanion\Providers\KingdomServiceProvider;
 use GreatMarketrealmCompanion\Providers\NavigationServiceProvider;
 use GreatMarketrealmCompanion\Providers\PageServiceProvider;
+use GreatMarketrealmCompanion\Providers\RegistryServiceProvider;
 use GreatMarketrealmCompanion\Providers\ResourceServiceProvider;
 use GreatMarketrealmCompanion\Providers\RouteServiceProvider;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Providers\SessionServiceProvider;
 use GreatMarketrealmCompanion\Providers\ViewServiceProvider;
-use GreatMarketrealmCompanion\Providers\GuildServiceProvider;
-use GreatMarketrealmCompanion\Providers\RegistryServiceProvider;
-use GreatMarketrealmCompanion\Providers\DefinitionServiceProvider;
-use GreatMarketrealmCompanion\Providers\CodexServiceProvider;
-use GreatMarketrealmCompanion\Providers\ModuleServiceProvider;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -25,8 +26,8 @@ defined('ABSPATH') || exit;
 /**
  * Application Kernel.
  *
- * Coordinates registration and booting of framework
- * and Kingdom service providers.
+ * Coordinates the registration and booting of framework,
+ * application, and Kingdom service providers.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.3.0
@@ -56,7 +57,6 @@ class Kernel
         SessionServiceProvider::class,
         HttpServiceProvider::class,
         KingdomServiceProvider::class,
-        ModuleServiceProvider::class,
         NavigationServiceProvider::class,
         ViewServiceProvider::class,
     ];
@@ -148,10 +148,13 @@ class Kernel
             return;
         }
 
-        if (! is_subclass_of(
-            $providerClass,
-            ServiceProvider::class
-        )) {
+        if (
+            ! class_exists($providerClass)
+            || ! is_subclass_of(
+                $providerClass,
+                ServiceProvider::class
+            )
+        ) {
             throw new RuntimeException(
                 sprintf(
                     'Invalid service provider: %s',
