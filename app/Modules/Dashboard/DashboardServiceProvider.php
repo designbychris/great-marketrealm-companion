@@ -6,6 +6,7 @@ use GreatMarketrealmCompanion\Core\Container;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\Dashboard\Controllers\DashboardController;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
+use GreatMarketrealmCompanion\Services\Codex\Codex;
 
 defined('ABSPATH') || exit;
 
@@ -25,7 +26,8 @@ class DashboardServiceProvider extends ServiceProvider
             DashboardController::class,
             static function (Container $container): DashboardController {
                 return new DashboardController(
-                    $container->make(ViewFactory::class)
+                    $container->make(ViewFactory::class),
+                    $container->make(Codex::class)
                 );
             }
         );
