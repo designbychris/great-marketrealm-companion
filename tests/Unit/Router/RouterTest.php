@@ -310,9 +310,9 @@ final class RouterTest extends TestCase
     public function testRouterHandlesUnmatchedRoute(): void
     {
         $router = $this->makeRouter();
-    
+
         $this->expectException(\RuntimeException::class);
-    
+
         $router->dispatch(
             'GET',
             '/missing-route'
@@ -320,22 +320,6 @@ final class RouterTest extends TestCase
     }
 }
 
-final class RouterTest extends TestCase
-{
-    // All your other tests...
-
-    public function testRouterHandlesUnmatchedRoute(): void
-    {
-        $router = $this->makeRouter();
-
-        $this->expectException(\RuntimeException::class);
-
-        $router->dispatch(
-            'GET',
-            '/missing-route'
-        );
-    }
-} // RouterTest closes here
 
 final class TestController
 {
