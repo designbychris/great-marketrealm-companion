@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Core\Session\FlashStore;
@@ -13,7 +15,7 @@ defined('ABSPATH') || exit;
  *
  * Registers and boots the framework session services.
  *
- * @package MarketrealmCompanion
+ * @package GreatMarketrealmCompanion
  * @since 0.7.0
  */
 class SessionServiceProvider extends ServiceProvider
@@ -37,7 +39,7 @@ class SessionServiceProvider extends ServiceProvider
     }
 
     /**
-     * Start the session and age flash data.
+     * Start the session and age its flash data.
      */
     public function boot(): void
     {
@@ -51,10 +53,8 @@ class SessionServiceProvider extends ServiceProvider
             return;
         }
 
-        $flash = $this->app->make(
+        $this->app->make(
             FlashStore::class
-        );
-
-        $flash->age();
+        )->age();
     }
 }
