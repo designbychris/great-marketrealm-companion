@@ -43,4 +43,27 @@ final class RouterTest extends TestCase
             )
         );
     }
+
+    public function testRouterDispatchesStaticGetRoute(): void
+    {
+        $router = new Router(
+            new Container(),
+            new Request()
+        );
+    
+        $router->get(
+            '/characters',
+            static fn (): string => 'characters'
+        );
+    
+        $result = $router->dispatch(
+            'GET',
+            '/characters'
+        );
+    
+        $this->assertSame(
+            'characters',
+            $result
+        );
+    }
 }
