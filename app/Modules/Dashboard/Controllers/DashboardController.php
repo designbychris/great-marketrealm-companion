@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GreatMarketrealmCompanion\Modules\Dashboard\Controllers;
 
 use GreatMarketrealmCompanion\Core\View\View;
@@ -27,8 +29,13 @@ class DashboardController
      */
     public function index(): string
     {
-        return $this->views->render(
-            View::make('dashboard.index')
+        return $this->view->render(
+            'dashboard.index',
+            [
+                'races' => $this->app
+                    ->codex()
+                    ->races(),
+            ]
         );
     }
 }
