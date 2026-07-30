@@ -9,6 +9,7 @@ use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
 use GreatMarketrealmCompanion\Navigation\Navigation;
 use GreatMarketrealmCompanion\Resources\ResourceRegistry;
 use GreatMarketrealmCompanion\Services\Definitions\Definitions;
+use GreatMarketrealmCompanion\Services\Codex\Codex;
 
 defined('ABSPATH') || exit;
 
@@ -245,5 +246,13 @@ class Application
         return $this->make(
             Router::class
         );
+    }
+
+    /**
+     * Return the Codex service.
+     */
+    public function codex(): Codex
+    {
+        return $this->make(Codex::class);
     }
 }
