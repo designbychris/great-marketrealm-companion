@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Services\Definitions;
 
+use GreatMarketrealmCompanion\Definitions\Characters\ClassDefinition;
 use GreatMarketrealmCompanion\Definitions\Characters\RaceDefinition;
 
 defined('ABSPATH') || exit;
@@ -34,6 +35,19 @@ final class Definitions
         string $name
     ): RaceDefinition {
         return new RaceDefinition(
+            key: $key,
+            name: $name
+        );
+    }
+
+    /**
+     * Create a character class definition.
+     */
+    public function characterClass(
+        string $key,
+        string $name
+    ): ClassDefinition {
+        return new ClassDefinition(
             key: $key,
             name: $name
         );
