@@ -58,19 +58,6 @@ class AppController
         $routeInput = $_POST['gmrc_route']
             ?? $_GET['gmrc_route']
             ?? 'not set';
-        
-        error_log(
-            sprintf(
-                'AppController::handle() entered — method: %s, URI: %s, gmrc_route: %s',
-                $_SERVER['REQUEST_METHOD'] ?? 'unknown',
-                $_SERVER['REQUEST_URI'] ?? 'unknown',
-                is_scalar($routeInput)
-                    ? sanitize_text_field(
-                        wp_unslash((string) $routeInput)
-                    )
-                    : 'invalid'
-            )
-        );
     
         $route = $this->requestedRoute();
     
@@ -90,9 +77,6 @@ class AppController
     
             $pageTitle = $this->pageTitle($route);
         } catch (RuntimeException $exception) {
-            error_log(
-                'GMRC route error: ' . $exception->getMessage()
-            );
     
             $content = $this->views->render(
                 View::make(
