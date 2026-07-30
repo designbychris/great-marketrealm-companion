@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Dashboard\Controllers;
 
+use GreatMarketrealmCompanion\Core\View\View;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Services\Codex\Codex;
 
@@ -25,11 +26,13 @@ final class DashboardController
 
     public function index(): string
     {
-        return $this->views->render(
-            'dashboard.index',
-            [
+        $view = new View(
+            name: 'dashboard.index',
+            data: [
                 'races' => $this->codex->races(),
             ]
         );
+
+        return $this->views->render($view);
     }
 }
