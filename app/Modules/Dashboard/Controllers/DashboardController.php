@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Dashboard\Controllers;
 
-use GreatMarketrealmCompanion\Core\View\View;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Services\Codex\Codex;
 
@@ -13,30 +12,23 @@ defined('ABSPATH') || exit;
 /**
  * Dashboard Controller.
  *
- * Handles requests for the Companion dashboard.
- *
  * @package GreatMarketrealmCompanion
  * @since 0.3.0
  */
-class DashboardController
+final class DashboardController
 {
     public function __construct(
-        protected ViewFactory $views,
-        protected Codex $codex
+        private ViewFactory $views,
+        private Codex $codex
     ) {
     }
 
-    /**
-     * Display the dashboard.
-     */
     public function index(): string
     {
-        return $this->view->render(
+        return $this->views->render(
             'dashboard.index',
             [
-                'races' => $this->app
-                    ->codex()
-                    ->races(),
+                'races' => $this->codex->races(),
             ]
         );
     }
