@@ -212,6 +212,38 @@ final class RouterTest extends TestCase
             $result
         );
     }
+
+    public function testRouterInjectsContainerDependencyIntoHandler(): void
+    {
+        $container = new Container();
+    
+        $logger = new TestLogger();
+    
+        $container->instance(
+            TestLogger::class,
+            $logger
+        );
+    
+        $router = new Router(
+            $container,
+            new Request()
+        );
+    
+        $router->get(
+            '/logger',
+            static fn (TestLogger $logger): TestLogger => $logger
+        );
+    
+        $result = $router->dispatch(
+            'GET',
+            '/logger'
+        );
+    
+        $this->assertSame(
+            $logger,
+            $result
+        );
+    }
 }
 
 final class TestController
