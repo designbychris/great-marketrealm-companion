@@ -18,4 +18,14 @@ if (! function_exists('status_header')) {
     }
 }
 
+if (! function_exists('wp_die')) {
+    function wp_die(
+        string $message = '',
+        string $title = '',
+        array|int $args = []
+    ): never {
+        throw new RuntimeException($message);
+    }
+}
+
 require dirname(__DIR__) . '/vendor/autoload.php';
