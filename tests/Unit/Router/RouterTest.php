@@ -239,6 +239,28 @@ final class RouterTest extends TestCase
             $result
         );
     }
+
+    public function testRouterUsesDefaultHandlerParameterValue(): void
+    {
+        $router = $this->makeRouter();
+    
+        $router->get(
+            '/greeting',
+            static fn (
+                string $name = 'Marketgoer'
+            ): string => $name
+        );
+    
+        $result = $router->dispatch(
+            'GET',
+            '/greeting'
+        );
+    
+        $this->assertSame(
+            'Marketgoer',
+            $result
+        );
+    }
 }
 
 final class TestController
