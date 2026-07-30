@@ -91,18 +91,23 @@ defined('ABSPATH') || exit;
     </div>
     <div class="codex-test">
     <h2>Codex Test</h2>
-
-    <?php foreach (gmrc()->codex()->races() as $race) : ?>
-    
-        <p>
-            <strong><?php echo esc_html($race->name()); ?></strong><br>
-    
-            <?php echo esc_html(
-                $race->get('description')
-            ); ?>
-        </p>
-    
-    <?php endforeach; ?>
+    <?php if (isset($races) && !$races->isEmpty()) : ?>
+        <?php foreach ($races as $race) : ?>
+            <p>
+                <strong>
+                    <?php echo esc_html($race->name()); ?>
+                </strong>
+                <br>
+                <?php
+                echo esc_html(
+                    (string) $race->get('description')
+                );
+                ?>
+            </p>
+        <?php endforeach; ?>
+    <?php else : ?>
+        <p>No races were found in the Codex.</p>
+    <?php endif; ?>
     </div>
     <section class="gmrc-welcome-card">
         <div class="gmrc-welcome-card__mascot" aria-hidden="true">
