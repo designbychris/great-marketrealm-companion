@@ -112,4 +112,29 @@ final class RouterTest extends TestCase
             $result
         );
     }
+
+    public function testRouterInjectsRequestIntoHandler(): void
+    {
+        $request = new Request();
+    
+        $router = new Router(
+            new Container(),
+            $request
+        );
+    
+        $router->get(
+            '/request',
+            static fn (Request $request): Request => $request
+        );
+    
+        $result = $router->dispatch(
+            'GET',
+            '/request'
+        );
+    
+        $this->assertSame(
+            $request,
+            $result
+        );
+    }
 }
