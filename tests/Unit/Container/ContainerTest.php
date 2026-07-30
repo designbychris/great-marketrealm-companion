@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Tests\Unit\Container;
 
 use GreatMarketrealmCompanion\Core\Container;
+use GreatMarketrealmCompanion\Exceptions\ContainerException;
 use PHPUnit\Framework\TestCase;
 
 final class ContainerTest extends TestCase
@@ -134,6 +135,53 @@ final class ContainerTest extends TestCase
             $container->has(TestService::class)
         );
     }
+
+    public function testForgetRemovesRegisteredService(): void
+    {
+        $container = new Container();
+    
+        $container->bind(
+            TestService::class
+        );
+    
+        $this->assertTrue(
+            $container->has(TestService::class)
+        );
+    
+        $container->forget(
+            TestService::class
+        );
+    
+        $this->assertFalse(
+            $container->has(TestService::class)
+        );
+    }
+    
+    public function testUnknownServiceThrowsException(): void
+    {
+        $container = new Container();
+    
+        $this->expectException(
+            ContainerException::class
+        );
+    
+        $container->make(
+            'This\\Class\\Does\\Not\\Exist'
+        );
+    }
+
+    public function testCircularDependencyThrowsException(): void
+    {
+        $container = new Container();
+    
+        $this->expectException(
+            ContainerException::class
+        );
+    
+        $container->make(
+            CircularDependencyA::class
+        );
+    }
     
 }
 
@@ -152,6 +200,22 @@ final class ServiceWithDependency
 {
     public function __construct(
         public TestDependency $dependency
+    ) {
+    }
+}
+
+final class CircularDependencyA
+{
+    public function __construct(
+        public CircularDependencyB $dependency
+    ) {
+    }
+}
+
+final class CircularDependencyB
+{
+    public function __construct(
+        public CircularDependencyA $dependency
     ) {
     }
 }
