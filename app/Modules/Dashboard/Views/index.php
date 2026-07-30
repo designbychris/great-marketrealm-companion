@@ -89,7 +89,21 @@ defined('ABSPATH') || exit;
             </div>
         </article>
     </div>
+    <div class="codex-test">
+    <h2>Codex Test</h2>
 
+    <?php foreach (gmrc()->codex()->races() as $race) : ?>
+    
+        <p>
+            <strong><?php echo esc_html($race->name()); ?></strong><br>
+    
+            <?php echo esc_html(
+                $race->get('description')
+            ); ?>
+        </p>
+    
+    <?php endforeach; ?>
+    </div>
     <section class="gmrc-welcome-card">
         <div class="gmrc-welcome-card__mascot" aria-hidden="true">
             🍆
