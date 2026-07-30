@@ -26,9 +26,9 @@ final class DashboardController
 
     public function index(): string
     {
-        $view = new View(
-            name: 'dashboard.index',
-            data: [
+        $view = View::make(
+            'dashboard.index',
+            [
                 'races' => $this->codex->races(),
             ]
         );
