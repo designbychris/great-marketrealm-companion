@@ -50,6 +50,10 @@ wp-config.php
 
 vendor/
 
+.phpunit.cache/
+
+coverage/
+
 node_modules/
 
 .idea/
