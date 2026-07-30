@@ -311,9 +311,7 @@ final class RouterTest extends TestCase
     {
         $router = $this->makeRouter();
     
-        $this->expectException(
-            \RuntimeException::class
-        );
+        $this->expectException(\RuntimeException::class);
     
         $router->dispatch(
             'GET',
@@ -322,17 +320,26 @@ final class RouterTest extends TestCase
     }
 }
 
+final class RouterTest extends TestCase
+{
+    // All your other tests...
+
+    public function testRouterHandlesUnmatchedRoute(): void
+    {
+        $router = $this->makeRouter();
+
+        $this->expectException(\RuntimeException::class);
+
+        $router->dispatch(
+            'GET',
+            '/missing-route'
+        );
+    }
+} // RouterTest closes here
+
 final class TestController
 {
-    public function __construct(
-        private TestLogger $logger
-    ) {
-    }
-
-    public function index(): TestLogger
-    {
-        return $this->logger;
-    }
+    // ...
 }
 
 final class TestLogger
