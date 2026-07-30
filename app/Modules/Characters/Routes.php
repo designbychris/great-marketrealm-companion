@@ -7,8 +7,6 @@ defined('ABSPATH') || exit;
 
 return static function (Router $router): void {
 
-    error_log('Characters Routes.php registrar executed');
-
     $router->get(
         '/characters',
         [CharacterController::class, 'index']
