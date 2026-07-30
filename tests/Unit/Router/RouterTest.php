@@ -137,4 +137,35 @@ final class RouterTest extends TestCase
             $result
         );
     }
+
+    public function testRouterDispatchesControllerHandler(): void
+    {
+        $router = new Router(
+            new Container(),
+            new Request()
+        );
+    
+        $router->get(
+            '/dashboard',
+            [TestController::class, 'index']
+        );
+    
+        $result = $router->dispatch(
+            'GET',
+            '/dashboard'
+        );
+    
+        $this->assertSame(
+            'dashboard',
+            $result
+        );
+    }
+}
+
+final class TestController
+{
+    public function index(): string
+    {
+        return 'dashboard';
+    }
 }
