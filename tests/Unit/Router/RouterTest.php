@@ -306,6 +306,38 @@ final class RouterTest extends TestCase
             $router->dispatch('DELETE', '/characters/1')
         );
     }
+
+    public function testRouterHandlesUnmatchedRoute(): void
+    {
+        $router = $this->makeRouter();
+    
+        $result = $router->dispatch(
+            'GET',
+            '/missing-route'
+        );
+    
+        $this->assertNotNull($result);
+    }
+
+    public function testRouterReturnsNotFoundResponseForUnmatchedRoute(): void
+    {
+        $router = $this->makeRouter();
+    
+        $result = $router->dispatch(
+            'GET',
+            '/missing-route'
+        );
+    
+        $this->assertInstanceOf(
+            Response::class,
+            $result
+        );
+    
+        $this->assertSame(
+            404,
+            $result->status()
+        );
+    }
 }
 
 final class TestController
