@@ -253,3 +253,7 @@ final class TestController
         return 'dashboard';
     }
 }
+
+final class TestLogger
+{
+}
