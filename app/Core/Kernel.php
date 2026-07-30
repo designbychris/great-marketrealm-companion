@@ -17,6 +17,7 @@ use GreatMarketrealmCompanion\Providers\GuildServiceProvider;
 use GreatMarketrealmCompanion\Providers\RegistryServiceProvider;
 use GreatMarketrealmCompanion\Providers\DefinitionServiceProvider;
 use GreatMarketrealmCompanion\Providers\CodexServiceProvider;
+use GreatMarketrealmCompanion\Providers\ModuleServiceProvider;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -54,6 +55,7 @@ class Kernel
     protected array $foundationProviders = [
         SessionServiceProvider::class,
         KingdomServiceProvider::class,
+        ModuleServiceProvider::class,
         NavigationServiceProvider::class,
         ViewServiceProvider::class,
     ];
