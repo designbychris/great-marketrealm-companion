@@ -11,25 +11,27 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase
 {
+    private function makeRouter(
+        ?Container $container = null,
+        ?Request $request = null
+    ): Router {
+        return new Router(
+            $container ?? new Container(),
+            $request ?? new Request()
+        );
+    }
+
     public function testRouterCanBeCreated(): void
     {
-        $router = new Router(
-            new Container(),
-            new Request()
-        );
-
         $this->assertInstanceOf(
             Router::class,
-            $router
+            $this->makeRouter()
         );
     }
 
     public function testRouterRegistersGetRoute(): void
     {
-        $router = new Router(
-            new Container(),
-            new Request()
-        );
+        $router = $this->makeRouter();
 
         $router->get(
             '/characters',
@@ -46,44 +48,38 @@ final class RouterTest extends TestCase
 
     public function testRouterDispatchesStaticGetRoute(): void
     {
-        $router = new Router(
-            new Container(),
-            new Request()
-        );
-    
+        $router = $this->makeRouter();
+
         $router->get(
             '/characters',
             static fn (): string => 'characters'
         );
-    
+
         $result = $router->dispatch(
             'GET',
             '/characters'
         );
-    
+
         $this->assertSame(
             'characters',
             $result
         );
     }
-    
+
     public function testRouterDispatchesRouteWithParameters(): void
     {
-        $router = new Router(
-            new Container(),
-            new Request()
-        );
-    
+        $router = $this->makeRouter();
+
         $router->get(
             '/characters/{id}',
             static fn (string $id): string => $id
         );
-    
+
         $result = $router->dispatch(
             'GET',
             '/characters/42'
         );
-    
+
         $this->assertSame(
             '42',
             $result
@@ -92,21 +88,18 @@ final class RouterTest extends TestCase
 
     public function testRouterCastsIntegerRouteParameter(): void
     {
-        $router = new Router(
-            new Container(),
-            new Request()
-        );
-    
+        $router = $this->makeRouter();
+
         $router->get(
             '/characters/{id}',
             static fn (int $id): int => $id
         );
-    
+
         $result = $router->dispatch(
             'GET',
             '/characters/42'
         );
-    
+
         $this->assertSame(
             42,
             $result
@@ -116,22 +109,21 @@ final class RouterTest extends TestCase
     public function testRouterInjectsRequestIntoHandler(): void
     {
         $request = new Request();
-    
-        $router = new Router(
-            new Container(),
-            $request
+
+        $router = $this->makeRouter(
+            request: $request
         );
-    
+
         $router->get(
             '/request',
             static fn (Request $request): Request => $request
         );
-    
+
         $result = $router->dispatch(
             'GET',
             '/request'
         );
-    
+
         $this->assertSame(
             $request,
             $result
@@ -140,34 +132,39 @@ final class RouterTest extends TestCase
 
     public function testRouterDispatchesControllerHandler(): void
     {
-        $router = new Router(
-            new Container(),
-            new Request()
+        $container = new Container();
+
+        $logger = new TestLogger();
+
+        $container->instance(
+            TestLogger::class,
+            $logger
         );
-    
+
+        $router = $this->makeRouter(
+            container: $container
+        );
+
         $router->get(
             '/dashboard',
             [TestController::class, 'index']
         );
-    
+
         $result = $router->dispatch(
             'GET',
             '/dashboard'
         );
-    
+
         $this->assertSame(
-            'dashboard',
+            $logger,
             $result
         );
     }
 
     public function testRouterDispatchesRouteWithMultipleParameters(): void
     {
-        $router = new Router(
-            new Container(),
-            new Request()
-        );
-    
+        $router = $this->makeRouter();
+
         $router->get(
             '/characters/{character}/inventory/{item}',
             static fn (
@@ -175,12 +172,12 @@ final class RouterTest extends TestCase
                 string $item
             ): string => $character . ':' . $item
         );
-    
+
         $result = $router->dispatch(
             'GET',
             '/characters/chris/inventory/sword'
         );
-    
+
         $this->assertSame(
             'chris:sword',
             $result
@@ -189,11 +186,8 @@ final class RouterTest extends TestCase
 
     public function testRouterResolvesRouteParametersByName(): void
     {
-        $router = new Router(
-            new Container(),
-            new Request()
-        );
-    
+        $router = $this->makeRouter();
+
         $router->get(
             '/characters/{character}/inventory/{item}',
             static fn (
@@ -201,12 +195,12 @@ final class RouterTest extends TestCase
                 string $character
             ): string => $character . ':' . $item
         );
-    
+
         $result = $router->dispatch(
             'GET',
             '/characters/chris/inventory/sword'
         );
-    
+
         $this->assertSame(
             'chris:sword',
             $result
@@ -216,29 +210,30 @@ final class RouterTest extends TestCase
     public function testRouterInjectsContainerDependencyIntoHandler(): void
     {
         $container = new Container();
-    
+
         $logger = new TestLogger();
-    
+
         $container->instance(
             TestLogger::class,
             $logger
         );
-    
-        $router = new Router(
-            $container,
-            new Request()
+
+        $router = $this->makeRouter(
+            container: $container
         );
-    
+
         $router->get(
             '/logger',
-            static fn (TestLogger $logger): TestLogger => $logger
+            static fn (
+                TestLogger $logger
+            ): TestLogger => $logger
         );
-    
+
         $result = $router->dispatch(
             'GET',
             '/logger'
         );
-    
+
         $this->assertSame(
             $logger,
             $result
