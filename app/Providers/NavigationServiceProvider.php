@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Navigation\Navigation;
@@ -9,10 +11,10 @@ defined('ABSPATH') || exit;
 /**
  * Navigation Service Provider.
  *
- * Registers the application's navigation service.
+ * Registers the application's shared navigation collection.
  *
- * Navigation items are contributed by individual Kingdoms rather
- * than being hard-coded inside the Navigation service.
+ * Navigation items are contributed by Kingdoms and, in the
+ * future, Guild Halls rather than being hard-coded here.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.3.0
@@ -24,17 +26,8 @@ class NavigationServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->container()->singleton(
-            Navigation::class,
-            static fn (): Navigation => new Navigation()
+        $this->app->singleton(
+            Navigation::class
         );
-    }
-
-    /**
-     * Boot navigation services.
-     */
-    public function boot(): void
-    {
-        // Kingdoms register their navigation separately.
     }
 }
