@@ -18,6 +18,15 @@ if (! function_exists('status_header')) {
     }
 }
 
+if (! function_exists('esc_html__')) {
+    function esc_html__(
+        string $text,
+        string $domain = 'default'
+    ): string {
+        return $text;
+    }
+}
+
 if (! function_exists('wp_die')) {
     function wp_die(
         string $message = '',
