@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Core\Exceptions\ExceptionHandler;
@@ -11,7 +13,8 @@ defined('ABSPATH') || exit;
 /**
  * HTTP Service Provider.
  *
- * Registers HTTP-related services.
+ * Registers the services representing the current request,
+ * response creation, and application exception handling.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.6.0
@@ -27,22 +30,13 @@ class HttpServiceProvider extends ServiceProvider
             Request::class,
             static fn (): Request => Request::capture()
         );
-        
+
         $this->app->singleton(
-            ResponseFactory::class,
-            static fn (): ResponseFactory => new ResponseFactory()
+            ResponseFactory::class
         );
-        
+
         $this->app->singleton(
             ExceptionHandler::class
         );
-    }
-
-    /**
-     * Boot HTTP services.
-     */
-    public function boot(): void
-    {
-        //
     }
 }
