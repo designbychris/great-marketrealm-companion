@@ -30,6 +30,18 @@ final class ContainerTest extends TestCase
             $service
         );
     }
+
+    public function testContainerResolvesConstructorDependencies(): void
+    {
+        $container = new Container();
+    
+        $service = $container->make(ServiceWithDependency::class);
+    
+        $this->assertInstanceOf(
+            TestDependency::class,
+            $service->dependency
+        );
+    }
 }
 
 /**
@@ -37,4 +49,16 @@ final class ContainerTest extends TestCase
  */
 final class TestService
 {
+}
+
+final class TestDependency
+{
+}
+
+final class ServiceWithDependency
+{
+    public function __construct(
+        public TestDependency $dependency
+    ) {
+    }
 }
