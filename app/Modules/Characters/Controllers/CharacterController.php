@@ -97,8 +97,6 @@ class CharacterController
         StoreCharacterRequest $request
     ): RedirectResponse {
         
-        error_log('CharacterController::store() reached');
-        
         $character = $this->createCharacter->handle(
             $request->toCharacter()
         );
