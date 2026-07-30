@@ -83,14 +83,6 @@ class FrontendServiceProvider extends ServiceProvider
                 )
                 : 'not set';
     
-        error_log(
-            sprintf(
-                'GMRC admin-post request — method: %s, route: %s',
-                $method,
-                $route
-            )
-        );
-    
         if ($method !== 'POST') {
             wp_safe_redirect(
                 home_url('/companion/')
@@ -105,34 +97,6 @@ class FrontendServiceProvider extends ServiceProvider
                     wp_unslash((string) $_POST['gmrc_nonce'])
                 )
                 : '';
-    
-        error_log(
-            'POST keys: ' .
-            implode(', ', array_keys($_POST))
-        );
-    
-        error_log(
-            'Nonce exists: ' .
-            ($submittedNonce !== '' ? 'yes' : 'no')
-        );
-    
-        error_log(
-            'Nonce value: ' .
-            ($submittedNonce !== '' ? $submittedNonce : 'missing')
-        );
-    
-        error_log(
-            'Nonce verification result: ' .
-            (
-                $submittedNonce !== ''
-                && wp_verify_nonce(
-                    $submittedNonce,
-                    'gmrc_create_character'
-                )
-                    ? 'valid'
-                    : 'invalid'
-            )
-        );
     
         if (
             $submittedNonce === ''
