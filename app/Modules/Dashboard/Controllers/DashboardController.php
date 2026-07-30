@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Dashboard\Controllers;
 
 use GreatMarketrealmCompanion\Core\View\View;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
+use GreatMarketrealmCompanion\Services\Codex\Codex;
 
 defined('ABSPATH') || exit;
 
@@ -20,7 +21,8 @@ defined('ABSPATH') || exit;
 class DashboardController
 {
     public function __construct(
-        protected ViewFactory $views
+        protected ViewFactory $views,
+        protected Codex $codex
     ) {
     }
 
