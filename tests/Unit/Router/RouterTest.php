@@ -248,9 +248,14 @@ final class RouterTest extends TestCase
 
 final class TestController
 {
-    public function index(): string
+    public function __construct(
+        private TestLogger $logger
+    ) {
+    }
+
+    public function index(): TestLogger
     {
-        return 'dashboard';
+        return $this->logger;
     }
 }
 
