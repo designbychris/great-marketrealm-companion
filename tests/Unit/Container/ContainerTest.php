@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GreatMarketrealmCompanion\Tests\Unit;
+namespace GreatMarketrealmCompanion\Tests\Unit\Container;
 
 use GreatMarketrealmCompanion\Core\Container;
 use PHPUnit\Framework\TestCase;
