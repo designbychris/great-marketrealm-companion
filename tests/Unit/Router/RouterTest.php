@@ -66,4 +66,27 @@ final class RouterTest extends TestCase
             $result
         );
     }
+    
+    public function testRouterDispatchesRouteWithParameters(): void
+    {
+        $router = new Router(
+            new Container(),
+            new Request()
+        );
+    
+        $router->get(
+            '/characters/{id}',
+            static fn (string $id): string => $id
+        );
+    
+        $result = $router->dispatch(
+            'GET',
+            '/characters/42'
+        );
+    
+        $this->assertSame(
+            '42',
+            $result
+        );
+    }
 }
