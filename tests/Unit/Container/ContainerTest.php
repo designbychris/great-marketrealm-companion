@@ -42,6 +42,28 @@ final class ContainerTest extends TestCase
             $service->dependency
         );
     }
+
+    public function testSingletonReturnsSameInstance(): void
+    {
+        $container = new Container();
+    
+        $container->singleton(
+            TestService::class
+        );
+    
+        $first = $container->make(
+            TestService::class
+        );
+    
+        $second = $container->make(
+            TestService::class
+        );
+    
+        $this->assertSame(
+            $first,
+            $second
+        );
+    }
 }
 
 /**
