@@ -117,6 +117,23 @@ final class ContainerTest extends TestCase
             $resolved
         );
     }
+
+    public function testHasReportsWhetherServiceIsRegistered(): void
+    {
+        $container = new Container();
+    
+        $this->assertFalse(
+            $container->has(TestService::class)
+        );
+    
+        $container->bind(
+            TestService::class
+        );
+    
+        $this->assertTrue(
+            $container->has(TestService::class)
+        );
+    }
     
 }
 
