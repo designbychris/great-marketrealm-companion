@@ -146,25 +146,9 @@ class Router
     
             $path = $this->normalisePath($path);
     
-            error_log(
-                sprintf(
-                    'Attempting dispatch: [%s %s]',
-                    $httpMethod,
-                    $path
-                )
-            );
-    
             $route = $this->matchRoute(
                 $httpMethod,
                 $path
-            );
-    
-            error_log(
-                sprintf(
-                    'Dispatching route: [%s %s]',
-                    $httpMethod,
-                    $path
-                )
             );
     
             if ($route === null) {
