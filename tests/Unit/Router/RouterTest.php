@@ -186,6 +186,32 @@ final class RouterTest extends TestCase
             $result
         );
     }
+
+    public function testRouterResolvesRouteParametersByName(): void
+    {
+        $router = new Router(
+            new Container(),
+            new Request()
+        );
+    
+        $router->get(
+            '/characters/{character}/inventory/{item}',
+            static fn (
+                string $item,
+                string $character
+            ): string => $character . ':' . $item
+        );
+    
+        $result = $router->dispatch(
+            'GET',
+            '/characters/chris/inventory/sword'
+        );
+    
+        $this->assertSame(
+            'chris:sword',
+            $result
+        );
+    }
 }
 
 final class TestController
