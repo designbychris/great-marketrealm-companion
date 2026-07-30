@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Core\Application;
@@ -9,35 +11,34 @@ defined('ABSPATH') || exit;
 /**
  * Base Service Provider.
  *
- * All framework service providers extend this class.
+ * Service providers register application services and may
+ * optionally perform work after every provider has registered.
  *
- * @package MarketrealmCompanion
+ * @package GreatMarketrealmCompanion
  * @since 0.2.0-alpha3.2
  */
 abstract class ServiceProvider
 {
     /**
-     * Application instance.
+     * Create the service provider.
      */
-    protected Application $app;
-
-    /**
-     * Constructor.
-     *
-     * @param Application $app Application instance.
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
+    public function __construct(
+        protected Application $app
+    ) {
     }
 
     /**
-     * Register services.
+     * Register services with the application.
      */
     abstract public function register(): void;
 
     /**
-     * Boot services.
+     * Boot the registered services.
+     *
+     * Providers only need to override this method when they
+     * have work to perform after all providers are registered.
      */
-    abstract public function boot(): void;
+    public function boot(): void
+    {
+    }
 }
