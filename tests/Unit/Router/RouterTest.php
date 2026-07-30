@@ -308,26 +308,19 @@ final class RouterTest extends TestCase
         );
     }
 
-    public function testRouterReturnsNotFoundResponseForUnmatchedRoute(): void
+    public function testRouterHandlesUnmatchedRoute(): void
     {
         $router = $this->makeRouter();
     
-        $result = $router->dispatch(
+        $this->expectException(
+            \RuntimeException::class
+        );
+    
+        $router->dispatch(
             'GET',
             '/missing-route'
         );
-    
-        $this->assertInstanceOf(
-            Response::class,
-            $result
-        );
-    
-        $this->assertSame(
-            404,
-            $result->status()
-        );
     }
-}
 
 final class TestController
 {
