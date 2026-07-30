@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Services\Codex;
 
 use Countable;
 use GreatMarketrealmCompanion\Services\Registry\Registry;
+use GreatMarketrealmCompanion\Services\Registry\RegistryItem;
 
 defined('ABSPATH') || exit;
 
@@ -95,7 +96,7 @@ final class CodexSection implements Countable
     /**
      * Retrieve an entry from the section.
      */
-    public function get(string $key): mixed
+    public function get(string $key): ?RegistryItem
     {
         return $this->entries()->get($key);
     }
