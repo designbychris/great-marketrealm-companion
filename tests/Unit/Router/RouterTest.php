@@ -261,6 +261,51 @@ final class RouterTest extends TestCase
             $result
         );
     }
+
+    public function testRouterDispatchesAllSupportedHttpMethods(): void
+    {
+        $router = $this->makeRouter();
+    
+        $router->post(
+            '/characters',
+            static fn (): string => 'post'
+        );
+    
+        $router->put(
+            '/characters/1',
+            static fn (): string => 'put'
+        );
+    
+        $router->patch(
+            '/characters/1',
+            static fn (): string => 'patch'
+        );
+    
+        $router->delete(
+            '/characters/1',
+            static fn (): string => 'delete'
+        );
+    
+        $this->assertSame(
+            'post',
+            $router->dispatch('POST', '/characters')
+        );
+    
+        $this->assertSame(
+            'put',
+            $router->dispatch('PUT', '/characters/1')
+        );
+    
+        $this->assertSame(
+            'patch',
+            $router->dispatch('PATCH', '/characters/1')
+        );
+    
+        $this->assertSame(
+            'delete',
+            $router->dispatch('DELETE', '/characters/1')
+        );
+    }
 }
 
 final class TestController
