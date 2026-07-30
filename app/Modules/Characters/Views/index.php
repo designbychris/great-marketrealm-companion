@@ -118,9 +118,12 @@ ob_start();
 </section>
 <?php
 
-$character_content = ob_get_clean();
+$registerContent = ob_get_clean();
 
-echo $this->component(
+/*
+ * Wrap the Character Register in a Ledger Section.
+ */
+$characterContent = $this->component(
     'components.furniture.ledger-section',
     [
         'eyebrow'     => 'Guild Register',
@@ -136,22 +139,22 @@ echo $this->component(
  */
 ob_start();
 
-$content = $character_content;
-$side = 'single';
-$class = 'gmrc-character-register';
-$spine = true;
+$content = $characterContent;
+$side    = 'single';
+$class   = 'gmrc-character-register';
+$spine   = true;
 
 require GMRC_PATH
-	. 'app/Views/components/furniture/guild-page.php';
+    . 'app/Views/components/furniture/guild-page.php';
 
-$ledger_content = ob_get_clean();
+$ledgerContent = ob_get_clean();
 
 /*
  * Render the outer Guild Ledger.
  */
-$content = $ledger_content;
-$layout = 'single';
-$class = 'gmrc-character-ledger';
+$content = $ledgerContent;
+$layout  = 'single';
+$class   = 'gmrc-character-ledger';
 
 require GMRC_PATH
     . 'app/Views/components/furniture/guild-ledger.php';
