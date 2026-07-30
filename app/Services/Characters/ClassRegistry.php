@@ -4,153 +4,84 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Services\Characters;
 
+use GreatMarketrealmCompanion\Services\Definitions\Definitions;
 use GreatMarketrealmCompanion\Services\Registry\Registry;
 
+defined('ABSPATH') || exit;
+
+/**
+ * Registry of playable Marketrealm classes.
+ *
+ * @since 0.3.0
+ */
 final class ClassRegistry extends Registry
 {
+    /**
+     * Create the Class Registry.
+     */
+    public function __construct(
+        private Definitions $definitions
+    ) {
+        parent::__construct();
+    }
+
+    /**
+     * Register the playable classes.
+     */
     protected function register(): void
     {
-        $this->registerItem(
-            key: 'artificer',
-            name: 'Artificer',
-            attributes: [
-                'hit_die'         => 'd8',
-                'primary_ability' => 'Intelligence',
-                'spellcaster'     => true,
-                'guild_seal'      => 'artificer',
-            ],
-        );
+        $scriptorium = $this->definitions->scriptorium();
 
-        $this->registerItem(
-            key: 'barbarian',
-            name: 'Barbarian',
-            attributes: [
-                'hit_die'         => 'd12',
-                'primary_ability' => 'Strength',
-                'spellcaster'     => false,
-                'guild_seal'      => 'barbarian',
-            ],
-        );
+        $scriptorium
+            ->characterClass(
+                key: 'grocer',
+                name: 'Grocer'
+            )
+                ->description(
+                    'Masters of logistics, stock control and improvised produce-based combat.'
+                )
+                ->hitDie(8)
+                ->primaryAbility('Wisdom')
+                ->savingThrow('Wisdom')
+                ->savingThrow('Charisma')
+                ->armourProficiency('Light Armour')
+                ->weaponProficiency('Simple Weapons')
+                ->toolProficiency('Merchant Tools')
+                ->startingEquipment('A merchant ledger')
+                ->startingEquipment('A simple weapon')
+                ->feature('Fresh Produce')
+                ->feature('Bulk Discount')
+                ->source('Great Marketrealm Core Rules')
+                ->tag('core')
+                ->done()
 
-        $this->registerItem(
-            key: 'bard',
-            name: 'Bard',
-            attributes: [
-                'hit_die'         => 'd8',
-                'primary_ability' => 'Charisma',
-                'spellcaster'     => true,
-                'guild_seal'      => 'bard',
-            ],
-        );
+            ->characterClass(
+                key: 'cleaver-saint',
+                name: 'Cleaver Saint'
+            )
+                ->description(
+                    'Sacred warriors who defend the Marketrealm with sharpened steel and unwavering conviction.'
+                )
+                ->hitDie(10)
+                ->primaryAbility('Strength')
+                ->primaryAbility('Charisma')
+                ->savingThrow('Wisdom')
+                ->savingThrow('Charisma')
+                ->spellcastingAbility('Charisma')
+                ->armourProficiency('All Armour')
+                ->armourProficiency('Shields')
+                ->weaponProficiency('Simple Weapons')
+                ->weaponProficiency('Martial Weapons')
+                ->multiclassRequirement('Strength 13')
+                ->multiclassRequirement('Charisma 13')
+                ->feature('Sacred Carving')
+                ->feature('Marketrealm Smite')
+                ->source('Great Marketrealm Core Rules')
+                ->tag('core')
+                ->done();
 
-        $this->registerItem(
-            key: 'cleric',
-            name: 'Cleric',
-            attributes: [
-                'hit_die'         => 'd8',
-                'primary_ability' => 'Wisdom',
-                'spellcaster'     => true,
-                'guild_seal'      => 'cleric',
-            ],
-        );
-
-        $this->registerItem(
-            key: 'druid',
-            name: 'Druid',
-            attributes: [
-                'hit_die'         => 'd8',
-                'primary_ability' => 'Wisdom',
-                'spellcaster'     => true,
-                'guild_seal'      => 'druid',
-            ],
-        );
-
-        $this->registerItem(
-            key: 'fighter',
-            name: 'Fighter',
-            attributes: [
-                'hit_die'         => 'd10',
-                'primary_ability' => 'Strength or Dexterity',
-                'spellcaster'     => false,
-                'guild_seal'      => 'fighter',
-            ],
-        );
-
-        $this->registerItem(
-            key: 'monk',
-            name: 'Monk',
-            attributes: [
-                'hit_die'         => 'd8',
-                'primary_ability' => 'Dexterity and Wisdom',
-                'spellcaster'     => false,
-                'guild_seal'      => 'monk',
-            ],
-        );
-
-        $this->registerItem(
-            key: 'paladin',
-            name: 'Paladin',
-            attributes: [
-                'hit_die'         => 'd10',
-                'primary_ability' => 'Strength and Charisma',
-                'spellcaster'     => true,
-                'guild_seal'      => 'paladin',
-            ],
-        );
-
-        $this->registerItem(
-            key: 'ranger',
-            name: 'Ranger',
-            attributes: [
-                'hit_die'         => 'd10',
-                'primary_ability' => 'Dexterity and Wisdom',
-                'spellcaster'     => true,
-                'guild_seal'      => 'ranger',
-            ],
-        );
-
-        $this->registerItem(
-            key: 'rogue',
-            name: 'Rogue',
-            attributes: [
-                'hit_die'         => 'd8',
-                'primary_ability' => 'Dexterity',
-                'spellcaster'     => false,
-                'guild_seal'      => 'rogue',
-            ],
-        );
-
-        $this->registerItem(
-            key: 'sorcerer',
-            name: 'Sorcerer',
-            attributes: [
-                'hit_die'         => 'd6',
-                'primary_ability' => 'Charisma',
-                'spellcaster'     => true,
-                'guild_seal'      => 'sorcerer',
-            ],
-        );
-
-        $this->registerItem(
-            key: 'warlock',
-            name: 'Warlock',
-            attributes: [
-                'hit_die'         => 'd8',
-                'primary_ability' => 'Charisma',
-                'spellcaster'     => true,
-                'guild_seal'      => 'warlock',
-            ],
-        );
-
-        $this->registerItem(
-            key: 'wizard',
-            name: 'Wizard',
-            attributes: [
-                'hit_die'         => 'd6',
-                'primary_ability' => 'Intelligence',
-                'spellcaster'     => true,
-                'guild_seal'      => 'wizard',
-            ],
+        $this->registerDefinitions(
+            $scriptorium->definitions()
         );
     }
 }
