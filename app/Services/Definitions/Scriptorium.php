@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Services\Definitions;
 
 use Countable;
 use GreatMarketrealmCompanion\Definitions\Definition;
+use GreatMarketrealmCompanion\Services\Definitions\Builders\ClassBuilder;
 use GreatMarketrealmCompanion\Services\Definitions\Builders\RaceBuilder;
 use InvalidArgumentException;
 
@@ -17,7 +18,7 @@ defined('ABSPATH') || exit;
  * Collects and authors game-content definitions.
  *
  * Each Scriptorium instance represents a single authoring session,
- * chapter, registry, sourcebook, or expansion pack.
+ * chapter, registry, sourcebook or expansion pack.
  *
  * @since 0.3.0
  */
@@ -59,6 +60,26 @@ final class Scriptorium implements Countable
     }
 
     /**
+     * Begin authoring a character class.
+     */
+    public function characterClass(
+        string $key,
+        string $name
+    ): ClassBuilder {
+        $definition = $this->definitionService->characterClass(
+            key: $key,
+            name: $name
+        );
+
+        $this->add($definition);
+
+        return new ClassBuilder(
+            characterClass: $definition,
+            scriptorium: $this
+        );
+    }
+
+    /**
      * Add an existing definition to the Scriptorium.
      */
     public function add(Definition $definition): self
@@ -84,7 +105,9 @@ final class Scriptorium implements Countable
      */
     public function has(string $key): bool
     {
-        return isset($this->definitions[$key]);
+        return isset(
+            $this->definitions[$key]
+        );
     }
 
     /**
@@ -120,6 +143,8 @@ final class Scriptorium implements Countable
      */
     public function count(): int
     {
-        return count($this->definitions);
+        return count(
+            $this->definitions
+        );
     }
 }
