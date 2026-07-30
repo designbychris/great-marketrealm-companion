@@ -18,4 +18,23 @@ final class ContainerTest extends TestCase
             $container
         );
     }
+
+    public function testContainerResolvesConcreteClasses(): void
+    {
+        $container = new Container();
+
+        $service = $container->make(TestService::class);
+
+        $this->assertInstanceOf(
+            TestService::class,
+            $service
+        );
+    }
+}
+
+/**
+ * Simple class used for testing auto-wiring.
+ */
+final class TestService
+{
 }
