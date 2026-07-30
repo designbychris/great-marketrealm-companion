@@ -96,6 +96,28 @@ final class ContainerTest extends TestCase
             $second
         );
     }
+
+    public function testInstanceReturnsRegisteredObject(): void
+    {
+        $container = new Container();
+    
+        $service = new TestService();
+    
+        $container->instance(
+            TestService::class,
+            $service
+        );
+    
+        $resolved = $container->make(
+            TestService::class
+        );
+    
+        $this->assertSame(
+            $service,
+            $resolved
+        );
+    }
+    
 }
 
 /**
