@@ -16,7 +16,7 @@ defined('ABSPATH') || exit;
  *
  * @since 0.3.0
  */
-final class RaceBuilder extends Builder
+final class RaceBuilder extends CharacterBuilder
 {
     /**
      * Create the race builder.
@@ -47,46 +47,6 @@ final class RaceBuilder extends Builder
     public function size(string $size): self
     {
         $this->race->size($size);
-
-        return $this;
-    }
-
-    /**
-     * Add a language.
-     */
-    public function language(string $language): self
-    {
-        $this->race->language($language);
-
-        return $this;
-    }
-
-    /**
-     * Add a racial trait.
-     */
-    public function trait(string $trait): self
-    {
-        $this->race->trait($trait);
-
-        return $this;
-    }
-
-    /**
-     * Add a damage or condition resistance.
-     */
-    public function resistance(string $resistance): self
-    {
-        $this->race->resistance($resistance);
-
-        return $this;
-    }
-
-    /**
-     * Add a proficiency.
-     */
-    public function proficiency(string $proficiency): self
-    {
-        $this->race->proficiency($proficiency);
 
         return $this;
     }
