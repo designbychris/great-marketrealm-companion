@@ -1,9 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GreatMarketrealmCompanion\Modules\Characters\Repositories;
 
-use GreatMarketrealmCompanion\Contracts\RepositoryInterface;
+use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
+use RuntimeException;
 use WP_Post;
 
 defined('ABSPATH') || exit;
@@ -11,18 +18,13 @@ defined('ABSPATH') || exit;
 /**
  * Character Repository.
  *
- * Handles persistence for Character domain models.
- *
- * @package MarketrealmCompanion
- * @since 0.3.0
+ * Handles persistence of Character entities.
  */
-class CharacterRepository implements RepositoryInterface
+final class CharacterRepository implements CharacterRepositoryInterface
 {
-    protected string $postType = 'gmrc_character';
+    private string $postType = 'gmrc_character';
 
     /**
-     * Retrieve all Characters belonging to the current user.
-     *
      * @return Character[]
      */
     public function all(): array
@@ -42,12 +44,10 @@ class CharacterRepository implements RepositoryInterface
         );
     }
 
-    /**
-     * Find a Character by ID.
-     */
-    public function find(int $id): ?Character
-    {
-        $post = get_post($id);
+    public function find(
+        CharacterId $id
+    ): ?Character {
+        $post = get_post($id->value());
 
         if (! $post instanceof WP_Post) {
             return null;
@@ -64,23 +64,31 @@ class CharacterRepository implements RepositoryInterface
         return $this->mapPost($post);
     }
 
-    /**
-     * Create a Character.
-     */
-    public function create(Character $character): Character
-    {
-        $postId = wp_insert_post(
-            [
+    public function save(
+        Character $character
+    ): void {
+        $postId = $character->id()->value();
+
+        if ($postId === 0) {
+
+            $postId = wp_insert_post([
                 'post_type'   => $this->postType,
                 'post_status' => 'publish',
-                'post_title'  => $character->name(),
+                'post_title'  => $character->name()->value(),
                 'post_author' => get_current_user_id(),
-            ],
-            true
-        );
+            ], true);
+
+        } else {
+
+            $postId = wp_update_post([
+                'ID'         => $postId,
+                'post_title' => $character->name()->value(),
+            ], true);
+
+        }
 
         if (is_wp_error($postId)) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 $postId->get_error_message()
             );
         }
@@ -89,115 +97,72 @@ class CharacterRepository implements RepositoryInterface
             (int) $postId,
             $character
         );
-
-        return $this->find((int) $postId)
-            ?? throw new \RuntimeException(
-                'The character was created but could not be loaded.'
-            );
     }
 
-    /**
-     * Update a Character.
-     */
-    public function update(Character $character): Character
-    {
-        $existing = $this->find($character->id());
-
-        if ($existing === null) {
-            throw new \RuntimeException(
-                'The requested character could not be found.'
-            );
-        }
-
-        $result = wp_update_post(
-            [
-                'ID'         => $character->id(),
-                'post_title' => $character->name(),
-            ],
+    public function delete(
+        CharacterId $id
+    ): void {
+        wp_delete_post(
+            $id->value(),
             true
         );
-
-        if (is_wp_error($result)) {
-            throw new \RuntimeException(
-                $result->get_error_message()
-            );
-        }
-
-        $this->saveMeta(
-            $character->id(),
-            $character
-        );
-
-        return $this->find($character->id())
-            ?? throw new \RuntimeException(
-                'The character was updated but could not be loaded.'
-            );
     }
 
-    /**
-     * Delete a Character.
-     */
-    public function delete(int $id): bool
-    {
-        if ($this->find($id) === null) {
-            return false;
-        }
-
-        return wp_delete_post($id, true) instanceof WP_Post;
-    }
-
-    /**
-     * Save Character metadata.
-     */
     protected function saveMeta(
         int $postId,
         Character $character
     ): void {
-        update_post_meta(
-            $postId,
-            '_gmrc_race',
-            $character->race()
-        );
-
-        update_post_meta(
-            $postId,
-            '_gmrc_class',
-            $character->class()
-        );
 
         update_post_meta(
             $postId,
             '_gmrc_level',
-            $character->level()
+            $character
+                ->level()
+                ->value()
         );
+
+        update_post_meta(
+            $postId,
+            '_gmrc_experience',
+            $character
+                ->experience()
+                ->value()
+        );
+
+        /*
+         * TODO
+         *
+         * Race Value Object
+         * CharacterClass Value Object
+         *
+         * update_post_meta(...)
+         */
     }
 
-    /**
-     * Convert a WordPress post into a Character model.
-     */
-    protected function mapPost(WP_Post $post): Character
-    {
-        return new Character(
-            id: $post->ID,
-            name: $post->post_title,
-            race: (string) get_post_meta(
-                $post->ID,
-                '_gmrc_race',
-                true
-            ),
-            class: (string) get_post_meta(
-                $post->ID,
-                '_gmrc_class',
-                true
-            ),
-            level: max(
-                1,
-                (int) get_post_meta(
-                    $post->ID,
-                    '_gmrc_level',
-                    true
+    protected function mapPost(
+        WP_Post $post
+    ): Character {
+
+        return Character::reconstitute(
+            CharacterId::fromString((string) $post->ID),
+            CharacterName::fromString($post->post_title),
+            Level::fromInt(
+                max(
+                    1,
+                    (int) get_post_meta(
+                        $post->ID,
+                        '_gmrc_level',
+                        true
+                    )
                 )
             ),
+            Experience::fromInt(
+                (int) get_post_meta(
+                    $post->ID,
+                    '_gmrc_experience',
+                    true
+                )
+            )
         );
     }
 }
