@@ -15,7 +15,7 @@
 ## View
 
 - [x] ViewFinder
-- [ ] ViewFactory
+- [x] ViewFactory
 - [x] View
 - [ ] Layouts
 
