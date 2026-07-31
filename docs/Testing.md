@@ -1,25 +1,31 @@
-# Testing Progress
+# Framework Testing
 
-## Container
-- [x] Complete
+## Core
 
-## Router
-- [x] Complete (Core)
+- [x] Container
+- [ ] Application
+- [ ] Kernel
 
-## Request
-- [ ] In Progress
+## HTTP
 
-## Response
-- [ ] Planned
+- [x] Router
+- [ ] Request
+- [ ] Response
 
 ## View
-- [ ] Planned
+
+- [ ] ViewFactory
+- [ ] View
+- [ ] Layouts
 
 ## Definitions
-- [ ] Planned
 
-## Kingdom Registry
-- [ ] Planned
+- [ ] Registry
+- [ ] Builder
+- [ ] Scriptorium
+- [ ] Codex
 
-## Character Module
-- [ ] Planned
+## Modules
+
+- [ ] Characters
+- [ ] Achievements
