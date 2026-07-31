@@ -25,10 +25,7 @@ class FrontendServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
-        // AppController is resolved automatically by the
-        // dependency injection container.
-        //
+        // No manual controller bindings required.
     }
 
     /**
