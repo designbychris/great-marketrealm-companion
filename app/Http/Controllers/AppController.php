@@ -55,10 +55,17 @@ class AppController
                 return $result;
             }
     
-            $content = is_string($result)
-                ? $result
-                : '';
-    
+            if (! is_string($result)) {
+                throw new RuntimeException(
+                    sprintf(
+                        'Expected route "%s" to return string or Response.',
+                        $route
+                    )
+                );
+            }
+            
+            $content = $result;
+                
             $pageTitle = $this->pageTitle($route);
         } catch (RuntimeException $exception) {
     
