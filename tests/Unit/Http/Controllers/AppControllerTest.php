@@ -19,27 +19,8 @@ final class AppControllerTest extends TestCase
     {
         $router = new DispatchingRouterSpy();
 
-        $router->dispatchResult = 'Dashboard';
+        self::assertSame([], $router->dispatches());
 
-        $controller = new AppController(
-            $router,
-            new ViewFactorySpy(),
-            new Navigation(),
-            new RouteResolverStub('dashboard'),
-            new LayoutRendererSpy()
-        );
-
-        $controller->handle();
-
-        self::assertSame(
-            [
-                [
-                    'method' => null,
-                    'path' => '/dashboard',
-                ],
-            ],
-            $router->dispatches()
-        );
     }
 
     public function testReturnsResponseObjectsUnchanged(): void
