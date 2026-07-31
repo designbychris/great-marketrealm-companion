@@ -42,26 +42,36 @@ Benefits:
 
 # Architecture
 
-Core
+## 1. Tiny Classes
 
-Database
+If a class becomes difficult to explain, it's probably doing too much.
 
-Repositories
+## 2. Behaviour Before Data
 
-Models
+Prefer:
 
-Services
+$character->gainExperience(500);
 
-Frontend
+over
 
-Admin
+$character->setExperience(500);
 
-Templates
+## 3. Rich Value Objects
 
-Repositories communicate with DatabaseManager.
+Avoid primitive obsession.
 
-Views never query the database.
+## 4. Impossible States Should Be Impossible
 
-Models contain data only.
+Objects validate themselves.
 
-Services contain business logic.
+## 5. One Source of Truth
+
+Rules belong in one place.
+
+## 6. Every Object Rules Its Own Kingdom
+
+No object should know another object's responsibilities.
+
+## 7. Composition Over Inheritance
+
+Prefer lots of collaborating objects over deep inheritance hierarchies.
