@@ -17,6 +17,23 @@ defined('ABSPATH') || exit;
 class ViewFinder
 {
     /**
+     * Base application path.
+     */
+    protected string $basePath;
+
+    /**
+     * Create the view finder.
+     */
+    public function __construct(
+        ?string $basePath = null
+    ) {
+        $this->basePath = rtrim(
+            $basePath ?? GMRC_PATH,
+            DIRECTORY_SEPARATOR
+        ) . DIRECTORY_SEPARATOR;
+    }
+
+    /**
      * Find a view.
      *
      * Module view example:
@@ -47,7 +64,10 @@ class ViewFinder
 
         $modulePath = $this->moduleViewPath($view);
 
-        if ($modulePath !== null && file_exists($modulePath)) {
+        if (
+            $modulePath !== null
+            && file_exists($modulePath)
+        ) {
             return $modulePath;
         }
 
@@ -57,7 +77,10 @@ class ViewFinder
                 $view,
                 $sharedPath,
                 $modulePath !== null
-                    ? sprintf(' and [%s]', $modulePath)
+                    ? sprintf(
+                        ' and [%s]',
+                        $modulePath
+                    )
                     : ''
             )
         );
@@ -66,11 +89,12 @@ class ViewFinder
     /**
      * Build a shared application view path.
      */
-    protected function sharedViewPath(string $view): string
-    {
+    protected function sharedViewPath(
+        string $view
+    ): string {
         return sprintf(
             '%sapp/Views/%s.php',
-            GMRC_PATH,
+            $this->basePath,
             str_replace(
                 '.',
                 DIRECTORY_SEPARATOR,
@@ -82,8 +106,9 @@ class ViewFinder
     /**
      * Build a module view path.
      */
-    protected function moduleViewPath(string $view): ?string
-    {
+    protected function moduleViewPath(
+        string $view
+    ): ?string {
         if (! str_contains($view, '.')) {
             return null;
         }
@@ -96,7 +121,7 @@ class ViewFinder
 
         return sprintf(
             '%sapp/Modules/%s/Views/%s.php',
-            GMRC_PATH,
+            $this->basePath,
             ucfirst($module),
             str_replace(
                 '.',
@@ -104,5 +129,13 @@ class ViewFinder
                 $template
             )
         );
+    }
+
+    /**
+     * Return the configured base path.
+     */
+    public function basePath(): string
+    {
+        return $this->basePath;
     }
 }
