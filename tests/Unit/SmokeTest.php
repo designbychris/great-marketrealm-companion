@@ -20,7 +20,9 @@ final class SmokeTest extends TestCase
     {
         fwrite(STDERR, "1\n");
 
-        $router = new EmptyRouterSpy();
+        use GreatMarketrealmCompanion\Tests\Stubs\DispatchingRouterSpy;
+
+        $router = new DispatchingRouterSpy();
 
         fwrite(STDERR, "2\n");
 
