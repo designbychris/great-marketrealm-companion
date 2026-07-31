@@ -54,6 +54,7 @@ final class DispatchingRouterSpy extends Router
      */
     public function __construct()
     {
+        fwrite(STDERR, "Spy ctor\n");
     }
 
     /**
