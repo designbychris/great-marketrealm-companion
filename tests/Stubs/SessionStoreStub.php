@@ -15,6 +15,14 @@ final class SessionStoreStub extends SessionStore
      */
     private array $storage = [];
 
+    public function has(string $key): bool
+    {
+        return array_key_exists(
+            $key,
+            $this->storage
+        );
+    }
+
     public function get(
         string $key,
         mixed $default = null
@@ -30,16 +38,8 @@ final class SessionStoreStub extends SessionStore
         $this->storage[$key] = $value;
     }
 
-    public function forget(
-        string $key
-    ): void {
-        unset(
-            $this->storage[$key]
-        );
-    }
-
-    public function flush(): void
+    public function forget(string $key): void
     {
-        $this->storage = [];
+        unset($this->storage[$key]);
     }
 }
