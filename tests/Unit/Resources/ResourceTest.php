@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Tests\Unit\Resources;
 
 use GreatMarketrealmCompanion\Core\Application;
-use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Tests\Stubs\TestController;
 use GreatMarketrealmCompanion\Tests\Stubs\TestResource;
 use GreatMarketrealmCompanion\Tests\Stubs\RouterSpy;
@@ -41,6 +40,10 @@ final class ResourceTest extends TestCase
 
     public function testKeyReturnsExpectedValue(): void
     {
+        $this->assertCount(
+            7,
+            $router->routes()
+        );
         $this->assertSame(
             'characters',
             $this->makeResource()->key()
@@ -84,109 +87,6 @@ final class ResourceTest extends TestCase
         $this->assertSame(
             [],
             $this->makeResource()->pages()
-        );
-    }
-
-    public function testRegistersIndexRoute(): void
-    {
-        $router = $this->createMock(
-            Router::class
-        );
-
-        $router
-            ->expects($this->once())
-            ->method('get')
-            ->with(
-                '/characters',
-                [
-                    TestController::class,
-                    'index',
-                ]
-            );
-
-        $this->makeResource()->registerRoutes(
-            $router
-        );
-    }
-
-    public function testRegistersCreateRoute(): void
-    {
-        $router = $this->createMock(
-            Router::class
-        );
-
-        $router
-            ->expects($this->exactly(3))
-            ->method('get');
-
-        $this->makeResource()->registerRoutes(
-            $router
-        );
-    }
-
-    public function testRegistersStoreRoute(): void
-    {
-        $router = $this->createMock(
-            Router::class
-        );
-
-        $router
-            ->expects($this->once())
-            ->method('post')
-            ->with(
-                '/characters',
-                [
-                    TestController::class,
-                    'store',
-                ]
-            );
-
-        $this->makeResource()->registerRoutes(
-            $router
-        );
-    }
-
-    public function testRegistersUpdateRoute(): void
-    {
-        $router = $this->createMock(
-            Router::class
-        );
-
-        $router
-            ->expects($this->once())
-            ->method('put')
-            ->with(
-                '/characters/{id}',
-                [
-                    TestController::class,
-                    'update',
-                ]
-            );
-
-        $this->makeResource()->registerRoutes(
-            $router
-        );
-    }
-
-    public function testRegistersDeleteRoute(): void
-    {
-        $router = $this->createMock(
-            Router::class
-        );
-
-        $router
-            ->expects($this->once())
-            ->method('delete')
-            ->with(
-                '/characters/{id}',
-                [
-                    TestController::class,
-                    'destroy',
-                ]
-            );
-
-        $this->makeResource()->registerRoutes(
-            $router
         );
     }
 
@@ -275,5 +175,13 @@ final class ResourceTest extends TestCase
                 '/characters/create'
             )
         );
+    }
+}
+
+final class TestResourceWithoutSlashes extends Resource
+{
+    public function routePrefix(): string
+    {
+        return 'characters/';
     }
 }
