@@ -86,14 +86,14 @@ final class RouteResolverTest extends TestCase
         );
     }
 
-    public function testRemovesInvalidCharacters(): void
+    public function testSanitisesUnsafeRouteInput(): void
     {
         $_GET['gmrc_route'] = '../../characters<script>';
 
         $resolver = new RouteResolver();
 
         self::assertSame(
-            'charactersscript',
+            'characters',
             $resolver->current()
         );
     }
