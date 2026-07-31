@@ -12,7 +12,7 @@ final class SmokeTest extends TestCase
     public function test_can_create_router_spy(): void
     {
         $router = new DispatchingRouterSpy();
-
+    
         self::assertInstanceOf(
             DispatchingRouterSpy::class,
             $router
