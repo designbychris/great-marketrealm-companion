@@ -11,7 +11,7 @@ final class LayoutRendererSpy extends LayoutRenderer
     /**
      * @var array<string,mixed>
      */
-    public array $data = [];
+    private array $data = [];
 
     public function __construct()
     {
