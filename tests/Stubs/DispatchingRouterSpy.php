@@ -134,3 +134,11 @@ final class DispatchingRouterSpy extends Router
         return $this->lookups;
     }
 }
+
+final class EmptyRouterSpy
+{
+    public function __construct()
+    {
+        fwrite(STDERR, "Ctor\n");
+    }
+}
