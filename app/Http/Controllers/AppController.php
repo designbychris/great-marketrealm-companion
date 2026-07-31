@@ -12,6 +12,8 @@ use GreatMarketrealmCompanion\Navigation\Navigation;
 use GreatMarketrealmCompanion\Core\Http\Response;
 use GreatMarketrealmCompanion\Core\Http\RouteResolver;
 use GreatMarketrealmCompanion\Core\View\LayoutRenderer;
+use GreatMarketrealmCompanion\Core\Http\Contracts\RouteResolverInterface;
+use GreatMarketrealmCompanion\Core\View\Contracts\LayoutRendererInterface;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -33,8 +35,8 @@ class AppController
         protected Router $router,
         protected ViewFactory $views,
         protected Navigation $navigation,
-        protected RouteResolver $routes,
-        protected LayoutRenderer $layout,
+        protected RouteResolverInterface $routes,
+        protected LayoutRendererInterface $layout,
     ) {
     }
 
