@@ -15,7 +15,7 @@
 ## View
 
 - [ ] ViewFactory
-- [ ] View
+- [x] View
 - [ ] Layouts
 
 ## Definitions
