@@ -50,13 +50,6 @@ final class ResourceTest extends TestCase
             7,
             $router->routes()
         );
-        
-        $this->assertSame(
-            [
-                ...
-            ],
-            $router->routes()
-        );
         $this->assertSame(
             'characters',
             $this->makeResource()->key()
