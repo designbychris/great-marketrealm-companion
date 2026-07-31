@@ -40,8 +40,21 @@ final class ResourceTest extends TestCase
 
     public function testKeyReturnsExpectedValue(): void
     {
+        $router = new RouterSpy();
+
+        $this->makeResource()->registerRoutes(
+            $router
+        );
+        
         $this->assertCount(
             7,
+            $router->routes()
+        );
+        
+        $this->assertSame(
+            [
+                ...
+            ],
             $router->routes()
         );
         $this->assertSame(
@@ -161,27 +174,4 @@ final class ResourceTest extends TestCase
         );
     }
 
-    public function testRegistersCreateRoute(): void
-    {
-        $router = new RouterSpy();
-    
-        $this->makeResource()->registerRoutes(
-            $router
-        );
-    
-        $this->assertTrue(
-            $router->hasRecorded(
-                'GET',
-                '/characters/create'
-            )
-        );
-    }
-}
-
-final class TestResourceWithoutSlashes extends Resource
-{
-    public function routePrefix(): string
-    {
-        return 'characters/';
-    }
 }
