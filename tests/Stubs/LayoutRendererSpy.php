@@ -23,4 +23,14 @@ final class LayoutRendererSpy extends LayoutRenderer
 
         return '<layout>' . ($data['content'] ?? '') . '</layout>';
     }
+    
+    /**
+     * Return the last layout data.
+     *
+     * @return array<string,mixed>
+     */
+    public function lastData(): array
+    {
+        return $this->data;
+    }
 }
