@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Tests\Stubs;
 
 use GreatMarketrealmCompanion\Core\Application;
 use GreatMarketrealmCompanion\Resources\Resource;
+use GreatMarketrealmCompanion\Tests\Stubs\TestController;
 
 final class TestResource extends Resource
 {
