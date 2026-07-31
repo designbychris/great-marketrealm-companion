@@ -3,7 +3,7 @@
 ## Core
 
 - [x] Container
-- [ ] Application
+- [x] Application
 - [ ] Kernel
 
 ## HTTP
