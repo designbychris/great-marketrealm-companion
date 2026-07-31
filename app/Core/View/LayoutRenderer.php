@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Core\View;
 
+use GreatMarketrealmCompanion\Core\View\Contracts\LayoutRendererInterface;
+
 defined('ABSPATH') || exit;
 
 /**
@@ -12,7 +14,7 @@ defined('ABSPATH') || exit;
  * @package GreatMarketrealmCompanion
  * @since 0.4.0
  */
-final class LayoutRenderer
+final class LayoutRenderer implements LayoutRendererInterface
 {
     /**
      * Layout file.
