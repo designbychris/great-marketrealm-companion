@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Core\Http;
 
+use GreatMarketrealmCompanion\Core\Http\Contracts\RouteResolverInterface;
+
 defined('ABSPATH') || exit;
 
 /**
@@ -12,7 +14,7 @@ defined('ABSPATH') || exit;
  * @package GreatMarketrealmCompanion
  * @since 0.4.0
  */
-final class RouteResolver
+final class RouteResolver implements RouteResolverInterface
 {
     /**
      * Resolve the requested route.
