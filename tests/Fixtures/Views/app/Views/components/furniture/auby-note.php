@@ -1,5 +1,6 @@
 <?php
 
 declare(strict_types=1);
+?>
 
-echo 'Auby Note Component';
+Quote: <?= $quote ?? 'None' ?>
