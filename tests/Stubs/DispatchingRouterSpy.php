@@ -54,7 +54,6 @@ final class DispatchingRouterSpy
      */
     public function __construct()
     {
-        fwrite(STDERR, "Spy ctor\n");
     }
 
     /**
