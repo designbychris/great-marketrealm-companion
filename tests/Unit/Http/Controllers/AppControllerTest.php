@@ -15,4 +15,13 @@ final class AppControllerTest extends TestCase
     {
         self::assertTrue(true);
     }
+    public function testDispatchingRouterSpyCanBeCreated(): void
+    {
+        $router = new DispatchingRouterSpy();
+    
+        self::assertInstanceOf(
+            DispatchingRouterSpy::class,
+            $router
+        );
+    }
 }
