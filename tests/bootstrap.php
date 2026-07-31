@@ -114,4 +114,18 @@ if (! function_exists('remove_query_arg')) {
     }
 }
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+$loader = require dirname(__DIR__) . '/vendor/autoload.php';
+
+$loader->setClassMapAuthoritative(false);
+
+spl_autoload_register(
+    function (string $class) {
+        file_put_contents(
+            __DIR__ . '/autoload.log',
+            $class . PHP_EOL,
+            FILE_APPEND
+        );
+    },
+    true,
+    true
+);
