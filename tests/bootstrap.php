@@ -69,4 +69,49 @@ if (! function_exists('absint')) {
     }
 }
 
+if (! function_exists('__')) {
+    function __(
+        string $text,
+        string $domain = 'default'
+    ): string {
+        return $text;
+    }
+}
+
+if (! function_exists('get_permalink')) {
+    function get_permalink(): string
+    {
+        return 'https://example.test/companion/';
+    }
+}
+
+if (! function_exists('home_url')) {
+    function home_url(string $path = ''): string
+    {
+        return 'https://example.test' . $path;
+    }
+}
+
+if (! function_exists('add_query_arg')) {
+    function add_query_arg(
+        string $key,
+        string $value,
+        string $url
+    ): string {
+        return $url . '?'
+            . urlencode($key)
+            . '='
+            . urlencode($value);
+    }
+}
+
+if (! function_exists('remove_query_arg')) {
+    function remove_query_arg(
+        string $key,
+        string $url
+    ): string {
+        return $url;
+    }
+}
+
 require dirname(__DIR__) . '/vendor/autoload.php';
