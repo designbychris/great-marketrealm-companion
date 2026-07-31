@@ -7,7 +7,6 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Router;
 use GreatMarketrealmCompanion\Core\Container;
 use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\Routing\Router;
-use GreatMarketrealmCompanion\Tests\Stubs\RouterSpy;
 use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase
