@@ -8,6 +8,7 @@ use GreatMarketrealmCompanion\Core\Application;
 use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Tests\Stubs\TestController;
 use GreatMarketrealmCompanion\Tests\Stubs\TestResource;
+use GreatMarketrealmCompanion\Tests\Stubs\RouterSpy;
 use PHPUnit\Framework\TestCase;
 
 final class ResourceTest extends TestCase
@@ -186,6 +187,93 @@ final class ResourceTest extends TestCase
 
         $this->makeResource()->registerRoutes(
             $router
+        );
+    }
+
+        public function testRegistersAllResourceRoutes(): void
+    {
+        $router = new RouterSpy();
+    
+        $this->makeResource()->registerRoutes(
+            $router
+        );
+    
+        $this->assertSame(
+            [
+                [
+                    'method' => 'GET',
+                    'path' => '/characters',
+                    'handler' => [
+                        TestController::class,
+                        'index',
+                    ],
+                ],
+                [
+                    'method' => 'GET',
+                    'path' => '/characters/create',
+                    'handler' => [
+                        TestController::class,
+                        'create',
+                    ],
+                ],
+                [
+                    'method' => 'POST',
+                    'path' => '/characters',
+                    'handler' => [
+                        TestController::class,
+                        'store',
+                    ],
+                ],
+                [
+                    'method' => 'GET',
+                    'path' => '/characters/{id}/edit',
+                    'handler' => [
+                        TestController::class,
+                        'edit',
+                    ],
+                ],
+                [
+                    'method' => 'GET',
+                    'path' => '/characters/{id}',
+                    'handler' => [
+                        TestController::class,
+                        'show',
+                    ],
+                ],
+                [
+                    'method' => 'PUT',
+                    'path' => '/characters/{id}',
+                    'handler' => [
+                        TestController::class,
+                        'update',
+                    ],
+                ],
+                [
+                    'method' => 'DELETE',
+                    'path' => '/characters/{id}',
+                    'handler' => [
+                        TestController::class,
+                        'destroy',
+                    ],
+                ],
+            ],
+            $router->routes()
+        );
+    }
+
+    public function testRegistersCreateRoute(): void
+    {
+        $router = new RouterSpy();
+    
+        $this->makeResource()->registerRoutes(
+            $router
+        );
+    
+        $this->assertTrue(
+            $router->hasRecorded(
+                'GET',
+                '/characters/create'
+            )
         );
     }
 }
