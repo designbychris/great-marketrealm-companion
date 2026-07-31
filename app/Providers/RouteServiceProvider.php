@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Core\Routing\Router;
@@ -15,11 +17,11 @@ defined('ABSPATH') || exit;
 /**
  * Route Service Provider.
  *
- * Registers the Router and loads routes contributed
- * by installed Kingdoms.
+ * Registers routing services and loads routes
+ * contributed by installed Kingdoms.
  *
  * @package GreatMarketrealmCompanion
- * @since 0.3.0
+ * @since 0.4.0
  */
 class RouteServiceProvider extends ServiceProvider
 {
@@ -28,7 +30,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->container()->singleton(
+        $this->app->singleton(
             Router::class,
             fn (): Router => new Router(
                 $this->app->container(),
@@ -38,7 +40,7 @@ class RouteServiceProvider extends ServiceProvider
             )
         );
     
-        $this->app->container()->singleton(
+        $this->app->singleton(
             RouteResolverInterface::class,
             RouteResolver::class
         );
