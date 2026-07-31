@@ -1,89 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GreatMarketrealmCompanion\Modules\Characters\Models;
+
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 
 defined('ABSPATH') || exit;
 
 /**
- * Character.
+ * Character Entity.
  *
- * Domain model representing a player character.
+ * Represents a playable character within the
+ * Great Marketrealm.
  *
- * @package MarketrealmCompanion
- * @since 0.3.0
+ * @package GreatMarketrealmCompanion
+ * @since 0.5.0
  */
-class Character
+final class Character
 {
     /**
-     * Constructor.
+     * Character constructor.
      */
-    public function __construct(
-        protected int $id = 0,
-        protected string $name = '',
-        protected string $race = '',
-        protected string $class = '',
-        protected int $level = 1,
+    private function __construct(
+        private CharacterId $id,
+        private CharacterName $name,
+        private Level $level,
+        private Experience $experience,
     ) {
-    }
-
-    /**
-     * Character ID.
-     */
-    public function id(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * Character name.
-     */
-    public function name(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * Character race.
-     */
-    public function race(): string
-    {
-        return $this->race;
-    }
-
-    /**
-     * Character class.
-     */
-    public function class(): string
-    {
-        return $this->class;
-    }
-
-    /**
-     * Character level.
-     */
-    public function level(): int
-    {
-        return $this->level;
-    }
-
-    /**
-     * Display name.
-     */
-    public function displayName(): string
-    {
-        return sprintf(
-            '%s (Level %d %s)',
-            $this->name,
-            $this->level,
-            $this->class
-        );
-    }
-
-    /**
-     * Determine whether the character is new.
-     */
-    public function isNew(): bool
-    {
-        return $this->id === 0;
     }
 }
