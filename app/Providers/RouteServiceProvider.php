@@ -6,6 +6,8 @@ use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
 use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
+use GreatMarketrealmCompanion\Core\Http\RouteResolver;
+use GreatMarketrealmCompanion\Core\Http\Contracts\RouteResolverInterface;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -34,6 +36,11 @@ class RouteServiceProvider extends ServiceProvider
                     Request::class
                 )
             )
+        );
+    
+        $this->app->container()->singleton(
+            RouteResolverInterface::class,
+            RouteResolver::class
         );
     }
 
