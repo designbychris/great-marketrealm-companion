@@ -10,8 +10,6 @@ use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Navigation\MenuItem;
 use GreatMarketrealmCompanion\Navigation\Navigation;
 use GreatMarketrealmCompanion\Core\Http\Response;
-use GreatMarketrealmCompanion\Core\Http\RouteResolver;
-use GreatMarketrealmCompanion\Core\View\LayoutRenderer;
 use GreatMarketrealmCompanion\Core\Http\Contracts\RouteResolverInterface;
 use GreatMarketrealmCompanion\Core\View\Contracts\LayoutRendererInterface;
 use RuntimeException;
