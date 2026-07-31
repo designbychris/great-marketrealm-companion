@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Tests\Unit;
 
-use GreatMarketrealmCompanion\Tests\Stubs\DispatchingRouterSpy;
 use PHPUnit\Framework\TestCase;
+
+final class EmptyRouterSpy
+{
+    public function __construct()
+    {
+        fwrite(STDERR, "Ctor\n");
+    }
+}
 
 final class SmokeTest extends TestCase
 {
@@ -17,7 +24,10 @@ final class SmokeTest extends TestCase
 
         fwrite(STDERR, "2\n");
 
-        self::assertTrue(true);
+        self::assertInstanceOf(
+            EmptyRouterSpy::class,
+            $router
+        );
 
         fwrite(STDERR, "3\n");
     }
