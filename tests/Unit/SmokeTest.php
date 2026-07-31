@@ -11,19 +11,14 @@ final class SmokeTest extends TestCase
 {
     public function test_can_create_router_spy(): void
     {
-        fwrite(STDERR, "Entered test\n");
-    
-        $reflection = new ReflectionClass(
-            DispatchingRouterSpy::class
-        );
-    
-        fwrite(
-            STDERR,
-            $reflection->getFileName() . PHP_EOL
-        );
-    
+        fwrite(STDERR, "1\n");
+
         $router = new DispatchingRouterSpy();
-    
-        fwrite(STDERR, "Created\n");
+
+        fwrite(STDERR, "2\n");
+
+        self::assertTrue(true);
+
+        fwrite(STDERR, "3\n");
     }
 }
