@@ -1,5 +1,6 @@
 <?php
 
 declare(strict_types=1);
+?>
 
-echo 'Characters Show';
+Character: <?= $name ?? 'Unknown' ?>
