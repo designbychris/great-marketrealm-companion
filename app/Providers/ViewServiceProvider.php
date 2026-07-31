@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Providers;
 
+use GreatMarketrealmCompanion\Core\View\Contracts\LayoutRendererInterface;
+use GreatMarketrealmCompanion\Core\View\LayoutRenderer;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Core\View\ViewFinder;
 
@@ -31,6 +33,11 @@ class ViewServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             ViewFactory::class
+        );
+        
+        $this->app->singleton(
+            LayoutRendererInterface::class,
+            LayoutRenderer::class
         );
     }
 }
