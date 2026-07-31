@@ -100,7 +100,7 @@ final class DispatchingRouterSpy extends Router
     /**
      * Mark a route as existing.
      */
-    public function addRoute(
+    public function registerRoute(
         string $method,
         string $path
     ): void {
