@@ -8,7 +8,6 @@
 
 ## HTTP
 
-- [x] Router
 - [x] Request
 - [x] Response
 
@@ -17,7 +16,11 @@
 - [x] ViewFinder
 - [x] ViewFactory
 - [x] View
-- [x] Layouts
+
+## Routing
+
+- [x] Router
+- [x] Page
 
 ## Definitions
 
