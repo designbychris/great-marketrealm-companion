@@ -7,7 +7,7 @@ namespace GreatMarketrealmCompanion\Core\View\Contracts;
 defined('ABSPATH') || exit;
 
 /**
- * Renders the application layout.
+ * Application layout renderer contract.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.4.0
@@ -15,7 +15,7 @@ defined('ABSPATH') || exit;
 interface LayoutRendererInterface
 {
     /**
-     * Render the layout.
+     * Render the application layout.
      *
      * @param array<string,mixed> $data
      */
