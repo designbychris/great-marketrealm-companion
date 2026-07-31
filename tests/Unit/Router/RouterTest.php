@@ -364,6 +364,15 @@ final class TestController
     }
 }
 
+final class MethodInjectionController
+{
+    public function index(
+        TestLogger $logger
+    ): TestLogger {
+        return $logger;
+    }
+}
+
 final class TestLogger
 {
 }
