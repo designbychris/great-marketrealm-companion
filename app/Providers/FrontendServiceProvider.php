@@ -2,11 +2,7 @@
 
 namespace GreatMarketrealmCompanion\Providers;
 
-use GreatMarketrealmCompanion\Core\Container;
-use GreatMarketrealmCompanion\Core\Routing\Router;
-use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Http\Controllers\AppController;
-use GreatMarketrealmCompanion\Navigation\Navigation;
 use GreatMarketrealmCompanion\Core\Http\Response;
 use WP_Post;
 
@@ -29,16 +25,10 @@ class FrontendServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->container()->bind(
-            AppController::class,
-            static function (Container $container): AppController {
-                return new AppController(
-                    $container->make(Router::class),
-                    $container->make(ViewFactory::class),
-                    $container->make(Navigation::class)
-                );
-            }
-        );
+        //
+        // AppController is resolved automatically by the
+        // dependency injection container.
+        //
     }
 
     /**
