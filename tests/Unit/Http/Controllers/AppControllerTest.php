@@ -15,22 +15,6 @@ use PHPUnit\Framework\TestCase;
 
 final class AppControllerTest extends TestCase
 {
-    public function testCanBeConstructed(): void
-    {
-        $controller = new AppController(
-            new DispatchingRouterSpy(),
-            new ViewFactorySpy(),
-            new Navigation(),
-            new RouteResolverStub(),
-            new LayoutRendererSpy()
-        );
-
-        self::assertInstanceOf(
-            AppController::class,
-            $controller
-        );
-    }
-
     public function testDispatchesResolvedRoute(): void
     {
         $router = new DispatchingRouterSpy();
