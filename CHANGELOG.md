@@ -6,7 +6,27 @@ The format is based on Keep a Changelog.
 
 ---
 
-## [0.2.0] - In Development
+## v0.6.0 — Framework Foundation
+
+### Core
+- Dependency Injection Container
+- HTTP Request
+- HTTP Response
+- Application
+- Kernel
+- Router
+
+### Quality
+- 113 PHPUnit tests
+- 130 assertions
+- 100% passing
+
+The framework foundation is now considered stable and ready
+for higher-level services and application modules.
+
+---
+
+## [0.2.0] - Unreleased
 
 ### Added
 
