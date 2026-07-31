@@ -10,7 +10,7 @@ use RuntimeException;
 /**
  * Test router that records dispatches and route lookups.
  */
-final class DispatchingRouterSpy extends Router
+final class DispatchingRouterSpy
 {
     /**
      * Value returned from dispatch().
