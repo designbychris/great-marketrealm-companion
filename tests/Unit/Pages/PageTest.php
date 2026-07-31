@@ -7,6 +7,7 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Pages;
 use GreatMarketrealmCompanion\Core\Pages\Page;
 use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Resources\Resource;
+use GreatMarketrealmCompanion\Tests\Stubs\TestPage;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
@@ -88,12 +89,24 @@ final class PageTest extends TestCase
         );
     }
 
-    public function testHandlerReturnsCallable(): void
+    public function testRegisterRouteUsesHandler(): void
     {
+        $router = $this->createMock(
+            Router::class
+        );
+    
         $handler = $this->makePage()->handler();
-
-        $this->assertIsCallable(
-            $handler
+    
+        $router
+            ->expects($this->once())
+            ->method('get')
+            ->with(
+                '/dashboard',
+                $handler
+            );
+    
+        $this->makePage()->registerRoute(
+            $router
         );
     }
 
