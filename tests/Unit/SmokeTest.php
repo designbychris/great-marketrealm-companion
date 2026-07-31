@@ -13,7 +13,7 @@ final class SmokeTest extends TestCase
     {
         fwrite(STDERR, "1\n");
 
-        $router = new DispatchingRouterSpy();
+        $router = new EmptyRouterSpy();
 
         fwrite(STDERR, "2\n");
 
