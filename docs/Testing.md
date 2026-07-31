@@ -9,7 +9,7 @@
 ## HTTP
 
 - [x] Router
-- [ ] Request
+- [x] Request
 - [ ] Response
 
 ## View
