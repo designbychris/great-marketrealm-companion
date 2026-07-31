@@ -318,6 +318,37 @@ final class RouterTest extends TestCase
             '/missing-route'
         );
     }
+
+    public function testRouterInjectsDependencyIntoControllerMethod(): void
+    {
+        $container = new Container();
+    
+        $logger = new TestLogger();
+    
+        $container->instance(
+            TestLogger::class,
+            $logger
+        );
+    
+        $router = $this->makeRouter(
+            container: $container
+        );
+    
+        $router->get(
+            '/method-injection',
+            [MethodInjectionController::class, 'index']
+        );
+    
+        $result = $router->dispatch(
+            'GET',
+            '/method-injection'
+        );
+    
+        $this->assertSame(
+            $logger,
+            $result
+        );
+    }
 }
 
 final class TestController
