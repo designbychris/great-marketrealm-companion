@@ -150,18 +150,21 @@ final class PageTest extends TestCase
         );
     }
 
-    public function testUnsupportedMethodThrowsException(): void
+    public function testRegistersDeleteRoute(): void
     {
-        $router = new Router();
-
-        $this->expectException(
-            RuntimeException::class
+        $router = $this->createMock(
+            Router::class
         );
-
-        $this->makePage(
-            'TRACE'
-        )->registerRoute(
-            $router
-        );
+    
+        $router
+            ->expects($this->once())
+            ->method('delete')
+            ->with(
+                '/dashboard',
+                $this->makePage('DELETE')->handler()
+            );
+    
+        $this->makePage('DELETE')
+            ->registerRoute($router);
     }
 }
