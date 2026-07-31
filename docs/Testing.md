@@ -31,6 +31,19 @@
 - [x] Navigation
 - [x] MenuItem
 
+## MVC
+
+- [ ] Controller
+- [ ] Repository
+
+## Modules
+
+- [ ] Characters
+- [ ] Inventory
+- [ ] Campaigns
+- [ ] Achievements
+- [ ] Settings
+
 ## Definitions
 
 - [ ] Registry
@@ -38,7 +51,9 @@
 - [ ] Scriptorium
 - [ ] Codex
 
-## Modules
+## Platform
 
-- [ ] Characters
-- [ ] Achievements
+- [ ] Kingdom Registry
+- [ ] Permissions
+- [ ] Events
+- [ ] Notifications
