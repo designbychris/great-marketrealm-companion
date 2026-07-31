@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Tests\Unit\Http\Controllers;
 
 use PHPUnit\Framework\TestCase;
+use GreatMarketrealmCompanion\Http\Controllers\AppController;
 
 final class AppControllerTest extends TestCase
 {
