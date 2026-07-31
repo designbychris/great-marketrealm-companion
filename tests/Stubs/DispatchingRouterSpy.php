@@ -100,7 +100,7 @@ final class DispatchingRouterSpy
     /**
      * Mark a route as existing.
      */
-    public function registerRoute(
+    public function registerAvailableRoute(
         string $method,
         string $path
     ): void {
