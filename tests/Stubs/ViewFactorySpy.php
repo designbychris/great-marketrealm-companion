@@ -20,6 +20,19 @@ final class ViewFactorySpy extends ViewFactory
     private array $views = [];
 
     /**
+     * Value returned from render().
+     */
+    private string $renderedContent = '<view />';
+
+    /**
+     * Configure the content returned by render().
+     */
+    public function willRender(string $content): void
+    {
+        $this->renderedContent = $content;
+    }
+    
+    /**
      * The spy does not require ViewFactory's production dependencies.
      */
     public function __construct()
@@ -29,12 +42,11 @@ final class ViewFactorySpy extends ViewFactory
     /**
      * {@inheritDoc}
      */
-    public function render(
-        View $view
-    ): string {
+    public function render(View $view): string
+    {
         $this->views[] = $view;
 
-        return '<view />';
+        return $this->renderedContent;
     }
 
     /**
@@ -56,8 +68,6 @@ final class ViewFactorySpy extends ViewFactory
             return null;
         }
 
-        return $this->views[
-            array_key_last($this->views)
-        ];
+        return $this->views[array_key_last($this->views)];
     }
 }
