@@ -22,6 +22,10 @@
 - [x] Router
 - [x] Page
 
+## Resources
+
+- [x] Resource
+
 ## Definitions
 
 - [ ] Registry
