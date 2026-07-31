@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GreatMarketrealmCompanion\Http\Controllers;
 
 use GreatMarketrealmCompanion\Core\Routing\Router;
@@ -8,6 +10,8 @@ use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Navigation\MenuItem;
 use GreatMarketrealmCompanion\Navigation\Navigation;
 use GreatMarketrealmCompanion\Core\Http\Response;
+use GreatMarketrealmCompanion\Core\Http\RouteResolver;
+use GreatMarketrealmCompanion\Core\View\LayoutRenderer;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -18,48 +22,28 @@ defined('ABSPATH') || exit;
  * Handles all incoming Companion requests.
  *
  * @package GreatMarketrealmCompanion
- * @since 0.3.0
+ * @since 0.4.0
  */
 class AppController
 {
     /**
-     * Router.
-     */
-    protected Router $router;
-
-    /**
-     * View factory.
-     */
-    protected ViewFactory $views;
-
-    /**
-     * Navigation.
-     */
-    protected Navigation $navigation;
-
-    /**
      * Constructor.
      */
     public function __construct(
-        Router $router,
-        ViewFactory $views,
-        Navigation $navigation
+        protected Router $router,
+        protected ViewFactory $views,
+        protected Navigation $navigation,
+        protected RouteResolver $routes,
+        protected LayoutRenderer $layout,
     ) {
-        $this->router = $router;
-        $this->views = $views;
-        $this->navigation = $navigation;
     }
 
     /**
      * Handle the application request.
      */
     public function handle(): string|Response
-    {
-        $routeInput = $_POST['gmrc_route']
-            ?? $_GET['gmrc_route']
-            ?? 'not set';
-    
-        $route = $this->requestedRoute();
+    {    
+        $route = $this->routes->current();
     
         try {
             $result = $this->router->dispatch(
@@ -93,7 +77,7 @@ class AppController
             );
         }
     
-        return $this->renderLayout(
+        return $this->layout->render(
             [
                 'pageTitle'    => $pageTitle,
                 'content'      => $content,
@@ -101,39 +85,6 @@ class AppController
                 'navigation'   => $this->navigationItems($route),
             ]
         );
-    }
-    
-    /**
-     * Determine requested route.
-     */
-    protected function requestedRoute(): string
-    {
-        if (isset($_POST['gmrc_route'])) {
-            $route = sanitize_text_field(
-                wp_unslash($_POST['gmrc_route'])
-            );
-        } elseif (isset($_GET['gmrc_route'])) {
-            $route = sanitize_text_field(
-                wp_unslash($_GET['gmrc_route'])
-            );
-        } else {
-            $route = 'dashboard';
-        }
-    
-        $route = preg_replace(
-            '#[^a-zA-Z0-9/_-]#',
-            '',
-            $route
-        );
-    
-        $route = trim(
-            is_string($route) ? $route : '',
-            '/'
-        );
-    
-        return $route !== ''
-            ? $route
-            : 'dashboard';
     }
 
     /**
@@ -179,7 +130,11 @@ class AppController
                         '/' . $route
                     ),
 
-                    'active' => $route === $currentRoute || str_starts_with( $currentRoute, $route . '/' ),
+                    'active' => $route === $currentRoute
+                    || str_starts_with(
+                        $currentRoute,
+                        $route . '/'
+                    ),
 
                 ];
 
@@ -231,33 +186,5 @@ class AppController
         }
 
         return ucfirst($route);
-    }
-
-    /**
-     * Render application layout.
-     *
-     * @param array<string,mixed> $data
-     */
-    protected function renderLayout(
-        array $data
-    ): string {
-
-        $layout = GMRC_PATH .
-            'app/Core/View/Templates/layouts/app.php';
-
-        if (! file_exists($layout)) {
-            return '<p>Layout not found.</p>';
-        }
-
-        extract(
-            $data,
-            EXTR_SKIP
-        );
-
-        ob_start();
-
-        require $layout;
-
-        return (string) ob_get_clean();
     }
 }
