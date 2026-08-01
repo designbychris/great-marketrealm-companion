@@ -193,27 +193,40 @@ final class CharacterFactoryTest extends TestCase
         );
     }
 
-    public function testNormalisesPrimitiveInput(): void
+    public function testNormalisesRaceAndCharacterClassInput(): void
     {
         $character = $this->factory()->fromInput(
-            name: '  Sir Allium  ',
+            name: 'Sir Allium',
             race: '  FRUCTAN  ',
             characterClass: '  FIGHTER  '
         );
-
+    
         self::assertSame(
             'Sir Allium',
             $character->name()->value()
         );
-
+    
         self::assertSame(
             'fructan',
             $character->race()->value()
         );
-
+    
         self::assertSame(
             'fighter',
             $character->characterClass()->value()
+        );
+    }
+
+    public function testRejectsCharacterNamesWithSurroundingWhitespace(): void
+    {
+        $this->expectException(
+            InvalidArgumentException::class
+        );
+    
+        $this->factory()->fromInput(
+            name: '  Sir Allium  ',
+            race: 'fructan',
+            characterClass: 'fighter'
         );
     }
 
