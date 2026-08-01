@@ -7,6 +7,7 @@ namespace Tests\Unit\Modules\Characters\Models;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScore;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
@@ -18,11 +19,9 @@ final class CharacterTest extends TestCase
 {
     public function test_it_can_create_a_new_character(): void
     {
-        $character = $this->createCharacter();
-
         self::assertInstanceOf(
             Character::class,
-            $character
+            $this->createCharacter()
         );
     }
 
@@ -33,14 +32,13 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             $id,
             CharacterName::fromString('Sir Allium'),
+            CharacterClass::fromString('fighter'),
             HitPoints::full(12),
             AbilityScores::average()
         );
 
         self::assertTrue(
-            $character
-                ->id()
-                ->equals($id)
+            $character->id()->equals($id)
         );
     }
 
@@ -53,14 +51,34 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             $name,
+            CharacterClass::fromString('fighter'),
+            HitPoints::full(12),
+            AbilityScores::average()
+        );
+
+        self::assertTrue(
+            $character->name()->equals($name)
+        );
+    }
+
+    public function test_it_returns_its_character_class(): void
+    {
+        $class = CharacterClass::fromString(
+            'fighter'
+        );
+
+        $character = Character::create(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            $class,
             HitPoints::full(12),
             AbilityScores::average()
         );
 
         self::assertTrue(
             $character
-                ->name()
-                ->equals($name)
+                ->characterClass()
+                ->equals($class)
         );
     }
 
@@ -71,6 +89,7 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
+            CharacterClass::fromString('fighter'),
             $hitPoints,
             AbilityScores::average()
         );
@@ -89,6 +108,7 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
+            CharacterClass::fromString('fighter'),
             HitPoints::full(12),
             $abilityScores
         );
@@ -102,10 +122,8 @@ final class CharacterTest extends TestCase
 
     public function test_new_characters_start_at_level_one(): void
     {
-        $character = $this->createCharacter();
-
         self::assertTrue(
-            $character
+            $this->createCharacter()
                 ->level()
                 ->equals(Level::one())
         );
@@ -113,10 +131,8 @@ final class CharacterTest extends TestCase
 
     public function test_new_characters_start_with_zero_experience(): void
     {
-        $character = $this->createCharacter();
-
         self::assertTrue(
-            $character
+            $this->createCharacter()
                 ->experience()
                 ->equals(Experience::zero())
         );
@@ -194,9 +210,7 @@ final class CharacterTest extends TestCase
 
         self::assertSame(
             7,
-            $character
-                ->hitPoints()
-                ->current()
+            $character->hitPoints()->current()
         );
     }
 
@@ -205,6 +219,7 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
+            CharacterClass::fromString('fighter'),
             HitPoints::fromValues(
                 current: 6,
                 maximum: 12
@@ -216,9 +231,7 @@ final class CharacterTest extends TestCase
 
         self::assertSame(
             10,
-            $character
-                ->hitPoints()
-                ->current()
+            $character->hitPoints()->current()
         );
     }
 
@@ -230,9 +243,7 @@ final class CharacterTest extends TestCase
 
         self::assertSame(
             4,
-            $character
-                ->hitPoints()
-                ->temporary()
+            $character->hitPoints()->temporary()
         );
     }
 
@@ -241,6 +252,7 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
+            CharacterClass::fromString('fighter'),
             HitPoints::fromValues(
                 current: 10,
                 maximum: 12,
@@ -253,16 +265,12 @@ final class CharacterTest extends TestCase
 
         self::assertSame(
             10,
-            $character
-                ->hitPoints()
-                ->current()
+            $character->hitPoints()->current()
         );
 
         self::assertSame(
             1,
-            $character
-                ->hitPoints()
-                ->temporary()
+            $character->hitPoints()->temporary()
         );
     }
 
@@ -271,6 +279,7 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
+            CharacterClass::fromString('fighter'),
             HitPoints::fromValues(
                 current: 1,
                 maximum: 12
@@ -288,6 +297,7 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
+            CharacterClass::fromString('fighter'),
             HitPoints::fromValues(
                 current: 0,
                 maximum: 12
@@ -308,6 +318,10 @@ final class CharacterTest extends TestCase
             'Sir Allium'
         );
 
+        $class = CharacterClass::fromString(
+            'fighter'
+        );
+
         $level = Level::fromInt(7);
 
         $experience = Experience::fromInt(
@@ -325,6 +339,7 @@ final class CharacterTest extends TestCase
         $character = Character::reconstitute(
             $id,
             $name,
+            $class,
             $level,
             $experience,
             $hitPoints,
@@ -332,21 +347,21 @@ final class CharacterTest extends TestCase
         );
 
         self::assertTrue(
-            $character
-                ->id()
-                ->equals($id)
+            $character->id()->equals($id)
+        );
+
+        self::assertTrue(
+            $character->name()->equals($name)
         );
 
         self::assertTrue(
             $character
-                ->name()
-                ->equals($name)
+                ->characterClass()
+                ->equals($class)
         );
 
         self::assertTrue(
-            $character
-                ->level()
-                ->equals($level)
+            $character->level()->equals($level)
         );
 
         self::assertTrue(
@@ -373,6 +388,7 @@ final class CharacterTest extends TestCase
         return Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
+            CharacterClass::fromString('fighter'),
             HitPoints::full(12),
             AbilityScores::average()
         );
