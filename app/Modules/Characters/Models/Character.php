@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Characters\Models;
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
@@ -30,6 +31,7 @@ final class Character
     private function __construct(
         private CharacterId $id,
         private CharacterName $name,
+        private CharacterClass $characterClass,
         private Level $level,
         private Experience $experience,
         private HitPoints $hitPoints,
@@ -43,12 +45,14 @@ final class Character
     public static function create(
         CharacterId $id,
         CharacterName $name,
+        CharacterClass $characterClass,
         HitPoints $hitPoints,
         AbilityScores $abilityScores,
     ): self {
         return new self(
             id: $id,
             name: $name,
+            characterClass: $characterClass,
             level: Level::one(),
             experience: Experience::zero(),
             hitPoints: $hitPoints,
@@ -65,6 +69,7 @@ final class Character
     public static function reconstitute(
         CharacterId $id,
         CharacterName $name,
+        CharacterClass $characterClass,
         Level $level,
         Experience $experience,
         HitPoints $hitPoints,
@@ -73,6 +78,7 @@ final class Character
         return new self(
             id: $id,
             name: $name,
+            characterClass: $characterClass,
             level: $level,
             experience: $experience,
             hitPoints: $hitPoints,
@@ -94,6 +100,14 @@ final class Character
     public function name(): CharacterName
     {
         return $this->name;
+    }
+
+    /**
+     * Get the Character class.
+     */
+    public function characterClass(): CharacterClass
+    {
+        return $this->characterClass;
     }
 
     /**
