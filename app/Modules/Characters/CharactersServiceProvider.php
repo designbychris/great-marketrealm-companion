@@ -1,18 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GreatMarketrealmCompanion\Modules\Characters;
 
 use GreatMarketrealmCompanion\Core\Container;
-use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\Characters\Actions\CreateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Actions\DeleteCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
+use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
-use GreatMarketrealmCompanion\Core\Session\FlashStore;
-use GreatMarketrealmCompanion\Core\Http\Request;
-use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteRepository;
 
@@ -26,44 +25,70 @@ defined('ABSPATH') || exit;
  * @package GreatMarketrealmCompanion
  * @since 0.3.0
  */
-class CharactersServiceProvider extends ServiceProvider
+final class CharactersServiceProvider extends ServiceProvider
 {
+    /**
+     * Register Characters Kingdom services.
+     */
     public function register(): void
     {
         $container = $this->app->container();
 
+        /*
+         * Register the concrete WordPress repository once.
+         */
         $container->singleton(
             CharacterRepository::class,
             static fn (): CharacterRepository =>
                 new CharacterRepository()
         );
 
+        /*
+         * Resolve the repository contract through the existing
+         * concrete singleton rather than creating a second instance.
+         */
+        $container->singleton(
+            CharacterRepositoryInterface::class,
+            static fn (
+                Container $container
+            ): CharacterRepositoryInterface =>
+                $container->make(
+                    CharacterRepository::class
+                )
+        );
+
         $container->bind(
             CreateCharacterAction::class,
-            static fn (Container $container): CreateCharacterAction =>
+            static fn (
+                Container $container
+            ): CreateCharacterAction =>
                 new CreateCharacterAction(
                     $container->make(
-                        CharacterRepository::class
+                        CharacterRepositoryInterface::class
                     )
                 )
         );
 
         $container->bind(
             UpdateCharacterAction::class,
-            static fn (Container $container): UpdateCharacterAction =>
+            static fn (
+                Container $container
+            ): UpdateCharacterAction =>
                 new UpdateCharacterAction(
                     $container->make(
-                        CharacterRepository::class
+                        CharacterRepositoryInterface::class
                     )
                 )
         );
 
         $container->bind(
             DeleteCharacterAction::class,
-            static fn (Container $container): DeleteCharacterAction =>
+            static fn (
+                Container $container
+            ): DeleteCharacterAction =>
                 new DeleteCharacterAction(
                     $container->make(
-                        CharacterRepository::class
+                        CharacterRepositoryInterface::class
                     )
                 )
         );
@@ -71,16 +96,23 @@ class CharactersServiceProvider extends ServiceProvider
         $container->singleton(
             QuoteRepository::class
         );
-        
+
         $container->singleton(
             Auby::class
         );
 
+        /*
+         * The container can auto-wire the controller now that
+         * CharacterRepositoryInterface has been registered.
+         */
         $container->bind(
             CharacterController::class
         );
     }
 
+    /**
+     * Register WordPress hooks.
+     */
     public function boot(): void
     {
         add_action(
@@ -89,24 +121,27 @@ class CharactersServiceProvider extends ServiceProvider
         );
     }
 
+    /**
+     * Register the Character storage post type.
+     */
     public function registerPostType(): void
     {
         register_post_type(
             'gmrc_character',
             [
                 'labels' => [
-                    'name'          => 'Characters',
+                    'name' => 'Characters',
                     'singular_name' => 'Character',
                 ],
-                'public'              => false,
-                'show_ui'             => false,
-                'show_in_rest'        => false,
-                'supports'            => [
+                'public' => false,
+                'show_ui' => false,
+                'show_in_rest' => false,
+                'supports' => [
                     'title',
                     'author',
                 ],
-                'capability_type'      => 'post',
-                'map_meta_cap'         => true,
+                'capability_type' => 'post',
+                'map_meta_cap' => true,
             ]
         );
     }
