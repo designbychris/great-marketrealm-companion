@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Modules\Characters\Models;
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScore;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
@@ -16,11 +18,7 @@ final class CharacterTest extends TestCase
 {
     public function test_it_can_create_a_new_character(): void
     {
-        $character = Character::create(
-            CharacterId::generate(),
-            CharacterName::fromString('Sir Allium'),
-            HitPoints::full(12)
-        );
+        $character = $this->createCharacter();
 
         self::assertInstanceOf(
             Character::class,
@@ -35,7 +33,8 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             $id,
             CharacterName::fromString('Sir Allium'),
-            HitPoints::full(12)
+            HitPoints::full(12),
+            AbilityScores::average()
         );
 
         self::assertTrue(
@@ -54,7 +53,8 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             $name,
-            HitPoints::full(12)
+            HitPoints::full(12),
+            AbilityScores::average()
         );
 
         self::assertTrue(
@@ -71,7 +71,8 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
-            $hitPoints
+            $hitPoints,
+            AbilityScores::average()
         );
 
         self::assertTrue(
@@ -81,13 +82,27 @@ final class CharacterTest extends TestCase
         );
     }
 
-    public function test_new_characters_start_at_level_one(): void
+    public function test_it_returns_its_ability_scores(): void
     {
+        $abilityScores = $this->abilityScores();
+
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
-            HitPoints::full(12)
+            HitPoints::full(12),
+            $abilityScores
         );
+
+        self::assertTrue(
+            $character
+                ->abilityScores()
+                ->equals($abilityScores)
+        );
+    }
+
+    public function test_new_characters_start_at_level_one(): void
+    {
+        $character = $this->createCharacter();
 
         self::assertTrue(
             $character
@@ -98,11 +113,7 @@ final class CharacterTest extends TestCase
 
     public function test_new_characters_start_with_zero_experience(): void
     {
-        $character = Character::create(
-            CharacterId::generate(),
-            CharacterName::fromString('Sir Allium'),
-            HitPoints::full(12)
-        );
+        $character = $this->createCharacter();
 
         self::assertTrue(
             $character
@@ -113,11 +124,7 @@ final class CharacterTest extends TestCase
 
     public function test_it_can_be_renamed(): void
     {
-        $character = Character::create(
-            CharacterId::generate(),
-            CharacterName::fromString('Sir Allium'),
-            HitPoints::full(12)
-        );
+        $character = $this->createCharacter();
 
         $newName = CharacterName::fromString(
             'Lady Leek'
@@ -134,11 +141,7 @@ final class CharacterTest extends TestCase
 
     public function test_gaining_experience_updates_the_experience_total(): void
     {
-        $character = Character::create(
-            CharacterId::generate(),
-            CharacterName::fromString('Sir Allium'),
-            HitPoints::full(12)
-        );
+        $character = $this->createCharacter();
 
         $character->gainExperience(
             Experience::fromInt(150)
@@ -155,11 +158,7 @@ final class CharacterTest extends TestCase
 
     public function test_gaining_enough_experience_levels_the_character_up(): void
     {
-        $character = Character::create(
-            CharacterId::generate(),
-            CharacterName::fromString('Sir Allium'),
-            HitPoints::full(12)
-        );
+        $character = $this->createCharacter();
 
         $character->gainExperience(
             Experience::fromInt(300)
@@ -174,11 +173,7 @@ final class CharacterTest extends TestCase
 
     public function test_large_experience_gains_can_level_multiple_times(): void
     {
-        $character = Character::create(
-            CharacterId::generate(),
-            CharacterName::fromString('Sir Allium'),
-            HitPoints::full(12)
-        );
+        $character = $this->createCharacter();
 
         $character->gainExperience(
             Experience::fromInt(6500)
@@ -193,11 +188,7 @@ final class CharacterTest extends TestCase
 
     public function test_it_can_take_damage(): void
     {
-        $character = Character::create(
-            CharacterId::generate(),
-            CharacterName::fromString('Sir Allium'),
-            HitPoints::full(12)
-        );
+        $character = $this->createCharacter();
 
         $character->takeDamage(5);
 
@@ -217,7 +208,8 @@ final class CharacterTest extends TestCase
             HitPoints::fromValues(
                 current: 6,
                 maximum: 12
-            )
+            ),
+            AbilityScores::average()
         );
 
         $character->heal(4);
@@ -232,11 +224,7 @@ final class CharacterTest extends TestCase
 
     public function test_it_can_receive_temporary_hit_points(): void
     {
-        $character = Character::create(
-            CharacterId::generate(),
-            CharacterName::fromString('Sir Allium'),
-            HitPoints::full(12)
-        );
+        $character = $this->createCharacter();
 
         $character->grantTemporaryHitPoints(4);
 
@@ -257,7 +245,8 @@ final class CharacterTest extends TestCase
                 current: 10,
                 maximum: 12,
                 temporary: 4
-            )
+            ),
+            AbilityScores::average()
         );
 
         $character->takeDamage(3);
@@ -285,7 +274,8 @@ final class CharacterTest extends TestCase
             HitPoints::fromValues(
                 current: 1,
                 maximum: 12
-            )
+            ),
+            AbilityScores::average()
         );
 
         self::assertTrue(
@@ -301,7 +291,8 @@ final class CharacterTest extends TestCase
             HitPoints::fromValues(
                 current: 0,
                 maximum: 12
-            )
+            ),
+            AbilityScores::average()
         );
 
         self::assertFalse(
@@ -329,12 +320,15 @@ final class CharacterTest extends TestCase
             temporary: 5
         );
 
+        $abilityScores = $this->abilityScores();
+
         $character = Character::reconstitute(
             $id,
             $name,
             $level,
             $experience,
-            $hitPoints
+            $hitPoints,
+            $abilityScores
         );
 
         self::assertTrue(
@@ -365,6 +359,34 @@ final class CharacterTest extends TestCase
             $character
                 ->hitPoints()
                 ->equals($hitPoints)
+        );
+
+        self::assertTrue(
+            $character
+                ->abilityScores()
+                ->equals($abilityScores)
+        );
+    }
+
+    private function createCharacter(): Character
+    {
+        return Character::create(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            HitPoints::full(12),
+            AbilityScores::average()
+        );
+    }
+
+    private function abilityScores(): AbilityScores
+    {
+        return AbilityScores::fromScores(
+            strength: AbilityScore::fromInt(15),
+            dexterity: AbilityScore::fromInt(14),
+            constitution: AbilityScore::fromInt(13),
+            intelligence: AbilityScore::fromInt(12),
+            wisdom: AbilityScore::fromInt(10),
+            charisma: AbilityScore::fromInt(8),
         );
     }
 }
