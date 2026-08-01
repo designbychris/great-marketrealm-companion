@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Characters\Models;
 
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
@@ -32,6 +33,7 @@ final class Character
         private Level $level,
         private Experience $experience,
         private HitPoints $hitPoints,
+        private AbilityScores $abilityScores,
     ) {
     }
 
@@ -42,6 +44,7 @@ final class Character
         CharacterId $id,
         CharacterName $name,
         HitPoints $hitPoints,
+        AbilityScores $abilityScores,
     ): self {
         return new self(
             id: $id,
@@ -49,6 +52,7 @@ final class Character
             level: Level::one(),
             experience: Experience::zero(),
             hitPoints: $hitPoints,
+            abilityScores: $abilityScores,
         );
     }
 
@@ -64,6 +68,7 @@ final class Character
         Level $level,
         Experience $experience,
         HitPoints $hitPoints,
+        AbilityScores $abilityScores,
     ): self {
         return new self(
             id: $id,
@@ -71,6 +76,7 @@ final class Character
             level: $level,
             experience: $experience,
             hitPoints: $hitPoints,
+            abilityScores: $abilityScores,
         );
     }
 
@@ -112,6 +118,14 @@ final class Character
     public function hitPoints(): HitPoints
     {
         return $this->hitPoints;
+    }
+
+    /**
+     * Get the Character ability scores.
+     */
+    public function abilityScores(): AbilityScores
+    {
+        return $this->abilityScores;
     }
 
     /**
