@@ -138,6 +138,5 @@ final class EmptyRouterSpy
 {
     public function __construct()
     {
-        fwrite(STDERR, "Ctor\n");
     }
 }
