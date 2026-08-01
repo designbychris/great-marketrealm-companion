@@ -8,6 +8,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryIn
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScore;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
@@ -29,6 +30,7 @@ defined('ABSPATH') || exit;
 final class CharacterRepository implements CharacterRepositoryInterface
 {
     private const META_CHARACTER_ID = '_gmrc_character_id';
+    private const META_CLASS = '_gmrc_class';
     private const META_LEVEL = '_gmrc_level';
     private const META_EXPERIENCE = '_gmrc_experience';
     private const META_HP_CURRENT = '_gmrc_hp_current';
@@ -51,16 +53,17 @@ final class CharacterRepository implements CharacterRepositoryInterface
     public function all(): array
     {
         $posts = get_posts([
-            'post_type'      => $this->postType,
-            'post_status'    => 'publish',
+            'post_type' => $this->postType,
+            'post_status' => 'publish',
             'posts_per_page' => -1,
-            'author'         => get_current_user_id(),
-            'orderby'        => 'date',
-            'order'          => 'DESC',
+            'author' => get_current_user_id(),
+            'orderby' => 'date',
+            'order' => 'DESC',
         ]);
 
         return array_map(
-            fn (WP_Post $post): Character => $this->mapPost($post),
+            fn (WP_Post $post): Character =>
+                $this->mapPost($post),
             $posts
         );
     }
@@ -73,11 +76,9 @@ final class CharacterRepository implements CharacterRepositoryInterface
     ): ?Character {
         $post = $this->findPostByCharacterId($id);
 
-        if (! $post instanceof WP_Post) {
-            return null;
-        }
-
-        return $this->mapPost($post);
+        return $post instanceof WP_Post
+            ? $this->mapPost($post)
+            : null;
     }
 
     /**
@@ -90,16 +91,12 @@ final class CharacterRepository implements CharacterRepositoryInterface
             $character->id()
         );
 
-        if ($existingPost instanceof WP_Post) {
-            $postId = $this->updatePost(
+        $postId = $existingPost instanceof WP_Post
+            ? $this->updatePost(
                 $existingPost,
                 $character
-            );
-        } else {
-            $postId = $this->insertPost(
-                $character
-            );
-        }
+            )
+            : $this->insertPost($character);
 
         $this->saveMeta(
             $postId,
@@ -138,12 +135,12 @@ final class CharacterRepository implements CharacterRepositoryInterface
         CharacterId $id
     ): ?WP_Post {
         $posts = get_posts([
-            'post_type'      => $this->postType,
-            'post_status'    => 'publish',
+            'post_type' => $this->postType,
+            'post_status' => 'publish',
             'posts_per_page' => 1,
-            'author'         => get_current_user_id(),
-            'meta_key'       => self::META_CHARACTER_ID,
-            'meta_value'     => $id->value(),
+            'author' => get_current_user_id(),
+            'meta_key' => self::META_CHARACTER_ID,
+            'meta_value' => $id->value(),
         ]);
 
         $post = $posts[0] ?? null;
@@ -161,9 +158,9 @@ final class CharacterRepository implements CharacterRepositoryInterface
     ): int {
         $postId = wp_insert_post(
             [
-                'post_type'   => $this->postType,
+                'post_type' => $this->postType,
                 'post_status' => 'publish',
-                'post_title'  => $character
+                'post_title' => $character
                     ->name()
                     ->value(),
                 'post_author' => get_current_user_id(),
@@ -189,7 +186,7 @@ final class CharacterRepository implements CharacterRepositoryInterface
     ): int {
         $postId = wp_update_post(
             [
-                'ID'         => $post->ID,
+                'ID' => $post->ID,
                 'post_title' => $character
                     ->name()
                     ->value(),
@@ -224,6 +221,14 @@ final class CharacterRepository implements CharacterRepositoryInterface
 
         update_post_meta(
             $postId,
+            self::META_CLASS,
+            $character
+                ->characterClass()
+                ->value()
+        );
+
+        update_post_meta(
+            $postId,
             self::META_LEVEL,
             $character->level()->value()
         );
@@ -252,41 +257,13 @@ final class CharacterRepository implements CharacterRepositoryInterface
             $hitPoints->temporary()
         );
 
-        update_post_meta(
-            $postId,
-            self::META_STRENGTH,
-            $abilityScores->strength()->value()
-        );
-
-        update_post_meta(
-            $postId,
-            self::META_DEXTERITY,
-            $abilityScores->dexterity()->value()
-        );
-
-        update_post_meta(
-            $postId,
-            self::META_CONSTITUTION,
-            $abilityScores->constitution()->value()
-        );
-
-        update_post_meta(
-            $postId,
-            self::META_INTELLIGENCE,
-            $abilityScores->intelligence()->value()
-        );
-
-        update_post_meta(
-            $postId,
-            self::META_WISDOM,
-            $abilityScores->wisdom()->value()
-        );
-
-        update_post_meta(
-            $postId,
-            self::META_CHARISMA,
-            $abilityScores->charisma()->value()
-        );
+        foreach ($abilityScores->all() as $key => $score) {
+            update_post_meta(
+                $postId,
+                '_gmrc_' . $key,
+                $score->value()
+            );
+        }
     }
 
     /**
@@ -315,6 +292,7 @@ final class CharacterRepository implements CharacterRepositoryInterface
             CharacterName::fromString(
                 $post->post_title
             ),
+            $this->mapCharacterClass($post->ID),
             Level::fromInt(
                 max(
                     1,
@@ -388,6 +366,29 @@ final class CharacterRepository implements CharacterRepositoryInterface
                 ),
             )
         );
+    }
+
+    /**
+     * Rebuild the Character class from post metadata.
+     */
+    private function mapCharacterClass(
+        int $postId
+    ): CharacterClass {
+        $stored = get_post_meta(
+            $postId,
+            self::META_CLASS,
+            true
+        );
+
+        /*
+         * Temporary compatibility fallback for older
+         * Character records created before class persistence.
+         */
+        $value = is_string($stored) && $stored !== ''
+            ? $stored
+            : 'fighter';
+
+        return CharacterClass::fromString($value);
     }
 
     /**
