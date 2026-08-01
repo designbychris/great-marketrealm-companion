@@ -17,17 +17,10 @@ final class AppControllerTest extends TestCase
     }
     public function testDispatchingRouterSpyCanBeCreated(): void
     {
-        fwrite(STDERR, "1\n");
-    
         $router = new DispatchingRouterSpy();
-    
-        fwrite(STDERR, "2\n");
-    
         self::assertInstanceOf(
             DispatchingRouterSpy::class,
             $router
         );
-    
-        fwrite(STDERR, "3\n");
     }
 }
