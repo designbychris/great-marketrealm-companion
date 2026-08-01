@@ -1,24 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GreatMarketrealmCompanion\Modules\Characters\Requests;
 
 use GreatMarketrealmCompanion\Core\Http\FormRequest;
-use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 
 defined('ABSPATH') || exit;
 
 /**
  * Store Character Request.
  *
- * Validates input used when creating a character.
+ * Validates input used when creating a Character.
  *
- * @package MarketrealmCompanion
+ * This request is responsible only for validation and
+ * returning validated primitive input. Domain entities
+ * are created outside the HTTP layer.
+ *
+ * @package GreatMarketrealmCompanion
  * @since 0.7.0
  */
-class StoreCharacterRequest extends FormRequest
+final class StoreCharacterRequest extends FormRequest
 {
     /**
-     * Determine whether the current user may create characters.
+     * Determine whether the current user may create Characters.
      */
     public function authorize(): bool
     {
@@ -28,7 +33,7 @@ class StoreCharacterRequest extends FormRequest
     /**
      * Character creation validation rules.
      *
-     * @return array<string, array<int, string>>
+     * @return array<string,array<int,string>>
      */
     public function rules(): array
     {
@@ -59,26 +64,30 @@ class StoreCharacterRequest extends FormRequest
     }
 
     /**
-     * Create a Character from the validated input.
+     * Return validated Character creation input.
+     *
+     * Race, class and level remain part of the validated
+     * form data while their domain objects are developed.
+     *
+     * @return array{
+     *     name: string,
+     *     race: string,
+     *     class: string,
+     *     level: int
+     * }
      */
-    public function toCharacter(): Character
+    public function characterData(): array
     {
         $input = $this->validated();
 
-        return new Character(
-            name: sanitize_text_field(
-                $input->string('name')
-            ),
-            race: sanitize_text_field(
-                $input->string('race')
-            ),
-            class: sanitize_text_field(
-                $input->string('class')
-            ),
-            level: $input->integer(
+        return [
+            'name' => $input->string('name'),
+            'race' => $input->string('race'),
+            'class' => $input->string('class'),
+            'level' => $input->integer(
                 'level',
                 1
-            )
-        );
+            ),
+        ];
     }
 }
