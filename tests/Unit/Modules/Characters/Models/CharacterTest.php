@@ -13,6 +13,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterNa
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use PHPUnit\Framework\TestCase;
 
 final class CharacterTest extends TestCase
@@ -32,8 +33,9 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             $id,
             CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
             CharacterClass::fromString('fighter'),
-            HitPoints::full(12),
+            HitPoints::full(10),
             AbilityScores::average()
         );
 
@@ -51,13 +53,34 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             $name,
+            Race::fromString('fructan'),
             CharacterClass::fromString('fighter'),
-            HitPoints::full(12),
+            HitPoints::full(10),
             AbilityScores::average()
         );
 
         self::assertTrue(
             $character->name()->equals($name)
+        );
+    }
+
+    public function test_it_returns_its_race(): void
+    {
+        $race = Race::fromString(
+            'fructan'
+        );
+
+        $character = Character::create(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            $race,
+            CharacterClass::fromString('fighter'),
+            HitPoints::full(10),
+            AbilityScores::average()
+        );
+
+        self::assertTrue(
+            $character->race()->equals($race)
         );
     }
 
@@ -70,8 +93,9 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
             $class,
-            HitPoints::full(12),
+            HitPoints::full(10),
             AbilityScores::average()
         );
 
@@ -89,6 +113,7 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
             CharacterClass::fromString('fighter'),
             $hitPoints,
             AbilityScores::average()
@@ -108,6 +133,7 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
             CharacterClass::fromString('fighter'),
             HitPoints::full(12),
             $abilityScores
@@ -209,7 +235,7 @@ final class CharacterTest extends TestCase
         $character->takeDamage(5);
 
         self::assertSame(
-            7,
+            5,
             $character->hitPoints()->current()
         );
     }
@@ -219,6 +245,7 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
             CharacterClass::fromString('fighter'),
             HitPoints::fromValues(
                 current: 6,
@@ -252,6 +279,7 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
             CharacterClass::fromString('fighter'),
             HitPoints::fromValues(
                 current: 10,
@@ -279,6 +307,7 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
             CharacterClass::fromString('fighter'),
             HitPoints::fromValues(
                 current: 1,
@@ -297,6 +326,7 @@ final class CharacterTest extends TestCase
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
             CharacterClass::fromString('fighter'),
             HitPoints::fromValues(
                 current: 0,
@@ -316,6 +346,10 @@ final class CharacterTest extends TestCase
 
         $name = CharacterName::fromString(
             'Sir Allium'
+        );
+
+        $race = Race::fromString(
+            'fructan'
         );
 
         $class = CharacterClass::fromString(
@@ -339,6 +373,7 @@ final class CharacterTest extends TestCase
         $character = Character::reconstitute(
             $id,
             $name,
+            $race,
             $class,
             $level,
             $experience,
@@ -352,6 +387,10 @@ final class CharacterTest extends TestCase
 
         self::assertTrue(
             $character->name()->equals($name)
+        );
+
+        self::assertTrue(
+            $character->race()->equals($race)
         );
 
         self::assertTrue(
@@ -388,8 +427,9 @@ final class CharacterTest extends TestCase
         return Character::create(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
             CharacterClass::fromString('fighter'),
-            HitPoints::full(12),
+            HitPoints::full(10),
             AbilityScores::average()
         );
     }
