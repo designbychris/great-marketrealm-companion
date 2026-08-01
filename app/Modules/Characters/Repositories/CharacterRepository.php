@@ -6,9 +6,12 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Repositories;
 
 use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScore;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 use RuntimeException;
 use WP_Post;
@@ -18,13 +21,31 @@ defined('ABSPATH') || exit;
 /**
  * Character Repository.
  *
- * Handles persistence of Character entities.
+ * Handles WordPress persistence for Character entities.
+ *
+ * @package GreatMarketrealmCompanion
+ * @since 0.5.0
  */
 final class CharacterRepository implements CharacterRepositoryInterface
 {
+    private const META_CHARACTER_ID = '_gmrc_character_id';
+    private const META_LEVEL = '_gmrc_level';
+    private const META_EXPERIENCE = '_gmrc_experience';
+    private const META_HP_CURRENT = '_gmrc_hp_current';
+    private const META_HP_MAXIMUM = '_gmrc_hp_maximum';
+    private const META_HP_TEMPORARY = '_gmrc_hp_temporary';
+    private const META_STRENGTH = '_gmrc_strength';
+    private const META_DEXTERITY = '_gmrc_dexterity';
+    private const META_CONSTITUTION = '_gmrc_constitution';
+    private const META_INTELLIGENCE = '_gmrc_intelligence';
+    private const META_WISDOM = '_gmrc_wisdom';
+    private const META_CHARISMA = '_gmrc_charisma';
+
     private string $postType = 'gmrc_character';
 
     /**
+     * Retrieve all Characters belonging to the current user.
+     *
      * @return Character[]
      */
     public function all(): array
@@ -44,48 +65,111 @@ final class CharacterRepository implements CharacterRepositoryInterface
         );
     }
 
+    /**
+     * Find a Character by its domain identifier.
+     */
     public function find(
         CharacterId $id
     ): ?Character {
-        $post = get_post($id->value());
+        $post = $this->findPostByCharacterId($id);
 
         if (! $post instanceof WP_Post) {
-            return null;
-        }
-
-        if ($post->post_type !== $this->postType) {
-            return null;
-        }
-
-        if ((int) $post->post_author !== get_current_user_id()) {
             return null;
         }
 
         return $this->mapPost($post);
     }
 
+    /**
+     * Persist a Character.
+     */
     public function save(
         Character $character
     ): void {
-        $postId = $character->id()->value();
+        $existingPost = $this->findPostByCharacterId(
+            $character->id()
+        );
 
-        if ($postId === 0) {
+        if ($existingPost instanceof WP_Post) {
+            $postId = $this->updatePost(
+                $existingPost,
+                $character
+            );
+        } else {
+            $postId = $this->insertPost(
+                $character
+            );
+        }
 
-            $postId = wp_insert_post([
+        $this->saveMeta(
+            $postId,
+            $character
+        );
+    }
+
+    /**
+     * Delete a Character.
+     */
+    public function delete(
+        CharacterId $id
+    ): void {
+        $post = $this->findPostByCharacterId($id);
+
+        if (! $post instanceof WP_Post) {
+            return;
+        }
+
+        $deleted = wp_delete_post(
+            $post->ID,
+            true
+        );
+
+        if (! $deleted instanceof WP_Post) {
+            throw new RuntimeException(
+                'The character could not be deleted.'
+            );
+        }
+    }
+
+    /**
+     * Find the WordPress post storing a Character.
+     */
+    private function findPostByCharacterId(
+        CharacterId $id
+    ): ?WP_Post {
+        $posts = get_posts([
+            'post_type'      => $this->postType,
+            'post_status'    => 'publish',
+            'posts_per_page' => 1,
+            'author'         => get_current_user_id(),
+            'meta_key'       => self::META_CHARACTER_ID,
+            'meta_value'     => $id->value(),
+        ]);
+
+        $post = $posts[0] ?? null;
+
+        return $post instanceof WP_Post
+            ? $post
+            : null;
+    }
+
+    /**
+     * Insert a new Character post.
+     */
+    private function insertPost(
+        Character $character
+    ): int {
+        $postId = wp_insert_post(
+            [
                 'post_type'   => $this->postType,
                 'post_status' => 'publish',
-                'post_title'  => $character->name()->value(),
+                'post_title'  => $character
+                    ->name()
+                    ->value(),
                 'post_author' => get_current_user_id(),
-            ], true);
-
-        } else {
-
-            $postId = wp_update_post([
-                'ID'         => $postId,
-                'post_title' => $character->name()->value(),
-            ], true);
-
-        }
+            ],
+            true
+        );
 
         if (is_wp_error($postId)) {
             throw new RuntimeException(
@@ -93,75 +177,240 @@ final class CharacterRepository implements CharacterRepositoryInterface
             );
         }
 
-        $this->saveMeta(
-            (int) $postId,
-            $character
-        );
+        return (int) $postId;
     }
 
-    public function delete(
-        CharacterId $id
-    ): void {
-        wp_delete_post(
-            $id->value(),
+    /**
+     * Update an existing Character post.
+     */
+    private function updatePost(
+        WP_Post $post,
+        Character $character
+    ): int {
+        $postId = wp_update_post(
+            [
+                'ID'         => $post->ID,
+                'post_title' => $character
+                    ->name()
+                    ->value(),
+            ],
             true
         );
+
+        if (is_wp_error($postId)) {
+            throw new RuntimeException(
+                $postId->get_error_message()
+            );
+        }
+
+        return (int) $postId;
     }
 
-    protected function saveMeta(
+    /**
+     * Save Character metadata.
+     */
+    private function saveMeta(
         int $postId,
         Character $character
     ): void {
+        $hitPoints = $character->hitPoints();
+        $abilityScores = $character->abilityScores();
 
         update_post_meta(
             $postId,
-            '_gmrc_level',
-            $character
-                ->level()
-                ->value()
+            self::META_CHARACTER_ID,
+            $character->id()->value()
         );
 
         update_post_meta(
             $postId,
-            '_gmrc_experience',
-            $character
-                ->experience()
-                ->value()
+            self::META_LEVEL,
+            $character->level()->value()
         );
 
-        /*
-         * TODO
-         *
-         * Race Value Object
-         * CharacterClass Value Object
-         *
-         * update_post_meta(...)
-         */
+        update_post_meta(
+            $postId,
+            self::META_EXPERIENCE,
+            $character->experience()->value()
+        );
+
+        update_post_meta(
+            $postId,
+            self::META_HP_CURRENT,
+            $hitPoints->current()
+        );
+
+        update_post_meta(
+            $postId,
+            self::META_HP_MAXIMUM,
+            $hitPoints->maximum()
+        );
+
+        update_post_meta(
+            $postId,
+            self::META_HP_TEMPORARY,
+            $hitPoints->temporary()
+        );
+
+        update_post_meta(
+            $postId,
+            self::META_STRENGTH,
+            $abilityScores->strength()->value()
+        );
+
+        update_post_meta(
+            $postId,
+            self::META_DEXTERITY,
+            $abilityScores->dexterity()->value()
+        );
+
+        update_post_meta(
+            $postId,
+            self::META_CONSTITUTION,
+            $abilityScores->constitution()->value()
+        );
+
+        update_post_meta(
+            $postId,
+            self::META_INTELLIGENCE,
+            $abilityScores->intelligence()->value()
+        );
+
+        update_post_meta(
+            $postId,
+            self::META_WISDOM,
+            $abilityScores->wisdom()->value()
+        );
+
+        update_post_meta(
+            $postId,
+            self::META_CHARISMA,
+            $abilityScores->charisma()->value()
+        );
     }
 
-    protected function mapPost(
+    /**
+     * Convert a WordPress post into a Character entity.
+     */
+    private function mapPost(
         WP_Post $post
     ): Character {
+        $characterId = (string) get_post_meta(
+            $post->ID,
+            self::META_CHARACTER_ID,
+            true
+        );
+
+        if ($characterId === '') {
+            throw new RuntimeException(
+                sprintf(
+                    'Character post [%d] has no domain identifier.',
+                    $post->ID
+                )
+            );
+        }
 
         return Character::reconstitute(
-            CharacterId::fromString((string) $post->ID),
-            CharacterName::fromString($post->post_title),
+            CharacterId::fromString($characterId),
+            CharacterName::fromString(
+                $post->post_title
+            ),
             Level::fromInt(
                 max(
                     1,
                     (int) get_post_meta(
                         $post->ID,
-                        '_gmrc_level',
+                        self::META_LEVEL,
                         true
                     )
                 )
             ),
             Experience::fromInt(
-                (int) get_post_meta(
-                    $post->ID,
-                    '_gmrc_experience',
-                    true
+                max(
+                    0,
+                    (int) get_post_meta(
+                        $post->ID,
+                        self::META_EXPERIENCE,
+                        true
+                    )
                 )
+            ),
+            HitPoints::fromValues(
+                current: max(
+                    0,
+                    (int) get_post_meta(
+                        $post->ID,
+                        self::META_HP_CURRENT,
+                        true
+                    )
+                ),
+                maximum: max(
+                    1,
+                    (int) get_post_meta(
+                        $post->ID,
+                        self::META_HP_MAXIMUM,
+                        true
+                    )
+                ),
+                temporary: max(
+                    0,
+                    (int) get_post_meta(
+                        $post->ID,
+                        self::META_HP_TEMPORARY,
+                        true
+                    )
+                )
+            ),
+            AbilityScores::fromScores(
+                strength: $this->mapAbilityScore(
+                    $post->ID,
+                    self::META_STRENGTH
+                ),
+                dexterity: $this->mapAbilityScore(
+                    $post->ID,
+                    self::META_DEXTERITY
+                ),
+                constitution: $this->mapAbilityScore(
+                    $post->ID,
+                    self::META_CONSTITUTION
+                ),
+                intelligence: $this->mapAbilityScore(
+                    $post->ID,
+                    self::META_INTELLIGENCE
+                ),
+                wisdom: $this->mapAbilityScore(
+                    $post->ID,
+                    self::META_WISDOM
+                ),
+                charisma: $this->mapAbilityScore(
+                    $post->ID,
+                    self::META_CHARISMA
+                ),
+            )
+        );
+    }
+
+    /**
+     * Rebuild an ability score from post metadata.
+     */
+    private function mapAbilityScore(
+        int $postId,
+        string $metaKey
+    ): AbilityScore {
+        $stored = get_post_meta(
+            $postId,
+            $metaKey,
+            true
+        );
+
+        $value = is_numeric($stored)
+            ? (int) $stored
+            : 10;
+
+        return AbilityScore::fromInt(
+            max(
+                1,
+                min(30, $value)
             )
         );
     }
