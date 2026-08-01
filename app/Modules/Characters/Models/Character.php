@@ -7,6 +7,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Models;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 
 defined('ABSPATH') || exit;
@@ -30,6 +31,7 @@ final class Character
         private CharacterName $name,
         private Level $level,
         private Experience $experience,
+        private HitPoints $hitPoints,
     ) {
     }
 
@@ -39,12 +41,14 @@ final class Character
     public static function create(
         CharacterId $id,
         CharacterName $name,
+        HitPoints $hitPoints,
     ): self {
         return new self(
-            $id,
-            $name,
-            Level::one(),
-            Experience::zero(),
+            id: $id,
+            name: $name,
+            level: Level::one(),
+            experience: Experience::zero(),
+            hitPoints: $hitPoints,
         );
     }
 
@@ -59,12 +63,14 @@ final class Character
         CharacterName $name,
         Level $level,
         Experience $experience,
+        HitPoints $hitPoints,
     ): self {
         return new self(
-            $id,
-            $name,
-            $level,
-            $experience,
+            id: $id,
+            name: $name,
+            level: $level,
+            experience: $experience,
+            hitPoints: $hitPoints,
         );
     }
 
@@ -101,6 +107,14 @@ final class Character
     }
 
     /**
+     * Get the Character hit points.
+     */
+    public function hitPoints(): HitPoints
+    {
+        return $this->hitPoints;
+    }
+
+    /**
      * Rename the Character.
      */
     public function rename(
@@ -115,7 +129,6 @@ final class Character
     public function gainExperience(
         Experience $experience
     ): void {
-
         $this->experience = $this->experience->gain(
             $experience->value()
         );
@@ -127,5 +140,44 @@ final class Character
         ) {
             $this->level = $this->level->next();
         }
+    }
+
+    /**
+     * Apply damage to the Character.
+     */
+    public function takeDamage(int $amount): void
+    {
+        $this->hitPoints = $this->hitPoints->takeDamage(
+            $amount
+        );
+    }
+
+    /**
+     * Restore hit points to the Character.
+     */
+    public function heal(int $amount): void
+    {
+        $this->hitPoints = $this->hitPoints->heal(
+            $amount
+        );
+    }
+
+    /**
+     * Grant temporary hit points to the Character.
+     */
+    public function grantTemporaryHitPoints(
+        int $amount
+    ): void {
+        $this->hitPoints = $this
+            ->hitPoints
+            ->grantTemporary($amount);
+    }
+
+    /**
+     * Determine whether the Character is conscious.
+     */
+    public function isConscious(): bool
+    {
+        return $this->hitPoints->isConscious();
     }
 }
