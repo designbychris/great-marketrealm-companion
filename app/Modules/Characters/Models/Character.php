@@ -11,6 +11,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterNa
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 
 defined('ABSPATH') || exit;
 
@@ -31,6 +32,7 @@ final class Character
     private function __construct(
         private CharacterId $id,
         private CharacterName $name,
+        private Race $race,
         private CharacterClass $characterClass,
         private Level $level,
         private Experience $experience,
@@ -40,11 +42,12 @@ final class Character
     }
 
     /**
-     * Create a brand new Character.
+     * Create a brand-new Character.
      */
     public static function create(
         CharacterId $id,
         CharacterName $name,
+        Race $race,
         CharacterClass $characterClass,
         HitPoints $hitPoints,
         AbilityScores $abilityScores,
@@ -52,6 +55,7 @@ final class Character
         return new self(
             id: $id,
             name: $name,
+            race: $race,
             characterClass: $characterClass,
             level: Level::one(),
             experience: Experience::zero(),
@@ -69,6 +73,7 @@ final class Character
     public static function reconstitute(
         CharacterId $id,
         CharacterName $name,
+        Race $race,
         CharacterClass $characterClass,
         Level $level,
         Experience $experience,
@@ -78,6 +83,7 @@ final class Character
         return new self(
             id: $id,
             name: $name,
+            race: $race,
             characterClass: $characterClass,
             level: $level,
             experience: $experience,
@@ -100,6 +106,14 @@ final class Character
     public function name(): CharacterName
     {
         return $this->name;
+    }
+
+    /**
+     * Get the Character race.
+     */
+    public function race(): Race
+    {
+        return $this->race;
     }
 
     /**
