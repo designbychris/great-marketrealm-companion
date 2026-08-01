@@ -32,7 +32,7 @@ final class Race implements Stringable
         'boxfolk' => 'Boxfolk',
         'capsicumite' => 'Capsicumite',
         'dairyfolk' => 'Dairyfolk',
-        'drinkfolk' => 'Drinkfolk',
+        'drink-folk' => 'Drinkfolk',
         'fluffling' => 'Fluffling',
         'fructan' => 'Fructan',
         'fungifolk' => 'Fungifolk',
