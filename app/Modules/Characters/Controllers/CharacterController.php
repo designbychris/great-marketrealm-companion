@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GreatMarketrealmCompanion\Modules\Characters\Controllers;
 
 use GreatMarketrealmCompanion\Core\Http\RedirectResponse;
@@ -11,40 +13,54 @@ use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\Characters\Actions\CreateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Actions\DeleteCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
+use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
-use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequest;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
-use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
 use GreatMarketrealmCompanion\Services\Characters\ClassRegistry;
 use GreatMarketrealmCompanion\Services\Characters\RaceRegistry;
+use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
+use RuntimeException;
 
 defined('ABSPATH') || exit;
 
 /**
  * Character Controller.
  *
- * Handles requests for the Characters Kingdom.
+ * Handles HTTP requests for the Characters Kingdom.
  *
- * @package MarketrealmCompanion
+ * The controller coordinates requests and application
+ * actions but does not contain Character domain rules.
+ *
+ * @package GreatMarketrealmCompanion
  * @since 0.3.0
  */
-class CharacterController
+final class CharacterController
 {
+    /**
+     * Temporary starting HP used until CharacterClass
+     * owns the starting hit-point calculation.
+     */
+    private const DEFAULT_STARTING_HIT_POINTS = 1;
+
     public function __construct(
-        protected CharacterRepository $characters,
-        protected ViewFactory $views,
-        protected CreateCharacterAction $createCharacter,
-        protected UpdateCharacterAction $updateCharacter,
-        protected DeleteCharacterAction $deleteCharacter,
-        protected Request $request,
-        protected ResponseFactory $responses,
-        protected FlashStore $flash,
-        protected Auby $auby,
-        protected GuildSealRegistry $sealRegistry,
-        protected RaceRegistry $raceRegistry,
-        protected ClassRegistry $classRegistry
+        private CharacterRepositoryInterface $characters,
+        private ViewFactory $views,
+        private CreateCharacterAction $createCharacter,
+        private UpdateCharacterAction $updateCharacter,
+        private DeleteCharacterAction $deleteCharacter,
+        private Request $request,
+        private ResponseFactory $responses,
+        private FlashStore $flash,
+        private Auby $auby,
+        private GuildSealRegistry $sealRegistry,
+        private RaceRegistry $raceRegistry,
+        private ClassRegistry $classRegistry
     ) {
     }
 
@@ -96,21 +112,34 @@ class CharacterController
     public function store(
         StoreCharacterRequest $request
     ): RedirectResponse {
-        
-        $character = $this->createCharacter->handle(
-            $request->toCharacter()
+        $data = $request->characterData();
+
+        $character = Character::create(
+            CharacterId::generate(),
+            CharacterName::fromString(
+                $data['name']
+            ),
+            HitPoints::full(
+                self::DEFAULT_STARTING_HIT_POINTS
+            ),
+            AbilityScores::average()
         );
-    
+
+        /*
+         * Race, CharacterClass and selected starting level
+         * will be applied here once their domain objects exist.
+         */
+
+        $this->createCharacter->handle(
+            $character
+        );
+
         $this->flash->success(
             'Your character has entered the Marketrealm!'
         );
-    
+
         return $this->responses->redirect(
-            add_query_arg(
-                'gmrc_route',
-                'characters',
-                home_url('/companion/')
-            )
+            $this->charactersUrl()
         );
     }
 
@@ -120,16 +149,29 @@ class CharacterController
     public function update(
         string $id
     ): Character {
-        $character = new Character(
-            id: absint($id),
-            name: $this->request->string('name'),
-            race: $this->request->string('race'),
-            class: $this->request->string('class'),
-            level: $this->request->integer(
-                'level',
-                1
-            ),
+        $characterId = CharacterId::fromString(
+            $id
         );
+
+        $character = $this->characters->find(
+            $characterId
+        );
+
+        if (! $character instanceof Character) {
+            throw new RuntimeException(
+                'The requested character could not be found.'
+            );
+        }
+
+        $name = $this->request->string(
+            'name'
+        );
+
+        if ($name !== '') {
+            $character->rename(
+                CharacterName::fromString($name)
+            );
+        }
 
         return $this->updateCharacter->handle(
             $character
@@ -139,10 +181,25 @@ class CharacterController
     /**
      * Delete an existing Character.
      */
-    public function destroy(string $id): bool
+    public function destroy(
+        string $id
+    ): bool {
+        $this->deleteCharacter->handle(
+            CharacterId::fromString($id)
+        );
+
+        return true;
+    }
+
+    /**
+     * Build the Character index URL.
+     */
+    private function charactersUrl(): string
     {
-        return $this->deleteCharacter->handle(
-            absint($id)
+        return add_query_arg(
+            'gmrc_route',
+            'characters',
+            home_url('/companion/')
         );
     }
 }
