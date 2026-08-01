@@ -1,36 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GreatMarketrealmCompanion\Modules\Characters\Actions;
 
 use GreatMarketrealmCompanion\Core\Actions\Action;
+use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
-use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 
 defined('ABSPATH') || exit;
 
 /**
  * Update Character Action.
  *
- * Persists changes to an existing Character.
+ * Persists changes made to an existing Character entity.
  *
- * @package MarketrealmCompanion
+ * @package GreatMarketrealmCompanion
  * @since 0.5.0
  */
-class UpdateCharacterAction extends Action
+final class UpdateCharacterAction extends Action
 {
     public function __construct(
-        protected CharacterRepository $characters
+        private CharacterRepositoryInterface $characters
     ) {
     }
 
     /**
-     * Update a Character.
+     * Persist an updated Character.
      */
     public function handle(
         Character $character
     ): Character {
-        return $this->characters->update(
+        $this->characters->save(
             $character
         );
+
+        return $character;
     }
 }
