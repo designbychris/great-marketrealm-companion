@@ -10,6 +10,9 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScor
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -20,15 +23,9 @@ final class CharacterFactoryTest extends TestCase
         $factory = new CharacterFactory();
 
         $character = $factory->create(
-            \GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName::fromString(
-                'Sir Allium'
-            ),
-            \GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race::fromString(
-                'fructan'
-            ),
-            \GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass::fromString(
-                'fighter'
-            ),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
             AbilityScores::average()
         );
 
