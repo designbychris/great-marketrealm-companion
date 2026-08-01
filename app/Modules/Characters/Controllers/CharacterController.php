@@ -16,6 +16,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
@@ -34,20 +35,11 @@ defined('ABSPATH') || exit;
  *
  * Handles HTTP requests for the Characters Kingdom.
  *
- * The controller coordinates requests and application
- * actions but does not contain Character domain rules.
- *
  * @package GreatMarketrealmCompanion
  * @since 0.3.0
  */
 final class CharacterController
 {
-    /**
-     * Temporary starting HP used until CharacterClass
-     * owns the starting hit-point calculation.
-     */
-    private const DEFAULT_STARTING_HIT_POINTS = 1;
-
     public function __construct(
         private CharacterRepositoryInterface $characters,
         private ViewFactory $views,
@@ -114,20 +106,32 @@ final class CharacterController
     ): RedirectResponse {
         $data = $request->characterData();
 
+        $abilityScores = AbilityScores::average();
+
+        $characterClass = CharacterClass::fromString(
+            $data['class']
+        );
+
+        $startingHitPoints = $characterClass
+            ->startingHitPoints(
+                $abilityScores->constitution()
+            );
+
         $character = Character::create(
             CharacterId::generate(),
             CharacterName::fromString(
                 $data['name']
             ),
+            $characterClass,
             HitPoints::full(
-                self::DEFAULT_STARTING_HIT_POINTS
+                $startingHitPoints
             ),
-            AbilityScores::average()
+            $abilityScores
         );
 
         /*
-         * Race, CharacterClass and selected starting level
-         * will be applied here once their domain objects exist.
+         * Race will be attached once the Race
+         * domain object has been implemented.
          */
 
         $this->createCharacter->handle(
