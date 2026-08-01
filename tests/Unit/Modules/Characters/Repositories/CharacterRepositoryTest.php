@@ -166,6 +166,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Repositories {
         unset($returnError);
 
         $postId = (int) ($data['ID'] ?? 0);
+
         $post = CharacterRepositoryWordPressState::$posts[$postId]
             ?? null;
 
@@ -234,6 +235,7 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
     use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
     use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScore;
     use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
+    use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
     use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
     use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
     use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
@@ -253,6 +255,7 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
         public function testSavesANewCharacter(): void
         {
             $repository = new CharacterRepository();
+
             $character = $this->character();
 
             $repository->save($character);
@@ -282,6 +285,7 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
         public function testPersistsCharacterDomainState(): void
         {
             $repository = new CharacterRepository();
+
             $character = $this->character();
 
             $repository->save($character);
@@ -294,24 +298,71 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
                 $postId
             ];
 
-            self::assertSame(7, $meta['_gmrc_level']);
-            self::assertSame(26000, $meta['_gmrc_experience']);
+            self::assertSame(
+                'fighter',
+                $meta['_gmrc_class']
+            );
 
-            self::assertSame(34, $meta['_gmrc_hp_current']);
-            self::assertSame(42, $meta['_gmrc_hp_maximum']);
-            self::assertSame(5, $meta['_gmrc_hp_temporary']);
+            self::assertSame(
+                7,
+                $meta['_gmrc_level']
+            );
 
-            self::assertSame(15, $meta['_gmrc_strength']);
-            self::assertSame(14, $meta['_gmrc_dexterity']);
-            self::assertSame(13, $meta['_gmrc_constitution']);
-            self::assertSame(12, $meta['_gmrc_intelligence']);
-            self::assertSame(10, $meta['_gmrc_wisdom']);
-            self::assertSame(8, $meta['_gmrc_charisma']);
+            self::assertSame(
+                26000,
+                $meta['_gmrc_experience']
+            );
+
+            self::assertSame(
+                34,
+                $meta['_gmrc_hp_current']
+            );
+
+            self::assertSame(
+                42,
+                $meta['_gmrc_hp_maximum']
+            );
+
+            self::assertSame(
+                5,
+                $meta['_gmrc_hp_temporary']
+            );
+
+            self::assertSame(
+                15,
+                $meta['_gmrc_strength']
+            );
+
+            self::assertSame(
+                14,
+                $meta['_gmrc_dexterity']
+            );
+
+            self::assertSame(
+                13,
+                $meta['_gmrc_constitution']
+            );
+
+            self::assertSame(
+                12,
+                $meta['_gmrc_intelligence']
+            );
+
+            self::assertSame(
+                10,
+                $meta['_gmrc_wisdom']
+            );
+
+            self::assertSame(
+                8,
+                $meta['_gmrc_charisma']
+            );
         }
 
         public function testFindsACharacterByItsUlid(): void
         {
             $repository = new CharacterRepository();
+
             $character = $this->character();
 
             $repository->save($character);
@@ -334,6 +385,12 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
             self::assertTrue(
                 $found->name()->equals(
                     $character->name()
+                )
+            );
+
+            self::assertTrue(
+                $found->characterClass()->equals(
+                    $character->characterClass()
                 )
             );
 
@@ -376,6 +433,7 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
         public function testSavingAnExistingCharacterUpdatesItsPost(): void
         {
             $repository = new CharacterRepository();
+
             $character = $this->character();
 
             $repository->save($character);
@@ -412,7 +470,8 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
             $second = Character::create(
                 CharacterId::generate(),
                 CharacterName::fromString('Lady Leek'),
-                HitPoints::full(10),
+                CharacterClass::fromString('wizard'),
+                HitPoints::full(6),
                 AbilityScores::average()
             );
 
@@ -435,10 +494,14 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
         public function testDeletesACharacterByItsUlid(): void
         {
             $repository = new CharacterRepository();
+
             $character = $this->character();
 
             $repository->save($character);
-            $repository->delete($character->id());
+
+            $repository->delete(
+                $character->id()
+            );
 
             self::assertNull(
                 $repository->find(
@@ -457,6 +520,7 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
             return Character::reconstitute(
                 CharacterId::generate(),
                 CharacterName::fromString('Sir Allium'),
+                CharacterClass::fromString('fighter'),
                 Level::fromInt(7),
                 Experience::fromInt(26000),
                 HitPoints::fromValues(
