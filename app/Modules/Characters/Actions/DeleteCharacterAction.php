@@ -1,34 +1,37 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GreatMarketrealmCompanion\Modules\Characters\Actions;
 
 use GreatMarketrealmCompanion\Core\Actions\Action;
-use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 
 defined('ABSPATH') || exit;
 
 /**
  * Delete Character Action.
  *
- * Deletes an existing Character.
+ * Deletes a Character using its domain identifier.
  *
- * @package MarketrealmCompanion
+ * @package GreatMarketrealmCompanion
  * @since 0.5.0
  */
-class DeleteCharacterAction extends Action
+final class DeleteCharacterAction extends Action
 {
     public function __construct(
-        protected CharacterRepository $characters
+        private CharacterRepositoryInterface $characters
     ) {
     }
 
     /**
-     * Delete a Character by its identifier.
+     * Delete a Character by its ULID.
      */
     public function handle(
-        int $id
-    ): bool {
-        return $this->characters->delete(
+        CharacterId $id
+    ): void {
+        $this->characters->delete(
             $id
         );
     }
