@@ -74,6 +74,9 @@ final class Race implements Stringable
         'vegfolk' => [
             'label' => 'Vegfolk',
         ],
+            'meatkin' => [
+            'label' => 'Meatkin',
+        ],
     ];
 
     /**
