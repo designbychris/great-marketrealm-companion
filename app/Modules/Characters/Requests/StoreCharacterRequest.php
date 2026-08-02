@@ -33,6 +33,10 @@ final class StoreCharacterRequest extends FormRequest
     /**
      * Character creation validation rules.
      *
+     * New Characters always begin at Level 1 through
+     * CharacterCreationRules, so level is not accepted
+     * from the HTTP request.
+     *
      * @return array<string,array<int,string>>
      */
     public function rules(): array
@@ -54,26 +58,16 @@ final class StoreCharacterRequest extends FormRequest
                 'string',
                 'max:100',
             ],
-            'level' => [
-                'required',
-                'integer',
-                'min:1',
-                'max:20',
-            ],
         ];
     }
 
     /**
      * Return validated Character creation input.
      *
-     * Race, class and level remain part of the validated
-     * form data while their domain objects are developed.
-     *
      * @return array{
      *     name: string,
      *     race: string,
-     *     class: string,
-     *     level: int
+     *     class: string
      * }
      */
     public function characterData(): array
@@ -84,10 +78,6 @@ final class StoreCharacterRequest extends FormRequest
             'name' => $input->string('name'),
             'race' => $input->string('race'),
             'class' => $input->string('class'),
-            'level' => $input->integer(
-                'level',
-                1
-            ),
         ];
     }
 }
