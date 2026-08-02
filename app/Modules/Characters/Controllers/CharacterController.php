@@ -15,12 +15,10 @@ use GreatMarketrealmCompanion\Modules\Characters\Actions\DeleteCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequest;
+use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
 use GreatMarketrealmCompanion\Services\Characters\ClassRegistry;
@@ -40,9 +38,13 @@ defined('ABSPATH') || exit;
  */
 final class CharacterController
 {
+    /**
+     * Create the Character controller.
+     */
     public function __construct(
         private CharacterRepositoryInterface $characters,
         private ViewFactory $views,
+        private CharacterFactory $characterFactory,
         private CreateCharacterAction $createCharacter,
         private UpdateCharacterAction $updateCharacter,
         private DeleteCharacterAction $deleteCharacter,
@@ -106,33 +108,11 @@ final class CharacterController
     ): RedirectResponse {
         $data = $request->characterData();
 
-        $abilityScores = AbilityScores::average();
-
-        $characterClass = CharacterClass::fromString(
-            $data['class']
+        $character = $this->characterFactory->fromInput(
+            name: $data['name'],
+            race: $data['race'],
+            characterClass: $data['class']
         );
-
-        $startingHitPoints = $characterClass
-            ->startingHitPoints(
-                $abilityScores->constitution()
-            );
-
-        $character = Character::create(
-            CharacterId::generate(),
-            CharacterName::fromString(
-                $data['name']
-            ),
-            $characterClass,
-            HitPoints::full(
-                $startingHitPoints
-            ),
-            $abilityScores
-        );
-
-        /*
-         * Race will be attached once the Race
-         * domain object has been implemented.
-         */
 
         $this->createCharacter->handle(
             $character
