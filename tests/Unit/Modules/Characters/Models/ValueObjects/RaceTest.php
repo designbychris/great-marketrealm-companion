@@ -49,30 +49,44 @@ final class RaceTest extends TestCase
 
     public function testNormalisesSpacesToHyphens(): void
     {
+        $race = Race::fromString(
+            'Drink Folk'
+        );
+
         self::assertSame(
             'drink-folk',
-            Race::fromString(
-                'drink folk'
-            )->value()
+            $race->value()
         );
     }
 
     public function testNormalisesUnderscoresToHyphens(): void
     {
+        $race = Race::fromString(
+            'drink_folk'
+        );
+
         self::assertSame(
             'drink-folk',
-            Race::fromString(
-                'drink_folk'
-            )->value()
+            $race->value()
         );
     }
 
-    public function testReturnsDisplayLabel(): void
+    public function testReturnsStandardRaceDisplayLabel(): void
     {
         self::assertSame(
             'Fructan',
             Race::fromString(
                 'fructan'
+            )->label()
+        );
+    }
+
+    public function testReturnsHyphenatedRaceDisplayLabel(): void
+    {
+        self::assertSame(
+            'Drinkfolk',
+            Race::fromString(
+                'drink-folk'
             )->label()
         );
     }
@@ -92,11 +106,11 @@ final class RaceTest extends TestCase
     public function testEqualRacesAreEqual(): void
     {
         $first = Race::fromString(
-            'fructan'
+            'drink-folk'
         );
 
         $second = Race::fromString(
-            'FRUCTAN'
+            'Drink Folk'
         );
 
         self::assertTrue(
@@ -144,7 +158,31 @@ final class RaceTest extends TestCase
         );
 
         Race::fromString(
-            'sandwich person'
+            'sandwich-person'
+        );
+    }
+
+    public function testSupportsNormalisedRaceIdentifiers(): void
+    {
+        self::assertTrue(
+            Race::supports(
+                ' Drink Folk '
+            )
+        );
+
+        self::assertTrue(
+            Race::supports(
+                'drink_folk'
+            )
+        );
+    }
+
+    public function testDoesNotSupportUnknownRaceIdentifiers(): void
+    {
+        self::assertFalse(
+            Race::supports(
+                'sandwich-person'
+            )
         );
     }
 
@@ -157,6 +195,29 @@ final class RaceTest extends TestCase
         );
     }
 
+    /**
+     * @return array<string,array{string}>
+     */
+    public static function supportedRaceProvider(): array
+    {
+        return [
+            'boxfolk' => ['boxfolk'],
+            'capsicumite' => ['capsicumite'],
+            'dairyfolk' => ['dairyfolk'],
+            'drink folk' => ['drink-folk'],
+            'fluffling' => ['fluffling'],
+            'fructan' => ['fructan'],
+            'fungifolk' => ['fungifolk'],
+            'herbfolk' => ['herbfolk'],
+            'meatfolk' => ['meatfolk'],
+            'melonian' => ['melonian'],
+            'rootkin' => ['rootkin'],
+            'stalker' => ['stalker'],
+            'sweetfolk' => ['sweetfolk'],
+            'vegfolk' => ['vegfolk'],
+        ];
+    }
+
     #[DataProvider('unsupportedRaceProvider')]
     public function testRejectsUnsupportedRaceIdentifiers(
         string $race
@@ -166,15 +227,96 @@ final class RaceTest extends TestCase
         );
     }
 
+    /**
+     * @return array<string,array{string}>
+     */
+    public static function unsupportedRaceProvider(): array
+    {
+        return [
+            'empty string' => [''],
+            'whitespace only' => ['   '],
+            'unknown race' => ['unknown'],
+            'unsupported food race' => [
+                'sandwich-person',
+            ],
+            'partial race name' => ['fruit'],
+        ];
+    }
+
     #[DataProvider('labelProvider')]
     public function testReturnsTheCorrectLabel(
-        string $value,
+        string $race,
         string $expectedLabel
     ): void {
         self::assertSame(
             $expectedLabel,
-            Race::fromString($value)->label()
+            Race::fromString($race)->label()
         );
+    }
+
+    /**
+     * @return array<string,array{string,string}>
+     */
+    public static function labelProvider(): array
+    {
+        return [
+            'boxfolk' => [
+                'boxfolk',
+                'Boxfolk',
+            ],
+            'capsicumite' => [
+                'capsicumite',
+                'Capsicumite',
+            ],
+            'dairyfolk' => [
+                'dairyfolk',
+                'Dairyfolk',
+            ],
+            'drink folk' => [
+                'drink-folk',
+                'Drinkfolk',
+            ],
+            'fluffling' => [
+                'fluffling',
+                'Fluffling',
+            ],
+            'fructan' => [
+                'fructan',
+                'Fructan',
+            ],
+            'fungifolk' => [
+                'fungifolk',
+                'Fungifolk',
+            ],
+            'herbfolk' => [
+                'herbfolk',
+                'Herbfolk',
+            ],
+            'meatfolk' => [
+                'meatfolk',
+                'Meatfolk',
+            ],
+            'melonian' => [
+                'melonian',
+                'Melonian',
+            ],
+            'rootkin' => [
+                'rootkin',
+                'Rootkin',
+            ],
+            'stalker' => [
+                'stalker',
+                'Stalker',
+            ],
+            'sweetfolk' => [
+                'sweetfolk',
+                'Sweetfolk',
+            ],
+            'vegfolk' => [
+                'vegfolk',
+                'Vegfolk',
+            ],
+        ];
     }
 
     public function testReturnsEverySupportedRace(): void
@@ -222,62 +364,31 @@ final class RaceTest extends TestCase
         );
     }
 
-    /**
-     * @return array<string,array{string}>
-     */
-    public static function supportedRaceProvider(): array
+    public function testEveryRaceReturnedByAllIsSupported(): void
     {
-        return [
-            'boxfolk' => ['boxfolk'],
-            'capsicumite' => ['capsicumite'],
-            'dairyfolk' => ['dairyfolk'],
-            'drink-folk' => ['drink-folk'],
-            'fluffling' => ['fluffling'],
-            'fructan' => ['fructan'],
-            'fungifolk' => ['fungifolk'],
-            'herbfolk' => ['herbfolk'],
-            'meatfolk' => ['meatfolk'],
-            'melonian' => ['melonian'],
-            'rootkin' => ['rootkin'],
-            'stalker' => ['stalker'],
-            'sweetfolk' => ['sweetfolk'],
-            'vegfolk' => ['vegfolk'],
-        ];
+        foreach (Race::all() as $race) {
+            self::assertTrue(
+                Race::supports(
+                    $race->value()
+                )
+            );
+        }
     }
 
-    /**
-     * @return array<string,array{string}>
-     */
-    public static function unsupportedRaceProvider(): array
+    public function testAllReturnsFreshRaceInstances(): void
     {
-        return [
-            'empty string' => [''],
-            'unknown race' => ['unknown'],
-            'unsupported food race' => ['sandwich-person'],
-            'partial race name' => ['fruit'],
-        ];
-    }
+        $first = Race::all();
+        $second = Race::all();
 
-    /**
-     * @return array<string,array{string,string}>
-     */
-    public static function labelProvider(): array
-    {
-        return [
-            'boxfolk' => ['boxfolk', 'Boxfolk'],
-            'capsicumite' => ['capsicumite', 'Capsicumite'],
-            'dairyfolk' => ['dairyfolk', 'Dairyfolk'],
-            'drink-folk' => ['drink-folk', 'Drinkfolk'],
-            'fluffling' => ['fluffling', 'Fluffling'],
-            'fructan' => ['fructan', 'Fructan'],
-            'fungifolk' => ['fungifolk', 'Fungifolk'],
-            'herbfolk' => ['herbfolk', 'Herbfolk'],
-            'meatfolk' => ['meatfolk', 'Meatfolk'],
-            'melonian' => ['melonian', 'Melonian'],
-            'rootkin' => ['rootkin', 'Rootkin'],
-            'stalker' => ['stalker', 'Stalker'],
-            'sweetfolk' => ['sweetfolk', 'Sweetfolk'],
-            'vegfolk' => ['vegfolk', 'Vegfolk'],
-        ];
+        self::assertNotSame(
+            $first[0],
+            $second[0]
+        );
+
+        self::assertTrue(
+            $first[0]->equals(
+                $second[0]
+            )
+        );
     }
 }
