@@ -63,6 +63,8 @@ final class CharacterController
      */
     public function index(): string
     {
+        error_log('CharacterController@index reached');
+        
         return $this->views->render(
             View::make(
                 'characters.index',
