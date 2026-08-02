@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Actions;
 
-use GreatMarketrealmCompanion\Modules\Characters\Actions\CreateCharacterAction;
+use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
@@ -19,20 +19,13 @@ final class UpdateCharacterActionTest extends TestCase
 {
     public function testPersistsTheCharacter(): void
     {
-        $repository = new CreateCharacterRepositorySpy();
+        $repository = new UpdateCharacterRepositorySpy();
 
         $action = new UpdateCharacterAction(
             $repository
         );
 
-        $character = Character::create(
-            CharacterId::generate(),
-            CharacterName::fromString('Sir Allium'),
-            Race::fromString('fructan'),
-            CharacterClass::fromString('fighter'),
-            HitPoints::full(12),
-            AbilityScores::average()
-        );
+        $character = $this->character();
 
         $returned = $action->handle(
             $character
@@ -51,9 +44,9 @@ final class UpdateCharacterActionTest extends TestCase
 
     public function testCallsSaveExactlyOnce(): void
     {
-        $repository = new CreateCharacterRepositorySpy();
+        $repository = new UpdateCharacterRepositorySpy();
 
-        $action = new CreateCharacterAction(
+        $action = new UpdateCharacterAction(
             $repository
         );
 
@@ -80,7 +73,8 @@ final class UpdateCharacterActionTest extends TestCase
     }
 }
 
-final class CreateCharacterRepositorySpy implements CharacterRepositoryInterface
+final class UpdateCharacterRepositorySpy implements
+    CharacterRepositoryInterface
 {
     public ?Character $savedCharacter = null;
 
