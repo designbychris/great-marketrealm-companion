@@ -71,25 +71,38 @@ class AppController
                 null,
                 '/' . $route
             );
-    
+        
             if ($result instanceof Response) {
                 return $result;
             }
-    
+        
             if (! is_string($result)) {
                 throw new RuntimeException(
                     sprintf(
-                        'Expected route "%s" to return string or Response.',
-                        $route
+                        'Expected route "%s" to return string or Response; received %s.',
+                        $route,
+                        get_debug_type($result)
                     )
                 );
             }
-            
+        
             $content = $result;
-                
             $pageTitle = $this->pageTitle($route);
-        } catch (RuntimeException $exception) {
-    
+        } catch (\Throwable $exception) {
+            error_log(
+                sprintf(
+                    'AppController Throwable: %s: %s in %s:%d',
+                    get_class($exception),
+                    $exception->getMessage(),
+                    $exception->getFile(),
+                    $exception->getLine()
+                )
+            );
+        
+            error_log(
+                $exception->getTraceAsString()
+            );
+        
             $content = $this->views->render(
                 View::make(
                     'dashboard.not-found',
@@ -98,7 +111,7 @@ class AppController
                     ]
                 )
             );
-    
+        
             $pageTitle = __(
                 'Not Found',
                 'great-marketrealm-companion'
