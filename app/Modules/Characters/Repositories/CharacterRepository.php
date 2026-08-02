@@ -285,13 +285,14 @@ final class CharacterRepository implements CharacterRepositoryInterface
             self::META_CHARACTER_ID,
             true
         );
-
+        
         if ($characterId === '') {
-            throw new RuntimeException(
-                sprintf(
-                    'Character post [%d] has no domain identifier.',
-                    $post->ID
-                )
+            $characterId = CharacterId::generate()->value();
+        
+            update_post_meta(
+                $post->ID,
+                self::META_CHARACTER_ID,
+                $characterId
             );
         }
 
