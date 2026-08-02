@@ -2,283 +2,586 @@
 
 declare(strict_types=1);
 
-namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Services;
+/*
+ * WordPress test doubles used by CharacterRepository.
+ */
+namespace {
 
-use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScore;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
-use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
-use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
+    if (! class_exists('WP_Post')) {
+        class WP_Post
+        {
+            public int $ID;
 
-final class CharacterFactoryTest extends TestCase
-{
-    public function testCreatesACharacterFromDomainValues(): void
+            public string $post_type = '';
+
+            public string $post_status = 'publish';
+
+            public string $post_title = '';
+
+            public int $post_author = 0;
+
+            public function __construct(
+                object|array $data = []
+            ) {
+                foreach ((array) $data as $key => $value) {
+                    $this->{$key} = $value;
+                }
+            }
+        }
+    }
+}
+
+/*
+ * Namespaced WordPress-function replacements.
+ *
+ * CharacterRepository is in this namespace, so PHP will
+ * resolve these functions before global WordPress functions.
+ */
+namespace GreatMarketrealmCompanion\Modules\Characters\Repositories {
+
+    use WP_Post;
+
+    final class CharacterRepositoryWordPressState
     {
-        $factory = new CharacterFactory();
+        /**
+         * @var array<int,WP_Post>
+         */
+        public static array $posts = [];
 
-        $character = $factory->create(
-            CharacterName::fromString('Sir Allium'),
-            Race::fromString('fructan'),
-            CharacterClass::fromString('fighter'),
-            AbilityScores::average()
-        );
+        /**
+         * @var array<int,array<string,mixed>>
+         */
+        public static array $meta = [];
 
-        self::assertInstanceOf(
-            Character::class,
-            $character
-        );
+        public static int $nextPostId = 1;
+
+        public static int $currentUserId = 42;
+
+        public static function reset(): void
+        {
+            self::$posts = [];
+            self::$meta = [];
+            self::$nextPostId = 1;
+            self::$currentUserId = 42;
+        }
     }
 
-    public function testCreatesACharacterFromPrimitiveInput(): void
+    /**
+     * @param array<string,mixed> $arguments
+     *
+     * @return WP_Post[]
+     */
+    function get_posts(array $arguments = []): array
     {
-        $character = $this->factory()->fromInput(
-            name: 'Sir Allium',
-            race: 'fructan',
-            characterClass: 'fighter'
+        $posts = array_values(
+            CharacterRepositoryWordPressState::$posts
         );
 
-        self::assertSame(
-            'Sir Allium',
-            $character->name()->value()
-        );
+        return array_values(
+            array_filter(
+                $posts,
+                static function (
+                    WP_Post $post
+                ) use ($arguments): bool {
+                    if (
+                        isset($arguments['post_type'])
+                        && $post->post_type
+                            !== $arguments['post_type']
+                    ) {
+                        return false;
+                    }
 
-        self::assertSame(
-            'fructan',
-            $character->race()->value()
-        );
+                    if (
+                        isset($arguments['post_status'])
+                        && $post->post_status
+                            !== $arguments['post_status']
+                    ) {
+                        return false;
+                    }
 
-        self::assertSame(
-            'fighter',
-            $character->characterClass()->value()
-        );
-    }
+                    if (
+                        isset($arguments['author'])
+                        && $post->post_author
+                            !== (int) $arguments['author']
+                    ) {
+                        return false;
+                    }
 
-    public function testGeneratesACharacterIdentifier(): void
-    {
-        $character = $this->createCharacter();
+                    if (
+                        isset(
+                            $arguments['meta_key'],
+                            $arguments['meta_value']
+                        )
+                    ) {
+                        $stored =
+                            CharacterRepositoryWordPressState::$meta[
+                                $post->ID
+                            ][$arguments['meta_key']] ?? null;
 
-        self::assertNotSame(
-            '',
-            $character->id()->value()
-        );
-    }
+                        if (
+                            (string) $stored
+                            !== (string) $arguments['meta_value']
+                        ) {
+                            return false;
+                        }
+                    }
 
-    public function testGeneratesDifferentIdentifiersForDifferentCharacters(): void
-    {
-        $first = $this->createCharacter();
-
-        $second = $this->factory()->fromInput(
-            name: 'Lady Leek',
-            race: 'vegfolk',
-            characterClass: 'wizard'
-        );
-
-        self::assertFalse(
-            $first->id()->equals(
-                $second->id()
+                    return true;
+                }
             )
         );
     }
 
-    public function testNewCharactersBeginAtLevelOne(): void
+    function get_current_user_id(): int
     {
-        self::assertTrue(
-            $this->createCharacter()
-                ->level()
-                ->equals(Level::one())
-        );
+        return CharacterRepositoryWordPressState::$currentUserId;
     }
 
-    public function testNewCharactersBeginWithZeroExperience(): void
-    {
-        self::assertTrue(
-            $this->createCharacter()
-                ->experience()
-                ->equals(Experience::zero())
-        );
+    /**
+     * @param array<string,mixed> $data
+     */
+    function wp_insert_post(
+        array $data,
+        bool $returnError = false
+    ): int {
+        unset($returnError);
+
+        $postId =
+            CharacterRepositoryWordPressState::$nextPostId++;
+
+        CharacterRepositoryWordPressState::$posts[$postId] =
+            new WP_Post([
+                'ID' => $postId,
+                'post_type' => (string) (
+                    $data['post_type'] ?? ''
+                ),
+                'post_status' => (string) (
+                    $data['post_status'] ?? 'publish'
+                ),
+                'post_title' => (string) (
+                    $data['post_title'] ?? ''
+                ),
+                'post_author' => (int) (
+                    $data['post_author'] ?? 0
+                ),
+            ]);
+
+        return $postId;
     }
 
-    public function testUsesAverageAbilityScoresByDefault(): void
+    /**
+     * @param array<string,mixed> $data
+     */
+    function wp_update_post(
+        array $data,
+        bool $returnError = false
+    ): int {
+        unset($returnError);
+
+        $postId = (int) ($data['ID'] ?? 0);
+
+        $post = CharacterRepositoryWordPressState::$posts[
+            $postId
+        ] ?? null;
+
+        if (! $post instanceof WP_Post) {
+            return 0;
+        }
+
+        if (isset($data['post_title'])) {
+            $post->post_title = (string) $data['post_title'];
+        }
+
+        return $postId;
+    }
+
+    function wp_delete_post(
+        int $postId,
+        bool $forceDelete = false
+    ): ?WP_Post {
+        unset($forceDelete);
+
+        $post = CharacterRepositoryWordPressState::$posts[
+            $postId
+        ] ?? null;
+
+        if (! $post instanceof WP_Post) {
+            return null;
+        }
+
+        unset(
+            CharacterRepositoryWordPressState::$posts[$postId],
+            CharacterRepositoryWordPressState::$meta[$postId]
+        );
+
+        return $post;
+    }
+
+    function update_post_meta(
+        int $postId,
+        string $key,
+        mixed $value
+    ): bool {
+        CharacterRepositoryWordPressState::$meta[
+            $postId
+        ][$key] = $value;
+
+        return true;
+    }
+
+    function get_post_meta(
+        int $postId,
+        string $key,
+        bool $single = false
+    ): mixed {
+        unset($single);
+
+        return CharacterRepositoryWordPressState::$meta[
+            $postId
+        ][$key] ?? '';
+    }
+
+    function is_wp_error(mixed $value): bool
     {
-        self::assertTrue(
-            $this->createCharacter()
-                ->abilityScores()
-                ->equals(
-                    AbilityScores::average()
+        return false;
+    }
+}
+
+namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
+
+    use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
+    use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScore;
+    use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
+    use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
+    use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
+    use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
+    use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
+    use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
+    use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
+    use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
+    use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
+    use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepositoryWordPressState;
+    use PHPUnit\Framework\TestCase;
+
+    final class CharacterRepositoryTest extends TestCase
+    {
+        protected function setUp(): void
+        {
+            CharacterRepositoryWordPressState::reset();
+        }
+
+        public function testSavesANewCharacter(): void
+        {
+            $repository = new CharacterRepository();
+
+            $character = $this->character();
+
+            $repository->save($character);
+
+            self::assertCount(
+                1,
+                CharacterRepositoryWordPressState::$posts
+            );
+
+            $post = array_values(
+                CharacterRepositoryWordPressState::$posts
+            )[0];
+
+            self::assertSame(
+                'Sir Allium',
+                $post->post_title
+            );
+
+            self::assertSame(
+                $character->id()->value(),
+                CharacterRepositoryWordPressState::$meta[
+                    $post->ID
+                ]['_gmrc_character_id']
+            );
+        }
+
+        public function testPersistsCharacterDomainState(): void
+        {
+            $repository = new CharacterRepository();
+
+            $character = $this->character();
+
+            $repository->save($character);
+
+            $postId = array_key_first(
+                CharacterRepositoryWordPressState::$posts
+            );
+
+            self::assertIsInt($postId);
+
+            $meta = CharacterRepositoryWordPressState::$meta[
+                $postId
+            ];
+
+            self::assertSame(
+                'fructan',
+                $meta['_gmrc_race']
+            );
+
+            self::assertSame(
+                'fighter',
+                $meta['_gmrc_class']
+            );
+
+            self::assertSame(
+                7,
+                $meta['_gmrc_level']
+            );
+
+            self::assertSame(
+                26000,
+                $meta['_gmrc_experience']
+            );
+
+            self::assertSame(
+                34,
+                $meta['_gmrc_hp_current']
+            );
+
+            self::assertSame(
+                42,
+                $meta['_gmrc_hp_maximum']
+            );
+
+            self::assertSame(
+                5,
+                $meta['_gmrc_hp_temporary']
+            );
+
+            self::assertSame(
+                15,
+                $meta['_gmrc_strength']
+            );
+
+            self::assertSame(
+                14,
+                $meta['_gmrc_dexterity']
+            );
+
+            self::assertSame(
+                13,
+                $meta['_gmrc_constitution']
+            );
+
+            self::assertSame(
+                12,
+                $meta['_gmrc_intelligence']
+            );
+
+            self::assertSame(
+                10,
+                $meta['_gmrc_wisdom']
+            );
+
+            self::assertSame(
+                8,
+                $meta['_gmrc_charisma']
+            );
+        }
+
+        public function testFindsACharacterByItsUlid(): void
+        {
+            $repository = new CharacterRepository();
+
+            $character = $this->character();
+
+            $repository->save($character);
+
+            $found = $repository->find(
+                $character->id()
+            );
+
+            self::assertInstanceOf(
+                Character::class,
+                $found
+            );
+
+            self::assertTrue(
+                $found->id()->equals(
+                    $character->id()
                 )
-        );
-    }
+            );
 
-    public function testUsesSuppliedAbilityScores(): void
-    {
-        $abilityScores = $this->customAbilityScores();
+            self::assertTrue(
+                $found->name()->equals(
+                    $character->name()
+                )
+            );
 
-        $character = $this->factory()->fromInput(
-            name: 'Sir Allium',
-            race: 'fructan',
-            characterClass: 'fighter',
-            abilityScores: $abilityScores
-        );
+            self::assertTrue(
+                $found->race()->equals(
+                    $character->race()
+                )
+            );
 
-        self::assertTrue(
-            $character
-                ->abilityScores()
-                ->equals($abilityScores)
-        );
-    }
+            self::assertTrue(
+                $found->characterClass()->equals(
+                    $character->characterClass()
+                )
+            );
 
-    public function testCalculatesFighterStartingHitPoints(): void
-    {
-        $character = $this->factory()->fromInput(
-            name: 'Sir Allium',
-            race: 'fructan',
-            characterClass: 'fighter',
-            abilityScores: $this->customAbilityScores()
-        );
+            self::assertTrue(
+                $found->level()->equals(
+                    $character->level()
+                )
+            );
 
-        /*
-         * Fighter hit die: 10
-         * Constitution 14: +2
-         */
-        self::assertSame(
-            12,
-            $character->hitPoints()->maximum()
-        );
+            self::assertTrue(
+                $found->experience()->equals(
+                    $character->experience()
+                )
+            );
 
-        self::assertSame(
-            12,
-            $character->hitPoints()->current()
-        );
-    }
+            self::assertTrue(
+                $found->hitPoints()->equals(
+                    $character->hitPoints()
+                )
+            );
 
-    public function testCalculatesBarbarianStartingHitPoints(): void
-    {
-        $character = $this->factory()->fromInput(
-            name: 'Ribald',
-            race: 'meatfolk',
-            characterClass: 'barbarian',
-            abilityScores: AbilityScores::fromScores(
-                strength: AbilityScore::fromInt(16),
-                dexterity: AbilityScore::fromInt(12),
-                constitution: AbilityScore::fromInt(16),
-                intelligence: AbilityScore::fromInt(8),
-                wisdom: AbilityScore::fromInt(10),
-                charisma: AbilityScore::fromInt(10),
-            )
-        );
+            self::assertTrue(
+                $found->abilityScores()->equals(
+                    $character->abilityScores()
+                )
+            );
+        }
 
-        /*
-         * Barbarian hit die: 12
-         * Constitution 16: +3
-         */
-        self::assertSame(
-            15,
-            $character->hitPoints()->maximum()
-        );
-    }
+        public function testReturnsNullWhenCharacterDoesNotExist(): void
+        {
+            $repository = new CharacterRepository();
 
-    public function testStartingTemporaryHitPointsAreZero(): void
-    {
-        self::assertSame(
-            0,
-            $this->createCharacter()
-                ->hitPoints()
-                ->temporary()
-        );
-    }
+            self::assertNull(
+                $repository->find(
+                    CharacterId::generate()
+                )
+            );
+        }
 
-    public function testNormalisesPrimitiveInput(): void
-    {
-        $character = $this->factory()->fromInput(
-            name: '  Sir Allium  ',
-            race: '  FRUCTAN  ',
-            characterClass: '  FIGHTER  '
-        );
+        public function testSavingAnExistingCharacterUpdatesItsPost(): void
+        {
+            $repository = new CharacterRepository();
 
-        self::assertSame(
-            'Sir Allium',
-            $character->name()->value()
-        );
+            $character = $this->character();
 
-        self::assertSame(
-            'fructan',
-            $character->race()->value()
-        );
+            $repository->save($character);
 
-        self::assertSame(
-            'fighter',
-            $character->characterClass()->value()
-        );
-    }
+            $character->rename(
+                CharacterName::fromString(
+                    'Sir Allium the Brave'
+                )
+            );
 
-    public function testRejectsAnUnsupportedRace(): void
-    {
-        $this->expectException(
-            InvalidArgumentException::class
-        );
+            $repository->save($character);
 
-        $this->factory()->fromInput(
-            name: 'Sir Allium',
-            race: 'sandwich-person',
-            characterClass: 'fighter'
-        );
-    }
+            self::assertCount(
+                1,
+                CharacterRepositoryWordPressState::$posts
+            );
 
-    public function testRejectsAnUnsupportedCharacterClass(): void
-    {
-        $this->expectException(
-            InvalidArgumentException::class
-        );
+            $post = array_values(
+                CharacterRepositoryWordPressState::$posts
+            )[0];
 
-        $this->factory()->fromInput(
-            name: 'Sir Allium',
-            race: 'fructan',
-            characterClass: 'sandwich-knight'
-        );
-    }
+            self::assertSame(
+                'Sir Allium the Brave',
+                $post->post_title
+            );
+        }
 
-    public function testRejectsAnInvalidCharacterName(): void
-    {
-        $this->expectException(
-            InvalidArgumentException::class
-        );
+        public function testRetrievesAllCharactersForCurrentUser(): void
+        {
+            $repository = new CharacterRepository();
 
-        $this->factory()->fromInput(
-            name: '',
-            race: 'fructan',
-            characterClass: 'fighter'
-        );
-    }
+            $first = $this->character();
 
-    private function factory(): CharacterFactory
-    {
-        return new CharacterFactory();
-    }
+            $second = Character::create(
+                CharacterId::generate(),
+                CharacterName::fromString('Lady Leek'),
+                Race::fromString('vegfolk'),
+                CharacterClass::fromString('wizard'),
+                HitPoints::full(6),
+                AbilityScores::average()
+            );
 
-    private function createCharacter(): Character
-    {
-        return $this->factory()->fromInput(
-            name: 'Sir Allium',
-            race: 'fructan',
-            characterClass: 'fighter'
-        );
-    }
+            $repository->save($first);
+            $repository->save($second);
 
-    private function customAbilityScores(): AbilityScores
-    {
-        return AbilityScores::fromScores(
-            strength: AbilityScore::fromInt(15),
-            dexterity: AbilityScore::fromInt(14),
-            constitution: AbilityScore::fromInt(14),
-            intelligence: AbilityScore::fromInt(12),
-            wisdom: AbilityScore::fromInt(10),
-            charisma: AbilityScore::fromInt(8),
-        );
+            $characters = $repository->all();
+
+            self::assertCount(
+                2,
+                $characters
+            );
+
+            self::assertContainsOnlyInstancesOf(
+                Character::class,
+                $characters
+            );
+
+            self::assertTrue(
+                $characters[0]->race()->equals(
+                    $first->race()
+                )
+            );
+
+            self::assertTrue(
+                $characters[1]->race()->equals(
+                    $second->race()
+                )
+            );
+        }
+
+        public function testDeletesACharacterByItsUlid(): void
+        {
+            $repository = new CharacterRepository();
+
+            $character = $this->character();
+
+            $repository->save($character);
+
+            $repository->delete(
+                $character->id()
+            );
+
+            self::assertNull(
+                $repository->find(
+                    $character->id()
+                )
+            );
+
+            self::assertSame(
+                [],
+                CharacterRepositoryWordPressState::$posts
+            );
+        }
+
+        private function character(): Character
+        {
+            return Character::reconstitute(
+                CharacterId::generate(),
+                CharacterName::fromString('Sir Allium'),
+                Race::fromString('fructan'),
+                CharacterClass::fromString('fighter'),
+                Level::fromInt(7),
+                Experience::fromInt(26000),
+                HitPoints::fromValues(
+                    current: 34,
+                    maximum: 42,
+                    temporary: 5
+                ),
+                AbilityScores::fromScores(
+                    strength: AbilityScore::fromInt(15),
+                    dexterity: AbilityScore::fromInt(14),
+                    constitution: AbilityScore::fromInt(13),
+                    intelligence: AbilityScore::fromInt(12),
+                    wisdom: AbilityScore::fromInt(10),
+                    charisma: AbilityScore::fromInt(8),
+                )
+            );
+        }
     }
 }
