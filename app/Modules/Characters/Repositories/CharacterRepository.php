@@ -14,6 +14,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterNa
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use RuntimeException;
 use WP_Post;
 
@@ -30,6 +31,7 @@ defined('ABSPATH') || exit;
 final class CharacterRepository implements CharacterRepositoryInterface
 {
     private const META_CHARACTER_ID = '_gmrc_character_id';
+    private const META_RACE = '_gmrc_race';
     private const META_CLASS = '_gmrc_class';
     private const META_LEVEL = '_gmrc_level';
     private const META_EXPERIENCE = '_gmrc_experience';
@@ -221,6 +223,12 @@ final class CharacterRepository implements CharacterRepositoryInterface
 
         update_post_meta(
             $postId,
+            self::META_RACE,
+            $character->race()->value()
+        );
+
+        update_post_meta(
+            $postId,
             self::META_CLASS,
             $character
                 ->characterClass()
@@ -292,6 +300,7 @@ final class CharacterRepository implements CharacterRepositoryInterface
             CharacterName::fromString(
                 $post->post_title
             ),
+            $this->mapRace($post->ID),
             $this->mapCharacterClass($post->ID),
             Level::fromInt(
                 max(
@@ -366,6 +375,29 @@ final class CharacterRepository implements CharacterRepositoryInterface
                 ),
             )
         );
+    }
+
+    /**
+     * Rebuild the Character race from post metadata.
+     */
+    private function mapRace(
+        int $postId
+    ): Race {
+        $stored = get_post_meta(
+            $postId,
+            self::META_RACE,
+            true
+        );
+
+        /*
+         * Temporary compatibility fallback for older
+         * Character records created before race persistence.
+         */
+        $value = is_string($stored) && $stored !== ''
+            ? $stored
+            : 'fructan';
+
+        return Race::fromString($value);
     }
 
     /**
