@@ -210,6 +210,7 @@ final class RaceTest extends TestCase
             'fungifolk' => ['fungifolk'],
             'herbfolk' => ['herbfolk'],
             'meatfolk' => ['meatfolk'],
+            'meatkin' => ['meatkin'],
             'melonian' => ['melonian'],
             'rootkin' => ['rootkin'],
             'stalker' => ['stalker'],
@@ -295,6 +296,10 @@ final class RaceTest extends TestCase
             'meatfolk' => [
                 'meatfolk',
                 'Meatfolk',
+            ],
+            'meatkin' => [
+                'meatkin',
+                'Meatkin',
             ],
             'melonian' => [
                 'melonian',
