@@ -79,7 +79,6 @@ $fieldError = static function (
 $nameError = $fieldError('name');
 $raceError = $fieldError('race');
 $classError = $fieldError('class');
-$levelError = $fieldError('level');
 
 $charactersUrl = add_query_arg(
     'gmrc_route',
@@ -124,7 +123,7 @@ $charactersUrl = add_query_arg(
             name="action"
             value="gmrc_app_request"
         >
-    
+
         <input
             type="hidden"
             name="gmrc_route"
@@ -143,13 +142,13 @@ $charactersUrl = add_query_arg(
             echo $this->component(
                 'components.controls.scribe-input',
                 [
-                    'name'         => 'name',
-                    'label'        => 'Character name',
-                    'value'        => $old['name'] ?? '',
-                    'required'     => true,
+                    'name' => 'name',
+                    'label' => 'Character name',
+                    'value' => $old['name'] ?? '',
+                    'required' => true,
                     'autocomplete' => 'off',
-                    'placeholder'  => 'Record the adventurer\'s name',
-                    'error'        => $nameError,
+                    'placeholder' => 'Record the adventurer\'s name',
+                    'error' => $nameError,
                 ]
             );
             ?>
@@ -161,21 +160,31 @@ $charactersUrl = add_query_arg(
                 <span aria-hidden="true">*</span>
             </label>
 
-            <input
+            <select
                 id="character-race"
                 name="race"
-                type="text"
-                value="<?php echo esc_attr(
-                    $old['race'] ?? ''
-                ); ?>"
-                maxlength="100"
-                autocomplete="off"
                 required
                 <?php if ($raceError !== null) : ?>
                     aria-invalid="true"
                     aria-describedby="character-race-error"
                 <?php endif; ?>
             >
+                <option value="">
+                    Choose a race
+                </option>
+
+                <?php foreach ($raceOptions as $value => $label) : ?>
+                    <option
+                        value="<?php echo esc_attr($value); ?>"
+                        <?php selected(
+                            $old['race'] ?? '',
+                            $value
+                        ); ?>
+                    >
+                        <?php echo esc_html($label); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
 
             <?php if ($raceError !== null) : ?>
                 <p
@@ -193,21 +202,31 @@ $charactersUrl = add_query_arg(
                 <span aria-hidden="true">*</span>
             </label>
 
-            <input
+            <select
                 id="character-class"
                 name="class"
-                type="text"
-                value="<?php echo esc_attr(
-                    $old['class'] ?? ''
-                ); ?>"
-                maxlength="100"
-                autocomplete="off"
                 required
                 <?php if ($classError !== null) : ?>
                     aria-invalid="true"
                     aria-describedby="character-class-error"
                 <?php endif; ?>
             >
+                <option value="">
+                    Choose a class
+                </option>
+
+                <?php foreach ($classOptions as $value => $label) : ?>
+                    <option
+                        value="<?php echo esc_attr($value); ?>"
+                        <?php selected(
+                            $old['class'] ?? '',
+                            $value
+                        ); ?>
+                    >
+                        <?php echo esc_html($label); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
 
             <?php if ($classError !== null) : ?>
                 <p
@@ -219,63 +238,20 @@ $charactersUrl = add_query_arg(
             <?php endif; ?>
         </div>
 
-        <div class="gmrc-form-field">
-            <label for="character-level">
-                Level
-                <span aria-hidden="true">*</span>
-            </label>
-
-            <input
-                id="character-level"
-                name="level"
-                type="number"
-                value="<?php echo esc_attr(
-                    $old['level'] ?? 1
-                ); ?>"
-                min="1"
-                max="20"
-                step="1"
-                inputmode="numeric"
-                required
-                <?php if ($levelError !== null) : ?>
-                    aria-invalid="true"
-                    aria-describedby="character-level-help<?php
-                        echo $levelError !== null
-                            ? ' character-level-error'
-                            : '';
-                    ?>"
-                <?php else : ?>
-                    aria-describedby="character-level-help"
-                <?php endif; ?>
-            >
-
-            <p
-                id="character-level-help"
-                class="gmrc-form-help"
-            >
-                Characters may begin between levels 1 and 20.
-            </p>
-
-            <?php if ($levelError !== null) : ?>
-                <p
-                    id="character-level-error"
-                    class="gmrc-form-error"
-                >
-                    <?php echo esc_html($levelError); ?>
-                </p>
-            <?php endif; ?>
-        </div>
+        <p class="gmrc-form-help">
+            New adventurers begin at Level 1 with no experience.
+        </p>
 
         <div class="gmrc-form-actions">
             <?php
             echo $this->component(
                 'components.controls.wax-button',
                 [
-                    'label'   => 'Record Adventurer',
-                    'type'    => 'submit',
-                    'symbol'  => '✦',
+                    'label' => 'Record Adventurer',
+                    'type' => 'submit',
+                    'symbol' => '✦',
                     'variant' => 'wax',
-                    'size'    => 'large',
+                    'size' => 'large',
                 ]
             );
             ?>
@@ -284,34 +260,14 @@ $charactersUrl = add_query_arg(
             echo $this->component(
                 'components.controls.paper-button',
                 [
-                    'label'   => 'Return to Register',
-                    'href'    => $charactersUrl,
-                    'symbol'  => '‹',
+                    'label' => 'Return to Register',
+                    'href' => $charactersUrl,
+                    'symbol' => '‹',
                     'variant' => 'parchment',
-                    'size'    => 'large',
+                    'size' => 'large',
                 ]
             );
             ?>
         </div>
     </form>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('.gmrc-character-form');
-    
-        if (!form) {
-            console.log('GMRC form not found');
-            return;
-        }
-    
-        console.log('GMRC form found:', form);
-        console.log('Form action:', form.action);
-        console.log('Form method:', form.method);
-    
-        form.addEventListener('submit', function (e) {
-            console.log('Submitting to:', form.action);
-            console.log('Method:', form.method);
-        });
-    });
-    </script>
 </section>
