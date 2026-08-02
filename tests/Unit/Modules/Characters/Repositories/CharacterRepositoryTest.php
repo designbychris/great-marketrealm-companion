@@ -588,50 +588,53 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
         {
             $repository = new CharacterRepository();
         
-            $postId = wp_insert_post([
-                'post_type' => 'gmrc_character',
-                'post_status' => 'publish',
-                'post_title' => 'Legacy Adventurer',
-                'post_author' => 42,
-            ]);
+            $postId =
+            \GreatMarketrealmCompanion\Modules\Characters\Repositories\wp_insert_post(
+                [
+                    'post_type' => 'gmrc_character',
+                    'post_status' => 'publish',
+                    'post_title' => 'Legacy Adventurer',
+                    'post_author' => 42,
+                ]
+            );
         
-            update_post_meta(
+            \GreatMarketrealmCompanion\Modules\Characters\Repositories\update_post_meta(
                 $postId,
                 '_gmrc_race',
                 'fructan'
             );
         
-            update_post_meta(
+            \GreatMarketrealmCompanion\Modules\Characters\Repositories\update_post_meta(
                 $postId,
                 '_gmrc_class',
                 'fighter'
             );
         
-            update_post_meta(
+            \GreatMarketrealmCompanion\Modules\Characters\Repositories\update_post_meta(
                 $postId,
                 '_gmrc_level',
                 1
             );
         
-            update_post_meta(
+            \GreatMarketrealmCompanion\Modules\Characters\Repositories\update_post_meta(
                 $postId,
                 '_gmrc_experience',
                 0
             );
         
-            update_post_meta(
+            \GreatMarketrealmCompanion\Modules\Characters\Repositories\update_post_meta(
                 $postId,
                 '_gmrc_hp_current',
                 10
             );
         
-            update_post_meta(
+            \GreatMarketrealmCompanion\Modules\Characters\Repositories\update_post_meta(
                 $postId,
                 '_gmrc_hp_maximum',
                 10
             );
         
-            update_post_meta(
+            \GreatMarketrealmCompanion\Modules\Characters\Repositories\update_post_meta(
                 $postId,
                 '_gmrc_hp_temporary',
                 0
