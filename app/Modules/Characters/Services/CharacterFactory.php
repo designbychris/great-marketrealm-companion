@@ -11,6 +11,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
+use GreatMarketrealmCompanion\Modules\Characters\Rules\CharacterCreationRules;
 
 defined('ABSPATH') || exit;
 
@@ -20,8 +21,9 @@ defined('ABSPATH') || exit;
  * Creates fully initialised Character entities from
  * validated character-creation input.
  *
- * The factory owns creation defaults and calculations
- * that do not belong in the HTTP controller.
+ * The factory coordinates Character creation while
+ * CharacterCreationRules owns creation defaults and
+ * gameplay calculations.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.5.0
@@ -29,7 +31,15 @@ defined('ABSPATH') || exit;
 final class CharacterFactory
 {
     /**
-     * Create a new Character.
+     * Create the Character factory.
+     */
+    public function __construct(
+        private CharacterCreationRules $rules
+    ) {
+    }
+
+    /**
+     * Create a new Character from domain values.
      */
     public function create(
         CharacterName $name,
@@ -37,9 +47,10 @@ final class CharacterFactory
         CharacterClass $characterClass,
         AbilityScores $abilityScores
     ): Character {
-        $startingHitPoints = $characterClass
+        $startingHitPoints = $this->rules
             ->startingHitPoints(
-                $abilityScores->constitution()
+                $characterClass,
+                $abilityScores
             );
 
         return Character::create(
@@ -73,7 +84,7 @@ final class CharacterFactory
                 $characterClass
             ),
             $abilityScores
-                ?? AbilityScores::average()
+                ?? $this->rules->defaultAbilityScores()
         );
     }
 }
