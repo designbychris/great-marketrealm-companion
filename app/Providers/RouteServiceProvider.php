@@ -77,6 +77,23 @@ class RouteServiceProvider extends ServiceProvider
             );
         }
 
+        error_log(
+            'Route boot Router ID: '
+            . spl_object_id($router)
+        );
+        
+        error_log(
+            'GET /characters registered: '
+            . (
+                $router->has(
+                    'GET',
+                    '/characters'
+                )
+                    ? 'yes'
+                    : 'no'
+            )
+        );
+
         do_action(
             'gmrc_kingdom_routes_registered',
             $router,
