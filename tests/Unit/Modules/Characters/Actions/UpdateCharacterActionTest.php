@@ -19,7 +19,7 @@ final class UpdateCharacterActionTest extends TestCase
 {
     public function testPersistsTheCharacter(): void
     {
-        $repository = new CharacterRepositorySpy();
+        $repository = new CreateCharacterRepositorySpy();
 
         $action = new UpdateCharacterAction(
             $repository
@@ -51,7 +51,7 @@ final class UpdateCharacterActionTest extends TestCase
 
     public function testCallsSaveExactlyOnce(): void
     {
-        $repository = new CharacterRepositorySpy();
+        $repository = new CreateCharacterRepositorySpy();
 
         $action = new CreateCharacterAction(
             $repository
@@ -80,7 +80,7 @@ final class UpdateCharacterActionTest extends TestCase
     }
 }
 
-final class CharacterRepositorySpy implements CharacterRepositoryInterface
+final class CreateCharacterRepositorySpy implements CharacterRepositoryInterface
 {
     public ?Character $savedCharacter = null;
 
