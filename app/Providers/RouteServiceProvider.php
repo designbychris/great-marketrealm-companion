@@ -59,6 +59,17 @@ class RouteServiceProvider extends ServiceProvider
             KingdomRegistry::class
         );
 
+        error_log(
+            'Kingdom count: ' . $registry->count()
+        );
+        
+        error_log(
+            print_r(
+                $registry->routeFiles(),
+                true
+            )
+        );
+
         foreach ($registry->routeFiles() as $routeFile) {
             $this->loadRouteFile(
                 $routeFile,
