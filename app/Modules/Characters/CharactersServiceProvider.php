@@ -11,6 +11,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Rules\CharacterCreationRules;
+use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteRepository;
@@ -33,6 +35,28 @@ final class CharactersServiceProvider extends ServiceProvider
     public function register(): void
     {
         $container = $this->app->container();
+
+        /*
+         * Domain rules.
+         */
+        $container->singleton(
+            CharacterCreationRules::class
+        );
+
+        /*
+         * Domain services.
+         */
+        $container->singleton(
+            CharacterFactory::class,
+            static fn (
+                Container $container
+            ): CharacterFactory =>
+                new CharacterFactory(
+                    $container->make(
+                        CharacterCreationRules::class
+                    )
+                )
+        );
 
         /*
          * Register the concrete WordPress repository once.
@@ -101,10 +125,6 @@ final class CharactersServiceProvider extends ServiceProvider
             Auby::class
         );
 
-        /*
-         * The container can auto-wire the controller now that
-         * CharacterRepositoryInterface has been registered.
-         */
         $container->bind(
             CharacterController::class
         );
