@@ -7,12 +7,13 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Services;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScore;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
-use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
+use GreatMarketrealmCompanion\Modules\Characters\Rules\CharacterCreationRules;
+use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -20,9 +21,7 @@ final class CharacterFactoryTest extends TestCase
 {
     public function testCreatesACharacterFromDomainValues(): void
     {
-        $factory = new CharacterFactory();
-
-        $character = $factory->create(
+        $character = $this->factory()->create(
             CharacterName::fromString('Sir Allium'),
             Race::fromString('fructan'),
             CharacterClass::fromString('fighter'),
@@ -55,7 +54,9 @@ final class CharacterFactoryTest extends TestCase
 
         self::assertSame(
             'fighter',
-            $character->characterClass()->value()
+            $character
+                ->characterClass()
+                ->value()
         );
     }
 
@@ -142,18 +143,18 @@ final class CharacterFactoryTest extends TestCase
             abilityScores: $this->customAbilityScores()
         );
 
-        /*
-         * Fighter hit die: 10
-         * Constitution 14: +2
-         */
         self::assertSame(
             12,
-            $character->hitPoints()->maximum()
+            $character
+                ->hitPoints()
+                ->maximum()
         );
 
         self::assertSame(
             12,
-            $character->hitPoints()->current()
+            $character
+                ->hitPoints()
+                ->current()
         );
     }
 
@@ -173,13 +174,11 @@ final class CharacterFactoryTest extends TestCase
             )
         );
 
-        /*
-         * Barbarian hit die: 12
-         * Constitution 16: +3
-         */
         self::assertSame(
             15,
-            $character->hitPoints()->maximum()
+            $character
+                ->hitPoints()
+                ->maximum()
         );
     }
 
@@ -200,20 +199,22 @@ final class CharacterFactoryTest extends TestCase
             race: '  FRUCTAN  ',
             characterClass: '  FIGHTER  '
         );
-    
+
         self::assertSame(
             'Sir Allium',
             $character->name()->value()
         );
-    
+
         self::assertSame(
             'fructan',
             $character->race()->value()
         );
-    
+
         self::assertSame(
             'fighter',
-            $character->characterClass()->value()
+            $character
+                ->characterClass()
+                ->value()
         );
     }
 
@@ -222,7 +223,7 @@ final class CharacterFactoryTest extends TestCase
         $this->expectException(
             InvalidArgumentException::class
         );
-    
+
         $this->factory()->fromInput(
             name: '  Sir Allium  ',
             race: 'fructan',
@@ -271,7 +272,9 @@ final class CharacterFactoryTest extends TestCase
 
     private function factory(): CharacterFactory
     {
-        return new CharacterFactory();
+        return new CharacterFactory(
+            new CharacterCreationRules()
+        );
     }
 
     private function createCharacter(): Character
