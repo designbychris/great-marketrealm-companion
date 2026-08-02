@@ -10,10 +10,14 @@ use Stringable;
 defined('ABSPATH') || exit;
 
 /**
- * Immutable character race value object.
+ * Immutable Character race value object.
  *
  * Represents the canonical identity of a playable race
  * within the Great Marketrealm.
+ *
+ * Detailed racial traits, movement, languages and other
+ * gameplay rules remain the responsibility of race
+ * definitions and dedicated rule objects.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.5.0
@@ -23,26 +27,53 @@ final class Race implements Stringable
     /**
      * Supported playable races.
      *
-     * These identifiers are intentionally kept separate from
-     * racial traits, ability bonuses and movement rules.
-     *
-     * @var array<string,string>
+     * @var array<string,array{
+     *     label: string
+     * }>
      */
     private const RACES = [
-        'boxfolk' => 'Boxfolk',
-        'capsicumite' => 'Capsicumite',
-        'dairyfolk' => 'Dairyfolk',
-        'drink-folk' => 'Drinkfolk',
-        'fluffling' => 'Fluffling',
-        'fructan' => 'Fructan',
-        'fungifolk' => 'Fungifolk',
-        'herbfolk' => 'Herbfolk',
-        'meatfolk' => 'Meatfolk',
-        'melonian' => 'Melonian',
-        'rootkin' => 'Rootkin',
-        'stalker' => 'Stalker',
-        'sweetfolk' => 'Sweetfolk',
-        'vegfolk' => 'Vegfolk',
+        'boxfolk' => [
+            'label' => 'Boxfolk',
+        ],
+        'capsicumite' => [
+            'label' => 'Capsicumite',
+        ],
+        'dairyfolk' => [
+            'label' => 'Dairyfolk',
+        ],
+        'drink-folk' => [
+            'label' => 'Drinkfolk',
+        ],
+        'fluffling' => [
+            'label' => 'Fluffling',
+        ],
+        'fructan' => [
+            'label' => 'Fructan',
+        ],
+        'fungifolk' => [
+            'label' => 'Fungifolk',
+        ],
+        'herbfolk' => [
+            'label' => 'Herbfolk',
+        ],
+        'meatfolk' => [
+            'label' => 'Meatfolk',
+        ],
+        'melonian' => [
+            'label' => 'Melonian',
+        ],
+        'rootkin' => [
+            'label' => 'Rootkin',
+        ],
+        'stalker' => [
+            'label' => 'Stalker',
+        ],
+        'sweetfolk' => [
+            'label' => 'Sweetfolk',
+        ],
+        'vegfolk' => [
+            'label' => 'Vegfolk',
+        ],
     ];
 
     /**
@@ -84,7 +115,9 @@ final class Race implements Stringable
      */
     public function label(): string
     {
-        return self::RACES[$this->value];
+        return self::RACES[
+            $this->value
+        ]['label'];
     }
 
     /**
@@ -105,6 +138,18 @@ final class Race implements Stringable
     }
 
     /**
+     * Determine whether a race identifier is supported.
+     */
+    public static function supports(
+        string $value
+    ): bool {
+        return array_key_exists(
+            self::normalise($value),
+            self::RACES
+        );
+    }
+
+    /**
      * Return every supported Race.
      *
      * @return array<int,self>
@@ -116,18 +161,6 @@ final class Race implements Stringable
                 string $race
             ): self => new self($race),
             array_keys(self::RACES)
-        );
-    }
-
-    /**
-     * Determine whether a canonical race identifier is supported.
-     */
-    public static function supports(
-        string $value
-    ): bool {
-        return array_key_exists(
-            self::normalise($value),
-            self::RACES
         );
     }
 
