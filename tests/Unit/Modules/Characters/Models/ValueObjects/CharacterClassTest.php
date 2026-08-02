@@ -48,26 +48,58 @@ final class CharacterClassTest extends TestCase
         );
     }
 
-    public function testReturnsDisplayLabel(): void
+    public function testNormalisesSpacesToHyphens(): void
     {
         $class = CharacterClass::fromString(
-            'fighter'
+            'Cleaver Saint'
         );
 
         self::assertSame(
+            'cleaver-saint',
+            $class->value()
+        );
+    }
+
+    public function testNormalisesUnderscoresToHyphens(): void
+    {
+        $class = CharacterClass::fromString(
+            'cleaver_saint'
+        );
+
+        self::assertSame(
+            'cleaver-saint',
+            $class->value()
+        );
+    }
+
+    public function testReturnsStandardClassDisplayLabel(): void
+    {
+        self::assertSame(
             'Fighter',
-            $class->label()
+            CharacterClass::fromString(
+                'fighter'
+            )->label()
+        );
+    }
+
+    public function testReturnsMarketrealmClassDisplayLabel(): void
+    {
+        self::assertSame(
+            'Cleaver Saint',
+            CharacterClass::fromString(
+                'cleaver-saint'
+            )->label()
         );
     }
 
     public function testCanBeConvertedToAString(): void
     {
         $class = CharacterClass::fromString(
-            'fighter'
+            'grocer'
         );
 
         self::assertSame(
-            'fighter',
+            'grocer',
             (string) $class
         );
     }
@@ -75,11 +107,11 @@ final class CharacterClassTest extends TestCase
     public function testEqualClassesAreEqual(): void
     {
         $first = CharacterClass::fromString(
-            'fighter'
+            'cleaver-saint'
         );
 
         $second = CharacterClass::fromString(
-            'Fighter'
+            'Cleaver Saint'
         );
 
         self::assertTrue(
@@ -89,16 +121,16 @@ final class CharacterClassTest extends TestCase
 
     public function testDifferentClassesAreNotEqual(): void
     {
+        $grocer = CharacterClass::fromString(
+            'grocer'
+        );
+
         $fighter = CharacterClass::fromString(
             'fighter'
         );
 
-        $wizard = CharacterClass::fromString(
-            'wizard'
-        );
-
         self::assertFalse(
-            $fighter->equals($wizard)
+            $grocer->equals($fighter)
         );
     }
 
@@ -127,7 +159,31 @@ final class CharacterClassTest extends TestCase
         );
 
         CharacterClass::fromString(
-            'sandwich knight'
+            'sandwich-knight'
+        );
+    }
+
+    public function testSupportsNormalisedClassIdentifiers(): void
+    {
+        self::assertTrue(
+            CharacterClass::supports(
+                ' Cleaver Saint '
+            )
+        );
+
+        self::assertTrue(
+            CharacterClass::supports(
+                'cleaver_saint'
+            )
+        );
+    }
+
+    public function testDoesNotSupportUnknownClassIdentifiers(): void
+    {
+        self::assertFalse(
+            CharacterClass::supports(
+                'sandwich-knight'
+            )
         );
     }
 
@@ -150,6 +206,8 @@ final class CharacterClassTest extends TestCase
     public static function hitDieProvider(): array
     {
         return [
+            'grocer' => ['grocer', 8],
+            'cleaver saint' => ['cleaver-saint', 10],
             'artificer' => ['artificer', 8],
             'barbarian' => ['barbarian', 12],
             'bard' => ['bard', 8],
@@ -194,6 +252,16 @@ final class CharacterClassTest extends TestCase
     public static function startingHitPointsProvider(): array
     {
         return [
+            'grocer with +2 constitution' => [
+                'grocer',
+                14,
+                10,
+            ],
+            'cleaver saint with +2 constitution' => [
+                'cleaver-saint',
+                14,
+                12,
+            ],
             'barbarian with +3 constitution' => [
                 'barbarian',
                 16,
@@ -227,12 +295,129 @@ final class CharacterClassTest extends TestCase
         ];
     }
 
+    #[DataProvider('supportedClassProvider')]
+    public function testSupportsEveryRegisteredClass(
+        string $className
+    ): void {
+        self::assertTrue(
+            CharacterClass::supports(
+                $className
+            )
+        );
+    }
+
+    /**
+     * @return array<string,array{string}>
+     */
+    public static function supportedClassProvider(): array
+    {
+        return [
+            'grocer' => ['grocer'],
+            'cleaver saint' => ['cleaver-saint'],
+            'artificer' => ['artificer'],
+            'barbarian' => ['barbarian'],
+            'bard' => ['bard'],
+            'cleric' => ['cleric'],
+            'druid' => ['druid'],
+            'fighter' => ['fighter'],
+            'monk' => ['monk'],
+            'paladin' => ['paladin'],
+            'ranger' => ['ranger'],
+            'rogue' => ['rogue'],
+            'sorcerer' => ['sorcerer'],
+            'warlock' => ['warlock'],
+            'wizard' => ['wizard'],
+        ];
+    }
+
+    #[DataProvider('labelProvider')]
+    public function testReturnsTheCorrectLabel(
+        string $className,
+        string $expectedLabel
+    ): void {
+        self::assertSame(
+            $expectedLabel,
+            CharacterClass::fromString(
+                $className
+            )->label()
+        );
+    }
+
+    /**
+     * @return array<string,array{string,string}>
+     */
+    public static function labelProvider(): array
+    {
+        return [
+            'grocer' => [
+                'grocer',
+                'Grocer',
+            ],
+            'cleaver saint' => [
+                'cleaver-saint',
+                'Cleaver Saint',
+            ],
+            'artificer' => [
+                'artificer',
+                'Artificer',
+            ],
+            'barbarian' => [
+                'barbarian',
+                'Barbarian',
+            ],
+            'bard' => [
+                'bard',
+                'Bard',
+            ],
+            'cleric' => [
+                'cleric',
+                'Cleric',
+            ],
+            'druid' => [
+                'druid',
+                'Druid',
+            ],
+            'fighter' => [
+                'fighter',
+                'Fighter',
+            ],
+            'monk' => [
+                'monk',
+                'Monk',
+            ],
+            'paladin' => [
+                'paladin',
+                'Paladin',
+            ],
+            'ranger' => [
+                'ranger',
+                'Ranger',
+            ],
+            'rogue' => [
+                'rogue',
+                'Rogue',
+            ],
+            'sorcerer' => [
+                'sorcerer',
+                'Sorcerer',
+            ],
+            'warlock' => [
+                'warlock',
+                'Warlock',
+            ],
+            'wizard' => [
+                'wizard',
+                'Wizard',
+            ],
+        ];
+    }
+
     public function testReturnsEverySupportedClass(): void
     {
         $classes = CharacterClass::all();
 
         self::assertCount(
-            13,
+            15,
             $classes
         );
 
@@ -253,6 +438,8 @@ final class CharacterClassTest extends TestCase
 
         self::assertSame(
             [
+                'grocer',
+                'cleaver-saint',
                 'artificer',
                 'barbarian',
                 'bard',
