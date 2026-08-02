@@ -329,7 +329,7 @@ final class RaceTest extends TestCase
         $races = Race::all();
 
         self::assertCount(
-            14,
+            15,
             $races
         );
 
@@ -359,6 +359,7 @@ final class RaceTest extends TestCase
                 'fungifolk',
                 'herbfolk',
                 'meatfolk',
+                'meatkin',
                 'melonian',
                 'rootkin',
                 'stalker',
