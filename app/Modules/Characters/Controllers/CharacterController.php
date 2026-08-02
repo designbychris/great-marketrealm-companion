@@ -133,30 +133,18 @@ final class CharacterController
     public function update(
         string $id
     ): Character {
-        $characterId = CharacterId::fromString(
-            $id
-        );
-
-        $character = $this->characters->find(
-            $characterId
-        );
-
-        if (! $character instanceof Character) {
-            throw new RuntimeException(
-                'The requested character could not be found.'
-            );
-        }
-
+        $character = $this->findCharacter($id);
+    
         $name = $this->request->string(
             'name'
         );
-
+    
         if ($name !== '') {
             $character->rename(
                 CharacterName::fromString($name)
             );
         }
-
+    
         return $this->updateCharacter->handle(
             $character
         );
@@ -175,6 +163,68 @@ final class CharacterController
         return true;
     }
 
+    /**
+     * Display a Character.
+     */
+    public function show(
+        string $id
+    ): string {
+        $character = $this->findCharacter($id);
+    
+        return $this->views->render(
+            View::make(
+                'characters.show',
+                [
+                    'character' => $character,
+                    'sealRegistry' => $this->sealRegistry,
+                ]
+            )
+        );
+    }
+    
+    /**
+     * Display the Character editing form.
+     */
+    public function edit(
+        string $id
+    ): string {
+        $character = $this->findCharacter($id);
+    
+        return $this->views->render(
+            View::make(
+                'characters.edit',
+                [
+                    'character' => $character,
+                    'raceOptions' => $this
+                        ->raceRegistry
+                        ->options(),
+                    'classOptions' => $this
+                        ->classRegistry
+                        ->options(),
+                ]
+            )
+        );
+    }
+
+    /**
+     * Find a Character or fail.
+     */
+    private function findCharacter(
+        string $id
+    ): Character {
+        $character = $this->characters->find(
+            CharacterId::fromString($id)
+        );
+    
+        if (! $character instanceof Character) {
+            throw new RuntimeException(
+                'The requested character could not be found.'
+            );
+        }
+    
+        return $character;
+    }
+    
     /**
      * Build the Character index URL.
      */
