@@ -267,7 +267,6 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
                 'name' => 'Sir Allium',
                 'race' => 'fructan',
                 'class' => 'grocer',
-                'level' => '1',
             ];
 
             $repository = new CharacterControllerRepositorySpy();
@@ -321,7 +320,6 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
                 'name' => 'Sir Allium',
                 'race' => 'fructan',
                 'class' => 'grocer',
-                'level' => '1',
             ];
 
             $repository = new CharacterControllerRepositorySpy();
@@ -366,7 +364,6 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
                 'name' => 'Sir Allium',
                 'race' => 'fructan',
                 'class' => 'grocer',
-                'level' => '1',
             ];
 
             $flash = $this->flashStore();
@@ -397,7 +394,6 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
                 'name' => 'Sir Allium',
                 'race' => 'fructan',
                 'class' => 'grocer',
-                'level' => '1',
             ];
 
             $controller = $this->controller();
