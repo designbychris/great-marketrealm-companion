@@ -137,14 +137,29 @@ class Router
         try {
             $httpMethod = strtoupper(
                 $httpMethod
-                ?? $this->request->method()
+                    ?? $this->request->method()
             );
     
-            $path = $requestUri !== null
-                ? $this->pathFromUri($requestUri)
-                : $this->request->path();
+            if ($requestUri !== null) {
+                $path = $this->pathFromUri(
+                    $requestUri
+                );
+            } else {
+                $applicationRoute = $this->request->string(
+                    'gmrc_route'
+                );
     
-            $path = $this->normalisePath($path);
+                $path = $applicationRoute !== ''
+                    ? '/' . ltrim(
+                        $applicationRoute,
+                        '/'
+                    )
+                    : $this->request->path();
+            }
+    
+            $path = $this->normalisePath(
+                $path
+            );
     
             $route = $this->matchRoute(
                 $httpMethod,
@@ -171,7 +186,6 @@ class Router
                 ->handle($exception);
         }
     }
-
     /**
      * Match a request against the registered routes.
      *
