@@ -1,50 +1,76 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Adventurer card component.
  *
  * Variables:
  *
- * @var object $character    Character model.
- * @var string $companionUrl Base Companion URL.
+ * @var \GreatMarketrealmCompanion\Modules\Characters\Models\Character $character
+ * @var string $companionUrl
  * @var GuildSealRegistry $sealRegistry
  */
 
+use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
 
 defined('ABSPATH') || exit;
 
 if (
-    ! isset($character) ||
-    ! is_object($character) ||
-    ! isset($companionUrl) ||
-    ! isset($sealRegistry) ||
-    ! $sealRegistry instanceof GuildSealRegistry
+    ! isset($character)
+    || ! $character instanceof Character
+    || ! isset($companionUrl)
+    || ! is_string($companionUrl)
+    || ! isset($sealRegistry)
+    || ! $sealRegistry instanceof GuildSealRegistry
 ) {
     return;
 }
 
-$characterId = absint($character->id());
-$name        = trim((string) $character->name());
-$race        = trim((string) $character->race());
-$class       = trim((string) $character->class());
-$level       = max(1, absint($character->level()));
+$characterId = $character
+    ->id()
+    ->value();
+
+$name = $character
+    ->name()
+    ->value();
+
+$race = $character
+    ->race()
+    ->label();
+
+$characterClass = $character
+    ->characterClass()
+    ->label();
+
+$level = $character
+    ->level()
+    ->value();
 
 $viewUrl = add_query_arg(
     'gmrc_route',
-    sprintf(
-        'characters/%d',
-        $characterId
-    ),
+    'characters/' . rawurlencode($characterId),
     $companionUrl
 );
 
 $editUrl = add_query_arg(
     'gmrc_route',
-    sprintf(
-        'characters/%d/edit',
-        $characterId
-    ),
+    'characters/'
+        . rawurlencode($characterId)
+        . '/edit',
     $companionUrl
+);
+
+/*
+ * Use the final six characters of the ULID as a compact
+ * register reference suitable for display on the card.
+ */
+$entryReference = strtoupper(
+    substr(
+        $characterId,
+        -6
+    )
 );
 
 /*
@@ -62,15 +88,20 @@ $initial = function_exists('mb_strtoupper')
     : strtoupper($initial);
 
 $displayTitleParts = array_filter(
-    array(
+    [
         $race,
-        $class,
-    )
+        $characterClass,
+    ]
 );
 
-$displayTitle = implode(' · ', $displayTitleParts);
+$displayTitle = implode(
+    ' · ',
+    $displayTitleParts
+);
 
-$guildSeal = $sealRegistry->for($class);
+$guildSeal = $sealRegistry->for(
+    $characterClass
+);
 ?>
 
 <article class="adventurer-card">
@@ -121,14 +152,7 @@ $guildSeal = $sealRegistry->for($class);
             <div class="adventurer-card__identity">
                 <p class="adventurer-card__kicker">
                     Entry No.
-                    <?php echo esc_html(
-                        str_pad(
-                            (string) $characterId,
-                            4,
-                            '0',
-                            STR_PAD_LEFT
-                        )
-                    ); ?>
+                    <?php echo esc_html($entryReference); ?>
                 </p>
 
                 <h2 class="adventurer-card__name">
@@ -154,48 +178,42 @@ $guildSeal = $sealRegistry->for($class);
             </span>
         </div>
 
-        <?php if ($race !== '' || $class !== '') : ?>
-            <div
-                class="adventurer-card__ingredients"
-                aria-label="Adventurer details"
+        <div
+            class="adventurer-card__ingredients"
+            aria-label="Adventurer details"
+        >
+            <span
+                class="
+                    ingredient-badge
+                    ingredient-badge--race
+                "
             >
-                <?php if ($race !== '') : ?>
-                    <span
-                        class="
-                            ingredient-badge
-                            ingredient-badge--race
-                        "
-                    >
-                        <span
-                            class="ingredient-badge__label"
-                            aria-hidden="true"
-                        >
-                            Race
-                        </span>
+                <span
+                    class="ingredient-badge__label"
+                    aria-hidden="true"
+                >
+                    Race
+                </span>
 
-                        <?php echo esc_html($race); ?>
-                    </span>
-                <?php endif; ?>
+                <?php echo esc_html($race); ?>
+            </span>
 
-                <?php if ($class !== '') : ?>
-                    <span
-                        class="
-                            ingredient-badge
-                            ingredient-badge--class
-                        "
-                    >
-                        <span
-                            class="ingredient-badge__label"
-                            aria-hidden="true"
-                        >
-                            Class
-                        </span>
+            <span
+                class="
+                    ingredient-badge
+                    ingredient-badge--class
+                "
+            >
+                <span
+                    class="ingredient-badge__label"
+                    aria-hidden="true"
+                >
+                    Class
+                </span>
 
-                        <?php echo esc_html($class); ?>
-                    </span>
-                <?php endif; ?>
-            </div>
-        <?php endif; ?>
+                <?php echo esc_html($characterClass); ?>
+            </span>
+        </div>
 
         <dl class="adventurer-card__features">
             <div class="adventurer-card__feature">
@@ -219,11 +237,11 @@ $guildSeal = $sealRegistry->for($class);
             echo $this->component(
                 'components.controls.wax-button',
                 [
-                    'label'   => 'Open Ledger',
-                    'href'    => $viewUrl,
-                    'symbol'  => '✦',
+                    'label' => 'Open Ledger',
+                    'href' => $viewUrl,
+                    'symbol' => '✦',
                     'variant' => 'wax',
-                    'size'    => 'medium',
+                    'size' => 'medium',
                 ]
             );
             ?>
@@ -232,11 +250,11 @@ $guildSeal = $sealRegistry->for($class);
             echo $this->component(
                 'components.controls.paper-button',
                 [
-                    'label'   => 'Edit Adventurer',
-                    'href'    => $editUrl,
-                    'symbol'  => '✎',
+                    'label' => 'Edit Adventurer',
+                    'href' => $editUrl,
+                    'symbol' => '✎',
                     'variant' => 'parchment',
-                    'size'    => 'medium',
+                    'size' => 'medium',
                 ]
             );
             ?>
