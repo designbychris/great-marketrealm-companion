@@ -12,8 +12,11 @@ defined('ABSPATH') || exit;
 /**
  * Immutable character-class value object.
  *
- * Represents a playable Character class and the size
- * of its starting hit die.
+ * Represents the canonical identity of a playable
+ * Character class and its hit-die size.
+ *
+ * Detailed class features, proficiencies and progression
+ * remain the responsibility of class definitions and rules.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.5.0
@@ -21,24 +24,82 @@ defined('ABSPATH') || exit;
 final class CharacterClass implements Stringable
 {
     /**
-     * Supported Character classes and their hit dice.
+     * Supported Character classes.
      *
-     * @var array<string,int>
+     * @var array<string,array{
+     *     label: string,
+     *     hit_die: int
+     * }>
      */
-    private const HIT_DICE = [
-        'artificer' => 8,
-        'barbarian' => 12,
-        'bard' => 8,
-        'cleric' => 8,
-        'druid' => 8,
-        'fighter' => 10,
-        'monk' => 8,
-        'paladin' => 10,
-        'ranger' => 10,
-        'rogue' => 8,
-        'sorcerer' => 6,
-        'warlock' => 8,
-        'wizard' => 6,
+    private const CLASSES = [
+        /*
+         * Great Marketrealm classes.
+         */
+        'grocer' => [
+            'label' => 'Grocer',
+            'hit_die' => 8,
+        ],
+        'cleaver-saint' => [
+            'label' => 'Cleaver Saint',
+            'hit_die' => 10,
+        ],
+
+        /*
+         * Standard classes retained for existing characters,
+         * future compatibility and homebrew subclasses.
+         */
+        'artificer' => [
+            'label' => 'Artificer',
+            'hit_die' => 8,
+        ],
+        'barbarian' => [
+            'label' => 'Barbarian',
+            'hit_die' => 12,
+        ],
+        'bard' => [
+            'label' => 'Bard',
+            'hit_die' => 8,
+        ],
+        'cleric' => [
+            'label' => 'Cleric',
+            'hit_die' => 8,
+        ],
+        'druid' => [
+            'label' => 'Druid',
+            'hit_die' => 8,
+        ],
+        'fighter' => [
+            'label' => 'Fighter',
+            'hit_die' => 10,
+        ],
+        'monk' => [
+            'label' => 'Monk',
+            'hit_die' => 8,
+        ],
+        'paladin' => [
+            'label' => 'Paladin',
+            'hit_die' => 10,
+        ],
+        'ranger' => [
+            'label' => 'Ranger',
+            'hit_die' => 10,
+        ],
+        'rogue' => [
+            'label' => 'Rogue',
+            'hit_die' => 8,
+        ],
+        'sorcerer' => [
+            'label' => 'Sorcerer',
+            'hit_die' => 6,
+        ],
+        'warlock' => [
+            'label' => 'Warlock',
+            'hit_die' => 8,
+        ],
+        'wizard' => [
+            'label' => 'Wizard',
+            'hit_die' => 6,
+        ],
     ];
 
     /**
@@ -74,11 +135,13 @@ final class CharacterClass implements Stringable
     }
 
     /**
-     * Return the display name.
+     * Return the display label.
      */
     public function label(): string
     {
-        return ucfirst($this->value);
+        return self::CLASSES[
+            $this->value
+        ]['label'];
     }
 
     /**
@@ -86,7 +149,9 @@ final class CharacterClass implements Stringable
      */
     public function hitDie(): int
     {
-        return self::HIT_DICE[$this->value];
+        return self::CLASSES[
+            $this->value
+        ]['hit_die'];
     }
 
     /**
@@ -97,7 +162,8 @@ final class CharacterClass implements Stringable
     ): int {
         return max(
             1,
-            $this->hitDie() + $constitution->modifier()
+            $this->hitDie()
+                + $constitution->modifier()
         );
     }
 
@@ -111,11 +177,23 @@ final class CharacterClass implements Stringable
     }
 
     /**
-     * Convert the class to its canonical string.
+     * Convert the class to its canonical identifier.
      */
     public function __toString(): string
     {
         return $this->value;
+    }
+
+    /**
+     * Determine whether a class identifier is supported.
+     */
+    public static function supports(
+        string $value
+    ): bool {
+        return array_key_exists(
+            self::normalise($value),
+            self::CLASSES
+        );
     }
 
     /**
@@ -126,9 +204,10 @@ final class CharacterClass implements Stringable
     public static function all(): array
     {
         return array_map(
-            static fn (string $class): self =>
-                new self($class),
-            array_keys(self::HIT_DICE)
+            static fn (
+                string $class
+            ): self => new self($class),
+            array_keys(self::CLASSES)
         );
     }
 
@@ -138,9 +217,19 @@ final class CharacterClass implements Stringable
     private static function normalise(
         string $value
     ): string {
-        return strtolower(
+        $value = strtolower(
             trim($value)
         );
+
+        $value = preg_replace(
+            '/[\s_]+/',
+            '-',
+            $value
+        );
+
+        return is_string($value)
+            ? trim($value, '-')
+            : '';
     }
 
     /**
@@ -157,7 +246,7 @@ final class CharacterClass implements Stringable
             );
         }
 
-        if (! array_key_exists($value, self::HIT_DICE)) {
+        if (! array_key_exists($value, self::CLASSES)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'The Character class "%s" is not supported.',
