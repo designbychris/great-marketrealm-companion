@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController;
 
 defined('ABSPATH') || exit;
 
-return static function (Router $router): void {
+return static function (
+    Router $router
+): void {
 
     $router->get(
         '/characters',
@@ -22,8 +26,14 @@ return static function (Router $router): void {
         [CharacterController::class, 'store']
     );
 
-    error_log(
-        'POST /characters route registered'
+    $router->get(
+        '/characters/{id}/edit',
+        [CharacterController::class, 'edit']
+    );
+
+    $router->get(
+        '/characters/{id}',
+        [CharacterController::class, 'show']
     );
 
     $router->put(
