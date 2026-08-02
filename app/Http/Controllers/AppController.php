@@ -44,6 +44,27 @@ class AppController
     public function handle(): string|Response
     {    
         $route = $this->routes->current();
+
+        error_log(
+            'AppController route: ' . $route
+        );
+    
+        error_log(
+            'AppController Router ID: '
+            . spl_object_id($this->router)
+        );
+    
+        error_log(
+            'AppController has GET /characters: '
+            . (
+                $this->router->has(
+                    'GET',
+                    '/characters'
+                )
+                    ? 'yes'
+                    : 'no'
+            )
+        );
     
         try {
             $result = $this->router->dispatch(
