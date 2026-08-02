@@ -642,6 +642,235 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
                 AbilityScores::average()
             );
         }
+
+
+
+        public function testShowRendersTheCharacterShowView(): void
+{
+    $character = $this->character();
+
+    $repository = new CharacterControllerRepositorySpy();
+
+    $repository->characters = [
+        $character,
+    ];
+
+    $views = new ViewFactorySpy();
+
+    $views->willRender(
+        '<character-show />'
+    );
+
+    $controller = $this->controller(
+        repository: $repository,
+        views: $views
+    );
+
+    $response = $controller->show(
+        $character->id()->value()
+    );
+
+    self::assertSame(
+        '<character-show />',
+        $response
+    );
+
+    $view = $views->lastView();
+
+    self::assertNotNull($view);
+
+    self::assertSame(
+        'characters.show',
+        $view->name()
+    );
+}
+
+public function testShowSuppliesTheRequestedCharacter(): void
+{
+    $character = $this->character();
+
+    $repository = new CharacterControllerRepositorySpy();
+
+    $repository->characters = [
+        $character,
+    ];
+
+    $views = new ViewFactorySpy();
+
+    $controller = $this->controller(
+        repository: $repository,
+        views: $views
+    );
+
+    $controller->show(
+        $character->id()->value()
+    );
+
+    $view = $views->lastView();
+
+    self::assertNotNull($view);
+
+    self::assertSame(
+        $character,
+        $view->data()['character']
+    );
+}
+
+public function testShowSuppliesTheGuildSealRegistry(): void
+{
+    $character = $this->character();
+
+    $repository = new CharacterControllerRepositorySpy();
+
+    $repository->characters = [
+        $character,
+    ];
+
+    $views = new ViewFactorySpy();
+
+    $sealRegistry = new GuildSealRegistry();
+
+    $controller = $this->controller(
+        repository: $repository,
+        views: $views,
+        sealRegistry: $sealRegistry
+    );
+
+    $controller->show(
+        $character->id()->value()
+    );
+
+    $view = $views->lastView();
+
+    self::assertNotNull($view);
+
+    self::assertSame(
+        $sealRegistry,
+        $view->data()['sealRegistry']
+    );
+}
+
+public function testShowThrowsWhenCharacterCannotBeFound(): void
+{
+    $this->expectException(
+        RuntimeException::class
+    );
+
+    $this->expectExceptionMessage(
+        'The requested character could not be found.'
+    );
+
+    $this->controller()->show(
+        CharacterId::generate()->value()
+    );
+}
+
+public function testEditRendersTheCharacterEditView(): void
+{
+    $character = $this->character();
+
+    $repository = new CharacterControllerRepositorySpy();
+
+    $repository->characters = [
+        $character,
+    ];
+
+    $views = new ViewFactorySpy();
+
+    $views->willRender(
+        '<character-edit />'
+    );
+
+    $controller = $this->controller(
+        repository: $repository,
+        views: $views
+    );
+
+    $response = $controller->edit(
+        $character->id()->value()
+    );
+
+    self::assertSame(
+        '<character-edit />',
+        $response
+    );
+
+    $view = $views->lastView();
+
+    self::assertNotNull($view);
+
+    self::assertSame(
+        'characters.edit',
+        $view->name()
+    );
+}
+
+public function testEditSuppliesCharacterAndFormOptions(): void
+{
+    $character = $this->character();
+
+    $repository = new CharacterControllerRepositorySpy();
+
+    $repository->characters = [
+        $character,
+    ];
+
+    $views = new ViewFactorySpy();
+
+    $controller = $this->controller(
+        repository: $repository,
+        views: $views
+    );
+
+    $controller->edit(
+        $character->id()->value()
+    );
+
+    $view = $views->lastView();
+
+    self::assertNotNull($view);
+
+    $data = $view->data();
+
+    self::assertSame(
+        $character,
+        $data['character']
+    );
+
+    self::assertSame(
+        [
+            'fructan' => 'Fructan',
+            'vegfolk' => 'Vegfolk',
+            'capsicumite' => 'Capsicumite',
+            'fungifolk' => 'Fungifolk',
+            'rootkin' => 'Rootkin',
+        ],
+        $data['raceOptions']
+    );
+
+    self::assertSame(
+        [
+            'grocer' => 'Grocer',
+            'cleaver-saint' => 'Cleaver Saint',
+        ],
+        $data['classOptions']
+    );
+}
+
+public function testEditThrowsWhenCharacterCannotBeFound(): void
+{
+    $this->expectException(
+        RuntimeException::class
+    );
+
+    $this->expectExceptionMessage(
+        'The requested character could not be found.'
+    );
+
+    $this->controller()->edit(
+        CharacterId::generate()->value()
+    );
+}
     }
 
     /**
@@ -732,232 +961,5 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
             );
         }
 
-
-        public function testShowRendersTheCharacterShowView(): void
-        {
-            $character = $this->character();
-        
-            $repository = new CharacterControllerRepositorySpy();
-        
-            $repository->characters = [
-                $character,
-            ];
-        
-            $views = new ViewFactorySpy();
-        
-            $views->willRender(
-                '<character-show />'
-            );
-        
-            $controller = $this->controller(
-                repository: $repository,
-                views: $views
-            );
-        
-            $response = $controller->show(
-                $character->id()->value()
-            );
-        
-            self::assertSame(
-                '<character-show />',
-                $response
-            );
-        
-            $view = $views->lastView();
-        
-            self::assertNotNull($view);
-        
-            self::assertSame(
-                'characters.show',
-                $view->name()
-            );
-        }
-        
-        public function testShowSuppliesTheRequestedCharacter(): void
-        {
-            $character = $this->character();
-        
-            $repository = new CharacterControllerRepositorySpy();
-        
-            $repository->characters = [
-                $character,
-            ];
-        
-            $views = new ViewFactorySpy();
-        
-            $controller = $this->controller(
-                repository: $repository,
-                views: $views
-            );
-        
-            $controller->show(
-                $character->id()->value()
-            );
-        
-            $view = $views->lastView();
-        
-            self::assertNotNull($view);
-        
-            self::assertSame(
-                $character,
-                $view->data()['character']
-            );
-        }
-        
-        public function testShowSuppliesTheGuildSealRegistry(): void
-        {
-            $character = $this->character();
-        
-            $repository = new CharacterControllerRepositorySpy();
-        
-            $repository->characters = [
-                $character,
-            ];
-        
-            $views = new ViewFactorySpy();
-        
-            $sealRegistry = new GuildSealRegistry();
-        
-            $controller = $this->controller(
-                repository: $repository,
-                views: $views,
-                sealRegistry: $sealRegistry
-            );
-        
-            $controller->show(
-                $character->id()->value()
-            );
-        
-            $view = $views->lastView();
-        
-            self::assertNotNull($view);
-        
-            self::assertSame(
-                $sealRegistry,
-                $view->data()['sealRegistry']
-            );
-        }
-        
-        public function testShowThrowsWhenCharacterCannotBeFound(): void
-        {
-            $this->expectException(
-                RuntimeException::class
-            );
-        
-            $this->expectExceptionMessage(
-                'The requested character could not be found.'
-            );
-        
-            $this->controller()->show(
-                CharacterId::generate()->value()
-            );
-        }
-        
-        public function testEditRendersTheCharacterEditView(): void
-        {
-            $character = $this->character();
-        
-            $repository = new CharacterControllerRepositorySpy();
-        
-            $repository->characters = [
-                $character,
-            ];
-        
-            $views = new ViewFactorySpy();
-        
-            $views->willRender(
-                '<character-edit />'
-            );
-        
-            $controller = $this->controller(
-                repository: $repository,
-                views: $views
-            );
-        
-            $response = $controller->edit(
-                $character->id()->value()
-            );
-        
-            self::assertSame(
-                '<character-edit />',
-                $response
-            );
-        
-            $view = $views->lastView();
-        
-            self::assertNotNull($view);
-        
-            self::assertSame(
-                'characters.edit',
-                $view->name()
-            );
-        }
-        
-        public function testEditSuppliesCharacterAndFormOptions(): void
-        {
-            $character = $this->character();
-        
-            $repository = new CharacterControllerRepositorySpy();
-        
-            $repository->characters = [
-                $character,
-            ];
-        
-            $views = new ViewFactorySpy();
-        
-            $controller = $this->controller(
-                repository: $repository,
-                views: $views
-            );
-        
-            $controller->edit(
-                $character->id()->value()
-            );
-        
-            $view = $views->lastView();
-        
-            self::assertNotNull($view);
-        
-            $data = $view->data();
-        
-            self::assertSame(
-                $character,
-                $data['character']
-            );
-        
-            self::assertSame(
-                [
-                    'fructan' => 'Fructan',
-                    'vegfolk' => 'Vegfolk',
-                    'capsicumite' => 'Capsicumite',
-                    'fungifolk' => 'Fungifolk',
-                    'rootkin' => 'Rootkin',
-                ],
-                $data['raceOptions']
-            );
-        
-            self::assertSame(
-                [
-                    'grocer' => 'Grocer',
-                    'cleaver-saint' => 'Cleaver Saint',
-                ],
-                $data['classOptions']
-            );
-        }
-        
-        public function testEditThrowsWhenCharacterCannotBeFound(): void
-        {
-            $this->expectException(
-                RuntimeException::class
-            );
-        
-            $this->expectExceptionMessage(
-                'The requested character could not be found.'
-            );
-        
-            $this->controller()->edit(
-                CharacterId::generate()->value()
-            );
-        }
     }
 }
