@@ -589,14 +589,14 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
             $repository = new CharacterRepository();
         
             $postId =
-            \GreatMarketrealmCompanion\Modules\Characters\Repositories\wp_insert_post(
-                [
-                    'post_type' => 'gmrc_character',
-                    'post_status' => 'publish',
-                    'post_title' => 'Legacy Adventurer',
-                    'post_author' => 42,
-                ]
-            );
+                \GreatMarketrealmCompanion\Modules\Characters\Repositories\wp_insert_post(
+                    [
+                        'post_type' => 'gmrc_character',
+                        'post_status' => 'publish',
+                        'post_title' => 'Legacy Adventurer',
+                        'post_author' => 42,
+                    ]
+                );
         
             \GreatMarketrealmCompanion\Modules\Characters\Repositories\update_post_meta(
                 $postId,
@@ -650,7 +650,7 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
                     'charisma',
                 ] as $ability
             ) {
-                update_post_meta(
+                \GreatMarketrealmCompanion\Modules\Characters\Repositories\update_post_meta(
                     $postId,
                     '_gmrc_' . $ability,
                     10
