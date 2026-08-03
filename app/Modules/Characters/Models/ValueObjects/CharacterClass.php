@@ -10,13 +10,14 @@ use Stringable;
 defined('ABSPATH') || exit;
 
 /**
- * Immutable character-class value object.
+ * Immutable Character Class Value Object.
  *
  * Represents the canonical identity of a playable
- * Character class and its hit-die size.
+ * Character class, its hit-die size and its
+ * saving-throw proficiencies.
  *
- * Detailed class features, proficiencies and progression
- * remain the responsibility of class definitions and rules.
+ * Detailed class features and progression remain the
+ * responsibility of class definitions and rules.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.5.0
@@ -28,7 +29,8 @@ final class CharacterClass implements Stringable
      *
      * @var array<string,array{
      *     label: string,
-     *     hit_die: int
+     *     hit_die: int,
+     *     saving_throws: array<int,string>
      * }>
      */
     private const CLASSES = [
@@ -38,10 +40,19 @@ final class CharacterClass implements Stringable
         'grocer' => [
             'label' => 'Grocer',
             'hit_die' => 8,
+            'saving_throws' => [
+                'wisdom',
+                'charisma',
+            ],
         ],
+
         'cleaver-saint' => [
             'label' => 'Cleaver Saint',
             'hit_die' => 10,
+            'saving_throws' => [
+                'wisdom',
+                'charisma',
+            ],
         ],
 
         /*
@@ -51,54 +62,118 @@ final class CharacterClass implements Stringable
         'artificer' => [
             'label' => 'Artificer',
             'hit_die' => 8,
+            'saving_throws' => [
+                'constitution',
+                'intelligence',
+            ],
         ],
+
         'barbarian' => [
             'label' => 'Barbarian',
             'hit_die' => 12,
+            'saving_throws' => [
+                'strength',
+                'constitution',
+            ],
         ],
+
         'bard' => [
             'label' => 'Bard',
             'hit_die' => 8,
+            'saving_throws' => [
+                'dexterity',
+                'charisma',
+            ],
         ],
+
         'cleric' => [
             'label' => 'Cleric',
             'hit_die' => 8,
+            'saving_throws' => [
+                'wisdom',
+                'charisma',
+            ],
         ],
+
         'druid' => [
             'label' => 'Druid',
             'hit_die' => 8,
+            'saving_throws' => [
+                'intelligence',
+                'wisdom',
+            ],
         ],
+
         'fighter' => [
             'label' => 'Fighter',
             'hit_die' => 10,
+            'saving_throws' => [
+                'strength',
+                'constitution',
+            ],
         ],
+
         'monk' => [
             'label' => 'Monk',
             'hit_die' => 8,
+            'saving_throws' => [
+                'strength',
+                'dexterity',
+            ],
         ],
+
         'paladin' => [
             'label' => 'Paladin',
             'hit_die' => 10,
+            'saving_throws' => [
+                'wisdom',
+                'charisma',
+            ],
         ],
+
         'ranger' => [
             'label' => 'Ranger',
             'hit_die' => 10,
+            'saving_throws' => [
+                'strength',
+                'dexterity',
+            ],
         ],
+
         'rogue' => [
             'label' => 'Rogue',
             'hit_die' => 8,
+            'saving_throws' => [
+                'dexterity',
+                'intelligence',
+            ],
         ],
+
         'sorcerer' => [
             'label' => 'Sorcerer',
             'hit_die' => 6,
+            'saving_throws' => [
+                'constitution',
+                'charisma',
+            ],
         ],
+
         'warlock' => [
             'label' => 'Warlock',
             'hit_die' => 8,
+            'saving_throws' => [
+                'wisdom',
+                'charisma',
+            ],
         ],
+
         'wizard' => [
             'label' => 'Wizard',
             'hit_die' => 6,
+            'saving_throws' => [
+                'intelligence',
+                'wisdom',
+            ],
         ],
     ];
 
@@ -110,7 +185,9 @@ final class CharacterClass implements Stringable
     private function __construct(
         private readonly string $value
     ) {
-        $this->guardAgainstInvalidValue($value);
+        $this->guardAgainstInvalidValue(
+            $value
+        );
     }
 
     /**
@@ -152,6 +229,36 @@ final class CharacterClass implements Stringable
         return self::CLASSES[
             $this->value
         ]['hit_die'];
+    }
+
+    /**
+     * Return the class saving-throw proficiencies.
+     *
+     * @return array<int,string>
+     */
+    public function savingThrowProficiencies(): array
+    {
+        return self::CLASSES[
+            $this->value
+        ]['saving_throws'];
+    }
+
+    /**
+     * Determine whether this class is proficient in
+     * a particular saving throw.
+     */
+    public function isProficientInSavingThrow(
+        string $ability
+    ): bool {
+        $ability = strtolower(
+            trim($ability)
+        );
+
+        return in_array(
+            $ability,
+            $this->savingThrowProficiencies(),
+            true
+        );
     }
 
     /**
