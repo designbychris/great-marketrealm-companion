@@ -15,6 +15,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ProficiencyBonus;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Speed;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Initiative;
 
 defined('ABSPATH') || exit;
 
@@ -168,6 +169,17 @@ final class Character
     public function armourClass(): ArmourClass
     {
         return ArmourClass::unarmoured(
+            $this->abilityScores
+                ->dexterity()
+        );
+    }
+
+    /**
+     * Calculate the Character's initiative modifier.
+     */
+    public function initiative(): Initiative
+    {
+        return Initiative::fromDexterity(
             $this->abilityScores
                 ->dexterity()
         );
