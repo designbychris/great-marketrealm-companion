@@ -14,6 +14,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ProficiencyBonus;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Speed;
 
 defined('ABSPATH') || exit;
 
@@ -180,6 +181,17 @@ final class Character
         return ProficiencyBonus::fromLevel(
             $this->level
         );
+    }
+
+    /**
+     * Calculate the Character's current walking speed.
+     *
+     * Race-based movement rules will replace the standard
+     * speed once race definitions are connected to the domain.
+     */
+    public function speed(): Speed
+    {
+        return Speed::standard();
     }
 
     /**
