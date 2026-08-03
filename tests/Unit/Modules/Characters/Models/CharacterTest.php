@@ -18,6 +18,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ArmourClass
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ProficiencyBonus;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Speed;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Initiative;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\PassivePerception;
 use PHPUnit\Framework\TestCase;
 
 final class CharacterTest extends TestCase
@@ -844,6 +845,103 @@ final class CharacterTest extends TestCase
                 ->equals(
                     Initiative::fromDexterity(
                         $abilityScores->dexterity()
+                    )
+                )
+        );
+    }
+
+    public function test_it_returns_passive_perception(): void
+    {
+        self::assertInstanceOf(
+            PassivePerception::class,
+            $this->createCharacter()
+                ->passivePerception()
+        );
+    }
+    
+    public function test_average_wisdom_gives_passive_perception_ten(): void
+    {
+        self::assertSame(
+            10,
+            $this->createCharacter()
+                ->passivePerception()
+                ->value()
+        );
+    }
+    
+    public function test_wisdom_fourteen_gives_passive_perception_twelve(): void
+    {
+        $character = Character::create(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            HitPoints::full(12),
+            AbilityScores::fromScores(
+                strength: AbilityScore::fromInt(15),
+                dexterity: AbilityScore::fromInt(14),
+                constitution: AbilityScore::fromInt(13),
+                intelligence: AbilityScore::fromInt(12),
+                wisdom: AbilityScore::fromInt(14),
+                charisma: AbilityScore::fromInt(8),
+            )
+        );
+    
+        self::assertSame(
+            12,
+            $character
+                ->passivePerception()
+                ->value()
+        );
+    }
+    
+    public function test_low_wisdom_reduces_passive_perception(): void
+    {
+        $character = Character::create(
+            CharacterId::generate(),
+            CharacterName::fromString('Distracted Turnip'),
+            Race::fromString('rootkin'),
+            CharacterClass::fromString('fighter'),
+            HitPoints::full(12),
+            AbilityScores::fromScores(
+                strength: AbilityScore::fromInt(14),
+                dexterity: AbilityScore::fromInt(10),
+                constitution: AbilityScore::fromInt(14),
+                intelligence: AbilityScore::fromInt(10),
+                wisdom: AbilityScore::fromInt(8),
+                charisma: AbilityScore::fromInt(10),
+            )
+        );
+    
+        self::assertSame(
+            9,
+            $character
+                ->passivePerception()
+                ->value()
+        );
+    }
+    
+    public function test_reconstituted_character_derives_passive_perception_from_restored_wisdom(): void
+    {
+        $abilityScores = $this->abilityScores();
+    
+        $character = Character::reconstitute(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            Level::fromInt(7),
+            Experience::fromInt(26000),
+            HitPoints::full(42),
+            $abilityScores
+        );
+    
+        self::assertTrue(
+            $character
+                ->passivePerception()
+                ->equals(
+                    PassivePerception::fromWisdom(
+                        $abilityScores->wisdom()
                     )
                 )
         );
