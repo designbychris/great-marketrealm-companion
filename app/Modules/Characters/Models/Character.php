@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Characters\Models;
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ArmourClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
@@ -154,6 +155,20 @@ final class Character
     public function abilityScores(): AbilityScores
     {
         return $this->abilityScores;
+    }
+
+    /**
+     * Calculate the Character's current Armour Class.
+     *
+     * Until equipment and armour are implemented, Armour Class
+     * is derived from the Character's Dexterity modifier.
+     */
+    public function armourClass(): ArmourClass
+    {
+        return ArmourClass::unarmoured(
+            $this->abilityScores
+                ->dexterity()
+        );
     }
 
     /**
