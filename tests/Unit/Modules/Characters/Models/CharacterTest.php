@@ -17,6 +17,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ArmourClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ProficiencyBonus;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Speed;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Initiative;
 use PHPUnit\Framework\TestCase;
 
 final class CharacterTest extends TestCase
@@ -739,6 +740,111 @@ final class CharacterTest extends TestCase
                 ->speed()
                 ->equals(
                     Speed::standard()
+                )
+        );
+    }
+
+
+    public function test_it_returns_an_initiative(): void
+    {
+        self::assertInstanceOf(
+            Initiative::class,
+            $this->createCharacter()
+                ->initiative()
+        );
+    }
+    
+    public function test_average_dexterity_gives_zero_initiative(): void
+    {
+        self::assertSame(
+            0,
+            $this->createCharacter()
+                ->initiative()
+                ->modifier()
+        );
+    }
+    
+    public function test_dexterity_fourteen_gives_plus_two_initiative(): void
+    {
+        $character = Character::create(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            HitPoints::full(12),
+            $this->abilityScores()
+        );
+    
+        self::assertSame(
+            2,
+            $character
+                ->initiative()
+                ->modifier()
+        );
+    
+        self::assertSame(
+            '+2',
+            $character
+                ->initiative()
+                ->signed()
+        );
+    }
+    
+    public function test_low_dexterity_gives_negative_initiative(): void
+    {
+        $character = Character::create(
+            CharacterId::generate(),
+            CharacterName::fromString('Slow Turnip'),
+            Race::fromString('rootkin'),
+            CharacterClass::fromString('fighter'),
+            HitPoints::full(12),
+            AbilityScores::fromScores(
+                strength: AbilityScore::fromInt(14),
+                dexterity: AbilityScore::fromInt(8),
+                constitution: AbilityScore::fromInt(14),
+                intelligence: AbilityScore::fromInt(10),
+                wisdom: AbilityScore::fromInt(10),
+                charisma: AbilityScore::fromInt(10),
+            )
+        );
+    
+        self::assertSame(
+            -1,
+            $character
+                ->initiative()
+                ->modifier()
+        );
+    
+        self::assertSame(
+            '-1',
+            $character
+                ->initiative()
+                ->signed()
+        );
+    }
+    
+    public function test_reconstituted_character_derives_initiative_from_restored_dexterity(): void
+    {
+        $abilityScores = $this->abilityScores();
+    
+        $character = Character::reconstitute(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            Level::fromInt(7),
+            Experience::fromInt(26000),
+            HitPoints::full(42),
+            $abilityScores
+        );
+    
+        self::assertTrue(
+            $character
+                ->initiative()
+                ->equals(
+                    Initiative::fromDexterity(
+                        $abilityScores->dexterity()
+                    )
                 )
         );
     }
