@@ -321,6 +321,15 @@ final class Character
     }
 
     /**
+     * Change the Character background.
+     */
+    public function changeBackground(
+        Background $background
+    ): void {
+        $this->background = $background;
+    }
+
+    /**
      * Award experience to the Character.
      */
     public function gainExperience(
