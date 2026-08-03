@@ -53,6 +53,7 @@ final class StoreCharacterRequest extends FormRequest
             'race' => [
                 'required',
                 'string',
+                'max:100',
                 'in:' . implode(
                     ',',
                     Race::identifiers()
@@ -61,6 +62,7 @@ final class StoreCharacterRequest extends FormRequest
             'class' => [
                 'required',
                 'string',
+                'max:100',
                 'in:' . implode(
                     ',',
                     CharacterClass::identifiers()
