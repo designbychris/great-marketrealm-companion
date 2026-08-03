@@ -20,6 +20,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SavingThrow
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SkillProficiencies;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Skills;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Speed;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Conditions;
 
 defined('ABSPATH') || exit;
 
@@ -46,6 +47,7 @@ final class Character
         private Experience $experience,
         private HitPoints $hitPoints,
         private AbilityScores $abilityScores,
+        private Conditions $conditions,
     ) {
     }
 
@@ -69,6 +71,7 @@ final class Character
             experience: Experience::zero(),
             hitPoints: $hitPoints,
             abilityScores: $abilityScores,
+            conditions: Conditions::none(),
         );
     }
 
@@ -87,6 +90,7 @@ final class Character
         Experience $experience,
         HitPoints $hitPoints,
         AbilityScores $abilityScores,
+        ?Conditions $conditions = null,
     ): self {
         return new self(
             id: $id,
@@ -97,6 +101,8 @@ final class Character
             experience: $experience,
             hitPoints: $hitPoints,
             abilityScores: $abilityScores,
+            conditions: $conditions
+                ?? Conditions::none(),
         );
     }
 
@@ -314,6 +320,47 @@ final class Character
         $this->hitPoints = $this
             ->hitPoints
             ->grantTemporary($amount);
+    }
+
+    /**
+     * Return the Character's current conditions.
+     */
+    public function conditions(): Conditions
+    {
+        return $this->conditions;
+    }
+    
+    /**
+     * Apply a condition to the Character.
+     */
+    public function applyCondition(
+        string $condition
+    ): void {
+        $this->conditions = $this->conditions->add(
+            $condition
+        );
+    }
+    
+    /**
+     * Remove a condition from the Character.
+     */
+    public function removeCondition(
+        string $condition
+    ): void {
+        $this->conditions = $this->conditions->remove(
+            $condition
+        );
+    }
+    
+    /**
+     * Determine whether the Character has a condition.
+     */
+    public function hasCondition(
+        string $condition
+    ): bool {
+        return $this->conditions->has(
+            $condition
+        );
     }
 
     /**
