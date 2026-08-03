@@ -124,6 +124,8 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Requests {
 
         public function testDefinesTheExpectedRaceRules(): void
         {
+            $request = new StoreCharacterRequest();
+        
             self::assertSame(
                 [
                     'required',
@@ -140,6 +142,8 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Requests {
 
         public function testDefinesTheExpectedClassRules(): void
         {
+            $request = new StoreCharacterRequest();
+        
             self::assertSame(
                 [
                     'required',
@@ -153,7 +157,6 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Requests {
                 $request->rules()['class']
             );
         }
-
         public function testReturnsValidatedCharacterData(): void
         {
             $_POST = [
