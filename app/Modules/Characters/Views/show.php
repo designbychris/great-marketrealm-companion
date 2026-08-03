@@ -48,6 +48,14 @@ $proficiencyBonus = $character
     ->proficiencyBonus()
     ->signed();
 
+$initiative = $character
+    ->initiative()
+    ->signed();
+
+$speed = $character
+    ->speed()
+    ->formatted();
+
 $hitPoints = $character->hitPoints();
 
 $abilityScores = $character
@@ -225,7 +233,7 @@ $abilities = [
                 <h2>Core Statistics</h2>
             </header>
         
-            <dl class="gmrc-stat-grid gmrc-stat-grid--three">
+            <dl class="gmrc-stat-grid gmrc-stat-grid--four">
                 <div class="gmrc-stat-card">
                     <dt>Armour Class</dt>
         
@@ -237,21 +245,31 @@ $abilities = [
                 </div>
         
                 <div class="gmrc-stat-card">
-                    <dt>Proficiency Bonus</dt>
+                    <dt>Initiative</dt>
         
                     <dd>
                         <?php echo esc_html(
-                            $proficiencyBonus
+                            $initiative
                         ); ?>
                     </dd>
                 </div>
         
                 <div class="gmrc-stat-card">
-                    <dt>Level</dt>
+                    <dt>Speed</dt>
         
                     <dd>
                         <?php echo esc_html(
-                            (string) $level
+                            $speed
+                        ); ?>
+                    </dd>
+                </div>
+        
+                <div class="gmrc-stat-card">
+                    <dt>Proficiency Bonus</dt>
+        
+                    <dd>
+                        <?php echo esc_html(
+                            $proficiencyBonus
                         ); ?>
                     </dd>
                 </div>
