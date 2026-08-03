@@ -17,6 +17,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Proficiency
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Speed;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Initiative;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\PassivePerception;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SavingThrows;
 
 defined('ABSPATH') || exit;
 
@@ -187,6 +188,17 @@ final class Character
     }
 
     /**
+     * Calculate the Character's Passive Perception.
+     */
+    public function passivePerception(): PassivePerception
+    {
+        return PassivePerception::fromWisdom(
+            $this->abilityScores
+                ->wisdom()
+        );
+    }
+
+    /**
      * Calculate the Character's proficiency bonus.
      */
     public function proficiencyBonus(): ProficiencyBonus
@@ -197,13 +209,15 @@ final class Character
     }
 
     /**
-     * Calculate the Character's Passive Perception.
+     * Calculate the Character's saving throws.
      */
-    public function passivePerception(): PassivePerception
+    public function savingThrows(): SavingThrows
     {
-        return PassivePerception::fromWisdom(
-            $this->abilityScores
-                ->wisdom()
+        return SavingThrows::fromAbilityScores(
+            $this->abilityScores,
+            $this->proficiencyBonus(),
+            $this->characterClass
+                ->savingThrowProficiencies()
         );
     }
 
