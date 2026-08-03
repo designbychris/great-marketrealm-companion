@@ -56,6 +56,10 @@ $speed = $character
     ->speed()
     ->formatted();
 
+$passivePerception = $character
+    ->passivePerception()
+    ->value();
+
 $hitPoints = $character->hitPoints();
 
 $abilityScores = $character
@@ -270,6 +274,16 @@ $abilities = [
                     <dd>
                         <?php echo esc_html(
                             $proficiencyBonus
+                        ); ?>
+                    </dd>
+                </div>
+
+                <div class="gmrc-stat-card">
+                    <dt>Passive Perception</dt>
+                
+                    <dd>
+                        <?php echo esc_html(
+                            (string) $passivePerception
                         ); ?>
                     </dd>
                 </div>
