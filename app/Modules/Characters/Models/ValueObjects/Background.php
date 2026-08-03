@@ -311,6 +311,34 @@ final class Background implements Stringable
     }
 
     /**
+     * Return every supported background identifier.
+     *
+     * @return array<int,string>
+     */
+    public static function identifiers(): array
+    {
+        return array_keys(
+            self::BACKGROUNDS
+        );
+    }
+    
+    /**
+     * Return every supported background label,
+     * keyed by canonical identifier.
+     *
+     * @return array<string,string>
+     */
+    public static function labels(): array
+    {
+        return array_map(
+            static fn (
+                array $background
+            ): string => $background['label'],
+            self::BACKGROUNDS
+        );
+    }
+
+    /**
      * Convert the Background to its canonical identifier.
      */
     public function __toString(): string
