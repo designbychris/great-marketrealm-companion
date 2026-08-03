@@ -7,16 +7,19 @@ namespace Tests\Unit\Modules\Characters\Models;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScore;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Languages;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ArmourClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ProficiencyBonus;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Speed;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiencies;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Initiative;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\PassivePerception;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SavingThrow;
@@ -115,6 +118,45 @@ final class CharacterTest extends TestCase
             $character
                 ->characterClass()
                 ->equals($class)
+        );
+    }
+
+    public function test_new_character_uses_market_runner_background_by_default(): void
+    {
+        $background = $this->createCharacter()
+            ->background();
+
+        self::assertInstanceOf(
+            Background::class,
+            $background
+        );
+
+        self::assertSame(
+            'market-runner',
+            $background->value()
+        );
+    }
+
+    public function test_character_can_be_created_with_a_background(): void
+    {
+        $background = Background::fromString(
+            'sage'
+        );
+
+        $character = Character::create(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            HitPoints::full(10),
+            AbilityScores::average(),
+            $background
+        );
+
+        self::assertTrue(
+            $character
+                ->background()
+                ->equals($background)
         );
     }
 
@@ -1170,23 +1212,25 @@ final class CharacterTest extends TestCase
         );
     }
     
-    public function test_new_character_has_no_skill_proficiencies_yet(): void
+    public function test_new_character_uses_market_runner_skill_proficiencies(): void
     {
-        $proficiencies = $this->createCharacter()
-            ->skillProficiencies();
+        $character = $this->createCharacter();
     
-        self::assertTrue(
-            $proficiencies->isEmpty()
+        self::assertSame(
+            [
+                'acrobatics',
+                'perception',
+            ],
+            $character
+                ->skillProficiencies()
+                ->proficiencies()
         );
     
         self::assertSame(
             [],
-            $proficiencies->proficiencies()
-        );
-    
-        self::assertSame(
-            [],
-            $proficiencies->expertiseSkills()
+            $character
+                ->skillProficiencies()
+                ->expertiseSkills()
         );
     }
     
@@ -1219,7 +1263,7 @@ final class CharacterTest extends TestCase
         );
     }
     
-    public function test_untrained_skills_use_their_governing_ability_modifiers(): void
+    public function test_skills_use_ability_modifiers_and_background_proficiencies(): void
     {
         $character = Character::create(
             CharacterId::generate(),
@@ -1229,11 +1273,12 @@ final class CharacterTest extends TestCase
             HitPoints::full(12),
             $this->abilityScores()
         );
-    
+
         $skills = $character->skills();
-    
+
         /*
          * Strength 15: +2
+         * Athletics is not proficient.
          */
         self::assertSame(
             2,
@@ -1241,9 +1286,22 @@ final class CharacterTest extends TestCase
                 ->athletics()
                 ->modifier()
         );
-    
+
         /*
          * Dexterity 14: +2
+         * Acrobatics is proficient through Market Runner.
+         * Level 1 proficiency bonus: +2
+         */
+        self::assertSame(
+            4,
+            $skills
+                ->acrobatics()
+                ->modifier()
+        );
+
+        /*
+         * Dexterity 14: +2
+         * Stealth is not proficient.
          */
         self::assertSame(
             2,
@@ -1251,9 +1309,10 @@ final class CharacterTest extends TestCase
                 ->stealth()
                 ->modifier()
         );
-    
+
         /*
          * Intelligence 12: +1
+         * Arcana is not proficient.
          */
         self::assertSame(
             1,
@@ -1261,19 +1320,22 @@ final class CharacterTest extends TestCase
                 ->arcana()
                 ->modifier()
         );
-    
+
         /*
          * Wisdom 10: +0
+         * Perception is proficient through Market Runner.
+         * Level 1 proficiency bonus: +2
          */
         self::assertSame(
-            0,
+            2,
             $skills
                 ->perception()
                 ->modifier()
         );
-    
+
         /*
          * Charisma 8: -1
+         * Persuasion is not proficient.
          */
         self::assertSame(
             -1,
@@ -1283,13 +1345,16 @@ final class CharacterTest extends TestCase
         );
     }
     
-    public function test_character_skills_are_not_proficient_by_default(): void
+    public function test_character_skills_use_background_proficiencies_by_default(): void
     {
         $skills = $this->createCharacter()
             ->skills();
     
         self::assertSame(
-            [],
+            [
+                'acrobatics',
+                'perception',
+            ],
             $skills->proficiencies()
         );
     
@@ -1297,12 +1362,34 @@ final class CharacterTest extends TestCase
             [],
             $skills->expertise()
         );
+    
+        self::assertTrue(
+            $skills
+                ->acrobatics()
+                ->isProficient()
+        );
+    
+        self::assertTrue(
+            $skills
+                ->perception()
+                ->isProficient()
+        );
+    
+        self::assertFalse(
+            $skills
+                ->athletics()
+                ->isProficient()
+        );
     }
     
-    public function test_reconstituted_character_derives_skills_from_restored_ability_scores(): void
+    public function test_reconstituted_character_derives_skills_from_restored_state(): void
     {
         $abilityScores = $this->abilityScores();
-    
+
+        $background = Background::fromString(
+            'market-runner'
+        );
+
         $character = Character::reconstitute(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
@@ -1311,21 +1398,87 @@ final class CharacterTest extends TestCase
             Level::fromInt(7),
             Experience::fromInt(26000),
             HitPoints::full(42),
-            $abilityScores
+            $abilityScores,
+            Conditions::none(),
+            $background
         );
-    
+
         $expected = Skills::fromAbilityScores(
             $abilityScores,
             ProficiencyBonus::fromLevel(
                 Level::fromInt(7)
             ),
-            SkillProficiencies::none()
+            $background->skillProficiencies()
         );
-    
+
         self::assertTrue(
             $character
                 ->skills()
                 ->equals($expected)
+        );
+    }
+
+    public function test_character_returns_languages_collection(): void
+    {
+        self::assertInstanceOf(
+            Languages::class,
+            $this->createCharacter()
+                ->languages()
+        );
+    }
+
+    public function test_market_runner_currently_grants_no_fixed_languages(): void
+    {
+        self::assertSame(
+            [],
+            $this->createCharacter()
+                ->languages()
+                ->values()
+        );
+    }
+
+    public function test_character_returns_background_tool_proficiencies(): void
+    {
+        $tools = $this->createCharacter()
+            ->toolProficiencies();
+
+        self::assertInstanceOf(
+            ToolProficiencies::class,
+            $tools
+        );
+
+        self::assertSame(
+            ['land-vehicles'],
+            $tools->values()
+        );
+    }
+
+    public function test_criminal_background_grants_its_tool_proficiencies(): void
+    {
+        $character = Character::create(
+            CharacterId::generate(),
+            CharacterName::fromString('Sneaky Shallot'),
+            Race::fromString('vegfolk'),
+            CharacterClass::fromString('rogue'),
+            HitPoints::full(8),
+            AbilityScores::average(),
+            Background::fromString('criminal')
+        );
+
+        self::assertSame(
+            [
+                'gaming-set',
+                'thieves-tools',
+            ],
+            $character
+                ->toolProficiencies()
+                ->values()
+        );
+
+        self::assertTrue(
+            $character
+                ->toolProficiencies()
+                ->hasUnresolvedChoices()
         );
     }
 
