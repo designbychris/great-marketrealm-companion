@@ -319,6 +319,34 @@ final class CharacterClass implements Stringable
     }
 
     /**
+     * Return every supported Character-class identifier.
+     *
+     * @return array<int,string>
+     */
+    public static function identifiers(): array
+    {
+        return array_keys(
+            self::CLASSES
+        );
+    }
+    
+    /**
+     * Return every supported Character-class label,
+     * keyed by canonical identifier.
+     *
+     * @return array<string,string>
+     */
+    public static function labels(): array
+    {
+        return array_map(
+            static fn (
+                array $class
+            ): string => $class['label'],
+            self::CLASSES
+        );
+    }
+
+    /**
      * Normalise class input.
      */
     private static function normalise(
