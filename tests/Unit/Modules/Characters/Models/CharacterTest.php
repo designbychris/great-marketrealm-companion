@@ -14,6 +14,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ArmourClass;
 use PHPUnit\Framework\TestCase;
 
 final class CharacterTest extends TestCase
@@ -143,6 +144,142 @@ final class CharacterTest extends TestCase
             $character
                 ->abilityScores()
                 ->equals($abilityScores)
+        );
+    }
+
+    public function test_it_returns_an_armour_class(): void
+    {
+        self::assertInstanceOf(
+            ArmourClass::class,
+            $this->createCharacter()
+                ->armourClass()
+        );
+    }
+    
+    public function test_average_dexterity_gives_armour_class_ten(): void
+    {
+        self::assertSame(
+            10,
+            $this->createCharacter()
+                ->armourClass()
+                ->value()
+        );
+    }
+    
+    public function test_dexterity_fourteen_gives_armour_class_twelve(): void
+    {
+        $character = Character::create(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            HitPoints::full(12),
+            AbilityScores::fromScores(
+                strength: AbilityScore::fromInt(15),
+                dexterity: AbilityScore::fromInt(14),
+                constitution: AbilityScore::fromInt(13),
+                intelligence: AbilityScore::fromInt(12),
+                wisdom: AbilityScore::fromInt(10),
+                charisma: AbilityScore::fromInt(8),
+            )
+        );
+    
+        self::assertSame(
+            12,
+            $character
+                ->armourClass()
+                ->value()
+        );
+    }
+    
+    public function test_dexterity_twenty_gives_armour_class_fifteen(): void
+    {
+        $character = Character::create(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            HitPoints::full(12),
+            AbilityScores::fromScores(
+                strength: AbilityScore::fromInt(15),
+                dexterity: AbilityScore::fromInt(20),
+                constitution: AbilityScore::fromInt(13),
+                intelligence: AbilityScore::fromInt(12),
+                wisdom: AbilityScore::fromInt(10),
+                charisma: AbilityScore::fromInt(8),
+            )
+        );
+    
+        self::assertSame(
+            15,
+            $character
+                ->armourClass()
+                ->value()
+        );
+    }
+    
+    public function test_armour_class_is_derived_from_dexterity(): void
+    {
+        $averageDexterityCharacter =
+            $this->createCharacter();
+    
+        $higherDexterityCharacter =
+            Character::create(
+                CharacterId::generate(),
+                CharacterName::fromString('Lady Leek'),
+                Race::fromString('vegfolk'),
+                CharacterClass::fromString('rogue'),
+                HitPoints::full(10),
+                AbilityScores::fromScores(
+                    strength: AbilityScore::fromInt(10),
+                    dexterity: AbilityScore::fromInt(16),
+                    constitution: AbilityScore::fromInt(10),
+                    intelligence: AbilityScore::fromInt(10),
+                    wisdom: AbilityScore::fromInt(10),
+                    charisma: AbilityScore::fromInt(10),
+                )
+            );
+    
+        self::assertSame(
+            10,
+            $averageDexterityCharacter
+                ->armourClass()
+                ->value()
+        );
+    
+        self::assertSame(
+            13,
+            $higherDexterityCharacter
+                ->armourClass()
+                ->value()
+        );
+    }
+    
+    public function test_reconstituted_character_derives_armour_class_from_restored_ability_scores(): void
+    {
+        $character = Character::reconstitute(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            Level::fromInt(7),
+            Experience::fromInt(26000),
+            HitPoints::fromValues(
+                current: 34,
+                maximum: 42,
+                temporary: 5
+            ),
+            $this->abilityScores()
+        );
+    
+        self::assertTrue(
+            $character
+                ->armourClass()
+                ->equals(
+                    ArmourClass::unarmoured(
+                        $abilityScores->dexterity()
+                    )
+                )
         );
     }
 
