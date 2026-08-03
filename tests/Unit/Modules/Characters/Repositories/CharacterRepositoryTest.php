@@ -261,6 +261,8 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
     use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
     use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
     use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepositoryWordPressState;
+    use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
+    use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Conditions;
     use PHPUnit\Framework\TestCase;
 
     final class CharacterRepositoryTest extends TestCase
@@ -326,6 +328,11 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
             self::assertSame(
                 'fighter',
                 $meta['_gmrc_class']
+            );
+
+            self::assertSame(
+                'sage',
+                $meta['_gmrc_background']
             );
 
             self::assertSame(
@@ -422,6 +429,12 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
             self::assertTrue(
                 $found->characterClass()->equals(
                     $character->characterClass()
+                )
+            );
+            
+            self::assertTrue(
+                $found->background()->equals(
+                    $character->background()
                 )
             );
 
@@ -562,24 +575,44 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
         private function character(): Character
         {
             return Character::reconstitute(
-                CharacterId::generate(),
-                CharacterName::fromString('Sir Allium'),
-                Race::fromString('fructan'),
-                CharacterClass::fromString('fighter'),
-                Level::fromInt(7),
-                Experience::fromInt(26000),
-                HitPoints::fromValues(
+                id: CharacterId::generate(),
+                name: CharacterName::fromString(
+                    'Sir Allium'
+                ),
+                race: Race::fromString(
+                    'fructan'
+                ),
+                characterClass:
+                    CharacterClass::fromString(
+                        'fighter'
+                    ),
+                level: Level::fromInt(7),
+                experience: Experience::fromInt(
+                    26000
+                ),
+                hitPoints: HitPoints::fromValues(
                     current: 34,
                     maximum: 42,
                     temporary: 5
                 ),
-                AbilityScores::fromScores(
-                    strength: AbilityScore::fromInt(15),
-                    dexterity: AbilityScore::fromInt(14),
-                    constitution: AbilityScore::fromInt(13),
-                    intelligence: AbilityScore::fromInt(12),
-                    wisdom: AbilityScore::fromInt(10),
-                    charisma: AbilityScore::fromInt(8),
+                abilityScores:
+                    AbilityScores::fromScores(
+                        strength:
+                            AbilityScore::fromInt(15),
+                        dexterity:
+                            AbilityScore::fromInt(14),
+                        constitution:
+                            AbilityScore::fromInt(13),
+                        intelligence:
+                            AbilityScore::fromInt(12),
+                        wisdom:
+                            AbilityScore::fromInt(10),
+                        charisma:
+                            AbilityScore::fromInt(8),
+                    ),
+                conditions: Conditions::none(),
+                background: Background::fromString(
+                    'sage'
                 )
             );
         }
@@ -677,6 +710,93 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
             self::assertSame(
                 $storedId,
                 $characters[0]->id()->value()
+            );
+
+            $storedBackground =
+                CharacterRepositoryWordPressState::$meta[
+                    $postId
+                ]['_gmrc_background'] ?? '';
+            
+            self::assertSame(
+                'market-runner',
+                $storedBackground
+            );
+            
+            self::assertSame(
+                'market-runner',
+                $characters[0]
+                    ->background()
+                    ->value()
+            );
+        }
+
+        public function testPersistsAndRestoresCharacterBackground(): void
+        {
+            $repository = new CharacterRepository();
+        
+            $character = Character::reconstitute(
+                id: CharacterId::generate(),
+                name: CharacterName::fromString(
+                    'Professor Parsnip'
+                ),
+                race: Race::fromString(
+                    'rootkin'
+                ),
+                characterClass:
+                    CharacterClass::fromString(
+                        'wizard'
+                    ),
+                level: Level::fromInt(3),
+                experience: Experience::fromInt(
+                    900
+                ),
+                hitPoints: HitPoints::full(18),
+                abilityScores:
+                    AbilityScores::average(),
+                conditions: Conditions::none(),
+                background: Background::fromString(
+                    'shelf-scholar'
+                )
+            );
+        
+            $repository->save($character);
+        
+            $restored = $repository->find(
+                $character->id()
+            );
+        
+            self::assertInstanceOf(
+                Character::class,
+                $restored
+            );
+        
+            self::assertTrue(
+                $restored
+                    ->background()
+                    ->equals(
+                        Background::fromString(
+                            'shelf-scholar'
+                        )
+                    )
+            );
+        
+            self::assertSame(
+                [
+                    'arcana',
+                    'history',
+                ],
+                $restored
+                    ->skillProficiencies()
+                    ->proficiencies()
+            );
+        
+            self::assertSame(
+                [
+                    'calligraphers-supplies',
+                ],
+                $restored
+                    ->toolProficiencies()
+                    ->values()
             );
         }
     }
