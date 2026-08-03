@@ -131,10 +131,13 @@ final class CharacterController
         );
     }
 
+    /**
+     * Update an existing Character.
+     */
     public function update(
         string $id,
         UpdateCharacterRequest $request
-    ): Character {
+    ): RedirectResponse {
         $character = $this->findCharacter(
             $id
         );
@@ -153,8 +156,18 @@ final class CharacterController
             )
         );
     
-        return $this->updateCharacter->handle(
+        $this->updateCharacter->handle(
             $character
+        );
+    
+        $this->flash->success(
+            'The adventurer’s register has been updated.'
+        );
+    
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id()
+            )
         );
     }
 
@@ -231,6 +244,21 @@ final class CharacterController
         }
     
         return $character;
+    }
+
+    /**
+     * Build a Character detail URL.
+     */
+    private function characterUrl(
+        CharacterId $id
+    ): string {
+        return add_query_arg(
+            'gmrc_route',
+            'characters/' . rawurlencode(
+                $id->value()
+            ),
+            home_url('/companion/')
+        );
     }
     
     /**
