@@ -57,6 +57,8 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
     use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
     use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
     use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
+    use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
+    use GreatMarketrealmCompanion\Modules\Characters\Requests\UpdateCharacterRequest;
     use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequest;
     use GreatMarketrealmCompanion\Modules\Characters\Rules\CharacterCreationRules;
     use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
@@ -419,43 +421,74 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
             );
         }
 
-        public function testUpdateRenamesAndPersistsAnExistingCharacter(): void
+        public function testUpdateRenamesChangesBackgroundAndPersistsCharacter(): void
         {
             $character = $this->character();
-
+        
             $repository = new CharacterControllerRepositorySpy();
-
+        
             $repository->characters = [
                 $character,
             ];
-
+        
             $_POST = [
                 'name' => 'Sir Allium the Brave',
+                'background' => 'shelf-scholar',
             ];
-
+        
             $controller = $this->controller(
                 repository: $repository
             );
-
+        
             $returned = $controller->update(
-                $character->id()->value()
+                $character->id()->value(),
+                new UpdateCharacterRequest()
             );
-
+        
             self::assertSame(
                 $character,
                 $returned
             );
-
+        
             self::assertSame(
                 'Sir Allium the Brave',
                 $character->name()->value()
             );
-
+        
+            self::assertTrue(
+                $character
+                    ->background()
+                    ->equals(
+                        Background::fromString(
+                            'shelf-scholar'
+                        )
+                    )
+            );
+        
+            self::assertSame(
+                [
+                    'arcana',
+                    'history',
+                ],
+                $character
+                    ->skillProficiencies()
+                    ->proficiencies()
+            );
+        
+            self::assertSame(
+                [
+                    'calligraphers-supplies',
+                ],
+                $character
+                    ->toolProficiencies()
+                    ->values()
+            );
+        
             self::assertSame(
                 1,
                 $repository->saveCalls
             );
-
+        
             self::assertSame(
                 $character,
                 $repository->savedCharacter
