@@ -63,13 +63,6 @@ class FrontendServiceProvider extends ServiceProvider
             $_SERVER['REQUEST_METHOD'] ?? 'GET'
         );
     
-        $route = isset($_POST['gmrc_route'])
-            && is_scalar($_POST['gmrc_route'])
-                ? sanitize_text_field(
-                    wp_unslash((string) $_POST['gmrc_route'])
-                )
-                : 'not set';
-    
         if ($method !== 'POST') {
             wp_safe_redirect(
                 home_url('/companion/')
@@ -78,18 +71,46 @@ class FrontendServiceProvider extends ServiceProvider
             exit;
         }
     
-        $submittedNonce = isset($_POST['gmrc_nonce'])
-            && is_scalar($_POST['gmrc_nonce'])
+        $route = isset($_POST['gmrc_route'])
+            && is_scalar($_POST['gmrc_route'])
                 ? sanitize_text_field(
-                    wp_unslash((string) $_POST['gmrc_nonce'])
+                    wp_unslash(
+                        (string) $_POST['gmrc_route']
+                    )
                 )
                 : '';
     
+        $methodOverride = isset($_POST['_method'])
+            && is_scalar($_POST['_method'])
+                ? strtoupper(
+                    sanitize_text_field(
+                        wp_unslash(
+                            (string) $_POST['_method']
+                        )
+                    )
+                )
+                : 'POST';
+    
+        $submittedNonce = isset($_POST['gmrc_nonce'])
+            && is_scalar($_POST['gmrc_nonce'])
+                ? sanitize_text_field(
+                    wp_unslash(
+                        (string) $_POST['gmrc_nonce']
+                    )
+                )
+                : '';
+    
+        $nonceAction = $this->nonceActionForRequest(
+            $methodOverride,
+            $route
+        );
+    
         if (
             $submittedNonce === ''
+            || $nonceAction === null
             || ! wp_verify_nonce(
                 $submittedNonce,
-                'gmrc_create_character'
+                $nonceAction
             )
         ) {
             wp_die(
@@ -118,6 +139,60 @@ class FrontendServiceProvider extends ServiceProvider
     
         echo $result; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         exit;
+    }
+
+    /**
+     * Determine the expected nonce action for an application request.
+     */
+    private function nonceActionForRequest(
+        string $method,
+        string $route
+    ): ?string {
+        $method = strtoupper(
+            trim($method)
+        );
+    
+        $route = trim(
+            $route,
+            '/'
+        );
+    
+        if (
+            $method === 'POST'
+            && $route === 'characters'
+        ) {
+            return 'gmrc_create_character';
+        }
+    
+        if (
+            $method === 'PUT'
+            && preg_match(
+                '#^characters/([^/]+)$#',
+                $route,
+                $matches
+            )
+        ) {
+            return 'gmrc_update_character_'
+                . sanitize_text_field(
+                    $matches[1]
+                );
+        }
+    
+        if (
+            $method === 'DELETE'
+            && preg_match(
+                '#^characters/([^/]+)$#',
+                $route,
+                $matches
+            )
+        ) {
+            return 'gmrc_delete_character_'
+                . sanitize_text_field(
+                    $matches[1]
+                );
+        }
+    
+        return null;
     }
     
     /**
