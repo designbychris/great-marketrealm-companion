@@ -24,6 +24,7 @@ use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
 use GreatMarketrealmCompanion\Services\Characters\ClassRegistry;
 use GreatMarketrealmCompanion\Services\Characters\RaceRegistry;
 use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -141,9 +142,21 @@ final class CharacterController
             'name'
         );
     
+        $background = $this->request->string(
+            'background'
+        );
+    
         if ($name !== '') {
             $character->rename(
                 CharacterName::fromString($name)
+            );
+        }
+    
+        if ($background !== '') {
+            $character->changeBackground(
+                Background::fromString(
+                    $background
+                )
             );
         }
     
