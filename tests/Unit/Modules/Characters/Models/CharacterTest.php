@@ -257,6 +257,8 @@ final class CharacterTest extends TestCase
     
     public function test_reconstituted_character_derives_armour_class_from_restored_ability_scores(): void
     {
+        $abilityScores = $this->abilityScores();
+    
         $character = Character::reconstitute(
             CharacterId::generate(),
             CharacterName::fromString('Sir Allium'),
@@ -269,7 +271,7 @@ final class CharacterTest extends TestCase
                 maximum: 42,
                 temporary: 5
             ),
-            $this->abilityScores()
+            $abilityScores
         );
     
         self::assertTrue(
