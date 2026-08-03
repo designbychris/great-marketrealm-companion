@@ -21,6 +21,9 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SkillProfic
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Skills;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Speed;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Conditions;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Languages;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiencies;
 
 defined('ABSPATH') || exit;
 
@@ -43,6 +46,7 @@ final class Character
         private CharacterName $name,
         private Race $race,
         private CharacterClass $characterClass,
+        private Background $background,
         private Level $level,
         private Experience $experience,
         private HitPoints $hitPoints,
@@ -61,12 +65,17 @@ final class Character
         CharacterClass $characterClass,
         HitPoints $hitPoints,
         AbilityScores $abilityScores,
+        ?Background $background = null,
     ): self {
         return new self(
             id: $id,
             name: $name,
             race: $race,
             characterClass: $characterClass,
+            background: $background
+                ?? Background::fromString(
+                    'market-runner'
+                ),
             level: Level::one(),
             experience: Experience::zero(),
             hitPoints: $hitPoints,
@@ -91,12 +100,17 @@ final class Character
         HitPoints $hitPoints,
         AbilityScores $abilityScores,
         ?Conditions $conditions = null,
+        ?Background $background = null,
     ): self {
         return new self(
             id: $id,
             name: $name,
             race: $race,
             characterClass: $characterClass,
+            background: $background
+                ?? Background::fromString(
+                    'market-runner'
+                ),
             level: $level,
             experience: $experience,
             hitPoints: $hitPoints,
@@ -136,6 +150,14 @@ final class Character
     public function characterClass(): CharacterClass
     {
         return $this->characterClass;
+    }
+
+    /**
+     * Get the Character background.
+     */
+    public function background(): Background
+    {
+        return $this->background;
     }
 
     /**
@@ -232,12 +254,13 @@ final class Character
     /**
      * Return the Character's skill proficiencies.
      *
-     * Class, race, background, feat and equipment sources
-     * will be merged here as those systems are introduced.
+     * Additional class, race, feat and equipment sources
+     * can be merged here as those systems are introduced.
      */
     public function skillProficiencies(): SkillProficiencies
     {
-        return SkillProficiencies::none();
+        return $this->background
+            ->skillProficiencies();
     }
 
     /**
@@ -249,6 +272,31 @@ final class Character
             $this->abilityScores,
             $this->proficiencyBonus(),
             $this->skillProficiencies()
+        );
+    }
+
+    /**
+     * Return the Character's known fixed languages.
+     *
+     * Chosen languages will later be merged with this
+     * background-provided collection.
+     */
+    public function languages(): Languages
+    {
+        return Languages::fromStrings(
+            $this->background
+                ->fixedLanguageIdentifiers()
+        );
+    }
+    
+    /**
+     * Return the Character's tool proficiencies.
+     */
+    public function toolProficiencies(): ToolProficiencies
+    {
+        return ToolProficiencies::fromStrings(
+            $this->background
+                ->toolProficiencyIdentifiers()
         );
     }
 
