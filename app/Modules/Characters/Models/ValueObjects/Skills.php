@@ -59,38 +59,17 @@ final class Skills
 
     /**
      * Build Skills from Character values.
-     *
-     * @param string[] $proficientSkills
-     * @param string[] $expertiseSkills
      */
     public static function fromAbilityScores(
         AbilityScores $abilityScores,
         ProficiencyBonus $proficiencyBonus,
-        array $proficientSkills = [],
-        array $expertiseSkills = []
+        ?SkillProficiencies $proficiencies = null
     ): self {
-        $proficiencies = self::normaliseSkills(
-            $proficientSkills
-        );
-
-        $expertise = self::normaliseSkills(
-            $expertiseSkills
-        );
-
-        /*
-         * Expertise always implies proficiency.
-         */
-        $proficiencies = array_values(
-            array_unique(
-                array_merge(
-                    $proficiencies,
-                    $expertise
-                )
-            )
-        );
-
+        $proficiencies ??=
+            SkillProficiencies::none();
+    
         $skills = [];
-
+    
         foreach (
             self::SKILLS
             as $skill => $ability
@@ -101,19 +80,15 @@ final class Skills
                     $ability
                 ),
                 $proficiencyBonus,
-                in_array(
-                    $skill,
-                    $proficiencies,
-                    true
+                $proficiencies->isProficient(
+                    $skill
                 ),
-                in_array(
-                    $skill,
-                    $expertise,
-                    true
+                $proficiencies->hasExpertise(
+                    $skill
                 )
             );
         }
-
+    
         return new self($skills);
     }
 
@@ -338,35 +313,6 @@ final class Skills
             'wisdom' => $abilityScores->wisdom(),
             'charisma' => $abilityScores->charisma(),
         };
-    }
-
-    /**
-     * Normalise skill identifiers.
-     *
-     * @param mixed[] $skills
-     *
-     * @return string[]
-     */
-    private static function normaliseSkills(
-        array $skills
-    ): array {
-        $normalised = [];
-
-        foreach ($skills as $skill) {
-            if (! is_string($skill)) {
-                throw new InvalidArgumentException(
-                    'Skill proficiency identifiers must be strings.'
-                );
-            }
-
-            $normalised[] = self::normaliseSkill(
-                $skill
-            );
-        }
-
-        return array_values(
-            array_unique($normalised)
-        );
     }
 
     /**
