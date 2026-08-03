@@ -11,13 +11,15 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ProficiencyBonus;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Speed;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Initiative;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\PassivePerception;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ProficiencyBonus;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SavingThrows;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SkillProficiencies;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Skills;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Speed;
 
 defined('ABSPATH') || exit;
 
@@ -218,6 +220,29 @@ final class Character
             $this->proficiencyBonus(),
             $this->characterClass
                 ->savingThrowProficiencies()
+        );
+    }
+
+    /**
+     * Return the Character's skill proficiencies.
+     *
+     * Class, race, background, feat and equipment sources
+     * will be merged here as those systems are introduced.
+     */
+    public function skillProficiencies(): SkillProficiencies
+    {
+        return SkillProficiencies::none();
+    }
+
+    /**
+     * Calculate the Character's skill modifiers.
+     */
+    public function skills(): Skills
+    {
+        return Skills::fromAbilityScores(
+            $this->abilityScores,
+            $this->proficiencyBonus(),
+            $this->skillProficiencies()
         );
     }
 
