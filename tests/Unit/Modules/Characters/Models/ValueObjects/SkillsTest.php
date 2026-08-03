@@ -256,12 +256,14 @@ final class SkillsTest extends TestCase
         $skills = Skills::fromAbilityScores(
             $this->abilityScores(),
             ProficiencyBonus::fromInt(2),
-            [
-                ' Animal Handling ',
-                'SLEIGHT_OF_HAND',
-            ]
+            SkillProficiencies::fromArrays(
+                proficient: [
+                    ' Animal Handling ',
+                    'SLEIGHT_OF_HAND',
+                ]
+            )
         );
-
+    
         self::assertSame(
             [
                 'animal-handling',
@@ -276,13 +278,13 @@ final class SkillsTest extends TestCase
         $skills = Skills::fromAbilityScores(
             $this->abilityScores(),
             ProficiencyBonus::fromInt(2),
-            [
+            SkillProficiencies::proficient([
                 'stealth',
                 'Stealth',
                 ' stealth ',
-            ]
+            ])
         );
-
+    
         self::assertSame(
             ['stealth'],
             $skills->proficiencies()
@@ -320,23 +322,6 @@ final class SkillsTest extends TestCase
 
         $this->skills()->get(
             'sandwich-making'
-        );
-    }
-
-    public function testRejectsNonStringProficiencyIdentifier(): void
-    {
-        $this->expectException(
-            InvalidArgumentException::class
-        );
-
-        $this->expectExceptionMessage(
-            'Skill proficiency identifiers must be strings.'
-        );
-
-        Skills::fromAbilityScores(
-            $this->abilityScores(),
-            ProficiencyBonus::fromInt(2),
-            [123]
         );
     }
 
@@ -516,15 +501,19 @@ final class SkillsTest extends TestCase
         $first = Skills::fromAbilityScores(
             $this->abilityScores(),
             ProficiencyBonus::fromInt(2),
-            ['athletics']
+            SkillProficiencies::proficient([
+                'athletics',
+            ])
         );
-
+    
         $second = Skills::fromAbilityScores(
             $this->abilityScores(),
             ProficiencyBonus::fromInt(2),
-            ['perception']
+            SkillProficiencies::proficient([
+                'perception',
+            ])
         );
-
+    
         self::assertFalse(
             $first->equals($second)
         );
