@@ -19,6 +19,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Proficiency
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Speed;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Initiative;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\PassivePerception;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SavingThrow;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SavingThrows;
 use PHPUnit\Framework\TestCase;
 
 final class CharacterTest extends TestCase
@@ -944,6 +946,213 @@ final class CharacterTest extends TestCase
                         $abilityScores->wisdom()
                     )
                 )
+        );
+    }
+
+    public function test_it_returns_saving_throws(): void
+    {
+        self::assertInstanceOf(
+            SavingThrows::class,
+            $this->createCharacter()
+                ->savingThrows()
+        );
+    }
+
+    public function test_fighter_has_strength_and_constitution_save_proficiencies(): void
+    {
+        $savingThrows = $this->createCharacter()
+            ->savingThrows();
+    
+        self::assertSame(
+            [
+                'strength',
+                'constitution',
+            ],
+            $savingThrows->proficiencies()
+        );
+    
+        self::assertTrue(
+            $savingThrows
+                ->strength()
+                ->isProficient()
+        );
+    
+        self::assertTrue(
+            $savingThrows
+                ->constitution()
+                ->isProficient()
+        );
+    }
+
+    public function test_fighter_saving_throws_include_proficiency_bonus(): void
+    {
+        $character = Character::create(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            HitPoints::full(12),
+            AbilityScores::fromScores(
+                strength: AbilityScore::fromInt(15),
+                dexterity: AbilityScore::fromInt(14),
+                constitution: AbilityScore::fromInt(13),
+                intelligence: AbilityScore::fromInt(12),
+                wisdom: AbilityScore::fromInt(10),
+                charisma: AbilityScore::fromInt(8),
+            )
+        );
+    
+        $savingThrows = $character->savingThrows();
+    
+        /*
+         * Strength 15: +2
+         * Fighter proficiency at level 1: +2
+         */
+        self::assertSame(
+            4,
+            $savingThrows
+                ->strength()
+                ->modifier()
+        );
+    
+        /*
+         * Constitution 13: +1
+         * Fighter proficiency at level 1: +2
+         */
+        self::assertSame(
+            3,
+            $savingThrows
+                ->constitution()
+                ->modifier()
+        );
+    }
+
+    public function test_non_proficient_saving_throws_use_only_ability_modifier(): void
+    {
+        $savingThrows = $this->createCharacter()
+            ->savingThrows();
+    
+        self::assertFalse(
+            $savingThrows
+                ->dexterity()
+                ->isProficient()
+        );
+    
+        self::assertSame(
+            0,
+            $savingThrows
+                ->dexterity()
+                ->modifier()
+        );
+    }
+
+    public function test_paladin_has_wisdom_and_charisma_save_proficiencies(): void
+    {
+        $character = Character::create(
+            CharacterId::generate(),
+            CharacterName::fromString('Mr Meat'),
+            Race::fromString('meatkin'),
+            CharacterClass::fromString('paladin'),
+            HitPoints::full(10),
+            AbilityScores::average()
+        );
+    
+        self::assertSame(
+            [
+                'wisdom',
+                'charisma',
+            ],
+            $character
+                ->savingThrows()
+                ->proficiencies()
+        );
+    }
+
+    public function test_saving_throw_modifiers_increase_when_proficiency_bonus_increases(): void
+    {
+        $character = Character::reconstitute(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            Level::fromInt(5),
+            Experience::fromInt(6500),
+            HitPoints::full(30),
+            AbilityScores::fromScores(
+                strength: AbilityScore::fromInt(16),
+                dexterity: AbilityScore::fromInt(12),
+                constitution: AbilityScore::fromInt(14),
+                intelligence: AbilityScore::fromInt(10),
+                wisdom: AbilityScore::fromInt(10),
+                charisma: AbilityScore::fromInt(10),
+            )
+        );
+    
+        $savingThrows = $character->savingThrows();
+    
+        /*
+         * Strength 16: +3
+         * Level 5 proficiency bonus: +3
+         */
+        self::assertSame(
+            6,
+            $savingThrows
+                ->strength()
+                ->modifier()
+        );
+    
+        /*
+         * Dexterity 12: +1
+         * Not proficient
+         */
+        self::assertSame(
+            1,
+            $savingThrows
+                ->dexterity()
+                ->modifier()
+        );
+    }
+
+    public function test_reconstituted_character_derives_saving_throws_from_restored_state(): void
+    {
+        $abilityScores = $this->abilityScores();
+    
+        $character = Character::reconstitute(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            Level::fromInt(7),
+            Experience::fromInt(26000),
+            HitPoints::full(42),
+            $abilityScores
+        );
+    
+        $expected = SavingThrows::fromAbilityScores(
+            $abilityScores,
+            ProficiencyBonus::fromLevel(
+                Level::fromInt(7)
+            ),
+            [
+                'strength',
+                'constitution',
+            ]
+        );
+    
+        self::assertTrue(
+            $character
+                ->savingThrows()
+                ->equals($expected)
+        );
+    }
+
+    public function test_every_character_saving_throw_is_a_saving_throw_value_object(): void
+    {
+        self::assertContainsOnlyInstancesOf(
+            SavingThrow::class,
+            $this->createCharacter()
+                ->savingThrows()
+                ->all()
         );
     }
 }
