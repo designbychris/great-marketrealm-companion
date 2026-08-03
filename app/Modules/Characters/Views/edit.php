@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiency;
 
 defined('ABSPATH') || exit;
 
@@ -36,6 +38,11 @@ $currentRace = $character
 
 $currentClass = $character
     ->characterClass();
+
+$currentBackground = $character
+    ->background();
+
+$backgroundOptions = Background::all();
 
 $companionUrl = home_url(
     '/companion/'
@@ -106,12 +113,42 @@ $fieldError = static function (
     return null;
 };
 
+/**
+ * Convert a canonical identifier into a fallback label.
+ */
+$identifierLabel = static function (
+    string $identifier
+): string {
+    return ucwords(
+        str_replace(
+            '-',
+            ' ',
+            $identifier
+        )
+    );
+};
+
 $nameError = $fieldError('name');
+
+$backgroundError = $fieldError(
+    'background'
+);
 
 $nameValue = isset($old['name'])
     && is_scalar($old['name'])
         ? (string) $old['name']
         : $currentName;
+
+$backgroundValue = isset($old['background'])
+    && is_scalar($old['background'])
+        ? sanitize_key(
+            (string) $old['background']
+        )
+        : $currentBackground->value();
+
+if (! Background::supports($backgroundValue)) {
+    $backgroundValue = $currentBackground->value();
+}
 ?>
 
 <section class="gmrc-character-editor">
@@ -263,12 +300,324 @@ $nameValue = isset($old['name'])
             </div>
         </section>
 
+        <section class="gmrc-form-section">
+            <header class="gmrc-form-section__header">
+                <p class="gmrc-eyebrow">
+                    Personal History
+                </p>
+
+                <h2>Choose a background</h2>
+
+                <p>
+                    A background determines skill proficiencies,
+                    language opportunities and practical training.
+                </p>
+            </header>
+
+            <fieldset
+                class="gmrc-background-selector"
+                <?php echo $backgroundError !== null
+                    ? 'aria-describedby="background-error"'
+                    : ''; ?>
+            >
+                <legend class="screen-reader-text">
+                    Character background
+                </legend>
+
+                <div class="gmrc-background-grid">
+                    <?php foreach ($backgroundOptions as $background) : ?>
+                        <?php
+                        $identifier = $background->value();
+
+                        $isSelected =
+                            $identifier === $backgroundValue;
+
+                        $skills = array_map(
+                            $identifierLabel,
+                            $background
+                                ->skillProficiencies()
+                                ->proficiencies()
+                        );
+
+                        $tools = array_map(
+                            static function (
+                                string $tool
+                            ) use ($identifierLabel): string {
+                                if (
+                                    ToolProficiency::supports(
+                                        $tool
+                                    )
+                                ) {
+                                    return ToolProficiency
+                                        ::fromString($tool)
+                                        ->label();
+                                }
+
+                                return $identifierLabel($tool);
+                            },
+                            $background
+                                ->toolProficiencyIdentifiers()
+                        );
+                        ?>
+
+                        <label
+                            class="
+                                gmrc-background-option
+                                <?php echo $isSelected
+                                    ? 'gmrc-background-option--selected'
+                                    : ''; ?>
+                            "
+                            data-background-option
+                            for="<?php echo esc_attr(
+                                'background-' . $identifier
+                            ); ?>"
+                        >
+                            <input
+                                id="<?php echo esc_attr(
+                                    'background-' . $identifier
+                                ); ?>"
+                                class="gmrc-background-option__input"
+                                type="radio"
+                                name="background"
+                                value="<?php echo esc_attr(
+                                    $identifier
+                                ); ?>"
+                                <?php checked(
+                                    $isSelected
+                                ); ?>
+                                required
+                            >
+
+                            <span
+                                class="gmrc-background-option__image"
+                                aria-hidden="true"
+                            >
+                                <span
+                                    class="
+                                        gmrc-background-option__monogram
+                                    "
+                                >
+                                    <?php echo esc_html(
+                                        strtoupper(
+                                            substr(
+                                                $background->label(),
+                                                0,
+                                                1
+                                            )
+                                        )
+                                    ); ?>
+                                </span>
+                            </span>
+
+                            <span
+                                class="gmrc-background-option__heading"
+                            >
+                                <strong
+                                    class="
+                                        gmrc-background-option__title
+                                    "
+                                >
+                                    <?php echo esc_html(
+                                        $background->label()
+                                    ); ?>
+                                </strong>
+
+                                <span
+                                    class="
+                                        gmrc-background-option__control
+                                    "
+                                    aria-hidden="true"
+                                ></span>
+                            </span>
+
+                            <span
+                                class="gmrc-background-option__summary"
+                            >
+                                <?php echo esc_html(
+                                    implode(', ', $skills)
+                                ); ?>
+                            </span>
+
+                            <span
+                                class="gmrc-background-option__details"
+                                data-background-details
+                                <?php echo $isSelected
+                                    ? ''
+                                    : 'hidden'; ?>
+                            >
+                                <span
+                                    class="
+                                        gmrc-background-option__detail
+                                    "
+                                >
+                                    <strong>Skill proficiencies</strong>
+
+                                    <span>
+                                        <?php echo esc_html(
+                                            $skills !== []
+                                                ? implode(
+                                                    ', ',
+                                                    $skills
+                                                )
+                                                : 'None'
+                                        ); ?>
+                                    </span>
+                                </span>
+
+                                <span
+                                    class="
+                                        gmrc-background-option__detail
+                                    "
+                                >
+                                    <strong>Language choices</strong>
+
+                                    <span>
+                                        <?php echo esc_html(
+                                            (string) $background
+                                                ->languageChoices()
+                                        ); ?>
+                                    </span>
+                                </span>
+
+                                <span
+                                    class="
+                                        gmrc-background-option__detail
+                                    "
+                                >
+                                    <strong>Tool proficiencies</strong>
+
+                                    <span>
+                                        <?php echo esc_html(
+                                            $tools !== []
+                                                ? implode(
+                                                    ', ',
+                                                    $tools
+                                                )
+                                                : 'None'
+                                        ); ?>
+                                    </span>
+                                </span>
+                            </span>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+            </fieldset>
+
+            <?php if ($backgroundError !== null) : ?>
+                <p
+                    id="background-error"
+                    class="gmrc-form-error"
+                    role="alert"
+                >
+                    <?php echo esc_html(
+                        $backgroundError
+                    ); ?>
+                </p>
+            <?php endif; ?>
+
+            <p class="gmrc-form-help">
+                Background artwork will be added to these selection
+                cards later. The monogram currently reserves the same
+                visual space.
+            </p>
+        </section>
+
+        <aside
+            class="gmrc-form-notice"
+            data-background-preview
+        >
+            <h2>Selected background benefits</h2>
+
+            <?php foreach ($backgroundOptions as $background) : ?>
+                <?php
+                $identifier = $background->value();
+
+                $isSelected =
+                    $identifier === $backgroundValue;
+
+                $skills = array_map(
+                    $identifierLabel,
+                    $background
+                        ->skillProficiencies()
+                        ->proficiencies()
+                );
+
+                $tools = array_map(
+                    static function (
+                        string $tool
+                    ) use ($identifierLabel): string {
+                        return ToolProficiency::supports($tool)
+                            ? ToolProficiency
+                                ::fromString($tool)
+                                ->label()
+                            : $identifierLabel($tool);
+                    },
+                    $background
+                        ->toolProficiencyIdentifiers()
+                );
+                ?>
+
+                <div
+                    data-background-preview-panel="<?php
+                    echo esc_attr($identifier);
+                    ?>"
+                    <?php echo $isSelected
+                        ? ''
+                        : 'hidden'; ?>
+                >
+                    <h3>
+                        <?php echo esc_html(
+                            $background->label()
+                        ); ?>
+                    </h3>
+
+                    <dl class="gmrc-definition-list">
+                        <div>
+                            <dt>Skill proficiencies</dt>
+
+                            <dd>
+                                <?php echo esc_html(
+                                    $skills !== []
+                                        ? implode(', ', $skills)
+                                        : 'None'
+                                ); ?>
+                            </dd>
+                        </div>
+
+                        <div>
+                            <dt>Language choices</dt>
+
+                            <dd>
+                                <?php echo esc_html(
+                                    (string) $background
+                                        ->languageChoices()
+                                ); ?>
+                            </dd>
+                        </div>
+
+                        <div>
+                            <dt>Tool proficiencies</dt>
+
+                            <dd>
+                                <?php echo esc_html(
+                                    $tools !== []
+                                        ? implode(', ', $tools)
+                                        : 'None'
+                                ); ?>
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            <?php endforeach; ?>
+        </aside>
+
         <aside class="gmrc-form-notice">
             <h2>Current adventuring record</h2>
 
             <dl class="gmrc-definition-list">
                 <div>
                     <dt>Level</dt>
+
                     <dd>
                         <?php echo esc_html(
                             (string) $character
@@ -280,6 +629,7 @@ $nameValue = isset($old['name'])
 
                 <div>
                     <dt>Experience</dt>
+
                     <dd>
                         <?php echo esc_html(
                             (string) $character
@@ -291,6 +641,7 @@ $nameValue = isset($old['name'])
 
                 <div>
                     <dt>Race</dt>
+
                     <dd>
                         <?php echo esc_html(
                             $currentRace->label()
@@ -300,9 +651,20 @@ $nameValue = isset($old['name'])
 
                 <div>
                     <dt>Class</dt>
+
                     <dd>
                         <?php echo esc_html(
                             $currentClass->label()
+                        ); ?>
+                    </dd>
+                </div>
+
+                <div>
+                    <dt>Current background</dt>
+
+                    <dd>
+                        <?php echo esc_html(
+                            $currentBackground->label()
                         ); ?>
                     </dd>
                 </div>
@@ -347,3 +709,61 @@ $nameValue = isset($old['name'])
         </div>
     </form>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const selector = document.querySelector(
+        '.gmrc-background-selector'
+    );
+
+    if (!selector) {
+        return;
+    }
+
+    const inputs = selector.querySelectorAll(
+        'input[name="background"]'
+    );
+
+    const options = selector.querySelectorAll(
+        '[data-background-option]'
+    );
+
+    const previewPanels = document.querySelectorAll(
+        '[data-background-preview-panel]'
+    );
+
+    const updateBackgroundDisplay = function (value) {
+        options.forEach(function (option) {
+            const input = option.querySelector(
+                'input[name="background"]'
+            );
+
+            const details = option.querySelector(
+                '[data-background-details]'
+            );
+
+            const selected = input && input.value === value;
+
+            option.classList.toggle(
+                'gmrc-background-option--selected',
+                selected
+            );
+
+            if (details) {
+                details.hidden = !selected;
+            }
+        });
+
+        previewPanels.forEach(function (panel) {
+            panel.hidden =
+                panel.dataset.backgroundPreviewPanel !== value;
+        });
+    };
+
+    inputs.forEach(function (input) {
+        input.addEventListener('change', function () {
+            updateBackgroundDisplay(input.value);
+        });
+    });
+});
+</script>
