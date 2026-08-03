@@ -168,6 +168,34 @@ final class Race implements Stringable
     }
 
     /**
+     * Return every supported race identifier.
+     *
+     * @return array<int,string>
+     */
+    public static function identifiers(): array
+    {
+        return array_keys(
+            self::RACES
+        );
+    }
+    
+    /**
+     * Return every supported race label,
+     * keyed by canonical identifier.
+     *
+     * @return array<string,string>
+     */
+    public static function labels(): array
+    {
+        return array_map(
+            static fn (
+                array $race
+            ): string => $race['label'],
+            self::RACES
+        );
+    }
+
+    /**
      * Normalise race input.
      */
     private static function normalise(
