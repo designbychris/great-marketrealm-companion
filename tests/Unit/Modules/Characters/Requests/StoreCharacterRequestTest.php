@@ -33,7 +33,6 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Requests {
     use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequestWordPressState;
     use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
     use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
-    use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequest;
     use PHPUnit\Framework\Attributes\DataProvider;
     use PHPUnit\Framework\TestCase;
 
