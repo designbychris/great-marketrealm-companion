@@ -13,6 +13,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ProficiencyBonus;
 
 defined('ABSPATH') || exit;
 
@@ -168,6 +169,16 @@ final class Character
         return ArmourClass::unarmoured(
             $this->abilityScores
                 ->dexterity()
+        );
+    }
+
+    /**
+     * Calculate the Character's proficiency bonus.
+     */
+    public function proficiencyBonus(): ProficiencyBonus
+    {
+        return ProficiencyBonus::fromLevel(
+            $this->level
         );
     }
 
