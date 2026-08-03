@@ -31,6 +31,8 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Requests {
     use GreatMarketrealmCompanion\Core\Http\Validation\ValidationException;
     use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequest;
     use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequestWordPressState;
+    use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
+    use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
     use PHPUnit\Framework\Attributes\DataProvider;
     use PHPUnit\Framework\TestCase;
 
@@ -127,9 +129,12 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Requests {
                     'required',
                     'string',
                     'max:100',
+                    'in:' . implode(
+                        ',',
+                        Race::identifiers()
+                    ),
                 ],
-                (new StoreCharacterRequest())
-                    ->rules()['race']
+                $request->rules()['race']
             );
         }
 
@@ -140,9 +145,12 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Requests {
                     'required',
                     'string',
                     'max:100',
+                    'in:' . implode(
+                        ',',
+                        CharacterClass::identifiers()
+                    ),
                 ],
-                (new StoreCharacterRequest())
-                    ->rules()['class']
+                $request->rules()['class']
             );
         }
 
