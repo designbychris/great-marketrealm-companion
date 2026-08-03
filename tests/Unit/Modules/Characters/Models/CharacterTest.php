@@ -24,6 +24,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SavingThrow
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Skill;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SkillProficiencies;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Skills;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Condition;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Conditions;
 use PHPUnit\Framework\TestCase;
 
 final class CharacterTest extends TestCase
@@ -1324,6 +1326,236 @@ final class CharacterTest extends TestCase
             $character
                 ->skills()
                 ->equals($expected)
+        );
+    }
+
+    public function test_new_character_starts_without_conditions(): void
+    {
+        $character = $this->createCharacter();
+    
+        self::assertInstanceOf(
+            Conditions::class,
+            $character->conditions()
+        );
+    
+        self::assertTrue(
+            $character
+                ->conditions()
+                ->isEmpty()
+        );
+    }
+
+    public function test_it_can_apply_a_condition(): void
+    {
+        $character = $this->createCharacter();
+    
+        $character->applyCondition(
+            'poisoned'
+        );
+    
+        self::assertTrue(
+            $character->hasCondition(
+                'poisoned'
+            )
+        );
+    
+        self::assertSame(
+            ['poisoned'],
+            $character
+                ->conditions()
+                ->values()
+        );
+    }
+
+    public function test_applying_a_condition_normalises_its_identifier(): void
+    {
+        $character = $this->createCharacter();
+    
+        $character->applyCondition(
+            ' POISONED '
+        );
+    
+        self::assertTrue(
+            $character->hasCondition(
+                'poisoned'
+            )
+        );
+    }
+
+    public function test_applying_the_same_condition_twice_does_not_duplicate_it(): void
+    {
+        $character = $this->createCharacter();
+    
+        $character->applyCondition(
+            'poisoned'
+        );
+    
+        $character->applyCondition(
+            'POISONED'
+        );
+    
+        self::assertSame(
+            ['poisoned'],
+            $character
+                ->conditions()
+                ->values()
+        );
+    
+        self::assertSame(
+            1,
+            $character
+                ->conditions()
+                ->count()
+        );
+    }
+
+    public function test_it_can_remove_a_condition(): void
+    {
+        $character = $this->createCharacter();
+    
+        $character->applyCondition(
+            'poisoned'
+        );
+    
+        $character->applyCondition(
+            'prone'
+        );
+    
+        $character->removeCondition(
+            'poisoned'
+        );
+    
+        self::assertFalse(
+            $character->hasCondition(
+                'poisoned'
+            )
+        );
+    
+        self::assertTrue(
+            $character->hasCondition(
+                'prone'
+            )
+        );
+    }
+
+    public function test_removing_a_missing_condition_leaves_state_unchanged(): void
+    {
+        $character = $this->createCharacter();
+    
+        $character->applyCondition(
+            'poisoned'
+        );
+    
+        $character->removeCondition(
+            'prone'
+        );
+    
+        self::assertSame(
+            ['poisoned'],
+            $character
+                ->conditions()
+                ->values()
+        );
+    }
+
+    public function test_has_condition_accepts_a_normalised_identifier(): void
+    {
+        $character = $this->createCharacter();
+    
+        $character->applyCondition(
+            'restrained'
+        );
+    
+        self::assertTrue(
+            $character->hasCondition(
+                ' RESTRAINED '
+            )
+        );
+    }
+
+    public function test_reconstituted_character_restores_conditions(): void
+    {
+        $conditions = Conditions::fromStrings([
+            'poisoned',
+            'prone',
+        ]);
+    
+        $character = Character::reconstitute(
+            CharacterId::generate(),
+            CharacterName::fromString(
+                'Sir Allium'
+            ),
+            Race::fromString(
+                'fructan'
+            ),
+            CharacterClass::fromString(
+                'fighter'
+            ),
+            Level::fromInt(7),
+            Experience::fromInt(26000),
+            HitPoints::full(42),
+            $this->abilityScores(),
+            $conditions
+        );
+    
+        self::assertTrue(
+            $character
+                ->conditions()
+                ->equals($conditions)
+        );
+    
+        self::assertTrue(
+            $character->hasCondition(
+                'poisoned'
+            )
+        );
+    
+        self::assertTrue(
+            $character->hasCondition(
+                'prone'
+            )
+        );
+    }
+
+    public function test_reconstituted_character_defaults_to_no_conditions(): void
+    {
+        $character = Character::reconstitute(
+            CharacterId::generate(),
+            CharacterName::fromString(
+                'Sir Allium'
+            ),
+            Race::fromString(
+                'fructan'
+            ),
+            CharacterClass::fromString(
+                'fighter'
+            ),
+            Level::fromInt(7),
+            Experience::fromInt(26000),
+            HitPoints::full(42),
+            $this->abilityScores()
+        );
+    
+        self::assertTrue(
+            $character
+                ->conditions()
+                ->isEmpty()
+        );
+    }
+
+    public function test_condition_state_is_held_by_condition_value_objects(): void
+    {
+        $character = $this->createCharacter();
+    
+        $character->applyCondition(
+            'stunned'
+        );
+    
+        self::assertContainsOnlyInstancesOf(
+            Condition::class,
+            $character
+                ->conditions()
+                ->all()
         );
     }
 }
