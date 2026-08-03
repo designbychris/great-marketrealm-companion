@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Characters\Requests;
 
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
 use GreatMarketrealmCompanion\Core\Http\FormRequest;
 
 defined('ABSPATH') || exit;
