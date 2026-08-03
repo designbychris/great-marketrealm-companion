@@ -9,6 +9,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScor
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ProficiencyBonus;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Skill;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Skills;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SkillProficiencies;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -191,10 +192,10 @@ final class SkillsTest extends TestCase
         $skills = Skills::fromAbilityScores(
             $this->abilityScores(),
             ProficiencyBonus::fromInt(2),
-            [
+            SkillProficiencies::proficient([
                 'athletics',
                 'perception',
-            ]
+            ])
         );
 
         self::assertSame(
@@ -221,10 +222,9 @@ final class SkillsTest extends TestCase
         $skills = Skills::fromAbilityScores(
             $this->abilityScores(),
             ProficiencyBonus::fromInt(3),
-            [],
-            [
+            SkillProficiencies::expertise([
                 'stealth',
-            ]
+            ])
         );
 
         self::assertSame(
@@ -483,15 +483,27 @@ final class SkillsTest extends TestCase
         $first = Skills::fromAbilityScores(
             $this->abilityScores(),
             ProficiencyBonus::fromInt(2),
-            ['athletics'],
-            ['stealth']
+            SkillProficiencies::fromArrays(
+                proficient: [
+                    'athletics',
+                ],
+                expertise: [
+                    'stealth',
+                ]
+            )
         );
 
         $second = Skills::fromAbilityScores(
             $this->abilityScores(),
             ProficiencyBonus::fromInt(2),
-            ['athletics'],
-            ['stealth']
+            SkillProficiencies::fromArrays(
+                proficient: [
+                    'athletics',
+                ],
+                expertise: [
+                    'stealth',
+                ]
+            )
         );
 
         self::assertTrue(
@@ -535,6 +547,63 @@ final class SkillsTest extends TestCase
             intelligence: AbilityScore::fromInt(10),
             wisdom: AbilityScore::fromInt(8),
             charisma: AbilityScore::fromInt(6),
+        );
+    }
+
+    public function testUsesSkillProficienciesValueObject(): void
+    {
+        $proficiencies =
+            SkillProficiencies::fromArrays(
+                proficient: [
+                    'athletics',
+                ],
+                expertise: [
+                    'stealth',
+                ]
+            );
+    
+        $skills = Skills::fromAbilityScores(
+            $this->abilityScores(),
+            ProficiencyBonus::fromInt(2),
+            $proficiencies
+        );
+    
+        self::assertTrue(
+            $skills->athletics()
+                ->isProficient()
+        );
+    
+        self::assertFalse(
+            $skills->athletics()
+                ->hasExpertise()
+        );
+    
+        self::assertTrue(
+            $skills->stealth()
+                ->isProficient()
+        );
+    
+        self::assertTrue(
+            $skills->stealth()
+                ->hasExpertise()
+        );
+    }
+    
+    public function testDefaultsToNoSkillProficiencies(): void
+    {
+        $skills = Skills::fromAbilityScores(
+            $this->abilityScores(),
+            ProficiencyBonus::fromInt(2)
+        );
+    
+        self::assertSame(
+            [],
+            $skills->proficiencies()
+        );
+    
+        self::assertSame(
+            [],
+            $skills->expertise()
         );
     }
 }
