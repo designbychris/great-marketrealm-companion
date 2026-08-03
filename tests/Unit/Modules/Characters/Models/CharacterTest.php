@@ -16,6 +16,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ArmourClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ProficiencyBonus;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Speed;
 use PHPUnit\Framework\TestCase;
 
 final class CharacterTest extends TestCase
@@ -688,6 +689,56 @@ final class CharacterTest extends TestCase
                 ->proficiencyBonus()
                 ->equals(
                     ProficiencyBonus::fromInt(5)
+                )
+        );
+    }
+
+    public function test_it_returns_a_speed(): void
+    {
+        self::assertInstanceOf(
+            Speed::class,
+            $this->createCharacter()->speed()
+        );
+    }
+    
+    public function test_character_has_standard_speed(): void
+    {
+        self::assertSame(
+            30,
+            $this->createCharacter()
+                ->speed()
+                ->feet()
+        );
+    }
+    
+    public function test_character_speed_is_formatted_for_display(): void
+    {
+        self::assertSame(
+            '30 ft',
+            $this->createCharacter()
+                ->speed()
+                ->formatted()
+        );
+    }
+    
+    public function test_reconstituted_character_has_standard_speed(): void
+    {
+        $character = Character::reconstitute(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            Level::fromInt(7),
+            Experience::fromInt(26000),
+            HitPoints::full(42),
+            $this->abilityScores()
+        );
+    
+        self::assertTrue(
+            $character
+                ->speed()
+                ->equals(
+                    Speed::standard()
                 )
         );
     }
