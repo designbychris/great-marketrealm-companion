@@ -18,13 +18,14 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequest;
+use GreatMarketrealmCompanion\Modules\Characters\Requests\UpdateCharacterRequest;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
 use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
 use GreatMarketrealmCompanion\Services\Characters\ClassRegistry;
 use GreatMarketrealmCompanion\Services\Characters\RaceRegistry;
 use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
-use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -130,35 +131,27 @@ final class CharacterController
         );
     }
 
-    /**
-     * Update an existing Character.
-     */
     public function update(
-        string $id
+        string $id,
+        UpdateCharacterRequest $request
     ): Character {
-        $character = $this->findCharacter($id);
-    
-        $name = $this->request->string(
-            'name'
+        $character = $this->findCharacter(
+            $id
         );
     
-        $background = $this->request->string(
-            'background'
+        $data = $request->characterData();
+    
+        $character->rename(
+            CharacterName::fromString(
+                $data['name']
+            )
         );
     
-        if ($name !== '') {
-            $character->rename(
-                CharacterName::fromString($name)
-            );
-        }
-    
-        if ($background !== '') {
-            $character->changeBackground(
-                Background::fromString(
-                    $background
-                )
-            );
-        }
+        $character->changeBackground(
+            Background::fromString(
+                $data['background']
+            )
+        );
     
         return $this->updateCharacter->handle(
             $character
