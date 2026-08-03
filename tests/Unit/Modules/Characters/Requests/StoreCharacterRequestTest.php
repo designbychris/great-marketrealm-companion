@@ -157,6 +157,7 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Requests {
                 $request->rules()['class']
             );
         }
+        
         public function testReturnsValidatedCharacterData(): void
         {
             $_POST = [
