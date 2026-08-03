@@ -15,6 +15,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
 use RuntimeException;
 use WP_Post;
 
@@ -44,6 +45,7 @@ final class CharacterRepository implements CharacterRepositoryInterface
     private const META_INTELLIGENCE = '_gmrc_intelligence';
     private const META_WISDOM = '_gmrc_wisdom';
     private const META_CHARISMA = '_gmrc_charisma';
+    private const META_BACKGROUND = '_gmrc_background';
 
     private string $postType = 'gmrc_character';
 
@@ -234,7 +236,15 @@ final class CharacterRepository implements CharacterRepositoryInterface
                 ->characterClass()
                 ->value()
         );
-
+        
+        update_post_meta(
+            $postId,
+            self::META_BACKGROUND,
+            $character
+                ->background()
+                ->value()
+        );
+        
         update_post_meta(
             $postId,
             self::META_LEVEL,
@@ -285,25 +295,33 @@ final class CharacterRepository implements CharacterRepositoryInterface
             self::META_CHARACTER_ID,
             true
         );
-        
+    
         if ($characterId === '') {
-            $characterId = CharacterId::generate()->value();
-        
+            $characterId =
+                CharacterId::generate()->value();
+    
             update_post_meta(
                 $post->ID,
                 self::META_CHARACTER_ID,
                 $characterId
             );
         }
-
+    
         return Character::reconstitute(
-            CharacterId::fromString($characterId),
-            CharacterName::fromString(
+            id: CharacterId::fromString(
+                $characterId
+            ),
+            name: CharacterName::fromString(
                 $post->post_title
             ),
-            $this->mapRace($post->ID),
-            $this->mapCharacterClass($post->ID),
-            Level::fromInt(
+            race: $this->mapRace(
+                $post->ID
+            ),
+            characterClass:
+                $this->mapCharacterClass(
+                    $post->ID
+                ),
+            level: Level::fromInt(
                 max(
                     1,
                     (int) get_post_meta(
@@ -313,7 +331,7 @@ final class CharacterRepository implements CharacterRepositoryInterface
                     )
                 )
             ),
-            Experience::fromInt(
+            experience: Experience::fromInt(
                 max(
                     0,
                     (int) get_post_meta(
@@ -323,7 +341,7 @@ final class CharacterRepository implements CharacterRepositoryInterface
                     )
                 )
             ),
-            HitPoints::fromValues(
+            hitPoints: HitPoints::fromValues(
                 current: max(
                     0,
                     (int) get_post_meta(
@@ -349,7 +367,7 @@ final class CharacterRepository implements CharacterRepositoryInterface
                     )
                 )
             ),
-            AbilityScores::fromScores(
+            abilityScores: AbilityScores::fromScores(
                 strength: $this->mapAbilityScore(
                     $post->ID,
                     self::META_STRENGTH
@@ -374,6 +392,9 @@ final class CharacterRepository implements CharacterRepositoryInterface
                     $post->ID,
                     self::META_CHARISMA
                 ),
+            ),
+            background: $this->mapBackground(
+                $post->ID
             )
         );
     }
@@ -422,6 +443,39 @@ final class CharacterRepository implements CharacterRepositoryInterface
             : 'fighter';
 
         return CharacterClass::fromString($value);
+    }
+
+    /**
+     * Rebuild the Character background from post metadata.
+     *
+     * Legacy Characters without stored background metadata
+     * are migrated to the default Market Runner background.
+     */
+    private function mapBackground(
+        int $postId
+    ): Background {
+        $stored = get_post_meta(
+            $postId,
+            self::META_BACKGROUND,
+            true
+        );
+    
+        if (
+            ! is_string($stored)
+            || trim($stored) === ''
+        ) {
+            $stored = 'market-runner';
+    
+            update_post_meta(
+                $postId,
+                self::META_BACKGROUND,
+                $stored
+            );
+        }
+    
+        return Background::fromString(
+            $stored
+        );
     }
 
     /**
