@@ -40,6 +40,14 @@ $experience = $character
     ->experience()
     ->value();
 
+$armourClass = $character
+    ->armourClass()
+    ->value();
+
+$proficiencyBonus = $character
+    ->proficiencyBonus()
+    ->signed();
+
 $hitPoints = $character->hitPoints();
 
 $abilityScores = $character
@@ -208,6 +216,48 @@ $abilities = [
     </div>
 
     <div class="gmrc-character-sheet__panels">
+        <section class="gmrc-ledger-panel">
+            <header class="gmrc-ledger-panel__header">
+                <p class="gmrc-eyebrow">
+                    Combat Measures
+                </p>
+        
+                <h2>Core Statistics</h2>
+            </header>
+        
+            <dl class="gmrc-stat-grid gmrc-stat-grid--three">
+                <div class="gmrc-stat-card">
+                    <dt>Armour Class</dt>
+        
+                    <dd>
+                        <?php echo esc_html(
+                            (string) $armourClass
+                        ); ?>
+                    </dd>
+                </div>
+        
+                <div class="gmrc-stat-card">
+                    <dt>Proficiency Bonus</dt>
+        
+                    <dd>
+                        <?php echo esc_html(
+                            $proficiencyBonus
+                        ); ?>
+                    </dd>
+                </div>
+        
+                <div class="gmrc-stat-card">
+                    <dt>Level</dt>
+        
+                    <dd>
+                        <?php echo esc_html(
+                            (string) $level
+                        ); ?>
+                    </dd>
+                </div>
+            </dl>
+        </section>
+        
         <section class="gmrc-ledger-panel">
             <header class="gmrc-ledger-panel__header">
                 <p class="gmrc-eyebrow">
