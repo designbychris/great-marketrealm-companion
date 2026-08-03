@@ -62,6 +62,18 @@ $passivePerception = $character
 
 $hitPoints = $character->hitPoints();
 
+$savingThrows = $character
+    ->savingThrows();
+
+$savingThrowLabels = [
+    'strength' => 'Strength',
+    'dexterity' => 'Dexterity',
+    'constitution' => 'Constitution',
+    'intelligence' => 'Intelligence',
+    'wisdom' => 'Wisdom',
+    'charisma' => 'Charisma',
+];
+
 $abilityScores = $character
     ->abilityScores();
 
@@ -288,6 +300,60 @@ $abilities = [
                     </dd>
                 </div>
             </dl>
+        </section>
+
+        <section class="gmrc-ledger-panel">
+            <header class="gmrc-ledger-panel__header">
+                <p class="gmrc-eyebrow">
+                    Defensive Measures
+                </p>
+        
+                <h2>Saving Throws</h2>
+            </header>
+        
+            <dl class="gmrc-stat-grid gmrc-stat-grid--abilities">
+                <?php foreach ($savingThrowLabels as $ability => $label) : ?>
+                    <?php
+                    $savingThrow = $savingThrows->get(
+                        $ability
+                    );
+                    ?>
+        
+                    <div
+                        class="
+                            gmrc-stat-card
+                            <?php echo $savingThrow->isProficient()
+                                ? 'gmrc-stat-card--proficient'
+                                : ''; ?>
+                        "
+                    >
+                        <dt>
+                            <?php if ($savingThrow->isProficient()) : ?>
+                                <span
+                                    class="gmrc-proficiency-marker"
+                                    aria-label="Proficient"
+                                    title="Proficient"
+                                >
+                                    ●
+                                </span>
+                            <?php endif; ?>
+        
+                            <?php echo esc_html($label); ?>
+                        </dt>
+        
+                        <dd>
+                            <?php echo esc_html(
+                                $savingThrow->signed()
+                            ); ?>
+                        </dd>
+                    </div>
+                <?php endforeach; ?>
+            </dl>
+        
+            <p class="gmrc-status-note">
+                <span aria-hidden="true">●</span>
+                indicates a proficient saving throw.
+            </p>
         </section>
         
         <section class="gmrc-ledger-panel">
