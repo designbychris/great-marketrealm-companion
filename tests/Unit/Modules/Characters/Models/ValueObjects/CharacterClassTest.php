@@ -200,6 +200,323 @@ final class CharacterClassTest extends TestCase
         );
     }
 
+
+    #[DataProvider('savingThrowProficiencyProvider')]
+        public function testReturnsTheCorrectSavingThrowProficiencies(
+            string $className,
+            array $expectedProficiencies
+        ): void {
+            self::assertSame(
+                $expectedProficiencies,
+                CharacterClass::fromString(
+                    $className
+                )->savingThrowProficiencies()
+            );
+        }
+        
+        /**
+         * @return array<string,array{
+         *     0:string,
+         *     1:array<int,string>
+         * }>
+         */
+        public static function savingThrowProficiencyProvider(): array
+        {
+            return [
+                'grocer' => [
+                    'grocer',
+                    [
+                        'wisdom',
+                        'charisma',
+                    ],
+                ],
+                'cleaver saint' => [
+                    'cleaver-saint',
+                    [
+                        'wisdom',
+                        'charisma',
+                    ],
+                ],
+                'artificer' => [
+                    'artificer',
+                    [
+                        'constitution',
+                        'intelligence',
+                    ],
+                ],
+                'barbarian' => [
+                    'barbarian',
+                    [
+                        'strength',
+                        'constitution',
+                    ],
+                ],
+                'bard' => [
+                    'bard',
+                    [
+                        'dexterity',
+                        'charisma',
+                    ],
+                ],
+                'cleric' => [
+                    'cleric',
+                    [
+                        'wisdom',
+                        'charisma',
+                    ],
+                ],
+                'druid' => [
+                    'druid',
+                    [
+                        'intelligence',
+                        'wisdom',
+                    ],
+                ],
+                'fighter' => [
+                    'fighter',
+                    [
+                        'strength',
+                        'constitution',
+                    ],
+                ],
+                'monk' => [
+                    'monk',
+                    [
+                        'strength',
+                        'dexterity',
+                    ],
+                ],
+                'paladin' => [
+                    'paladin',
+                    [
+                        'wisdom',
+                        'charisma',
+                    ],
+                ],
+                'ranger' => [
+                    'ranger',
+                    [
+                        'strength',
+                        'dexterity',
+                    ],
+                ],
+                'rogue' => [
+                    'rogue',
+                    [
+                        'dexterity',
+                        'intelligence',
+                    ],
+                ],
+                'sorcerer' => [
+                    'sorcerer',
+                    [
+                        'constitution',
+                        'charisma',
+                    ],
+                ],
+                'warlock' => [
+                    'warlock',
+                    [
+                        'wisdom',
+                        'charisma',
+                    ],
+                ],
+                'wizard' => [
+                    'wizard',
+                    [
+                        'intelligence',
+                        'wisdom',
+                    ],
+                ],
+            ];
+        }
+        
+        #[DataProvider('savingThrowProficiencyProvider')]
+        public function testEveryClassHasExactlyTwoSavingThrowProficiencies(
+            string $className,
+            array $expectedProficiencies
+        ): void {
+            unset($expectedProficiencies);
+        
+            self::assertCount(
+                2,
+                CharacterClass::fromString(
+                    $className
+                )->savingThrowProficiencies()
+            );
+        }
+        
+        #[DataProvider('proficientSavingThrowProvider')]
+        public function testRecognisesSavingThrowProficiency(
+            string $className,
+            string $ability
+        ): void {
+            self::assertTrue(
+                CharacterClass::fromString(
+                    $className
+                )->isProficientInSavingThrow(
+                    $ability
+                )
+            );
+        }
+        
+        /**
+         * @return array<string,array{string,string}>
+         */
+        public static function proficientSavingThrowProvider(): array
+        {
+            return [
+                'fighter strength' => [
+                    'fighter',
+                    'strength',
+                ],
+                'fighter constitution' => [
+                    'fighter',
+                    'constitution',
+                ],
+                'wizard intelligence' => [
+                    'wizard',
+                    'intelligence',
+                ],
+                'wizard wisdom' => [
+                    'wizard',
+                    'wisdom',
+                ],
+                'paladin wisdom' => [
+                    'paladin',
+                    'wisdom',
+                ],
+                'paladin charisma' => [
+                    'paladin',
+                    'charisma',
+                ],
+                'grocer wisdom' => [
+                    'grocer',
+                    'wisdom',
+                ],
+                'grocer charisma' => [
+                    'grocer',
+                    'charisma',
+                ],
+            ];
+        }
+        
+        public function testSavingThrowProficiencyCheckNormalisesCase(): void
+        {
+            $class = CharacterClass::fromString(
+                'fighter'
+            );
+        
+            self::assertTrue(
+                $class->isProficientInSavingThrow(
+                    'STRENGTH'
+                )
+            );
+        
+            self::assertTrue(
+                $class->isProficientInSavingThrow(
+                    'Constitution'
+                )
+            );
+        }
+        
+        public function testSavingThrowProficiencyCheckTrimsWhitespace(): void
+        {
+            self::assertTrue(
+                CharacterClass::fromString(
+                    'wizard'
+                )->isProficientInSavingThrow(
+                    '  wisdom  '
+                )
+            );
+        }
+        
+        #[DataProvider('nonProficientSavingThrowProvider')]
+        public function testRejectsNonProficientSavingThrows(
+            string $className,
+            string $ability
+        ): void {
+            self::assertFalse(
+                CharacterClass::fromString(
+                    $className
+                )->isProficientInSavingThrow(
+                    $ability
+                )
+            );
+        }
+        
+        /**
+         * @return array<string,array{string,string}>
+         */
+        public static function nonProficientSavingThrowProvider(): array
+        {
+            return [
+                'fighter dexterity' => [
+                    'fighter',
+                    'dexterity',
+                ],
+                'fighter wisdom' => [
+                    'fighter',
+                    'wisdom',
+                ],
+                'wizard strength' => [
+                    'wizard',
+                    'strength',
+                ],
+                'wizard charisma' => [
+                    'wizard',
+                    'charisma',
+                ],
+                'paladin strength' => [
+                    'paladin',
+                    'strength',
+                ],
+                'grocer intelligence' => [
+                    'grocer',
+                    'intelligence',
+                ],
+            ];
+        }
+        
+        public function testSavingThrowProficienciesUseCanonicalAbilityIdentifiers(): void
+        {
+            $supportedAbilities = [
+                'strength',
+                'dexterity',
+                'constitution',
+                'intelligence',
+                'wisdom',
+                'charisma',
+            ];
+        
+            foreach (CharacterClass::all() as $class) {
+                foreach (
+                    $class->savingThrowProficiencies()
+                    as $ability
+                ) {
+                    self::assertContains(
+                        $ability,
+                        $supportedAbilities
+                    );
+                }
+            }
+        }
+        
+        public function testSavingThrowProficienciesContainNoDuplicates(): void
+        {
+            foreach (CharacterClass::all() as $class) {
+                $proficiencies =
+                    $class->savingThrowProficiencies();
+        
+                self::assertSame(
+                    $proficiencies,
+                    array_values(
+                        array_unique($proficiencies)
+                    )
+                );
+            }
+        }
+
     /**
      * @return array<string,array{string,int}>
      */
