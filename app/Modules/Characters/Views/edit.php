@@ -368,6 +368,9 @@ if (! Background::supports($backgroundValue)) {
                                     : ''; ?>
                             "
                             data-background-option
+                            aria-current="<?php echo $isSelected
+                                ? 'true'
+                                : 'false'; ?>"
                             for="<?php echo esc_attr(
                                 'background-' . $identifier
                             ); ?>"
