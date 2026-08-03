@@ -46,6 +46,7 @@ final class UpdateCharacterRequest extends FormRequest
             'background' => [
                 'required',
                 'string',
+                'max:100',
                 'in:' . implode(
                     ',',
                     Background::identifiers()
