@@ -446,8 +446,17 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
             );
         
             self::assertSame(
-                $character,
-                $returned
+                303,
+                $returned->status()
+            );
+        
+            self::assertSame(
+                'https://example.test/companion/'
+                    . '?gmrc_route=characters%2F'
+                    . rawurlencode(
+                        $character->id()->value()
+                    ),
+                $returned->destination()
             );
         
             self::assertSame(
