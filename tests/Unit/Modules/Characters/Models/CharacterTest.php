@@ -21,6 +21,9 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Initiative;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\PassivePerception;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SavingThrow;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SavingThrows;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Skill;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SkillProficiencies;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Skills;
 use PHPUnit\Framework\TestCase;
 
 final class CharacterTest extends TestCase
@@ -1153,6 +1156,174 @@ final class CharacterTest extends TestCase
             $this->createCharacter()
                 ->savingThrows()
                 ->all()
+        );
+    }
+
+    public function test_it_returns_skill_proficiencies(): void
+    {
+        self::assertInstanceOf(
+            SkillProficiencies::class,
+            $this->createCharacter()
+                ->skillProficiencies()
+        );
+    }
+    
+    public function test_new_character_has_no_skill_proficiencies_yet(): void
+    {
+        $proficiencies = $this->createCharacter()
+            ->skillProficiencies();
+    
+        self::assertTrue(
+            $proficiencies->isEmpty()
+        );
+    
+        self::assertSame(
+            [],
+            $proficiencies->proficiencies()
+        );
+    
+        self::assertSame(
+            [],
+            $proficiencies->expertiseSkills()
+        );
+    }
+    
+    public function test_it_returns_skills(): void
+    {
+        self::assertInstanceOf(
+            Skills::class,
+            $this->createCharacter()
+                ->skills()
+        );
+    }
+    
+    public function test_it_returns_all_eighteen_skills(): void
+    {
+        self::assertCount(
+            18,
+            $this->createCharacter()
+                ->skills()
+                ->all()
+        );
+    }
+    
+    public function test_every_character_skill_is_a_skill_value_object(): void
+    {
+        self::assertContainsOnlyInstancesOf(
+            Skill::class,
+            $this->createCharacter()
+                ->skills()
+                ->all()
+        );
+    }
+    
+    public function test_untrained_skills_use_their_governing_ability_modifiers(): void
+    {
+        $character = Character::create(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            HitPoints::full(12),
+            $this->abilityScores()
+        );
+    
+        $skills = $character->skills();
+    
+        /*
+         * Strength 15: +2
+         */
+        self::assertSame(
+            2,
+            $skills
+                ->athletics()
+                ->modifier()
+        );
+    
+        /*
+         * Dexterity 14: +2
+         */
+        self::assertSame(
+            2,
+            $skills
+                ->stealth()
+                ->modifier()
+        );
+    
+        /*
+         * Intelligence 12: +1
+         */
+        self::assertSame(
+            1,
+            $skills
+                ->arcana()
+                ->modifier()
+        );
+    
+        /*
+         * Wisdom 10: +0
+         */
+        self::assertSame(
+            0,
+            $skills
+                ->perception()
+                ->modifier()
+        );
+    
+        /*
+         * Charisma 8: -1
+         */
+        self::assertSame(
+            -1,
+            $skills
+                ->persuasion()
+                ->modifier()
+        );
+    }
+    
+    public function test_character_skills_are_not_proficient_by_default(): void
+    {
+        $skills = $this->createCharacter()
+            ->skills();
+    
+        self::assertSame(
+            [],
+            $skills->proficiencies()
+        );
+    
+        self::assertSame(
+            [],
+            $skills->expertise()
+        );
+    }
+    
+    public function test_reconstituted_character_derives_skills_from_restored_ability_scores(): void
+    {
+        $abilityScores = $this->abilityScores();
+    
+        $character = Character::reconstitute(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            Level::fromInt(7),
+            Experience::fromInt(26000),
+            HitPoints::full(42),
+            $abilityScores
+        );
+    
+        $expected = Skills::fromAbilityScores(
+            $abilityScores,
+            ProficiencyBonus::fromLevel(
+                Level::fromInt(7)
+            ),
+            SkillProficiencies::none()
+        );
+    
+        self::assertTrue(
+            $character
+                ->skills()
+                ->equals($expected)
         );
     }
 }
