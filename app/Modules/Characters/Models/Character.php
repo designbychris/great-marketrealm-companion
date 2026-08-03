@@ -16,6 +16,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ProficiencyBonus;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Speed;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Initiative;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\PassivePerception;
 
 defined('ABSPATH') || exit;
 
@@ -192,6 +193,17 @@ final class Character
     {
         return ProficiencyBonus::fromLevel(
             $this->level
+        );
+    }
+
+    /**
+     * Calculate the Character's Passive Perception.
+     */
+    public function passivePerception(): PassivePerception
+    {
+        return PassivePerception::fromWisdom(
+            $this->abilityScores
+                ->wisdom()
         );
     }
 
