@@ -15,6 +15,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ArmourClass;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ProficiencyBonus;
 use PHPUnit\Framework\TestCase;
 
 final class CharacterTest extends TestCase
@@ -582,6 +583,112 @@ final class CharacterTest extends TestCase
             intelligence: AbilityScore::fromInt(12),
             wisdom: AbilityScore::fromInt(10),
             charisma: AbilityScore::fromInt(8),
+        );
+    }
+
+    public function test_it_returns_a_proficiency_bonus(): void
+    {
+        self::assertInstanceOf(
+            ProficiencyBonus::class,
+            $this->createCharacter()
+                ->proficiencyBonus()
+        );
+    }
+    
+    public function test_level_one_character_has_proficiency_bonus_two(): void
+    {
+        self::assertSame(
+            2,
+            $this->createCharacter()
+                ->proficiencyBonus()
+                ->value()
+        );
+    }
+    
+    public function test_level_five_character_has_proficiency_bonus_three(): void
+    {
+        $character = Character::reconstitute(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            Level::fromInt(5),
+            Experience::fromInt(6500),
+            HitPoints::full(20),
+            AbilityScores::average()
+        );
+    
+        self::assertSame(
+            3,
+            $character
+                ->proficiencyBonus()
+                ->value()
+        );
+    }
+    
+    public function test_level_seventeen_character_has_proficiency_bonus_six(): void
+    {
+        $character = Character::reconstitute(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            Level::fromInt(17),
+            Experience::fromInt(225000),
+            HitPoints::full(100),
+            AbilityScores::average()
+        );
+    
+        self::assertSame(
+            6,
+            $character
+                ->proficiencyBonus()
+                ->value()
+        );
+    }
+    
+    public function test_proficiency_bonus_updates_when_experience_increases_level(): void
+    {
+        $character = $this->createCharacter();
+    
+        self::assertSame(
+            2,
+            $character
+                ->proficiencyBonus()
+                ->value()
+        );
+    
+        $character->gainExperience(
+            Experience::fromInt(6500)
+        );
+    
+        self::assertSame(
+            3,
+            $character
+                ->proficiencyBonus()
+                ->value()
+        );
+    }
+    
+    public function test_reconstituted_character_derives_proficiency_bonus_from_restored_level(): void
+    {
+        $character = Character::reconstitute(
+            CharacterId::generate(),
+            CharacterName::fromString('Sir Allium'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('fighter'),
+            Level::fromInt(13),
+            Experience::fromInt(120000),
+            HitPoints::full(80),
+            $this->abilityScores()
+        );
+    
+        self::assertTrue(
+            $character
+                ->proficiencyBonus()
+                ->equals(
+                    ProficiencyBonus::fromInt(5)
+                )
         );
     }
 }
