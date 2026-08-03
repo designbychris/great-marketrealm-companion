@@ -495,29 +495,68 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
             );
         }
 
-        public function testUpdateLeavesNameUnchangedWhenNoNameIsSupplied(): void
+        public function testUpdateCanRetainNameWhileChangingBackground(): void
         {
             $character = $this->character();
-
+        
             $repository = new CharacterControllerRepositorySpy();
-
+        
             $repository->characters = [
                 $character,
             ];
-
+        
+            $_POST = [
+                'name' => 'Sir Allium',
+                'background' => 'criminal',
+            ];
+        
             $controller = $this->controller(
                 repository: $repository
             );
-
+        
             $controller->update(
-                $character->id()->value()
+                $character->id()->value(),
+                new UpdateCharacterRequest()
             );
-
+        
             self::assertSame(
                 'Sir Allium',
                 $character->name()->value()
             );
-
+        
+            self::assertSame(
+                'criminal',
+                $character
+                    ->background()
+                    ->value()
+            );
+        
+            self::assertSame(
+                [
+                    'deception',
+                    'stealth',
+                ],
+                $character
+                    ->skillProficiencies()
+                    ->proficiencies()
+            );
+        
+            self::assertSame(
+                [
+                    'gaming-set',
+                    'thieves-tools',
+                ],
+                $character
+                    ->toolProficiencies()
+                    ->values()
+            );
+        
+            self::assertTrue(
+                $character
+                    ->toolProficiencies()
+                    ->hasUnresolvedChoices()
+            );
+        
             self::assertSame(
                 1,
                 $repository->saveCalls
@@ -529,15 +568,21 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
             $this->expectException(
                 RuntimeException::class
             );
-
+        
             $this->expectExceptionMessage(
                 'The requested character could not be found.'
             );
-
+        
+            $_POST = [
+                'name' => 'Missing Adventurer',
+                'background' => 'market-runner',
+            ];
+        
             $controller = $this->controller();
-
+        
             $controller->update(
-                CharacterId::generate()->value()
+                CharacterId::generate()->value(),
+                new UpdateCharacterRequest()
             );
         }
 
