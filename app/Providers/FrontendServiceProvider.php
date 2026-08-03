@@ -207,6 +207,7 @@ class FrontendServiceProvider extends ServiceProvider
         $this->enqueueFoundation();
         $this->enqueueFonts();
         $this->enqueueComponents();
+        $this->enqueueScripts();
         $this->enqueueTheme();
 
     }
@@ -280,6 +281,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path'   => 'modules/characters/character-inscription-form.css',
             ],
             [
+                'handle' => 'gmrc-background-selector',
+                'path' => 'modules/characters/background-selector.css',
+            ],
+            [
                 'handle' => 'gmrc-wax-button',
                 'path'   => 'components/controls/wax-button.css',
             ],
@@ -302,6 +307,23 @@ class FrontendServiceProvider extends ServiceProvider
             );
         }
     }
+
+    /**
+     * Load Companion application scripts.
+     */
+    protected function enqueueScripts(): void
+    {
+        wp_enqueue_script(
+            'gmrc-background-selector',
+            GMRC_URL
+                . 'assets/js/modules/characters/'
+                . 'background-selector.js',
+            [],
+            GMRC_VERSION,
+            true
+        );
+    }
+    
 
     protected function enqueueTheme(): void
     {
