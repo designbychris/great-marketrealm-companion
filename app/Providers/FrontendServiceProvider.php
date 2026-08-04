@@ -298,8 +298,11 @@ class FrontendServiceProvider extends ServiceProvider
             ],
             [
                 'handle' => 'gmrc-character-creation-preview',
-                'path' =>
-                    'modules/characters/character-creation-preview.css',
+                'path' =>   'modules/characters/character-creation-preview.css',
+            ],
+            [
+                'handle' => 'gmrc-auby-note',
+                'path' => 'components/furniture/auby-note.css',
             ],
         ];
     
@@ -342,6 +345,15 @@ class FrontendServiceProvider extends ServiceProvider
             'gmrc-character-creation-preview',
             GMRC_URL
                 . 'assets/js/modules/characters/character-creation-preview.js',
+            [],
+            GMRC_VERSION,
+            true
+        );
+        wp_enqueue_script(
+            'gmrc-auby-note',
+            GMRC_URL
+                . 'assets/js/components/furniture/'
+                . 'auby-note.js',
             [],
             GMRC_VERSION,
             true
