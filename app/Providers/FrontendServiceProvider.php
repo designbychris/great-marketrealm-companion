@@ -299,8 +299,7 @@ class FrontendServiceProvider extends ServiceProvider
             [
                 'handle' => 'gmrc-character-creation-preview',
                 'path' =>
-                    'modules/characters/'
-                    . 'character-creation-preview.css',
+                    'modules/characters/character-creation-preview.css',
             ],
         ];
     
@@ -326,8 +325,7 @@ class FrontendServiceProvider extends ServiceProvider
         wp_enqueue_script(
             'gmrc-background-selector',
             GMRC_URL
-                . 'assets/js/modules/characters/'
-                . 'background-selector.js',
+                . 'assets/js/modules/characters/background-selector.js',
             [],
             GMRC_VERSION,
             true
@@ -335,8 +333,7 @@ class FrontendServiceProvider extends ServiceProvider
         wp_enqueue_script(
             'gmrc-choice-selector',
             GMRC_URL
-                . 'assets/js/modules/characters/'
-                . 'choice-selector.js',
+                . 'assets/js/modules/characters/choice-selector.js',
             [],
             GMRC_VERSION,
             true
@@ -344,8 +341,7 @@ class FrontendServiceProvider extends ServiceProvider
         wp_enqueue_script(
             'gmrc-character-creation-preview',
             GMRC_URL
-                . 'assets/js/modules/characters/'
-                . 'character-creation-preview.js',
+                . 'assets/js/modules/characters/character-creation-preview.js',
             [],
             GMRC_VERSION,
             true
