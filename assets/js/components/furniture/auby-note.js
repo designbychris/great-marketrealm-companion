@@ -71,15 +71,14 @@
                 ready: 0,
             };
 
+            
+
             /**
              * Parse a server-rendered quote pool.
              */
             const messagePoolFor = function (state) {
-                const attributeName =
-                    'data-auby-' + state;
-            
                 const encoded = desk.getAttribute(
-                    attributeName
+                    'data-auby-' + state
                 );
             
                 if (!encoded) {
@@ -87,16 +86,22 @@
                 }
             
                 try {
-                    const messages = JSON.parse(encoded);
+                    const messages = JSON.parse(
+                        encoded
+                    );
             
-                    return Array.isArray(messages)
-                        ? messages.filter(function (message) {
+                    if (!Array.isArray(messages)) {
+                        return [];
+                    }
+            
+                    return messages.filter(
+                        function (message) {
                             return (
                                 typeof message === 'string'
                                 && message.trim() !== ''
                             );
-                        })
-                        : [];
+                        }
+                    );
                 } catch (error) {
                     console.warn(
                         'GMRC could not parse an Auby quote pool.',
