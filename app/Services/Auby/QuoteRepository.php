@@ -45,6 +45,44 @@ final class QuoteRepository
         );
     }
 
+    /**
+     * Retrieve several different quotes from a category.
+     *
+     * @return array<int,Quote>
+     */
+    public function many(
+        string $category,
+        int $quantity = 3
+    ): array {
+        $quantity = max(
+            1,
+            min(10, $quantity)
+        );
+    
+        $selected = [];
+        $attempts = 0;
+        $maximumAttempts = $quantity * 10;
+    
+        while (
+            count($selected) < $quantity
+            && $attempts < $maximumAttempts
+        ) {
+            $quote = $this->random(
+                $category
+            );
+    
+            $selected[
+                $quote->id()
+            ] = $quote;
+    
+            $attempts++;
+        }
+    
+        return array_values(
+            $selected
+        );
+    }
+
     public function all(): QuoteCollection
     {
         return $this->quotes;
