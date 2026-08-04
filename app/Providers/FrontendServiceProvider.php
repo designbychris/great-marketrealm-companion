@@ -285,6 +285,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/characters/background-selector.css',
             ],
             [
+                'handle' => 'gmrc-choice-selector',
+                'path' => 'modules/characters/choice-selector.css',
+            ],
+            [
                 'handle' => 'gmrc-wax-button',
                 'path'   => 'components/controls/wax-button.css',
             ],
@@ -318,6 +322,15 @@ class FrontendServiceProvider extends ServiceProvider
             GMRC_URL
                 . 'assets/js/modules/characters/'
                 . 'background-selector.js',
+            [],
+            GMRC_VERSION,
+            true
+        );
+        wp_enqueue_script(
+            'gmrc-choice-selector',
+            GMRC_URL
+                . 'assets/js/modules/characters/'
+                . 'choice-selector.js',
             [],
             GMRC_VERSION,
             true
