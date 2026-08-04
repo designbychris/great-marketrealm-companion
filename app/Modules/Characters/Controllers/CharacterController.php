@@ -104,19 +104,19 @@ final class CharacterController
                      * Auby guidance used by the Living Desk.
                      */
                     'aubyNotes' => [
-                        'start' => $this->auby->for(
+                        'start' => $this->auby->many(
                             QuoteCategories::CHARACTER_CREATOR
                         ),
-                        'name' => $this->auby->for(
+                        'name' => $this->auby->many(
                             QuoteCategories::CHARACTER_NAME
                         ),
-                        'race' => $this->auby->for(
+                        'race' => $this->auby->many(
                             QuoteCategories::CHARACTER_RACE
                         ),
-                        'class' => $this->auby->for(
+                        'class' => $this->auby->many(
                             QuoteCategories::CHARACTER_CLASS
                         ),
-                        'ready' => $this->auby->for(
+                        'ready' => $this->auby->many(
                             QuoteCategories::CHARACTER_READY
                         ),
                     ],
