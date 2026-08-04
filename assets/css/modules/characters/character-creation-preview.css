@@ -18,7 +18,7 @@
     isolation: isolate;
 }
 
-.gmrc-creation-preview__scroll {
+/*.gmrc-creation-preview__scroll {
     position: relative;
     z-index: 2;
 
@@ -37,6 +37,33 @@
         780ms
         cubic-bezier(0.2, 0.85, 0.25, 1)
         both;
+}*/
+
+.gmrc-creation-preview__scroll{
+    position:relative;
+    z-index:2;
+    width: min(100%, 58rem);
+    filter:
+        drop-shadow(
+            0 1.2rem 1.4rem
+            rgba(40, 25, 15, 0.32)
+        );
+    transform-origin: top center;
+    opacity:0;
+    transform:
+        perspective(60rem)
+        rotateX(-12deg)
+        scaleY(.35);
+}
+
+.gmrc-creation-preview--visible
+.gmrc-creation-preview__scroll{
+
+    animation:
+        gmrc-preview-unfurl
+        780ms
+        cubic-bezier(.2,.85,.25,1)
+        forwards;
 }
 
 .gmrc-creation-preview__paper {
