@@ -531,3 +531,116 @@
         display: none;
     }
 }
+
+
+/**
+ * Living Desk layout.
+ */
+.gmrc-living-desk {
+    position: relative;
+
+    display: grid;
+
+    gap:
+        var(--gmrc-space-7, 1.75rem);
+
+    padding:
+        clamp(1.5rem, 4vw, 3rem);
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(67, 41, 23, 0.5);
+
+    background:
+        radial-gradient(
+            circle at 18% 18%,
+            rgba(255, 214, 126, 0.1),
+            transparent 24%
+        ),
+        linear-gradient(
+            rgba(81, 46, 24, 0.12),
+            rgba(38, 23, 14, 0.2)
+        ),
+        #6c4327;
+
+    box-shadow:
+        inset 0 0 0 0.35rem
+        rgba(255, 220, 162, 0.08),
+        inset 0 0 3rem
+        rgba(31, 18, 10, 0.35),
+        0 1rem 1.8rem
+        rgba(43, 27, 16, 0.2);
+}
+
+.gmrc-living-desk::before {
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+    content: "";
+
+    opacity: 0.24;
+
+    background:
+        repeating-linear-gradient(
+            92deg,
+            transparent 0,
+            transparent 5rem,
+            rgba(255, 230, 185, 0.08) 5.05rem,
+            transparent 5.15rem
+        );
+}
+
+.gmrc-living-desk__header {
+    position: relative;
+    z-index: 2;
+
+    max-width: 46rem;
+
+    color:
+        rgba(255, 244, 215, 0.95);
+}
+
+.gmrc-living-desk__header h2,
+.gmrc-living-desk__header p {
+    color: inherit;
+}
+
+.gmrc-living-desk__surface {
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+    grid-template-columns:
+        minmax(16rem, 0.65fr)
+        minmax(0, 1.8fr);
+
+    align-items: start;
+
+    gap:
+        clamp(1.5rem, 4vw, 3rem);
+}
+
+.gmrc-living-desk__auby {
+    position: sticky;
+    top: 2rem;
+
+    padding-top:
+        var(--gmrc-space-8, 2rem);
+}
+
+@media (max-width: 900px) {
+    .gmrc-living-desk__surface {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-living-desk__auby {
+        position: static;
+
+        max-width: 28rem;
+
+        margin-inline: auto;
+    }
+}
