@@ -690,24 +690,39 @@ $charactersUrl = add_query_arg(
     class="gmrc-living-desk"
     data-living-desk
     data-auby-start="<?php echo esc_attr(
-        $aubyStartNote?->text()
-            ?? 'A fresh page awaits.'
+        wp_json_encode(
+            $aubyQuoteTexts(
+                $aubyStartNotes
+            )
+        )
     ); ?>"
     data-auby-name="<?php echo esc_attr(
-        $aubyNameNote?->text()
-            ?? 'Now that is a proper adventurer’s name.'
+        wp_json_encode(
+            $aubyQuoteTexts(
+                $aubyNameNotes
+            )
+        )
     ); ?>"
     data-auby-race="<?php echo esc_attr(
-        $aubyRaceNote?->text()
-            ?? 'A fine heritage.'
+        wp_json_encode(
+            $aubyQuoteTexts(
+                $aubyRaceNotes
+            )
+        )
     ); ?>"
     data-auby-class="<?php echo esc_attr(
-        $aubyClassNote?->text()
-            ?? 'A noble calling.'
+        wp_json_encode(
+            $aubyQuoteTexts(
+                $aubyClassNotes
+            )
+        )
     ); ?>"
     data-auby-ready="<?php echo esc_attr(
-        $aubyReadyNote?->text()
-            ?? 'The Guild Ledger is ready.'
+        wp_json_encode(
+            $aubyQuoteTexts(
+                $aubyReadyNotes
+            )
+        )
     ); ?>"
 >
     <header class="gmrc-living-desk__header">
