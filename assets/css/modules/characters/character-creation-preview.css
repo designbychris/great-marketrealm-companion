@@ -37,6 +37,7 @@
         perspective(60rem)
         rotateX(-12deg)
         scaleY(.35);
+    
 }
 
 .gmrc-creation-preview--visible
