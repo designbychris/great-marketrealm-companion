@@ -121,11 +121,77 @@ $aubyNotes = is_array($aubyNotes ?? null)
     ? $aubyNotes
     : [];
 
-$aubyStartNote = $aubyNotes['start'] ?? null;
-$aubyNameNote = $aubyNotes['name'] ?? null;
-$aubyRaceNote = $aubyNotes['race'] ?? null;
-$aubyClassNote = $aubyNotes['class'] ?? null;
-$aubyReadyNote = $aubyNotes['ready'] ?? null;
+$aubyStartNotes = is_array(
+    $aubyNotes['start'] ?? null
+)
+    ? $aubyNotes['start']
+    : [];
+
+$aubyNameNotes = is_array(
+    $aubyNotes['name'] ?? null
+)
+    ? $aubyNotes['name']
+    : [];
+
+$aubyRaceNotes = is_array(
+    $aubyNotes['race'] ?? null
+)
+    ? $aubyNotes['race']
+    : [];
+
+$aubyClassNotes = is_array(
+    $aubyNotes['class'] ?? null
+)
+    ? $aubyNotes['class']
+    : [];
+
+$aubyReadyNotes = is_array(
+    $aubyNotes['ready'] ?? null
+)
+    ? $aubyNotes['ready']
+    : [];
+
+$aubyStartNote = $aubyStartNotes[0] ?? null;
+
+/**
+ * Convert quote objects into primitive text arrays
+ * for the reactive front end.
+ *
+ * @param array<int,mixed> $quotes
+ *
+ * @return array<int,string>
+ */
+$aubyQuoteTexts = static function (
+    array $quotes
+): array {
+    return array_values(
+        array_filter(
+            array_map(
+                static function (
+                    mixed $quote
+                ): ?string {
+                    if (
+                        ! is_object($quote)
+                        || ! method_exists(
+                            $quote,
+                            'text'
+                        )
+                    ) {
+                        return null;
+                    }
+
+                    $text = $quote->text();
+
+                    return is_string($text)
+                        && $text !== ''
+                            ? $text
+                            : null;
+                },
+                $quotes
+            )
+        )
+    );
+};
 
 $charactersUrl = add_query_arg(
     'gmrc_route',
