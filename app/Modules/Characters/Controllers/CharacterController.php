@@ -99,6 +99,27 @@ final class CharacterController
                     'classOptions' => $this
                         ->classRegistry
                         ->options(),
+    
+                    /*
+                     * Auby guidance used by the Living Desk.
+                     */
+                    'aubyNotes' => [
+                        'start' => $this->auby->for(
+                            QuoteCategories::CHARACTER_CREATOR
+                        ),
+                        'name' => $this->auby->for(
+                            QuoteCategories::CHARACTER_NAME
+                        ),
+                        'race' => $this->auby->for(
+                            QuoteCategories::CHARACTER_RACE
+                        ),
+                        'class' => $this->auby->for(
+                            QuoteCategories::CHARACTER_CLASS
+                        ),
+                        'ready' => $this->auby->for(
+                            QuoteCategories::CHARACTER_READY
+                        ),
+                    ],
                 ]
             )
         );
