@@ -257,6 +257,104 @@ final class QuoteRepository
                 'Auby',
                 QuoteCategories::SETTINGS
             ),
+            
+            new Quote(
+                'Ah! A fresh page. I was wondering who we would be writing about today.',
+                'Auby',
+                QuoteCategories::CHARACTER_CREATOR,
+                false,
+                true
+            ),
+            
+            new Quote(
+                'Every adventurer begins as an empty page. Fortunately, I have plenty of ink.',
+                'Auby',
+                QuoteCategories::CHARACTER_CREATOR
+            ),
+            
+            new Quote(
+                'Choose carefully. The Ledger remembers everything. Except where I left my spectacles.',
+                'Auby',
+                QuoteCategories::CHARACTER_CREATOR,
+                true,
+                true,
+                true,
+                'They were on my head.'
+            ),
+            
+            new Quote(
+                'Now that is a proper adventurer’s name.',
+                'Auby',
+                QuoteCategories::CHARACTER_NAME
+            ),
+            
+            new Quote(
+                'Names have power. They also make filing considerably easier.',
+                'Auby',
+                QuoteCategories::CHARACTER_NAME
+            ),
+            
+            new Quote(
+                'Excellent. I shall write that in my neatest handwriting.',
+                'Auby',
+                QuoteCategories::CHARACTER_NAME
+            ),
+            
+            new Quote(
+                'A fine heritage. The Archive has many stories about their people.',
+                'Auby',
+                QuoteCategories::CHARACTER_RACE
+            ),
+            
+            new Quote(
+                'An excellent choice. Every corner of the Marketrealm brings something special.',
+                'Auby',
+                QuoteCategories::CHARACTER_RACE
+            ),
+            
+            new Quote(
+                'Heritage recorded! I knew there was a reason I sharpened this quill.',
+                'Auby',
+                QuoteCategories::CHARACTER_RACE
+            ),
+            
+            new Quote(
+                'A noble calling. Or at least a very interesting one.',
+                'Auby',
+                QuoteCategories::CHARACTER_CLASS
+            ),
+            
+            new Quote(
+                'That path should produce plenty of stories for the Ledger.',
+                'Auby',
+                QuoteCategories::CHARACTER_CLASS
+            ),
+            
+            new Quote(
+                'Class recorded. I shall leave room for heroic deeds and minor administrative mishaps.',
+                'Auby',
+                QuoteCategories::CHARACTER_CLASS
+            ),
+            
+            new Quote(
+                'Wonderful! The Guild Ledger is ready to receive its newest adventurer.',
+                'Auby',
+                QuoteCategories::CHARACTER_READY,
+                false,
+                true
+            ),
+            
+            new Quote(
+                'Everything appears to be in order. That is unusually encouraging.',
+                'Auby',
+                QuoteCategories::CHARACTER_READY
+            ),
+            
+            new Quote(
+                'Name, heritage and calling—all recorded. The first page of the adventure awaits.',
+                'Auby',
+                QuoteCategories::CHARACTER_READY
+            ),
         ];
 
         /**
