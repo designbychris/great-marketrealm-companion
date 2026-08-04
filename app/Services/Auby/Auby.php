@@ -24,4 +24,19 @@ final class Auby
     ): Quote {
         return $this->note($category);
     }
+
+    /**
+     * Retrieve several different notes for a category.
+     *
+     * @return array<int,Quote>
+     */
+    public function many(
+        string $category,
+        int $quantity = 3
+    ): array {
+        return $this->quotes->many(
+            $category,
+            $quantity
+        );
+    }
 }
