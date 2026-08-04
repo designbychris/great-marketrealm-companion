@@ -352,8 +352,7 @@ class FrontendServiceProvider extends ServiceProvider
         wp_enqueue_script(
             'gmrc-auby-note',
             GMRC_URL
-                . 'assets/js/components/furniture/'
-                . 'auby-note.js',
+                . 'assets/js/components/furniture/auby-note.js',
             [],
             GMRC_VERSION,
             true
