@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 
@@ -295,6 +296,9 @@ $charactersUrl = add_query_arg(
                                 value="<?php echo esc_attr(
                                     $identifier
                                 ); ?>"
+                                data-race-label="<?php echo esc_attr(
+                                    $race->label()
+                                ); ?>"
                                 <?php checked($isSelected); ?>
                                 required
                             >
@@ -436,6 +440,11 @@ $charactersUrl = add_query_arg(
                                 ->savingThrowProficiencies()
                         );
 
+                        $startingHitPoints = $class->startingHitPoints(
+                            AbilityScores::average()
+                                ->constitution()
+                        );
+
                         $monogram = function_exists(
                             'mb_substr'
                         )
@@ -482,6 +491,18 @@ $charactersUrl = add_query_arg(
                                 name="class"
                                 value="<?php echo esc_attr(
                                     $identifier
+                                ); ?>"
+                                data-class-label="<?php echo esc_attr(
+                                    $class->label()
+                                ); ?>"
+                                data-hit-die="<?php echo esc_attr(
+                                    (string) $class->hitDie()
+                                ); ?>"
+                                data-starting-hit-points="<?php echo esc_attr(
+                                    (string) $startingHitPoints
+                                ); ?>"
+                                data-saving-throws="<?php echo esc_attr(
+                                    implode(', ', $savingThrows)
                                 ); ?>"
                                 <?php checked($isSelected); ?>
                                 required
@@ -598,6 +619,150 @@ $charactersUrl = add_query_arg(
                 chosen class and Constitution.
             </p>
         </aside>
+
+        <section
+            class="gmrc-creation-preview"
+            data-character-creation-preview
+            aria-live="polite"
+        >
+            <div
+                class="gmrc-creation-preview__particles"
+                aria-hidden="true"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        
+            <div class="gmrc-creation-preview__scroll">
+                <div class="gmrc-creation-preview__roller gmrc-creation-preview__roller--top">
+                    <span></span>
+                </div>
+        
+                <div class="gmrc-creation-preview__paper">
+                    <header class="gmrc-creation-preview__header">
+                        <p class="gmrc-eyebrow">
+                            Provisional Guild Record
+                        </p>
+        
+                        <h2
+                            class="gmrc-creation-preview__name"
+                            data-preview-name
+                        >
+                            Unnamed Adventurer
+                        </h2>
+        
+                        <p class="gmrc-creation-preview__identity">
+                            <span data-preview-race>
+                                Heritage awaiting selection
+                            </span>
+        
+                            <span aria-hidden="true">·</span>
+        
+                            <span data-preview-class>
+                                Class awaiting selection
+                            </span>
+                        </p>
+                    </header>
+        
+                    <div
+                        class="recipe-divider"
+                        aria-hidden="true"
+                    >
+                        <span class="recipe-divider__ornament">
+                            ✦
+                        </span>
+                    </div>
+        
+                    <dl class="gmrc-creation-preview__statistics">
+                        <div>
+                            <dt>Starting level</dt>
+        
+                            <dd>
+                                <span class="gmrc-preview-ink">
+                                    1
+                                </span>
+                            </dd>
+                        </div>
+        
+                        <div>
+                            <dt>Starting experience</dt>
+        
+                            <dd>
+                                <span class="gmrc-preview-ink">
+                                    0
+                                </span>
+                            </dd>
+                        </div>
+        
+                        <div>
+                            <dt>Hit Die</dt>
+        
+                            <dd>
+                                <span
+                                    class="gmrc-preview-ink"
+                                    data-preview-hit-die
+                                >
+                                    —
+                                </span>
+                            </dd>
+                        </div>
+        
+                        <div>
+                            <dt>Starting Hit Points</dt>
+        
+                            <dd>
+                                <span
+                                    class="gmrc-preview-ink"
+                                    data-preview-hit-points
+                                >
+                                    —
+                                </span>
+                            </dd>
+                        </div>
+                    </dl>
+        
+                    <section class="gmrc-creation-preview__entry">
+                        <h3>Saving Throw Proficiencies</h3>
+        
+                        <p
+                            class="gmrc-preview-ink"
+                            data-preview-saving-throws
+                        >
+                            Choose a class to reveal its defensive training.
+                        </p>
+                    </section>
+        
+                    <section class="gmrc-creation-preview__entry">
+                        <h3>Archive Note</h3>
+        
+                        <p
+                            class="gmrc-preview-ink"
+                            data-preview-note
+                        >
+                            Choose a race and class to begin this adventurer’s
+                            first inscription.
+                        </p>
+                    </section>
+        
+                    <footer class="gmrc-creation-preview__footer">
+                        <span aria-hidden="true">✦</span>
+        
+                        <span>
+                            Awaiting the Guild Registrar’s seal
+                        </span>
+        
+                        <span aria-hidden="true">✦</span>
+                    </footer>
+                </div>
+        
+                <div class="gmrc-creation-preview__roller gmrc-creation-preview__roller--bottom">
+                    <span></span>
+                </div>
+            </div>
+        </section>
 
         <div class="gmrc-form-actions">
             <?php
