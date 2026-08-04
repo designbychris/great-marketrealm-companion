@@ -225,7 +225,7 @@
                             correction.hidden = true;
                         }
                     },
-                    170
+                    480
                 );
 
                 animationTimer = window.setTimeout(
@@ -234,7 +234,7 @@
                             'auby-note--changing'
                         );
                     },
-                    780
+                    1160
                 );
             };
 
