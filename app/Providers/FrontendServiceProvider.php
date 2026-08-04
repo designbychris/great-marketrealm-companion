@@ -296,6 +296,12 @@ class FrontendServiceProvider extends ServiceProvider
                 'handle' => 'gmrc-paper-button',
                 'path'   => 'components/controls/paper-button.css',
             ],
+            [
+                'handle' => 'gmrc-character-creation-preview',
+                'path' =>
+                    'modules/characters/'
+                    . 'character-creation-preview.css',
+            ],
         ];
     
         foreach ($components as $component) {
@@ -331,6 +337,15 @@ class FrontendServiceProvider extends ServiceProvider
             GMRC_URL
                 . 'assets/js/modules/characters/'
                 . 'choice-selector.js',
+            [],
+            GMRC_VERSION,
+            true
+        );
+        wp_enqueue_script(
+            'gmrc-character-creation-preview',
+            GMRC_URL
+                . 'assets/js/modules/characters/'
+                . 'character-creation-preview.js',
             [],
             GMRC_VERSION,
             true
