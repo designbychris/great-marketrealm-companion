@@ -347,31 +347,59 @@ document.addEventListener(
         updateRace();
         updateClass();
 
-        // Wait until the preview scrolls into view before
-        // playing the unfurl animation.
-        const observer = new IntersectionObserver(
-            function (entries) {
+        /**
+         * Unfurl the parchment when its upper portion approaches
+         * the visible browser window.
+         */
+        const revealPreview = function () {
+            preview.classList.add(
+                'gmrc-creation-preview--visible'
+            );
+        };
         
-                entries.forEach(function (entry) {
+        if (
+            reducedMotion.matches
+            || !('IntersectionObserver' in window)
+        ) {
+            /*
+             * Keep the preview available when reduced motion is
+             * requested or IntersectionObserver is unsupported.
+             */
+            revealPreview();
+        } else {
+            const observer = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        if (!entry.isIntersecting) {
+                            return;
+                        }
         
-                    if (!entry.isIntersecting) {
-                        return;
-                    }
+                        revealPreview();
         
-                    preview.classList.add(
-                        'gmrc-creation-preview--visible'
-                    );
+                        observer.unobserve(
+                            preview
+                        );
+                    });
+                },
+                {
+                    /*
+                     * A small threshold works for a parchment that may
+                     * be taller than the browser viewport.
+                     */
+                    threshold: 0.05,
         
-                    observer.disconnect();
+                    /*
+                     * Begin shortly before the preview reaches the
+                     * lower part of the viewport.
+                     */
+                    rootMargin:
+                        '0px 0px -12% 0px',
+                }
+            );
         
-                });
-        
-            },
-            {
-                threshold: 0.35,
-            }
-        );
-        
-        observer.observe(preview);
+            observer.observe(
+                preview
+            );
+        }
     }
 );
