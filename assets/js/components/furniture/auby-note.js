@@ -63,31 +63,77 @@
             let nameTimer = null;
             let ambientTimer = null;
 
+            const messageIndexes = {
+                start: 0,
+                name: 0,
+                race: 0,
+                class: 0,
+                ready: 0,
+            };
+
             /**
-             * Retrieve one of the server-rendered messages.
+             * Parse a server-rendered quote pool.
+             */
+            const messagePoolFor = function (state) {
+                const attributeName =
+                    'data-auby-' + state;
+            
+                const encoded = desk.getAttribute(
+                    attributeName
+                );
+            
+                if (!encoded) {
+                    return [];
+                }
+            
+                try {
+                    const messages = JSON.parse(encoded);
+            
+                    return Array.isArray(messages)
+                        ? messages.filter(function (message) {
+                            return (
+                                typeof message === 'string'
+                                && message.trim() !== ''
+                            );
+                        })
+                        : [];
+                } catch (error) {
+                    console.warn(
+                        'GMRC could not parse an Auby quote pool.',
+                        {
+                            state: state,
+                            value: encoded,
+                            error: error,
+                        }
+                    );
+            
+                    return [];
+                }
+            };
+            
+            /**
+             * Retrieve the next quote for an interaction state.
              */
             const messageFor = function (state) {
-                const messages = {
-                    start: desk.getAttribute(
-                        'data-auby-start'
-                    ),
-                    name: desk.getAttribute(
-                        'data-auby-name'
-                    ),
-                    race: desk.getAttribute(
-                        'data-auby-race'
-                    ),
-                    class: desk.getAttribute(
-                        'data-auby-class'
-                    ),
-                    ready: desk.getAttribute(
-                        'data-auby-ready'
-                    ),
-                };
-
-                return messages[state]
-                    || messages.start
-                    || 'A fresh page awaits.';
+                const messages = messagePoolFor(
+                    state
+                );
+            
+                if (messages.length === 0) {
+                    return 'A fresh page awaits.';
+                }
+            
+                const currentIndex =
+                    messageIndexes[state] ?? 0;
+            
+                const message = messages[
+                    currentIndex % messages.length
+                ];
+            
+                messageIndexes[state] =
+                    currentIndex + 1;
+            
+                return message;
             };
 
             /**
