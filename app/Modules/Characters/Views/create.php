@@ -117,6 +117,16 @@ $raceOptions = Race::all();
 
 $classOptions = CharacterClass::all();
 
+$aubyNotes = is_array($aubyNotes ?? null)
+    ? $aubyNotes
+    : [];
+
+$aubyStartNote = $aubyNotes['start'] ?? null;
+$aubyNameNote = $aubyNotes['name'] ?? null;
+$aubyRaceNote = $aubyNotes['race'] ?? null;
+$aubyClassNote = $aubyNotes['class'] ?? null;
+$aubyReadyNote = $aubyNotes['ready'] ?? null;
+
 $charactersUrl = add_query_arg(
     'gmrc_route',
     'characters',
@@ -610,15 +620,57 @@ $charactersUrl = add_query_arg(
             <?php endif; ?>
         </section>
 
-        <aside class="gmrc-form-notice">
-            <h2>The first page of the adventure</h2>
+        <section
+    class="gmrc-living-desk"
+    data-living-desk
+    data-auby-start="<?php echo esc_attr(
+        $aubyStartNote?->text()
+            ?? 'A fresh page awaits.'
+    ); ?>"
+    data-auby-name="<?php echo esc_attr(
+        $aubyNameNote?->text()
+            ?? 'Now that is a proper adventurer’s name.'
+    ); ?>"
+    data-auby-race="<?php echo esc_attr(
+        $aubyRaceNote?->text()
+            ?? 'A fine heritage.'
+    ); ?>"
+    data-auby-class="<?php echo esc_attr(
+        $aubyClassNote?->text()
+            ?? 'A noble calling.'
+    ); ?>"
+    data-auby-ready="<?php echo esc_attr(
+        $aubyReadyNote?->text()
+            ?? 'The Guild Ledger is ready.'
+    ); ?>"
+>
+    <header class="gmrc-living-desk__header">
+        <p class="gmrc-eyebrow">
+            The Registrar’s Desk
+        </p>
 
-            <p>
-                New adventurers begin at Level 1 with no experience.
-                Their starting hit points are calculated from their
-                chosen class and Constitution.
-            </p>
-        </aside>
+        <h2>The first page of the adventure</h2>
+
+        <p>
+            New adventurers begin at Level 1 with no experience.
+            Their starting hit points are calculated from their
+            chosen class and Constitution.
+        </p>
+    </header>
+
+    <div class="gmrc-living-desk__surface">
+        <div class="gmrc-living-desk__auby">
+            <?php
+            if ($aubyStartNote !== null) {
+                echo $this->component(
+                    'components.furniture.auby-note',
+                    [
+                        'quote' => $aubyStartNote,
+                    ]
+                );
+            }
+            ?>
+        </div>
 
         <section
             class="gmrc-creation-preview"
@@ -635,38 +687,43 @@ $charactersUrl = add_query_arg(
                 <span></span>
                 <span></span>
             </div>
-        
+
             <div class="gmrc-creation-preview__scroll">
-                <div class="gmrc-creation-preview__roller gmrc-creation-preview__roller--top">
+                <div
+                    class="
+                        gmrc-creation-preview__roller
+                        gmrc-creation-preview__roller--top
+                    "
+                >
                     <span></span>
                 </div>
-        
+
                 <div class="gmrc-creation-preview__paper">
                     <header class="gmrc-creation-preview__header">
                         <p class="gmrc-eyebrow">
                             Provisional Guild Record
                         </p>
-        
+
                         <h2
                             class="gmrc-creation-preview__name"
                             data-preview-name
                         >
                             Unnamed Adventurer
                         </h2>
-        
+
                         <p class="gmrc-creation-preview__identity">
                             <span data-preview-race>
                                 Heritage awaiting selection
                             </span>
-        
+
                             <span aria-hidden="true">·</span>
-        
+
                             <span data-preview-class>
                                 Class awaiting selection
                             </span>
                         </p>
                     </header>
-        
+
                     <div
                         class="recipe-divider"
                         aria-hidden="true"
@@ -675,31 +732,31 @@ $charactersUrl = add_query_arg(
                             ✦
                         </span>
                     </div>
-        
+
                     <dl class="gmrc-creation-preview__statistics">
                         <div>
                             <dt>Starting level</dt>
-        
+
                             <dd>
                                 <span class="gmrc-preview-ink">
                                     1
                                 </span>
                             </dd>
                         </div>
-        
+
                         <div>
                             <dt>Starting experience</dt>
-        
+
                             <dd>
                                 <span class="gmrc-preview-ink">
                                     0
                                 </span>
                             </dd>
                         </div>
-        
+
                         <div>
                             <dt>Hit Die</dt>
-        
+
                             <dd>
                                 <span
                                     class="gmrc-preview-ink"
@@ -709,10 +766,10 @@ $charactersUrl = add_query_arg(
                                 </span>
                             </dd>
                         </div>
-        
+
                         <div>
                             <dt>Starting Hit Points</dt>
-        
+
                             <dd>
                                 <span
                                     class="gmrc-preview-ink"
@@ -723,46 +780,56 @@ $charactersUrl = add_query_arg(
                             </dd>
                         </div>
                     </dl>
-        
+
                     <section class="gmrc-creation-preview__entry">
-                        <h3>Saving Throw Proficiencies</h3>
-        
+                        <h3>
+                            Saving Throw Proficiencies
+                        </h3>
+
                         <p
                             class="gmrc-preview-ink"
                             data-preview-saving-throws
                         >
-                            Choose a class to reveal its defensive training.
+                            Choose a class to reveal its defensive
+                            training.
                         </p>
                     </section>
-        
+
                     <section class="gmrc-creation-preview__entry">
                         <h3>Archive Note</h3>
-        
+
                         <p
                             class="gmrc-preview-ink"
                             data-preview-note
                         >
-                            Choose a race and class to begin this adventurer’s
-                            first inscription.
+                            Choose a race and class to begin this
+                            adventurer’s first inscription.
                         </p>
                     </section>
-        
+
                     <footer class="gmrc-creation-preview__footer">
                         <span aria-hidden="true">✦</span>
-        
-                        <span>
+
+                        <span data-preview-status>
                             Awaiting the Guild Registrar’s seal
                         </span>
-        
+
                         <span aria-hidden="true">✦</span>
                     </footer>
                 </div>
-        
-                <div class="gmrc-creation-preview__roller gmrc-creation-preview__roller--bottom">
+
+                <div
+                    class="
+                        gmrc-creation-preview__roller
+                        gmrc-creation-preview__roller--bottom
+                    "
+                >
                     <span></span>
                 </div>
             </div>
         </section>
+    </div>
+</section>
 
         <div class="gmrc-form-actions">
             <?php
