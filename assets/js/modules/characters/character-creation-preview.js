@@ -98,6 +98,14 @@ document.addEventListener(
          * Briefly awaken the full parchment.
          */
         const awakenPreview = function () {
+
+            if ( !preview.classList.contains(
+                    'gmrc-creation-preview--visible'
+                )
+            ) {
+                return;
+            }
+            
             if (reducedMotion.matches) {
                 return;
             }
@@ -338,5 +346,32 @@ document.addEventListener(
         updateName();
         updateRace();
         updateClass();
+
+        // Wait until the preview scrolls into view before
+        // playing the unfurl animation.
+        const observer = new IntersectionObserver(
+            function (entries) {
+        
+                entries.forEach(function (entry) {
+        
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+        
+                    preview.classList.add(
+                        'gmrc-creation-preview--visible'
+                    );
+        
+                    observer.disconnect();
+        
+                });
+        
+            },
+            {
+                threshold: 0.35,
+            }
+        );
+        
+        observer.observe(preview);
     }
 );
