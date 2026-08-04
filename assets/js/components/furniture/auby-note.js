@@ -3,9 +3,13 @@
  * Reactive Auby Note
  */
 
-document.addEventListener(
-    'DOMContentLoaded',
-    function () {
+(function () {
+    'use strict';
+
+    /**
+     * Initialise every Living Desk on the current page.
+     */
+    const initialiseAubyNotes = function () {
         const desks = document.querySelectorAll(
             '[data-living-desk]'
         );
@@ -29,47 +33,56 @@ document.addEventListener(
                 '[data-auby-correction]'
             );
 
-            if (
-                !(form instanceof HTMLFormElement)
-                || !(note instanceof HTMLElement)
-                || !(quote instanceof HTMLElement)
-            ) {
+            if (!form || !note || !quote) {
+                console.warn(
+                    'GMRC Auby note could not initialise.',
+                    {
+                        desk: desk,
+                        form: form,
+                        note: note,
+                        quote: quote,
+                    }
+                );
+
                 return;
             }
 
-            const nameInput = form.querySelector(
-                'input[name="name"]'
-            );
+            /*
+             * Prevent duplicate event listeners if another script
+             * attempts to initialise the component again.
+             */
+            if (desk.dataset.aubyInitialised === 'true') {
+                return;
+            }
 
-            const raceInputs = form.querySelectorAll(
-                'input[name="race"]'
-            );
+            desk.dataset.aubyInitialised = 'true';
 
-            const classInputs = form.querySelectorAll(
-                'input[name="class"]'
-            );
-
-            let messageTimer = null;
             let animationTimer = null;
-            let ambientTimer = null;
+            let textTimer = null;
             let readyTimer = null;
             let nameTimer = null;
+            let ambientTimer = null;
 
             /**
-             * Retrieve a message stored on the Living Desk.
+             * Retrieve one of the server-rendered messages.
              */
             const messageFor = function (state) {
                 const messages = {
-                    start:
-                        desk.dataset.aubyStart,
-                    name:
-                        desk.dataset.aubyName,
-                    race:
-                        desk.dataset.aubyRace,
-                    class:
-                        desk.dataset.aubyClass,
-                    ready:
-                        desk.dataset.aubyReady,
+                    start: desk.getAttribute(
+                        'data-auby-start'
+                    ),
+                    name: desk.getAttribute(
+                        'data-auby-name'
+                    ),
+                    race: desk.getAttribute(
+                        'data-auby-race'
+                    ),
+                    class: desk.getAttribute(
+                        'data-auby-class'
+                    ),
+                    ready: desk.getAttribute(
+                        'data-auby-ready'
+                    ),
                 };
 
                 return messages[state]
@@ -78,28 +91,41 @@ document.addEventListener(
             };
 
             /**
-             * Determine whether a radio field has a selection.
+             * Find the character-name field.
              */
-            const hasSelection = function (name) {
+            const nameField = function () {
                 return form.querySelector(
-                    'input[name="'
-                        + name
-                        + '"]:checked'
-                ) instanceof HTMLInputElement;
-            };
-
-            /**
-             * Determine whether the adventurer has a name.
-             */
-            const hasName = function () {
-                return (
-                    nameInput instanceof HTMLInputElement
-                    && nameInput.value.trim() !== ''
+                    '[name="name"]'
                 );
             };
 
             /**
-             * Determine whether the main inscription is complete.
+             * Determine whether a radio group has a selection.
+             */
+            const hasSelection = function (name) {
+                return form.querySelector(
+                    '[name="'
+                        + name
+                        + '"]:checked'
+                ) !== null;
+            };
+
+            /**
+             * Determine whether the character has a name.
+             */
+            const hasName = function () {
+                const input = nameField();
+
+                if (!input) {
+                    return false;
+                }
+
+                return String(input.value || '')
+                    .trim() !== '';
+            };
+
+            /**
+             * Determine whether the registration can be completed.
              */
             const isReady = function () {
                 return (
@@ -110,18 +136,13 @@ document.addEventListener(
             };
 
             /**
-             * Change Auby's note with a paper-swap animation.
+             * Replace Auby's written message.
              */
-            const replaceMessage = function (state) {
+            const showMessage = function (state) {
                 const message = messageFor(state);
 
-                window.clearTimeout(
-                    messageTimer
-                );
-
-                window.clearTimeout(
-                    animationTimer
-                );
+                window.clearTimeout(textTimer);
+                window.clearTimeout(animationTimer);
 
                 note.classList.remove(
                     'auby-note--ambient',
@@ -131,7 +152,7 @@ document.addEventListener(
                 if (reducedMotion.matches) {
                     quote.textContent = message;
 
-                    if (correction instanceof HTMLElement) {
+                    if (correction) {
                         correction.hidden = true;
                     }
 
@@ -139,8 +160,7 @@ document.addEventListener(
                 }
 
                 /*
-                 * Force the animation to restart even if the same
-                 * interaction occurs more than once.
+                 * Restart the paper and quill animations.
                  */
                 void note.offsetWidth;
 
@@ -149,20 +169,17 @@ document.addEventListener(
                 );
 
                 /*
-                 * Swap the text while the old paper is faded out.
+                 * Change the words while the old note is hidden.
                  */
-                messageTimer = window.setTimeout(
+                textTimer = window.setTimeout(
                     function () {
                         quote.textContent = message;
 
-                        if (
-                            correction
-                                instanceof HTMLElement
-                        ) {
+                        if (correction) {
                             correction.hidden = true;
                         }
                     },
-                    180
+                    170
                 );
 
                 animationTimer = window.setTimeout(
@@ -171,17 +188,15 @@ document.addEventListener(
                             'auby-note--changing'
                         );
                     },
-                    760
+                    780
                 );
             };
 
             /**
-             * Show the ready message shortly after another reaction.
+             * Follow an interaction with the completed-record note.
              */
             const scheduleReadyMessage = function () {
-                window.clearTimeout(
-                    readyTimer
-                );
+                window.clearTimeout(readyTimer);
 
                 if (!isReady()) {
                     return;
@@ -189,72 +204,99 @@ document.addEventListener(
 
                 readyTimer = window.setTimeout(
                     function () {
-                        replaceMessage('ready');
+                        showMessage('ready');
                     },
-                    1250
+                    1800
                 );
             };
 
             /**
-             * React to the adventurer's name.
+             * React when the name is edited.
              */
             const reactToName = function () {
-                window.clearTimeout(
-                    nameTimer
-                );
+                window.clearTimeout(nameTimer);
+                window.clearTimeout(readyTimer);
 
-                /*
-                 * Avoid replacing the note for every individual
-                 * keystroke while the player is typing.
-                 */
                 nameTimer = window.setTimeout(
                     function () {
-                        if (!hasName()) {
-                            replaceMessage('start');
+                        showMessage(
+                            hasName()
+                                ? 'name'
+                                : 'start'
+                        );
 
-                            return;
-                        }
-
-                        replaceMessage('name');
                         scheduleReadyMessage();
                     },
-                    500
+                    350
                 );
             };
 
             /**
-             * React immediately to a race selection.
+             * React when a race or class is selected.
              */
-            const reactToRace = function () {
-                replaceMessage('race');
+            const reactToSelection = function (
+                fieldName
+            ) {
+                window.clearTimeout(readyTimer);
+
+                showMessage(fieldName);
+
                 scheduleReadyMessage();
             };
 
             /**
-             * React immediately to a class selection.
+             * Use form-level event delegation.
+             *
+             * This continues working even if a field component is
+             * replaced or re-rendered later.
              */
-            const reactToClass = function () {
-                replaceMessage('class');
-                scheduleReadyMessage();
-            };
+            form.addEventListener(
+                'input',
+                function (event) {
+                    const target = event.target;
+
+                    if (
+                        target
+                        && target.getAttribute('name')
+                            === 'name'
+                    ) {
+                        reactToName();
+                    }
+                }
+            );
+
+            form.addEventListener(
+                'change',
+                function (event) {
+                    const target = event.target;
+
+                    if (!target) {
+                        return;
+                    }
+
+                    const fieldName = target.getAttribute(
+                        'name'
+                    );
+
+                    if (fieldName === 'race') {
+                        reactToSelection('race');
+                    }
+
+                    if (fieldName === 'class') {
+                        reactToSelection('class');
+                    }
+                }
+            );
 
             /**
-             * Schedule occasional movement around Auby's note.
+             * Occasionally let the note and quill move.
              */
             const scheduleAmbientLife = function () {
                 if (reducedMotion.matches) {
                     return;
                 }
 
-                window.clearTimeout(
-                    ambientTimer
-                );
-
-                const delay =
-                    12000
-                    + Math.floor(
-                        Math.random() * 10000
-                    );
+                window.clearTimeout(ambientTimer);
 
                 ambientTimer = window.setTimeout(
                     function () {
@@ -276,61 +318,31 @@ document.addEventListener(
 
                                 scheduleAmbientLife();
                             },
-                            1100
+                            1000
                         );
                     },
-                    delay
+                    12000
+                        + Math.floor(
+                            Math.random() * 10000
+                        )
                 );
             };
 
-            if (
-                nameInput
-                    instanceof HTMLInputElement
-            ) {
-                nameInput.addEventListener(
-                    'input',
-                    reactToName
-                );
-            }
-
-            raceInputs.forEach(function (input) {
-                input.addEventListener(
-                    'change',
-                    reactToRace
-                );
-            });
-
-            classInputs.forEach(function (input) {
-                input.addEventListener(
-                    'change',
-                    reactToClass
-                );
-            });
-
-            /*
-             * Keep the original server-rendered welcome note on load.
-             * Only move to ready automatically when the form was
-             * restored with all fields already populated.
-             */
-            if (isReady()) {
-                scheduleReadyMessage();
-            }
-
             scheduleAmbientLife();
+
+            console.info(
+                'GMRC reactive Auby note initialised.'
+            );
 
             window.addEventListener(
                 'pagehide',
                 function () {
                     window.clearTimeout(
-                        messageTimer
-                    );
-
-                    window.clearTimeout(
                         animationTimer
                     );
 
                     window.clearTimeout(
-                        ambientTimer
+                        textTimer
                     );
 
                     window.clearTimeout(
@@ -340,11 +352,28 @@ document.addEventListener(
                     window.clearTimeout(
                         nameTimer
                     );
+
+                    window.clearTimeout(
+                        ambientTimer
+                    );
                 },
                 {
                     once: true,
                 }
             );
         });
+    };
+
+    /*
+     * Work whether the script loads before or after
+     * DOMContentLoaded.
+     */
+    if (document.readyState === 'loading') {
+        document.addEventListener(
+            'DOMContentLoaded',
+            initialiseAubyNotes
+        );
+    } else {
+        initialiseAubyNotes();
     }
-);
+})();
