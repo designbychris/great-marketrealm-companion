@@ -8,9 +8,26 @@ final class QuoteRepository
 {
     private QuoteCollection $quotes;
 
-    public function __construct(?QuoteCollection $quotes = null)
-    {
-        $this->quotes = $quotes ?? new QuoteCollection(
+    /**
+     * Create the quote repository.
+     *
+     * An empty injected collection is treated the same as no
+     * collection so the built-in Auby quotes remain available
+     * when the dependency container auto-resolves this class.
+     */
+    public function __construct(
+        ?QuoteCollection $quotes = null
+    ) {
+        if (
+            $quotes instanceof QuoteCollection
+            && ! $quotes->isEmpty()
+        ) {
+            $this->quotes = $quotes;
+    
+            return;
+        }
+    
+        $this->quotes = new QuoteCollection(
             $this->defaultQuotes()
         );
     }
