@@ -10,6 +10,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\CharacterPortraitRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRecipeGenerator;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\PortraitRecipe;
 
 defined('ABSPATH') || exit;
 
