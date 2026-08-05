@@ -718,9 +718,14 @@
         "Bradley Hand",
         cursive;
 
-    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-size: clamp(
+        1.7rem,
+        2.1vw,
+        2.35rem
+    );
+
+    line-height: 1.28;
     font-weight: 600;
-    line-height: 1.12;
     letter-spacing: 0.01em;
 
     text-wrap: balance;
