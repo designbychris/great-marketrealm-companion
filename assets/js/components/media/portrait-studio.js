@@ -557,160 +557,416 @@
             };
 
             /**
-             * Apply the provisional portrait recipe.
-             */
-            const applyRecipe = function (
-                name,
-                race,
-                characterClass
-            ) {
-                /*
-                 * The separators prevent combinations such as
-                 * "ab" + "c" matching "a" + "bc".
-                 */
-                const seed = [
-                    name.toLocaleLowerCase(),
-                    race,
-                    characterClass,
-                ].join('|');
+ * Apply the provisional portrait recipe.
+ */
+const applyRecipe = function (
+    name,
+    race,
+    characterClass
+) {
+    /*
+     * The separators prevent combinations such as
+     * "ab" + "c" matching "a" + "bc".
+     */
+    const seed = [
+        name.toLocaleLowerCase(),
+        race,
+        characterClass,
+    ].join('|');
 
-                const backgroundVariant =
-                    variantFor(
-                        seed,
-                        'background'
-                    );
+    const backgroundVariant =
+        variantFor(
+            seed,
+            'background'
+        );
 
-                const bodyVariant = variantFor(
-                    seed,
-                    'body'
-                );
+    const bodyVariant =
+        variantFor(
+            seed,
+            'body'
+        );
 
-                const outfitVariant =
-                    variantFor(
-                        seed,
-                        'outfit'
-                    );
+    const headVariant =
+        variantFor(
+            seed,
+            'head'
+        );
 
-                const equipmentVariant =
-                    variantFor(
-                        seed,
-                        'equipment'
-                    );
+    const eyesVariant =
+        variantFor(
+            seed,
+            'eyes'
+        );
 
-                const effectsVariant =
-                    variantFor(
-                        seed,
-                        'effects'
-                    );
+    const mouthVariant =
+        variantFor(
+            seed,
+            'mouth'
+        );
 
-                studio.dataset.portraitSeed =
-                    String(hashValue(seed));
+    const heritageVariant =
+        variantFor(
+            seed,
+            'heritage'
+        );
 
-                studio.dataset.portraitBackground =
-                    'background-provisional-0'
-                    + backgroundVariant;
+    const outfitVariant =
+        variantFor(
+            seed,
+            'outfit'
+        );
 
-                studio.dataset.portraitBody =
-                    (
-                        race
-                            || 'unwritten'
+    const equipmentVariant =
+        variantFor(
+            seed,
+            'equipment'
+        );
+
+    const accessoryVariant =
+        variantFor(
+            seed,
+            'class-accessory'
+        );
+
+    const frameVariant =
+        variantFor(
+            seed,
+            'frame'
+        );
+
+    const effectsVariant =
+        variantFor(
+            seed,
+            'effects'
+        );
+
+    const seedValue =
+        portraitSeedFor(seed);
+
+    /*
+     * These identifiers match the PHP
+     * PortraitLayerRegistry exactly.
+     */
+    const backgroundLayerId =
+        backgroundLayers[
+            backgroundVariant - 1
+        ];
+
+    const bodyLayerId =
+        race !== ''
+            ? race
+                + '-body-0'
+                + bodyVariant
+            : '';
+
+    const headLayerId =
+        race !== ''
+            ? race
+                + '-head-0'
+                + headVariant
+            : '';
+
+    const eyesLayerId =
+        eyeLayers[
+            eyesVariant - 1
+        ];
+
+    const mouthLayerId =
+        mouthLayers[
+            mouthVariant - 1
+        ];
+
+    const paletteLayerId =
+        race !== ''
+            ? race
+                + '-palette-0'
+                + bodyVariant
+            : '';
+
+    const heritageLayerId =
+        race !== ''
+            ? (
+                heritageVariant === 1
+                    ? race
+                        + '-heritage-none'
+                    : race
+                        + '-heritage-0'
+                        + (
+                            heritageVariant - 1
+                        )
+            )
+            : '';
+
+    const outfitLayerId =
+        characterClass !== ''
+            ? characterClass
+                + '-outfit-0'
+                + outfitVariant
+            : '';
+
+    const equipmentLayerId =
+        characterClass !== ''
+            ? characterClass
+                + '-equipment-0'
+                + equipmentVariant
+            : '';
+
+    const accessoryLayerId =
+        characterClass !== ''
+            ? (
+                accessoryVariant === 1
+                    ? characterClass
+                        + '-accessory-none'
+                    : characterClass
+                        + '-accessory-0'
+                        + (
+                            accessoryVariant - 1
+                        )
+            )
+            : '';
+
+    const frameLayerId =
+        frameLayers[
+            frameVariant - 1
+        ];
+
+    const effectsLayerId =
+        effectLayers[
+            effectsVariant - 1
+        ];
+
+    /*
+     * Keep the component data attributes synchronised.
+     */
+    studio.dataset.portraitSeed =
+        seedValue;
+
+    studio.dataset.portraitBackground =
+        backgroundLayerId;
+
+    studio.dataset.portraitBody =
+        bodyLayerId;
+
+    studio.dataset.portraitHead =
+        headLayerId;
+
+    studio.dataset.portraitEyes =
+        eyesLayerId;
+
+    studio.dataset.portraitMouth =
+        mouthLayerId;
+
+    studio.dataset.portraitPalette =
+        paletteLayerId;
+
+    studio.dataset.portraitHeritage =
+        heritageLayerId;
+
+    studio.dataset.portraitOutfit =
+        outfitLayerId;
+
+    studio.dataset.portraitEquipment =
+        equipmentLayerId;
+
+    studio.dataset.portraitAccessory =
+        accessoryLayerId;
+
+    studio.dataset.portraitFrame =
+        frameLayerId;
+
+    studio.dataset.portraitEffects =
+        effectsLayerId;
+
+    /*
+     * Write the same canonical values into the form.
+     */
+    writePortraitField(
+        'seed',
+        seedValue
+    );
+
+    writePortraitField(
+        'background',
+        backgroundLayerId
+    );
+
+    writePortraitField(
+        'body',
+        bodyLayerId
+    );
+
+    writePortraitField(
+        'head',
+        headLayerId
+    );
+
+    writePortraitField(
+        'eyes',
+        eyesLayerId
+    );
+
+    writePortraitField(
+        'mouth',
+        mouthLayerId
+    );
+
+    writePortraitField(
+        'palette',
+        paletteLayerId
+    );
+
+    writePortraitField(
+        'heritage',
+        heritageLayerId
+    );
+
+    writePortraitField(
+        'outfit',
+        outfitLayerId
+    );
+
+    writePortraitField(
+        'equipment',
+        equipmentLayerId
+    );
+
+    writePortraitField(
+        'class_accessory',
+        accessoryLayerId
+    );
+
+    writePortraitField(
+        'frame',
+        frameLayerId
+    );
+
+    writePortraitField(
+        'effects',
+        effectsLayerId
+    );
+
+    /*
+     * Apply the live provisional artwork.
+     */
+    applyGradient(
+        backgroundGradient,
+        backgroundPalettes[
+            backgroundVariant - 1
+        ]
+    );
+
+    applyGradient(
+        bodyGradient,
+        bodyPalettes[
+            bodyVariant - 1
+        ]
+    );
+
+    applyGradient(
+        garmentGradient,
+        outfitPalettes[
+            outfitVariant - 1
+        ]
+    );
+
+    applyVariantClass(
+        backgroundLayer,
+        backgroundVariant
+    );
+
+    applyVariantClass(
+        raceLayer,
+        bodyVariant
+    );
+
+    applyVariantClass(
+        classLayer,
+        outfitVariant
+    );
+
+    applyVariantClass(
+        effectsLayer,
+        effectsVariant
+    );
+
+    /*
+     * Adjust the provisional body proportions.
+     */
+    if (raceLayer instanceof SVGElement) {
+        const ellipses =
+            raceLayer.querySelectorAll(
+                'ellipse'
+            );
+
+        const torso = ellipses[0];
+        const head = ellipses[1];
+
+        if (torso instanceof SVGElement) {
+            torso.setAttribute(
+                'rx',
+                bodyVariant === 2
+                    ? '138'
+                    : (
+                        bodyVariant === 3
+                            ? '116'
+                            : '126'
                     )
-                    + '-body-provisional-0'
-                    + bodyVariant;
+            );
+        }
 
-                studio.dataset.portraitHead =
-                    (
-                        race
-                            || 'unwritten'
-                    )
-                    + '-head-provisional-0'
-                    + variantFor(
-                        seed,
-                        'head'
-                    );
+        if (head instanceof SVGElement) {
+            head.setAttribute(
+                'rx',
+                bodyVariant === 3
+                    ? '82'
+                    : '92'
+            );
 
-                studio.dataset.portraitEyes =
-                    'eyes-provisional-0'
-                    + variantFor(
-                        seed,
-                        'eyes'
-                    );
+            head.setAttribute(
+                'ry',
+                bodyVariant === 2
+                    ? '118'
+                    : '110'
+            );
+        }
+    }
 
-                studio.dataset.portraitMouth =
-                    'mouth-provisional-0'
-                    + variantFor(
-                        seed,
-                        'mouth'
-                    );
+    drawEquipment(
+        classLayer,
+        equipmentVariant
+    );
 
-                studio.dataset.portraitPalette =
-                    (
-                        race
-                            || 'unwritten'
-                    )
-                    + '-palette-provisional-0'
-                    + bodyVariant;
+    /*
+     * Change the visible effect glyphs.
+     */
+    if (effectsLayer instanceof SVGElement) {
+        const effects =
+            effectsLayer.querySelectorAll(
+                'text'
+            );
 
-                studio.dataset.portraitOutfit =
-                    (
-                        characterClass
-                            || 'unwritten'
-                    )
-                    + '-outfit-provisional-0'
-                    + outfitVariant;
+        if (effects[0]) {
+            effects[0].textContent =
+                effectsVariant === 2
+                    ? '❧'
+                    : '✦';
+        }
 
-                studio.dataset.portraitEquipment =
-                    (
-                        characterClass
-                            || 'unwritten'
-                    )
-                    + '-equipment-provisional-0'
-                    + equipmentVariant;
+        if (effects[1]) {
+            effects[1].textContent =
+                effectsVariant === 3
+                    ? '✺'
+                    : '✧';
+        }
 
-                studio.dataset.portraitEffects =
-                    'effects-provisional-0'
-                    + effectsVariant;
-
-                applyGradient(
-                    backgroundGradient,
-                    backgroundPalettes[
-                        backgroundVariant - 1
-                    ]
-                );
-
-                applyGradient(
-                    bodyGradient,
-                    bodyPalettes[
-                        bodyVariant - 1
-                    ]
-                );
-
-                applyGradient(
-                    garmentGradient,
-                    outfitPalettes[
-                        outfitVariant - 1
-                    ]
-                );
-
-                applyVariantClass(
-                    backgroundLayer,
-                    backgroundVariant
-                );
-
-                applyVariantClass(
-                    raceLayer,
-                    bodyVariant
-                );
-
-                applyVariantClass(
-                    classLayer,
-                    outfitVariant
-                );
-
-                applyVariantClass(
-                    effectsLayer,
-                    effectsVariant
-                );
+        if (effects[2]) {
+            effects[2].textContent =
+                effectsVariant === 1
+                    ? '✧'
+                    : '✦';
+        }
+    }
+};
 
                 /*
                  * Adjust the provisional body proportions.
