@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\ViewModels\PortraitViewModel;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitRenderContext;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitSvgRenderer;
 
 defined('ABSPATH') || exit;
 
@@ -76,6 +78,21 @@ $isCustom =
     $mode === 'custom'
     && is_string($customPortraitUrl)
     && $customPortraitUrl !== '';
+
+$renderContext =
+    $portraitModel instanceof PortraitViewModel
+        ? PortraitRenderContext::fromViewModel(
+            $portraitModel
+        )
+        : PortraitRenderContext::provisional(
+            $name,
+            $race,
+            $characterClass
+        );
+
+$svgRenderer = gmrc()->make(
+    PortraitSvgRenderer::class
+);
 
 $displayName = $name !== ''
     ? $name
