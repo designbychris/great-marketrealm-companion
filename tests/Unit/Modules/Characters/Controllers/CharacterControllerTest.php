@@ -74,6 +74,7 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
     use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
     use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
     use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\PortraitLayerRegistryInterface;
+    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\SubmittedPortraitRecipeFactory;
     use GreatMarketrealmCompanion\Services\Auby\Auby;
     use GreatMarketrealmCompanion\Services\Auby\Quote;
     use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
