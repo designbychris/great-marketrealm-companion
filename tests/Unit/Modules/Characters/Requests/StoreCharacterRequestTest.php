@@ -89,18 +89,33 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Requests {
             );
         }
 
-        public function testDefinesOnlyCharacterCreationFields(): void
+        public function testDefinesCharacterAndPortraitCreationFields(): void
         {
             $rules = (new StoreCharacterRequest())->rules();
 
             self::assertSame(
-                [
-                    'name',
-                    'race',
-                    'class',
-                ],
-                array_keys($rules)
-            );
+            [
+                'name',
+                'race',
+                'class',
+                'portrait_seed',
+                'portrait_background',
+                'portrait_body',
+                'portrait_head',
+                'portrait_eyes',
+                'portrait_mouth',
+                'portrait_palette',
+                'portrait_heritage',
+                'portrait_outfit',
+                'portrait_equipment',
+                'portrait_accessory',
+                'portrait_frame',
+                'portrait_effects',
+            ],
+            array_keys(
+                $request->rules()
+            )
+        );
 
             self::assertArrayNotHasKey(
                 'level',
