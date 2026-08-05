@@ -19,11 +19,14 @@ use GreatMarketrealmCompanion\Modules\Characters\Portraits\Repositories\Characte
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitLayerRegistry;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRecipeGenerator;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitSvgAssetLibrary;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\SubmittedPortraitRecipeFactory;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\BackgroundLayerRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\BodyLayerRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\ClassLayerRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\EffectsLayerRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\AssetFaceLayerRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\AssetFrameLayerRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitLayerStack;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitSvgRenderer;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
@@ -148,14 +151,38 @@ final class CharactersServiceProvider extends ServiceProvider
          * Portrait rendering stack.
          */
         $container->singleton(
+            PortraitSvgAssetLibrary::class,
+            static fn (): PortraitSvgAssetLibrary =>
+                new PortraitSvgAssetLibrary(
+                    __DIR__ . '/Portraits/Library'
+                )
+        );
+
+        $container->singleton(
             PortraitLayerStack::class,
-            static fn (): PortraitLayerStack =>
+            static fn (
+                Container $container
+            ): PortraitLayerStack =>
                 new PortraitLayerStack(
                     [
-                        new BackgroundLayerRenderer(),
-                        new BodyLayerRenderer(),
-                        new ClassLayerRenderer(),
-                        new EffectsLayerRenderer(),
+                        new BackgroundLayerRenderer(
+                            $container->make(PortraitSvgAssetLibrary::class)
+                        ),
+                        new BodyLayerRenderer(
+                            $container->make(PortraitSvgAssetLibrary::class)
+                        ),
+                        new AssetFaceLayerRenderer(
+                            $container->make(PortraitSvgAssetLibrary::class)
+                        ),
+                        new ClassLayerRenderer(
+                            $container->make(PortraitSvgAssetLibrary::class)
+                        ),
+                        new EffectsLayerRenderer(
+                            $container->make(PortraitSvgAssetLibrary::class)
+                        ),
+                        new AssetFrameLayerRenderer(
+                            $container->make(PortraitSvgAssetLibrary::class)
+                        ),
                     ]
                 )
         );
@@ -166,9 +193,8 @@ final class CharactersServiceProvider extends ServiceProvider
                 Container $container
             ): PortraitSvgRenderer =>
                 new PortraitSvgRenderer(
-                    $container->make(
-                        PortraitLayerStack::class
-                    )
+                    $container->make(PortraitLayerStack::class),
+                    $container->make(PortraitSvgAssetLibrary::class)
                 )
         );
 
