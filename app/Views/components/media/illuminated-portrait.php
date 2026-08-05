@@ -7,10 +7,10 @@ use GreatMarketrealmCompanion\Modules\Characters\Portraits\ViewModels\PortraitVi
 defined('ABSPATH') || exit;
 
 /*
- * A persisted Character supplies a PortraitViewModel.
+ * Persisted Characters provide a PortraitViewModel.
  *
- * The live Character Creator still passes primitive name,
- * Race and Class values before a Character has been saved.
+ * The live Character Creator may still provide primitive
+ * name, Race and Class values before a Character exists.
  */
 $portraitModel = isset($portrait)
     && $portrait instanceof PortraitViewModel
@@ -108,10 +108,45 @@ $isCustom =
     && is_string($customPortraitUrl)
     && $customPortraitUrl !== '';
 
+/*
+ * Resolve generated SVG markup.
+ *
+ * Saved Characters receive this from PortraitViewModel.
+ * The Character Creator may supply provisional markup using
+ * the optional $portraitSvg component variable.
+ */
+$generatedSvg = $portraitModel instanceof PortraitViewModel
+    ? $portraitModel->svg()
+    : (
+        isset($portraitSvg)
+        && is_string($portraitSvg)
+            ? $portraitSvg
+            : ''
+    );
 
 /*
- * Prepare fallback display values used by the caption and
- * accessible custom-image description.
+ * Read a persisted recipe layer without exposing a rendering
+ * context or service container to the view.
+ */
+$layerValue = static function (
+    string $slot
+) use ($portraitModel): string {
+    if (! $portraitModel instanceof PortraitViewModel) {
+        return '';
+    }
+
+    $value = $portraitModel->layer(
+        $slot
+    );
+
+    return is_string($value)
+        ? $value
+        : '';
+};
+
+/*
+ * Prepare display values used by the caption and accessible
+ * custom-image description.
  */
 $displayName = $name !== ''
     ? $name
@@ -192,65 +227,65 @@ if ($isCustom) {
         $characterClass
     ); ?>"
     data-portrait-seed="<?php echo esc_attr(
-        $renderContext->seed()
+        $portraitModel?->seed() ?? ''
     ); ?>"
     data-portrait-background="<?php echo esc_attr(
-        $renderContext->layer(
+        $layerValue(
             'background'
         )
     ); ?>"
     data-portrait-body="<?php echo esc_attr(
-        $renderContext->layer(
+        $layerValue(
             'body'
         )
     ); ?>"
     data-portrait-head="<?php echo esc_attr(
-        $renderContext->layer(
+        $layerValue(
             'head'
         )
     ); ?>"
     data-portrait-eyes="<?php echo esc_attr(
-        $renderContext->layer(
+        $layerValue(
             'eyes'
         )
     ); ?>"
     data-portrait-mouth="<?php echo esc_attr(
-        $renderContext->layer(
+        $layerValue(
             'mouth'
         )
     ); ?>"
     data-portrait-palette="<?php echo esc_attr(
-        $renderContext->layer(
+        $layerValue(
             'palette'
         )
     ); ?>"
     data-portrait-heritage="<?php echo esc_attr(
-        $renderContext->layer(
+        $layerValue(
             'heritage'
         )
     ); ?>"
     data-portrait-outfit="<?php echo esc_attr(
-        $renderContext->layer(
+        $layerValue(
             'outfit'
         )
     ); ?>"
     data-portrait-equipment="<?php echo esc_attr(
-        $renderContext->layer(
+        $layerValue(
             'equipment'
         )
     ); ?>"
     data-portrait-accessory="<?php echo esc_attr(
-        $renderContext->layer(
+        $layerValue(
             'class_accessory'
         )
     ); ?>"
     data-portrait-frame="<?php echo esc_attr(
-        $renderContext->layer(
+        $layerValue(
             'frame'
         )
     ); ?>"
     data-portrait-effects="<?php echo esc_attr(
-        $renderContext->layer(
+        $layerValue(
             'effects'
         )
     ); ?>"
@@ -314,9 +349,9 @@ if ($isCustom) {
                     loading="lazy"
                     decoding="async"
                 >
-            <?php else : ?>
+            <?php elseif ($generatedSvg !== '') : ?>
                 <?php
-                echo $portraitModel?->svg() ?? ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo $generatedSvg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 ?>
             <?php endif; ?>
 
