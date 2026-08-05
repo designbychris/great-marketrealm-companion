@@ -493,6 +493,18 @@
                     '.gmrc-portrait-layer--effects'
                 );
 
+            const eyesLayer = studio.querySelector(
+                '[data-portrait-layer="eyes"]'
+            );
+
+            const mouthLayer = studio.querySelector(
+                '[data-portrait-layer="mouth"]'
+            );
+
+            const frameLayer = studio.querySelector(
+                '[data-portrait-layer="frame"]'
+            );
+
             const backgroundGradient =
                 studio.querySelector(
                     'radialGradient'
@@ -606,6 +618,71 @@
             };
 
             /**
+             * Return the first SVG asset ID that exists in this portrait.
+             */
+            const availableAsset = function (...layerIds) {
+                return layerIds.find(function (layerId) {
+                    return layerId !== ''
+                        && document.getElementById(
+                            'gmrc-portrait-asset-' + layerId
+                        ) instanceof SVGElement;
+                }) || '';
+            };
+
+            /**
+             * Swap a procedural layer for one or more library assets.
+             */
+            const renderAssetLayer = function (
+                layer,
+                layerIds
+            ) {
+                if (!(layer instanceof SVGElement)) {
+                    return;
+                }
+
+                const available = layerIds.filter(
+                    function (layerId) {
+                        return availableAsset(layerId) !== '';
+                    }
+                );
+
+                if (available.length !== layerIds.length) {
+                    if (typeof layer.gmrcProceduralMarkup === 'string') {
+                        layer.innerHTML = layer.gmrcProceduralMarkup;
+                    }
+
+                    layer.dataset.portraitUsingAssets = 'false';
+                    layer.removeAttribute('hidden');
+                    return;
+                }
+
+                if (typeof layer.gmrcProceduralMarkup !== 'string') {
+                    layer.gmrcProceduralMarkup = layer.innerHTML;
+                }
+
+                layer.innerHTML = '';
+
+                available.forEach(function (layerId) {
+                    const use = document.createElementNS(
+                        'http://www.w3.org/2000/svg',
+                        'use'
+                    );
+
+                    use.setAttribute(
+                        'href',
+                        '#gmrc-portrait-asset-' + layerId
+                    );
+
+                    use.dataset.portraitAssetUse = layerId;
+                    layer.appendChild(use);
+                });
+
+                layer.dataset.layerId = available[0] || '';
+                layer.dataset.portraitUsingAssets = 'true';
+                layer.removeAttribute('hidden');
+            };
+
+            /**
  * Apply the provisional portrait recipe.
  */
 const applyRecipe = function (
@@ -701,12 +778,15 @@ const applyRecipe = function (
             backgroundVariant - 1
         ];
 
-    const bodyLayerId =
+    const preferredBodyLayerId =
         race !== ''
-            ? race
-                + '-body-0'
-                + bodyVariant
+            ? race + '-body-0' + bodyVariant
             : '';
+
+    const bodyLayerId = availableAsset(
+        preferredBodyLayerId,
+        race !== '' ? race + '-body-01' : ''
+    ) || preferredBodyLayerId;
 
     const headLayerId =
         race !== ''
@@ -746,19 +826,29 @@ const applyRecipe = function (
             )
             : '';
 
-    const outfitLayerId =
+    const preferredOutfitLayerId =
         characterClass !== ''
-            ? characterClass
-                + '-outfit-0'
-                + outfitVariant
+            ? characterClass + '-outfit-0' + outfitVariant
             : '';
 
-    const equipmentLayerId =
+    const outfitLayerId = availableAsset(
+        preferredOutfitLayerId,
         characterClass !== ''
-            ? characterClass
-                + '-equipment-0'
-                + equipmentVariant
+            ? characterClass + '-outfit-01'
+            : ''
+    ) || preferredOutfitLayerId;
+
+    const preferredEquipmentLayerId =
+        characterClass !== ''
+            ? characterClass + '-equipment-0' + equipmentVariant
             : '';
+
+    const equipmentLayerId = availableAsset(
+        preferredEquipmentLayerId,
+        characterClass !== ''
+            ? characterClass + '-equipment-01'
+            : ''
+    ) || preferredEquipmentLayerId;
 
     const accessoryLayerId =
         characterClass !== ''
@@ -894,6 +984,41 @@ const applyRecipe = function (
         effectsLayerId
     );
 
+    renderAssetLayer(
+        backgroundLayer,
+        [backgroundLayerId]
+    );
+
+    renderAssetLayer(
+        raceLayer,
+        [bodyLayerId]
+    );
+
+    renderAssetLayer(
+        eyesLayer,
+        [eyesLayerId]
+    );
+
+    renderAssetLayer(
+        mouthLayer,
+        [mouthLayerId]
+    );
+
+    renderAssetLayer(
+        classLayer,
+        [outfitLayerId, equipmentLayerId]
+    );
+
+    renderAssetLayer(
+        effectsLayer,
+        [effectsLayerId]
+    );
+
+    renderAssetLayer(
+        frameLayer,
+        [frameLayerId]
+    );
+
     /*
      * Apply the live provisional artwork.
      */
@@ -980,10 +1105,15 @@ const applyRecipe = function (
         }
     }
 
-    drawEquipment(
-        classLayer,
-        equipmentVariant
-    );
+    if (
+        !(classLayer instanceof SVGElement)
+        || classLayer.dataset.portraitUsingAssets !== 'true'
+    ) {
+        drawEquipment(
+            classLayer,
+            equipmentVariant
+        );
+    }
 
     /*
      * Change the visible effect glyphs.
