@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitRenderContext;
-use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitSvgRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\ViewModels\PortraitViewModel;
 
 defined('ABSPATH') || exit;
@@ -110,28 +108,6 @@ $isCustom =
     && is_string($customPortraitUrl)
     && $customPortraitUrl !== '';
 
-/*
- * Build the immutable rendering context consumed by the
- * procedural SVG renderer.
- */
-$renderContext =
-    $portraitModel instanceof PortraitViewModel
-        ? PortraitRenderContext::fromViewModel(
-            $portraitModel
-        )
-        : PortraitRenderContext::provisional(
-            $name,
-            $race,
-            $characterClass
-        );
-
-/*
- * Resolve the SVG rendering service through the application
- * container so the view does not construct the layer stack.
- */
-$svgRenderer = gmrc()->make(
-    PortraitSvgRenderer::class
-);
 
 /*
  * Prepare fallback display values used by the caption and
@@ -340,9 +316,7 @@ if ($isCustom) {
                 >
             <?php else : ?>
                 <?php
-                echo $svgRenderer->render(
-                    $renderContext
-                ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo $portraitModel?->svg() ?? ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 ?>
             <?php endif; ?>
 
