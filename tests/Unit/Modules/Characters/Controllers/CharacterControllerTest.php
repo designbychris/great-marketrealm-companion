@@ -62,6 +62,10 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
     use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequest;
     use GreatMarketrealmCompanion\Modules\Characters\Rules\CharacterCreationRules;
     use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
+    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\CharacterPortraitRepositoryInterface;
+    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\PortraitLayerRegistryInterface;
+    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
+    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRecipeGenerator;
     use GreatMarketrealmCompanion\Services\Auby\Auby;
     use GreatMarketrealmCompanion\Services\Auby\Quote;
     use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
@@ -629,64 +633,75 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
         }
 
         private function controller(
-            ?CharacterRepositoryInterface $repository = null,
-            ?ViewFactorySpy $views = null,
-            ?FlashStore $flash = null,
-            ?GuildSealRegistry $sealRegistry = null
-        ): CharacterController {
-            $repository ??=
-                new CharacterControllerRepositorySpy();
+    ?CharacterRepositoryInterface $repository = null,
+    ?ViewFactorySpy $views = null,
+    ?FlashStore $flash = null,
+    ?GuildSealRegistry $sealRegistry = null,
+    ?CharacterPortraitRepositoryInterface $portraitRepository = null
+): CharacterController {
+    $repository ??=
+        new CharacterControllerRepositorySpy();
 
-            $views ??= new ViewFactorySpy();
+    $portraitRepository ??=
+        new CharacterControllerPortraitRepositorySpy();
 
-            $flash ??= $this->flashStore();
+    $views ??= new ViewFactorySpy();
 
-            $creationRules =
-                new CharacterCreationRules();
+    $flash ??= $this->flashStore();
 
-            $characterFactory =
-                new CharacterFactory(
-                    $creationRules
-                );
+    $creationRules =
+        new CharacterCreationRules();
 
-            $createCharacter =
-                new CreateCharacterAction(
-                    $repository
-                );
+    $characterFactory =
+        new CharacterFactory(
+            $creationRules
+        );
 
-            $updateCharacter =
-                new UpdateCharacterAction(
-                    $repository
-                );
+    $portraitRecipes =
+        new PortraitRecipeGenerator(
+            new CharacterControllerPortraitLayerRegistry()
+        );
 
-            $deleteCharacter =
-                new DeleteCharacterAction(
-                    $repository
-                );
+    $createCharacter =
+        new CreateCharacterAction(
+            $repository,
+            $portraitRepository,
+            $portraitRecipes
+        );
 
-            $definitions = new Definitions();
+    $updateCharacter =
+        new UpdateCharacterAction(
+            $repository
+        );
 
-            return new CharacterController(
-                characters: $repository,
-                views: $views,
-                characterFactory: $characterFactory,
-                createCharacter: $createCharacter,
-                updateCharacter: $updateCharacter,
-                deleteCharacter: $deleteCharacter,
-                request: new Request(),
-                responses: new ResponseFactory(),
-                flash: $flash,
-                auby: $this->auby(),
-                sealRegistry: $sealRegistry
-                    ?? new GuildSealRegistry(),
-                raceRegistry: new RaceRegistry(
-                    $definitions
-                ),
-                classRegistry: new ClassRegistry(
-                    $definitions
-                )
-            );
-        }
+    $deleteCharacter =
+        new DeleteCharacterAction(
+            $repository
+        );
+
+    $definitions = new Definitions();
+
+    return new CharacterController(
+        characters: $repository,
+        views: $views,
+        characterFactory: $characterFactory,
+        createCharacter: $createCharacter,
+        updateCharacter: $updateCharacter,
+        deleteCharacter: $deleteCharacter,
+        request: new Request(),
+        responses: new ResponseFactory(),
+        flash: $flash,
+        auby: $this->auby(),
+        sealRegistry: $sealRegistry
+            ?? new GuildSealRegistry(),
+        raceRegistry: new RaceRegistry(
+            $definitions
+        ),
+        classRegistry: new ClassRegistry(
+            $definitions
+        )
+    );
+}
 
         private function flashStore(): FlashStore
         {
@@ -1049,4 +1064,112 @@ public function testEditThrowsWhenCharacterCannotBeFound(): void
         }
 
     }
+
+    /**
+ * In-memory portrait repository used by controller tests.
+ */
+final class CharacterControllerPortraitRepositorySpy implements
+    CharacterPortraitRepositoryInterface
+{
+    public ?CharacterId $savedCharacterId = null;
+
+    public ?CharacterPortrait $savedPortrait = null;
+
+    public int $saveCalls = 0;
+
+    public function find(
+        CharacterId $characterId
+    ): ?CharacterPortrait {
+        return null;
+    }
+
+    public function save(
+        CharacterId $characterId,
+        CharacterPortrait $portrait
+    ): void {
+        $this->saveCalls++;
+
+        $this->savedCharacterId =
+            $characterId;
+
+        $this->savedPortrait =
+            $portrait;
+    }
+
+    public function delete(
+        CharacterId $characterId
+    ): void {
+    }
+}
+
+/**
+ * Small deterministic layer registry for controller tests.
+ */
+final class CharacterControllerPortraitLayerRegistry implements
+    PortraitLayerRegistryInterface
+{
+    public function shared(): array
+    {
+        return [
+            'background' => [
+                'background-controller-test-01',
+            ],
+            'eyes' => [
+                'eyes-controller-test-01',
+            ],
+        ];
+    }
+
+    public function forRace(
+        string $race
+    ): array {
+        return [
+            'body' => [
+                $race
+                    . '-body-controller-test-01',
+            ],
+            'head' => [
+                $race
+                    . '-head-controller-test-01',
+            ],
+        ];
+    }
+
+    public function forClass(
+        string $characterClass
+    ): array {
+        return [
+            'outfit' => [
+                $characterClass
+                    . '-outfit-controller-test-01',
+            ],
+            'equipment' => [
+                $characterClass
+                    . '-equipment-controller-test-01',
+            ],
+        ];
+    }
+
+    public function supports(
+        string $slot,
+        string $layerId,
+        string $race,
+        string $characterClass
+    ): bool {
+        $available = array_merge(
+            $this->shared(),
+            $this->forRace($race),
+            $this->forClass(
+                $characterClass
+            )
+        );
+
+        return isset($available[$slot])
+            && in_array(
+                $layerId,
+                $available[$slot],
+                true
+            );
+    }
+}
 }
