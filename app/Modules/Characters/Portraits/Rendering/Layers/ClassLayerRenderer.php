@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layer
 
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Contracts\PortraitLayerRendererInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitRenderContext;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitSvgAssetLibrary;
 
 defined('ABSPATH') || exit;
 
@@ -18,6 +19,11 @@ defined('ABSPATH') || exit;
 final class ClassLayerRenderer implements
     PortraitLayerRendererInterface
 {
+    public function __construct(
+        private ?PortraitSvgAssetLibrary $assets = null
+    ) {
+    }
+
     public function priority(): int
     {
         return 30;
@@ -26,6 +32,21 @@ final class ClassLayerRenderer implements
     public function render(
         PortraitRenderContext $context
     ): string {
+        $outfitLayerId = $context->layer('outfit');
+        $equipmentLayerId = $context->layer('equipment');
+
+        if (
+            $this->assets?->has($outfitLayerId)
+            && $this->assets?->has($equipmentLayerId)
+        ) {
+            return sprintf(
+                '<g class="gmrc-portrait-layer gmrc-portrait-layer--class" data-portrait-layer="class" data-layer-id="%1$s"><use data-portrait-asset-slot="outfit" href="#%2$s"></use><use data-portrait-asset-slot="equipment" href="#%3$s"></use></g>',
+                esc_attr($outfitLayerId),
+                esc_attr($this->assets->symbolId($outfitLayerId)),
+                esc_attr($this->assets->symbolId($equipmentLayerId))
+            );
+        }
+
         $outfitVariant =
             $context->outfitVariant();
 
