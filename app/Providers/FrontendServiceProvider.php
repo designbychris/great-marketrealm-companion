@@ -261,6 +261,12 @@ class FrontendServiceProvider extends ServiceProvider
                 'path'   => 'components/media/guild-seal.css',
             ],
             [
+                'handle' => 'gmrc-illuminated-portrait',
+                'path' =>
+                    'components/media/'
+                    . 'illuminated-portrait.css',
+            ],
+            [
                 'handle' => 'gmrc-ledger-ribbon',
                 'path'   => 'components/furniture/ledger-ribbon.css',
             ],
@@ -385,6 +391,22 @@ class FrontendServiceProvider extends ServiceProvider
                 . 'assets/js/components/furniture/auby-note.js',
             [],
             GMRC_VERSION,
+            true
+        );
+        $portraitStudioScriptPath =
+            GMRC_PATH
+            . 'assets/js/components/media/portrait-studio.js';
+        
+        wp_enqueue_script(
+            'gmrc-portrait-studio',
+            GMRC_URL
+                . 'assets/js/components/media/portrait-studio.js',
+            [],
+            file_exists($portraitStudioScriptPath)
+                ? (string) filemtime(
+                    $portraitStudioScriptPath
+                )
+                : GMRC_VERSION,
             true
         );
     }
