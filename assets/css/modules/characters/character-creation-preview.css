@@ -631,6 +631,13 @@
         var(--gmrc-space-8, 2rem);
 }
 
+@media (max-width: 1400px) {
+    .gmrc-living-desk__surface {
+        grid-template-columns: 1fr;
+    }
+}
+
+
 @media (max-width: 900px) {
     .gmrc-living-desk__surface {
         grid-template-columns: 1fr;
