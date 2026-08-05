@@ -614,13 +614,18 @@
 
     display: grid;
     grid-template-columns:
-        minmax(16rem, 0.65fr)
-        minmax(0, 1.8fr);
+        minmax(15rem, 0.55fr)
+        minmax(18rem, 0.85fr)
+        minmax(28rem, 1.6fr);
 
     align-items: start;
 
     gap:
         clamp(1.5rem, 4vw, 3rem);
+}
+
+.gmrc-living-desk__illuminator {
+    align-self: start;
 }
 
 .gmrc-living-desk__auby {
