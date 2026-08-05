@@ -9,6 +9,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\CharacterPo
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\PortraitRecipe;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\ViewModels\PortraitViewModel;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitRenderContext;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitSvgRenderer;
 
 defined('ABSPATH') || exit;
 
@@ -87,12 +89,12 @@ final class PortraitRenderer
         CharacterPortrait $portrait
     ): PortraitViewModel {
         $recipe = $portrait->recipe();
-
+    
         $attachmentId =
             $portrait->attachmentId()?->value();
-
+    
         $attachmentUrl = null;
-
+    
         if (
             $portrait->mode()->isCustom()
             && $attachmentId !== null
@@ -101,18 +103,19 @@ final class PortraitRenderer
                 $attachmentId,
                 'large'
             );
-
+    
             if (is_string($resolvedUrl)) {
                 $attachmentUrl = $resolvedUrl;
             }
         }
-
+    
         /*
          * If a custom attachment is unavailable, preserve the
-         * generated fallback recipe instead of showing a broken image.
+         * generated fallback recipe instead of displaying a
+         * broken image.
          */
         $mode = $portrait->mode()->value();
-
+    
         if (
             $mode === 'custom'
             && $attachmentUrl === null
@@ -120,18 +123,18 @@ final class PortraitRenderer
         ) {
             $mode = 'generated';
         }
-
-        $context = PortraitRenderContext::fromRecipe()
-
-        $svg = $this->svgRenderer->render(
-        $context
-        );
-        
-        return new PortraitViewModel(
+    
+        $viewModel = new PortraitViewModel(
             mode: $mode,
-            name: $character->name()->value(),
-            race: $character->race()->value(),
-            raceLabel: $character->race()->label(),
+            name: $character
+                ->name()
+                ->value(),
+            race: $character
+                ->race()
+                ->value(),
+            raceLabel: $character
+                ->race()
+                ->label(),
             characterClass: $character
                 ->characterClass()
                 ->value(),
@@ -144,7 +147,41 @@ final class PortraitRenderer
             seed: $recipe?->seed()->value(),
             attachmentId: $attachmentId,
             attachmentUrl: $attachmentUrl,
-            svg: $svg,
+            svg: ''
+        );
+    
+        /*
+         * Custom portraits use their WordPress attachment and do
+         * not require generated SVG markup.
+         */
+        $svg = '';
+    
+        if ($mode === 'generated') {
+            $context =
+                PortraitRenderContext::fromViewModel(
+                    $viewModel
+                );
+    
+            $svg = $this->svgRenderer->render(
+                $context
+            );
+        }
+    
+        return new PortraitViewModel(
+            mode: $mode,
+            name: $viewModel->name(),
+            race: $viewModel->race(),
+            raceLabel: $viewModel->raceLabel(),
+            characterClass:
+                $viewModel->characterClass(),
+            classLabel: $viewModel->classLabel(),
+            layers: $viewModel->layers(),
+            seed: $viewModel->seed(),
+            attachmentId:
+                $viewModel->attachmentId(),
+            attachmentUrl:
+                $viewModel->attachmentUrl(),
+            svg: $svg
         );
     }
 
