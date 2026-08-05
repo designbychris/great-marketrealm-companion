@@ -304,6 +304,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'handle' => 'gmrc-auby-note',
                 'path' => 'components/furniture/auby-note.css',
             ],
+            [
+                'handle' => 'gmrc-registrar',
+                'path' => 'components/furniture/registrar.css',
+            ],
         ];
     
         foreach ($components as $component) {
@@ -325,6 +329,22 @@ class FrontendServiceProvider extends ServiceProvider
      */
     protected function enqueueScripts(): void
     {
+        $registrarScriptPath =
+            GMRC_PATH
+            . 'assets/js/components/furniture/registrar.js';
+        
+        wp_enqueue_script(
+            'gmrc-registrar',
+            GMRC_URL
+                . 'assets/js/components/furniture/registrar.js',
+            [],
+            file_exists($registrarScriptPath)
+                ? (string) filemtime(
+                    $registrarScriptPath
+                )
+                : GMRC_VERSION,
+            true
+        );
         wp_enqueue_script(
             'gmrc-background-selector',
             GMRC_URL
@@ -341,12 +361,22 @@ class FrontendServiceProvider extends ServiceProvider
             GMRC_VERSION,
             true
         );
+        $previewScriptPath =
+            GMRC_PATH
+            . 'assets/js/modules/characters/character-creation-preview.js';
+        
         wp_enqueue_script(
             'gmrc-character-creation-preview',
             GMRC_URL
                 . 'assets/js/modules/characters/character-creation-preview.js',
-            [],
-            GMRC_VERSION,
+            [
+                'gmrc-registrar',
+            ],
+            file_exists($previewScriptPath)
+                ? (string) filemtime(
+                    $previewScriptPath
+                )
+                : GMRC_VERSION,
             true
         );
         wp_enqueue_script(
