@@ -5,6 +5,7 @@ declare(strict_types=1);
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\ViewModels\PortraitViewModel;
 
 defined('ABSPATH') || exit;
 
@@ -18,6 +19,10 @@ $flash = is_array($flash ?? null)
     ? $flash
     : [];
 
+$portrait = isset($portrait)
+    && $portrait instanceof PortraitViewModel
+        ? $portrait
+        : null;
 /**
  * Retrieve the first validation error for a field.
  */
@@ -846,28 +851,14 @@ $charactersUrl = add_query_arg(
 
         <div class="gmrc-living-desk__illuminator">
             <?php
-            echo $this->component(
-                'components.media.illuminated-portrait',
-                [
-                    'name' => $nameValue,
-                    'race' => $raceValue,
-                    'raceLabel' =>
-                        Race::supports($raceValue)
-                            ? Race::fromString(
-                                $raceValue
-                            )->label()
-                            : '',
-                    'characterClass' => $classValue,
-                    'classLabel' =>
-                        CharacterClass::supports(
-                            $classValue
-                        )
-                            ? CharacterClass::fromString(
-                                $classValue
-                            )->label()
-                            : '',
-                ]
-            );
+            if ($portrait instanceof PortraitViewModel) {
+                echo $this->component(
+                    'components.media.illuminated-portrait',
+                    [
+                        'portrait' => $portrait,
+                    ]
+                );
+            }
             ?>
         </div>
 
