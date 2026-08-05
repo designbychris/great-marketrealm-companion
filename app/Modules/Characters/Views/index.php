@@ -4,6 +4,10 @@ defined('ABSPATH') || exit;
 
 $characters = $characters ?? [];
 
+$portraits = is_array($portraits ?? null)
+    ? $portraits
+    : [];
+
 $companionUrl = home_url('/companion/');
 
 /*
@@ -38,7 +42,7 @@ ob_start();
 	?>
 
         <?php if ($characters === []) : ?>
-
+		
         <section class="gmrc-empty-state">
             <div
                 class="gmrc-empty-state__icon"
@@ -73,46 +77,55 @@ ob_start();
     <?php else : ?>
 
         <div class="adventurer-register">
-            <?php foreach ($characters as $character) : ?>
-			    <?php
-			    echo $this->component(
-			        'components.entries.adventurer-entry',
-			        [
-			            'character'    => $character,
-						'sealRegistry' => $sealRegistry,
-			            'companionUrl' => $companionUrl,
-			        ]
-			    );
-			    ?>
-			<?php endforeach; ?>
-
-            <a
-                class="adventurer-create-entry"
-                href="<?php echo esc_url(
-                    add_query_arg(
-                        'gmrc_route',
-                        'characters/create',
-                        $companionUrl
-                    )
-                ); ?>"
-            >
-                <span
-                    class="adventurer-create-entry__icon"
-                    aria-hidden="true"
-                >
-                    ✒
-                </span>
-
-                <span class="adventurer-create-entry__content">
-                    <strong>Inscribe a New Adventurer</strong>
-
-                    <small>
-                        Prepare a fresh page for another hero of the
-                        Great Marketrealm.
-                    </small>
-                </span>
-            </a>
-        </div>
+		    <?php foreach ($characters as $character) : ?>
+		        <?php
+		        $characterId = $character
+		            ->id()
+		            ->value();
+		
+		        $characterPortrait =
+		            $portraits[$characterId]
+		                ?? null;
+		
+		        echo $this->component(
+		            'components.entries.adventurer-entry',
+		            [
+		                'character' => $character,
+		                'portrait' => $characterPortrait,
+		                'sealRegistry' => $sealRegistry,
+		                'companionUrl' => $companionUrl,
+		            ]
+		        );
+		        ?>
+		    <?php endforeach; ?>
+		
+		    <a
+		        class="adventurer-create-entry"
+		        href="<?php echo esc_url(
+		            add_query_arg(
+		                'gmrc_route',
+		                'characters/create',
+		                $companionUrl
+		            )
+		        ); ?>"
+		    >
+		        <span
+		            class="adventurer-create-entry__icon"
+		            aria-hidden="true"
+		        >
+		            ✒
+		        </span>
+		
+		        <span class="adventurer-create-entry__content">
+		            <strong>Inscribe a New Adventurer</strong>
+		
+		            <small>
+		                Prepare a fresh page for another hero of the
+		                Great Marketrealm.
+		            </small>
+		        </span>
+		    </a>
+		</div>
 
     <?php endif; ?>
 </section>
