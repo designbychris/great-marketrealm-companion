@@ -780,6 +780,16 @@ $charactersUrl = add_query_arg(
                 </div>
 
                 <div class="gmrc-creation-preview__paper">
+                    <div
+                        class="gmrc-registrar"
+                        aria-hidden="true"
+                    >
+                        <div class="gmrc-registrar__inkwell"></div>
+                    
+                        <div class="gmrc-registrar__quill">
+                            🪶
+                        </div>
+                    </div>
                     <header class="gmrc-creation-preview__header">
                         <p class="gmrc-eyebrow">
                             Provisional Guild Record
@@ -788,18 +798,23 @@ $charactersUrl = add_query_arg(
                         <h2
                             class="gmrc-creation-preview__name"
                             data-preview-name
+                            data-register-anchor="name"
                         >
                             Unnamed Adventurer
                         </h2>
 
                         <p class="gmrc-creation-preview__identity">
-                            <span data-preview-race>
+                            <span data-preview-race
+                                data-register-anchor="race" 
+                            >
                                 Heritage awaiting selection
                             </span>
 
                             <span aria-hidden="true">·</span>
 
-                            <span data-preview-class>
+                            <span data-preview-class
+                                data-register-anchor="class"
+                            >
                                 Class awaiting selection
                             </span>
                         </p>
@@ -855,6 +870,7 @@ $charactersUrl = add_query_arg(
                                 <span
                                     class="gmrc-preview-ink"
                                     data-preview-hit-points
+                                    data-register-anchor="hp"
                                 >
                                     —
                                 </span>
@@ -870,6 +886,7 @@ $charactersUrl = add_query_arg(
                         <p
                             class="gmrc-preview-ink"
                             data-preview-saving-throws
+                            data-register-anchor="saving"
                         >
                             Choose a class to reveal its defensive
                             training.
@@ -882,6 +899,7 @@ $charactersUrl = add_query_arg(
                         <p
                             class="gmrc-preview-ink"
                             data-preview-note
+                            data-register-anchor="note"
                         >
                             Choose a race and class to begin this
                             adventurer’s first inscription.
