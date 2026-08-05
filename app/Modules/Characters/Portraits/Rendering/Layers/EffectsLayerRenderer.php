@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layer
 
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Contracts\PortraitLayerRendererInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitRenderContext;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitSvgAssetLibrary;
 
 defined('ABSPATH') || exit;
 
@@ -15,6 +16,11 @@ defined('ABSPATH') || exit;
 final class EffectsLayerRenderer implements
     PortraitLayerRendererInterface
 {
+    public function __construct(
+        private ?PortraitSvgAssetLibrary $assets = null
+    ) {
+    }
+
     public function priority(): int
     {
         return 40;
@@ -23,6 +29,16 @@ final class EffectsLayerRenderer implements
     public function render(
         PortraitRenderContext $context
     ): string {
+        $assetLayerId = $context->layer('effects');
+
+        if ($this->assets?->has($assetLayerId)) {
+            return sprintf(
+                '<g class="gmrc-portrait-layer gmrc-portrait-layer--effects" data-portrait-layer="effects" data-layer-id="%1$s"><use data-portrait-asset-use href="#%2$s"></use></g>',
+                esc_attr($assetLayerId),
+                esc_attr($this->assets->symbolId($assetLayerId))
+            );
+        }
+
         $variant =
             $context->effectsVariant();
 
