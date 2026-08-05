@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\ViewModels\PortraitViewModel;
 use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
 
 defined('ABSPATH') || exit;
