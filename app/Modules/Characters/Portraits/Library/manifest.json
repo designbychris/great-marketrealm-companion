@@ -1,0 +1,61 @@
+{
+  "package": "Great Marketrealm Companion Portrait Library \u2014 First Batch",
+  "version": "1.1.0",
+  "root": "app/Modules/Characters/Portraits/Library",
+  "canvas": {
+    "width": 480,
+    "height": 600
+  },
+  "layer_order": [
+    "Backgrounds",
+    "Bodies",
+    "Faces/Eyes",
+    "Faces/Mouths",
+    "Classes/<Class>/outfit.svg",
+    "Classes/<Class>/equipment.svg",
+    "Effects",
+    "Frames"
+  ],
+  "races": {
+    "fructan": "Bodies/Fructan/body.svg",
+    "rootkin": "Bodies/Rootkin/body.svg",
+    "fungifolk": "Bodies/Fungifolk/body.svg"
+  },
+  "classes": {
+    "fighter": {
+      "outfit": "Classes/Fighter/outfit.svg",
+      "equipment": "Classes/Fighter/equipment.svg"
+    },
+    "wizard": {
+      "outfit": "Classes/Wizard/outfit.svg",
+      "equipment": "Classes/Wizard/equipment.svg"
+    },
+    "rogue": {
+      "outfit": "Classes/Rogue/outfit.svg",
+      "equipment": "Classes/Rogue/equipment.svg"
+    }
+  },
+  "shared": {
+    "backgrounds": {
+      "parchment": "Backgrounds/parchment.svg",
+      "market-arch": "Backgrounds/market-arch.svg",
+      "guild-hall": "Backgrounds/guild-hall.svg"
+    },
+    "eyes": {
+      "round": "Faces/Eyes/round.svg",
+      "bright": "Faces/Eyes/bright.svg",
+      "determined": "Faces/Eyes/determined.svg"
+    },
+    "mouths": {
+      "neutral": "Faces/Mouths/neutral.svg",
+      "smile": "Faces/Mouths/smile.svg",
+      "grin": "Faces/Mouths/grin.svg"
+    },
+    "effects": {
+      "gold-motes": "Effects/gold-motes.svg"
+    },
+    "frames": {
+      "guild-gold": "Frames/guild-gold.svg"
+    }
+  }
+}

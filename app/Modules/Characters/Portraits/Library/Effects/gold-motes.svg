@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Gold motes effect layer</title>
+<g data-portrait-layer="effects" fill="#f8dea0">
+  <circle cx="91" cy="181" r="5"/><circle cx="375" cy="213" r="7"/><circle cx="111" cy="343" r="4"/><circle cx="390" cy="379" r="5"/>
+  <path d="M82 270l5 9 10 2-8 7 2 10-9-5-9 5 2-10-8-7 10-2Z"/>
+  <path d="M385 298l4 7 8 2-6 5 1 8-7-4-7 4 1-8-6-5 8-2Z"/>
+</g>
+</svg>

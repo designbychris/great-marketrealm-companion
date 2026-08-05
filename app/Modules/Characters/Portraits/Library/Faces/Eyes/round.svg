@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Round eyes layer</title>
+<g data-portrait-layer="eyes">
+  <ellipse cx="205" cy="220" rx="12" ry="15" fill="#fff5d5" stroke="#3b2418" stroke-width="4"/>
+  <ellipse cx="275" cy="220" rx="12" ry="15" fill="#fff5d5" stroke="#3b2418" stroke-width="4"/>
+  <circle cx="208" cy="223" r="5" fill="#3b2418"/><circle cx="278" cy="223" r="5" fill="#3b2418"/>
+  <circle cx="205" cy="217" r="2.5" fill="#fff"/><circle cx="275" cy="217" r="2.5" fill="#fff"/>
+</g>
+</svg>

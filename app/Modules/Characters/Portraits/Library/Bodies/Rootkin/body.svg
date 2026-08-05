@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Rootkin body layer</title>
+<defs><linearGradient id="skin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c8844d"/><stop offset="1" stop-color="#6e4028"/></linearGradient></defs>
+<g data-portrait-layer="race" data-layer-id="body">
+  <ellipse cx="240" cy="457" rx="132" ry="94" fill="url(#skin)" stroke="#41291f" stroke-width="7"/>
+  <path d="M158 435C164 348 191 303 240 294C289 303 316 348 322 435Z" fill="url(#skin)" stroke="#41291f" stroke-width="7"/>
+  <path d="M178 235C178 157 201 112 240 112s62 45 62 123c0 68-25 108-62 108s-62-40-62-108Z" fill="url(#skin)" stroke="#41291f" stroke-width="7"/>
+  <path d="M212 117C201 84 200 55 215 34c17 19 23 45 19 77M246 111c0-42 12-72 32-87 10 31 1 63-21 92M230 110c-20-36-45-55-67-52 5 31 27 51 59 66" fill="none" stroke="#627947" stroke-width="17" stroke-linecap="round"/>
+  <path d="M202 166c-12 36-9 72 6 107M276 163c10 37 7 74-7 109" fill="none" stroke="#e0a86c" stroke-width="4" opacity=".45"/>
+  <path d="M164 466c-18 15-27 40-25 74M316 466c18 15 27 40 25 74" fill="none" stroke="#4f321f" stroke-width="13" stroke-linecap="round"/>
+  <path d="M139 536l-20 19M140 536l4 27M341 536l20 19M340 536l-4 27" stroke="#4f321f" stroke-width="8" stroke-linecap="round"/>
+</g>
+</svg>

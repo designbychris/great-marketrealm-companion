@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Wizard outfit layer</title>
+<defs><linearGradient id="cloth" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#79639e"/><stop offset="1" stop-color="#30234e"/></linearGradient></defs>
+<g data-portrait-layer="class" data-layer-id="outfit">
+  <path d="M142 431C174 363 204 340 240 340s66 23 98 91l31 114H111Z" fill="url(#cloth)" stroke="#e9d28e" stroke-width="6"/>
+  <path d="M177 374l63 69 63-69-26 113h-74Z" fill="#392c59" stroke="#b7a4d6" stroke-width="5"/>
+  <path d="M215 399l25 22 25-22" fill="none" stroke="#f2d98e" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="240" cy="449" r="20" fill="#6c4c89" stroke="#f2d98e" stroke-width="5"/>
+  <path d="M240 436l5 9 11 2-8 8 2 11-10-5-10 5 2-11-8-8 11-2Z" fill="#f7e7a9"/>
+  <path d="M165 513c45-22 105-22 150 0" fill="none" stroke="#b89fcf" stroke-width="6" stroke-dasharray="5 12"/>
+</g>
+</svg>

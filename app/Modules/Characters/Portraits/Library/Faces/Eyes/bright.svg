@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Bright eyes layer</title>
+<g data-portrait-layer="eyes">
+  <path d="M188 220Q205 202 222 220Q205 238 188 220Z" fill="#fff7d7" stroke="#3b2418" stroke-width="4"/>
+  <path d="M258 220Q275 202 292 220Q275 238 258 220Z" fill="#fff7d7" stroke="#3b2418" stroke-width="4"/>
+  <circle cx="207" cy="220" r="7" fill="#6a8b52"/><circle cx="277" cy="220" r="7" fill="#6a8b52"/>
+  <path d="M202 214l3 4 5-2-3 5 3 4-5-2-3 4 1-5-4-3 5 1Z" fill="#fff"/>
+  <path d="M272 214l3 4 5-2-3 5 3 4-5-2-3 4 1-5-4-3 5 1Z" fill="#fff"/>
+</g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Fungifolk body layer</title>
+<defs><linearGradient id="skin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ead9b8"/><stop offset="1" stop-color="#a89571"/></linearGradient></defs>
+<g data-portrait-layer="race" data-layer-id="body">
+  <ellipse cx="240" cy="458" rx="122" ry="92" fill="url(#skin)" stroke="#594b39" stroke-width="6"/>
+  <path d="M163 435C169 350 195 309 240 298C285 309 311 350 317 435Z" fill="url(#skin)" stroke="#594b39" stroke-width="6"/>
+  <path d="M187 239C187 166 206 124 240 124s53 42 53 115c0 64-20 102-53 102s-53-38-53-102Z" fill="url(#skin)" stroke="#594b39" stroke-width="6"/>
+  <path d="M113 151C125 78 178 39 240 39s115 39 127 112c-39 25-82 36-127 36s-88-11-127-36Z" fill="#9f5671" stroke="#5a3144" stroke-width="8"/>
+  <path d="M135 145c35 12 70 18 105 18s70-6 105-18" fill="none" stroke="#d58aa5" stroke-width="8" opacity=".55"/>
+  <circle cx="177" cy="102" r="15" fill="#f5d8a4"/><circle cx="239" cy="72" r="12" fill="#f5d8a4"/><circle cx="302" cy="111" r="17" fill="#f5d8a4"/>
+  <path d="M178 306c-20 25-23 58-10 96M302 306c20 25 23 58 10 96" fill="none" stroke="#816f53" stroke-width="5" opacity=".55"/>
+</g>
+</svg>

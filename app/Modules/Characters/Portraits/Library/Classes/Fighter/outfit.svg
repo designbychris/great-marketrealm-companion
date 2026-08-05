@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Fighter outfit layer</title>
+<defs><linearGradient id="cloth" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7a8a9e"/><stop offset="1" stop-color="#31445d"/></linearGradient></defs>
+<g data-portrait-layer="class" data-layer-id="outfit">
+  <path d="M145 430C172 362 204 340 240 340s68 22 95 90l29 115H116Z" fill="url(#cloth)" stroke="#efd58c" stroke-width="6"/>
+  <path d="M165 391l-43 40 27 55 53-69M315 391l43 40-27 55-53-69" fill="#657890" stroke="#26364c" stroke-width="6"/>
+  <path d="M189 360l51 64 51-64" fill="none" stroke="#efd58c" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="240" cy="428" r="20" fill="#bc8c35" stroke="#fff0bd" stroke-width="5"/>
+  <path d="M195 453h90M202 481h76M211 509h58" stroke="#c9d2dc" stroke-width="8" stroke-linecap="round" opacity=".75"/>
+</g>
+</svg>

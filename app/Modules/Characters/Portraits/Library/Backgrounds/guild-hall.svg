@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Guild hall portrait background</title>
+<defs>
+  <radialGradient id="bg" cx="50%" cy="33%" r="80%">
+    <stop offset="0" stop-color="#eee1f1"/>
+    <stop offset=".68" stop-color="#b48cb8"/>
+    <stop offset="1" stop-color="#604368"/>
+  </radialGradient>
+</defs>
+<rect x="12" y="12" width="456" height="576" rx="220" fill="url(#bg)"/>
+<path d="M90 505V170M390 505V170" stroke="#3e2b45" stroke-width="24" opacity=".42"/>
+<path d="M62 192L240 73l178 119" fill="none" stroke="#ead39a" stroke-width="12" stroke-linejoin="round" opacity=".68"/>
+<path d="M120 505V221M360 505V221" stroke="#efdca8" stroke-width="7" opacity=".55"/>
+<circle cx="240" cy="236" r="174" fill="none" stroke="#bc8c35" stroke-width="4" stroke-dasharray="3 12" opacity=".72"/>
+</svg>

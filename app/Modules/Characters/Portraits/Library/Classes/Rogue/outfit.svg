@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Rogue outfit layer</title>
+<defs><linearGradient id="cloth" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4f6f5d"/><stop offset="1" stop-color="#1e342b"/></linearGradient></defs>
+<g data-portrait-layer="class" data-layer-id="outfit">
+  <path d="M144 432C172 364 204 340 240 340s68 24 96 92l30 113H114Z" fill="url(#cloth)" stroke="#cbbd86" stroke-width="5"/>
+  <path d="M178 361q62-52 124 0l-22 62h-80Z" fill="#263e35" stroke="#607f68" stroke-width="6"/>
+  <path d="M190 369l50 62 50-62" fill="none" stroke="#cbbd86" stroke-width="7" stroke-linecap="round"/>
+  <path d="M141 467q99-45 198 0" fill="none" stroke="#38291f" stroke-width="18"/>
+  <rect x="228" y="449" width="24" height="32" rx="5" fill="#bc8c35" stroke="#f0d998" stroke-width="4"/>
+  <path d="M176 495l28 50M304 495l-28 50" stroke="#718e73" stroke-width="8" stroke-linecap="round"/>
+</g>
+</svg>

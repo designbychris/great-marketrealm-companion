@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Determined eyes layer</title>
+<g data-portrait-layer="eyes">
+  <path d="M184 207Q205 199 225 211" fill="none" stroke="#3b2418" stroke-width="8" stroke-linecap="round"/>
+  <path d="M255 211Q275 199 296 207" fill="none" stroke="#3b2418" stroke-width="8" stroke-linecap="round"/>
+  <path d="M190 222Q205 208 222 222Q205 235 190 222Z" fill="#fff5d5" stroke="#3b2418" stroke-width="4"/>
+  <path d="M258 222Q275 208 290 222Q275 235 258 222Z" fill="#fff5d5" stroke="#3b2418" stroke-width="4"/>
+  <circle cx="208" cy="221" r="5" fill="#3b2418"/><circle cx="272" cy="221" r="5" fill="#3b2418"/>
+</g>
+</svg>

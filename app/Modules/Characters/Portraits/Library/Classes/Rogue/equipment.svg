@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Rogue daggers and satchel layer</title>
+<g data-portrait-layer="equipment" data-layer-id="equipment">
+  <path d="M130 355l35 35-67 93-18-18Z" fill="#d8e2e7" stroke="#38434a" stroke-width="5"/>
+  <path d="M120 345l54 54" stroke="#a77937" stroke-width="12" stroke-linecap="round"/>
+  <path d="M350 355l-35 35 67 93 18-18Z" fill="#d8e2e7" stroke="#38434a" stroke-width="5"/>
+  <path d="M360 345l-54 54" stroke="#a77937" stroke-width="12" stroke-linecap="round"/>
+  <path d="M305 443q65-7 82 42v57h-90v-77Z" fill="#755038" stroke="#3b291f" stroke-width="6"/>
+  <path d="M310 470h72" stroke="#d2a660" stroke-width="5"/>
+</g>
+</svg>
