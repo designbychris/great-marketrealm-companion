@@ -32,26 +32,30 @@ final class CreateCharacterAction extends Action
     }
 
     /**
-     * Persist a new Character.
+     * Persist a new Character and its Guild portrait.
      */
     public function handle(
-        Character $character
+        Character $character,
+        ?PortraitRecipe $portraitRecipe = null
     ): Character {
         $this->characters->save(
             $character
         );
-
-        $recipe = $this
-            ->portraitRecipes
-            ->forCharacter($character);
-
+    
+        $recipe = $portraitRecipe
+            ?? $this
+                ->portraitRecipes
+                ->forCharacter(
+                    $character
+                );
+    
         $this->portraits->save(
             $character->id(),
             CharacterPortrait::generated(
                 $recipe
             )
         );
-
+    
         return $character;
     }
 }
