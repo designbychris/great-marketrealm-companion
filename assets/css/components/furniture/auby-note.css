@@ -547,6 +547,69 @@
     }
 }
 
+@media (max-width: 700px) {
+    .auby-note {
+        width: min(
+            calc(100% - 1rem),
+            22rem
+        );
+    }
+
+    .auby-note__paper {
+        min-height: 13.5rem;
+
+        padding:
+            3.5rem
+            1.5rem
+            2rem;
+    }
+
+    .auby-note__portrait {
+        top: 0.7rem;
+        left: 0.85rem;
+
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .auby-note__portrait-face {
+        font-size: 1.65rem;
+    }
+
+    .auby-note__quote {
+        font-size:
+            clamp(
+                1.45rem,
+                7vw,
+                1.9rem
+            );
+
+        line-height: 1.25;
+    }
+
+    .auby-note__signature {
+        font-size: 1.15rem;
+    }
+
+    .auby-note__quill {
+        top: 4.3rem;
+        right: 0.65rem;
+
+        transform:
+            translate3d(0, 0, 0)
+            rotate(-25deg)
+            scale(0.82);
+
+        transform-origin:
+            74%
+            86%;
+    }
+
+    .auby-note__quill-feather {
+        font-size: 2.3rem;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .auby-note,
     .auby-note__paper,
