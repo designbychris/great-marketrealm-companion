@@ -27,11 +27,11 @@ final class PortraitViewModel
         private readonly string $raceLabel,
         private readonly string $characterClass,
         private readonly string $classLabel,
+        private readonly string $svg = '',
         private readonly array $layers = [],
         private readonly ?string $seed = null,
         private readonly ?int $attachmentId = null,
         private readonly ?string $attachmentUrl = null,
-        private readonly string $svg,
     ) {
     }
 
