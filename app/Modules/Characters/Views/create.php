@@ -753,6 +753,33 @@ $charactersUrl = add_query_arg(
             ?>
         </div>
 
+        <div class="gmrc-living-desk__illuminator">
+            <?php
+            echo $this->component(
+                'components.media.illuminated-portrait',
+                [
+                    'name' => $nameValue,
+                    'race' => $raceValue,
+                    'raceLabel' =>
+                        Race::supports($raceValue)
+                            ? Race::fromString(
+                                $raceValue
+                            )->label()
+                            : '',
+                    'characterClass' => $classValue,
+                    'classLabel' =>
+                        CharacterClass::supports(
+                            $classValue
+                        )
+                            ? CharacterClass::fromString(
+                                $classValue
+                            )->label()
+                            : '',
+                ]
+            );
+            ?>
+        </div>
+
         <section
             class="gmrc-creation-preview"
             data-character-creation-preview
