@@ -8,12 +8,8 @@
     --gmrc-registrar-y: 0px;
 
     position: absolute;
-    right: 1.15rem;
-    bottom: 1.1rem;
+    inset: 0;
     z-index: 8;
-
-    width: 4.5rem;
-    height: 4.5rem;
 
     pointer-events: none;
 }
@@ -23,8 +19,8 @@
  */
 .gmrc-registrar__inkwell {
     position: absolute;
-    right: 0;
-    bottom: 0;
+    right: 1.15rem;
+    bottom: 1.1rem;
 
     width: 2.65rem;
     height: 2.2rem;
@@ -113,8 +109,10 @@
  */
 .gmrc-registrar__quill {
     position: absolute;
-    left: -0.1rem;
-    top: -0.25rem;
+    left: auto;
+    top: auto;
+    right: 1.45rem;
+    bottom: 1.7rem;
 
     display: block;
 
