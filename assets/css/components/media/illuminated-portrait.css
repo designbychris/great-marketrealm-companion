@@ -4,6 +4,8 @@
  */
 
 .gmrc-illuminated-portrait {
+    --gmrc-portrait-figure-shift: 0.75rem;
+
     position: relative;
 
     width: min(100%, 31rem);
@@ -155,7 +157,23 @@
 }
 
 .gmrc-portrait-layer--race,
-.gmrc-portrait-layer--class,
+.gmrc-portrait-layer--class {
+    opacity: 0;
+
+    filter:
+        blur(0.35rem)
+        saturate(0);
+
+    transform:
+        translateY(
+            calc(
+                var(--gmrc-portrait-figure-shift)
+                + 0.75rem
+            )
+        )
+        scale(0.92);
+}
+
 .gmrc-portrait-layer--effects {
     opacity: 0;
 
@@ -177,7 +195,9 @@
         saturate(0.45);
 
     transform:
-        translateY(0)
+        translateY(
+            var(--gmrc-portrait-figure-shift)
+        )
         scale(1);
 
     animation:
@@ -194,7 +214,9 @@
         saturate(0.65);
 
     transform:
-        translateY(0)
+        translateY(
+            var(--gmrc-portrait-figure-shift)
+        )
         scale(1);
 
     animation:
@@ -416,8 +438,13 @@
             saturate(0);
 
         transform:
-            translateY(1rem)
-            scale(0.93);
+            translateY(
+                calc(
+                    var(--gmrc-portrait-figure-shift)
+                    + 1rem
+                )
+            )
+            scale(0.92);
     }
 
     48% {
@@ -426,6 +453,15 @@
         filter:
             blur(0.08rem)
             saturate(0);
+
+        transform:
+            translateY(
+                calc(
+                    var(--gmrc-portrait-figure-shift)
+                    + 0.3rem
+                )
+            )
+            scale(0.97);
     }
 
     100% {
@@ -436,7 +472,9 @@
             saturate(0.45);
 
         transform:
-            translateY(0)
+            translateY(
+                var(--gmrc-portrait-figure-shift)
+            )
             scale(1);
     }
 }
@@ -446,19 +484,43 @@
         opacity: 0;
 
         transform:
-            translateY(-1.5rem)
-            scale(1.04);
+            translateY(
+                calc(
+                    var(--gmrc-portrait-figure-shift)
+                    - 1.5rem
+                )
+            )
+            scale(0.92);
 
         filter:
             blur(0.4rem)
             saturate(0);
     }
 
+    72% {
+        opacity: 1;
+
+        transform:
+            translateY(
+                calc(
+                    var(--gmrc-portrait-figure-shift)
+                    + 0.15rem
+                )
+            )
+            scale(1.015);
+
+        filter:
+            blur(0.03rem)
+            saturate(0.55);
+    }
+
     100% {
         opacity: 1;
 
         transform:
-            translateY(0)
+            translateY(
+                var(--gmrc-portrait-figure-shift)
+            )
             scale(1);
 
         filter:
