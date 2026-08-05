@@ -72,6 +72,7 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
     use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitLayerRegistry;
     use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRecipeGenerator;
     use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
+    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
     use GreatMarketrealmCompanion\Services\Auby\Auby;
     use GreatMarketrealmCompanion\Services\Auby\Quote;
     use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
@@ -1106,34 +1107,25 @@ public function testEditThrowsWhenCharacterCannotBeFound(): void
 final class CharacterControllerPortraitRepositorySpy implements
     CharacterPortraitRepositoryInterface
 {
-    public ?CharacterId $savedCharacterId = null;
-
-    public ?CharacterPortrait $savedPortrait = null;
-
-    public int $saveCalls = 0;
+    public ?CharacterPortrait $portrait = null;
 
     public function find(
         CharacterId $characterId
     ): ?CharacterPortrait {
-        return null;
+        return $this->portrait;
     }
 
     public function save(
         CharacterId $characterId,
         CharacterPortrait $portrait
     ): void {
-        $this->saveCalls++;
-
-        $this->savedCharacterId =
-            $characterId;
-
-        $this->savedPortrait =
-            $portrait;
+        $this->portrait = $portrait;
     }
 
     public function delete(
         CharacterId $characterId
     ): void {
+        $this->portrait = null;
     }
 }
 
