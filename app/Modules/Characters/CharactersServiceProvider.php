@@ -144,6 +144,9 @@ final class CharactersServiceProvider extends ServiceProvider
             Auby::class
         );
 
+        /*
+         * Portrait rendering stack.
+         */
         $container->singleton(
             PortraitLayerStack::class,
             static fn (): PortraitLayerStack =>
@@ -167,10 +170,6 @@ final class CharactersServiceProvider extends ServiceProvider
                         PortraitLayerStack::class
                     )
                 )
-        );
-
-        $container->bind(
-            CharacterController::class
         );
 
         /*
@@ -213,21 +212,6 @@ final class CharactersServiceProvider extends ServiceProvider
                     )
                 )
         );
-
-        $container->singleton(
-            PortraitRenderer::class,
-            static fn (
-                Container $container
-            ): PortraitRenderer =>
-                new PortraitRenderer(
-                    $container->make(
-                        CharacterPortraitRepositoryInterface::class
-                    ),
-                    $container->make(
-                        PortraitRecipeGenerator::class
-                    )
-                )
-        );
         
         /*
          * WordPress portrait persistence.
@@ -246,6 +230,34 @@ final class CharactersServiceProvider extends ServiceProvider
                 $container->make(
                     CharacterPortraitRepository::class
                 )
+        );
+
+        /*
+         * Presentation-ready portrait service.
+         */
+        $container->singleton(
+            PortraitRenderer::class,
+            static fn (
+                Container $container
+            ): PortraitRenderer =>
+                new PortraitRenderer(
+                    $container->make(
+                        CharacterPortraitRepositoryInterface::class
+                    ),
+                    $container->make(
+                        PortraitRecipeGenerator::class
+                    ),
+                    $container->make(
+                        PortraitSvgRenderer::class
+                    )
+                )
+        );
+        
+        /*
+         * Controller resolved after its dependencies are registered.
+         */
+        $container->bind(
+            CharacterController::class
         );
     }
 
