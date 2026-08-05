@@ -249,6 +249,97 @@ $charactersUrl = add_query_arg(
             value="characters"
         >
 
+        <input
+            type="hidden"
+            name="portrait_seed"
+            value=""
+            data-portrait-field="seed"
+        >
+        
+        <input
+            type="hidden"
+            name="portrait_background"
+            value=""
+            data-portrait-field="background"
+        >
+        
+        <input
+            type="hidden"
+            name="portrait_body"
+            value=""
+            data-portrait-field="body"
+        >
+        
+        <input
+            type="hidden"
+            name="portrait_head"
+            value=""
+            data-portrait-field="head"
+        >
+        
+        <input
+            type="hidden"
+            name="portrait_eyes"
+            value=""
+            data-portrait-field="eyes"
+        >
+        
+        <input
+            type="hidden"
+            name="portrait_mouth"
+            value=""
+            data-portrait-field="mouth"
+        >
+        
+        <input
+            type="hidden"
+            name="portrait_palette"
+            value=""
+            data-portrait-field="palette"
+        >
+        
+        <input
+            type="hidden"
+            name="portrait_heritage"
+            value=""
+            data-portrait-field="heritage"
+        >
+        
+        <input
+            type="hidden"
+            name="portrait_outfit"
+            value=""
+            data-portrait-field="outfit"
+        >
+        
+        <input
+            type="hidden"
+            name="portrait_equipment"
+            value=""
+            data-portrait-field="equipment"
+        >
+        
+        <input
+            type="hidden"
+            name="portrait_accessory"
+            value=""
+            data-portrait-field="class_accessory"
+        >
+        
+        <input
+            type="hidden"
+            name="portrait_frame"
+            value=""
+            data-portrait-field="frame"
+        >
+        
+        <input
+            type="hidden"
+            name="portrait_effects"
+            value=""
+            data-portrait-field="effects"
+        >
+
         <?php
         wp_nonce_field(
             'gmrc_create_character',
