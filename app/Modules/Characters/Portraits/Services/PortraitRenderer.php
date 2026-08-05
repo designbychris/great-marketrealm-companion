@@ -28,7 +28,8 @@ final class PortraitRenderer
 {
     public function __construct(
         private CharacterPortraitRepositoryInterface $portraits,
-        private PortraitRecipeGenerator $recipes
+        private PortraitRecipeGenerator $recipes,
+        private PortraitSvgRenderer $svgRenderer,
     ) {
     }
 
@@ -120,6 +121,12 @@ final class PortraitRenderer
             $mode = 'generated';
         }
 
+        $context = PortraitRenderContext::fromRecipe()
+
+        $svg = $this->svgRenderer->render(
+        $context
+        );
+        
         return new PortraitViewModel(
             mode: $mode,
             name: $character->name()->value(),
@@ -136,7 +143,8 @@ final class PortraitRenderer
             ),
             seed: $recipe?->seed()->value(),
             attachmentId: $attachmentId,
-            attachmentUrl: $attachmentUrl
+            attachmentUrl: $attachmentUrl,
+            svg: $svg,
         );
     }
 
