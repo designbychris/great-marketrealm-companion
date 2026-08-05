@@ -31,7 +31,13 @@ final class PortraitViewModel
         private readonly ?string $seed = null,
         private readonly ?int $attachmentId = null,
         private readonly ?string $attachmentUrl = null,
+        private readonly string $svg,
     ) {
+    }
+
+    public function svg(): string
+    {
+        return $this->svg;
     }
 
     public function mode(): string
@@ -149,6 +155,7 @@ final class PortraitViewModel
             'seed' => $this->seed,
             'attachment_id' => $this->attachmentId,
             'attachment_url' => $this->attachmentUrl,
+            'svg' => $this->svg,
         ];
     }
 }
