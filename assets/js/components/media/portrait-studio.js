@@ -582,27 +582,27 @@
                     },
                     660
                 );
+            };
 
-                /**
-                 * Write a provisional portrait value into its
-                 * corresponding hidden form field.
-                 */
-                const writePortraitField = function (
-                    field,
-                    value
-                ) {
-                    const input = form.querySelector(
-                        '[data-portrait-field="'
-                            + field
-                            + '"]'
-                    );
-                
-                    if (!(input instanceof HTMLInputElement)) {
-                        return;
-                    }
-                
-                    input.value = String(value || '');
-                };
+            /**
+             * Write a provisional portrait value into its
+             * corresponding hidden form field.
+             */
+            const writePortraitField = function (
+                field,
+                value
+            ) {
+                const input = form.querySelector(
+                    '[data-portrait-field="'
+                        + field
+                        + '"]'
+                );
+
+                if (!(input instanceof HTMLInputElement)) {
+                    return;
+                }
+
+                input.value = String(value || '');
             };
 
             /**
@@ -1017,84 +1017,6 @@ const applyRecipe = function (
     }
 };
 
-                /*
-                 * Adjust the provisional body proportions.
-                 */
-                if (raceLayer instanceof SVGElement) {
-                    const ellipses =
-                        raceLayer.querySelectorAll(
-                            'ellipse'
-                        );
-
-                    const torso = ellipses[0];
-                    const head = ellipses[1];
-
-                    if (torso instanceof SVGElement) {
-                        torso.setAttribute(
-                            'rx',
-                            bodyVariant === 2
-                                ? '138'
-                                : (
-                                    bodyVariant === 3
-                                        ? '116'
-                                        : '126'
-                                )
-                        );
-                    }
-
-                    if (head instanceof SVGElement) {
-                        head.setAttribute(
-                            'rx',
-                            bodyVariant === 3
-                                ? '82'
-                                : '92'
-                        );
-
-                        head.setAttribute(
-                            'ry',
-                            bodyVariant === 2
-                                ? '118'
-                                : '110'
-                        );
-                    }
-                }
-
-                drawEquipment(
-                    classLayer,
-                    equipmentVariant
-                );
-
-                /*
-                 * Change the visible effect glyphs.
-                 */
-                if (effectsLayer instanceof SVGElement) {
-                    const effects =
-                        effectsLayer.querySelectorAll(
-                            'text'
-                        );
-
-                    if (effects[0]) {
-                        effects[0].textContent =
-                            effectsVariant === 2
-                                ? '❧'
-                                : '✦';
-                    }
-
-                    if (effects[1]) {
-                        effects[1].textContent =
-                            effectsVariant === 3
-                                ? '✺'
-                                : '✧';
-                    }
-
-                    if (effects[2]) {
-                        effects[2].textContent =
-                            effectsVariant === 1
-                                ? '✧'
-                                : '✦';
-                    }
-                }
-            };
 
             /**
              * Synchronise the complete portrait state.
