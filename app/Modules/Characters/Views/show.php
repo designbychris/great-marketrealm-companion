@@ -12,6 +12,8 @@ if (
     || ! $character instanceof Character
     || ! isset($sealRegistry)
     || ! $sealRegistry instanceof GuildSealRegistry
+    || ! isset($portrait)
+    || ! $portrait instanceof PortraitViewModel
 ) {
     return;
 }
@@ -143,14 +145,6 @@ $guildSeal = $sealRegistry->for(
     $characterClass
 );
 
-$initial = function_exists('mb_substr')
-    ? mb_substr($name, 0, 1)
-    : substr($name, 0, 1);
-
-$initial = function_exists('mb_strtoupper')
-    ? mb_strtoupper($initial)
-    : strtoupper($initial);
-
 $abilities = [
     'Strength' => $abilityScores->strength(),
     'Dexterity' => $abilityScores->dexterity(),
@@ -209,20 +203,16 @@ $abilities = [
     </header>
 
     <div class="gmrc-character-sheet__identity">
-        <figure class="portrait-frame portrait-frame--sheet">
-            <div class="portrait-frame__inner">
-                <span
-                    class="portrait-frame__initials"
-                    aria-hidden="true"
-                >
-                    <?php echo esc_html($initial); ?>
-                </span>
-            </div>
-
-            <figcaption class="portrait-frame__caption">
-                Registered Adventurer
-            </figcaption>
-        </figure>
+        <div class="gmrc-character-sheet__portrait">
+            <?php
+            echo $this->component(
+                'components.media.illuminated-portrait',
+                [
+                    'portrait' => $portrait,
+                ]
+            );
+            ?>
+        </div>
 
         <div class="gmrc-character-sheet__summary">
             <div class="gmrc-character-sheet__seal">
