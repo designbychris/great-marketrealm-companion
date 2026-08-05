@@ -19,6 +19,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Portraits\Repositories\Characte
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitLayerRegistry;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRecipeGenerator;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\SubmittedPortraitRecipeFactory;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteRepository;
@@ -155,6 +156,18 @@ final class CharactersServiceProvider extends ServiceProvider
             ): PortraitLayerRegistryInterface =>
                 $container->make(
                     PortraitLayerRegistry::class
+                )
+        );
+
+        $container->singleton(
+            SubmittedPortraitRecipeFactory::class,
+            static fn (
+                Container $container
+            ): SubmittedPortraitRecipeFactory =>
+                new SubmittedPortraitRecipeFactory(
+                    $container->make(
+                        PortraitLayerRegistryInterface::class
+                    )
                 )
         );
         
