@@ -27,6 +27,17 @@ if (! function_exists('esc_html__')) {
     }
 }
 
+if (! function_exists('esc_html')) {
+    function esc_html(mixed $text): string
+    {
+        return htmlspecialchars(
+            (string) $text,
+            ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5,
+            'UTF-8'
+        );
+    }
+}
+
 if (! function_exists('wp_die')) {
     function wp_die(
         string $message = '',
