@@ -20,6 +20,12 @@ use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitLaye
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRecipeGenerator;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\SubmittedPortraitRecipeFactory;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\BackgroundLayerRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\BodyLayerRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\ClassLayerRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\EffectsLayerRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitLayerStack;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitSvgRenderer;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteRepository;
@@ -136,6 +142,31 @@ final class CharactersServiceProvider extends ServiceProvider
 
         $container->singleton(
             Auby::class
+        );
+
+        $container->singleton(
+            PortraitLayerStack::class,
+            static fn (): PortraitLayerStack =>
+                new PortraitLayerStack(
+                    [
+                        new BackgroundLayerRenderer(),
+                        new BodyLayerRenderer(),
+                        new ClassLayerRenderer(),
+                        new EffectsLayerRenderer(),
+                    ]
+                )
+        );
+        
+        $container->singleton(
+            PortraitSvgRenderer::class,
+            static fn (
+                Container $container
+            ): PortraitSvgRenderer =>
+                new PortraitSvgRenderer(
+                    $container->make(
+                        PortraitLayerStack::class
+                    )
+                )
         );
 
         $container->bind(
