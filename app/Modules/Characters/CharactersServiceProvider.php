@@ -13,6 +13,11 @@ use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Rules\CharacterCreationRules;
 use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\CharacterPortraitRepositoryInterface;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\PortraitLayerRegistryInterface;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Repositories\CharacterPortraitRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitLayerRegistry;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRecipeGenerator;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteRepository;
@@ -89,6 +94,12 @@ final class CharactersServiceProvider extends ServiceProvider
                 new CreateCharacterAction(
                     $container->make(
                         CharacterRepositoryInterface::class
+                    ),
+                    $container->make(
+                        CharacterPortraitRepositoryInterface::class
+                    ),
+                    $container->make(
+                        PortraitRecipeGenerator::class
                     )
                 )
         );
@@ -127,6 +138,54 @@ final class CharactersServiceProvider extends ServiceProvider
 
         $container->bind(
             CharacterController::class
+        );
+
+        /*
+         * Portrait layers and deterministic recipes.
+         */
+        $container->singleton(
+            PortraitLayerRegistry::class
+        );
+        
+        $container->singleton(
+            PortraitLayerRegistryInterface::class,
+            static fn (
+                Container $container
+            ): PortraitLayerRegistryInterface =>
+                $container->make(
+                    PortraitLayerRegistry::class
+                )
+        );
+        
+        $container->singleton(
+            PortraitRecipeGenerator::class,
+            static fn (
+                Container $container
+            ): PortraitRecipeGenerator =>
+                new PortraitRecipeGenerator(
+                    $container->make(
+                        PortraitLayerRegistryInterface::class
+                    )
+                )
+        );
+        
+        /*
+         * WordPress portrait persistence.
+         */
+        $container->singleton(
+            CharacterPortraitRepository::class,
+            static fn (): CharacterPortraitRepository =>
+                new CharacterPortraitRepository()
+        );
+        
+        $container->singleton(
+            CharacterPortraitRepositoryInterface::class,
+            static fn (
+                Container $container
+            ): CharacterPortraitRepositoryInterface =>
+                $container->make(
+                    CharacterPortraitRepository::class
+                )
         );
     }
 
