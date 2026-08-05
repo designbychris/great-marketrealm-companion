@@ -21,6 +21,28 @@ namespace {
         }
     }
 
+    if (! function_exists('apply_filters')) {
+        function apply_filters(
+            string $hookName,
+            mixed $value,
+            mixed ...$args
+        ): mixed {
+            return $value;
+        }
+    }
+    
+    if (! function_exists('esc_attr')) {
+        function esc_attr(
+            mixed $value
+        ): string {
+            return htmlspecialchars(
+                (string) $value,
+                ENT_QUOTES | ENT_SUBSTITUTE,
+                'UTF-8'
+            );
+        }
+    }
+
     if (! function_exists('wp_validate_redirect')) {
         function wp_validate_redirect(
             string $location,
