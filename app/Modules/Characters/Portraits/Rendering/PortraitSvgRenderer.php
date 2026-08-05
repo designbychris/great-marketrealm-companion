@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering;
 
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitSvgAssetLibrary;
+
 defined('ABSPATH') || exit;
 
 /**
@@ -15,7 +17,8 @@ defined('ABSPATH') || exit;
 final class PortraitSvgRenderer
 {
     public function __construct(
-        private PortraitLayerStack $layers
+        private PortraitLayerStack $layers,
+        private ?PortraitSvgAssetLibrary $assets = null
     ) {
     }
 
@@ -78,6 +81,11 @@ final class PortraitSvgRenderer
             </title>
 
             <defs>
+                <?php
+                if ($this->assets instanceof PortraitSvgAssetLibrary) {
+                    echo $this->assets->definitions(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                }
+                ?>
                 <radialGradient
                     id="<?php echo esc_attr(
                         $backgroundId
