@@ -153,11 +153,14 @@
         "Caveat",
         var(--gmrc-display-font, Georgia, serif);
 
-    font-size:
-        clamp(1.55rem, 3vw, 2rem);
+    font-size: clamp(
+        1.7rem,
+        2.1vw,
+        2.35rem
+    );
 
+    line-height: 1.28;
     font-weight: 600;
-    line-height: 1.18;
 }
 
 .auby-note__signature {
