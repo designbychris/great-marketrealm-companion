@@ -547,6 +547,15 @@
     }
 }
 
+@media (max-width: 1400px) {
+    .auby-note {
+        width: min(
+            calc(100% - 1rem),
+            22rem
+        );
+    }
+}
+
 @media (max-width: 700px) {
     .auby-note {
         width: min(
