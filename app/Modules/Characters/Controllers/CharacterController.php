@@ -95,11 +95,17 @@ final class CharacterController
      */
     public function create(): string
     {
+        $old = [];
+    
+        $name = '';
+        $race = '';
+        $characterClass = '';
+    
         return $this->views->render(
             View::make(
                 'characters.create',
                 [
-                    'old' => [],
+                    'old' => $old,
                     'errors' => [],
                     'flash' => [],
                     'raceOptions' => $this
@@ -108,6 +114,18 @@ final class CharacterController
                     'classOptions' => $this
                         ->classRegistry
                         ->options(),
+    
+                    /*
+                     * The provisional portrait uses the same rendering
+                     * pipeline as persisted Character portraits.
+                     */
+                    'portrait' => $this
+                        ->portraitRenderer
+                        ->preview(
+                            $name,
+                            $race,
+                            $characterClass
+                        ),
     
                     /*
                      * Auby guidance used by the Living Desk.
