@@ -6,6 +6,376 @@
 (function () {
     'use strict';
 
+    const SVG_NAMESPACE =
+        'http://www.w3.org/2000/svg';
+
+    /**
+     * Portrait colour collections.
+     *
+     * These mirror the provisional palettes rendered by PHP.
+     */
+    const backgroundPalettes = [
+        [
+            '#fff4ce',
+            '#e5c884',
+            '#a77a3c',
+        ],
+        [
+            '#eef1d2',
+            '#b9c48d',
+            '#68774b',
+        ],
+        [
+            '#eee1f1',
+            '#b48cb8',
+            '#604368',
+        ],
+    ];
+
+    const bodyPalettes = [
+        [
+            '#705078',
+            '#392240',
+        ],
+        [
+            '#77895d',
+            '#38482f',
+        ],
+        [
+            '#a25f4e',
+            '#593125',
+        ],
+    ];
+
+    const outfitPalettes = [
+        [
+            '#9d5162',
+            '#5c2433',
+        ],
+        [
+            '#687f50',
+            '#344329',
+        ],
+        [
+            '#596f94',
+            '#2e3d5a',
+        ],
+    ];
+
+    /**
+     * Produce a stable positive integer from text.
+     */
+    const hashValue = function (value) {
+        let hash = 2166136261;
+
+        Array.from(String(value)).forEach(
+            function (character) {
+                hash ^= character.codePointAt(0);
+
+                hash = Math.imul(
+                    hash,
+                    16777619
+                );
+            }
+        );
+
+        return hash >>> 0;
+    };
+
+    /**
+     * Return a deterministic variant between 1 and quantity.
+     */
+    const variantFor = function (
+        seed,
+        slot,
+        quantity = 3
+    ) {
+        quantity = Math.max(
+            1,
+            Number(quantity) || 1
+        );
+
+        return (
+            hashValue(
+                seed + '|' + slot
+            ) % quantity
+        ) + 1;
+    };
+
+    /**
+     * Create an SVG element with attributes.
+     */
+    const svgElement = function (
+        tagName,
+        attributes = {}
+    ) {
+        const element = document.createElementNS(
+            SVG_NAMESPACE,
+            tagName
+        );
+
+        Object.entries(attributes).forEach(
+            function (entry) {
+                element.setAttribute(
+                    entry[0],
+                    String(entry[1])
+                );
+            }
+        );
+
+        return element;
+    };
+
+    /**
+     * Apply a numbered variant class to a portrait layer.
+     */
+    const applyVariantClass = function (
+        layer,
+        variant
+    ) {
+        if (!(layer instanceof SVGElement)) {
+            return;
+        }
+
+        Array.from(layer.classList).forEach(
+            function (className) {
+                if (
+                    className.indexOf(
+                        'gmrc-portrait-layer--variant-'
+                    ) === 0
+                ) {
+                    layer.classList.remove(
+                        className
+                    );
+                }
+            }
+        );
+
+        layer.classList.add(
+            'gmrc-portrait-layer--variant-'
+                + variant
+        );
+    };
+
+    /**
+     * Apply colours to a gradient.
+     */
+    const applyGradient = function (
+        gradient,
+        colours
+    ) {
+        if (!(gradient instanceof SVGElement)) {
+            return;
+        }
+
+        const stops = gradient.querySelectorAll(
+            'stop'
+        );
+
+        colours.forEach(function (
+            colour,
+            index
+        ) {
+            const stop = stops[index];
+
+            if (stop instanceof SVGElement) {
+                stop.setAttribute(
+                    'stop-color',
+                    colour
+                );
+            }
+        });
+    };
+
+    /**
+     * Remove dynamically managed equipment artwork.
+     */
+    const clearEquipment = function (
+        classLayer
+    ) {
+        if (!(classLayer instanceof SVGElement)) {
+            return;
+        }
+
+        classLayer
+            .querySelectorAll(
+                '[data-live-portrait-equipment]'
+            )
+            .forEach(function (element) {
+                element.remove();
+            });
+
+        /*
+         * Remove the equipment initially rendered by PHP.
+         *
+         * Garment elements remain untouched because only the
+         * equipment path has this class and its following artwork
+         * is positioned at the end of the class layer.
+         */
+        const originalEquipment =
+            classLayer.querySelector(
+                '.gmrc-portrait-layers__equipment'
+            );
+
+        if (
+            originalEquipment
+                instanceof SVGElement
+        ) {
+            let element = originalEquipment;
+
+            while (element) {
+                const next =
+                    element.nextElementSibling;
+
+                element.remove();
+
+                element = next;
+            }
+        }
+    };
+
+    /**
+     * Draw the selected provisional equipment variant.
+     */
+    const drawEquipment = function (
+        classLayer,
+        variant
+    ) {
+        if (!(classLayer instanceof SVGElement)) {
+            return;
+        }
+
+        clearEquipment(classLayer);
+
+        if (variant === 1) {
+            /*
+             * Sword or cleaver.
+             */
+            const blade = svgElement(
+                'path',
+                {
+                    d:
+                        'M350 170 '
+                        + 'L366 185 '
+                        + 'L250 390 '
+                        + 'L228 378 Z',
+                    fill: '#69513f',
+                    stroke: '#35271e',
+                    'stroke-width': '5',
+                    class:
+                        'gmrc-portrait-layers__equipment',
+                    'data-live-portrait-equipment':
+                        'true',
+                }
+            );
+
+            const handle = svgElement(
+                'path',
+                {
+                    d: 'M337 156 L382 202',
+                    fill: 'none',
+                    stroke: '#bc8c35',
+                    'stroke-width': '13',
+                    'stroke-linecap': 'round',
+                    'data-live-portrait-equipment':
+                        'true',
+                }
+            );
+
+            classLayer.append(
+                blade,
+                handle
+            );
+
+            return;
+        }
+
+        if (variant === 2) {
+            /*
+             * Bow.
+             */
+            const bow = svgElement(
+                'path',
+                {
+                    d:
+                        'M338 160 '
+                        + 'Q410 290 339 430',
+                    fill: 'none',
+                    stroke: '#78502c',
+                    'stroke-width': '12',
+                    'stroke-linecap': 'round',
+                    class:
+                        'gmrc-portrait-layers__equipment',
+                    'data-live-portrait-equipment':
+                        'true',
+                }
+            );
+
+            const string = svgElement(
+                'path',
+                {
+                    d:
+                        'M338 160 '
+                        + 'Q292 295 339 430',
+                    fill: 'none',
+                    stroke: '#d7bd7b',
+                    'stroke-width': '3',
+                    'data-live-portrait-equipment':
+                        'true',
+                }
+            );
+
+            classLayer.append(
+                bow,
+                string
+            );
+
+            return;
+        }
+
+        /*
+         * Staff.
+         */
+        const staff = svgElement(
+            'path',
+            {
+                d:
+                    'M348 150 '
+                    + 'L360 450',
+                fill: 'none',
+                stroke: '#68442b',
+                'stroke-width': '12',
+                'stroke-linecap': 'round',
+                class:
+                    'gmrc-portrait-layers__equipment',
+                'data-live-portrait-equipment':
+                    'true',
+            }
+        );
+
+        const crystal = svgElement(
+            'circle',
+            {
+                cx: '348',
+                cy: '145',
+                r: '30',
+                fill: '#7c5790',
+                stroke: '#efd58c',
+                'stroke-width': '7',
+                'data-live-portrait-equipment':
+                    'true',
+            }
+        );
+
+        classLayer.append(
+            staff,
+            crystal
+        );
+    };
+
+    /**
+     * Initialise every portrait studio on the page.
+     */
     const initialisePortraitStudios = function () {
         const studios = document.querySelectorAll(
             '[data-portrait-studio]'
@@ -18,6 +388,10 @@
         studios.forEach(function (studio) {
             const form = studio.closest('form');
 
+            /*
+             * Saved portraits are rendered by PHP and do not need
+             * the live provisional recipe.
+             */
             if (!(form instanceof HTMLFormElement)) {
                 return;
             }
@@ -51,6 +425,40 @@
             const initialOutput = studio.querySelector(
                 '[data-portrait-initial]'
             );
+
+            const backgroundLayer =
+                studio.querySelector(
+                    '.gmrc-portrait-layer--background'
+                );
+
+            const raceLayer = studio.querySelector(
+                '.gmrc-portrait-layer--race'
+            );
+
+            const classLayer = studio.querySelector(
+                '.gmrc-portrait-layer--class'
+            );
+
+            const effectsLayer =
+                studio.querySelector(
+                    '.gmrc-portrait-layer--effects'
+                );
+
+            const backgroundGradient =
+                studio.querySelector(
+                    'radialGradient'
+                );
+
+            const linearGradients =
+                studio.querySelectorAll(
+                    'linearGradient'
+                );
+
+            const bodyGradient =
+                linearGradients[0] || null;
+
+            const garmentGradient =
+                linearGradients[1] || null;
 
             let nameTimer = null;
             let updateTimer = null;
@@ -90,7 +498,8 @@
                 );
 
                 return characters.length > 0
-                    ? characters[0].toLocaleUpperCase()
+                    ? characters[0]
+                        .toLocaleUpperCase()
                     : '?';
             };
 
@@ -127,6 +536,241 @@
             };
 
             /**
+             * Apply the provisional portrait recipe.
+             */
+            const applyRecipe = function (
+                name,
+                race,
+                characterClass
+            ) {
+                /*
+                 * The separators prevent combinations such as
+                 * "ab" + "c" matching "a" + "bc".
+                 */
+                const seed = [
+                    name.toLocaleLowerCase(),
+                    race,
+                    characterClass,
+                ].join('|');
+
+                const backgroundVariant =
+                    variantFor(
+                        seed,
+                        'background'
+                    );
+
+                const bodyVariant = variantFor(
+                    seed,
+                    'body'
+                );
+
+                const outfitVariant =
+                    variantFor(
+                        seed,
+                        'outfit'
+                    );
+
+                const equipmentVariant =
+                    variantFor(
+                        seed,
+                        'equipment'
+                    );
+
+                const effectsVariant =
+                    variantFor(
+                        seed,
+                        'effects'
+                    );
+
+                studio.dataset.portraitSeed =
+                    String(hashValue(seed));
+
+                studio.dataset.portraitBackground =
+                    'background-provisional-0'
+                    + backgroundVariant;
+
+                studio.dataset.portraitBody =
+                    (
+                        race
+                            || 'unwritten'
+                    )
+                    + '-body-provisional-0'
+                    + bodyVariant;
+
+                studio.dataset.portraitHead =
+                    (
+                        race
+                            || 'unwritten'
+                    )
+                    + '-head-provisional-0'
+                    + variantFor(
+                        seed,
+                        'head'
+                    );
+
+                studio.dataset.portraitEyes =
+                    'eyes-provisional-0'
+                    + variantFor(
+                        seed,
+                        'eyes'
+                    );
+
+                studio.dataset.portraitMouth =
+                    'mouth-provisional-0'
+                    + variantFor(
+                        seed,
+                        'mouth'
+                    );
+
+                studio.dataset.portraitPalette =
+                    (
+                        race
+                            || 'unwritten'
+                    )
+                    + '-palette-provisional-0'
+                    + bodyVariant;
+
+                studio.dataset.portraitOutfit =
+                    (
+                        characterClass
+                            || 'unwritten'
+                    )
+                    + '-outfit-provisional-0'
+                    + outfitVariant;
+
+                studio.dataset.portraitEquipment =
+                    (
+                        characterClass
+                            || 'unwritten'
+                    )
+                    + '-equipment-provisional-0'
+                    + equipmentVariant;
+
+                studio.dataset.portraitEffects =
+                    'effects-provisional-0'
+                    + effectsVariant;
+
+                applyGradient(
+                    backgroundGradient,
+                    backgroundPalettes[
+                        backgroundVariant - 1
+                    ]
+                );
+
+                applyGradient(
+                    bodyGradient,
+                    bodyPalettes[
+                        bodyVariant - 1
+                    ]
+                );
+
+                applyGradient(
+                    garmentGradient,
+                    outfitPalettes[
+                        outfitVariant - 1
+                    ]
+                );
+
+                applyVariantClass(
+                    backgroundLayer,
+                    backgroundVariant
+                );
+
+                applyVariantClass(
+                    raceLayer,
+                    bodyVariant
+                );
+
+                applyVariantClass(
+                    classLayer,
+                    outfitVariant
+                );
+
+                applyVariantClass(
+                    effectsLayer,
+                    effectsVariant
+                );
+
+                /*
+                 * Adjust the provisional body proportions.
+                 */
+                if (raceLayer instanceof SVGElement) {
+                    const ellipses =
+                        raceLayer.querySelectorAll(
+                            'ellipse'
+                        );
+
+                    const torso = ellipses[0];
+                    const head = ellipses[1];
+
+                    if (torso instanceof SVGElement) {
+                        torso.setAttribute(
+                            'rx',
+                            bodyVariant === 2
+                                ? '138'
+                                : (
+                                    bodyVariant === 3
+                                        ? '116'
+                                        : '126'
+                                )
+                        );
+                    }
+
+                    if (head instanceof SVGElement) {
+                        head.setAttribute(
+                            'rx',
+                            bodyVariant === 3
+                                ? '82'
+                                : '92'
+                        );
+
+                        head.setAttribute(
+                            'ry',
+                            bodyVariant === 2
+                                ? '118'
+                                : '110'
+                        );
+                    }
+                }
+
+                drawEquipment(
+                    classLayer,
+                    equipmentVariant
+                );
+
+                /*
+                 * Change the visible effect glyphs.
+                 */
+                if (effectsLayer instanceof SVGElement) {
+                    const effects =
+                        effectsLayer.querySelectorAll(
+                            'text'
+                        );
+
+                    if (effects[0]) {
+                        effects[0].textContent =
+                            effectsVariant === 2
+                                ? '❧'
+                                : '✦';
+                    }
+
+                    if (effects[1]) {
+                        effects[1].textContent =
+                            effectsVariant === 3
+                                ? '✺'
+                                : '✧';
+                    }
+
+                    if (effects[2]) {
+                        effects[2].textContent =
+                            effectsVariant === 1
+                                ? '✧'
+                                : '✦';
+                    }
+                }
+            };
+
+            /**
              * Synchronise the complete portrait state.
              */
             const updatePortrait = function (
@@ -134,10 +778,14 @@
             ) {
                 const name = characterName();
 
-                const race = selectedInput('race');
+                const race = selectedInput(
+                    'race'
+                );
 
                 const characterClass =
-                    selectedInput('class');
+                    selectedInput(
+                        'class'
+                    );
 
                 const raceValue =
                     race instanceof HTMLInputElement
@@ -206,13 +854,13 @@
                 if (raceOutput instanceof HTMLElement) {
                     raceOutput.textContent =
                         raceLabel
-                        || 'Heritage unwritten';
+                            || 'Heritage unwritten';
                 }
 
                 if (classOutput instanceof HTMLElement) {
                     classOutput.textContent =
                         classLabel
-                        || 'Calling unchosen';
+                            || 'Calling unchosen';
                 }
 
                 if (statusOutput instanceof HTMLElement) {
@@ -236,6 +884,12 @@
                             'Portrait awaiting inscription';
                     }
                 }
+
+                applyRecipe(
+                    name,
+                    raceValue,
+                    classValue
+                );
 
                 if (animate) {
                     awaken();
@@ -273,8 +927,10 @@
                     const target = event.target;
 
                     if (
-                        !(target
-                            instanceof HTMLInputElement)
+                        !(
+                            target
+                                instanceof HTMLInputElement
+                        )
                     ) {
                         return;
                     }
