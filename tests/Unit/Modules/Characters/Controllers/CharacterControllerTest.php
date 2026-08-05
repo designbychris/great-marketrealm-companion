@@ -63,11 +63,15 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
     use GreatMarketrealmCompanion\Modules\Characters\Rules\CharacterCreationRules;
     use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
     use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\CharacterPortraitRepositoryInterface;
-    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\PortraitLayerRegistryInterface;
-    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
+    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\BackgroundLayerRenderer;
+    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\BodyLayerRenderer;
+    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\ClassLayerRenderer;
+    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\EffectsLayerRenderer;
+    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitLayerStack;
+    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitSvgRenderer;
+    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitLayerRegistry;
     use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRecipeGenerator;
     use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
-    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\SubmittedPortraitRecipeFactory;
     use GreatMarketrealmCompanion\Services\Auby\Auby;
     use GreatMarketrealmCompanion\Services\Auby\Quote;
     use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
@@ -644,8 +648,35 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
     $repository ??=
         new CharacterControllerRepositorySpy();
 
-    $portraitRepository ??=
-        new CharacterControllerPortraitRepositorySpy();
+    $portraitRepository =
+    new CharacterControllerPortraitRepositorySpy();
+
+    $portraitLayerRegistry =
+        new PortraitLayerRegistry();
+    
+    $portraitRecipes =
+        new PortraitRecipeGenerator(
+            $portraitLayerRegistry
+        );
+    
+    $portraitLayerStack =
+        new PortraitLayerStack(
+            [
+                new BackgroundLayerRenderer(),
+                new BodyLayerRenderer(),
+                new ClassLayerRenderer(),
+                new EffectsLayerRenderer(),
+            ]
+        );
+    
+    $portraitRenderer =
+        new PortraitRenderer(
+            $portraitRepository,
+            $portraitRecipes,
+            new PortraitSvgRenderer(
+                $portraitLayerStack
+            )
+        );
 
     $views ??= new ViewFactorySpy();
 
@@ -657,17 +688,6 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
     $characterFactory =
         new CharacterFactory(
             $creationRules
-        );
-
-    $portraitRecipes =
-        new PortraitRecipeGenerator(
-            new CharacterControllerPortraitLayerRegistry()
-        );
-
-    $portraitRenderer =
-        new PortraitRenderer(
-            $portraitRepository,
-            $portraitRecipes
         );
 
     $createCharacter =
