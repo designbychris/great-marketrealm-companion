@@ -1,0 +1,548 @@
+/**
+ * Great Marketrealm Companion
+ * Illuminated Portrait
+ */
+
+.gmrc-illuminated-portrait {
+    position: relative;
+
+    width: min(100%, 31rem);
+
+    margin: 0 auto;
+
+    color:
+        var(--gmrc-ink, #35271e);
+}
+
+.gmrc-illuminated-portrait__frame {
+    position: relative;
+
+    padding:
+        clamp(1.15rem, 3vw, 1.75rem);
+
+    border:
+        0.45rem double
+        rgba(123, 84, 34, 0.88);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 247, 207, 0.96),
+            rgba(213, 177, 94, 0.96)
+        );
+
+    box-shadow:
+        inset 0 0 0 0.35rem
+        rgba(255, 244, 196, 0.48),
+        inset 0 0 2.5rem
+        rgba(92, 57, 25, 0.22),
+        0 1rem 1.5rem
+        rgba(42, 25, 14, 0.28);
+
+    clip-path:
+        polygon(
+            2% 0,
+            98% 1%,
+            100% 97%,
+            97% 100%,
+            2% 99%,
+            0 3%
+        );
+}
+
+.gmrc-illuminated-portrait__frame::before {
+    position: absolute;
+    inset: 0.55rem;
+
+    pointer-events: none;
+    content: "";
+
+    border:
+        1px solid
+        rgba(126, 84, 30, 0.44);
+}
+
+.gmrc-illuminated-portrait__corner {
+    position: absolute;
+    z-index: 4;
+
+    display: grid;
+    place-items: center;
+
+    width: 2.25rem;
+    height: 2.25rem;
+
+    color: #8a6329;
+
+    font-family: Georgia, serif;
+    font-size: 1.35rem;
+
+    text-shadow:
+        0 1px 0
+        rgba(255, 244, 187, 0.86);
+}
+
+.gmrc-illuminated-portrait__corner--top-left {
+    top: 0.4rem;
+    left: 0.45rem;
+}
+
+.gmrc-illuminated-portrait__corner--top-right {
+    top: 0.4rem;
+    right: 0.45rem;
+
+    transform: scaleX(-1);
+}
+
+.gmrc-illuminated-portrait__corner--bottom-left {
+    left: 0.45rem;
+    bottom: 0.4rem;
+
+    transform:
+        scaleY(-1);
+}
+
+.gmrc-illuminated-portrait__corner--bottom-right {
+    right: 0.45rem;
+    bottom: 0.4rem;
+
+    transform:
+        scale(-1);
+}
+
+.gmrc-illuminated-portrait__canvas {
+    position: relative;
+
+    overflow: hidden;
+
+    aspect-ratio: 4 / 5;
+
+    border:
+        1px solid
+        rgba(71, 44, 23, 0.68);
+
+    background:
+        linear-gradient(
+            rgba(255, 248, 220, 0.95),
+            rgba(224, 195, 133, 0.95)
+        );
+
+    box-shadow:
+        inset 0 0 2rem
+        rgba(75, 47, 25, 0.2);
+}
+
+.gmrc-portrait-layers {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+}
+
+.gmrc-portrait-layer {
+    transform-box: fill-box;
+    transform-origin: center;
+
+    transition:
+        opacity 520ms ease,
+        filter 720ms ease,
+        transform 720ms
+        cubic-bezier(0.18, 0.82, 0.25, 1);
+}
+
+.gmrc-portrait-layer--background {
+    opacity: 0.74;
+}
+
+.gmrc-portrait-layer--race,
+.gmrc-portrait-layer--class,
+.gmrc-portrait-layer--effects {
+    opacity: 0;
+
+    filter:
+        blur(0.35rem)
+        saturate(0);
+
+    transform:
+        translateY(0.75rem)
+        scale(0.96);
+}
+
+.gmrc-illuminated-portrait--has-race
+.gmrc-portrait-layer--race {
+    opacity: 1;
+
+    filter:
+        blur(0)
+        saturate(0.45);
+
+    transform:
+        translateY(0)
+        scale(1);
+
+    animation:
+        gmrc-portrait-sketch-in
+        820ms ease both;
+}
+
+.gmrc-illuminated-portrait--has-class
+.gmrc-portrait-layer--class {
+    opacity: 1;
+
+    filter:
+        blur(0)
+        saturate(0.65);
+
+    transform:
+        translateY(0)
+        scale(1);
+
+    animation:
+        gmrc-portrait-garment-in
+        780ms
+        cubic-bezier(0.2, 0.8, 0.25, 1)
+        both;
+}
+
+.gmrc-illuminated-portrait--complete
+.gmrc-portrait-layer--race,
+.gmrc-illuminated-portrait--complete
+.gmrc-portrait-layer--class {
+    filter:
+        blur(0)
+        saturate(1);
+}
+
+.gmrc-illuminated-portrait--complete
+.gmrc-portrait-layer--effects {
+    opacity: 1;
+
+    filter: none;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+.gmrc-portrait-layers__initial {
+    fill: rgba(255, 244, 205, 0.92);
+
+    font-family:
+        var(--gmrc-font-book, Georgia, serif);
+
+    font-size: 74px;
+    font-weight: 700;
+}
+
+.gmrc-portrait-layers__equipment {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+}
+
+.gmrc-illuminated-portrait--has-class
+.gmrc-portrait-layers__equipment {
+    animation:
+        gmrc-portrait-equipment-arrive
+        720ms
+        240ms
+        cubic-bezier(0.2, 0.8, 0.25, 1)
+        both;
+}
+
+.gmrc-portrait-layers__spark {
+    fill: #fff1a8;
+
+    font-family: Georgia, serif;
+    font-size: 30px;
+
+    opacity: 0;
+
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.gmrc-illuminated-portrait--complete
+.gmrc-portrait-layers__spark {
+    animation:
+        gmrc-portrait-spark
+        2.8s ease-in-out infinite;
+}
+
+.gmrc-illuminated-portrait--complete
+.gmrc-portrait-layers__spark:nth-child(2) {
+    animation-delay: 0.65s;
+}
+
+.gmrc-illuminated-portrait--complete
+.gmrc-portrait-layers__spark:nth-child(3) {
+    animation-delay: 1.3s;
+}
+
+.gmrc-illuminated-portrait__waiting {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+
+    display: grid;
+    place-content: center;
+
+    gap: 0.5rem;
+
+    padding: 2rem;
+
+    color:
+        rgba(62, 43, 30, 0.8);
+
+    background:
+        rgba(241, 223, 179, 0.62);
+
+    text-align: center;
+
+    transition:
+        opacity 420ms ease,
+        visibility 420ms ease;
+}
+
+.gmrc-illuminated-portrait__waiting > span {
+    font-size: 2.75rem;
+}
+
+.gmrc-illuminated-portrait__waiting strong {
+    font-family:
+        var(--gmrc-font-book, Georgia, serif);
+
+    font-size: 1.4rem;
+}
+
+.gmrc-illuminated-portrait__waiting small {
+    max-width: 18rem;
+
+    font-size: 0.82rem;
+    line-height: 1.55;
+}
+
+.gmrc-illuminated-portrait--has-race
+.gmrc-illuminated-portrait__waiting {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.gmrc-illuminated-portrait__caption {
+    position: relative;
+
+    margin-top: 0.85rem;
+
+    padding:
+        1rem
+        1.15rem;
+
+    border:
+        1px solid
+        rgba(106, 70, 31, 0.42);
+
+    background:
+        rgba(255, 247, 213, 0.72);
+
+    text-align: center;
+}
+
+.gmrc-illuminated-portrait__caption p {
+    margin:
+        0
+        0
+        0.25rem;
+}
+
+.gmrc-illuminated-portrait__caption > strong {
+    display: block;
+
+    font-family:
+        "Caveat",
+        var(--gmrc-font-book, Georgia, serif);
+
+    font-size:
+        clamp(1.8rem, 5vw, 2.6rem);
+
+    line-height: 1.05;
+}
+
+.gmrc-illuminated-portrait__identity {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    gap: 0.45rem;
+
+    margin-top: 0.35rem;
+
+    color:
+        var(--gmrc-ink-light, #665344);
+
+    font-family:
+        var(--gmrc-font-book, Georgia, serif);
+
+    font-size: 0.95rem;
+}
+
+.gmrc-illuminated-portrait__caption > small {
+    display: block;
+
+    margin-top: 0.65rem;
+
+    color:
+        var(--gmrc-aubergine, #563561);
+
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.gmrc-illuminated-portrait--updating
+.gmrc-illuminated-portrait__canvas {
+    animation:
+        gmrc-portrait-canvas-awaken
+        620ms
+        cubic-bezier(0.2, 0.82, 0.25, 1)
+        both;
+}
+
+@keyframes gmrc-portrait-sketch-in {
+    0% {
+        opacity: 0;
+
+        filter:
+            blur(0.5rem)
+            saturate(0);
+
+        transform:
+            translateY(1rem)
+            scale(0.93);
+    }
+
+    48% {
+        opacity: 0.75;
+
+        filter:
+            blur(0.08rem)
+            saturate(0);
+    }
+
+    100% {
+        opacity: 1;
+
+        filter:
+            blur(0)
+            saturate(0.45);
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+@keyframes gmrc-portrait-garment-in {
+    0% {
+        opacity: 0;
+
+        transform:
+            translateY(-1.5rem)
+            scale(1.04);
+
+        filter:
+            blur(0.4rem)
+            saturate(0);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+        filter:
+            blur(0)
+            saturate(0.65);
+    }
+}
+
+@keyframes gmrc-portrait-equipment-arrive {
+    0% {
+        opacity: 0;
+
+        transform:
+            translate(4rem, -2rem)
+            rotate(22deg);
+    }
+
+    70% {
+        opacity: 1;
+
+        transform:
+            translate(-0.2rem, 0.1rem)
+            rotate(-2deg);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            translate(0)
+            rotate(0);
+    }
+}
+
+@keyframes gmrc-portrait-spark {
+    0%,
+    100% {
+        opacity: 0.2;
+
+        transform:
+            translateY(0)
+            rotate(0)
+            scale(0.75);
+    }
+
+    45% {
+        opacity: 1;
+
+        transform:
+            translateY(-0.35rem)
+            rotate(18deg)
+            scale(1.18);
+    }
+}
+
+@keyframes gmrc-portrait-canvas-awaken {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    48% {
+        transform: scale(1.012);
+    }
+}
+
+@media (max-width: 600px) {
+    .gmrc-illuminated-portrait__frame {
+        padding: 1rem;
+    }
+
+    .gmrc-illuminated-portrait__caption {
+        padding:
+            0.85rem
+            0.9rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-portrait-layer,
+    .gmrc-portrait-layers__equipment,
+    .gmrc-portrait-layers__spark,
+    .gmrc-illuminated-portrait__canvas {
+        animation: none;
+        transition: none;
+    }
+}
