@@ -78,68 +78,48 @@
             };
 
             /**
-             * Calculate the quill position for an anchor.
+             * Calculate the translation from the resting quill
+             * position to a writable field.
              */
             const positionFor = function (anchor) {
                 const paperRect =
                     paper.getBoundingClientRect();
-
+            
                 const anchorRect =
                     anchor.getBoundingClientRect();
-
-                const quillWidth =
-                    quill.offsetWidth || 42;
-
-                const quillHeight =
-                    quill.offsetHeight || 42;
-
-                /*
-                 * Position the nib near the final third of
-                 * the writable field.
-                 */
-                const desiredX =
+            
+                const quillRect =
+                    quill.getBoundingClientRect();
+            
+                const targetX =
                     anchorRect.left
                     - paperRect.left
                     + Math.min(
-                        anchorRect.width * 0.72,
+                        anchorRect.width * 0.7,
                         Math.max(
                             18,
-                            anchorRect.width - 12
+                            anchorRect.width - 10
                         )
-                    )
-                    - quillWidth * 0.72;
-
-                const desiredY =
+                    );
+            
+                const targetY =
                     anchorRect.top
                     - paperRect.top
-                    + anchorRect.height * 0.58
-                    - quillHeight * 0.78;
-
-                const maximumX =
-                    paper.clientWidth
-                    - quillWidth
-                    - 12;
-
-                const maximumY =
-                    paper.clientHeight
-                    - quillHeight
-                    - 12;
-
+                    + anchorRect.height * 0.58;
+            
+                const restingX =
+                    quillRect.left
+                    - paperRect.left
+                    + quillRect.width * 0.72;
+            
+                const restingY =
+                    quillRect.top
+                    - paperRect.top
+                    + quillRect.height * 0.78;
+            
                 return {
-                    x: Math.max(
-                        12,
-                        Math.min(
-                            maximumX,
-                            desiredX
-                        )
-                    ),
-                    y: Math.max(
-                        12,
-                        Math.min(
-                            maximumY,
-                            desiredY
-                        )
-                    ),
+                    x: targetX - restingX,
+                    y: targetY - restingY,
                 };
             };
 
