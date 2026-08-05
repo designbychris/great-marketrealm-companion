@@ -5,38 +5,57 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Characters\Portraits\Services;
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\CharacterPortraitRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\PortraitRecipe;
-use GreatMarketrealmCompanion\Modules\Characters\Portraits\ViewModels\PortraitViewModel;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitRenderContext;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitSvgRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\ViewModels\PortraitViewModel;
 
 defined('ABSPATH') || exit;
 
 /**
  * Portrait Renderer.
  *
- * Converts persisted Character portrait information into a
- * presentation-ready view model.
- *
- * Despite its name, this service does not produce HTML. The
- * illuminated portrait component remains responsible for markup.
+ * Converts portrait information into presentation-ready
+ * PortraitViewModel instances.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.9.0
  */
 final class PortraitRenderer
 {
+    /**
+     * Slots used by the procedural portrait recipe.
+     *
+     * @var array<int,string>
+     */
+    private const LAYER_SLOTS = [
+        'background',
+        'body',
+        'head',
+        'eyes',
+        'mouth',
+        'palette',
+        'heritage',
+        'outfit',
+        'equipment',
+        'class_accessory',
+        'frame',
+        'effects',
+    ];
+
     public function __construct(
         private CharacterPortraitRepositoryInterface $portraits,
         private PortraitRecipeGenerator $recipes,
-        private PortraitSvgRenderer $svgRenderer,
+        private PortraitSvgRenderer $svgRenderer
     ) {
     }
 
     /**
-     * Build a portrait view model for a Character.
+     * Build a portrait for a persisted Character.
      */
     public function forCharacter(
         Character $character
@@ -60,6 +79,68 @@ final class PortraitRenderer
     }
 
     /**
+     * Build the provisional portrait used by the live creator.
+     *
+     * A Character entity does not yet exist at this point, so the
+     * render context is created directly from primitive form values.
+     */
+    public function preview(
+        string $name = '',
+        string $race = '',
+        string $characterClass = ''
+    ): PortraitViewModel {
+        $name = trim($name);
+        $race = sanitize_key($race);
+        $characterClass = sanitize_key(
+            $characterClass
+        );
+
+        if (! Race::supports($race)) {
+            $race = '';
+        }
+
+        if (! CharacterClass::supports(
+            $characterClass
+        )) {
+            $characterClass = '';
+        }
+
+        $raceLabel = $race !== ''
+            ? Race::fromString($race)->label()
+            : '';
+
+        $classLabel = $characterClass !== ''
+            ? CharacterClass::fromString(
+                $characterClass
+            )->label()
+            : '';
+
+        $context = PortraitRenderContext::provisional(
+            $name,
+            $race,
+            $characterClass
+        );
+
+        return new PortraitViewModel(
+            mode: 'generated',
+            name: $name,
+            race: $race,
+            raceLabel: $raceLabel,
+            characterClass: $characterClass,
+            classLabel: $classLabel,
+            svg: $this->svgRenderer->render(
+                $context
+            ),
+            layers: $this->contextLayers(
+                $context
+            ),
+            seed: $context->seed()
+        );
+    }
+
+    /**
+     * Build several portrait view models indexed by Character ID.
+     *
      * @param Character[] $characters
      *
      * @return array<string,PortraitViewModel>
@@ -84,17 +165,20 @@ final class PortraitRenderer
         return $portraits;
     }
 
+    /**
+     * Build a presentation model for a persisted portrait.
+     */
     private function viewModel(
         Character $character,
         CharacterPortrait $portrait
     ): PortraitViewModel {
         $recipe = $portrait->recipe();
-    
+
         $attachmentId =
             $portrait->attachmentId()?->value();
-    
+
         $attachmentUrl = null;
-    
+
         if (
             $portrait->mode()->isCustom()
             && $attachmentId !== null
@@ -103,19 +187,18 @@ final class PortraitRenderer
                 $attachmentId,
                 'large'
             );
-    
+
             if (is_string($resolvedUrl)) {
                 $attachmentUrl = $resolvedUrl;
             }
         }
-    
-        /*
-         * If a custom attachment is unavailable, preserve the
-         * generated fallback recipe instead of displaying a
-         * broken image.
-         */
+
         $mode = $portrait->mode()->value();
-    
+
+        /*
+         * Fall back to the generated recipe when a custom media
+         * attachment has been removed or is unavailable.
+         */
         if (
             $mode === 'custom'
             && $attachmentUrl === null
@@ -123,8 +206,8 @@ final class PortraitRenderer
         ) {
             $mode = 'generated';
         }
-    
-        $viewModel = new PortraitViewModel(
+
+        $baseViewModel = new PortraitViewModel(
             mode: $mode,
             name: $character
                 ->name()
@@ -141,51 +224,51 @@ final class PortraitRenderer
             classLabel: $character
                 ->characterClass()
                 ->label(),
+            svg: '',
             layers: $this->recipeLayers(
                 $recipe
             ),
             seed: $recipe?->seed()->value(),
             attachmentId: $attachmentId,
-            attachmentUrl: $attachmentUrl,
-            svg: ''
+            attachmentUrl: $attachmentUrl
         );
-    
-        /*
-         * Custom portraits use their WordPress attachment and do
-         * not require generated SVG markup.
-         */
+
         $svg = '';
-    
+
         if ($mode === 'generated') {
             $context =
                 PortraitRenderContext::fromViewModel(
-                    $viewModel
+                    $baseViewModel
                 );
-    
+
             $svg = $this->svgRenderer->render(
                 $context
             );
         }
-    
+
         return new PortraitViewModel(
-            mode: $mode,
-            name: $viewModel->name(),
-            race: $viewModel->race(),
-            raceLabel: $viewModel->raceLabel(),
+            mode: $baseViewModel->mode(),
+            name: $baseViewModel->name(),
+            race: $baseViewModel->race(),
+            raceLabel:
+                $baseViewModel->raceLabel(),
             characterClass:
-                $viewModel->characterClass(),
-            classLabel: $viewModel->classLabel(),
-            layers: $viewModel->layers(),
-            seed: $viewModel->seed(),
+                $baseViewModel->characterClass(),
+            classLabel:
+                $baseViewModel->classLabel(),
+            svg: $svg,
+            layers: $baseViewModel->layers(),
+            seed: $baseViewModel->seed(),
             attachmentId:
-                $viewModel->attachmentId(),
+                $baseViewModel->attachmentId(),
             attachmentUrl:
-                $viewModel->attachmentUrl(),
-            svg: $svg
+                $baseViewModel->attachmentUrl()
         );
     }
 
     /**
+     * Convert a saved recipe into primitive layer identifiers.
+     *
      * @return array<string,string>
      */
     private function recipeLayers(
@@ -200,5 +283,30 @@ final class PortraitRenderer
                 $layer->value(),
             $recipe->layers()
         );
+    }
+
+    /**
+     * Convert a provisional rendering context into layer values.
+     *
+     * @return array<string,string>
+     */
+    private function contextLayers(
+        PortraitRenderContext $context
+    ): array {
+        $layers = [];
+
+        foreach (self::LAYER_SLOTS as $slot) {
+            $value = $context->layer(
+                $slot
+            );
+
+            if ($value === '') {
+                continue;
+            }
+
+            $layers[$slot] = $value;
+        }
+
+        return $layers;
     }
 }
