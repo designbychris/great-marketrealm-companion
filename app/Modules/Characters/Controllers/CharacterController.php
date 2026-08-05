@@ -21,6 +21,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequest;
 use GreatMarketrealmCompanion\Modules\Characters\Requests\UpdateCharacterRequest;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
 use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
 use GreatMarketrealmCompanion\Services\Characters\ClassRegistry;
@@ -56,7 +57,8 @@ final class CharacterController
         private Auby $auby,
         private GuildSealRegistry $sealRegistry,
         private RaceRegistry $raceRegistry,
-        private ClassRegistry $classRegistry
+        private ClassRegistry $classRegistry,
+        private PortraitRenderer $portraitRenderer
     ) {
     }
 
@@ -65,13 +67,18 @@ final class CharacterController
      */
     public function index(): string
     {
-        error_log('CharacterController@index reached');
-        
+        $characters = $this->characters->all();
+    
         return $this->views->render(
             View::make(
                 'characters.index',
                 [
-                    'characters' => $this->characters->all(),
+                    'characters' => $characters,
+                    'portraits' => $this
+                        ->portraitRenderer
+                        ->forCharacters(
+                            $characters
+                        ),
                     'aubyQuote' => $this->auby->for(
                         QuoteCategories::REGISTER
                     ),
@@ -218,6 +225,11 @@ final class CharacterController
                 'characters.show',
                 [
                     'character' => $character,
+                    'portrait' => $this
+                        ->portraitRenderer
+                        ->forCharacter(
+                            $character
+                        ),
                     'sealRegistry' => $this->sealRegistry,
                 ]
             )
