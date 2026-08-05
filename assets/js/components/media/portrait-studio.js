@@ -373,6 +373,55 @@
         );
     };
 
+    const backgroundLayers = [
+    'background-parchment-01',
+    'background-market-arch-01',
+    'background-guild-hall-01',
+    ];
+    
+    const eyeLayers = [
+        'eyes-round-01',
+        'eyes-bright-01',
+        'eyes-determined-01',
+    ];
+    
+    const mouthLayers = [
+        'mouth-neutral-01',
+        'mouth-smile-01',
+        'mouth-grin-01',
+    ];
+    
+    const frameLayers = [
+        'frame-guild-gold-01',
+        'frame-vine-gold-01',
+        'frame-market-scroll-01',
+    ];
+    
+    const effectLayers = [
+        'effects-none',
+        'effects-gold-motes-01',
+        'effects-ink-sparks-01',
+    ];
+
+    const portraitSeedFor = function (value) {
+            const first = hashValue(
+                'primary|' + value
+            );
+        
+            const second = hashValue(
+                'secondary|' + value
+            );
+        
+            return first
+                .toString(16)
+                .padStart(8, '0')
+                .slice(-8)
+                + second
+                    .toString(16)
+                    .padStart(8, '0')
+                    .slice(-8);
+        };
+    
     /**
      * Initialise every portrait studio on the page.
      */
