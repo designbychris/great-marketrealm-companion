@@ -10,7 +10,7 @@ defined('ABSPATH') || exit;
  * Portrait View Model.
  *
  * Contains presentation-ready portrait information without
- * exposing repository or WordPress persistence concerns to views.
+ * exposing persistence or rendering services to views.
  *
  * @package GreatMarketrealmCompanion
  * @since 0.9.0
@@ -31,13 +31,8 @@ final class PortraitViewModel
         private readonly array $layers = [],
         private readonly ?string $seed = null,
         private readonly ?int $attachmentId = null,
-        private readonly ?string $attachmentUrl = null,
+        private readonly ?string $attachmentUrl = null
     ) {
-    }
-
-    public function svg(): string
-    {
-        return $this->svg;
     }
 
     public function mode(): string
@@ -68,6 +63,11 @@ final class PortraitViewModel
     public function classLabel(): string
     {
         return $this->classLabel;
+    }
+
+    public function svg(): string
+    {
+        return $this->svg;
     }
 
     /**
@@ -114,14 +114,15 @@ final class PortraitViewModel
 
     /**
      * Return a deterministic visual variant for a layer.
-     *
-     * The same recipe layer always produces the same variant.
      */
     public function variant(
         string $slot,
         int $quantity = 3
     ): int {
-        $quantity = max(1, $quantity);
+        $quantity = max(
+            1,
+            $quantity
+        );
 
         $layer = $this->layer($slot)
             ?? $this->seed
@@ -134,7 +135,11 @@ final class PortraitViewModel
 
         return (
             (int) hexdec(
-                substr($hash, 0, 8)
+                substr(
+                    $hash,
+                    0,
+                    8
+                )
             ) % $quantity
         ) + 1;
     }
@@ -151,11 +156,11 @@ final class PortraitViewModel
             'race_label' => $this->raceLabel,
             'class' => $this->characterClass,
             'class_label' => $this->classLabel,
+            'svg' => $this->svg,
             'layers' => $this->layers,
             'seed' => $this->seed,
             'attachment_id' => $this->attachmentId,
             'attachment_url' => $this->attachmentUrl,
-            'svg' => $this->svg,
         ];
     }
 }
