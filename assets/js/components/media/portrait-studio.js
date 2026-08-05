@@ -533,6 +533,27 @@
                     },
                     660
                 );
+
+                /**
+                 * Write a provisional portrait value into its
+                 * corresponding hidden form field.
+                 */
+                const writePortraitField = function (
+                    field,
+                    value
+                ) {
+                    const input = form.querySelector(
+                        '[data-portrait-field="'
+                            + field
+                            + '"]'
+                    );
+                
+                    if (!(input instanceof HTMLInputElement)) {
+                        return;
+                    }
+                
+                    input.value = String(value || '');
+                };
             };
 
             /**
