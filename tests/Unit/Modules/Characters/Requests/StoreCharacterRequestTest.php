@@ -113,7 +113,7 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Requests {
                 'portrait_effects',
             ],
             array_keys(
-                $request->rules()
+                $rules
             )
         );
 
