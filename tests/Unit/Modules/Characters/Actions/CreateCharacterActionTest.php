@@ -34,6 +34,7 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Actions {
     use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
     use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRecipeGenerator;
     use GreatMarketrealmCompanion\Modules\Characters\Portraits\ValueObjects\PortraitSeed;
+    use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\PortraitRecipe;
     use PHPUnit\Framework\TestCase;
 
     final class CreateCharacterActionTest extends TestCase
@@ -385,6 +386,73 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Actions {
                     $available[$slot],
                     true
                 );
+        }
+
+        public function testUsesASubmittedPortraitRecipe(): void
+        {
+            $characters =
+                new CharacterRepositorySpy();
+        
+            $portraits =
+                new CharacterPortraitRepositorySpy();
+        
+            $character = $this->character();
+        
+            $submittedRecipe =
+                PortraitRecipe::create(
+                    PortraitSeed::fromString(
+                        '1234567890abcdef'
+                    ),
+                    [
+                        'background' =>
+                            'background-parchment-01',
+                        'body' =>
+                            'fructan-body-01',
+                        'head' =>
+                            'fructan-head-01',
+                        'eyes' =>
+                            'eyes-round-01',
+                        'mouth' =>
+                            'mouth-smile-01',
+                        'palette' =>
+                            'fructan-palette-01',
+                        'heritage' =>
+                            'fructan-heritage-none',
+                        'outfit' =>
+                            'fighter-outfit-01',
+                        'equipment' =>
+                            'fighter-equipment-01',
+                        'class_accessory' =>
+                            'fighter-accessory-none',
+                        'frame' =>
+                            'frame-guild-gold-01',
+                        'effects' =>
+                            'effects-none',
+                    ]
+                );
+        
+            $this->action(
+                $characters,
+                $portraits
+            )->handle(
+                $character,
+                $submittedRecipe
+            );
+        
+            $savedRecipe =
+                $portraits
+                    ->savedPortrait
+                    ?->recipe();
+        
+            self::assertNotNull(
+                $savedRecipe
+            );
+        
+            self::assertTrue(
+                $submittedRecipe->equals(
+                    $savedRecipe
+                )
+            );
         }
     }
 }
