@@ -22,6 +22,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Requests\UpdateCharacterRequest
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
 use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\SubmittedPortraitRecipeFactory;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
 use GreatMarketrealmCompanion\Services\Characters\ClassRegistry;
@@ -58,7 +59,8 @@ final class CharacterController
         private GuildSealRegistry $sealRegistry,
         private RaceRegistry $raceRegistry,
         private ClassRegistry $classRegistry,
-        private PortraitRenderer $portraitRenderer
+        private PortraitRenderer $portraitRenderer,
+        private SubmittedPortraitRecipeFactory $submittedPortraits
     ) {
     }
 
@@ -139,21 +141,30 @@ final class CharacterController
         StoreCharacterRequest $request
     ): RedirectResponse {
         $data = $request->characterData();
-
+    
         $character = $this->characterFactory->fromInput(
             name: $data['name'],
             race: $data['race'],
             characterClass: $data['class']
         );
-
+    
+        $portraitRecipe = $this
+            ->submittedPortraits
+            ->create(
+                $request->portraitData(),
+                $data['race'],
+                $data['class']
+            );
+    
         $this->createCharacter->handle(
-            $character
+            $character,
+            $portraitRecipe
         );
-
+    
         $this->flash->success(
             'Your character has entered the Marketrealm!'
         );
-
+    
         return $this->responses->redirect(
             $this->charactersUrl()
         );
