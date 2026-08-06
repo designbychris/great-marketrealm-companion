@@ -2,15 +2,41 @@
     viewBox="0 0 480 600"
     role="img"
     aria-labelledby="title">
-<title id="title">Grocer working apron</title>
-<defs>
-  <linearGradient id="apron" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#8bbb5d"/>
-    <stop offset="1" stop-color="#416b3c"/>
-  </linearGradient>
-</defs>
-<path d="M170 378l70 76 70-76 15 166H155Z"
-      fill="url(#apron)"
-      stroke="#31522f"
-      stroke-width="9"/>
+  <title id="title">Painterly Grocer apron</title>
+  <defs>
+    <linearGradient id="apron" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#91bd62"/>
+      <stop offset=".52" stop-color="#648f4a"/>
+      <stop offset="1" stop-color="#3f683b"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M170 378l70 76 70-76 15 166H155Z"
+        fill="url(#apron)"
+        stroke="#31522f"
+        stroke-width="9"/>
+
+  <path d="M198 457q42 18 84 0v65q-42 19-84 0Z"
+        fill="#719b52"
+        stroke="#31522f"
+        stroke-width="6"/>
+
+  <path d="M240 454v85"
+        stroke="#b9d88b"
+        stroke-width="4"
+        stroke-linecap="round"
+        opacity=".5"/>
+
+  <path d="M180 420q20 38 14 88M300 420q-20 38-14 88"
+        fill="none"
+        stroke="#31522f"
+        stroke-width="5"
+        opacity=".35"/>
+
+  <path d="M206 491l7 7 9-10 8 9"
+        fill="none"
+        stroke="#e7c276"
+        stroke-width="4"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
 </svg>
