@@ -10,7 +10,6 @@
   ],
   "defaults": {
     "background": "g2-background-market-garden-01",
-    "ambient_effects": "g2-effects-golden-pollen-01",
     "frame": "g2-frame-guild-woodland-01",
     "guild_ornament": "g2-auby-illuminator-mark-01"
   },
