@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Grocer everyday outfit highlight</title>
+<g id="grocer-everyday-outfit-highlight">
+  <path d="M180 401q21-25 43-29" fill="none"
+        stroke="#ffe5ae" stroke-width="10" stroke-linecap="round" opacity=".56"/>
+  <path d="M190 392l50 58" fill="none"
+        stroke="#b9d47d" stroke-width="8" stroke-linecap="round" opacity=".65"/>
+  <path d="M186 467q7-37 20-56" fill="none"
+        stroke="#9fc36d" stroke-width="7" stroke-linecap="round" opacity=".48"/>
+  <path d="M216 468h46" stroke="#d4e5a5" stroke-width="5" stroke-linecap="round"/>
+  <path d="M216 483h31" stroke="#d4e5a5" stroke-width="4" stroke-linecap="round"/>
+</g>
+</svg>

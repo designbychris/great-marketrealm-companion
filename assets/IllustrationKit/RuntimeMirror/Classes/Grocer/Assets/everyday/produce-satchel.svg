@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Grocer produce satchel</title>
+<defs>
+  <linearGradient id="leather" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#b97a3c"/><stop offset=".55" stop-color="#7d4727"/><stop offset="1" stop-color="#4a2a1c"/>
+  </linearGradient>
+</defs>
+<g id="grocer-produce-satchel">
+  <path d="M310 377q58-16 94 28l-12 116h-96l5-117Z"
+        fill="url(#leather)" stroke="#4b2b20" stroke-width="8"/>
+  <path d="M310 404q44 30 84 0l-4 46q-40 24-88 0Z"
+        fill="#8d542d" stroke="#4b2b20" stroke-width="6"/>
+  <rect x="338" y="432" width="25" height="29" rx="5"
+        fill="#d6a63f" stroke="#6f4922" stroke-width="5"/>
+  <path d="M318 376q35-55 65 4" fill="none"
+        stroke="#4b2b20" stroke-width="11" stroke-linecap="round"/>
+  <path d="M326 503h55" stroke="#d69a4b" stroke-width="4" stroke-dasharray="5 8"/>
+  <path d="M333 389c-2-35 10-53 32-56 8 25-1 45-32 56Z"
+        fill="#81aa3a" stroke="#426323" stroke-width="5"/>
+  <path d="M354 389c8-29 25-42 45-36-2 25-17 38-45 36Z"
+        fill="#a1c844" stroke="#426323" stroke-width="5"/>
+  <path d="M318 398c-25-17-31-37-18-55 23 9 31 28 18 55Z"
+        fill="#e27c35" stroke="#8a431e" stroke-width="5"/>
+</g>
+</svg>

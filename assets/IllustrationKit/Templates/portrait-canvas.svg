@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Generation 2 portrait canvas</title>
+<rect x="12" y="12" width="456" height="576" rx="214" fill="#fff8dc" opacity=".18"/>
+<g fill="none" stroke="#7b5b39" stroke-width="2" stroke-dasharray="6 8" opacity=".65">
+  <line x1="240" y1="25" x2="240" y2="575"/>
+  <line x1="45" y1="220" x2="435" y2="220"/>
+  <line x1="45" y1="266" x2="435" y2="266"/>
+  <line x1="45" y1="352" x2="435" y2="352"/>
+  <line x1="45" y1="545" x2="435" y2="545"/>
+</g>
+<g fill="#5b432a" font-family="sans-serif" font-size="13">
+  <text x="250" y="216">eye line</text>
+  <text x="250" y="262">mouth line</text>
+  <text x="250" y="348">shoulder line</text>
+  <text x="250" y="541">ground line</text>
+</g>
+</svg>

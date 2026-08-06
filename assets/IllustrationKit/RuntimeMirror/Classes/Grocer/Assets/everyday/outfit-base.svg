@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Grocer everyday outfit base</title>
+<defs>
+  <linearGradient id="shirt" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#f0d49a"/><stop offset="1" stop-color="#a96e3f"/>
+  </linearGradient>
+  <linearGradient id="apron" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#7fa64c"/><stop offset="1" stop-color="#3f6535"/>
+  </linearGradient>
+</defs>
+<g id="grocer-everyday-outfit-base">
+  <path d="M150 391q90-62 180 0l27 146H123Z"
+        fill="url(#shirt)" stroke="#674127" stroke-width="8"/>
+  <path d="M183 365l57 66 57-66 13 172H170Z"
+        fill="url(#apron)" stroke="#31502d" stroke-width="8"/>
+  <path d="M187 370l53 62 53-62" fill="none"
+        stroke="#f0dcaa" stroke-width="11" stroke-linecap="round"/>
+  <path d="M167 438l-20 92M313 438l20 92"
+        stroke="#7a4c2c" stroke-width="12" stroke-linecap="round"/>
+  <rect x="204" y="456" width="72" height="55" rx="13"
+        fill="#6e9448" stroke="#2f4c2c" stroke-width="6"/>
+  <path d="M240 432v105" stroke="#29452a" stroke-width="6"/>
+</g>
+</svg>

@@ -1,0 +1,203 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Generation 2 Apple Fructan Grocer hero prototype</title>
+<defs>
+  <radialGradient id="sky" cx="48%" cy="22%" r="83%">
+    <stop offset="0" stop-color="#fff5c9"/>
+    <stop offset=".52" stop-color="#d7e8b4"/>
+    <stop offset="1" stop-color="#8db56b"/>
+  </radialGradient>
+  <linearGradient id="path" x1="0" y1="0" x2="0" y2="1">
+    <stop stop-color="#ead29b"/>
+    <stop offset="1" stop-color="#b88a50"/>
+  </linearGradient>
+  <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur stdDeviation="5"/>
+  </filter>
+</defs>
+<rect x="12" y="12" width="456" height="576" rx="210" fill="url(#sky)"/>
+<circle cx="108" cy="105" r="48" fill="#fff7cf" opacity=".72" filter="url(#soft)"/>
+<path d="M28 422C108 362 165 374 229 422C299 360 366 364 452 430V575H28Z"
+      fill="#668f4f" opacity=".76"/>
+<path d="M51 447C128 395 184 413 238 462C291 409 353 402 430 450V575H51Z"
+      fill="#86aa5f"/>
+<path d="M187 575C180 511 195 469 240 444C285 469 301 511 294 575Z"
+      fill="url(#path)" opacity=".95"/>
+<g fill="#f2d066" opacity=".82">
+  <circle cx="69" cy="374" r="7"/><circle cx="411" cy="381" r="6"/>
+  <circle cx="92" cy="402" r="4"/><circle cx="386" cy="410" r="5"/>
+</g>
+<defs><radialGradient id="shadow" cx="50%" cy="50%" r="50%">
+<stop offset="0" stop-color="#4f351f" stop-opacity=".5"/>
+<stop offset="1" stop-color="#4f351f" stop-opacity="0"/>
+</radialGradient></defs>
+<ellipse cx="240" cy="531" rx="133" ry="25" fill="url(#shadow)"/>
+<defs>
+  <radialGradient id="apple" cx="34%" cy="25%" r="85%">
+    <stop offset="0" stop-color="#f06f74"/>
+    <stop offset=".5" stop-color="#c94758"/>
+    <stop offset="1" stop-color="#7f293b"/>
+  </radialGradient>
+</defs>
+<g id="fructan-apple-body-base">
+  <path d="M174 222C174 152 203 112 240 112s66 40 66 110c0 58-19 94-46 110
+           42 7 77 43 84 101l13 104H123l13-104c7-58 42-94 84-101-27-16-46-52-46-110Z"
+        fill="url(#apple)" stroke="#5f2032" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M147 420c-27 8-47 28-56 57M333 420c27 8 47 28 56 57"
+        fill="none" stroke="#7f293b" stroke-width="24" stroke-linecap="round"/>
+  <path d="M168 507c-17 8-29 24-35 48M312 507c17 8 29 24 35 48"
+        fill="none" stroke="#6c2737" stroke-width="24" stroke-linecap="round"/>
+  <path d="M128 553h54M298 553h54" stroke="#4f1f2d" stroke-width="18" stroke-linecap="round"/>
+</g>
+<defs>
+  <linearGradient id="shade" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#6a2334" stop-opacity="0"/>
+    <stop offset=".62" stop-color="#5a1d2d" stop-opacity=".34"/>
+    <stop offset="1" stop-color="#39121e" stop-opacity=".66"/>
+  </linearGradient>
+</defs>
+<g id="fructan-apple-body-shadow">
+  <path d="M246 113c38 6 60 48 60 109 0 57-18 94-45 109
+           46 9 76 48 83 102l13 104H240V113Z"
+        fill="url(#shade)"/>
+  <path d="M143 425c7 56 31 91 74 111H123l13-104c1-3 4-6 7-7Z"
+        fill="#4f1827" opacity=".28"/>
+  <ellipse cx="210" cy="305" rx="42" ry="17" fill="#6f2234" opacity=".2"/>
+</g>
+<g id="fructan-apple-body-highlight">
+  <path d="M194 151c-17 27-22 65-14 98" fill="none"
+        stroke="#ffb2ad" stroke-width="15" stroke-linecap="round" opacity=".72"/>
+  <path d="M163 387c16-24 38-37 62-42" fill="none"
+        stroke="#f99291" stroke-width="14" stroke-linecap="round" opacity=".42"/>
+  <ellipse cx="199" cy="191" rx="11" ry="18" fill="#ffd4c8" opacity=".84"
+           transform="rotate(22 199 191)"/>
+  <circle cx="186" cy="276" r="4" fill="#f7a0a0" opacity=".75"/>
+  <circle cx="172" cy="291" r="3" fill="#f7a0a0" opacity=".6"/>
+</g>
+<defs>
+  <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#b6d63f"/>
+    <stop offset=".55" stop-color="#78a82a"/>
+    <stop offset="1" stop-color="#3f681e"/>
+  </linearGradient>
+</defs>
+<g id="fructan-apple-leaves" stroke="#36531d" stroke-width="7" stroke-linejoin="round">
+  <path d="M237 119C221 84 225 55 244 33c18 25 16 56-7 86Z" fill="#6f9228"/>
+  <path d="M238 113C199 107 170 88 158 61c36-4 66 12 80 52Z" fill="url(#leaf)"/>
+  <path d="M242 113c40-8 72-1 91 22-29 22-63 22-91-22Z" fill="url(#leaf)"/>
+  <path d="M221 114c-27 23-59 30-83 18 17-29 46-37 83-18Z" fill="#8dbb31"/>
+  <path d="M260 111c31-28 61-39 88-29-10 33-37 47-88 29Z" fill="#6f9d27"/>
+  <path d="M238 111V52" fill="none" stroke="#4f671f" stroke-width="11" stroke-linecap="round"/>
+  <path d="M175 72l48 38M321 94l-61 18M158 129l60-13"
+        fill="none" stroke="#d0e965" stroke-width="4" opacity=".55"/>
+</g>
+<g id="auby-bright-eyes">
+  <ellipse cx="205" cy="224" rx="28" ry="35" fill="#28152c" stroke="#4b243f" stroke-width="6"/>
+  <ellipse cx="275" cy="224" rx="28" ry="35" fill="#28152c" stroke="#4b243f" stroke-width="6"/>
+  <ellipse cx="202" cy="218" rx="17" ry="23" fill="#121018"/>
+  <ellipse cx="272" cy="218" rx="17" ry="23" fill="#121018"/>
+  <ellipse cx="195" cy="206" rx="8" ry="11" fill="#fff"/>
+  <ellipse cx="265" cy="206" rx="8" ry="11" fill="#fff"/>
+  <circle cx="208" cy="232" r="5" fill="#8d69a8"/>
+  <circle cx="278" cy="232" r="5" fill="#8d69a8"/>
+  <path d="M181 189q24-14 48 0M251 189q24-14 48 0"
+        fill="none" stroke="#69263f" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="195" cy="251" rx="25" ry="10" fill="#ef7f88" opacity=".62"/>
+  <ellipse cx="285" cy="251" rx="25" ry="10" fill="#ef7f88" opacity=".62"/>
+</g>
+<g id="auby-warm-smile">
+  <path d="M211 260q29 34 58 0q-3 46-29 46t-29-46Z"
+        fill="#3a1728" stroke="#5e2035" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M224 286q16 12 32 0q-4 14-16 14t-16-14Z" fill="#f17667"/>
+  <path d="M219 263q21 8 42 0" fill="none" stroke="#fff3df" stroke-width="6"
+        stroke-linecap="round"/>
+</g>
+<defs>
+  <linearGradient id="shirt" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#f0d49a"/><stop offset="1" stop-color="#a96e3f"/>
+  </linearGradient>
+  <linearGradient id="apron" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#7fa64c"/><stop offset="1" stop-color="#3f6535"/>
+  </linearGradient>
+</defs>
+<g id="grocer-everyday-outfit-base">
+  <path d="M150 391q90-62 180 0l27 146H123Z"
+        fill="url(#shirt)" stroke="#674127" stroke-width="8"/>
+  <path d="M183 365l57 66 57-66 13 172H170Z"
+        fill="url(#apron)" stroke="#31502d" stroke-width="8"/>
+  <path d="M187 370l53 62 53-62" fill="none"
+        stroke="#f0dcaa" stroke-width="11" stroke-linecap="round"/>
+  <path d="M167 438l-20 92M313 438l20 92"
+        stroke="#7a4c2c" stroke-width="12" stroke-linecap="round"/>
+  <rect x="204" y="456" width="72" height="55" rx="13"
+        fill="#6e9448" stroke="#2f4c2c" stroke-width="6"/>
+  <path d="M240 432v105" stroke="#29452a" stroke-width="6"/>
+</g>
+<g id="grocer-everyday-outfit-shadow">
+  <path d="M240 432l57-67 13 172h-70Z" fill="#1f3925" opacity=".32"/>
+  <path d="M300 384q36 22 42 71l15 82h-51Z" fill="#4b2d20" opacity=".25"/>
+  <path d="M207 456h69v18q-35 17-69 0Z" fill="#24452b" opacity=".35"/>
+  <path d="M172 497q68 31 136 0" fill="none"
+        stroke="#24452b" stroke-width="14" opacity=".3"/>
+</g>
+<g id="grocer-everyday-outfit-highlight">
+  <path d="M180 401q21-25 43-29" fill="none"
+        stroke="#ffe5ae" stroke-width="10" stroke-linecap="round" opacity=".56"/>
+  <path d="M190 392l50 58" fill="none"
+        stroke="#b9d47d" stroke-width="8" stroke-linecap="round" opacity=".65"/>
+  <path d="M186 467q7-37 20-56" fill="none"
+        stroke="#9fc36d" stroke-width="7" stroke-linecap="round" opacity=".48"/>
+  <path d="M216 468h46" stroke="#d4e5a5" stroke-width="5" stroke-linecap="round"/>
+  <path d="M216 483h31" stroke="#d4e5a5" stroke-width="4" stroke-linecap="round"/>
+</g>
+<defs>
+  <linearGradient id="leather" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#b97a3c"/><stop offset=".55" stop-color="#7d4727"/><stop offset="1" stop-color="#4a2a1c"/>
+  </linearGradient>
+</defs>
+<g id="grocer-produce-satchel">
+  <path d="M310 377q58-16 94 28l-12 116h-96l5-117Z"
+        fill="url(#leather)" stroke="#4b2b20" stroke-width="8"/>
+  <path d="M310 404q44 30 84 0l-4 46q-40 24-88 0Z"
+        fill="#8d542d" stroke="#4b2b20" stroke-width="6"/>
+  <rect x="338" y="432" width="25" height="29" rx="5"
+        fill="#d6a63f" stroke="#6f4922" stroke-width="5"/>
+  <path d="M318 376q35-55 65 4" fill="none"
+        stroke="#4b2b20" stroke-width="11" stroke-linecap="round"/>
+  <path d="M326 503h55" stroke="#d69a4b" stroke-width="4" stroke-dasharray="5 8"/>
+  <path d="M333 389c-2-35 10-53 32-56 8 25-1 45-32 56Z"
+        fill="#81aa3a" stroke="#426323" stroke-width="5"/>
+  <path d="M354 389c8-29 25-42 45-36-2 25-17 38-45 36Z"
+        fill="#a1c844" stroke="#426323" stroke-width="5"/>
+  <path d="M318 398c-25-17-31-37-18-55 23 9 31 28 18 55Z"
+        fill="#e27c35" stroke="#8a431e" stroke-width="5"/>
+</g>
+<g id="golden-pollen" fill="#ffd15a">
+  <circle cx="82" cy="176" r="5"/><circle cx="392" cy="194" r="6"/>
+  <circle cx="104" cy="321" r="4"/><circle cx="384" cy="344" r="4"/>
+  <path d="M75 259l5 9 10 2-8 7 2 10-9-5-9 5 2-10-8-7 10-2Z"/>
+  <path d="M397 278l4 7 8 2-6 6 1 8-7-4-7 4 1-8-6-6 8-2Z"/>
+</g>
+<defs>
+  <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#b9894d"/><stop offset=".48" stop-color="#744723"/><stop offset="1" stop-color="#3d2517"/>
+  </linearGradient>
+</defs>
+<g id="woodland-guild-frame">
+  <rect x="12" y="12" width="456" height="576" rx="214"
+        fill="none" stroke="#3d2517" stroke-width="20"/>
+  <rect x="24" y="24" width="432" height="552" rx="202"
+        fill="none" stroke="url(#wood)" stroke-width="12"/>
+  <rect x="34" y="34" width="412" height="532" rx="192"
+        fill="none" stroke="#f2d486" stroke-width="5"/>
+  <g fill="#799f34" stroke="#385724" stroke-width="5">
+    <path d="M66 94c38-22 68-15 89 19-38 12-67 5-89-19Z"/>
+    <path d="M414 94c-38-22-68-15-89 19 38 12 67 5 89-19Z"/>
+    <path d="M66 506c38 22 68 15 89-19-38-12-67-5-89 19Z"/>
+    <path d="M414 506c-38 22-68 15-89-19 38-12 67-5 89 19Z"/>
+  </g>
+  <g fill="#f5c653">
+    <circle cx="62" cy="146" r="5"/><circle cx="418" cy="146" r="5"/>
+    <circle cx="62" cy="454" r="5"/><circle cx="418" cy="454" r="5"/>
+  </g>
+</g>
+</svg>
