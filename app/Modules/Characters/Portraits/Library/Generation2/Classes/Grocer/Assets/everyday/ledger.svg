@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Grocer ledger</title>
+<path d="M78 414q55-31 110 0v99q-55-27-110 0Z"
+      fill="#ead8aa"
+      stroke="#6a4a2d"
+      stroke-width="7"/>
+<path d="M133 414v99" stroke="#6a4a2d" stroke-width="6"/>
+<path d="M93 442h27M93 461h39M93 480h32"
+      stroke="#9b7a49"
+      stroke-width="5"
+      stroke-linecap="round"/>
+</svg>

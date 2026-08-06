@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Chunky Grocer boots</title>
+<defs>
+  <linearGradient id="boot" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#8b5b34"/>
+    <stop offset="1" stop-color="#432719"/>
+  </linearGradient>
+</defs>
+<g fill="url(#boot)" stroke="#3d2518" stroke-width="8">
+  <path d="M149 509q48-15 71 18v29h-91q-5-33 20-47Z"/>
+  <path d="M331 509q-48-15-71 18v29h91q5-33-20-47Z"/>
+</g>
+</svg>

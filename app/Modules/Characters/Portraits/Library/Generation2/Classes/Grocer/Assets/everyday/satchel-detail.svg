@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Satchel details</title>
+<rect x="338" y="449" width="28" height="32" rx="5"
+      fill="#d7a743"
+      stroke="#6d471f"
+      stroke-width="5"/>
+<path d="M317 520h63" stroke="#d89948" stroke-width="5" stroke-dasharray="5 8"/>
+<path d="M311 491q41 18 82 0"
+      fill="none"
+      stroke="#4f2c1d"
+      stroke-width="6"
+      opacity=".6"/>
+</svg>

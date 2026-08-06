@@ -1,10 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
-<title id="title">Grocer everyday outfit shadow</title>
-<g id="grocer-everyday-outfit-shadow">
-  <path d="M240 432l57-67 13 172h-70Z" fill="#1f3925" opacity=".32"/>
-  <path d="M300 384q36 22 42 71l15 82h-51Z" fill="#4b2d20" opacity=".25"/>
-  <path d="M207 456h69v18q-35 17-69 0Z" fill="#24452b" opacity=".35"/>
-  <path d="M172 497q68 31 136 0" fill="none"
-        stroke="#24452b" stroke-width="14" opacity=".3"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Grocer outfit shadows</title>
+<path d="M240 453l70-75 15 166h-85Z" fill="#223f28" opacity=".34"/>
+<path d="M308 390q42 26 49 87l11 67h-58Z" fill="#4d3022" opacity=".25"/>
+<path d="M164 499q76 35 152 0"
+      fill="none"
+      stroke="#25462c"
+      stroke-width="16"
+      opacity=".33"/>
 </svg>
