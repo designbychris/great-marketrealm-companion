@@ -25,8 +25,11 @@ use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\Back
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\BodyLayerRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\ClassLayerRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\EffectsLayerRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\AccessoryLayerRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\AssetFaceLayerRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\AssetFrameLayerRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\ClassEffectsLayerRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\GuildOrnamentLayerRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitLayerStack;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitSvgRenderer;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
@@ -177,7 +180,16 @@ final class CharactersServiceProvider extends ServiceProvider
                         new ClassLayerRenderer(
                             $container->make(PortraitSvgAssetLibrary::class)
                         ),
+                        new AccessoryLayerRenderer(
+                            $container->make(PortraitSvgAssetLibrary::class)
+                        ),
+                        new ClassEffectsLayerRenderer(
+                            $container->make(PortraitSvgAssetLibrary::class)
+                        ),
                         new EffectsLayerRenderer(
+                            $container->make(PortraitSvgAssetLibrary::class)
+                        ),
+                        new GuildOrnamentLayerRenderer(
                             $container->make(PortraitSvgAssetLibrary::class)
                         ),
                         new AssetFrameLayerRenderer(
