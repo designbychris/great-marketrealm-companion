@@ -307,6 +307,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' =>   'modules/characters/character-creation-preview.css',
             ],
             [
+                'handle' => 'gmrc-character-creation-preview',
+                'path' =>   'components/media/portrait-studio-controls.css',
+            ],
+            [
                 'handle' => 'gmrc-auby-note',
                 'path' => 'components/furniture/auby-note.css',
             ],
@@ -409,6 +413,42 @@ class FrontendServiceProvider extends ServiceProvider
                 : GMRC_VERSION,
             true
         );
+
+        $portraitStudioModules = [
+            'namespace',
+            'state',
+            'variants',
+            'layer-updater',
+            'randomiser',
+            'controls',
+            'app',
+        ];
+        
+        $previousHandle = 'gmrc-portrait-studio';
+        
+        foreach ($portraitStudioModules as $module) {
+            $handle = 'gmrc-portrait-studio-' . $module;
+            $path = GMRC_PATH
+                . 'assets/js/components/media/portrait-studio/'
+                . $module
+                . '.js';
+        
+            wp_enqueue_script(
+                $handle,
+                GMRC_URL
+                    . 'assets/js/components/media/portrait-studio/'
+                    . $module
+                    . '.js',
+                [$previousHandle],
+                file_exists($path)
+                    ? (string) filemtime($path)
+                    : GMRC_VERSION,
+                true
+            );
+        
+            $previousHandle = $handle;
+        }
+        
     }
     
 
