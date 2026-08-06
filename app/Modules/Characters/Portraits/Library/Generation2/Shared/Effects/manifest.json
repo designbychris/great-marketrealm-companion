@@ -1,0 +1,20 @@
+{
+  "schema_version": "2.0",
+  "id": "shared-effects",
+  "type": "shared",
+  "label": "Ambient portrait effects",
+  "assets": [
+    {
+      "id": "g2-effects-golden-pollen-01",
+      "slot": "ambient_effects",
+      "file": "Assets/golden-pollen-01.svg",
+      "label": "Golden pollen motes",
+      "variant": "golden-pollen",
+      "tags": [
+        "subtle",
+        "magic"
+      ],
+      "animated": true
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "schema_version": "2.0",
+  "id": "race-fructan",
+  "type": "race",
+  "label": "Fructan",
+  "description": "Generation 2 illustrated Fructan construction.",
+  "owner": "fructan",
+  "defaults": {
+    "body_base": "g2-fructan-body-apple-base-01",
+    "body_shadow": "g2-fructan-body-apple-shadow-01",
+    "body_highlight": "g2-fructan-body-apple-highlight-01",
+    "heritage": "g2-fructan-heritage-apple-leaves-01"
+  },
+  "assets": [
+    {
+      "id": "g2-fructan-body-apple-base-01",
+      "slot": "body_base",
+      "file": "Assets/apple/body-base.svg",
+      "label": "Apple body base",
+      "variant": "apple"
+    },
+    {
+      "id": "g2-fructan-body-apple-shadow-01",
+      "slot": "body_shadow",
+      "file": "Assets/apple/body-shadow.svg",
+      "label": "Apple body shadows",
+      "variant": "apple",
+      "requires": [
+        "g2-fructan-body-apple-base-01"
+      ]
+    },
+    {
+      "id": "g2-fructan-body-apple-highlight-01",
+      "slot": "body_highlight",
+      "file": "Assets/apple/body-highlight.svg",
+      "label": "Apple body highlights",
+      "variant": "apple",
+      "requires": [
+        "g2-fructan-body-apple-base-01"
+      ]
+    },
+    {
+      "id": "g2-fructan-heritage-apple-leaves-01",
+      "slot": "heritage",
+      "file": "Assets/apple/leaves-01.svg",
+      "label": "Apple leaves",
+      "variant": "apple"
+    }
+  ]
+}

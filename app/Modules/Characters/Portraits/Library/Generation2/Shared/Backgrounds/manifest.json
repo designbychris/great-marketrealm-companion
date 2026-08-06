@@ -1,0 +1,19 @@
+{
+  "schema_version": "2.0",
+  "id": "shared-backgrounds",
+  "type": "shared",
+  "label": "Illuminated backgrounds",
+  "assets": [
+    {
+      "id": "g2-background-market-garden-01",
+      "slot": "background",
+      "file": "Assets/market-garden-01.svg",
+      "label": "Sunny market garden",
+      "variant": "market-garden",
+      "tags": [
+        "warm",
+        "outdoors"
+      ]
+    }
+  ]
+}

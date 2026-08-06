@@ -1,0 +1,19 @@
+{
+  "schema_version": "2.0",
+  "id": "shared-frames",
+  "type": "shared",
+  "label": "Illuminated portrait frames",
+  "assets": [
+    {
+      "id": "g2-frame-guild-woodland-01",
+      "slot": "frame",
+      "file": "Assets/guild-woodland-01.svg",
+      "label": "Woodland guild frame",
+      "variant": "woodland",
+      "tags": [
+        "wood",
+        "leaves"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": "2.0",
+  "id": "shared-faces",
+  "type": "shared",
+  "label": "Shared Auby-style faces",
+  "description": "Reusable expressive eye and mouth layers.",
+  "defaults": {
+    "eyes": "g2-eyes-auby-bright-01",
+    "mouth": "g2-mouth-auby-smile-01"
+  },
+  "assets": [
+    {
+      "id": "g2-eyes-auby-bright-01",
+      "slot": "eyes",
+      "file": "Assets/eyes/bright-01.svg",
+      "label": "Bright friendly eyes",
+      "variant": "bright",
+      "tags": [
+        "friendly",
+        "glossy"
+      ]
+    },
+    {
+      "id": "g2-mouth-auby-smile-01",
+      "slot": "mouth",
+      "file": "Assets/mouths/smile-01.svg",
+      "label": "Warm smile",
+      "variant": "smile",
+      "tags": [
+        "friendly"
+      ]
+    }
+  ]
+}

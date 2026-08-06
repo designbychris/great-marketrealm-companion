@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://greatmarketrealm.co.uk/schemas/portrait-manifest-v2.json",
+  "title": "Great Marketrealm Generation 2 Portrait Manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "id",
+    "type",
+    "label",
+    "assets"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "2.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "type": {
+      "enum": [
+        "shared",
+        "race",
+        "class",
+        "collection"
+      ]
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "owner": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "compatible_with": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9-]*$"
+      },
+      "uniqueItems": true
+    },
+    "defaults": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^g2-[a-z0-9-]+$"
+      }
+    },
+    "assets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "slot",
+          "file",
+          "label"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^g2-[a-z0-9-]+$"
+          },
+          "slot": {
+            "enum": [
+              "background",
+              "ground_shadow",
+              "body_base",
+              "body_shadow",
+              "body_highlight",
+              "heritage",
+              "eyes",
+              "mouth",
+              "outfit_base",
+              "outfit_shadow",
+              "outfit_highlight",
+              "equipment",
+              "accessory",
+              "class_effects",
+              "ambient_effects",
+              "guild_ornament",
+              "frame"
+            ]
+          },
+          "file": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*\\.\\.).+\\.svg$"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "variant": {
+            "type": "string"
+          },
+          "palette": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "requires": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "excludes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "animated": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    }
+  }
+}

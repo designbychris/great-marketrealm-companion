@@ -1,0 +1,50 @@
+{
+  "schema_version": "2.0",
+  "id": "class-grocer",
+  "type": "class",
+  "label": "Grocer",
+  "description": "Warm, practical market clothing and well-loved equipment.",
+  "owner": "grocer",
+  "defaults": {
+    "outfit_base": "g2-grocer-outfit-everyday-base-01",
+    "outfit_shadow": "g2-grocer-outfit-everyday-shadow-01",
+    "outfit_highlight": "g2-grocer-outfit-everyday-highlight-01",
+    "equipment": "g2-grocer-equipment-produce-satchel-01"
+  },
+  "assets": [
+    {
+      "id": "g2-grocer-outfit-everyday-base-01",
+      "slot": "outfit_base",
+      "file": "Assets/everyday/outfit-base.svg",
+      "label": "Everyday grocer apron",
+      "variant": "everyday"
+    },
+    {
+      "id": "g2-grocer-outfit-everyday-shadow-01",
+      "slot": "outfit_shadow",
+      "file": "Assets/everyday/outfit-shadow.svg",
+      "label": "Everyday apron shadows",
+      "variant": "everyday",
+      "requires": [
+        "g2-grocer-outfit-everyday-base-01"
+      ]
+    },
+    {
+      "id": "g2-grocer-outfit-everyday-highlight-01",
+      "slot": "outfit_highlight",
+      "file": "Assets/everyday/outfit-highlight.svg",
+      "label": "Everyday apron highlights",
+      "variant": "everyday",
+      "requires": [
+        "g2-grocer-outfit-everyday-base-01"
+      ]
+    },
+    {
+      "id": "g2-grocer-equipment-produce-satchel-01",
+      "slot": "equipment",
+      "file": "Assets/everyday/produce-satchel.svg",
+      "label": "Produce satchel",
+      "variant": "produce-satchel"
+    }
+  ]
+}
