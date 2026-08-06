@@ -1,0 +1,189 @@
+/**
+ * Registrar's Desk illumination sequence.
+ */
+
+.gmrc-g2-illumination-pending
+.gmrc-portrait-generation-two > use {
+    opacity: 0;
+}
+
+.gmrc-g2-illumination-active
+.gmrc-portrait-generation-two > use {
+    animation:
+        gmrc-g2-painted-reveal
+        520ms
+        cubic-bezier(0.16, 0.78, 0.26, 1)
+        both;
+
+    animation-delay:
+        var(--gmrc-reveal-delay, 0ms);
+}
+
+.gmrc-g2-illumination-active
+.gmrc-g2-frame {
+    animation-name:
+        gmrc-g2-frame-illuminate;
+}
+
+.gmrc-g2-illumination-active
+.gmrc-g2-auby-mark {
+    animation-name:
+        gmrc-g2-seal-stamp;
+}
+
+.gmrc-living-desk__illuminator {
+    position: relative;
+}
+
+.gmrc-living-desk__illuminator::after {
+    position: absolute;
+    inset: 7% 8% 19%;
+
+    z-index: 4;
+
+    pointer-events: none;
+    content: "";
+
+    border-radius: 48%;
+
+    opacity: 0;
+
+    background:
+        radial-gradient(
+            circle at 35% 25%,
+            rgba(255, 242, 170, 0.46),
+            transparent 42%
+        );
+
+    mix-blend-mode: screen;
+}
+
+.gmrc-living-desk--in-view
+.gmrc-living-desk__illuminator::after {
+    animation:
+        gmrc-g2-paint-light
+        2.25s
+        ease-out
+        both;
+}
+
+@keyframes gmrc-g2-painted-reveal {
+    0% {
+        opacity: 0;
+
+        filter:
+            blur(4px)
+            saturate(0.4);
+
+        transform:
+            translateY(6px)
+            scale(0.985);
+    }
+
+    48% {
+        opacity: 0.78;
+
+        filter:
+            blur(0.8px)
+            saturate(0.85);
+    }
+
+    100% {
+        opacity: 1;
+
+        filter: none;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+@keyframes gmrc-g2-frame-illuminate {
+    0% {
+        opacity: 0;
+
+        filter:
+            brightness(1.8)
+            blur(2px);
+    }
+
+    58% {
+        opacity: 1;
+
+        filter:
+            brightness(1.4)
+            drop-shadow(
+                0 0 8px
+                rgba(243, 205, 111, 0.68)
+            );
+    }
+
+    100% {
+        opacity: 1;
+
+        filter: none;
+    }
+}
+
+@keyframes gmrc-g2-seal-stamp {
+    0% {
+        opacity: 0;
+
+        transform:
+            scale(1.5)
+            rotate(-8deg);
+    }
+
+    62% {
+        opacity: 1;
+
+        transform:
+            scale(0.92)
+            rotate(2deg);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            scale(1)
+            rotate(0);
+    }
+}
+
+@keyframes gmrc-g2-paint-light {
+    0% {
+        opacity: 0;
+        transform: translateX(-7%);
+    }
+
+    30% {
+        opacity: 0.48;
+    }
+
+    75% {
+        opacity: 0.16;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(8%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-g2-illumination-pending
+    .gmrc-portrait-generation-two > use,
+    .gmrc-g2-illumination-active
+    .gmrc-portrait-generation-two > use {
+        animation: none !important;
+        filter: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .gmrc-living-desk__illuminator::after {
+        display: none;
+    }
+}
