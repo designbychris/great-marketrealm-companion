@@ -69,6 +69,16 @@ final class PortraitSvgAssetLibrary
             'rogue-equipment-01' => 'Classes/Rogue/equipment.svg',
             'effects-gold-motes-01' => 'Effects/gold-motes.svg',
             'frame-guild-gold-01' => 'Frames/guild-gold.svg',
+            'grocer-outfit-01' => 'Classes/Grocer/outfit.svg',
+            'grocer-equipment-01' => 'Classes/Grocer/equipment.svg',
+            'grocer-accessory-01' => 'Classes/Grocer/accessory.svg',
+            'grocer-effects-01' => 'Classes/Grocer/effects.svg',
+            'grocer-ornament-01' => 'Classes/Grocer/ornament.svg',
+            'cleaver-saint-outfit-01' => 'Classes/CleaverSaint/outfit.svg',
+            'cleaver-saint-equipment-01' => 'Classes/CleaverSaint/equipment.svg',
+            'cleaver-saint-accessory-01' => 'Classes/CleaverSaint/accessory.svg',
+            'cleaver-saint-effects-01' => 'Classes/CleaverSaint/effects.svg',
+            'cleaver-saint-ornament-01' => 'Classes/CleaverSaint/ornament.svg',
         ];
     }
 
