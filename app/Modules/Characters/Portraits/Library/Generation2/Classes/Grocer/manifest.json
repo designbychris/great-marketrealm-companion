@@ -3,48 +3,90 @@
   "id": "class-grocer",
   "type": "class",
   "label": "Grocer",
-  "description": "Warm, practical market clothing and well-loved equipment.",
   "owner": "grocer",
   "defaults": {
-    "outfit_base": "g2-grocer-outfit-everyday-base-01",
-    "outfit_shadow": "g2-grocer-outfit-everyday-shadow-01",
-    "outfit_highlight": "g2-grocer-outfit-everyday-highlight-01",
-    "equipment": "g2-grocer-equipment-produce-satchel-01"
+    "outfit_base": "g2-grocer-shirt-everyday-01",
+    "outfit_shadow": "g2-grocer-outfit-shadow-01",
+    "outfit_highlight": "g2-grocer-outfit-highlight-01",
+    "equipment": "g2-grocer-satchel-base-01"
   },
   "assets": [
     {
-      "id": "g2-grocer-outfit-everyday-base-01",
+      "id": "g2-grocer-shirt-everyday-01",
       "slot": "outfit_base",
-      "file": "Assets/everyday/outfit-base.svg",
-      "label": "Everyday grocer apron",
-      "variant": "everyday"
+      "file": "Assets/everyday/shirt-base.svg",
+      "label": "Working shirt",
+      "variant": "benchmark"
     },
     {
-      "id": "g2-grocer-outfit-everyday-shadow-01",
+      "id": "g2-grocer-apron-everyday-01",
+      "slot": "outfit_base",
+      "file": "Assets/everyday/apron-base.svg",
+      "label": "Working apron",
+      "variant": "benchmark"
+    },
+    {
+      "id": "g2-grocer-outfit-shadow-01",
       "slot": "outfit_shadow",
       "file": "Assets/everyday/outfit-shadow.svg",
-      "label": "Everyday apron shadows",
-      "variant": "everyday",
-      "requires": [
-        "g2-grocer-outfit-everyday-base-01"
-      ]
+      "label": "Outfit shadows",
+      "variant": "benchmark"
     },
     {
-      "id": "g2-grocer-outfit-everyday-highlight-01",
+      "id": "g2-grocer-outfit-highlight-01",
       "slot": "outfit_highlight",
       "file": "Assets/everyday/outfit-highlight.svg",
-      "label": "Everyday apron highlights",
-      "variant": "everyday",
-      "requires": [
-        "g2-grocer-outfit-everyday-base-01"
-      ]
+      "label": "Outfit highlights",
+      "variant": "benchmark"
     },
     {
-      "id": "g2-grocer-equipment-produce-satchel-01",
+      "id": "g2-grocer-stitching-01",
+      "slot": "outfit_highlight",
+      "file": "Assets/everyday/stitching.svg",
+      "label": "Apron stitching",
+      "variant": "benchmark"
+    },
+    {
+      "id": "g2-grocer-hands-01",
+      "slot": "accessory",
+      "file": "Assets/everyday/hands.svg",
+      "label": "Chunky hands",
+      "variant": "benchmark"
+    },
+    {
+      "id": "g2-grocer-boots-01",
+      "slot": "accessory",
+      "file": "Assets/everyday/boots.svg",
+      "label": "Chunky boots",
+      "variant": "benchmark"
+    },
+    {
+      "id": "g2-grocer-ledger-01",
       "slot": "equipment",
-      "file": "Assets/everyday/produce-satchel.svg",
+      "file": "Assets/everyday/ledger.svg",
+      "label": "Grocer ledger",
+      "variant": "benchmark"
+    },
+    {
+      "id": "g2-grocer-satchel-base-01",
+      "slot": "equipment",
+      "file": "Assets/everyday/satchel-base.svg",
       "label": "Produce satchel",
-      "variant": "produce-satchel"
+      "variant": "benchmark"
+    },
+    {
+      "id": "g2-grocer-satchel-detail-01",
+      "slot": "equipment",
+      "file": "Assets/everyday/satchel-detail.svg",
+      "label": "Satchel details",
+      "variant": "benchmark"
+    },
+    {
+      "id": "g2-grocer-produce-01",
+      "slot": "equipment",
+      "file": "Assets/everyday/produce.svg",
+      "label": "Produce bundle",
+      "variant": "benchmark"
     }
   ]
 }
