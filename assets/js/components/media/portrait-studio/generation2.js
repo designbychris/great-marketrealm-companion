@@ -1,34 +1,35 @@
 (function (window, document) {
     'use strict';
 
-    const ASSET_IDS = [
-        'g2-background-market-garden-01',
-        'g2-fructan-grocer-ground-shadow-01',
-        'g2-fructan-body-apple-base-01',
-        'g2-fructan-body-apple-shadow-01',
-        'g2-fructan-body-apple-highlight-01',
-        'g2-fructan-body-apple-blush-01',
-        'g2-fructan-body-apple-speckles-01',
-        'g2-fructan-heritage-apple-leaves-01',
-        'g2-fructan-heritage-apple-leaves-shadow-01',
-        'g2-fructan-heritage-apple-leaves-highlight-01',
-        'g2-fructan-heritage-apple-stem-01',
-        'g2-brows-friendly-01',
-        'g2-eyes-auby-bright-01',
-        'g2-mouth-auby-smile-01',
-        'g2-grocer-shirt-everyday-01',
-        'g2-grocer-apron-everyday-01',
-        'g2-grocer-outfit-shadow-01',
-        'g2-grocer-outfit-highlight-01',
-        'g2-grocer-stitching-01',
-        'g2-grocer-hands-01',
-        'g2-grocer-boots-01',
-        'g2-grocer-ledger-01',
-        'g2-grocer-satchel-base-01',
-        'g2-grocer-satchel-detail-01',
-        'g2-grocer-produce-01',
-        'g2-effects-golden-pollen-01',
-        'g2-frame-guild-woodland-01'
+    const ASSETS = [
+        ['g2-background-market-garden-01', 'gmrc-g2-background'],
+        ['g2-fructan-grocer-ground-shadow-01', 'gmrc-g2-ground-shadow'],
+        ['g2-fructan-body-apple-base-01', 'gmrc-g2-character gmrc-g2-body'],
+        ['g2-fructan-body-apple-shadow-01', 'gmrc-g2-character gmrc-g2-body'],
+        ['g2-fructan-body-apple-highlight-01', 'gmrc-g2-character gmrc-g2-body'],
+        ['g2-fructan-body-apple-blush-01', 'gmrc-g2-character gmrc-g2-face'],
+        ['g2-fructan-body-apple-speckles-01', 'gmrc-g2-character gmrc-g2-face'],
+        ['g2-fructan-heritage-apple-leaves-01', 'gmrc-g2-character gmrc-g2-leaves'],
+        ['g2-fructan-heritage-apple-leaves-shadow-01', 'gmrc-g2-character gmrc-g2-leaves'],
+        ['g2-fructan-heritage-apple-leaves-highlight-01', 'gmrc-g2-character gmrc-g2-leaves'],
+        ['g2-fructan-heritage-apple-stem-01', 'gmrc-g2-character gmrc-g2-stem'],
+        ['g2-brows-friendly-01', 'gmrc-g2-character gmrc-g2-brows'],
+        ['g2-eyes-auby-bright-01', 'gmrc-g2-character gmrc-g2-eyes'],
+        ['g2-mouth-auby-smile-01', 'gmrc-g2-character gmrc-g2-mouth'],
+        ['g2-grocer-shirt-everyday-01', 'gmrc-g2-character gmrc-g2-outfit'],
+        ['g2-grocer-apron-everyday-01', 'gmrc-g2-character gmrc-g2-outfit'],
+        ['g2-grocer-outfit-shadow-01', 'gmrc-g2-character gmrc-g2-outfit'],
+        ['g2-grocer-outfit-highlight-01', 'gmrc-g2-character gmrc-g2-outfit'],
+        ['g2-grocer-stitching-01', 'gmrc-g2-character gmrc-g2-outfit'],
+        ['g2-grocer-hands-01', 'gmrc-g2-character gmrc-g2-hands'],
+        ['g2-grocer-boots-01', 'gmrc-g2-character gmrc-g2-boots'],
+        ['g2-grocer-ledger-01', 'gmrc-g2-character gmrc-g2-ledger'],
+        ['g2-grocer-satchel-base-01', 'gmrc-g2-character gmrc-g2-satchel'],
+        ['g2-grocer-satchel-detail-01', 'gmrc-g2-character gmrc-g2-satchel'],
+        ['g2-grocer-produce-01', 'gmrc-g2-character gmrc-g2-satchel'],
+        ['g2-effects-golden-pollen-01', 'gmrc-g2-pollen'],
+        ['g2-frame-guild-woodland-01', 'gmrc-g2-frame'],
+        ['g2-auby-illuminator-mark-01', 'gmrc-g2-auby-mark'],
     ];
 
     const selectedValue = function (form, name) {
@@ -41,7 +42,7 @@
             : '';
     };
 
-    const useElement = function (assetId) {
+    const useElement = function (assetId, classNames) {
         const use = document.createElementNS(
             'http://www.w3.org/2000/svg',
             'use'
@@ -52,6 +53,13 @@
         use.setAttribute('href', href);
         use.setAttribute('xlink:href', href);
         use.dataset.portraitAssetId = assetId;
+
+        classNames
+            .split(' ')
+            .filter(Boolean)
+            .forEach(function (className) {
+                use.classList.add(className);
+            });
 
         return use;
     };
@@ -78,12 +86,15 @@
                 'http://www.w3.org/2000/svg',
                 'g'
             );
+
             generationTwo.classList.add(
                 'gmrc-portrait-generation-two'
             );
+
             generationTwo.dataset.portraitGeneration = '2';
             generationTwo.dataset.portraitCollection =
                 'fructan-grocer';
+
             svg.appendChild(generationTwo);
         }
 
@@ -94,9 +105,9 @@
         };
 
         const available = function () {
-            return ASSET_IDS.every(function (assetId) {
+            return ASSETS.every(function (asset) {
                 return svg.querySelector(
-                    '#gmrc-portrait-asset-' + assetId
+                    '#gmrc-portrait-asset-' + asset[0]
                 ) instanceof SVGElement;
             });
         };
@@ -119,19 +130,36 @@
                 generationTwo.replaceChildren();
 
                 if (!supported) {
-                    generationTwo.setAttribute('display', 'none');
+                    generationTwo.setAttribute(
+                        'display',
+                        'none'
+                    );
+
                     svg.dataset.portraitGeneration = '1';
                     return;
                 }
 
-                ASSET_IDS.forEach(function (assetId) {
+                ASSETS.forEach(function (asset) {
                     generationTwo.appendChild(
-                        useElement(assetId)
+                        useElement(asset[0], asset[1])
                     );
                 });
 
                 generationTwo.removeAttribute('display');
                 svg.dataset.portraitGeneration = '2';
+
+                studio.dispatchEvent(
+                    new CustomEvent(
+                        'gmrc:portrait:generation-changed',
+                        {
+                            bubbles: true,
+                            detail: {
+                                generation: 2,
+                                collection: 'fructan-grocer',
+                            },
+                        }
+                    )
+                );
             }, 0);
         };
 
@@ -142,7 +170,9 @@
 
     const boot = function () {
         document
-            .querySelectorAll('.gmrc-illuminated-portrait')
+            .querySelectorAll(
+                '.gmrc-illuminated-portrait'
+            )
             .forEach(function (studio) {
                 if (studio instanceof HTMLElement) {
                     initialise(studio);
