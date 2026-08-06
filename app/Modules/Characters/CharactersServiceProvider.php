@@ -32,6 +32,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\Clas
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\GuildOrnamentLayerRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitLayerStack;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitSvgRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\PortraitVariantRegistryInterface;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitVariantRegistry;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteRepository;
@@ -224,6 +226,31 @@ final class CharactersServiceProvider extends ServiceProvider
             ): PortraitLayerRegistryInterface =>
                 $container->make(
                     PortraitLayerRegistry::class
+                )
+        );
+
+        $container->singleton(
+            PortraitVariantRegistry::class,
+            static fn (
+                Container $container
+            ): PortraitVariantRegistry =>
+                new PortraitVariantRegistry(
+                    $container->make(
+                        PortraitLayerRegistryInterface::class
+                    ),
+                    $container->make(
+                        PortraitSvgAssetLibrary::class
+                    )
+                )
+        );
+        
+        $container->singleton(
+            PortraitVariantRegistryInterface::class,
+            static fn (
+                Container $container
+            ): PortraitVariantRegistryInterface =>
+                $container->make(
+                    PortraitVariantRegistry::class
                 )
         );
 
