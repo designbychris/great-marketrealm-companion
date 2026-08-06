@@ -318,6 +318,12 @@ class FrontendServiceProvider extends ServiceProvider
                 'handle' => 'gmrc-registrar',
                 'path' => 'components/furniture/registrar.css',
             ],
+            [
+                'handle' => 'gmrc-registrars-desk-reveal',
+                'path' =>
+                    'components/furniture/'
+                    . 'registrars-desk-reveal.css',
+            ],
         ];
     
         foreach ($components as $component) {
@@ -475,6 +481,27 @@ class FrontendServiceProvider extends ServiceProvider
             ['gmrc-portrait-studio-generation-two'],
             file_exists($livingPortraitScriptPath)
                 ? (string) filemtime($livingPortraitScriptPath)
+                : GMRC_VERSION,
+            true
+        );
+
+        $registrarsDeskScriptPath =
+            GMRC_PATH
+            . 'assets/js/components/furniture/'
+            . 'registrars-desk.js';
+
+        wp_enqueue_script(
+            'gmrc-registrars-desk',
+            GMRC_URL
+                . 'assets/js/components/furniture/'
+                . 'registrars-desk.js',
+            [
+                'gmrc-portrait-studio-living-portrait',
+            ],
+            file_exists($registrarsDeskScriptPath)
+                ? (string) filemtime(
+                    $registrarsDeskScriptPath
+                )
                 : GMRC_VERSION,
             true
         );
