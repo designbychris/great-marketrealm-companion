@@ -60,11 +60,22 @@
     ) {
         portrait.dataset.illuminationReady = 'true';
         portrait.classList.remove(
-            'gmrc-g2-illumination-pending'
+            'gmrc-g2-illumination-pending',
+            'gmrc-g2-illumination-active'
         );
         portrait.classList.add(
             'gmrc-g2-illumination-complete'
         );
+
+        portrait
+            .querySelectorAll(
+                '.gmrc-portrait-generation-two > use'
+            )
+            .forEach(function (layer) {
+                layer.style.removeProperty(
+                    '--gmrc-reveal-delay'
+                );
+            });
 
         desk.classList.add(
             'gmrc-living-desk--illuminated'
@@ -105,7 +116,7 @@
 
         window.setTimeout(function () {
             completeIllumination(desk, portrait);
-        }, 2550);
+        }, 2860);
     };
 
     const initialise = function (desk) {
