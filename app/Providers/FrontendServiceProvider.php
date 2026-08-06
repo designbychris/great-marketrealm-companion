@@ -448,6 +448,21 @@ class FrontendServiceProvider extends ServiceProvider
         
             $previousHandle = $handle;
         }
+
+        $generationTwoPortraitPath =
+            GMRC_PATH
+            . 'assets/js/components/media/portrait-studio/generation2.js';
+        
+        wp_enqueue_script(
+            'gmrc-portrait-studio-generation-two',
+            GMRC_URL
+                . 'assets/js/components/media/portrait-studio/generation2.js',
+            ['gmrc-portrait-studio-app'],
+            file_exists($generationTwoPortraitPath)
+                ? (string) filemtime($generationTwoPortraitPath)
+                : GMRC_VERSION,
+            true
+        );
         
     }
     
