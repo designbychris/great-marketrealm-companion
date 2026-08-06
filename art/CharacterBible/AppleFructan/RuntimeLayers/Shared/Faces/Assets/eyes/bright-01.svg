@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Large bright eyes</title>
+<g>
+  <ellipse cx="199" cy="240" rx="31" ry="40" fill="#29132d" stroke="#4d233f" stroke-width="7"/>
+  <ellipse cx="281" cy="240" rx="31" ry="40" fill="#29132d" stroke="#4d233f" stroke-width="7"/>
+  <ellipse cx="196" cy="233" rx="20" ry="28" fill="#121016"/>
+  <ellipse cx="278" cy="233" rx="20" ry="28" fill="#121016"/>
+  <ellipse cx="188" cy="218" rx="9" ry="13" fill="#fff"/>
+  <ellipse cx="270" cy="218" rx="9" ry="13" fill="#fff"/>
+  <circle cx="204" cy="251" r="6" fill="#8765a4"/>
+  <circle cx="286" cy="251" r="6" fill="#8765a4"/>
+</g>
+</svg>

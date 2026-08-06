@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Generation 2 anchor template</title>
+<rect x="12" y="12" width="456" height="576" rx="210"
+      fill="#fff8dc" opacity=".18"/>
+<g fill="none" stroke="#765738" stroke-width="2"
+   stroke-dasharray="6 8" opacity=".7">
+  <line x1="240" y1="22" x2="240" y2="578"/>
+  <line x1="40" y1="240" x2="440" y2="240"/>
+  <line x1="40" y1="300" x2="440" y2="300"/>
+  <line x1="40" y1="380" x2="440" y2="380"/>
+  <line x1="40" y1="556" x2="440" y2="556"/>
+</g>
+</svg>

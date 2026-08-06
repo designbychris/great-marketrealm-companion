@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Warm open smile</title>
+<path d="M207 283q33 36 66 0q-2 51-33 51t-33-51Z"
+      fill="#391526"
+      stroke="#5d2035"
+      stroke-width="7"
+      stroke-linejoin="round"/>
+<path d="M222 309q18 15 36 0q-4 17-18 17t-18-17Z" fill="#f07b6d"/>
+<path d="M216 285q24 9 48 0"
+      fill="none"
+      stroke="#fff2dc"
+      stroke-width="7"
+      stroke-linecap="round"/>
+</svg>

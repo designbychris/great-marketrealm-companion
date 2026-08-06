@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Curled apple stem</title>
+<defs>
+  <linearGradient id="stem" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#91b73b"/>
+    <stop offset="1" stop-color="#42631e"/>
+  </linearGradient>
+</defs>
+<path d="M237 106c-14-43-7-77 18-101 19 30 13 66-18 101Z"
+      fill="url(#stem)"
+      stroke="#35511c"
+      stroke-width="8"/>
+</svg>

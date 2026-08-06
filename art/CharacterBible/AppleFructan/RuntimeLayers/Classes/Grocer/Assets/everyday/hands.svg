@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Chunky Grocer hands</title>
+<g fill="#cf485a" stroke="#642238" stroke-width="7">
+  <ellipse cx="104" cy="478" rx="27" ry="31" transform="rotate(-20 104 478)"/>
+  <ellipse cx="376" cy="478" rx="27" ry="31" transform="rotate(20 376 478)"/>
+</g>
+</svg>

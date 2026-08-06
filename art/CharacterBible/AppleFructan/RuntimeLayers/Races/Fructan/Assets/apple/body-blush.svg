@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Apple Fructan blush</title>
+<g fill="#f47d88" opacity=".58">
+  <ellipse cx="174" cy="294" rx="32" ry="14"/>
+  <ellipse cx="306" cy="294" rx="32" ry="14"/>
+</g>
+</svg>

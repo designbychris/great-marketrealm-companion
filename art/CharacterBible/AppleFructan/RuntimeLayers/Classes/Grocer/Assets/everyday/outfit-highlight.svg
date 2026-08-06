@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Grocer outfit highlights</title>
+<g fill="none" stroke-linecap="round">
+  <path d="M154 415q31-36 66-41" stroke="#ffe4ae" stroke-width="11" opacity=".58"/>
+  <path d="M183 392l57 63" stroke="#c7e493" stroke-width="9" opacity=".68"/>
+  <path d="M179 452q8-39 24-63" stroke="#a9cf7d" stroke-width="8" opacity=".52"/>
+</g>
+</svg>

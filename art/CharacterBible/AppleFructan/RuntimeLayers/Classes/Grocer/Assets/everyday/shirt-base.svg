@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Grocer working shirt</title>
+<defs>
+  <linearGradient id="shirt" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f3d7a1"/>
+    <stop offset="1" stop-color="#ae7547"/>
+  </linearGradient>
+</defs>
+<path d="M126 398q114-80 228 0l24 146H102Z"
+      fill="url(#shirt)"
+      stroke="#654027"
+      stroke-width="9"/>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Warm market garden</title>
+<defs>
+  <radialGradient id="sky" cx="40%" cy="18%" r="88%">
+    <stop offset="0" stop-color="#fff8d8"/>
+    <stop offset=".48" stop-color="#dcebb6"/>
+    <stop offset="1" stop-color="#88ad64"/>
+  </radialGradient>
+  <filter id="sun-glow" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="7"/>
+  </filter>
+</defs>
+<rect x="12" y="12" width="456" height="576" rx="210" fill="url(#sky)"/>
+<circle cx="105" cy="101" r="54" fill="#fff8d2" opacity=".66" filter="url(#sun-glow)"/>
+<path d="M18 420c85-68 153-57 222 9 67-63 138-68 222 5v146H18Z"
+      fill="#678f4e" opacity=".82"/>
+<path d="M35 467c82-53 147-45 205 13 60-53 129-58 205-5v105H35Z"
+      fill="#89aa61"/>
+<path d="M188 580c-10-73 7-119 52-145 47 26 63 72 52 145Z"
+      fill="#d3ad72" opacity=".94"/>
+<g fill="#efd05d" opacity=".82">
+  <circle cx="67" cy="372" r="6"/>
+  <circle cx="414" cy="379" r="6"/>
+  <circle cx="94" cy="405" r="4"/>
+  <circle cx="389" cy="410" r="4"/>
+</g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Grocer outfit shadows</title>
+<path d="M240 453l70-75 15 166h-85Z" fill="#223f28" opacity=".34"/>
+<path d="M308 390q42 26 49 87l11 67h-58Z" fill="#4d3022" opacity=".25"/>
+<path d="M164 499q76 35 152 0"
+      fill="none"
+      stroke="#25462c"
+      stroke-width="16"
+      opacity=".33"/>
+</svg>

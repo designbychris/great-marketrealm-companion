@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Apple Fructan body highlights</title>
+<path d="M180 137c-21 33-27 81-18 120"
+      fill="none"
+      stroke="#ffc8bd"
+      stroke-width="18"
+      stroke-linecap="round"
+      opacity=".8"/>
+<path d="M149 348c20-28 48-43 77-48"
+      fill="none"
+      stroke="#ffa09b"
+      stroke-width="16"
+      stroke-linecap="round"
+      opacity=".45"/>
+<ellipse cx="189" cy="181" rx="13" ry="22"
+         fill="#ffe3d8"
+         opacity=".92"
+         transform="rotate(24 189 181)"/>
+</svg>
