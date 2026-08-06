@@ -597,7 +597,7 @@
     position: relative;
     z-index: 2;
 
-    max-width: 46rem;
+    max-width: 52rem;
 
     color:
         rgba(255, 244, 215, 0.95);
@@ -614,45 +614,57 @@
 
     display: grid;
     grid-template-columns:
-        minmax(15rem, 0.55fr)
-        minmax(18rem, 0.85fr)
-        minmax(28rem, 1.6fr);
+        minmax(19rem, 0.78fr)
+        minmax(34rem, 1.65fr);
+    grid-template-areas:
+        "auby auby"
+        "illuminator record";
 
     align-items: start;
 
     gap:
-        clamp(1.5rem, 4vw, 3rem);
-}
-
-.gmrc-living-desk__illuminator {
-    align-self: start;
+        clamp(1.5rem, 3.5vw, 3rem);
 }
 
 .gmrc-living-desk__auby {
-    position: sticky;
-    top: 2rem;
+    grid-area: auby;
 
-    padding-top:
-        var(--gmrc-space-8, 2rem);
+    width: 100%;
 }
 
-@media (max-width: 1400px) {
-    .gmrc-living-desk__surface {
-        grid-template-columns: 1fr;
-    }
+.gmrc-living-desk__illuminator {
+    grid-area: illuminator;
+    align-self: start;
 }
 
+.gmrc-living-desk__surface
+.gmrc-creation-preview {
+    grid-area: record;
+}
 
-@media (max-width: 900px) {
+@media (max-width: 1150px) {
     .gmrc-living-desk__surface {
         grid-template-columns: 1fr;
+        grid-template-areas:
+            "auby"
+            "illuminator"
+            "record";
     }
 
-    .gmrc-living-desk__auby {
-        position: static;
-
-        max-width: 28rem;
-
+    .gmrc-living-desk__illuminator {
+        width: min(100%, 31rem);
         margin-inline: auto;
+    }
+}
+
+@media (max-width: 720px) {
+    .gmrc-living-desk {
+        padding:
+            var(--gmrc-space-5, 1.25rem);
+    }
+
+    .gmrc-living-desk__surface {
+        gap:
+            var(--gmrc-space-6, 1.5rem);
     }
 }
