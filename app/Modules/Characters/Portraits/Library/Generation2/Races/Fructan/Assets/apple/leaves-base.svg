@@ -2,21 +2,30 @@
     viewBox="0 0 480 600"
     role="img"
     aria-labelledby="title">
-<title id="title">Apple Fructan hero leaves</title>
-<defs>
-  <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#c1e64c"/>
-    <stop offset=".52" stop-color="#78aa2f"/>
-    <stop offset="1" stop-color="#3e6920"/>
-  </linearGradient>
-</defs>
-<g fill="url(#leaf)"
-   stroke="#34531d"
-   stroke-width="8"
-   stroke-linejoin="round">
-  <path d="M239 111c-42-5-75-29-89-61 42-5 76 16 89 61Z"/>
-  <path d="M241 111c43-12 80-2 104 27-34 28-72 25-104-27Z"/>
-  <path d="M216 118c-40 26-77 29-105 8 25-35 61-39 105-8Z"/>
-  <path d="M264 114c39-34 78-45 112-29-15 39-51 52-112 29Z"/>
-</g>
+  <title id="title">Painterly Apple Fructan leaves</title>
+  <defs>
+    <linearGradient id="leaf-a" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#c7ea53"/>
+      <stop offset=".5" stop-color="#79ab31"/>
+      <stop offset="1" stop-color="#3d6720"/>
+    </linearGradient>
+    <linearGradient id="leaf-b" x1="1" y1="0" x2="0" y2="1">
+      <stop stop-color="#afd742"/>
+      <stop offset=".55" stop-color="#69962a"/>
+      <stop offset="1" stop-color="#35591c"/>
+    </linearGradient>
+  </defs>
+
+  <g stroke="#34531d" stroke-linejoin="round">
+    <path d="M240 116c-48-1-85-23-105-58 45-12 86 7 105 58Z"
+          fill="url(#leaf-a)" stroke-width="9"/>
+    <path d="M247 114c44-19 85-14 114 13-30 35-72 34-114-13Z"
+          fill="url(#leaf-b)" stroke-width="8"/>
+    <path d="M212 125c-43 31-85 37-117 15 24-41 65-48 117-15Z"
+          fill="url(#leaf-b)" stroke-width="9"/>
+    <path d="M269 119c39-40 81-55 119-41-11 45-49 63-119 41Z"
+          fill="url(#leaf-a)" stroke-width="8"/>
+    <path d="M225 115c-17-37-12-68 14-91 23 25 18 58-14 91Z"
+          fill="#86b334" stroke-width="8"/>
+  </g>
 </svg>
