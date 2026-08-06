@@ -2,15 +2,53 @@
     viewBox="0 0 480 600"
     role="img"
     aria-labelledby="title">
-<title id="title">Large bright eyes</title>
-<g>
-  <ellipse cx="199" cy="240" rx="31" ry="40" fill="#29132d" stroke="#4d233f" stroke-width="7"/>
-  <ellipse cx="281" cy="240" rx="31" ry="40" fill="#29132d" stroke="#4d233f" stroke-width="7"/>
-  <ellipse cx="196" cy="233" rx="20" ry="28" fill="#121016"/>
-  <ellipse cx="278" cy="233" rx="20" ry="28" fill="#121016"/>
-  <ellipse cx="188" cy="218" rx="9" ry="13" fill="#fff"/>
-  <ellipse cx="270" cy="218" rx="9" ry="13" fill="#fff"/>
-  <circle cx="204" cy="251" r="6" fill="#8765a4"/>
-  <circle cx="286" cy="251" r="6" fill="#8765a4"/>
-</g>
+  <title id="title">Painterly bright eyes</title>
+  <defs>
+    <radialGradient id="iris" cx="37%" cy="28%" r="75%">
+      <stop offset="0" stop-color="#8c69b1"/>
+      <stop offset=".45" stop-color="#4a2b69"/>
+      <stop offset="1" stop-color="#17101d"/>
+    </radialGradient>
+    <linearGradient id="lower-glow" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#bc8fe1" stop-opacity=".15"/>
+      <stop offset="1" stop-color="#bc8fe1" stop-opacity=".75"/>
+    </linearGradient>
+  </defs>
+
+  <g>
+    <ellipse cx="199" cy="240" rx="32" ry="41"
+             fill="#27132d"
+             stroke="#4d233f"
+             stroke-width="7"/>
+    <ellipse cx="281" cy="240" rx="32" ry="41"
+             fill="#27132d"
+             stroke="#4d233f"
+             stroke-width="7"/>
+
+    <ellipse cx="197" cy="234" rx="21" ry="29" fill="url(#iris)"/>
+    <ellipse cx="279" cy="234" rx="21" ry="29" fill="url(#iris)"/>
+
+    <ellipse cx="197" cy="251" rx="15" ry="12" fill="url(#lower-glow)"/>
+    <ellipse cx="279" cy="251" rx="15" ry="12" fill="url(#lower-glow)"/>
+
+    <ellipse cx="188" cy="216" rx="9" ry="13" fill="#fff"/>
+    <ellipse cx="270" cy="216" rx="9" ry="13" fill="#fff"/>
+
+    <circle cx="204" cy="230" r="4.5" fill="#fff" opacity=".92"/>
+    <circle cx="286" cy="230" r="4.5" fill="#fff" opacity=".92"/>
+
+    <circle cx="208" cy="256" r="3.5" fill="#d8b8f1" opacity=".7"/>
+    <circle cx="290" cy="256" r="3.5" fill="#d8b8f1" opacity=".7"/>
+
+    <path d="M172 204q27-17 55-2"
+          fill="none"
+          stroke="#5e2441"
+          stroke-width="6"
+          stroke-linecap="round"/>
+    <path d="M253 202q28-15 56 2"
+          fill="none"
+          stroke="#5e2441"
+          stroke-width="6"
+          stroke-linecap="round"/>
+  </g>
 </svg>
