@@ -2,26 +2,26 @@
 .gmrc-g2-character,
 .gmrc-portrait-layers[data-portrait-generation="2"]
 .gmrc-g2-pollen,
-.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-auby-mark {
     transform-box: fill-box;
 }
 
-.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-body,
-.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-face,
-.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-brows,
-.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-mouth,
-.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-outfit,
-.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-hands,
-.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-boots,
-.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-ledger {
     transform-origin: center bottom;
     animation:
@@ -31,9 +31,9 @@
         infinite;
 }
 
-.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-leaves,
-.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-stem {
     transform-origin: center bottom;
     animation:
@@ -43,7 +43,7 @@
         infinite;
 }
 
-.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-satchel {
     transform-origin: top center;
     animation:
@@ -54,7 +54,7 @@
     animation-delay: 180ms;
 }
 
-.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-pollen {
     transform-origin: center;
     animation:
@@ -78,7 +78,7 @@
     opacity: 0.96;
 }
 
-.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-auby-mark {
     transform-origin: center;
     animation:
@@ -124,14 +124,28 @@
 @keyframes gmrc-g2-pollen-drift {
     0%,
     100% {
-        transform: translate(0, 0);
-        opacity: 0.82;
+        transform: translate(-2px, 4px) scale(0.98);
+        opacity: 0.48;
     }
 
     50% {
-        transform: translate(2px, -4px);
+        transform: translate(6px, -11px) scale(1.06);
         opacity: 1;
     }
+}
+
+.gmrc-portrait-layers[data-portrait-generation="2"]
+[data-illumination-ready="true"]
+.gmrc-g2-pollen--far {
+    animation-duration: 9.5s;
+    animation-delay: -2.8s;
+}
+
+.gmrc-portrait-layers[data-portrait-generation="2"]
+[data-illumination-ready="true"]
+.gmrc-g2-pollen--near {
+    animation-duration: 6.8s;
+    animation-direction: alternate-reverse;
 }
 
 @keyframes gmrc-g2-mark-glint {
