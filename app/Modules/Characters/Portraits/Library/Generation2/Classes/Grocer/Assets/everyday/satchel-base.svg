@@ -4,6 +4,31 @@
     aria-labelledby="title">
   <title id="title">Well-travelled produce satchel</title>
   <defs>
+
+<filter
+    id="painted-edge"
+    x="-8%"
+    y="-8%"
+    width="116%"
+    height="116%"
+    color-interpolation-filters="sRGB"
+>
+  <feTurbulence
+      type="fractalNoise"
+      baseFrequency="0.018"
+      numOctaves="2"
+      seed="11"
+      result="paper-grain"
+  />
+  <feDisplacementMap
+      in="SourceGraphic"
+      in2="paper-grain"
+      scale="1.25"
+      xChannelSelector="R"
+      yChannelSelector="G"
+  />
+</filter>
+
     <linearGradient id="leather" x1="0" y1="0" x2="1" y2="1">
       <stop stop-color="#c08143"/>
       <stop offset=".48" stop-color="#80502f"/>
@@ -11,12 +36,12 @@
     </linearGradient>
   </defs>
 
-  <path d="M306 391q61-17 102 31l-12 121H292l5-122Z"
+  <path filter="url(#painted-edge)" d="M306 391q61-17 102 31l-12 121H292l5-122Z"
         fill="url(#leather)"
         stroke="#48291c"
         stroke-width="9"/>
 
-  <path d="M306 418q50 34 93 2l-5 50q-43 24-95 0Z"
+  <path filter="url(#painted-edge)" d="M306 418q50 34 93 2l-5 50q-43 24-95 0Z"
         fill="#965c34"
         stroke="#48291c"
         stroke-width="7"
