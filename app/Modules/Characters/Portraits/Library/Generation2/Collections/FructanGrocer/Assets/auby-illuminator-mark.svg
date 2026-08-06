@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Auby's Guild Illuminator mark</title>
+<defs>
+  <radialGradient id="wax" cx="35%" cy="25%" r="78%">
+    <stop offset="0" stop-color="#a56bd1"/>
+    <stop offset=".55" stop-color="#704096"/>
+    <stop offset="1" stop-color="#45255f"/>
+  </radialGradient>
+</defs>
+<g id="auby-illuminator-mark" transform="translate(389 507)">
+  <circle cx="0" cy="0" r="32"
+          fill="url(#wax)"
+          stroke="#3c214f"
+          stroke-width="6"/>
+  <path d="M-13 9C-19-5-14-19 0-22c14 3 19 17 13 31
+           C8 22-8 22-13 9Z"
+        fill="#8d56ba"
+        stroke="#3c214f"
+        stroke-width="4"/>
+  <path d="M0-22c-5-13 0-22 10-27 6 12 2 21-10 27Z"
+        fill="#78a83d"
+        stroke="#36521f"
+        stroke-width="4"/>
+  <path d="M-8 1q8-7 16 0M-6 10q6 6 12 0"
+        fill="none"
+        stroke="#f8e4ff"
+        stroke-width="3"
+        stroke-linecap="round"/>
+  <circle cx="-7" cy="-6" r="2.5" fill="#fff"/>
+  <circle cx="7" cy="-6" r="2.5" fill="#fff"/>
+</g>
+</svg>

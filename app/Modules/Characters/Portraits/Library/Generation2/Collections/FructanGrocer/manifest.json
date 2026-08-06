@@ -11,7 +11,8 @@
   "defaults": {
     "background": "g2-background-market-garden-01",
     "ambient_effects": "g2-effects-golden-pollen-01",
-    "frame": "g2-frame-guild-woodland-01"
+    "frame": "g2-frame-guild-woodland-01",
+    "guild_ornament": "g2-auby-illuminator-mark-01"
   },
   "assets": [
     {
@@ -20,6 +21,14 @@
       "file": "Assets/ground-shadow.svg",
       "label": "Painted ground shadow",
       "variant": "benchmark"
+    },
+    {
+      "id": "g2-auby-illuminator-mark-01",
+      "slot": "guild_ornament",
+      "file": "Assets/auby-illuminator-mark.svg",
+      "label": "Auby's Guild Illuminator mark",
+      "variant": "auby",
+      "animated": false
     }
   ]
 }
