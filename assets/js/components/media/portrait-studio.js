@@ -488,10 +488,22 @@
                 '.gmrc-portrait-layer--class'
             );
 
+            const accessoryLayer = studio.querySelector(
+                '.gmrc-portrait-layer--accessory'
+            );
+
+            const classEffectsLayer = studio.querySelector(
+                '.gmrc-portrait-layer--class-effects'
+            );
+
             const effectsLayer =
                 studio.querySelector(
                     '.gmrc-portrait-layer--effects'
                 );
+
+            const guildOrnamentLayer = studio.querySelector(
+                '.gmrc-portrait-layer--guild-ornament'
+            );
 
             const eyesLayer = studio.querySelector(
                 '[data-portrait-layer="eyes"]'
@@ -850,7 +862,7 @@ const applyRecipe = function (
             : ''
     ) || preferredEquipmentLayerId;
 
-    const accessoryLayerId =
+    const preferredAccessoryLayerId =
         characterClass !== ''
             ? (
                 accessoryVariant === 1
@@ -863,6 +875,25 @@ const applyRecipe = function (
                         )
             )
             : '';
+
+    const accessoryLayerId = availableAsset(
+        preferredAccessoryLayerId,
+        characterClass !== ''
+            ? characterClass + '-accessory-01'
+            : ''
+    ) || preferredAccessoryLayerId;
+
+    const classEffectsLayerId = availableAsset(
+        characterClass !== ''
+            ? characterClass + '-effects-01'
+            : ''
+    );
+
+    const guildOrnamentLayerId = availableAsset(
+        characterClass !== ''
+            ? characterClass + '-ornament-01'
+            : ''
+    );
 
     const frameLayerId =
         frameLayers[
@@ -909,6 +940,12 @@ const applyRecipe = function (
 
     studio.dataset.portraitAccessory =
         accessoryLayerId;
+
+    studio.dataset.portraitClassEffects =
+        classEffectsLayerId;
+
+    studio.dataset.portraitGuildOrnament =
+        guildOrnamentLayerId;
 
     studio.dataset.portraitFrame =
         frameLayerId;
@@ -975,6 +1012,16 @@ const applyRecipe = function (
     );
 
     writePortraitField(
+        'class_effects',
+        classEffectsLayerId
+    );
+
+    writePortraitField(
+        'guild_ornament',
+        guildOrnamentLayerId
+    );
+
+    writePortraitField(
         'frame',
         frameLayerId
     );
@@ -1010,8 +1057,29 @@ const applyRecipe = function (
     );
 
     renderAssetLayer(
+        accessoryLayer,
+        accessoryLayerId !== ''
+            ? [accessoryLayerId]
+            : []
+    );
+
+    renderAssetLayer(
+        classEffectsLayer,
+        classEffectsLayerId !== ''
+            ? [classEffectsLayerId]
+            : []
+    );
+
+    renderAssetLayer(
         effectsLayer,
         [effectsLayerId]
+    );
+
+    renderAssetLayer(
+        guildOrnamentLayer,
+        guildOrnamentLayerId !== ''
+            ? [guildOrnamentLayerId]
+            : []
     );
 
     renderAssetLayer(
