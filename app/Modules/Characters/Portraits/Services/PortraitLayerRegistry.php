@@ -53,9 +53,8 @@ final class PortraitLayerRegistry implements PortraitLayerRegistryInterface
     /**
      * @return array<string,array<int,string>>
      */
-    public function forRace(
-        string $race
-    ): array {
+    public function forRace(string $race): array
+    {
         $race = sanitize_key($race);
 
         $defaults = [
@@ -80,30 +79,21 @@ final class PortraitLayerRegistry implements PortraitLayerRegistryInterface
             ],
         ];
 
-        /**
-         * @param array<string,array<int,string>> $layers
-         * @param string                         $race
-         */
         $filtered = apply_filters(
             'gmrc_portrait_race_layers',
             $defaults,
             $race
         );
 
-        return is_array($filtered)
-            ? $filtered
-            : $defaults;
+        return is_array($filtered) ? $filtered : $defaults;
     }
 
     /**
      * @return array<string,array<int,string>>
      */
-    public function forClass(
-        string $characterClass
-    ): array {
-        $characterClass = sanitize_key(
-            $characterClass
-        );
+    public function forClass(string $characterClass): array
+    {
+        $characterClass = sanitize_key($characterClass);
 
         $defaults = [
             'outfit' => [
@@ -121,21 +111,25 @@ final class PortraitLayerRegistry implements PortraitLayerRegistryInterface
                 $characterClass . '-accessory-01',
                 $characterClass . '-accessory-02',
             ],
+            'class_effects' => [
+                $characterClass . '-effects-none',
+                $characterClass . '-effects-01',
+                $characterClass . '-effects-02',
+            ],
+            'guild_ornament' => [
+                $characterClass . '-ornament-none',
+                $characterClass . '-ornament-01',
+                $characterClass . '-ornament-02',
+            ],
         ];
 
-        /**
-         * @param array<string,array<int,string>> $layers
-         * @param string                         $characterClass
-         */
         $filtered = apply_filters(
             'gmrc_portrait_class_layers',
             $defaults,
             $characterClass
         );
 
-        return is_array($filtered)
-            ? $filtered
-            : $defaults;
+        return is_array($filtered) ? $filtered : $defaults;
     }
 
     public function supports(
@@ -153,10 +147,6 @@ final class PortraitLayerRegistry implements PortraitLayerRegistryInterface
         $slot = sanitize_key($slot);
 
         return isset($available[$slot])
-            && in_array(
-                $layerId,
-                $available[$slot],
-                true
-            );
+            && in_array($layerId, $available[$slot], true);
     }
 }
