@@ -83,6 +83,30 @@
 
         scheduleBlink(portrait);
 
+        const readinessObserver = new MutationObserver(
+            function () {
+                if (
+                    portrait.dataset.illuminationReady
+                    !== 'true'
+                ) {
+                    return;
+                }
+
+                readinessObserver.disconnect();
+                scheduleBlink(portrait);
+            }
+        );
+
+        readinessObserver.observe(
+            portrait,
+            {
+                attributes: true,
+                attributeFilter: [
+                    'data-illumination-ready',
+                ],
+            }
+        );
+
         studio.addEventListener(
             'gmrc:portrait:generation-changed',
             function () {
@@ -90,13 +114,20 @@
             }
         );
 
-        studio.closest('[data-living-desk]')
-            ?.addEventListener(
+        const desk = studio.closest(
+            '[data-living-desk]'
+        );
+
+        if (desk instanceof HTMLElement) {
+            desk.addEventListener(
                 'gmrc:portrait:illumination-complete',
                 function () {
-                    scheduleBlink(portrait);
+                    window.setTimeout(function () {
+                        scheduleBlink(portrait);
+                    }, 120);
                 }
             );
+        }
     };
 
     const refresh = function () {
