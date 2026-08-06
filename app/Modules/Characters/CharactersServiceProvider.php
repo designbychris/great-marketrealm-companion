@@ -34,6 +34,11 @@ use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitLay
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitSvgRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\PortraitVariantRegistryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitVariantRegistry;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Generation2\Contracts\PortraitManifestRepositoryInterface;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Generation2\Contracts\PortraitManifestValidatorInterface;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Generation2\Services\FilesystemPortraitManifestRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Generation2\Services\PortraitAssetCatalogue;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Generation2\Services\PortraitManifestValidator;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteRepository;
@@ -314,6 +319,35 @@ final class CharactersServiceProvider extends ServiceProvider
                     ),
                     $container->make(
                         PortraitSvgRenderer::class
+                    )
+                )
+        );
+
+
+        $container->singleton(
+            PortraitManifestValidatorInterface::class,
+            static fn (): PortraitManifestValidatorInterface =>
+                new PortraitManifestValidator()
+        );
+        
+        $container->singleton(
+            PortraitManifestRepositoryInterface::class,
+            static fn (Container $container): PortraitManifestRepositoryInterface =>
+                new FilesystemPortraitManifestRepository(
+                    GMRC_PATH
+                        . 'app/Modules/Characters/Portraits/Library/Generation2',
+                    $container->make(
+                        PortraitManifestValidatorInterface::class
+                    )
+                )
+        );
+        
+        $container->singleton(
+            PortraitAssetCatalogue::class,
+            static fn (Container $container): PortraitAssetCatalogue =>
+                new PortraitAssetCatalogue(
+                    $container->make(
+                        PortraitManifestRepositoryInterface::class
                     )
                 )
         );
