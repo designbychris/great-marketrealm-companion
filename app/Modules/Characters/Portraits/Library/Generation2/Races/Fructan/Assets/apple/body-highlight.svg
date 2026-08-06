@@ -1,13 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
-<title id="title">Apple Fructan body highlight</title>
-<g id="fructan-apple-body-highlight">
-  <path d="M194 151c-17 27-22 65-14 98" fill="none"
-        stroke="#ffb2ad" stroke-width="15" stroke-linecap="round" opacity=".72"/>
-  <path d="M163 387c16-24 38-37 62-42" fill="none"
-        stroke="#f99291" stroke-width="14" stroke-linecap="round" opacity=".42"/>
-  <ellipse cx="199" cy="191" rx="11" ry="18" fill="#ffd4c8" opacity=".84"
-           transform="rotate(22 199 191)"/>
-  <circle cx="186" cy="276" r="4" fill="#f7a0a0" opacity=".75"/>
-  <circle cx="172" cy="291" r="3" fill="#f7a0a0" opacity=".6"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Apple Fructan body highlights</title>
+<path d="M180 137c-21 33-27 81-18 120"
+      fill="none"
+      stroke="#ffc8bd"
+      stroke-width="18"
+      stroke-linecap="round"
+      opacity=".8"/>
+<path d="M149 348c20-28 48-43 77-48"
+      fill="none"
+      stroke="#ffa09b"
+      stroke-width="16"
+      stroke-linecap="round"
+      opacity=".45"/>
+<ellipse cx="189" cy="181" rx="13" ry="22"
+         fill="#ffe3d8"
+         opacity=".92"
+         transform="rotate(24 189 181)"/>
 </svg>

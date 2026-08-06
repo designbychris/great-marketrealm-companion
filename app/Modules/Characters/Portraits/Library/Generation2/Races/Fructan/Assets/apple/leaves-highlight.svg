@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Apple leaf highlights</title>
+<g fill="none"
+   stroke="#d6f078"
+   stroke-width="6"
+   stroke-linecap="round"
+   opacity=".72">
+  <path d="M167 61c18 5 37 17 55 37"/>
+  <path d="M268 103c22-8 43-8 61-2"/>
+  <path d="M128 119c24-9 48-10 73-2"/>
+  <path d="M293 102c24-17 45-24 64-22"/>
+</g>
+</svg>

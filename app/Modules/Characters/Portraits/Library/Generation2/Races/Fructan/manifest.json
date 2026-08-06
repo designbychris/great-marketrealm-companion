@@ -3,7 +3,6 @@
   "id": "race-fructan",
   "type": "race",
   "label": "Fructan",
-  "description": "Generation 2 illustrated Fructan construction.",
   "owner": "fructan",
   "defaults": {
     "body_base": "g2-fructan-body-apple-base-01",
@@ -16,35 +15,64 @@
       "id": "g2-fructan-body-apple-base-01",
       "slot": "body_base",
       "file": "Assets/apple/body-base.svg",
-      "label": "Apple body base",
-      "variant": "apple"
+      "label": "Rounded apple body",
+      "variant": "benchmark"
     },
     {
       "id": "g2-fructan-body-apple-shadow-01",
       "slot": "body_shadow",
       "file": "Assets/apple/body-shadow.svg",
-      "label": "Apple body shadows",
-      "variant": "apple",
-      "requires": [
-        "g2-fructan-body-apple-base-01"
-      ]
+      "label": "Apple body shadow",
+      "variant": "benchmark"
     },
     {
       "id": "g2-fructan-body-apple-highlight-01",
       "slot": "body_highlight",
       "file": "Assets/apple/body-highlight.svg",
-      "label": "Apple body highlights",
-      "variant": "apple",
-      "requires": [
-        "g2-fructan-body-apple-base-01"
-      ]
+      "label": "Apple body highlight",
+      "variant": "benchmark"
+    },
+    {
+      "id": "g2-fructan-body-apple-blush-01",
+      "slot": "body_highlight",
+      "file": "Assets/apple/body-blush.svg",
+      "label": "Apple blush",
+      "variant": "benchmark"
+    },
+    {
+      "id": "g2-fructan-body-apple-speckles-01",
+      "slot": "body_highlight",
+      "file": "Assets/apple/body-speckles.svg",
+      "label": "Apple speckles",
+      "variant": "benchmark"
     },
     {
       "id": "g2-fructan-heritage-apple-leaves-01",
       "slot": "heritage",
-      "file": "Assets/apple/leaves-01.svg",
-      "label": "Apple leaves",
-      "variant": "apple"
+      "file": "Assets/apple/leaves-base.svg",
+      "label": "Hero apple leaves",
+      "variant": "benchmark"
+    },
+    {
+      "id": "g2-fructan-heritage-apple-leaves-shadow-01",
+      "slot": "heritage",
+      "file": "Assets/apple/leaves-shadow.svg",
+      "label": "Leaf shadows",
+      "variant": "benchmark"
+    },
+    {
+      "id": "g2-fructan-heritage-apple-leaves-highlight-01",
+      "slot": "heritage",
+      "file": "Assets/apple/leaves-highlight.svg",
+      "label": "Leaf highlights",
+      "variant": "benchmark"
+    },
+    {
+      "id": "g2-fructan-heritage-apple-stem-01",
+      "slot": "heritage",
+      "file": "Assets/apple/stem.svg",
+      "label": "Curled stem",
+      "variant": "benchmark"
     }
   ]
 }

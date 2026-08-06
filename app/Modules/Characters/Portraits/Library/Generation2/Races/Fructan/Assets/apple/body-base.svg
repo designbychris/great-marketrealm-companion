@@ -1,20 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
 <title id="title">Apple Fructan body base</title>
 <defs>
-  <radialGradient id="apple" cx="34%" cy="25%" r="85%">
-    <stop offset="0" stop-color="#f06f74"/>
-    <stop offset=".5" stop-color="#c94758"/>
-    <stop offset="1" stop-color="#7f293b"/>
+  <radialGradient id="apple" cx="33%" cy="22%" r="83%">
+    <stop offset="0" stop-color="#ff8c86"/>
+    <stop offset=".48" stop-color="#d64e5e"/>
+    <stop offset="1" stop-color="#8a2b40"/>
   </radialGradient>
 </defs>
-<g id="fructan-apple-body-base">
-  <path d="M174 222C174 152 203 112 240 112s66 40 66 110c0 58-19 94-46 110
-           42 7 77 43 84 101l13 104H123l13-104c7-58 42-94 84-101-27-16-46-52-46-110Z"
-        fill="url(#apple)" stroke="#5f2032" stroke-width="8" stroke-linejoin="round"/>
-  <path d="M147 420c-27 8-47 28-56 57M333 420c27 8 47 28 56 57"
-        fill="none" stroke="#7f293b" stroke-width="24" stroke-linecap="round"/>
-  <path d="M168 507c-17 8-29 24-35 48M312 507c17 8 29 24 35 48"
-        fill="none" stroke="#6c2737" stroke-width="24" stroke-linecap="round"/>
-  <path d="M128 553h54M298 553h54" stroke="#4f1f2d" stroke-width="18" stroke-linecap="round"/>
-</g>
+<path d="M145 243c0-97 40-150 95-150s95 53 95 150
+         c0 77-29 123-67 144
+         c58 12 94 54 100 115l4 42H108l4-42
+         c6-61 42-103 100-115c-38-21-67-67-67-144Z"
+      fill="url(#apple)"
+      stroke="#642238"
+      stroke-width="10"
+      stroke-linejoin="round"/>
+<path d="M143 425c-36 8-62 30-76 64M337 425c36 8 62 30 76 64"
+      fill="none"
+      stroke="#8a2b40"
+      stroke-width="32"
+      stroke-linecap="round"/>
 </svg>
