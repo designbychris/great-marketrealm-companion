@@ -4,6 +4,31 @@
     aria-labelledby="title">
   <title id="title">Painterly Apple Fructan leaves</title>
   <defs>
+
+<filter
+    id="painted-edge"
+    x="-8%"
+    y="-8%"
+    width="116%"
+    height="116%"
+    color-interpolation-filters="sRGB"
+>
+  <feTurbulence
+      type="fractalNoise"
+      baseFrequency="0.018"
+      numOctaves="2"
+      seed="11"
+      result="paper-grain"
+  />
+  <feDisplacementMap
+      in="SourceGraphic"
+      in2="paper-grain"
+      scale="1.25"
+      xChannelSelector="R"
+      yChannelSelector="G"
+  />
+</filter>
+
     <linearGradient id="leaf-a" x1="0" y1="0" x2="1" y2="1">
       <stop stop-color="#c7ea53"/>
       <stop offset=".5" stop-color="#79ab31"/>
@@ -16,7 +41,7 @@
     </linearGradient>
   </defs>
 
-  <g stroke="#34531d" stroke-linejoin="round">
+  <g filter="url(#painted-edge)" stroke="#34531d" stroke-linejoin="round">
     <path d="M240 116c-48-1-85-23-105-58 45-12 86 7 105 58Z"
           fill="url(#leaf-a)" stroke-width="9"/>
     <path d="M247 114c44-19 85-14 114 13-30 35-72 34-114-13Z"
