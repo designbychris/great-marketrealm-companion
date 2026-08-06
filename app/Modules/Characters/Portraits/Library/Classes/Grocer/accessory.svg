@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Grocer accessory layer</title>
+<g data-portrait-layer="accessory" data-layer-id="grocer-accessory-01">
+  <path d="M180 115q60-34 120 0l-13 43q-47-20-94 0Z"
+        fill="#5f7b4d" stroke="#3b4f30" stroke-width="6"/>
+  <rect x="203" y="88" width="74" height="33" rx="10"
+        fill="#e6d39a" stroke="#6d5531" stroke-width="5"/>
+  <path d="M218 104h44" stroke="#9b7b42" stroke-width="4" stroke-linecap="round"/>
+</g>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Cleaver Saint guild ornament layer</title>
+<g data-portrait-layer="ornament" data-layer-id="cleaver-saint-ornament-01">
+  <circle cx="240" cy="528" r="32" fill="#7b3038" stroke="#efd58c" stroke-width="7"/>
+  <path d="M226 505h29v38q-5 15-29 18Z"
+        fill="#d8dde1" stroke="#3d4952" stroke-width="4"/>
+  <path d="M240 544v16" stroke="#68442b" stroke-width="7" stroke-linecap="round"/>
+</g>
+</svg>

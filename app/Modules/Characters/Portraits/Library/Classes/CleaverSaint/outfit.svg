@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Cleaver Saint outfit layer</title>
+<defs>
+  <linearGradient id="plate" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#d7dde2"/>
+    <stop offset=".48" stop-color="#7c8b96"/>
+    <stop offset="1" stop-color="#3e4c58"/>
+  </linearGradient>
+  <linearGradient id="cloth" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#9a3c45"/>
+    <stop offset="1" stop-color="#4e2027"/>
+  </linearGradient>
+</defs>
+<g data-portrait-layer="class" data-layer-id="cleaver-saint-outfit-01">
+  <path d="M135 433C165 363 202 337 240 337s75 26 105 96l32 112H103Z"
+        fill="url(#plate)" stroke="#efd58c" stroke-width="7"/>
+  <path d="M164 389l76 66 76-66-20 156H184Z"
+        fill="url(#cloth)" stroke="#f1d99a" stroke-width="6"/>
+  <path d="M178 362l62 79 62-79" fill="none"
+        stroke="#f1d99a" stroke-width="10" stroke-linecap="round"/>
+  <path d="M145 407l-42 35 19 74 70-77M335 407l42 35-19 74-70-77"
+        fill="#66747e" stroke="#32404a" stroke-width="7"/>
+  <circle cx="240" cy="458" r="24" fill="#bc8c35" stroke="#fff0bd" stroke-width="5"/>
+  <path d="M228 458h24M240 446v24" stroke="#fff0bd" stroke-width="5" stroke-linecap="round"/>
+</g>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Cleaver Saint equipment layer</title>
+<defs>
+  <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f4f6f7"/>
+    <stop offset=".55" stop-color="#a9b5bc"/>
+    <stop offset="1" stop-color="#697883"/>
+  </linearGradient>
+</defs>
+<g data-portrait-layer="equipment" data-layer-id="cleaver-saint-equipment-01">
+  <path d="M325 112h66v116q-7 42-66 50Z"
+        fill="url(#steel)" stroke="#35424b" stroke-width="7"/>
+  <circle cx="343" cy="151" r="11" fill="#9a3c45" stroke="#efd58c" stroke-width="4"/>
+  <path d="M338 270l16 188" stroke="#68442b" stroke-width="15" stroke-linecap="round"/>
+  <path d="M322 446h50" stroke="#bc8c35" stroke-width="12" stroke-linecap="round"/>
+  <path d="M91 388q56-40 112 0v91q-56 54-112 0Z"
+        fill="#7b3038" stroke="#efd58c" stroke-width="8"/>
+  <path d="M147 372v123M109 429h76" stroke="#efd58c" stroke-width="8"/>
+  <path d="M116 405q31-25 62 0" fill="none" stroke="#d8dde1" stroke-width="5"/>
+</g>
+</svg>

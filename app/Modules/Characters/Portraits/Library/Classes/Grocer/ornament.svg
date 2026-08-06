@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Grocer guild ornament layer</title>
+<g data-portrait-layer="ornament" data-layer-id="grocer-ornament-01">
+  <circle cx="240" cy="528" r="30" fill="#6d8758" stroke="#efd58c" stroke-width="6"/>
+  <path d="M225 530q15-22 30 0q-15 18-30 0Z" fill="#e7c45d" stroke="#6b4a28" stroke-width="4"/>
+  <path d="M240 510v-12" stroke="#4e6a37" stroke-width="5" stroke-linecap="round"/>
+</g>
+</svg>

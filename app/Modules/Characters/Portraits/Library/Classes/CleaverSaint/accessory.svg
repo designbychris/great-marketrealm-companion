@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Cleaver Saint accessory layer</title>
+<g data-portrait-layer="accessory" data-layer-id="cleaver-saint-accessory-01">
+  <path d="M171 130q69-42 138 0l-18 50q-51-27-102 0Z"
+        fill="#66747e" stroke="#32404a" stroke-width="7"/>
+  <path d="M206 112h68l-8 42h-52Z"
+        fill="#9a3c45" stroke="#efd58c" stroke-width="5"/>
+  <path d="M229 120h22v27h-22Z" fill="#efd58c"/>
+</g>
+</svg>

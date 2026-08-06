@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Cleaver Saint class effects layer</title>
+<g data-portrait-layer="class-effects" data-layer-id="cleaver-saint-effects-01">
+  <circle cx="240" cy="301" r="172" fill="none" stroke="#f2d98e"
+          stroke-width="5" stroke-dasharray="3 16" opacity=".72"/>
+  <path d="M240 105v34M240 463v34M62 301h34M384 301h34"
+        stroke="#fff0bd" stroke-width="7" stroke-linecap="round" opacity=".8"/>
+  <path d="M107 168l24 24M349 410l24 24M373 168l-24 24M131 410l-24 24"
+        stroke="#fff0bd" stroke-width="5" stroke-linecap="round" opacity=".65"/>
+</g>
+</svg>
