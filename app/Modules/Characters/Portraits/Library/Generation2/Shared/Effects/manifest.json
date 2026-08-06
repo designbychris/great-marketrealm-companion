@@ -5,14 +5,27 @@
   "label": "Ambient portrait effects",
   "assets": [
     {
-      "id": "g2-effects-golden-pollen-01",
+      "id": "g2-effects-golden-pollen-far-01",
       "slot": "ambient_effects",
-      "file": "Assets/golden-pollen-01.svg",
-      "label": "Golden pollen motes",
-      "variant": "golden-pollen",
+      "file": "Assets/golden-pollen-far-01.svg",
+      "label": "Distant golden pollen",
+      "variant": "golden-pollen-far",
       "tags": [
         "subtle",
-        "magic"
+        "magic",
+        "depth"
+      ],
+      "animated": true
+    },
+    {
+      "id": "g2-effects-golden-pollen-near-01",
+      "slot": "ambient_effects",
+      "file": "Assets/golden-pollen-near-01.svg",
+      "label": "Near golden pollen",
+      "variant": "golden-pollen-near",
+      "tags": [
+        "magic",
+        "foreground"
       ],
       "animated": true
     }

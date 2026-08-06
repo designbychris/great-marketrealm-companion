@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Distant golden pollen</title>
+<g fill="#f5c952" opacity=".72">
+  <circle cx="76" cy="184" r="4"/>
+  <circle cx="405" cy="214" r="4.5"/>
+  <circle cx="111" cy="337" r="3.5"/>
+  <circle cx="373" cy="365" r="3"/>
+  <circle cx="146" cy="150" r="2.5"/>
+  <circle cx="344" cy="164" r="2.5"/>
+</g>
+</svg>
