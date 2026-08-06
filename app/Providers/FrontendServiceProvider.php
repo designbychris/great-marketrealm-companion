@@ -463,6 +463,35 @@ class FrontendServiceProvider extends ServiceProvider
                 : GMRC_VERSION,
             true
         );
+
+        $livingPortraitScriptPath =
+            GMRC_PATH
+            . 'assets/js/components/media/portrait-studio/living-portrait.js';
+        
+        wp_enqueue_script(
+            'gmrc-portrait-studio-living-portrait',
+            GMRC_URL
+                . 'assets/js/components/media/portrait-studio/living-portrait.js',
+            ['gmrc-portrait-studio-generation-two'],
+            file_exists($livingPortraitScriptPath)
+                ? (string) filemtime($livingPortraitScriptPath)
+                : GMRC_VERSION,
+            true
+        );
+        
+        $livingPortraitStylePath =
+            GMRC_PATH
+            . 'assets/css/components/media/generation2-living-portrait.css';
+        
+        wp_enqueue_style(
+            'gmrc-generation-two-living-portrait',
+            GMRC_URL
+                . 'assets/css/components/media/generation2-living-portrait.css',
+            [],
+            file_exists($livingPortraitStylePath)
+                ? (string) filemtime($livingPortraitStylePath)
+                : GMRC_VERSION
+        );
         
     }
     
