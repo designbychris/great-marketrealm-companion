@@ -39,6 +39,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Portraits\Generation2\Contracts
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Generation2\Services\FilesystemPortraitManifestRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Generation2\Services\PortraitAssetCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Generation2\Services\PortraitManifestValidator;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Generation2\Rendering\Generation2PortraitRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Generation2\Services\Generation2CollectionResolver;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteRepository;
@@ -162,9 +164,14 @@ final class CharactersServiceProvider extends ServiceProvider
          */
         $container->singleton(
             PortraitSvgAssetLibrary::class,
-            static fn (): PortraitSvgAssetLibrary =>
+            static fn (
+                Container $container
+            ): PortraitSvgAssetLibrary =>
                 new PortraitSvgAssetLibrary(
-                    __DIR__ . '/Portraits/Library'
+                    __DIR__ . '/Portraits/Library',
+                    $container->make(
+                        PortraitAssetCatalogue::class
+                    )
                 )
         );
 
@@ -205,6 +212,43 @@ final class CharactersServiceProvider extends ServiceProvider
                     ]
                 )
         );
+
+        $container->singleton(
+            PortraitAssetCatalogue::class,
+            static fn (Container $container): PortraitAssetCatalogue =>
+                new PortraitAssetCatalogue(
+                    $container->make(
+                        PortraitManifestRepositoryInterface::class
+                    )
+                )
+        );
+
+        $container->singleton(
+            Generation2CollectionResolver::class,
+            static fn (
+                Container $container
+            ): Generation2CollectionResolver =>
+                new Generation2CollectionResolver(
+                    $container->make(
+                        PortraitManifestRepositoryInterface::class
+                    )
+                )
+        );
+        
+        $container->singleton(
+            Generation2PortraitRenderer::class,
+            static fn (
+                Container $container
+            ): Generation2PortraitRenderer =>
+                new Generation2PortraitRenderer(
+                    $container->make(
+                        Generation2CollectionResolver::class
+                    ),
+                    $container->make(
+                        PortraitSvgAssetLibrary::class
+                    )
+                )
+        );
         
         $container->singleton(
             PortraitSvgRenderer::class,
@@ -212,8 +256,15 @@ final class CharactersServiceProvider extends ServiceProvider
                 Container $container
             ): PortraitSvgRenderer =>
                 new PortraitSvgRenderer(
-                    $container->make(PortraitLayerStack::class),
-                    $container->make(PortraitSvgAssetLibrary::class)
+                    $container->make(
+                        PortraitLayerStack::class
+                    ),
+                    $container->make(
+                        PortraitSvgAssetLibrary::class
+                    ),
+                    $container->make(
+                        Generation2PortraitRenderer::class
+                    )
                 )
         );
 
@@ -342,15 +393,6 @@ final class CharactersServiceProvider extends ServiceProvider
                 )
         );
         
-        $container->singleton(
-            PortraitAssetCatalogue::class,
-            static fn (Container $container): PortraitAssetCatalogue =>
-                new PortraitAssetCatalogue(
-                    $container->make(
-                        PortraitManifestRepositoryInterface::class
-                    )
-                )
-        );
         
         /*
          * Controller resolved after its dependencies are registered.
