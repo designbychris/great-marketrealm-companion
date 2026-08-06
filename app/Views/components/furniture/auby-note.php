@@ -68,9 +68,17 @@ $rotation = $quote->rotation();
             class="auby-note__portrait"
             aria-hidden="true"
         >
-            <span class="auby-note__portrait-face">
-                🍆
-            </span>
+            <img
+                class="auby-note__portrait-image"
+                src="<?php echo esc_url(
+                    GMRC_URL
+                        . 'assets/images/auby/'
+                        . 'auby-note-face.svg'
+                ); ?>"
+                alt=""
+                width="64"
+                height="64"
+            >
         </div>
 
         <div class="auby-note__writing">
