@@ -1,17 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
-<title id="title">Auby inspired bright eyes</title>
-<g id="auby-bright-eyes">
-  <ellipse cx="205" cy="224" rx="28" ry="35" fill="#28152c" stroke="#4b243f" stroke-width="6"/>
-  <ellipse cx="275" cy="224" rx="28" ry="35" fill="#28152c" stroke="#4b243f" stroke-width="6"/>
-  <ellipse cx="202" cy="218" rx="17" ry="23" fill="#121018"/>
-  <ellipse cx="272" cy="218" rx="17" ry="23" fill="#121018"/>
-  <ellipse cx="195" cy="206" rx="8" ry="11" fill="#fff"/>
-  <ellipse cx="265" cy="206" rx="8" ry="11" fill="#fff"/>
-  <circle cx="208" cy="232" r="5" fill="#8d69a8"/>
-  <circle cx="278" cy="232" r="5" fill="#8d69a8"/>
-  <path d="M181 189q24-14 48 0M251 189q24-14 48 0"
-        fill="none" stroke="#69263f" stroke-width="7" stroke-linecap="round"/>
-  <ellipse cx="195" cy="251" rx="25" ry="10" fill="#ef7f88" opacity=".62"/>
-  <ellipse cx="285" cy="251" rx="25" ry="10" fill="#ef7f88" opacity=".62"/>
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Large bright eyes</title>
+<g>
+  <ellipse cx="199" cy="240" rx="31" ry="40" fill="#29132d" stroke="#4d233f" stroke-width="7"/>
+  <ellipse cx="281" cy="240" rx="31" ry="40" fill="#29132d" stroke="#4d233f" stroke-width="7"/>
+  <ellipse cx="196" cy="233" rx="20" ry="28" fill="#121016"/>
+  <ellipse cx="278" cy="233" rx="20" ry="28" fill="#121016"/>
+  <ellipse cx="188" cy="218" rx="9" ry="13" fill="#fff"/>
+  <ellipse cx="270" cy="218" rx="9" ry="13" fill="#fff"/>
+  <circle cx="204" cy="251" r="6" fill="#8765a4"/>
+  <circle cx="286" cy="251" r="6" fill="#8765a4"/>
 </g>
 </svg>

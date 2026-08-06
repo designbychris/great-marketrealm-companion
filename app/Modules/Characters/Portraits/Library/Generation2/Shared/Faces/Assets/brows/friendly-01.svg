@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Friendly brows</title>
+<g fill="none"
+   stroke="#69263f"
+   stroke-width="8"
+   stroke-linecap="round">
+  <path d="M168 192q29-20 60-4"/>
+  <path d="M252 188q31-16 60 4"/>
+</g>
+</svg>

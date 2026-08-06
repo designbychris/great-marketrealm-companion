@@ -1,10 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
-<title id="title">Auby inspired warm smile</title>
-<g id="auby-warm-smile">
-  <path d="M211 260q29 34 58 0q-3 46-29 46t-29-46Z"
-        fill="#3a1728" stroke="#5e2035" stroke-width="6" stroke-linejoin="round"/>
-  <path d="M224 286q16 12 32 0q-4 14-16 14t-16-14Z" fill="#f17667"/>
-  <path d="M219 263q21 8 42 0" fill="none" stroke="#fff3df" stroke-width="6"
-        stroke-linecap="round"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+<title id="title">Warm open smile</title>
+<path d="M207 283q33 36 66 0q-2 51-33 51t-33-51Z"
+      fill="#391526"
+      stroke="#5d2035"
+      stroke-width="7"
+      stroke-linejoin="round"/>
+<path d="M222 309q18 15 36 0q-4 17-18 17t-18-17Z" fill="#f07b6d"/>
+<path d="M216 285q24 9 48 0"
+      fill="none"
+      stroke="#fff2dc"
+      stroke-width="7"
+      stroke-linecap="round"/>
 </svg>

@@ -1,26 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
 <title id="title">Woodland guild frame</title>
 <defs>
   <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1">
-    <stop stop-color="#b9894d"/><stop offset=".48" stop-color="#744723"/><stop offset="1" stop-color="#3d2517"/>
+    <stop offset="0" stop-color="#b78b4f"/>
+    <stop offset=".5" stop-color="#764823"/>
+    <stop offset="1" stop-color="#3b2417"/>
   </linearGradient>
 </defs>
-<g id="woodland-guild-frame">
+<g>
   <rect x="12" y="12" width="456" height="576" rx="214"
-        fill="none" stroke="#3d2517" stroke-width="20"/>
+        fill="none" stroke="#3b2417" stroke-width="20"/>
   <rect x="24" y="24" width="432" height="552" rx="202"
         fill="none" stroke="url(#wood)" stroke-width="12"/>
-  <rect x="34" y="34" width="412" height="532" rx="192"
-        fill="none" stroke="#f2d486" stroke-width="5"/>
+  <rect x="35" y="35" width="410" height="530" rx="190"
+        fill="none" stroke="#f0d184" stroke-width="5"/>
   <g fill="#799f34" stroke="#385724" stroke-width="5">
     <path d="M66 94c38-22 68-15 89 19-38 12-67 5-89-19Z"/>
     <path d="M414 94c-38-22-68-15-89 19 38 12 67 5 89-19Z"/>
-    <path d="M66 506c38 22 68 15 89-19-38-12-67-5-89 19Z"/>
-    <path d="M414 506c-38 22-68 15-89-19 38-12 67-5 89 19Z"/>
-  </g>
-  <g fill="#f5c653">
-    <circle cx="62" cy="146" r="5"/><circle cx="418" cy="146" r="5"/>
-    <circle cx="62" cy="454" r="5"/><circle cx="418" cy="454" r="5"/>
   </g>
 </g>
 </svg>
