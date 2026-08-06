@@ -2,8 +2,7 @@
   "schema_version": "2.0",
   "id": "collection-fructan-grocer",
   "type": "collection",
-  "label": "Fructan Grocer hero prototype",
-  "description": "The first complete Generation 2 quality benchmark.",
+  "label": "Apple Fructan Grocer benchmark",
   "owner": "fructan-grocer",
   "compatible_with": [
     "fructan",
@@ -11,18 +10,16 @@
   ],
   "defaults": {
     "background": "g2-background-market-garden-01",
-    "eyes": "g2-eyes-auby-bright-01",
-    "mouth": "g2-mouth-auby-smile-01",
-    "frame": "g2-frame-guild-woodland-01",
-    "ambient_effects": "g2-effects-golden-pollen-01"
+    "ambient_effects": "g2-effects-golden-pollen-01",
+    "frame": "g2-frame-guild-woodland-01"
   },
   "assets": [
     {
       "id": "g2-fructan-grocer-ground-shadow-01",
       "slot": "ground_shadow",
       "file": "Assets/ground-shadow.svg",
-      "label": "Soft painted ground shadow",
-      "variant": "default"
+      "label": "Painted ground shadow",
+      "variant": "benchmark"
     }
   ]
 }
