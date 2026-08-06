@@ -27,7 +27,8 @@
         ['g2-grocer-satchel-base-01', 'gmrc-g2-character gmrc-g2-satchel'],
         ['g2-grocer-satchel-detail-01', 'gmrc-g2-character gmrc-g2-satchel'],
         ['g2-grocer-produce-01', 'gmrc-g2-character gmrc-g2-satchel'],
-        ['g2-effects-golden-pollen-01', 'gmrc-g2-pollen'],
+        ['g2-effects-golden-pollen-far-01', 'gmrc-g2-pollen gmrc-g2-pollen--far'],
+        ['g2-effects-golden-pollen-near-01', 'gmrc-g2-pollen gmrc-g2-pollen--near'],
         ['g2-frame-guild-woodland-01', 'gmrc-g2-frame'],
         ['g2-auby-illuminator-mark-01', 'gmrc-g2-auby-mark'],
     ];

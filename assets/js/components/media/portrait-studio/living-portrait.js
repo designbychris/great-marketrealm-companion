@@ -23,6 +23,7 @@
             reducedMotion.matches
             || document.hidden
             || portrait.dataset.portraitGeneration !== '2'
+            || portrait.dataset.illuminationReady !== 'true'
         ) {
             return;
         }
@@ -88,6 +89,14 @@
                 scheduleBlink(portrait);
             }
         );
+
+        studio.closest('[data-living-desk]')
+            ?.addEventListener(
+                'gmrc:portrait:illumination-complete',
+                function () {
+                    scheduleBlink(portrait);
+                }
+            );
     };
 
     const refresh = function () {
