@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Apple Fructan body base</title>
+<defs>
+  <radialGradient id="apple" cx="34%" cy="25%" r="85%">
+    <stop offset="0" stop-color="#f06f74"/>
+    <stop offset=".5" stop-color="#c94758"/>
+    <stop offset="1" stop-color="#7f293b"/>
+  </radialGradient>
+</defs>
+<g id="fructan-apple-body-base">
+  <path d="M174 222C174 152 203 112 240 112s66 40 66 110c0 58-19 94-46 110
+           42 7 77 43 84 101l13 104H123l13-104c7-58 42-94 84-101-27-16-46-52-46-110Z"
+        fill="url(#apple)" stroke="#5f2032" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M147 420c-27 8-47 28-56 57M333 420c27 8 47 28 56 57"
+        fill="none" stroke="#7f293b" stroke-width="24" stroke-linecap="round"/>
+  <path d="M168 507c-17 8-29 24-35 48M312 507c17 8 29 24 35 48"
+        fill="none" stroke="#6c2737" stroke-width="24" stroke-linecap="round"/>
+  <path d="M128 553h54M298 553h54" stroke="#4f1f2d" stroke-width="18" stroke-linecap="round"/>
+</g>
+</svg>

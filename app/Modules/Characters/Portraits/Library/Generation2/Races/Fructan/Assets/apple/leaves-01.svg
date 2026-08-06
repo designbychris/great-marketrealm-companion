@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-labelledby="title">
+<title id="title">Apple Fructan layered leaves</title>
+<defs>
+  <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#b6d63f"/>
+    <stop offset=".55" stop-color="#78a82a"/>
+    <stop offset="1" stop-color="#3f681e"/>
+  </linearGradient>
+</defs>
+<g id="fructan-apple-leaves" stroke="#36531d" stroke-width="7" stroke-linejoin="round">
+  <path d="M237 119C221 84 225 55 244 33c18 25 16 56-7 86Z" fill="#6f9228"/>
+  <path d="M238 113C199 107 170 88 158 61c36-4 66 12 80 52Z" fill="url(#leaf)"/>
+  <path d="M242 113c40-8 72-1 91 22-29 22-63 22-91-22Z" fill="url(#leaf)"/>
+  <path d="M221 114c-27 23-59 30-83 18 17-29 46-37 83-18Z" fill="#8dbb31"/>
+  <path d="M260 111c31-28 61-39 88-29-10 33-37 47-88 29Z" fill="#6f9d27"/>
+  <path d="M238 111V52" fill="none" stroke="#4f671f" stroke-width="11" stroke-linecap="round"/>
+  <path d="M175 72l48 38M321 94l-61 18M158 129l60-13"
+        fill="none" stroke="#d0e965" stroke-width="4" opacity=".55"/>
+</g>
+</svg>
