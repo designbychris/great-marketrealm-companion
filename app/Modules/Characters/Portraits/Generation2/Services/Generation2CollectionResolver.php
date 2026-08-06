@@ -9,9 +9,6 @@ use GreatMarketrealmCompanion\Modules\Characters\Portraits\Generation2\Models\Po
 
 defined('ABSPATH') || exit;
 
-/**
- * Resolve complete Generation 2 portrait collections.
- */
 final class Generation2CollectionResolver
 {
     private const SLOT_ORDER = [
@@ -49,8 +46,6 @@ final class Generation2CollectionResolver
     }
 
     /**
-     * Return ordered asset IDs forming the supported collection.
-     *
      * @return array<int,string>
      */
     public function assetIds(
@@ -67,31 +62,35 @@ final class Generation2CollectionResolver
             return [];
         }
 
-        $slots = [];
+        $bySlot = [];
 
         foreach ($manifests as $manifest) {
             foreach ($manifest->defaults() as $slot => $assetId) {
+                $slot = sanitize_key((string) $slot);
+
                 if (is_string($assetId) && $assetId !== '') {
-                    $slots[sanitize_key((string) $slot)] = $assetId;
+                    $bySlot[$slot][] = $assetId;
                 }
             }
 
             foreach ($manifest->assets() as $asset) {
-                if (! isset($slots[$asset->slot()])) {
-                    $slots[$asset->slot()] = $asset->id();
-                }
+                $bySlot[$asset->slot()][] = $asset->id();
             }
         }
 
         $ordered = [];
 
         foreach (self::SLOT_ORDER as $slot) {
-            if (isset($slots[$slot])) {
-                $ordered[] = $slots[$slot];
+            foreach (
+                array_values(
+                    array_unique($bySlot[$slot] ?? [])
+                ) as $assetId
+            ) {
+                $ordered[] = $assetId;
             }
         }
 
-        return array_values(array_unique($ordered));
+        return $ordered;
     }
 
     /**
