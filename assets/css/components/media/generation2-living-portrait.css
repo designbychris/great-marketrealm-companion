@@ -65,7 +65,9 @@
 }
 
 .gmrc-portrait-layers[data-portrait-generation="2"]
+[data-illumination-ready="true"]
 .gmrc-g2-eyes {
+    transform-box: fill-box;
     transform-origin: center;
     transition:
         transform 65ms ease-in-out,
@@ -73,8 +75,9 @@
 }
 
 .gmrc-portrait-layers[data-portrait-generation="2"]
+[data-illumination-ready="true"]
 .gmrc-g2-eyes.is-blinking {
-    transform: scaleY(0.08);
+    transform: scaleY(0.075) !important;
     opacity: 0.96;
 }
 
