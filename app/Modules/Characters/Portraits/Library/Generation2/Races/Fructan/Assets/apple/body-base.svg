@@ -2,7 +2,7 @@
     viewBox="0 0 480 600"
     role="img"
     aria-labelledby="title">
-<title id="title">Apple Fructan body base</title>
+<title id="title">Rounded Apple Fructan body base</title>
 <defs>
 
 <filter
@@ -29,21 +29,39 @@
   />
 </filter>
 
-  <radialGradient id="apple" cx="33%" cy="22%" r="83%">
-    <stop offset="0" stop-color="#ff8c86"/>
-    <stop offset=".48" stop-color="#d64e5e"/>
-    <stop offset="1" stop-color="#8a2b40"/>
+  <radialGradient id="apple" cx="31%" cy="20%" r="86%">
+    <stop offset="0" stop-color="#ff918a"/>
+    <stop offset=".46" stop-color="#d84f60"/>
+    <stop offset="1" stop-color="#882a40"/>
   </radialGradient>
 </defs>
-<path filter="url(#painted-edge)" d="M145 243c0-97 40-150 95-150s95 53 95 150
-         c0 77-29 123-67 144
-         c58 12 94 54 100 115l4 42H108l4-42
-         c6-61 42-103 100-115c-38-21-67-67-67-144Z"
-      fill="url(#apple)"
-      stroke="#642238"
-      stroke-width="10"
-      stroke-linejoin="round"/>
-<path d="M143 425c-36 8-62 30-76 64M337 425c36 8 62 30 76 64"
+
+<path
+    filter="url(#painted-edge)"
+    d="M240 113
+       C218 88 190 91 169 109
+       C137 137 122 185 132 245
+       C141 304 171 347 211 374
+       C163 389 127 429 117 491
+       L109 544
+       H371
+       L363 491
+       C353 429 317 389 269 374
+       C309 347 339 304 348 245
+       C358 185 343 137 311 109
+       C290 91 262 88 240 113Z"
+    fill="url(#apple)"
+    stroke="#642238"
+    stroke-width="10"
+    stroke-linejoin="round"/>
+
+<path d="M142 425c-37 8-63 30-77 64"
+      fill="none"
+      stroke="#8a2b40"
+      stroke-width="32"
+      stroke-linecap="round"/>
+
+<path d="M338 425c37 8 63 30 77 64"
       fill="none"
       stroke="#8a2b40"
       stroke-width="32"
