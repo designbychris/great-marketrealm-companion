@@ -321,6 +321,24 @@ class FrontendServiceProvider extends ServiceProvider
                     . 'seal-of-approval.css',
             ],
             [
+                'handle' => 'gmrc-auby-sticky-note',
+                'path' =>
+                    'components/auby/'
+                    . 'sticky-note.css',
+            ],
+            [
+                'handle' => 'gmrc-auby-desk',
+                'path' =>
+                    'components/guild-hall/'
+                    . 'auby-desk.css',
+            ],
+            [
+                'handle' => 'gmrc-guild-hall-dashboard',
+                'path' =>
+                    'modules/dashboard/'
+                    . 'guild-hall-dashboard.css',
+            ],
+            [
                 'handle' => 'gmrc-registrar',
                 'path' => 'components/furniture/registrar.css',
             ],
@@ -424,6 +442,44 @@ class FrontendServiceProvider extends ServiceProvider
             file_exists($aubySealScriptPath)
                 ? (string) filemtime(
                     $aubySealScriptPath
+                )
+                : GMRC_VERSION,
+            true
+        );
+
+        $aubyStickyNoteScriptPath =
+            GMRC_PATH
+            . 'assets/js/components/auby/'
+            . 'sticky-note.js';
+
+        wp_enqueue_script(
+            'gmrc-auby-sticky-note',
+            GMRC_URL
+                . 'assets/js/components/auby/'
+                . 'sticky-note.js',
+            [],
+            file_exists($aubyStickyNoteScriptPath)
+                ? (string) filemtime(
+                    $aubyStickyNoteScriptPath
+                )
+                : GMRC_VERSION,
+            true
+        );
+
+        $aubyDeskScriptPath =
+            GMRC_PATH
+            . 'assets/js/components/guild-hall/'
+            . 'auby-desk.js';
+
+        wp_enqueue_script(
+            'gmrc-auby-desk',
+            GMRC_URL
+                . 'assets/js/components/guild-hall/'
+                . 'auby-desk.js',
+            ['gmrc-auby-sticky-note'],
+            file_exists($aubyDeskScriptPath)
+                ? (string) filemtime(
+                    $aubyDeskScriptPath
                 )
                 : GMRC_VERSION,
             true
