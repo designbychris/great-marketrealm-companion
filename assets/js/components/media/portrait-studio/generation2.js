@@ -15,6 +15,7 @@
         ['g2-fructan-heritage-apple-stem-01', 'gmrc-g2-character gmrc-g2-stem'],
         ['g2-brows-friendly-01', 'gmrc-g2-character gmrc-g2-brows'],
         ['g2-eyes-auby-bright-01', 'gmrc-g2-character gmrc-g2-eyes'],
+        ['g2-eyelids-apple-closed-01', 'gmrc-g2-character gmrc-g2-eyelids'],
         ['g2-mouth-auby-smile-01', 'gmrc-g2-character gmrc-g2-mouth'],
         ['g2-grocer-shirt-everyday-01', 'gmrc-g2-character gmrc-g2-outfit'],
         ['g2-grocer-apron-everyday-01', 'gmrc-g2-character gmrc-g2-outfit'],
@@ -30,6 +31,7 @@
         ['g2-effects-golden-pollen-far-01', 'gmrc-g2-pollen gmrc-g2-pollen--far'],
         ['g2-effects-golden-pollen-near-01', 'gmrc-g2-pollen gmrc-g2-pollen--near'],
         ['g2-frame-guild-woodland-01', 'gmrc-g2-frame'],
+        ['g2-auby-finishing-touch-01', 'gmrc-g2-auby-finisher'],
         ['g2-auby-illuminator-mark-01', 'gmrc-g2-auby-mark'],
     ];
 

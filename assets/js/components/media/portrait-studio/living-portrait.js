@@ -28,11 +28,11 @@
             return;
         }
 
-        const eyes = portrait.querySelector(
-            '.gmrc-g2-eyes'
+        const eyelids = portrait.querySelector(
+            '.gmrc-g2-eyelids'
         );
 
-        if (!(eyes instanceof SVGElement)) {
+        if (!(eyelids instanceof SVGElement)) {
             return;
         }
 
@@ -43,16 +43,16 @@
         const delay = 4000 + Math.random() * 5000;
 
         const timer = window.setTimeout(function () {
-            eyes.classList.add('is-blinking');
+            eyelids.classList.add('is-blinking');
 
             window.setTimeout(function () {
-                eyes.classList.remove('is-blinking');
+                eyelids.classList.remove('is-blinking');
 
                 const doubleBlink = Math.random() < 0.18;
 
                 if (doubleBlink) {
                     window.setTimeout(function () {
-                        eyes.classList.add('is-blinking');
+                        eyelids.classList.add('is-blinking');
 
                         window.setTimeout(function () {
                             eyes.classList.remove(
