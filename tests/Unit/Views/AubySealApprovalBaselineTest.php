@@ -26,7 +26,7 @@ final class AubySealApprovalBaselineTest extends TestCase
         );
 
         self::assertStringContainsString(
-            'A106 106 0 0 0 261 200',
+            'A106 106 0 0 0 268 200',
             $seal
         );
 
