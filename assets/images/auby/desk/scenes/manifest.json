@@ -19,8 +19,12 @@
         "dust",
         "window-glow"
       ],
-      "status": "Auby has opened the shutters and is preparing the first Guild records of the day.",
-      "composition": "hero-wide"
+      "status": "The Guild Hall is quiet. Auby is already preparing today's records.",
+      "composition": "hero-wide",
+      "heading": "A new adventure awaits.",
+      "note_title": "First note of the day",
+      "note_message": "Fresh parchment. Fresh tea. Fresh adventures. I had better find my good quill.",
+      "tea_message": "Fresh tea has just been brewed."
     },
     {
       "id": "morning",
@@ -39,8 +43,12 @@
         "dust",
         "window-glow"
       ],
-      "status": "Auby is working through the morning register with suspicious concentration.",
-      "composition": "hero-wide"
+      "status": "Auby has already organised today's Guild Records. Mostly.",
+      "composition": "hero-wide",
+      "heading": "Good morning, adventurer!",
+      "note_title": "Auby left this here",
+      "note_message": "You're just in time. I have the Register open and I only misplaced one page this morning.",
+      "tea_message": "The first proper pot of tea is ready."
     },
     {
       "id": "afternoon",
@@ -61,7 +69,11 @@
       ],
       "status": "Auby appears to be thinking very hard about something. Possibly cake.",
       "composition": "hero-wide",
-      "background_position": "center left"
+      "background_position": "center left",
+      "heading": "Someone has been busy.",
+      "note_title": "Auby left this here",
+      "note_message": "I left your Guild Journal open for you. I was absolutely not reading it. Also, I found a copper coin under the desk. We should probably work out whose it is.",
+      "tea_message": "Tea is still warm. Probably."
     },
     {
       "id": "evening",
@@ -79,8 +91,12 @@
         "lamp-glow",
         "dust"
       ],
-      "status": "The lamps are lit and Auby is reading through the day's completed adventures.",
-      "composition": "hero-wide"
+      "status": "The lamps are lit, the records are filed, and the kettle is still warm.",
+      "composition": "hero-wide",
+      "heading": "Welcome back to the Guild Hall.",
+      "note_title": "Evening note",
+      "note_message": "I finished the last stack of records. Well... the last stack I am admitting exists.",
+      "tea_message": "One last cup before the lamps go down?"
     },
     {
       "id": "night",
@@ -98,8 +114,12 @@
         "lamp-glow",
         "stars"
       ],
-      "status": "The Guild Hall is quiet. Auby has made another cup of tea and is still thinking.",
-      "composition": "hero-wide"
+      "status": "Auby is still awake... somehow. The Guild Hall has gone wonderfully quiet.",
+      "composition": "hero-wide",
+      "heading": "Burning the midnight oil?",
+      "note_title": "A late note from Auby",
+      "note_message": "Don't forget to get some sleep. This advice is aimed at both of us.",
+      "tea_message": "Herbal tea only at this hour."
     },
     {
       "id": "late-night",
@@ -119,9 +139,14 @@
         "stars",
         "sleep"
       ],
-      "status": "Auby appears to have fallen asleep over the Guild records. We should probably let him rest.",
-      "composition": "hero-wide"
+      "status": "Please tread quietly. The Guild Hall never truly closes.",
+      "composition": "hero-wide",
+      "heading": "Shhh... Auby is asleep.",
+      "note_title": "Leave this for morning",
+      "note_message": "If you need anything, leave me a note. If it is urgent... leave two notes.",
+      "tea_message": "The tea has gone cold. Let him sleep."
     }
   ],
-  "hero_library_version": "2.2"
+  "hero_library_version": "2.2",
+  "welcome_copy_version": "3.0"
 }
