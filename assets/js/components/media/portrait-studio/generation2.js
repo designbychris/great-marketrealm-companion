@@ -32,7 +32,6 @@
         ['g2-effects-golden-pollen-near-01', 'gmrc-g2-pollen gmrc-g2-pollen--near'],
         ['g2-frame-guild-woodland-01', 'gmrc-g2-frame'],
         ['g2-auby-finishing-touch-01', 'gmrc-g2-auby-finisher'],
-        ['g2-auby-illuminator-mark-01', 'gmrc-g2-auby-mark'],
     ];
 
     const selectedValue = function (form, name) {
