@@ -64,21 +64,15 @@ $rotation = $quote->rotation();
             aria-hidden="true"
         ></span>
 
-        <div
-            class="auby-note__portrait"
-            aria-hidden="true"
-        >
-            <img
-                class="auby-note__portrait-image"
-                src="<?php echo esc_url(
-                    GMRC_URL
-                        . 'assets/images/auby/'
-                        . 'auby-note-face.svg'
-                ); ?>"
-                alt=""
-                width="64"
-                height="64"
-            >
+
+        <div class="auby-note__seal">
+            <?php echo $this->component(
+                'components.auby.seal-of-approval',
+                [
+                    'context' => 'quote',
+                    'trigger' => 'visible',
+                ]
+            ); ?>
         </div>
 
         <div class="auby-note__writing">
@@ -113,16 +107,6 @@ $rotation = $quote->rotation();
                     ); ?>
                 </span>
             </p>
-        </div>
-
-        <div class="auby-note__approval">
-            <?php echo $this->component(
-                'components.auby.seal-of-approval',
-                [
-                    'context' => 'quote',
-                    'trigger' => 'visible',
-                ]
-            ); ?>
         </div>
 
         <div
