@@ -1,0 +1,239 @@
+/**
+ * Auby Sticky Note
+ */
+
+.gmrc-auby-sticky-note {
+    --gmrc-auby-sticky-rotation: -1.4deg;
+
+    position: relative;
+
+    width: min(100%, 24rem);
+
+    opacity: 0;
+
+    transform:
+        translateY(0.8rem)
+        rotate(
+            var(--gmrc-auby-sticky-rotation)
+        );
+
+    transition:
+        opacity 420ms ease,
+        transform 520ms
+            cubic-bezier(0.16, 0.78, 0.26, 1);
+}
+
+.gmrc-auby-sticky-note.is-revealed {
+    opacity: 1;
+
+    transform:
+        translateY(0)
+        rotate(
+            var(--gmrc-auby-sticky-rotation)
+        );
+}
+
+.gmrc-auby-sticky-note__paper {
+    position: relative;
+
+    padding:
+        2.1rem
+        1.7rem
+        1.5rem;
+
+    color: #4b2f29;
+
+    background:
+        radial-gradient(
+            circle at 18% 22%,
+            rgba(255, 255, 255, 0.46),
+            transparent 26%
+        ),
+        #f0dfad;
+
+    clip-path:
+        polygon(
+            0 3%,
+            7% 1%,
+            15% 3%,
+            23% 0,
+            33% 2%,
+            43% 0,
+            54% 2%,
+            66% 0,
+            77% 2%,
+            88% 0,
+            100% 3%,
+            98% 17%,
+            100% 31%,
+            98% 46%,
+            100% 62%,
+            98% 78%,
+            100% 95%,
+            91% 98%,
+            80% 96%,
+            69% 100%,
+            57% 97%,
+            45% 100%,
+            33% 97%,
+            20% 100%,
+            9% 97%,
+            1% 100%
+        );
+
+    box-shadow:
+        0 0.8rem 1.1rem
+        rgba(74, 44, 24, 0.22);
+}
+
+.gmrc-auby-sticky-note__paper::after {
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+    content: "";
+
+    opacity: 0.2;
+
+    background:
+        repeating-linear-gradient(
+            1deg,
+            transparent 0,
+            transparent 1.05rem,
+            rgba(110, 83, 55, 0.12) 1.08rem,
+            transparent 1.11rem
+        );
+}
+
+.gmrc-auby-sticky-note__tape {
+    position: absolute;
+    top: -0.7rem;
+    z-index: 3;
+
+    width: 4.8rem;
+    height: 1.35rem;
+
+    opacity: 0.88;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.11),
+            transparent 22%,
+            rgba(255, 255, 255, 0.14) 68%,
+            transparent
+        ),
+        #6d3d88;
+
+    box-shadow:
+        0 0.12rem 0.24rem
+        rgba(46, 23, 54, 0.2);
+}
+
+.gmrc-auby-sticky-note__tape--left {
+    left: 1.1rem;
+
+    transform: rotate(-7deg);
+}
+
+.gmrc-auby-sticky-note__tape--right {
+    right: 1rem;
+
+    transform: rotate(5deg);
+}
+
+.gmrc-auby-sticky-note__doodle {
+    position: absolute;
+    top: 1.3rem;
+    right: 1.45rem;
+
+    font-size: 1.5rem;
+
+    transform: rotate(8deg);
+}
+
+.gmrc-auby-sticky-note__eyebrow {
+    position: relative;
+    z-index: 1;
+
+    margin: 0 2.2rem 0.4rem 0;
+
+    color: #643d7c;
+
+    font-family:
+        var(--gmrc-font-display, Georgia, serif);
+
+    font-size: 0.82rem;
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.gmrc-auby-sticky-note__message,
+.gmrc-auby-sticky-note__signature {
+    position: relative;
+    z-index: 1;
+
+    font-family:
+        'Caveat',
+        'Comic Sans MS',
+        cursive;
+}
+
+.gmrc-auby-sticky-note__message {
+    margin: 0;
+
+    font-size:
+        clamp(1.4rem, 2vw, 1.75rem);
+
+    font-weight: 600;
+    line-height: 1.18;
+}
+
+.gmrc-auby-sticky-note__signature {
+    margin:
+        0.65rem
+        0
+        0;
+
+    color: #61367c;
+
+    font-size: 1.28rem;
+    font-weight: 700;
+
+    text-align: right;
+}
+
+.gmrc-auby-sticky-note--found
+.gmrc-auby-sticky-note__paper {
+    background-color: #efe0b2;
+}
+
+.gmrc-auby-sticky-note--tip
+.gmrc-auby-sticky-note__paper {
+    background-color: #f3e6bd;
+}
+
+.gmrc-auby-sticky-note--warning
+.gmrc-auby-sticky-note__paper {
+    background-color: #efd2b4;
+}
+
+.gmrc-auby-sticky-note--memory
+.gmrc-auby-sticky-note__paper {
+    background-color: #e8dfc6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-auby-sticky-note {
+        opacity: 1 !important;
+
+        transition: none !important;
+
+        transform:
+            rotate(
+                var(--gmrc-auby-sticky-rotation)
+            ) !important;
+    }
+}
