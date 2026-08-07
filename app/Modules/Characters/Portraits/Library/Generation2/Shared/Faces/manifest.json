@@ -28,6 +28,19 @@
       "file": "Assets/mouths/smile-01.svg",
       "label": "Warm smile",
       "variant": "benchmark"
+    },
+    {
+      "id": "g2-eyelids-apple-closed-01",
+      "slot": "eyes",
+      "file": "Assets/eyelids/apple-closed-01.svg",
+      "label": "Painted closed eyelids",
+      "variant": "apple-closed",
+      "tags": [
+        "blink",
+        "apple",
+        "expression"
+      ],
+      "animated": true
     }
   ]
 }
