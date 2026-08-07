@@ -1,0 +1,266 @@
+/**
+ * Auby Seal of Approval
+ */
+
+.gmrc-auby-seal {
+    --gmrc-auby-seal-size: 7.25rem;
+    --gmrc-auby-seal-rotation: -5deg;
+
+    position: relative;
+
+    display: inline-grid;
+    place-items: center;
+
+    width: var(--gmrc-auby-seal-size);
+    aspect-ratio: 1;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    transform:
+        translateY(-1.75rem)
+        rotate(
+            calc(
+                var(--gmrc-auby-seal-rotation)
+                - 4deg
+            )
+        )
+        scale(1.18);
+
+    transform-origin: center;
+
+    filter:
+        drop-shadow(
+            0 0.35rem 0.32rem
+            rgba(54, 27, 61, 0.18)
+        );
+}
+
+.gmrc-auby-seal__mark,
+.gmrc-auby-seal__splatter {
+    position: absolute;
+    inset: 0;
+
+    display: grid;
+    place-items: center;
+}
+
+.gmrc-auby-seal__mark {
+    z-index: 2;
+}
+
+.gmrc-auby-seal__splatter {
+    z-index: 1;
+
+    opacity: 0;
+    transform: scale(0.42);
+}
+
+.gmrc-auby-seal img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+}
+
+.gmrc-auby-seal--quote {
+    --gmrc-auby-seal-size:
+        clamp(5rem, 8vw, 7.25rem);
+    --gmrc-auby-seal-rotation: -7deg;
+}
+
+.gmrc-auby-seal--portrait {
+    --gmrc-auby-seal-size:
+        clamp(6.5rem, 10vw, 8.75rem);
+    --gmrc-auby-seal-rotation: -5deg;
+}
+
+.gmrc-auby-seal--static,
+.gmrc-auby-seal.is-approved {
+    opacity: 0.9;
+
+    transform:
+        translateY(0)
+        rotate(
+            var(--gmrc-auby-seal-rotation)
+        )
+        scale(1);
+}
+
+.gmrc-auby-seal.is-stamping {
+    animation:
+        gmrc-auby-seal-impact
+        820ms
+        cubic-bezier(
+            0.16,
+            0.82,
+            0.25,
+            1
+        )
+        both;
+}
+
+.gmrc-auby-seal.is-stamping
+.gmrc-auby-seal__splatter {
+    animation:
+        gmrc-auby-ink-splatter
+        560ms
+        ease-out
+        310ms
+        both;
+}
+
+.gmrc-auby-seal.is-approved
+.gmrc-auby-seal__mark {
+    animation:
+        gmrc-auby-ink-dry
+        680ms
+        ease-out
+        both;
+}
+
+.gmrc-auby-seal-surface--impact {
+    animation:
+        gmrc-auby-stamp-surface-impact
+        240ms
+        ease-out
+        both;
+}
+
+@keyframes gmrc-auby-seal-impact {
+    0% {
+        opacity: 0;
+
+        transform:
+            translateY(-2rem)
+            rotate(
+                calc(
+                    var(--gmrc-auby-seal-rotation)
+                    - 6deg
+                )
+            )
+            scale(1.22);
+    }
+
+    37% {
+        opacity: 1;
+
+        transform:
+            translateY(0.12rem)
+            rotate(
+                calc(
+                    var(--gmrc-auby-seal-rotation)
+                    + 2deg
+                )
+            )
+            scaleX(1.09)
+            scaleY(0.88);
+    }
+
+    54% {
+        transform:
+            translateY(-0.32rem)
+            rotate(
+                calc(
+                    var(--gmrc-auby-seal-rotation)
+                    - 1deg
+                )
+            )
+            scale(0.97);
+    }
+
+    72% {
+        transform:
+            translateY(0.06rem)
+            rotate(
+                calc(
+                    var(--gmrc-auby-seal-rotation)
+                    + 0.4deg
+                )
+            )
+            scale(1.015);
+    }
+
+    100% {
+        opacity: 0.93;
+
+        transform:
+            translateY(0)
+            rotate(
+                var(--gmrc-auby-seal-rotation)
+            )
+            scale(1);
+    }
+}
+
+@keyframes gmrc-auby-ink-splatter {
+    0% {
+        opacity: 0;
+        transform: scale(0.35);
+    }
+
+    28% {
+        opacity: 0.78;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.32);
+    }
+}
+
+@keyframes gmrc-auby-ink-dry {
+    0% {
+        opacity: 1;
+        filter:
+            saturate(1.22)
+            contrast(1.12);
+    }
+
+    100% {
+        opacity: 0.9;
+        filter:
+            saturate(0.94)
+            contrast(0.96);
+    }
+}
+
+@keyframes gmrc-auby-stamp-surface-impact {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    45% {
+        transform: translateY(1px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-auby-seal,
+    .gmrc-auby-seal.is-stamping,
+    .gmrc-auby-seal.is-approved,
+    .gmrc-auby-seal__mark,
+    .gmrc-auby-seal__splatter,
+    .gmrc-auby-seal-surface--impact {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .gmrc-auby-seal {
+        opacity: 0.9 !important;
+
+        transform:
+            rotate(
+                var(--gmrc-auby-seal-rotation)
+            )
+            scale(1) !important;
+    }
+
+    .gmrc-auby-seal__splatter {
+        display: none !important;
+    }
+}
