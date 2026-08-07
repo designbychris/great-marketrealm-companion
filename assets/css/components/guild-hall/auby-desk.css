@@ -15,3 +15,99 @@
 @media(max-width:980px){.gmrc-auby-desk{min-height:43rem;background-position:38% center}.gmrc-auby-desk:before{background:linear-gradient(180deg,rgba(64,38,23,0) 0%,rgba(64,38,23,.1) 42%,rgba(64,38,23,.78) 59%,#402617 70%,#402617 100%)}.gmrc-auby-desk__content{width:100%;min-height:43rem;padding-top:25rem}.gmrc-auby-desk__note{width:min(100%,28rem)}}
 @media(max-width:620px){.gmrc-auby-desk{min-height:41rem;background-position:37% top;background-size:auto 25rem;background-color:#402617}.gmrc-auby-desk__content{min-height:41rem;padding:24rem 1rem 1.35rem}.gmrc-auby-desk__heading h2{font-size:2.1rem}}
 @media(prefers-reduced-motion:reduce){.gmrc-auby-desk,.gmrc-auby-desk__window-glow,.gmrc-auby-desk__lamp-glow,.gmrc-auby-desk__steam,.gmrc-auby-desk__dust i,.gmrc-auby-desk__stars i,.gmrc-auby-desk__sleep{animation:none!important;transition:none!important}.gmrc-auby-desk__steam,.gmrc-auby-desk__dust,.gmrc-auby-desk__stars,.gmrc-auby-desk__sleep{display:none!important}}
+
+/**
+ * Guild Hall Living Desk Phase II.1.1
+ * Authoritative hero-composition + ambient-state overrides.
+ *
+ * These rules intentionally sit after the minified Phase II stylesheet.
+ */
+
+.gmrc-auby-desk {
+    background:
+        var(--gmrc-auby-desk-scene)
+        left center / auto 100%
+        no-repeat,
+        #402617;
+}
+
+.gmrc-auby-desk::before {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(64, 38, 23, 0) 0%,
+            rgba(64, 38, 23, 0) 48%,
+            rgba(64, 38, 23, 0.08) 55%,
+            rgba(64, 38, 23, 0.32) 62%,
+            rgba(64, 38, 23, 0.72) 70%,
+            rgba(64, 38, 23, 0.96) 78%,
+            #402617 84%,
+            #402617 100%
+        );
+}
+
+.gmrc-auby-desk__content {
+    width:
+        min(
+            35%,
+            30rem
+        );
+}
+
+/*
+ * Ambient layers are not merely transparent when inactive:
+ * they are absent from layout/paint entirely.
+ */
+.gmrc-auby-desk__window-glow,
+.gmrc-auby-desk__lamp-glow,
+.gmrc-auby-desk__steam,
+.gmrc-auby-desk__dust,
+.gmrc-auby-desk__stars,
+.gmrc-auby-desk__sleep {
+    display: none;
+    opacity: 0;
+}
+
+.gmrc-auby-desk[data-ambient~="window-glow"]
+.gmrc-auby-desk__window-glow,
+.gmrc-auby-desk[data-ambient~="lamp-glow"]
+.gmrc-auby-desk__lamp-glow,
+.gmrc-auby-desk[data-ambient~="steam"]
+.gmrc-auby-desk__steam,
+.gmrc-auby-desk[data-ambient~="dust"]
+.gmrc-auby-desk__dust,
+.gmrc-auby-desk[data-ambient~="stars"]
+.gmrc-auby-desk__stars {
+    display: block;
+    opacity: 1;
+}
+
+/*
+ * Hard sleep contract:
+ * Zzz can only exist in the late-night scene AND when the
+ * manifest explicitly enables the sleep ambience.
+ */
+.gmrc-auby-desk[data-guild-hall-daypart="late-night"]
+[data-ambient~="sleep"]
+.gmrc-auby-desk__sleep {
+    display: block;
+    opacity: 1;
+}
+
+@media (max-width: 980px) {
+    .gmrc-auby-desk {
+        background-position:
+            left center;
+        background-size:
+            auto 68%;
+    }
+}
+
+@media (max-width: 620px) {
+    .gmrc-auby-desk {
+        background-position:
+            32% top;
+        background-size:
+            auto 25rem;
+    }
+}
