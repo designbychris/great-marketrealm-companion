@@ -64,8 +64,7 @@
         infinite;
 }
 
-.gmrc-portrait-layers[data-portrait-generation="2"]
-[data-illumination-ready="true"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-eyes {
     transform-box: fill-box;
     transform-origin: center;
@@ -74,8 +73,7 @@
         opacity 65ms ease-in-out;
 }
 
-.gmrc-portrait-layers[data-portrait-generation="2"]
-[data-illumination-ready="true"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-eyes.is-blinking {
     transform: scaleY(0.075) !important;
     opacity: 0.96;
@@ -137,15 +135,13 @@
     }
 }
 
-.gmrc-portrait-layers[data-portrait-generation="2"]
-[data-illumination-ready="true"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-pollen--far {
     animation-duration: 9.5s;
     animation-delay: -2.8s;
 }
 
-.gmrc-portrait-layers[data-portrait-generation="2"]
-[data-illumination-ready="true"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-pollen--near {
     animation-duration: 6.8s;
     animation-direction: alternate-reverse;
@@ -193,8 +189,7 @@
         opacity 45ms ease-in-out;
 }
 
-.gmrc-portrait-layers[data-portrait-generation="2"]
-[data-illumination-ready="true"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-eyelids.is-blinking {
     opacity: 1;
 }
@@ -229,8 +224,7 @@
     transition: opacity 45ms ease-in-out;
 }
 
-.gmrc-portrait-layers[data-portrait-generation="2"]
-[data-illumination-ready="true"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-eyelids.is-blinking {
     opacity: 1 !important;
 }
