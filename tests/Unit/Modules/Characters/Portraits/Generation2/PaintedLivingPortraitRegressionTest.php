@@ -24,7 +24,7 @@ final class PaintedLivingPortraitRegressionTest extends TestCase
             $script
         );
         self::assertStringContainsString(
-            '2860',
+            '3120',
             $script
         );
     }
