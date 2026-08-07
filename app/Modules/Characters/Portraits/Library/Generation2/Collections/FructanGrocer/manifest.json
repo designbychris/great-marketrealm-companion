@@ -28,6 +28,14 @@
       "label": "Auby's Guild Illuminator mark",
       "variant": "auby",
       "animated": false
+    },
+    {
+      "id": "g2-auby-finishing-touch-01",
+      "slot": "guild_ornament",
+      "file": "Assets/auby-finishing-touch.svg",
+      "label": "Auby's final brush stroke",
+      "variant": "finishing-touch",
+      "animated": true
     }
   ]
 }
