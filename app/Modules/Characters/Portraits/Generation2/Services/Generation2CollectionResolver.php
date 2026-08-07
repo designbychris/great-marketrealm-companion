@@ -20,6 +20,7 @@ final class Generation2CollectionResolver
         'heritage',
         'eyes',
         'mouth',
+        'face_overlay',
         'outfit_base',
         'outfit_shadow',
         'outfit_highlight',

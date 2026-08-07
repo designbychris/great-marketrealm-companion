@@ -21,6 +21,7 @@ final class PortraitManifestValidator implements PortraitManifestValidatorInterf
         'heritage',
         'eyes',
         'mouth',
+        'face_overlay',
         'outfit_base',
         'outfit_shadow',
         'outfit_highlight',
