@@ -2,14 +2,38 @@
     viewBox="0 0 480 600"
     role="img"
     aria-labelledby="title">
-<title id="title">Grocer ledger</title>
-<path d="M78 414q55-31 110 0v99q-55-27-110 0Z"
-      fill="#ead8aa"
-      stroke="#6a4a2d"
-      stroke-width="7"/>
-<path d="M133 414v99" stroke="#6a4a2d" stroke-width="6"/>
-<path d="M93 442h27M93 461h39M93 480h32"
-      stroke="#9b7a49"
-      stroke-width="5"
-      stroke-linecap="round"/>
+<title id="title">Grocer ledger held at the left hand</title>
+
+<g transform="rotate(5 121 474)">
+  <path d="M60 425q48-25 96 3v87q-48-24-96 2Z"
+        fill="#ead8aa"
+        stroke="#6a4a2d"
+        stroke-width="7"
+        stroke-linejoin="round"/>
+
+  <path d="M156 428q31-10 51 6v82q-24-13-51-1Z"
+        fill="#e4cf9c"
+        stroke="#6a4a2d"
+        stroke-width="7"
+        stroke-linejoin="round"/>
+
+  <path d="M156 428v87"
+        stroke="#6a4a2d"
+        stroke-width="6"/>
+
+  <path d="M74 448h28M74 466h42M74 484h34"
+        stroke="#9b7a49"
+        stroke-width="5"
+        stroke-linecap="round"/>
+
+  <path d="M169 449h22M169 468h26M169 487h18"
+        stroke="#9b7a49"
+        stroke-width="4.5"
+        stroke-linecap="round"/>
+
+  <path d="M195 501l12 15-16-3Z"
+        fill="#c9ad79"
+        stroke="#8c6d42"
+        stroke-width="3"/>
+</g>
 </svg>
