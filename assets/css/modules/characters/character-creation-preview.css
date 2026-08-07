@@ -5,7 +5,7 @@
 
 .gmrc-creation-preview {
     position: relative;
-    padding-top:5px;
+    padding-top:5px!important;
     display: grid;
     place-items: center;
 
