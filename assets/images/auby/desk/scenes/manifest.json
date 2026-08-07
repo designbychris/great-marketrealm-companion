@@ -52,12 +52,14 @@
       ],
       "mood": "quizzical",
       "activity": "thinking",
-      "image": "auby-desk-afternoon.webp",
+      "image": "auby-desk-afternoon-wide.webp",
       "ambient_effects": [
         "dust",
         "window-glow"
       ],
-      "status": "Auby appears to be thinking very hard about something. Possibly cake."
+      "status": "Auby appears to be thinking very hard about something. Possibly cake.",
+      "composition": "hero-wide",
+      "background_position": "center left"
     },
     {
       "id": "evening",
