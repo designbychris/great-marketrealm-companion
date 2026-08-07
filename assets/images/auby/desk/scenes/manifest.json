@@ -13,18 +13,20 @@
       ],
       "mood": "welcoming",
       "activity": "first-tea",
-      "image": "auby-desk-dawn-hero.webp",
+      "image": "high-resolution/auby-desk-dawn-hires.webp",
       "ambient_effects": [
         "steam",
         "dust",
         "window-glow"
       ],
       "status": "The Guild Hall is quiet. Auby is already preparing today's records.",
-      "composition": "hero-wide",
+      "composition": "high-resolution-wide",
       "heading": "A new adventure awaits.",
       "note_title": "First note of the day",
       "note_message": "Fresh parchment. Fresh tea. Fresh adventures. I had better find my good quill.",
-      "tea_message": "Fresh tea has just been brewed."
+      "tea_message": "Fresh tea has just been brewed.",
+      "resolution": "2560x1584",
+      "art_pass": "phase-3.1"
     },
     {
       "id": "morning",
@@ -37,18 +39,20 @@
       ],
       "mood": "focused",
       "activity": "writing",
-      "image": "auby-desk-morning-hero.webp",
+      "image": "high-resolution/auby-desk-morning-hires.webp",
       "ambient_effects": [
         "steam",
         "dust",
         "window-glow"
       ],
       "status": "Auby has already organised today's Guild Records. Mostly.",
-      "composition": "hero-wide",
+      "composition": "high-resolution-wide",
       "heading": "Good morning, adventurer!",
       "note_title": "Auby left this here",
       "note_message": "You're just in time. I have the Register open and I only misplaced one page this morning.",
-      "tea_message": "The first proper pot of tea is ready."
+      "tea_message": "The first proper pot of tea is ready.",
+      "resolution": "2560x1584",
+      "art_pass": "phase-3.1"
     },
     {
       "id": "afternoon",
@@ -62,18 +66,20 @@
       ],
       "mood": "quizzical",
       "activity": "thinking",
-      "image": "auby-desk-afternoon-hero.webp",
+      "image": "high-resolution/auby-desk-afternoon-hires.webp",
       "ambient_effects": [
         "dust",
         "window-glow"
       ],
       "status": "Auby appears to be thinking very hard about something. Possibly cake.",
-      "composition": "hero-wide",
+      "composition": "high-resolution-wide",
       "background_position": "center left",
       "heading": "Someone has been busy.",
       "note_title": "Auby left this here",
       "note_message": "I left your Guild Journal open for you. I was absolutely not reading it. Also, I found a copper coin under the desk. We should probably work out whose it is.",
-      "tea_message": "Tea is still warm. Probably."
+      "tea_message": "Tea is still warm. Probably.",
+      "resolution": "2560x1584",
+      "art_pass": "phase-3.1"
     },
     {
       "id": "evening",
@@ -86,17 +92,19 @@
       ],
       "mood": "relaxed",
       "activity": "reading",
-      "image": "auby-desk-evening-hero.webp",
+      "image": "high-resolution/auby-desk-evening-hires.webp",
       "ambient_effects": [
         "lamp-glow",
         "dust"
       ],
       "status": "The lamps are lit, the records are filed, and the kettle is still warm.",
-      "composition": "hero-wide",
+      "composition": "high-resolution-wide",
       "heading": "Welcome back to the Guild Hall.",
       "note_title": "Evening note",
       "note_message": "I finished the last stack of records. Well... the last stack I am admitting exists.",
-      "tea_message": "One last cup before the lamps go down?"
+      "tea_message": "One last cup before the lamps go down?",
+      "resolution": "2560x1584",
+      "art_pass": "phase-3.1"
     },
     {
       "id": "night",
@@ -108,18 +116,20 @@
       ],
       "mood": "thoughtful",
       "activity": "late-tea",
-      "image": "auby-desk-night-hero.webp",
+      "image": "high-resolution/auby-desk-night-hires.webp",
       "ambient_effects": [
         "steam",
         "lamp-glow",
         "stars"
       ],
       "status": "Auby is still awake... somehow. The Guild Hall has gone wonderfully quiet.",
-      "composition": "hero-wide",
+      "composition": "high-resolution-wide",
       "heading": "Burning the midnight oil?",
       "note_title": "A late note from Auby",
       "note_message": "Don't forget to get some sleep. This advice is aimed at both of us.",
-      "tea_message": "Herbal tea only at this hour."
+      "tea_message": "Herbal tea only at this hour.",
+      "resolution": "2560x1584",
+      "art_pass": "phase-3.1"
     },
     {
       "id": "late-night",
@@ -133,20 +143,23 @@
       ],
       "mood": "sleepy",
       "activity": "asleep",
-      "image": "auby-desk-late-night-hero.webp",
+      "image": "high-resolution/auby-desk-late-night-hires.webp",
       "ambient_effects": [
         "lamp-glow",
         "stars",
         "sleep"
       ],
       "status": "Please tread quietly. The Guild Hall never truly closes.",
-      "composition": "hero-wide",
+      "composition": "high-resolution-wide",
       "heading": "Shhh... Auby is asleep.",
       "note_title": "Leave this for morning",
       "note_message": "If you need anything, leave me a note. If it is urgent... leave two notes.",
-      "tea_message": "The tea has gone cold. Let him sleep."
+      "tea_message": "The tea has gone cold. Let him sleep.",
+      "resolution": "2560x1584",
+      "art_pass": "phase-3.1"
     }
   ],
   "hero_library_version": "2.2",
-  "welcome_copy_version": "3.0"
+  "welcome_copy_version": "3.0",
+  "high_resolution_pass": "3.1"
 }
