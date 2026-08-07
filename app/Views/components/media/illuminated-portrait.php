@@ -379,6 +379,14 @@ if ($isCustom) {
                     </small>
                 </div>
             <?php endif; ?>
+
+            <?php echo $this->component(
+                'components.auby.seal-of-approval',
+                [
+                    'context' => 'portrait',
+                    'trigger' => 'manual',
+                ]
+            ); ?>
         </div>
 
         <figcaption
