@@ -115,6 +115,16 @@ $rotation = $quote->rotation();
             </p>
         </div>
 
+        <div class="auby-note__approval">
+            <?php echo $this->component(
+                'components.auby.seal-of-approval',
+                [
+                    'context' => 'quote',
+                    'trigger' => 'visible',
+                ]
+            ); ?>
+        </div>
+
         <div
             class="auby-note__quill"
             aria-hidden="true"
