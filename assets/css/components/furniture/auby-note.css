@@ -6,8 +6,8 @@
 .auby-note {
     position: relative;
 
-    width: min(100%, 22rem);
-
+    width: min(100%, 60rem);
+    margin-bottom:20px;
     margin-inline: auto;
 
     transform:
