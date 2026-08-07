@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class LivingPortraitBlinkSelectorRegressionTest extends TestCase
 {
-    public function testBlinkSelectorTargetsReadyPortraitItself(): void
+    public function testBlinkSelectorsTargetReadyPortraitItself(): void
     {
         $root = dirname(__DIR__, 6);
 
@@ -20,23 +20,38 @@ final class LivingPortraitBlinkSelectorRegressionTest extends TestCase
 
         self::assertIsString($css);
 
-        self::assertStringContainsString(
+        $readySelector =
             '[data-portrait-generation="2"]'
-            . '[data-illumination-ready="true"]',
+            . '[data-illumination-ready="true"]';
+
+        self::assertStringContainsString(
+            $readySelector,
+            $css
+        );
+
+        self::assertStringContainsString(
+            $readySelector
+            . "\n"
+            . '.gmrc-g2-eyes.is-blinking',
+            $css
+        );
+
+        self::assertStringContainsString(
+            $readySelector
+            . "\n"
+            . '.gmrc-g2-eyelids.is-blinking',
             $css
         );
 
         self::assertStringNotContainsString(
             '[data-portrait-generation="2"]'
             . "\n"
-            . '[data-illumination-ready="true"]'
-            . "\n"
-            . '.gmrc-g2-eyelids.is-blinking',
+            . '[data-illumination-ready="true"]',
             $css
         );
     }
 
-    public function testDoubleBlinkUsesEyelidLayer(): void
+    public function testDoubleBlinkUsesSharedBlinkState(): void
     {
         $root = dirname(__DIR__, 6);
 
@@ -49,12 +64,27 @@ final class LivingPortraitBlinkSelectorRegressionTest extends TestCase
         self::assertIsString($script);
 
         self::assertStringContainsString(
-            'eyelids.classList.remove',
+            'const setBlinkState',
+            $script
+        );
+
+        self::assertStringContainsString(
+            'setBlinkState(true)',
+            $script
+        );
+
+        self::assertStringContainsString(
+            'setBlinkState(false)',
             $script
         );
 
         self::assertStringNotContainsString(
             'eyes.classList.remove',
+            $script
+        );
+
+        self::assertStringNotContainsString(
+            'eyelids.classList.remove',
             $script
         );
     }
