@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+  <title id="title">Auby adding the final brush stroke</title>
+
+  <defs>
+    <radialGradient id="auby-skin" cx="35%" cy="24%" r="82%">
+      <stop offset="0" stop-color="#aa6bd0"/>
+      <stop offset=".58" stop-color="#77449d"/>
+      <stop offset="1" stop-color="#4a285f"/>
+    </radialGradient>
+    <linearGradient id="auby-leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#badb49"/>
+      <stop offset="1" stop-color="#527923"/>
+    </linearGradient>
+  </defs>
+
+  <g id="auby-finishing-touch" transform="translate(34 408)">
+    <ellipse cx="56" cy="77" rx="39" ry="52"
+             fill="url(#auby-skin)"
+             stroke="#3d214f"
+             stroke-width="7"/>
+
+    <g fill="url(#auby-leaf)" stroke="#36521f" stroke-width="5">
+      <path d="M55 32C35 29 20 18 14 4c21-3 37 7 41 28Z"/>
+      <path d="M59 31c20-8 38-5 50 8-15 14-33 12-50-8Z"/>
+      <path d="M48 34c-18 12-35 14-48 5 12-17 28-19 48-5Z"/>
+    </g>
+
+    <path d="M56 28c-6-18-2-31 10-41 10 14 7 29-10 41Z"
+          fill="#72972d"
+          stroke="#36521f"
+          stroke-width="5"/>
+
+    <ellipse cx="43" cy="69" rx="9" ry="13" fill="#161019"/>
+    <ellipse cx="69" cy="69" rx="9" ry="13" fill="#161019"/>
+    <circle cx="40" cy="65" r="3" fill="#fff"/>
+    <circle cx="66" cy="65" r="3" fill="#fff"/>
+
+    <path d="M44 86q12 13 24 0q-2 17-12 17T44 86Z"
+          fill="#341426"
+          stroke="#4e2038"
+          stroke-width="4"/>
+
+    <path d="M85 93q27-25 48-5"
+          fill="none"
+          stroke="#73469b"
+          stroke-width="15"
+          stroke-linecap="round"/>
+
+    <path d="M118 89l70-57"
+          stroke="#6d4428"
+          stroke-width="8"
+          stroke-linecap="round"/>
+
+    <path d="M181 35l24-17 9 12-27 14Z"
+          fill="#d9b35a"
+          stroke="#744c24"
+          stroke-width="5"/>
+
+    <path d="M205 20q18-12 31-3-11 18-28 17Z"
+          fill="#f4cf63"
+          opacity=".9"/>
+  </g>
+</svg>
