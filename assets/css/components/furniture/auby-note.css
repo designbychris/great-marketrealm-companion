@@ -760,3 +760,90 @@
         margin-top: -0.75rem;
     }
 }
+
+
+/**
+ * Purple Thumbprint v1.1
+ * The approval seal replaces the old Auby portrait medallion.
+ */
+.auby-note__portrait,
+.auby-note__approval {
+    display: none !important;
+}
+
+.auby-note__seal {
+    position: absolute;
+    top: 0.8rem;
+    left: 1rem;
+    z-index: 5;
+
+    width: auto;
+
+    transform: rotate(-2deg);
+}
+
+.auby-note__seal
+.gmrc-auby-seal--quote {
+    --gmrc-auby-seal-size:
+        clamp(5.35rem, 8vw, 7rem);
+    --gmrc-auby-seal-rotation: -5deg;
+}
+
+.auby-note__writing {
+    padding-left:
+        clamp(6.3rem, 10vw, 8.25rem);
+}
+
+.gmrc-living-desk__auby
+.auby-note__paper {
+    grid-template-columns:
+        minmax(0, 1fr)
+        auto;
+}
+
+.gmrc-living-desk__auby
+.auby-note__seal {
+    top: clamp(0.8rem, 1.4vw, 1.1rem);
+    left: clamp(0.9rem, 1.8vw, 1.45rem);
+}
+
+.gmrc-living-desk__auby
+.auby-note__writing {
+    padding-left:
+        clamp(7rem, 11vw, 9.25rem);
+    padding-right:
+        clamp(0.8rem, 2vw, 1.75rem);
+}
+
+.gmrc-living-desk__auby
+.auby-note__quill {
+    position: relative;
+    inset: auto;
+
+    align-self: end;
+}
+
+@media (max-width: 720px) {
+    .auby-note__seal {
+        position: relative;
+        top: auto;
+        left: auto;
+
+        grid-column: 1 / -1;
+        justify-self: start;
+
+        margin-bottom: -0.8rem;
+    }
+
+    .auby-note__writing,
+    .gmrc-living-desk__auby
+    .auby-note__writing {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .gmrc-living-desk__auby
+    .auby-note__paper {
+        grid-template-columns: 1fr;
+    }
+}
