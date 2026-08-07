@@ -31,9 +31,9 @@
     },
     {
       "id": "g2-eyelids-apple-closed-01",
-      "slot": "eyes",
+      "slot": "face_overlay",
       "file": "Assets/eyelids/apple-closed-01.svg",
-      "label": "Painted closed eyelids",
+      "label": "Painted closed eyelid overlay",
       "variant": "apple-closed",
       "tags": [
         "blink",
