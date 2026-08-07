@@ -2,7 +2,8 @@
     viewBox="0 0 480 600"
     role="img"
     aria-labelledby="title">
-<title id="title">Round Apple Fructan painted shadows</title>
+<title id="title">Approved clean Apple Fructan body shadow</title>
+
 <defs>
   <linearGradient
       id="body-shadow"
@@ -24,11 +25,12 @@
     <stop
         offset="1"
         stop-color="#35101D"
-        stop-opacity=".72"
+        stop-opacity=".7"
     />
   </linearGradient>
 </defs>
 
+<!-- Right-side paint shadow follows only the fruit, not the neckline. -->
 <path
     d="
         M240 126
@@ -36,25 +38,8 @@
         C358 133 376 176 370 229
         C364 286 338 329 295 355
         C278 365 260 371 240 374
-        L240 544
-        H369
-        L359 465
-        C351 423 331 392 302 372
-        C347 347 374 307 379 254
-        C384 224 379 193 361 169
-        C354 144 341 124 320 111
-        C293 95 262 99 240 126
         Z
     "
     fill="url(#body-shadow)"
-/>
-
-<ellipse
-    cx="240"
-    cy="379"
-    rx="92"
-    ry="25"
-    fill="#6B2135"
-    opacity=".16"
 />
 </svg>

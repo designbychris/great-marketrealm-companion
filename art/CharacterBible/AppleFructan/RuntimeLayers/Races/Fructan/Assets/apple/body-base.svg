@@ -2,7 +2,8 @@
     viewBox="0 0 480 600"
     role="img"
     aria-labelledby="title">
-<title id="title">Round storybook Apple Fructan body</title>
+<title id="title">Approved clean Apple Fructan body</title>
+
 <defs>
 
 <filter
@@ -29,6 +30,7 @@
   />
 </filter>
 
+
   <radialGradient
       id="apple"
       cx="31%"
@@ -42,8 +44,9 @@
 </defs>
 
 <!--
-    The head is deliberately broad and round with a shallow
-    central indentation so the heritage reads immediately as apple.
+    One clean, closed fruit silhouette.
+    Outfit layers begin directly beneath the fruit and hide the torso,
+    so there is no second body outline crossing the chin.
 -->
 <path
     filter="url(#painted-edge)"
@@ -57,21 +60,6 @@
         C338 329 364 286 370 229
         C376 176 358 133 320 111
         C293 95 262 99 240 126
-
-        C218 99 187 95 160 111
-        C139 124 126 144 119 169
-        C101 193 96 224 101 254
-
-        C106 307 133 347 178 372
-        C149 392 129 423 121 465
-        L111 544
-        H369
-        L359 465
-        C351 423 331 392 302 372
-        C347 347 374 307 379 254
-        C384 224 379 193 361 169
-        C354 144 341 124 320 111
-        C293 95 262 99 240 126
         Z
     "
     fill="url(#apple)"
@@ -80,7 +68,7 @@
     stroke-linejoin="round"
 />
 
-<!-- arms remain soft and secondary to the fruit silhouette -->
+<!-- Arms remain separate so equipment and hands can layer naturally. -->
 <path
     d="M142 430
        C105 438 79 459 65 493"
