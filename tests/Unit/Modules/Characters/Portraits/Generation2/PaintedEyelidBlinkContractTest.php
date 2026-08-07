@@ -20,7 +20,7 @@ final class PaintedEyelidBlinkContractTest extends TestCase
         );
     }
 
-    public function testBlinkScriptTargetsEyelids(): void
+    public function testBlinkScriptTargetsOpenEyesAndPaintedEyelids(): void
     {
         $root = dirname(__DIR__, 6);
 
@@ -31,12 +31,29 @@ final class PaintedEyelidBlinkContractTest extends TestCase
         );
 
         self::assertIsString($script);
+
+        self::assertStringContainsString(
+            "'.gmrc-g2-eyes'",
+            $script
+        );
+
         self::assertStringContainsString(
             "'.gmrc-g2-eyelids'",
             $script
         );
-        self::assertStringNotContainsString(
-            "const eyes = portrait.querySelector",
+
+        self::assertStringContainsString(
+            'const setBlinkState',
+            $script
+        );
+
+        self::assertStringContainsString(
+            'eyes.classList.toggle',
+            $script
+        );
+
+        self::assertStringContainsString(
+            'eyelids.classList.toggle',
             $script
         );
     }
