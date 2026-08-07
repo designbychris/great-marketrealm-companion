@@ -209,3 +209,28 @@
     transform-box: fill-box;
     transform-origin: left bottom;
 }
+
+/**
+ * Generation 2 face overlay.
+ *
+ * SVG paint order, not CSS z-index, makes the eyelids sit above the eyes.
+ */
+.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-g2-face-overlay {
+    pointer-events: none;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-g2-eyelids {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 45ms ease-in-out;
+}
+
+.gmrc-portrait-layers[data-portrait-generation="2"]
+[data-illumination-ready="true"]
+.gmrc-g2-eyelids.is-blinking {
+    opacity: 1 !important;
+}
