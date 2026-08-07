@@ -13,13 +13,14 @@
       ],
       "mood": "welcoming",
       "activity": "first-tea",
-      "image": "auby-desk-dawn.webp",
+      "image": "auby-desk-dawn-hero.webp",
       "ambient_effects": [
         "steam",
         "dust",
         "window-glow"
       ],
-      "status": "Auby has opened the shutters and is preparing the first Guild records of the day."
+      "status": "Auby has opened the shutters and is preparing the first Guild records of the day.",
+      "composition": "hero-wide"
     },
     {
       "id": "morning",
@@ -32,13 +33,14 @@
       ],
       "mood": "focused",
       "activity": "writing",
-      "image": "auby-desk-morning.webp",
+      "image": "auby-desk-morning-hero.webp",
       "ambient_effects": [
         "steam",
         "dust",
         "window-glow"
       ],
-      "status": "Auby is writing carefully. That usually means someone filed something in the wrong drawer."
+      "status": "Auby is working through the morning register with suspicious concentration.",
+      "composition": "hero-wide"
     },
     {
       "id": "afternoon",
@@ -52,7 +54,7 @@
       ],
       "mood": "quizzical",
       "activity": "thinking",
-      "image": "auby-desk-afternoon-wide.webp",
+      "image": "auby-desk-afternoon-hero.webp",
       "ambient_effects": [
         "dust",
         "window-glow"
@@ -72,12 +74,13 @@
       ],
       "mood": "relaxed",
       "activity": "reading",
-      "image": "auby-desk-evening.webp",
+      "image": "auby-desk-evening-hero.webp",
       "ambient_effects": [
         "lamp-glow",
         "dust"
       ],
-      "status": "The lamps are lit and Auby is reading through the day's completed adventures."
+      "status": "The lamps are lit and Auby is reading through the day's completed adventures.",
+      "composition": "hero-wide"
     },
     {
       "id": "night",
@@ -89,13 +92,14 @@
       ],
       "mood": "thoughtful",
       "activity": "late-tea",
-      "image": "auby-desk-night.webp",
+      "image": "auby-desk-night-hero.webp",
       "ambient_effects": [
         "steam",
         "lamp-glow",
         "stars"
       ],
-      "status": "The Guild Hall is quiet. Auby has made another cup of tea and is still thinking."
+      "status": "The Guild Hall is quiet. Auby has made another cup of tea and is still thinking.",
+      "composition": "hero-wide"
     },
     {
       "id": "late-night",
@@ -109,13 +113,15 @@
       ],
       "mood": "sleepy",
       "activity": "asleep",
-      "image": "auby-desk-late-night.webp",
+      "image": "auby-desk-late-night-hero.webp",
       "ambient_effects": [
         "lamp-glow",
         "stars",
         "sleep"
       ],
-      "status": "Auby appears to have fallen asleep over the Guild records. We should probably let him rest."
+      "status": "Auby appears to have fallen asleep over the Guild records. We should probably let him rest.",
+      "composition": "hero-wide"
     }
-  ]
+  ],
+  "hero_library_version": "2.2"
 }
