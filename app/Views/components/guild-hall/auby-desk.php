@@ -7,7 +7,7 @@ defined('ABSPATH') || exit;
 $note = trim((string) ($note ?? __('I left your Guild Journal open for you. I was absolutely not reading it.', 'great-marketrealm-companion')));
 $sceneBase = GMRC_URL . 'assets/images/auby/desk/scenes/';
 ?>
-<section class="gmrc-auby-desk" data-auby-desk data-guild-hall-daypart="afternoon" data-auby-scene-base="<?php echo esc_url($sceneBase); ?>" style="<?php echo esc_attr('--gmrc-auby-desk-scene: url(' . $sceneBase . 'auby-desk-afternoon.webp);'); ?>" aria-labelledby="gmrc-auby-desk-title">
+<section class="gmrc-auby-desk" data-auby-desk data-guild-hall-daypart="afternoon" data-auby-scene-base="<?php echo esc_url($sceneBase); ?>" style="<?php echo esc_attr('--gmrc-auby-desk-scene: url(' . $sceneBase . 'auby-desk-afternoon-hero.webp);'); ?>" aria-labelledby="gmrc-auby-desk-title">
     <span class="gmrc-auby-desk__window-glow" data-auby-ambient="window-glow" aria-hidden="true"></span>
     <span class="gmrc-auby-desk__lamp-glow" data-auby-ambient="lamp-glow" aria-hidden="true"></span>
     <span class="gmrc-auby-desk__steam gmrc-auby-desk__steam--one" data-auby-ambient="steam" aria-hidden="true"></span>
