@@ -18,11 +18,42 @@ $sceneBase = GMRC_URL . 'assets/images/auby/desk/scenes/';
     <div class="gmrc-auby-desk__content">
         <header class="gmrc-auby-desk__heading">
             <p class="gmrc-eyebrow"><?php esc_html_e("Auby's Desk", 'great-marketrealm-companion'); ?></p>
-            <h2 id="gmrc-auby-desk-title"><?php esc_html_e('Someone has been busy.', 'great-marketrealm-companion'); ?></h2>
+            <h2 id="gmrc-auby-desk-title" data-auby-desk-title><?php esc_html_e('Someone has been busy.', 'great-marketrealm-companion'); ?></h2>
             <p class="gmrc-auby-desk__status" data-auby-desk-status><?php esc_html_e('Auby appears to be thinking very hard about something. Possibly cake.', 'great-marketrealm-companion'); ?></p>
         </header>
         <div class="gmrc-auby-desk__note">
-            <?php echo $this->component('components.auby.sticky-note', ['title' => __('Auby left this here', 'great-marketrealm-companion'), 'message' => $note, 'variant' => 'general', 'rotation' => 1.2]); ?>
+            <?php echo $this->component(
+                'components.auby.sticky-note',
+                [
+                    'title' => __(
+                        'Auby left this here',
+                        'great-marketrealm-companion'
+                    ),
+                    'message' => $note,
+                    'variant' => 'general',
+                    'rotation' => 1.2,
+                ]
+            ); ?>
+
+            <div
+                class="gmrc-auby-desk__tea-card"
+                aria-live="polite"
+            >
+                <span
+                    class="gmrc-auby-desk__tea-icon"
+                    aria-hidden="true"
+                >☕</span>
+
+                <p
+                    class="gmrc-auby-desk__tea-message"
+                    data-auby-tea-message
+                >
+                    <?php esc_html_e(
+                        'Tea is still warm. Probably.',
+                        'great-marketrealm-companion'
+                    ); ?>
+                </p>
+            </div>
         </div>
     </div>
 </section>
