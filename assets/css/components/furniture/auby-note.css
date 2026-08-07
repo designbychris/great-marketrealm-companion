@@ -731,3 +731,32 @@
         height: 3.7rem;
     }
 }
+
+
+.auby-note__approval {
+    position: absolute;
+    right: clamp(0.75rem, 2vw, 1.5rem);
+    bottom: clamp(0.65rem, 1.5vw, 1rem);
+    z-index: 3;
+
+    transform: rotate(-2deg);
+}
+
+.gmrc-living-desk__auby
+.auby-note__approval {
+    right: clamp(1rem, 2.5vw, 2rem);
+    bottom: 0.7rem;
+}
+
+@media (max-width: 720px) {
+    .auby-note__approval {
+        position: relative;
+        right: auto;
+        bottom: auto;
+
+        grid-column: 1 / -1;
+        justify-self: end;
+
+        margin-top: -0.75rem;
+    }
+}
