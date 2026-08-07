@@ -75,7 +75,7 @@ final class Generation2AvailabilityRegressionTest extends TestCase
         self::assertIsString($body);
 
         self::assertStringContainsString(
-            'Round storybook Apple Fructan body',
+            'Approved clean Apple Fructan body',
             $body
         );
 
