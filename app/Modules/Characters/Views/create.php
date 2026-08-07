@@ -858,6 +858,14 @@ $charactersUrl = add_query_arg(
                         'portrait' => $portrait,
                     ]
                 );
+
+                echo $this->component(
+                    'components.auby.seal-of-approval',
+                    [
+                        'context' => 'portrait',
+                        'trigger' => 'manual',
+                    ]
+                );
             }
             ?>
         </div>
