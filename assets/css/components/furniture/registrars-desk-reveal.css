@@ -187,3 +187,72 @@
         display: none;
     }
 }
+
+
+/**
+ * Auby's final painted flourish.
+ */
+.gmrc-g2-illumination-active
+.gmrc-g2-auby-finisher {
+    animation:
+        gmrc-g2-auby-finishing-touch
+        1060ms
+        cubic-bezier(0.16, 0.78, 0.26, 1)
+        both;
+
+    animation-delay:
+        var(--gmrc-reveal-delay, 0ms);
+}
+
+@keyframes gmrc-g2-auby-finishing-touch {
+    0% {
+        opacity: 0;
+        transform:
+            translateX(-58px)
+            translateY(12px)
+            rotate(-5deg)
+            scale(0.92);
+    }
+
+    18% {
+        opacity: 1;
+        transform:
+            translateX(-8px)
+            translateY(0)
+            rotate(0)
+            scale(1);
+    }
+
+    48% {
+        opacity: 1;
+        transform:
+            translateX(2px)
+            translateY(-2px)
+            rotate(1deg)
+            scale(1);
+    }
+
+    66% {
+        opacity: 1;
+        transform:
+            translateX(1px)
+            translateY(0)
+            rotate(0)
+            scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform:
+            translateX(-62px)
+            translateY(8px)
+            rotate(-4deg)
+            scale(0.95);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-g2-auby-finisher {
+        display: none !important;
+    }
+}
