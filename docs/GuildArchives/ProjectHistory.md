@@ -1,5 +1,5 @@
-## Guild Archives — Project History
-# 7th August 2026
+# Guild Archives — Project History
+## 7th August 2026
 The First Living Portrait
 
 "Today, the Guild Illuminator smiled back."
