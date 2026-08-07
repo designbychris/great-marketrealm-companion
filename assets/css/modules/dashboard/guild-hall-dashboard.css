@@ -1,0 +1,136 @@
+/**
+ * Guild Hall Dashboard
+ */
+
+.gmrc-guild-hall {
+    display: grid;
+
+    gap:
+        clamp(1.5rem, 3vw, 2.6rem);
+}
+
+.gmrc-guild-hall__welcome {
+    position: relative;
+
+    max-width: 58rem;
+}
+
+.gmrc-guild-hall__welcome h1 {
+    margin-bottom: 0.45rem;
+}
+
+.gmrc-guild-hall__welcome p:last-child {
+    max-width: 48rem;
+
+    margin-bottom: 0;
+}
+
+.gmrc-guild-hall__rooms {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0, 1fr)
+        );
+
+    gap: 1rem;
+}
+
+.gmrc-guild-hall-room {
+    position: relative;
+
+    min-height: 12.5rem;
+
+    padding: 1.35rem;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(95, 65, 41, 0.28);
+
+    border-radius: 0.8rem;
+
+    background:
+        radial-gradient(
+            circle at 85% 15%,
+            rgba(255, 229, 164, 0.35),
+            transparent 26%
+        ),
+        #f2e4bf;
+
+    box-shadow:
+        0 0.55rem 1rem
+        rgba(73, 48, 30, 0.11);
+}
+
+.gmrc-guild-hall-room::after {
+    position: absolute;
+    right: -1rem;
+    bottom: -1.8rem;
+
+    font-size: 6rem;
+
+    opacity: 0.08;
+
+    content:
+        attr(data-room-symbol);
+
+    transform: rotate(-8deg);
+}
+
+.gmrc-guild-hall-room h2 {
+    margin:
+        0.4rem
+        0
+        0.45rem;
+
+    font-size: 1.35rem;
+}
+
+.gmrc-guild-hall-room p {
+    position: relative;
+    z-index: 1;
+
+    margin: 0;
+
+    color: rgba(66, 45, 31, 0.8);
+}
+
+.gmrc-guild-hall-room__eyebrow {
+    color: #6b3e83;
+
+    font-size: 0.78rem;
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.gmrc-guild-hall-room__link {
+    display: inline-flex;
+
+    margin-top: 1rem;
+
+    font-weight: 700;
+}
+
+.gmrc-guild-hall-room--future {
+    opacity: 0.88;
+}
+
+@media (max-width: 1100px) {
+    .gmrc-guild-hall__rooms {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+    }
+}
+
+@media (max-width: 620px) {
+    .gmrc-guild-hall__rooms {
+        grid-template-columns: 1fr;
+    }
+}
