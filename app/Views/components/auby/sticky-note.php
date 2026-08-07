@@ -71,11 +71,11 @@ if ($message === '') {
             🍆
         </span>
 
-        <p class="gmrc-auby-sticky-note__eyebrow">
+        <p class="gmrc-auby-sticky-note__eyebrow" data-auby-note-title>
             <?php echo esc_html($title); ?>
         </p>
 
-        <p class="gmrc-auby-sticky-note__message">
+        <p class="gmrc-auby-sticky-note__message" data-auby-note-message>
             <?php echo esc_html($message); ?>
         </p>
 
