@@ -235,15 +235,13 @@
  * The open-eye illustration disappears for exactly the same interval
  * that the painted closed-eyelid overlay is visible.
  */
-.gmrc-portrait-layers[data-portrait-generation="2"]
-[data-illumination-ready="true"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-eyes.is-blinking {
     opacity: 0 !important;
     transform: none !important;
 }
 
-.gmrc-portrait-layers[data-portrait-generation="2"]
-[data-illumination-ready="true"]
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-eyelids.is-blinking {
     opacity: 1 !important;
 }
