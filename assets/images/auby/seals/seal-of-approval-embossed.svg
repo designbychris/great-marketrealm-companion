@@ -7,13 +7,13 @@
 <defs>
   <path
       id="seal-top-arc"
-      d="M55 159
-         A105 105 0 0 1 265 159"
+      d="M67 150
+         A93 93 0 0 1 253 150"
   />
   <path
       id="seal-bottom-arc"
-      d="M48 190
-         A118 118 0 0 0 272 190"
+      d="M59 194
+         A106 106 0 0 0 261 194"
   />
 
   <filter
@@ -55,12 +55,16 @@
       stroke-width="8"
   />
 
-  <circle
-      cx="160"
-      cy="160"
-      r="116"
+  <path
+      d="M82 89
+         A106 106 0 0 0 82 231"
       stroke-width="4.5"
-      stroke-dasharray="410 14 92 9 150 11"
+  />
+
+  <path
+      d="M238 89
+         A106 106 0 0 1 238 231"
+      stroke-width="4.5"
   />
 </g>
 
@@ -70,8 +74,8 @@
     font-weight="800"
 >
   <text
-      font-size="32"
-      letter-spacing="4.2"
+      font-size="27"
+      letter-spacing="3.6"
   >
     <textPath
         href="#seal-top-arc"
@@ -82,7 +86,7 @@
 
   <text
       font-size="29"
-      letter-spacing="2.2"
+      letter-spacing="1.8"
   >
     <textPath
         href="#seal-bottom-arc"
