@@ -668,3 +668,24 @@
             var(--gmrc-space-6, 1.5rem);
     }
 }
+
+
+.gmrc-living-desk__illuminator {
+    position: relative;
+}
+
+.gmrc-living-desk__illuminator
+> .gmrc-auby-seal {
+    position: absolute;
+    right: -1rem;
+    bottom: clamp(5.5rem, 14%, 7.5rem);
+    z-index: 8;
+}
+
+@media (max-width: 720px) {
+    .gmrc-living-desk__illuminator
+    > .gmrc-auby-seal {
+        right: -0.25rem;
+        bottom: 5.25rem;
+    }
+}
