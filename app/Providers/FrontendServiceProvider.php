@@ -505,6 +505,25 @@ class FrontendServiceProvider extends ServiceProvider
                 : GMRC_VERSION,
             true
         );
+
+        $registrarsDeskStatusPath =
+            GMRC_PATH
+            . 'assets/js/components/furniture/'
+            . 'registrars-desk-status.js';
+
+        wp_enqueue_script(
+            'gmrc-registrars-desk-status',
+            GMRC_URL
+                . 'assets/js/components/furniture/'
+                . 'registrars-desk-status.js',
+            ['gmrc-registrars-desk'],
+            file_exists($registrarsDeskStatusPath)
+                ? (string) filemtime(
+                    $registrarsDeskStatusPath
+                )
+                : GMRC_VERSION,
+            true
+        );
         
         $livingPortraitStylePath =
             GMRC_PATH
