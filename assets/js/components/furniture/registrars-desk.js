@@ -116,7 +116,7 @@
 
         window.setTimeout(function () {
             completeIllumination(desk, portrait);
-        }, 2860);
+        }, 3120);
     };
 
     const initialise = function (desk) {
