@@ -5,18 +5,36 @@
 <title id="title">Auby Seal of Approval</title>
 
 <defs>
-  <filter id="rough-ink" x="-12%" y="-12%" width="124%" height="124%">
+  <path
+      id="seal-top-arc"
+      d="M55 159
+         A105 105 0 0 1 265 159"
+  />
+  <path
+      id="seal-bottom-arc"
+      d="M48 190
+         A118 118 0 0 0 272 190"
+  />
+
+  <filter
+      id="rough-ink"
+      x="-12%"
+      y="-12%"
+      width="124%"
+      height="124%"
+      color-interpolation-filters="sRGB"
+  >
     <feTurbulence
         type="fractalNoise"
-        baseFrequency="0.035"
+        baseFrequency="0.032"
         numOctaves="2"
-        seed="17"
+        seed="23"
         result="grain"
     />
     <feDisplacementMap
         in="SourceGraphic"
         in2="grain"
-        scale="1.8"
+        scale="1.55"
         xChannelSelector="R"
         yChannelSelector="G"
     />
@@ -25,120 +43,209 @@
 
 <g
     fill="none"
-    stroke="#5e337a"
+    stroke="#5E3A8A"
     stroke-linecap="round"
     stroke-linejoin="round"
     filter="url(#rough-ink)"
 >
-  <circle cx="160" cy="160" r="146" stroke-width="8"/>
-  <path
-      d="M60 118A110 110 0 0 1 260 118"
-      stroke-width="5"
+  <circle
+      cx="160"
+      cy="160"
+      r="145"
+      stroke-width="8"
   />
-  <path
-      d="M60 205A110 110 0 0 0 260 205"
-      stroke-width="5"
+
+  <circle
+      cx="160"
+      cy="160"
+      r="116"
+      stroke-width="4.5"
+      stroke-dasharray="410 14 92 9 150 11"
   />
 </g>
 
-<g fill="#5e337a">
+<g
+    fill="#5E3A8A"
+    font-family="Arial, Helvetica, sans-serif"
+    font-weight="800"
+>
   <text
-      x="160"
-      y="72"
-      text-anchor="middle"
-      font-size="34"
-      font-weight="800"
-      letter-spacing="4"
-      font-family="Arial, sans-serif"
-  >SEAL OF</text>
+      font-size="32"
+      letter-spacing="4.2"
+  >
+    <textPath
+        href="#seal-top-arc"
+        startOffset="50%"
+        text-anchor="middle"
+    >SEAL OF</textPath>
+  </text>
 
   <text
-      x="160"
-      y="276"
-      text-anchor="middle"
-      font-size="31"
-      font-weight="800"
-      letter-spacing="2.5"
-      font-family="Arial, sans-serif"
-  >APPROVAL</text>
+      font-size="29"
+      letter-spacing="2.2"
+  >
+    <textPath
+        href="#seal-bottom-arc"
+        startOffset="50%"
+        text-anchor="middle"
+    >APPROVAL</textPath>
+  </text>
 </g>
 
-<!-- One-colour Auby -->
-<g transform="translate(82 88)">
+<!-- Auby: one-colour Guild Illuminator portrait -->
+<g transform="translate(79 82)">
   <path
-      d="M78 33
-         C57 17 34 25 26 48
-         C13 84 27 128 78 144
-         C129 128 143 84 130 48
-         C122 25 99 17 78 33Z"
-      fill="#f8edd3"
-      stroke="#5e337a"
-      stroke-width="6"
+      d="M81 42
+         C57 24 31 35 23 62
+         C12 99 29 139 81 153
+         C133 139 150 99 139 62
+         C131 35 105 24 81 42Z"
+      fill="#F8EDD3"
+      stroke="#5E3A8A"
+      stroke-width="6.5"
+      stroke-linejoin="round"
   />
 
   <g
-      fill="#5e337a"
-      stroke="#5e337a"
-      stroke-width="4"
+      fill="#5E3A8A"
+      stroke="#5E3A8A"
+      stroke-width="3.5"
+      stroke-linejoin="round"
   >
-    <path d="M77 31C54 28 37 17 29 1c23-3 41 8 48 30Z"/>
-    <path d="M81 31c22-9 43-5 57 10-16 16-37 14-57-10Z"/>
-    <path d="M70 34c-21 14-41 16-56 5 13-19 32-21 56-5Z"/>
-    <path d="M79 26c-6-22-1-37 13-48 11 16 7 33-13 48Z"/>
+    <path
+        d="M80 40
+           C55 37 36 26 28 8
+           C54 5 73 16 80 40Z"
+    />
+    <path
+        d="M84 39
+           C108 29 130 34 145 50
+           C127 68 105 64 84 39Z"
+    />
+    <path
+        d="M72 42
+           C50 58 28 60 11 48
+           C25 28 47 27 72 42Z"
+    />
+    <path
+        d="M82 34
+           C76 10 81 -6 96 -18
+           C108 0 102 19 82 34Z"
+    />
   </g>
 
-  <ellipse cx="57" cy="75" rx="10" ry="14" fill="#5e337a"/>
-  <ellipse cx="99" cy="75" rx="10" ry="14" fill="#5e337a"/>
-  <circle cx="54" cy="70" r="3.5" fill="#f8edd3"/>
-  <circle cx="96" cy="70" r="3.5" fill="#f8edd3"/>
-
-  <path
-      d="M60 95q18 20 36 0q-3 25-18 25T60 95Z"
-      fill="#5e337a"
+  <ellipse
+      cx="58"
+      cy="83"
+      rx="10"
+      ry="14"
+      fill="#5E3A8A"
+  />
+  <ellipse
+      cx="105"
+      cy="83"
+      rx="10"
+      ry="14"
+      fill="#5E3A8A"
   />
 
-  <!-- waving arm -->
+  <circle
+      cx="55"
+      cy="78"
+      r="3.5"
+      fill="#F8EDD3"
+  />
+  <circle
+      cx="102"
+      cy="78"
+      r="3.5"
+      fill="#F8EDD3"
+  />
+
   <path
-      d="M30 96
-         q-22-7-27-27
-         q7-6 13 2
-         q-1-12 7-12
-         q7 1 5 13
-         q7-8 13-2
-         q2 16-11 26Z"
-      fill="#f8edd3"
-      stroke="#5e337a"
+      d="M62 104
+         q19 21 38 0
+         q-4 26-19 26
+         q-15 0-19-26Z"
+      fill="#5E3A8A"
+  />
+
+  <!-- waving hand -->
+  <path
+      d="M31 102
+         q-24-8-29-30
+         q7-7 14 2
+         q-1-13 7-13
+         q8 1 6 14
+         q8-9 14-2
+         q2 17-12 29Z"
+      fill="#F8EDD3"
+      stroke="#5E3A8A"
       stroke-width="6"
+      stroke-linejoin="round"
   />
 
-  <!-- cloak -->
+  <!-- little Guild cloak -->
   <path
-      d="M39 117
-         q39 29 78 0
-         l19 38
-         H20Z"
-      fill="#f8edd3"
-      stroke="#5e337a"
+      d="M40 127
+         q41 29 82 0
+         l17 38
+         H23Z"
+      fill="#F8EDD3"
+      stroke="#5E3A8A"
       stroke-width="6"
+      stroke-linejoin="round"
   />
+
   <path
-      d="M50 124l28 21 28-21"
+      d="M50 132
+         l31 23
+         l31-23"
       fill="none"
-      stroke="#5e337a"
+      stroke="#5E3A8A"
       stroke-width="6"
+      stroke-linecap="round"
   />
+
   <path
-      d="M78 145l10 9-10 9-10-9Z"
-      fill="#5e337a"
+      d="M81 153
+         l10 9
+         l-10 10
+         l-10-10Z"
+      fill="#5E3A8A"
   />
 </g>
 
-<g fill="#5e337a" opacity=".78">
-  <circle cx="42" cy="156" r="3"/>
-  <circle cx="278" cy="164" r="4"/>
-  <circle cx="56" cy="191" r="2.5"/>
-  <circle cx="267" cy="199" r="2.5"/>
-  <path d="M43 138l4 7 8 2-6 6 1 8-7-4-7 4 1-8-6-6 8-2Z"/>
-  <path d="M277 133l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1Z"/>
+<g fill="#5E3A8A" opacity=".72">
+  <circle cx="43" cy="158" r="3"/>
+  <circle cx="279" cy="162" r="4"/>
+  <circle cx="55" cy="196" r="2.5"/>
+  <circle cx="267" cy="203" r="2.5"/>
+
+  <path
+      d="M40 137
+         l4 8
+         l9 2
+         l-7 6
+         l2 9
+         l-8-5
+         l-8 5
+         l2-9
+         l-7-6
+         l9-2Z"
+  />
+
+  <path
+      d="M279 132
+         l3 7
+         l8 1
+         l-6 6
+         l1 8
+         l-7-4
+         l-7 4
+         l1-8
+         l-6-6
+         l8-1Z"
+  />
 </g>
 </svg>
