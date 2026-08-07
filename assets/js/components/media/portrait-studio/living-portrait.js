@@ -28,13 +28,32 @@
             return;
         }
 
+        const eyes = portrait.querySelector(
+            '.gmrc-g2-eyes'
+        );
+
         const eyelids = portrait.querySelector(
             '.gmrc-g2-eyelids'
         );
 
-        if (!(eyelids instanceof SVGElement)) {
+        if (
+            !(eyes instanceof SVGElement)
+            || !(eyelids instanceof SVGElement)
+        ) {
             return;
         }
+
+        const setBlinkState = function (isBlinking) {
+            eyes.classList.toggle(
+                'is-blinking',
+                isBlinking
+            );
+
+            eyelids.classList.toggle(
+                'is-blinking',
+                isBlinking
+            );
+        };
 
         /*
          * Natural-looking interval: usually 4–9 seconds, with an
@@ -43,21 +62,19 @@
         const delay = 4000 + Math.random() * 5000;
 
         const timer = window.setTimeout(function () {
-            eyelids.classList.add('is-blinking');
+            setBlinkState(true);
 
             window.setTimeout(function () {
-                eyelids.classList.remove('is-blinking');
+                setBlinkState(false);
 
                 const doubleBlink = Math.random() < 0.18;
 
                 if (doubleBlink) {
                     window.setTimeout(function () {
-                        eyelids.classList.add('is-blinking');
+                        setBlinkState(true);
 
                         window.setTimeout(function () {
-                            eyelids.classList.remove(
-                                'is-blinking'
-                            );
+                            setBlinkState(false);
                             scheduleBlink(portrait);
                         }, 115);
                     }, 190);
