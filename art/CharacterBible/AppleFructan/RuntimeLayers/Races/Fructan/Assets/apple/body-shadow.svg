@@ -2,29 +2,59 @@
     viewBox="0 0 480 600"
     role="img"
     aria-labelledby="title">
-<title id="title">Rounded Apple Fructan body shadows</title>
+<title id="title">Round Apple Fructan painted shadows</title>
 <defs>
-  <linearGradient id="body-shadow" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#541a2d" stop-opacity="0"/>
-    <stop offset=".56" stop-color="#541a2d" stop-opacity=".2"/>
-    <stop offset="1" stop-color="#35101d" stop-opacity=".7"/>
+  <linearGradient
+      id="body-shadow"
+      x1="0"
+      y1="0"
+      x2="1"
+      y2="1"
+  >
+    <stop
+        offset="0"
+        stop-color="#541A2D"
+        stop-opacity="0"
+    />
+    <stop
+        offset=".55"
+        stop-color="#541A2D"
+        stop-opacity=".18"
+    />
+    <stop
+        offset="1"
+        stop-color="#35101D"
+        stop-opacity=".72"
+    />
   </linearGradient>
 </defs>
 
-<path d="M240 113
-         C262 88 290 91 311 109
-         C343 137 358 185 348 245
-         C339 304 309 347 269 374
-         C317 389 353 429 363 491
-         L371 544
-         H240Z"
-      fill="url(#body-shadow)"/>
+<path
+    d="
+        M240 126
+        C262 99 293 95 320 111
+        C358 133 376 176 370 229
+        C364 286 338 329 295 355
+        C278 365 260 371 240 374
+        L240 544
+        H369
+        L359 465
+        C351 423 331 392 302 372
+        C347 347 374 307 379 254
+        C384 224 379 193 361 169
+        C354 144 341 124 320 111
+        C293 95 262 99 240 126
+        Z
+    "
+    fill="url(#body-shadow)"
+/>
 
-<path d="M119 475c23 48 61 67 113 69H109l8-53c1-6 1-11 2-16Z"
-      fill="#4a1424"
-      opacity=".27"/>
-
-<ellipse cx="240" cy="383" rx="83" ry="22"
-         fill="#6b2135"
-         opacity=".18"/>
+<ellipse
+    cx="240"
+    cy="379"
+    rx="92"
+    ry="25"
+    fill="#6B2135"
+    opacity=".16"
+/>
 </svg>
