@@ -55,7 +55,7 @@
                         eyelids.classList.add('is-blinking');
 
                         window.setTimeout(function () {
-                            eyes.classList.remove(
+                            eyelids.classList.remove(
                                 'is-blinking'
                             );
                             scheduleBlink(portrait);
