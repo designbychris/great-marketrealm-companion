@@ -1,133 +1,138 @@
 <?php
 
 defined('ABSPATH') || exit;
+
+$companionUrl = remove_query_arg(
+    'gmrc_route'
+);
+
+$charactersUrl = add_query_arg(
+    'gmrc_route',
+    'characters',
+    $companionUrl
+);
+
+$createCharacterUrl = add_query_arg(
+    'gmrc_route',
+    'characters/create',
+    $companionUrl
+);
 ?>
 
-<section class="gmrc-dashboard">
-    <div class="gmrc-status-badge">
-        <span class="gmrc-status-badge__icon" aria-hidden="true">✓</span>
-        Framework booted successfully
-    </div>
-
-    <header class="gmrc-dashboard__header">
+<section class="gmrc-guild-hall">
+    <header class="gmrc-guild-hall__welcome">
         <p class="gmrc-eyebrow">
-            Welcome to the Kingdoms
+            The Great Marketrealm Companion
         </p>
 
         <h1>
-            Marketrealm Companion is alive!
+            Welcome back to the Guild Hall.
         </h1>
 
-        <p class="gmrc-dashboard__introduction">
-            The Composer-powered Marketrealm Companion framework has loaded
-            successfully inside WordPress.
+        <p>
+            Your Journal is waiting, the Registrar has kept your records safe,
+            and Auby appears to have been rearranging the desk again.
         </p>
     </header>
 
-    <div class="gmrc-system-grid">
-        <article class="gmrc-system-card">
-            <div class="gmrc-system-card__icon" aria-hidden="true">
-                C
-            </div>
+    <?php echo $this->component(
+        'components.guild-hall.auby-desk',
+        [
+            'note' =>
+                'I left your Guild Journal open for you. '
+                . 'I was absolutely not reading it. '
+                . 'Also, I found a copper coin under the desk. '
+                . 'We should probably work out whose it is.',
+        ]
+    ); ?>
 
-            <div>
-                <span class="gmrc-system-card__label">
-                    Composer autoloader
-                </span>
+    <nav
+        class="gmrc-guild-hall__rooms"
+        aria-label="Guild Hall"
+    >
+        <article
+            class="gmrc-guild-hall-room"
+            data-room-symbol="✒"
+        >
+            <span class="gmrc-guild-hall-room__eyebrow">
+                Open now
+            </span>
 
-                <strong class="gmrc-system-card__status">
-                    Online
-                </strong>
-            </div>
-        </article>
-
-        <article class="gmrc-system-card">
-            <div class="gmrc-system-card__icon" aria-hidden="true">
-                K
-            </div>
-
-            <div>
-                <span class="gmrc-system-card__label">
-                    Application Kernel
-                </span>
-
-                <strong class="gmrc-system-card__status">
-                    Online
-                </strong>
-            </div>
-        </article>
-
-        <article class="gmrc-system-card">
-            <div class="gmrc-system-card__icon" aria-hidden="true">
-                P
-            </div>
-
-            <div>
-                <span class="gmrc-system-card__label">
-                    Service Providers
-                </span>
-
-                <strong class="gmrc-system-card__status">
-                    Online
-                </strong>
-            </div>
-        </article>
-
-        <article class="gmrc-system-card">
-            <div class="gmrc-system-card__icon" aria-hidden="true">
-                C
-            </div>
-
-            <div>
-                <span class="gmrc-system-card__label">
-                    Characters Kingdom
-                </span>
-
-                <strong class="gmrc-system-card__status">
-                    Loaded
-                </strong>
-            </div>
-        </article>
-    </div>
-    <div class="codex-test">
-    <h2>Codex Test</h2>
-    <?php if (isset($races) && !$races->isEmpty()) : ?>
-        <?php foreach ($races as $race) : ?>
-            <p>
-                <strong>
-                    <?php echo esc_html($race->name()); ?>
-                </strong>
-                <br>
-                <?php
-                echo esc_html(
-                    (string) $race->get('description')
-                );
-                ?>
-            </p>
-        <?php endforeach; ?>
-    <?php else : ?>
-        <p>No races were found in the Codex.</p>
-    <?php endif; ?>
-    </div>
-    <section class="gmrc-welcome-card">
-        <div class="gmrc-welcome-card__mascot" aria-hidden="true">
-            🍆
-        </div>
-
-        <div class="gmrc-welcome-card__content">
-            <p class="gmrc-welcome-card__eyebrow">
-                A message from Auby
-            </p>
-
-            <h2>
-                The gates are open!
-            </h2>
+            <h2>Adventurer Register</h2>
 
             <p>
-                The foundations of the Companion are now in place. Soon,
-                adventurers will be able to create characters, join campaigns
-                and earn achievements across the Great Marketrealm.
+                Visit your recorded adventurers or inscribe a new Guild member.
             </p>
-        </div>
-    </section>
+
+            <a
+                class="gmrc-guild-hall-room__link"
+                href="<?php echo esc_url(
+                    $charactersUrl
+                ); ?>"
+            >
+                Open the Register →
+            </a>
+
+            <br>
+
+            <a
+                class="gmrc-guild-hall-room__link"
+                href="<?php echo esc_url(
+                    $createCharacterUrl
+                ); ?>"
+            >
+                Inscribe an Adventurer →
+            </a>
+        </article>
+
+        <article
+            class="gmrc-guild-hall-room
+                gmrc-guild-hall-room--future"
+            data-room-symbol="📖"
+        >
+            <span class="gmrc-guild-hall-room__eyebrow">
+                Guild Journal Initiative
+            </span>
+
+            <h2>Guild Journal</h2>
+
+            <p>
+                Your illuminated character record, portrait and personal archive.
+            </p>
+        </article>
+
+        <article
+            class="gmrc-guild-hall-room
+                gmrc-guild-hall-room--future"
+            data-room-symbol="🎒"
+        >
+            <span class="gmrc-guild-hall-room__eyebrow">
+                Project Leather Satchel
+            </span>
+
+            <h2>Leather Satchel</h2>
+
+            <p>
+                Equipment, provisions, coins and suspicious things Auby found
+                in the lining.
+            </p>
+        </article>
+
+        <article
+            class="gmrc-guild-hall-room
+                gmrc-guild-hall-room--future"
+            data-room-symbol="★"
+        >
+            <span class="gmrc-guild-hall-room__eyebrow">
+                Book of Deeds
+            </span>
+
+            <h2>Guild Honours</h2>
+
+            <p>
+                Achievements, milestones and the occasional very enthusiastic
+                Seal of Approval.
+            </p>
+        </article>
+    </nav>
 </section>
