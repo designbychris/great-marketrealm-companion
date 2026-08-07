@@ -2,21 +2,31 @@
     viewBox="0 0 480 600"
     role="img"
     aria-labelledby="title">
-<title id="title">Apple Fructan body highlights</title>
-<path d="M180 137c-21 33-27 81-18 120"
+<title id="title">Rounded Apple Fructan body highlights</title>
+
+<path d="M169 144c-23 34-30 82-20 124"
       fill="none"
       stroke="#ffc8bd"
       stroke-width="18"
       stroke-linecap="round"
       opacity=".8"/>
-<path d="M149 348c20-28 48-43 77-48"
+
+<path d="M143 335c20-26 49-41 79-46"
       fill="none"
       stroke="#ffa09b"
       stroke-width="16"
       stroke-linecap="round"
-      opacity=".45"/>
-<ellipse cx="189" cy="181" rx="13" ry="22"
+      opacity=".44"/>
+
+<ellipse cx="179" cy="181" rx="14" ry="23"
          fill="#ffe3d8"
          opacity=".92"
-         transform="rotate(24 189 181)"/>
+         transform="rotate(24 179 181)"/>
+
+<path d="M220 111q20 9 40 0"
+      fill="none"
+      stroke="#f18b8f"
+      stroke-width="5"
+      stroke-linecap="round"
+      opacity=".38"/>
 </svg>

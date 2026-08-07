@@ -2,20 +2,29 @@
     viewBox="0 0 480 600"
     role="img"
     aria-labelledby="title">
-<title id="title">Apple Fructan body shadows</title>
+<title id="title">Rounded Apple Fructan body shadows</title>
 <defs>
   <linearGradient id="body-shadow" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0" stop-color="#541a2d" stop-opacity="0"/>
-    <stop offset=".58" stop-color="#541a2d" stop-opacity=".22"/>
+    <stop offset=".56" stop-color="#541a2d" stop-opacity=".2"/>
     <stop offset="1" stop-color="#35101d" stop-opacity=".7"/>
   </linearGradient>
 </defs>
-<path d="M240 95c60 6 95 63 95 148
-         c0 77-29 123-67 144
-         c58 12 94 54 100 115l4 42H240Z"
+
+<path d="M240 113
+         C262 88 290 91 311 109
+         C343 137 358 185 348 245
+         C339 304 309 347 269 374
+         C317 389 353 429 363 491
+         L371 544
+         H240Z"
       fill="url(#body-shadow)"/>
-<path d="M116 472c22 49 59 69 112 72H108l4-42c1-12 2-22 4-30Z"
+
+<path d="M119 475c23 48 61 67 113 69H109l8-53c1-6 1-11 2-16Z"
       fill="#4a1424"
-      opacity=".28"/>
-<ellipse cx="240" cy="384" rx="79" ry="21" fill="#6b2135" opacity=".18"/>
+      opacity=".27"/>
+
+<ellipse cx="240" cy="383" rx="83" ry="22"
+         fill="#6b2135"
+         opacity=".18"/>
 </svg>
