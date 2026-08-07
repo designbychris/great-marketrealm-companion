@@ -315,6 +315,12 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'components/furniture/auby-note.css',
             ],
             [
+                'handle' => 'gmrc-auby-seal-of-approval',
+                'path' =>
+                    'components/auby/'
+                    . 'seal-of-approval.css',
+            ],
+            [
                 'handle' => 'gmrc-registrar',
                 'path' => 'components/furniture/registrar.css',
             ],
@@ -401,6 +407,25 @@ class FrontendServiceProvider extends ServiceProvider
                 . 'assets/js/components/furniture/auby-note.js',
             [],
             GMRC_VERSION,
+            true
+        );
+
+        $aubySealScriptPath =
+            GMRC_PATH
+            . 'assets/js/components/auby/'
+            . 'seal-of-approval.js';
+
+        wp_enqueue_script(
+            'gmrc-auby-seal-of-approval',
+            GMRC_URL
+                . 'assets/js/components/auby/'
+                . 'seal-of-approval.js',
+            [],
+            file_exists($aubySealScriptPath)
+                ? (string) filemtime(
+                    $aubySealScriptPath
+                )
+                : GMRC_VERSION,
             true
         );
         $portraitStudioScriptPath =
