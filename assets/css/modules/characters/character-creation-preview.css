@@ -5,7 +5,7 @@
 
 .gmrc-creation-preview {
     position: relative;
-    padding-top:5px!important;
+
     display: grid;
     place-items: center;
 
@@ -688,4 +688,14 @@
         right: -0.25rem;
         bottom: 5.25rem;
     }
+}
+
+
+/**
+ * Purple Thumbprint v1.1
+ * Portrait seals now live inside the Illuminator canvas.
+ */
+.gmrc-living-desk__illuminator
+> .gmrc-auby-seal {
+    display: none !important;
 }
