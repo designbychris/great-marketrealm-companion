@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 480 600"
+    role="img"
+    aria-labelledby="title">
+  <title id="title">Apple Fructan painted eyelids</title>
+
+  <g id="painted-eyelids">
+    <path d="M168 239q31-29 62 0q-31 24-62 0Z"
+          fill="#d64e5e"
+          stroke="#642238"
+          stroke-width="7"
+          stroke-linejoin="round"/>
+
+    <path d="M250 239q31-29 62 0q-31 24-62 0Z"
+          fill="#d64e5e"
+          stroke="#642238"
+          stroke-width="7"
+          stroke-linejoin="round"/>
+
+    <path d="M176 240q23 12 46 0M258 240q23 12 46 0"
+          fill="none"
+          stroke="#7e2b43"
+          stroke-width="4"
+          stroke-linecap="round"
+          opacity=".72"/>
+
+    <path d="M180 233q17-11 35-4M262 229q18-7 35 4"
+          fill="none"
+          stroke="#f58c92"
+          stroke-width="3"
+          stroke-linecap="round"
+          opacity=".55"/>
+  </g>
+</svg>
