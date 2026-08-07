@@ -175,3 +175,37 @@
         transform: none !important;
     }
 }
+
+
+/**
+ * Painted eyelid blink.
+ *
+ * Dedicated eyelids are more reliable than transforming an SVG <use>
+ * element containing the open eyes.
+ */
+.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-g2-eyelids {
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        opacity 45ms ease-in-out;
+}
+
+.gmrc-portrait-layers[data-portrait-generation="2"]
+[data-illumination-ready="true"]
+.gmrc-g2-eyelids.is-blinking {
+    opacity: 1;
+}
+
+/**
+ * Auby waits off-canvas until the final flourish.
+ */
+.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-g2-auby-finisher {
+    opacity: 0;
+    pointer-events: none;
+    transform-box: fill-box;
+    transform-origin: left bottom;
+}
