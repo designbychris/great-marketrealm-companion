@@ -10,7 +10,7 @@ final class AubySealOfApprovalComponentTest extends TestCase
 {
     public function testSealAssetsExist(): void
     {
-        $root = dirname(__DIR__, 2);
+        $root = dirname(__DIR__, 3);
 
         foreach (
             [
@@ -31,7 +31,7 @@ final class AubySealOfApprovalComponentTest extends TestCase
 
     public function testReusableSealComponentExists(): void
     {
-        $root = dirname(__DIR__, 2);
+        $root = dirname(__DIR__, 3);
 
         self::assertFileExists(
             $root
