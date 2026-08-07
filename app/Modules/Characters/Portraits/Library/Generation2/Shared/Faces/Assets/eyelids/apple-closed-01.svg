@@ -2,33 +2,45 @@
     viewBox="0 0 480 600"
     role="img"
     aria-labelledby="title">
-  <title id="title">Apple Fructan painted eyelids</title>
+<title id="title">Apple Fructan painted closed eyelids</title>
 
-  <g id="painted-eyelids">
-    <path d="M168 239q31-29 62 0q-31 24-62 0Z"
-          fill="#d64e5e"
-          stroke="#642238"
-          stroke-width="7"
-          stroke-linejoin="round"/>
+<g id="painted-eyelids">
+  <path d="M164 237q35-34 70 0q-35 35-70 0Z"
+        fill="#d85060"
+        stroke="#642238"
+        stroke-width="8"
+        stroke-linejoin="round"/>
 
-    <path d="M250 239q31-29 62 0q-31 24-62 0Z"
-          fill="#d64e5e"
-          stroke="#642238"
-          stroke-width="7"
-          stroke-linejoin="round"/>
+  <path d="M246 237q35-34 70 0q-35 35-70 0Z"
+        fill="#d85060"
+        stroke="#642238"
+        stroke-width="8"
+        stroke-linejoin="round"/>
 
-    <path d="M176 240q23 12 46 0M258 240q23 12 46 0"
-          fill="none"
-          stroke="#7e2b43"
-          stroke-width="4"
-          stroke-linecap="round"
-          opacity=".72"/>
+  <path d="M176 241q23 16 46 0"
+        fill="none"
+        stroke="#562035"
+        stroke-width="6"
+        stroke-linecap="round"/>
 
-    <path d="M180 233q17-11 35-4M262 229q18-7 35 4"
-          fill="none"
-          stroke="#f58c92"
-          stroke-width="3"
-          stroke-linecap="round"
-          opacity=".55"/>
-  </g>
+  <path d="M258 241q23 16 46 0"
+        fill="none"
+        stroke="#562035"
+        stroke-width="6"
+        stroke-linecap="round"/>
+
+  <path d="M178 228q19-10 39-3"
+        fill="none"
+        stroke="#f59a9f"
+        stroke-width="3.5"
+        stroke-linecap="round"
+        opacity=".62"/>
+
+  <path d="M260 225q20-7 39 3"
+        fill="none"
+        stroke="#f59a9f"
+        stroke-width="3.5"
+        stroke-linecap="round"
+        opacity=".62"/>
+</g>
 </svg>
