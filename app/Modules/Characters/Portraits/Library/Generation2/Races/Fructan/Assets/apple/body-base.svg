@@ -2,7 +2,7 @@
     viewBox="0 0 480 600"
     role="img"
     aria-labelledby="title">
-<title id="title">Rounded Apple Fructan body base</title>
+<title id="title">Round storybook Apple Fructan body</title>
 <defs>
 
 <filter
@@ -29,41 +29,73 @@
   />
 </filter>
 
-  <radialGradient id="apple" cx="31%" cy="20%" r="86%">
-    <stop offset="0" stop-color="#ff918a"/>
-    <stop offset=".46" stop-color="#d84f60"/>
-    <stop offset="1" stop-color="#882a40"/>
+  <radialGradient
+      id="apple"
+      cx="31%"
+      cy="20%"
+      r="86%"
+  >
+    <stop offset="0" stop-color="#FF948B"/>
+    <stop offset=".46" stop-color="#D84F60"/>
+    <stop offset="1" stop-color="#872A40"/>
   </radialGradient>
 </defs>
 
+<!--
+    The head is deliberately broad and round with a shallow
+    central indentation so the heritage reads immediately as apple.
+-->
 <path
     filter="url(#painted-edge)"
-    d="M240 113
-       C218 88 190 91 169 109
-       C137 137 122 185 132 245
-       C141 304 171 347 211 374
-       C163 389 127 429 117 491
-       L109 544
-       H371
-       L363 491
-       C353 429 317 389 269 374
-       C309 347 339 304 348 245
-       C358 185 343 137 311 109
-       C290 91 262 88 240 113Z"
+    d="
+        M240 126
+        C218 99 187 95 160 111
+        C122 133 104 176 110 229
+        C116 286 142 329 185 355
+        C202 365 220 371 240 374
+        C260 371 278 365 295 355
+        C338 329 364 286 370 229
+        C376 176 358 133 320 111
+        C293 95 262 99 240 126
+
+        C218 99 187 95 160 111
+        C139 124 126 144 119 169
+        C101 193 96 224 101 254
+
+        C106 307 133 347 178 372
+        C149 392 129 423 121 465
+        L111 544
+        H369
+        L359 465
+        C351 423 331 392 302 372
+        C347 347 374 307 379 254
+        C384 224 379 193 361 169
+        C354 144 341 124 320 111
+        C293 95 262 99 240 126
+        Z
+    "
     fill="url(#apple)"
     stroke="#642238"
     stroke-width="10"
-    stroke-linejoin="round"/>
+    stroke-linejoin="round"
+/>
 
-<path d="M142 425c-37 8-63 30-77 64"
-      fill="none"
-      stroke="#8a2b40"
-      stroke-width="32"
-      stroke-linecap="round"/>
+<!-- arms remain soft and secondary to the fruit silhouette -->
+<path
+    d="M142 430
+       C105 438 79 459 65 493"
+    fill="none"
+    stroke="#8A2B40"
+    stroke-width="31"
+    stroke-linecap="round"
+/>
 
-<path d="M338 425c37 8 63 30 77 64"
-      fill="none"
-      stroke="#8a2b40"
-      stroke-width="32"
-      stroke-linecap="round"/>
+<path
+    d="M338 430
+       C375 438 401 459 415 493"
+    fill="none"
+    stroke="#8A2B40"
+    stroke-width="31"
+    stroke-linecap="round"
+/>
 </svg>

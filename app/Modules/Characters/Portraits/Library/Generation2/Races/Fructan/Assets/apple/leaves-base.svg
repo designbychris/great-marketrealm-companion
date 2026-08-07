@@ -2,8 +2,8 @@
     viewBox="0 0 480 600"
     role="img"
     aria-labelledby="title">
-  <title id="title">Painterly Apple Fructan leaves</title>
-  <defs>
+<title id="title">Apple Fructan storybook leaf cap</title>
+<defs>
 
 <filter
     id="painted-edge"
@@ -29,28 +29,61 @@
   />
 </filter>
 
-    <linearGradient id="leaf-a" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#c7ea53"/>
-      <stop offset=".5" stop-color="#79ab31"/>
-      <stop offset="1" stop-color="#3d6720"/>
-    </linearGradient>
-    <linearGradient id="leaf-b" x1="1" y1="0" x2="0" y2="1">
-      <stop stop-color="#afd742"/>
-      <stop offset=".55" stop-color="#69962a"/>
-      <stop offset="1" stop-color="#35591c"/>
-    </linearGradient>
-  </defs>
+  <linearGradient id="leaf-a" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#C7EA53"/>
+    <stop offset=".52" stop-color="#7DAE32"/>
+    <stop offset="1" stop-color="#3C6720"/>
+  </linearGradient>
+  <linearGradient id="leaf-b" x1="1" y1="0" x2="0" y2="1">
+    <stop stop-color="#B5DD44"/>
+    <stop offset=".55" stop-color="#68942A"/>
+    <stop offset="1" stop-color="#34591C"/>
+  </linearGradient>
+</defs>
 
-  <g filter="url(#painted-edge)" stroke="#34531d" stroke-linejoin="round">
-    <path d="M240 116c-48-1-85-23-105-58 45-12 86 7 105 58Z"
-          fill="url(#leaf-a)" stroke-width="9"/>
-    <path d="M247 114c44-19 85-14 114 13-30 35-72 34-114-13Z"
-          fill="url(#leaf-b)" stroke-width="8"/>
-    <path d="M212 125c-43 31-85 37-117 15 24-41 65-48 117-15Z"
-          fill="url(#leaf-b)" stroke-width="9"/>
-    <path d="M269 119c39-40 81-55 119-41-11 45-49 63-119 41Z"
-          fill="url(#leaf-a)" stroke-width="8"/>
-    <path d="M225 115c-17-37-12-68 14-91 23 25 18 58-14 91Z"
-          fill="#86b334" stroke-width="8"/>
-  </g>
+<g
+    filter="url(#painted-edge)"
+    stroke="#34531D"
+    stroke-linejoin="round"
+>
+  <path
+      d="M237 126
+         C197 125 166 109 146 82
+         C183 68 218 84 237 126Z"
+      fill="url(#leaf-a)"
+      stroke-width="9"
+  />
+
+  <path
+      d="M243 126
+         C282 123 315 105 335 78
+         C297 68 263 85 243 126Z"
+      fill="url(#leaf-b)"
+      stroke-width="9"
+  />
+
+  <path
+      d="M213 127
+         C176 145 143 143 119 125
+         C143 95 177 96 213 127Z"
+      fill="url(#leaf-b)"
+      stroke-width="8"
+  />
+
+  <path
+      d="M267 126
+         C306 143 339 139 361 119
+         C335 91 302 95 267 126Z"
+      fill="url(#leaf-a)"
+      stroke-width="8"
+  />
+
+  <path
+      d="M237 119
+         C220 86 226 55 250 34
+         C270 59 263 91 237 119Z"
+      fill="#82AF32"
+      stroke-width="8"
+  />
+</g>
 </svg>
