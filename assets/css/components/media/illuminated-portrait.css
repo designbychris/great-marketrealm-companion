@@ -654,3 +654,33 @@
         transition: none;
     }
 }
+
+
+/**
+ * Purple Thumbprint v1.1 — portrait approval placement.
+ */
+.gmrc-illuminated-portrait__canvas
+> .gmrc-auby-seal {
+    --gmrc-auby-seal-size:
+        clamp(4.5rem, 24%, 6.25rem);
+    --gmrc-auby-seal-rotation: -7deg;
+
+    position: absolute;
+    left: clamp(0.45rem, 2.5%, 0.85rem);
+    bottom: clamp(0.45rem, 2.5%, 0.85rem);
+    z-index: 12;
+
+    filter:
+        drop-shadow(
+            0 0.2rem 0.18rem
+            rgba(54, 27, 61, 0.16)
+        );
+}
+
+/*
+ * The HTML Seal of Approval supersedes the earlier
+ * circular SVG Guild Illuminator mark.
+ */
+.gmrc-g2-auby-mark {
+    display: none !important;
+}
