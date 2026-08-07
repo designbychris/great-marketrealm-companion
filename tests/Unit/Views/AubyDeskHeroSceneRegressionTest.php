@@ -15,7 +15,7 @@ final class AubyDeskHeroSceneRegressionTest extends TestCase
         self::assertFileExists(
             $root
             . '/assets/images/auby/desk/scenes/'
-            . 'auby-desk-afternoon-hero.webp'
+            . 'high-resolution/auby-desk-afternoon-hires.webp'
         );
 
         $manifest = json_decode(
@@ -39,12 +39,12 @@ final class AubyDeskHeroSceneRegressionTest extends TestCase
         )[0] ?? [];
 
         self::assertSame(
-            'auby-desk-afternoon-hero.webp',
+            'high-resolution/auby-desk-afternoon-hires.webp',
             $afternoon['image'] ?? null
         );
 
         self::assertSame(
-            'hero-wide',
+            'high-resolution-wide',
             $afternoon['composition'] ?? null
         );
     }

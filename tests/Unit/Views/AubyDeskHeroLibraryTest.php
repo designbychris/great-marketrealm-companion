@@ -56,8 +56,15 @@ final class AubyDeskHeroLibraryTest extends TestCase
             $manifest['scenes'] ?? []
             as $scene
         ) {
+            self::assertStringContainsString(
+                'high-resolution/',
+                (string) (
+                    $scene['image'] ?? ''
+                )
+            );
+
             self::assertStringEndsWith(
-                '-hero.webp',
+                '-hires.webp',
                 (string) (
                     $scene['image'] ?? ''
                 )
