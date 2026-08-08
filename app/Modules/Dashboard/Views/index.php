@@ -20,19 +20,60 @@ $createCharacterUrl = add_query_arg(
 ?>
 
 <section class="gmrc-guild-hall">
-    <header class="gmrc-guild-hall__welcome">
-        <p class="gmrc-eyebrow">
-            The Great Marketrealm Companion
-        </p>
+    <header
+        class="gmrc-guild-welcome"
+        aria-labelledby="gmrc-guild-welcome-title"
+    >
+        <div class="gmrc-guild-welcome__paper">
 
-        <h1>
-            Welcome back to the Guild Hall.
-        </h1>
+            <span
+                class="gmrc-guild-welcome__tape
+                    gmrc-guild-welcome__tape--left"
+                aria-hidden="true"
+            ></span>
 
-        <p>
-            Your Journal is waiting, the Registrar has kept your records safe,
-            and Auby appears to have been rearranging the desk again.
-        </p>
+            <span
+                class="gmrc-guild-welcome__tape
+                    gmrc-guild-welcome__tape--right"
+                aria-hidden="true"
+            ></span>
+
+            <p class="gmrc-guild-welcome__eyebrow">
+                <span aria-hidden="true">✦</span>
+
+                The Great Marketrealm Companion
+
+                <span aria-hidden="true">✦</span>
+            </p>
+
+            <h1
+                id="gmrc-guild-welcome-title"
+                class="gmrc-guild-welcome__title"
+            >
+                Welcome back to the Guild Hall.
+            </h1>
+
+            <div
+                class="gmrc-guild-welcome__divider"
+                aria-hidden="true"
+            >
+                <span></span>
+                <b>◆</b>
+                <span></span>
+            </div>
+
+            <p class="gmrc-guild-welcome__message">
+                Your Journal is waiting, the Registrar has kept your
+                records safe, and Auby appears to have been rearranging
+                the desk again.
+
+                <span
+                    class="gmrc-guild-welcome__auby-mark"
+                    aria-hidden="true"
+                >♡</span>
+            </p>
+
+        </div>
     </header>
 
     <?php echo $this->component(
