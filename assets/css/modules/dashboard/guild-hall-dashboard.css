@@ -9,22 +9,6 @@
         clamp(1.5rem, 3vw, 2.6rem);
 }
 
-.gmrc-guild-hall__welcome {
-    position: relative;
-
-    max-width: 58rem;
-}
-
-.gmrc-guild-hall__welcome h1 {
-    margin-bottom: 0.45rem;
-}
-
-.gmrc-guild-hall__welcome p:last-child {
-    max-width: 48rem;
-
-    margin-bottom: 0;
-}
-
 .gmrc-guild-hall__rooms {
     display: grid;
     grid-template-columns:
@@ -132,5 +116,421 @@
 @media (max-width: 620px) {
     .gmrc-guild-hall__rooms {
         grid-template-columns: 1fr;
+    }
+}
+
+
+/**
+ * Guild Hall Initiative — Phase IV.2: The Guild Welcome
+ */
+
+.gmrc-guild-welcome {
+    position: relative;
+    z-index: 3;
+
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+
+    padding:
+        clamp(0.5rem, 1.5vw, 1rem)
+        clamp(0.75rem, 3vw, 2rem)
+        clamp(0.4rem, 1vw, 0.8rem);
+
+    text-align: center;
+}
+
+.gmrc-guild-welcome__paper {
+    position: relative;
+
+    width:
+        min(
+            100%,
+            58rem
+        );
+
+    padding:
+        clamp(2.3rem, 4.8vw, 3.7rem)
+        clamp(1.5rem, 6vw, 5rem)
+        clamp(2rem, 4vw, 3rem);
+
+    overflow: visible;
+
+    border:
+        1px solid
+        rgba(
+            126,
+            88,
+            39,
+            0.28
+        );
+
+    background:
+        radial-gradient(
+            circle at 50% 16%,
+            rgba(255, 255, 255, 0.34),
+            transparent 42%
+        ),
+        linear-gradient(
+            180deg,
+            #fff2cf 0%,
+            #f5dda1 100%
+        );
+
+    box-shadow:
+        0 1.2rem 2.5rem
+        rgba(
+            64,
+            38,
+            23,
+            0.2
+        );
+
+    transform: rotate(-0.12deg);
+}
+
+/*
+ * Fine horizontal fibres stop the welcome from looking like a flat
+ * CSS rectangle while retaining real selectable/readable HTML text.
+ */
+.gmrc-guild-welcome__paper::before {
+    position: absolute;
+    inset: 0;
+
+    z-index: 0;
+
+    pointer-events: none;
+
+    content: "";
+
+    opacity: 0.3;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(89, 57, 34, 0.027) 0,
+            rgba(89, 57, 34, 0.027) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+}
+
+.gmrc-guild-welcome__paper::after {
+    position: absolute;
+    inset: 0;
+
+    z-index: 0;
+
+    pointer-events: none;
+
+    content: "";
+
+    box-shadow:
+        inset 0 0 2.2rem
+        rgba(
+            111,
+            74,
+            38,
+            0.1
+        );
+}
+
+.gmrc-guild-welcome__tape {
+    position: absolute;
+    top: -0.72rem;
+
+    z-index: 3;
+
+    width: 5.5rem;
+    height: 1.6rem;
+
+    opacity: 0.9;
+
+    background:
+        linear-gradient(
+            135deg,
+            #653d8f,
+            #8658ac
+        );
+
+    box-shadow:
+        0 0.2rem 0.35rem
+        rgba(
+            64,
+            38,
+            23,
+            0.16
+        );
+}
+
+.gmrc-guild-welcome__tape--left {
+    left:
+        clamp(
+            1.5rem,
+            7vw,
+            5rem
+        );
+
+    transform: rotate(-8deg);
+}
+
+.gmrc-guild-welcome__tape--right {
+    right:
+        clamp(
+            1.5rem,
+            7vw,
+            5rem
+        );
+
+    transform: rotate(7deg);
+}
+
+.gmrc-guild-welcome__eyebrow {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.45rem;
+
+    margin:
+        0
+        0
+        0.65rem;
+
+    color:
+        var(
+            --gmrc-purple-600,
+            #603773
+        );
+
+    font-family:
+        var(
+            --gmrc-font-heading,
+            Georgia,
+            serif
+        );
+
+    font-size:
+        clamp(
+            0.68rem,
+            1vw,
+            0.86rem
+        );
+
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.gmrc-guild-welcome__eyebrow span {
+    color:
+        var(
+            --gmrc-gold,
+            #b88a37
+        );
+
+    font-size: 1.05em;
+}
+
+.gmrc-guild-welcome__title {
+    position: relative;
+    z-index: 2;
+
+    margin: 0;
+
+    color:
+        var(
+            --gmrc-ink-strong,
+            #321f17
+        );
+
+    font-family:
+        var(
+            --gmrc-font-handwritten,
+            "Caveat",
+            cursive
+        );
+
+    font-size:
+        clamp(
+            2.25rem,
+            4.1vw,
+            4rem
+        );
+
+    font-weight: 600;
+
+    letter-spacing: -0.015em;
+    line-height: 1.02;
+}
+
+.gmrc-guild-welcome__divider {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.72rem;
+
+    width:
+        min(
+            100%,
+            29rem
+        );
+
+    margin:
+        1rem
+        auto
+        1.1rem;
+
+    color:
+        var(
+            --gmrc-purple-500,
+            #74458a
+        );
+}
+
+.gmrc-guild-welcome__divider span {
+    flex: 1;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                116,
+                69,
+                138,
+                0.56
+            )
+        );
+}
+
+.gmrc-guild-welcome__divider span:last-child {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(
+                116,
+                69,
+                138,
+                0.56
+            ),
+            transparent
+        );
+}
+
+.gmrc-guild-welcome__divider b {
+    font-size: 0.73rem;
+}
+
+.gmrc-guild-welcome__message {
+    position: relative;
+    z-index: 2;
+
+    max-width: 43rem;
+
+    margin:
+        0
+        auto;
+
+    color:
+        var(
+            --gmrc-ink,
+            #4a3022
+        );
+
+    font-family:
+        var(
+            --gmrc-font-handwritten,
+            "Caveat",
+            cursive
+        );
+
+    font-size:
+        clamp(
+            1.12rem,
+            1.75vw,
+            1.45rem
+        );
+
+    font-weight: 500;
+
+    line-height: 1.48;
+}
+
+.gmrc-guild-welcome__auby-mark {
+    display: inline-block;
+
+    margin-left: 0.22rem;
+
+    color:
+        var(
+            --gmrc-purple-500,
+            #74458a
+        );
+
+    font-size: 1.35em;
+
+    transform: rotate(-8deg);
+}
+
+@media (max-width: 620px) {
+    .gmrc-guild-welcome {
+        padding:
+            1rem
+            0
+            0.5rem;
+    }
+
+    .gmrc-guild-welcome__paper {
+        padding:
+            2.5rem
+            1.2rem
+            2rem;
+    }
+
+    .gmrc-guild-welcome__tape {
+        width: 4rem;
+        height: 1.2rem;
+    }
+
+    .gmrc-guild-welcome__tape--left {
+        left: 1rem;
+    }
+
+    .gmrc-guild-welcome__tape--right {
+        right: 1rem;
+    }
+
+    .gmrc-guild-welcome__eyebrow {
+        gap: 0.25rem;
+
+        letter-spacing: 0.1em;
+    }
+
+    .gmrc-guild-welcome__title {
+        font-size:
+            clamp(
+                2rem,
+                10vw,
+                3rem
+            );
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-guild-welcome__paper {
+        transform: none;
     }
 }
