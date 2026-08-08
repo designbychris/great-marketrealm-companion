@@ -773,3 +773,32 @@ span:nth-child(3) {
         transition: none !important;
     }
 }
+
+
+/**
+ * Guild Hall Initiative — Phase IV.2
+ * Navigation icon rendering polish.
+ */
+
+.gmrc-navigation__icon {
+    flex: 0 0 1.35rem;
+}
+
+.gmrc-navigation__icon svg {
+    display: block;
+
+    width: 1.18rem;
+    height: 1.18rem;
+
+    overflow: visible;
+}
+
+.gmrc-navigation__item.is-active
+.gmrc-navigation__icon {
+    color: #f0c766;
+}
+
+.gmrc-navigation__item:hover
+.gmrc-navigation__icon {
+    color: #f0c766;
+}
