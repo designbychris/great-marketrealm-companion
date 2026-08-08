@@ -15,6 +15,61 @@ $sceneBase = GMRC_URL . 'assets/images/auby/desk/scenes/';
     <span class="gmrc-auby-desk__dust" data-auby-ambient="dust" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
     <span class="gmrc-auby-desk__stars" data-auby-ambient="stars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
     <span class="gmrc-auby-desk__sleep" data-auby-ambient="sleep" aria-hidden="true">Z<small>z</small><em>z</em></span>
+
+    <div
+        class="gmrc-living-guild"
+        data-living-guild
+        data-living-guild-manifest="<?php echo esc_url(
+            GMRC_URL
+            . 'assets/data/guild-hall/'
+            . 'living-guild.json'
+        ); ?>"
+        aria-hidden="true"
+    >
+        <span
+            class="gmrc-living-guild__page"
+            data-living-guild-beat="page-flutter"
+        ></span>
+
+        <span
+            class="gmrc-living-guild__quill"
+            data-living-guild-beat="quill-nudge"
+        ></span>
+
+        <span
+            class="gmrc-living-guild__mouse"
+            data-living-guild-beat="market-mouse"
+        >
+            <span class="gmrc-living-guild__mouse-ear"></span>
+            <span class="gmrc-living-guild__mouse-eye"></span>
+        </span>
+
+        <span
+            class="gmrc-living-guild__thumbprint"
+            data-living-guild-beat="purple-thumbprint"
+        ></span>
+
+        <button
+            class="gmrc-living-guild__coin"
+            type="button"
+            data-living-guild-beat="copper-coin"
+            data-living-guild-coin
+            tabindex="-1"
+            aria-label="<?php echo esc_attr__(
+                'Pick up the copper coin',
+                'great-marketrealm-companion'
+            ); ?>"
+        >
+            <span aria-hidden="true">¢</span>
+        </button>
+    </div>
+
+    <p
+        class="gmrc-living-guild__status"
+        data-living-guild-status
+        aria-live="polite"
+    ></p>
+
     <div class="gmrc-auby-desk__content">
         <header class="gmrc-auby-desk__heading">
             <p class="gmrc-eyebrow"><?php esc_html_e("Auby's Desk", 'great-marketrealm-companion'); ?></p>
