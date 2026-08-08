@@ -11,6 +11,74 @@ $homeUrl = remove_query_arg(
     'gmrc_route',
     get_permalink()
 );
+
+/**
+ * Render the SVG supplied by the Navigation icon registry.
+ *
+ * wp_kses_post() intentionally strips SVG elements, so the Guild
+ * Navigation uses a deliberately narrow whitelist instead of adding
+ * another icon-font or JavaScript dependency.
+ */
+$navigationIconHtml = static function (
+    string $icon
+): string {
+    return wp_kses(
+        $icon,
+        [
+            'svg' => [
+                'viewBox' => true,
+                'viewbox' => true,
+                'aria-hidden' => true,
+                'focusable' => true,
+                'xmlns' => true,
+            ],
+            'path' => [
+                'd' => true,
+                'fill' => true,
+                'stroke' => true,
+                'stroke-width' => true,
+                'stroke-linecap' => true,
+                'stroke-linejoin' => true,
+            ],
+            'circle' => [
+                'cx' => true,
+                'cy' => true,
+                'r' => true,
+                'fill' => true,
+                'stroke' => true,
+                'stroke-width' => true,
+            ],
+            'rect' => [
+                'x' => true,
+                'y' => true,
+                'width' => true,
+                'height' => true,
+                'rx' => true,
+                'ry' => true,
+                'fill' => true,
+                'stroke' => true,
+                'stroke-width' => true,
+            ],
+            'line' => [
+                'x1' => true,
+                'x2' => true,
+                'y1' => true,
+                'y2' => true,
+                'stroke' => true,
+                'stroke-width' => true,
+                'stroke-linecap' => true,
+            ],
+            'polyline' => [
+                'points' => true,
+                'fill' => true,
+                'stroke' => true,
+                'stroke-width' => true,
+                'stroke-linecap' => true,
+                'stroke-linejoin' => true,
+            ],
+        ]
+    );
+};
 ?>
 
 <div
@@ -121,8 +189,8 @@ $homeUrl = remove_query_arg(
                         aria-hidden="true"
                     >
                         <?php
-                        echo wp_kses_post(
-                            $item['icon']
+                        echo $navigationIconHtml(
+                            (string) $item['icon']
                         );
                         ?>
                     </span>
@@ -151,8 +219,8 @@ $homeUrl = remove_query_arg(
                         aria-hidden="true"
                     >
                         <?php
-                        echo wp_kses_post(
-                            $item['icon']
+                        echo $navigationIconHtml(
+                            (string) $item['icon']
                         );
                         ?>
                     </span>
