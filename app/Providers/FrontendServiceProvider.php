@@ -484,6 +484,25 @@ class FrontendServiceProvider extends ServiceProvider
                 : GMRC_VERSION,
             true
         );
+
+        $livingGuildScriptPath =
+            GMRC_PATH
+            . 'assets/js/components/guild-hall/'
+            . 'living-guild.js';
+
+        wp_enqueue_script(
+            'gmrc-living-guild',
+            GMRC_URL
+                . 'assets/js/components/guild-hall/'
+                . 'living-guild.js',
+            ['gmrc-auby-desk'],
+            file_exists($livingGuildScriptPath)
+                ? (string) filemtime(
+                    $livingGuildScriptPath
+                )
+                : GMRC_VERSION,
+            true
+        );
         $portraitStudioScriptPath =
             GMRC_PATH
             . 'assets/js/components/media/portrait-studio.js';
