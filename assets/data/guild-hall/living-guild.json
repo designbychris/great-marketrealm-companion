@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0",
+  "initiative": "Guild Hall Initiative \u2014 Phase IV: The Living Guild",
+  "principle": "One delightful thing at a time.",
+  "story_beats": [
+    {
+      "id": "copper-coin",
+      "label": "A copper coin catches the light.",
+      "class": "gmrc-living-guild--coin",
+      "interactive": true,
+      "dayparts": [
+        "dawn",
+        "morning",
+        "afternoon",
+        "evening"
+      ],
+      "message": "You found a copper coin tucked beneath Auby's ledger."
+    },
+    {
+      "id": "quill-nudge",
+      "label": "Auby's quill shifts slightly.",
+      "class": "gmrc-living-guild--quill",
+      "interactive": false,
+      "dayparts": [
+        "morning",
+        "afternoon",
+        "evening",
+        "night"
+      ],
+      "message": ""
+    },
+    {
+      "id": "page-flutter",
+      "label": "A Guild Journal page lifts in the breeze.",
+      "class": "gmrc-living-guild--page",
+      "interactive": false,
+      "dayparts": [
+        "dawn",
+        "morning",
+        "afternoon",
+        "evening"
+      ],
+      "message": ""
+    },
+    {
+      "id": "market-mouse",
+      "label": "A tiny Market Mouse peeks out from the books.",
+      "class": "gmrc-living-guild--mouse",
+      "interactive": false,
+      "dayparts": [
+        "evening",
+        "night",
+        "late-night"
+      ],
+      "message": ""
+    },
+    {
+      "id": "purple-thumbprint",
+      "label": "A tiny Purple Thumbprint has appeared on the desk.",
+      "class": "gmrc-living-guild--thumbprint",
+      "interactive": false,
+      "dayparts": [
+        "dawn",
+        "morning",
+        "afternoon",
+        "evening",
+        "night"
+      ],
+      "message": ""
+    }
+  ],
+  "seasons": {
+    "spring": [
+      3,
+      4,
+      5
+    ],
+    "summer": [
+      6,
+      7,
+      8
+    ],
+    "harvest": [
+      9,
+      10,
+      11
+    ],
+    "winter": [
+      12,
+      1,
+      2
+    ]
+  }
+}
