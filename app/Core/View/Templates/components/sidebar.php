@@ -4,19 +4,26 @@ defined('ABSPATH') || exit;
 
 $currentUser = wp_get_current_user();
 
+$navigationId =
+    'gmrc-primary-navigation';
+
+$homeUrl = remove_query_arg(
+    'gmrc_route',
+    get_permalink()
+);
 ?>
 
-<aside class="gmrc-sidebar">
+<div
+    class="gmrc-sidebar"
+    data-guild-navigation
+>
 
     <div class="gmrc-sidebar__header">
 
         <a
             class="gmrc-brand"
             href="<?php echo esc_url(
-                remove_query_arg(
-                    'gmrc_route',
-                    get_permalink()
-                )
+                $homeUrl
             ); ?>"
         >
 
@@ -43,40 +50,38 @@ $currentUser = wp_get_current_user();
 
     </div>
 
-    <div class="gmrc-sidebar__user">
+    <button
+        class="gmrc-navigation-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="<?php echo esc_attr(
+            $navigationId
+        ); ?>"
+        data-guild-navigation-toggle
+    >
 
-        <div class="gmrc-sidebar__avatar">
+        <span
+            class="gmrc-navigation-toggle__icon"
+            aria-hidden="true"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </span>
 
-            <?php
-            echo get_avatar(
-                $currentUser->ID,
-                48
-            );
-            ?>
+        <span class="gmrc-navigation-toggle__label">
+            Guild Menu
+        </span>
 
-        </div>
-
-        <div class="gmrc-sidebar__user-details">
-
-            <strong>
-                <?php
-                echo esc_html(
-                    $currentUser->display_name
-                );
-                ?>
-            </strong>
-
-            <span>
-                Adventurer
-            </span>
-
-        </div>
-
-    </div>
+    </button>
 
     <nav
+        id="<?php echo esc_attr(
+            $navigationId
+        ); ?>"
         class="gmrc-navigation"
-        aria-label="Companion navigation"
+        aria-label="Guild Hall navigation"
+        data-guild-navigation-menu
     >
 
         <?php foreach ($navigation ?? [] as $item) : ?>
@@ -168,28 +173,51 @@ $currentUser = wp_get_current_user();
 
     </nav>
 
-    <div class="gmrc-sidebar__footer">
+    <div class="gmrc-sidebar__user">
+
+        <div
+            class="gmrc-sidebar__avatar"
+            aria-hidden="true"
+        >
+            <?php
+            echo get_avatar(
+                $currentUser->ID,
+                38
+            );
+            ?>
+        </div>
+
+        <div class="gmrc-sidebar__user-details">
+
+            <strong>
+                <?php
+                echo esc_html(
+                    $currentUser->display_name
+                );
+                ?>
+            </strong>
+
+            <span>
+                Adventurer
+            </span>
+
+        </div>
 
         <a
             href="<?php echo esc_url(
                 wp_logout_url(home_url())
             ); ?>"
-            class="gmrc-navigation__item"
+            class="gmrc-navigation__logout"
         >
-
-            <span
-                class="gmrc-navigation__icon"
-                aria-hidden="true"
-            >
+            <span aria-hidden="true">
                 ↪
             </span>
 
-            <span class="gmrc-navigation__label">
+            <span class="gmrc-navigation__logout-label">
                 Logout
             </span>
-
         </a>
 
     </div>
 
-</aside>
+</div>
