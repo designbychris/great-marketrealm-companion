@@ -1,0 +1,775 @@
+/**
+ * Guild Hall Initiative — Phase IV.1
+ * The Guild Navigation
+ *
+ * Refactors the historic vertical .gmrc-sidebar into a horizontal,
+ * cocoa-coloured Guild Hall navigation bar without changing the
+ * Navigation domain model.
+ */
+
+.gmrc-app-shell--guild-navigation {
+    display: block;
+
+    min-height: 720px;
+
+    overflow: visible;
+
+    background:
+        rgba(
+            248,
+            244,
+            234,
+            0.7
+        );
+}
+
+.gmrc-topbar--guild-navigation {
+    display: block;
+
+    min-height: 0;
+
+    padding: 0;
+
+    border-bottom:
+        1px solid
+        rgba(
+            216,
+            168,
+            78,
+            0.32
+        );
+
+    background:
+        #402617;
+
+    box-shadow:
+        0 0.45rem 1.2rem
+        rgba(
+            45,
+            25,
+            15,
+            0.18
+        );
+}
+
+.gmrc-sidebar {
+    display: grid;
+    grid-template-columns:
+        auto
+        minmax(0, 1fr)
+        auto;
+    grid-template-areas:
+        "brand navigation user";
+
+    align-items: center;
+
+    width: 100%;
+    min-width: 0;
+
+    padding:
+        0.8rem
+        clamp(
+            1.25rem,
+            3.5vw,
+            3.5rem
+        );
+
+    color: #fff0ce;
+
+    background: transparent;
+}
+
+.gmrc-sidebar__header {
+    grid-area: brand;
+
+    margin: 0;
+}
+
+.gmrc-brand {
+    gap: 0.7rem;
+
+    color: #fff0ce;
+}
+
+.gmrc-brand__icon {
+    display: grid;
+
+    flex: 0 0 2.65rem;
+
+    width: 2.65rem;
+    height: 2.65rem;
+
+    place-items: center;
+
+    border:
+        1px solid
+        rgba(
+            216,
+            168,
+            78,
+            0.38
+        );
+
+    border-radius: 50%;
+
+    background:
+        rgba(
+            255,
+            240,
+            206,
+            0.07
+        );
+
+    box-shadow:
+        inset 0 0 0 0.18rem
+        rgba(
+            216,
+            168,
+            78,
+            0.05
+        );
+
+    font-size: 1.35rem;
+
+    transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background-color 180ms ease;
+}
+
+.gmrc-brand:hover
+.gmrc-brand__icon,
+.gmrc-brand:focus-visible
+.gmrc-brand__icon {
+    border-color:
+        rgba(
+            216,
+            168,
+            78,
+            0.72
+        );
+
+    background:
+        rgba(
+            255,
+            240,
+            206,
+            0.11
+        );
+
+    transform:
+        rotate(-4deg)
+        scale(1.035);
+}
+
+.gmrc-brand__text {
+    white-space: nowrap;
+}
+
+.gmrc-brand__text strong,
+.gmrc-brand__text span {
+    display: block;
+}
+
+.gmrc-brand__text strong {
+    color: #fff0ce;
+
+    font-family:
+        var(
+            --gmrc-font-display,
+            Georgia,
+            serif
+        );
+
+    font-size: 0.94rem;
+    line-height: 1.05;
+}
+
+.gmrc-brand__text span {
+    margin-top: 0.18rem;
+
+    color:
+        rgba(
+            229,
+            184,
+            95,
+            0.88
+        );
+
+    font-size: 0.62rem;
+    font-weight: 800;
+
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+}
+
+.gmrc-navigation {
+    grid-area: navigation;
+
+    display: flex;
+
+    align-items: stretch;
+    justify-content: center;
+
+    gap: 0.15rem;
+
+    min-width: 0;
+
+    margin:
+        0
+        clamp(
+            1rem,
+            3vw,
+            3rem
+        );
+}
+
+.gmrc-navigation__item {
+    position: relative;
+
+    display: inline-flex;
+    grid-template-columns: none;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.45rem;
+
+    min-height: 3.35rem;
+
+    padding:
+        0.7rem
+        clamp(
+            0.7rem,
+            1.5vw,
+            1.15rem
+        );
+
+    border-radius: 0.35rem;
+
+    color:
+        rgba(
+            255,
+            240,
+            206,
+            0.74
+        );
+
+    white-space: nowrap;
+
+    text-decoration: none;
+
+    transition:
+        color 160ms ease,
+        background-color 160ms ease,
+        transform 160ms ease;
+}
+
+a.gmrc-navigation__item:hover {
+    color: #fff0ce;
+
+    background:
+        rgba(
+            255,
+            240,
+            206,
+            0.07
+        );
+
+    transform: translateY(-1px);
+}
+
+.gmrc-navigation__item.is-active {
+    color: #fff0ce;
+
+    background:
+        rgba(
+            216,
+            168,
+            78,
+            0.09
+        );
+
+    font-weight: 700;
+}
+
+.gmrc-navigation__item.is-active::after {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.22rem;
+    left: 0.75rem;
+
+    height: 2px;
+
+    border-radius: 999px;
+
+    content: "";
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #d8a84e 22%,
+            #d8a84e 78%,
+            transparent
+        );
+}
+
+.gmrc-navigation__item.is-disabled {
+    opacity: 0.42;
+}
+
+.gmrc-navigation__icon {
+    display: grid;
+
+    width: 1.35rem;
+    height: 1.35rem;
+
+    place-items: center;
+
+    color: #e0b25b;
+
+    font-size: 1rem;
+}
+
+.gmrc-navigation__icon svg {
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+.gmrc-sidebar__user {
+    grid-area: user;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.6rem;
+
+    min-width: 0;
+}
+
+.gmrc-sidebar__avatar {
+    display: grid;
+
+    flex: 0 0 2.35rem;
+
+    width: 2.35rem;
+    height: 2.35rem;
+
+    place-items: center;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(
+            216,
+            168,
+            78,
+            0.42
+        );
+
+    border-radius: 50%;
+
+    background: #2f1a10;
+}
+
+.gmrc-sidebar__avatar img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.gmrc-sidebar__user-details {
+    min-width: 0;
+}
+
+.gmrc-sidebar__user-details strong,
+.gmrc-sidebar__user-details span {
+    display: block;
+
+    white-space: nowrap;
+}
+
+.gmrc-sidebar__user-details strong {
+    max-width: 8.5rem;
+
+    overflow: hidden;
+
+    color: #fff0ce;
+
+    font-size: 0.76rem;
+
+    text-overflow: ellipsis;
+}
+
+.gmrc-sidebar__user-details span {
+    margin-top: 0.1rem;
+
+    color:
+        rgba(
+            229,
+            184,
+            95,
+            0.7
+        );
+
+    font-size: 0.58rem;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.gmrc-navigation__logout {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 0.3rem;
+
+    min-height: 2.4rem;
+
+    padding:
+        0.45rem
+        0.55rem;
+
+    color:
+        rgba(
+            255,
+            240,
+            206,
+            0.64
+        );
+
+    border-radius: 0.3rem;
+
+    font-size: 0.72rem;
+
+    text-decoration: none;
+}
+
+.gmrc-navigation__logout:hover,
+.gmrc-navigation__logout:focus-visible {
+    color: #fff0ce;
+
+    background:
+        rgba(
+            255,
+            240,
+            206,
+            0.07
+        );
+}
+
+.gmrc-navigation-toggle {
+    grid-area: toggle;
+
+    display: none;
+
+    align-items: center;
+
+    gap: 0.55rem;
+
+    min-height: 2.7rem;
+
+    padding:
+        0.55rem
+        0.8rem;
+
+    color: #fff0ce;
+
+    border:
+        1px solid
+        rgba(
+            216,
+            168,
+            78,
+            0.38
+        );
+
+    border-radius: 0.4rem;
+
+    cursor: pointer;
+
+    background:
+        rgba(
+            255,
+            240,
+            206,
+            0.055
+        );
+
+    font: inherit;
+}
+
+.gmrc-navigation-toggle__icon {
+    display: grid;
+
+    gap: 0.22rem;
+
+    width: 1.1rem;
+}
+
+.gmrc-navigation-toggle__icon span {
+    display: block;
+
+    width: 100%;
+    height: 2px;
+
+    border-radius: 999px;
+
+    background: #e4b85f;
+
+    transition:
+        transform 180ms ease,
+        opacity 180ms ease;
+}
+
+.gmrc-navigation-toggle[aria-expanded="true"]
+.gmrc-navigation-toggle__icon
+span:nth-child(1) {
+    transform:
+        translateY(0.44rem)
+        rotate(45deg);
+}
+
+.gmrc-navigation-toggle[aria-expanded="true"]
+.gmrc-navigation-toggle__icon
+span:nth-child(2) {
+    opacity: 0;
+}
+
+.gmrc-navigation-toggle[aria-expanded="true"]
+.gmrc-navigation-toggle__icon
+span:nth-child(3) {
+    transform:
+        translateY(-0.44rem)
+        rotate(-45deg);
+}
+
+.gmrc-navigation-toggle__label {
+    font-size: 0.76rem;
+    font-weight: 800;
+
+    letter-spacing: 0.04em;
+}
+
+.gmrc-app-shell--guild-navigation
+.gmrc-app-main {
+    width: 100%;
+    min-width: 0;
+}
+
+.gmrc-app-shell--guild-navigation
+.gmrc-content {
+    width: 100%;
+
+    padding:
+        clamp(
+            1.5rem,
+            4vw,
+            4rem
+        );
+}
+
+/* The historic vertical footer is replaced by the utility area. */
+.gmrc-sidebar__footer {
+    display: none !important;
+}
+
+@media (max-width: 1180px) {
+    .gmrc-sidebar__user-details {
+        display: none;
+    }
+
+    .gmrc-navigation {
+        margin:
+            0
+            1rem;
+    }
+
+    .gmrc-navigation__item {
+        padding:
+            0.65rem
+            0.7rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .gmrc-sidebar {
+        grid-template-columns:
+            minmax(0, 1fr)
+            auto;
+        grid-template-areas:
+            "brand toggle"
+            "navigation navigation"
+            "user user";
+
+        gap:
+            0
+            1rem;
+
+        padding:
+            0.75rem
+            1rem;
+    }
+
+    .gmrc-navigation-toggle {
+        display: inline-flex;
+
+        justify-self: end;
+    }
+
+    .gmrc-navigation {
+        display: none;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        justify-content: flex-start;
+
+        gap: 0.25rem;
+
+        margin:
+            0.75rem
+            0
+            0;
+
+        padding-top: 0.7rem;
+
+        border-top:
+            1px solid
+            rgba(
+                216,
+                168,
+                78,
+                0.22
+            );
+    }
+
+    .gmrc-sidebar.is-navigation-open
+    .gmrc-navigation {
+        display: flex;
+    }
+
+    .gmrc-navigation__item {
+        justify-content: flex-start;
+
+        width: 100%;
+        min-height: 3rem;
+
+        padding:
+            0.65rem
+            0.75rem;
+    }
+
+    .gmrc-navigation__item.is-active::after {
+        top: 0.55rem;
+        right: auto;
+        bottom: 0.55rem;
+        left: 0;
+
+        width: 2px;
+        height: auto;
+    }
+
+    .gmrc-sidebar__user {
+        display: none;
+
+        margin-top: 0.35rem;
+        padding-top: 0.75rem;
+
+        border-top:
+            1px solid
+            rgba(
+                216,
+                168,
+                78,
+                0.18
+            );
+    }
+
+    .gmrc-sidebar.is-navigation-open
+    .gmrc-sidebar__user {
+        display: flex;
+    }
+
+    .gmrc-sidebar__user-details {
+        display: block;
+    }
+
+    .gmrc-navigation__logout {
+        margin-left: auto;
+    }
+
+    .gmrc-app-shell--guild-navigation
+    .gmrc-content {
+        padding:
+            clamp(
+                1.25rem,
+                4vw,
+                2.25rem
+            );
+    }
+}
+
+@media (max-width: 520px) {
+    .gmrc-brand__text strong {
+        font-size: 0.82rem;
+    }
+
+    .gmrc-brand__text span {
+        font-size: 0.54rem;
+    }
+
+    .gmrc-brand__icon {
+        flex-basis: 2.35rem;
+
+        width: 2.35rem;
+        height: 2.35rem;
+
+        font-size: 1.15rem;
+    }
+
+    .gmrc-navigation-toggle__label {
+        position: absolute;
+
+        width: 1px;
+        height: 1px;
+
+        overflow: hidden;
+
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+
+        white-space: nowrap;
+    }
+
+    .gmrc-navigation-toggle {
+        width: 2.75rem;
+
+        justify-content: center;
+
+        padding:
+            0.55rem
+            0.7rem;
+    }
+
+    .gmrc-navigation__logout-label {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-brand__icon,
+    .gmrc-navigation__item,
+    .gmrc-navigation-toggle__icon span {
+        transition: none !important;
+    }
+}
