@@ -86,38 +86,6 @@ $navigationIconHtml = static function (
     data-guild-navigation
 >
 
-    <div class="gmrc-sidebar__header">
-
-        <a
-            class="gmrc-brand"
-            href="<?php echo esc_url(
-                $homeUrl
-            ); ?>"
-        >
-
-            <span
-                class="gmrc-brand__icon"
-                aria-hidden="true"
-            >
-                🍆
-            </span>
-
-            <span class="gmrc-brand__text">
-
-                <strong>
-                    Great Marketrealm
-                </strong>
-
-                <span>
-                    Companion
-                </span>
-
-            </span>
-
-        </a>
-
-    </div>
-
     <button
         class="gmrc-navigation-toggle"
         type="button"
