@@ -20,6 +20,10 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterNa
 use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequest;
 use GreatMarketrealmCompanion\Modules\Characters\Requests\UpdateCharacterRequest;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScore;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Languages;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiencies;
 use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\SubmittedPortraitRecipeFactory;
@@ -163,13 +167,46 @@ final class CharacterController
         StoreCharacterRequest $request
     ): RedirectResponse {
         $data = $request->characterData();
-    
+        $registration = $request->registrationData();
+
+        $abilities = $registration['abilities'];
+
         $character = $this->characterFactory->fromInput(
             name: $data['name'],
             race: $data['race'],
-            characterClass: $data['class']
+            characterClass: $data['class'],
+            abilityScores: AbilityScores::fromScores(
+                strength: AbilityScore::fromInt(
+                    $abilities['strength']
+                ),
+                dexterity: AbilityScore::fromInt(
+                    $abilities['dexterity']
+                ),
+                constitution: AbilityScore::fromInt(
+                    $abilities['constitution']
+                ),
+                intelligence: AbilityScore::fromInt(
+                    $abilities['intelligence']
+                ),
+                wisdom: AbilityScore::fromInt(
+                    $abilities['wisdom']
+                ),
+                charisma: AbilityScore::fromInt(
+                    $abilities['charisma']
+                )
+            ),
+            background: Background::fromString(
+                $registration['background']
+            ),
+            selectedLanguages: Languages::fromStrings(
+                $registration['languages']
+            ),
+            selectedToolProficiencies:
+                ToolProficiencies::fromStrings(
+                    $registration['tools']
+                )
         );
-    
+
         $portraitRecipe = $this
             ->submittedPortraits
             ->create(
@@ -211,16 +248,35 @@ final class CharacterController
             )
         );
     
-        $character->changeBackground(
-            Background::fromString(
-                $data['background']
-            )
+        $background = Background::fromString(
+            $data['background']
         );
-    
+
+        $registration = $request
+            ->registrationChoicesFor(
+                $background
+            );
+
+        if ($registration['confirmed']) {
+            $character->completeRegistration(
+                $background,
+                Languages::fromStrings(
+                    $registration['languages']
+                ),
+                ToolProficiencies::fromStrings(
+                    $registration['tools']
+                )
+            );
+        } else {
+            $character->changeBackground(
+                $background
+            );
+        }
+
         $this->updateCharacter->handle(
             $character
         );
-    
+
         $this->flash->success(
             'The adventurer’s register has been updated.'
         );
