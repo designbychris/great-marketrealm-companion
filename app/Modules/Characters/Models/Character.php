@@ -52,6 +52,8 @@ final class Character
         private HitPoints $hitPoints,
         private AbilityScores $abilityScores,
         private Conditions $conditions,
+        private Languages $selectedLanguages,
+        private ToolProficiencies $selectedToolProficiencies,
     ) {
     }
 
@@ -66,6 +68,8 @@ final class Character
         HitPoints $hitPoints,
         AbilityScores $abilityScores,
         ?Background $background = null,
+        ?Languages $selectedLanguages = null,
+        ?ToolProficiencies $selectedToolProficiencies = null,
     ): self {
         return new self(
             id: $id,
@@ -81,6 +85,12 @@ final class Character
             hitPoints: $hitPoints,
             abilityScores: $abilityScores,
             conditions: Conditions::none(),
+            selectedLanguages:
+                $selectedLanguages
+                ?? Languages::none(),
+            selectedToolProficiencies:
+                $selectedToolProficiencies
+                ?? ToolProficiencies::none(),
         );
     }
 
@@ -101,6 +111,8 @@ final class Character
         AbilityScores $abilityScores,
         ?Conditions $conditions = null,
         ?Background $background = null,
+        ?Languages $selectedLanguages = null,
+        ?ToolProficiencies $selectedToolProficiencies = null,
     ): self {
         return new self(
             id: $id,
@@ -117,6 +129,12 @@ final class Character
             abilityScores: $abilityScores,
             conditions: $conditions
                 ?? Conditions::none(),
+            selectedLanguages:
+                $selectedLanguages
+                ?? Languages::none(),
+            selectedToolProficiencies:
+                $selectedToolProficiencies
+                ?? ToolProficiencies::none(),
         );
     }
 
@@ -286,7 +304,17 @@ final class Character
         return Languages::fromStrings(
             $this->background
                 ->fixedLanguageIdentifiers()
+        )->merge(
+            $this->selectedLanguages
         );
+    }
+
+    /**
+     * Return languages explicitly selected during registration.
+     */
+    public function selectedLanguages(): Languages
+    {
+        return $this->selectedLanguages;
     }
     
     /**
@@ -294,10 +322,45 @@ final class Character
      */
     public function toolProficiencies(): ToolProficiencies
     {
-        return ToolProficiencies::fromStrings(
-            $this->background
-                ->toolProficiencyIdentifiers()
+        $backgroundTools =
+            ToolProficiencies::fromStrings(
+                $this->background
+                    ->toolProficiencyIdentifiers()
+            );
+
+        /*
+         * Preserve legacy unresolved categories until a Character has
+         * actually completed registration. Once explicit selections exist,
+         * replace those category placeholders with the concrete choices.
+         */
+        if (
+            $this->selectedToolProficiencies
+                ->isEmpty()
+        ) {
+            return $backgroundTools;
+        }
+
+        foreach (
+            $backgroundTools->unresolvedChoices()
+            as $choice
+        ) {
+            $backgroundTools =
+                $backgroundTools->remove(
+                    $choice
+                );
+        }
+
+        return $backgroundTools->merge(
+            $this->selectedToolProficiencies
         );
+    }
+
+    /**
+     * Return concrete tools explicitly selected during registration.
+     */
+    public function selectedToolProficiencies(): ToolProficiencies
+    {
+        return $this->selectedToolProficiencies;
     }
 
     /**
@@ -327,6 +390,29 @@ final class Character
         Background $background
     ): void {
         $this->background = $background;
+
+        /*
+         * Background-specific selections cannot safely survive a background
+         * change unless the Registrar supplies fresh choices.
+         */
+        $this->selectedLanguages =
+            Languages::none();
+
+        $this->selectedToolProficiencies =
+            ToolProficiencies::none();
+    }
+
+    /**
+     * Complete or amend the background-dependent registration record.
+     */
+    public function completeRegistration(
+        Background $background,
+        Languages $languages,
+        ToolProficiencies $tools
+    ): void {
+        $this->background = $background;
+        $this->selectedLanguages = $languages;
+        $this->selectedToolProficiencies = $tools;
     }
 
     /**
