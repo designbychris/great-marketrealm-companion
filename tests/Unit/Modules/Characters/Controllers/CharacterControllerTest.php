@@ -630,21 +630,28 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
             );
         }
 
-        public function testDestroyDeletesACharacterByItsUlid(): void
+        public function testDestroyDeletesACharacterAndRedirectsToRegister(): void
         {
             $repository = new CharacterControllerRepositorySpy();
 
-            $id = CharacterId::generate();
+            $character = $this->character();
+
+            $repository->characters = [
+                $character,
+            ];
 
             $controller = $this->controller(
                 repository: $repository
             );
 
             $result = $controller->destroy(
-                $id->value()
+                $character->id()->value()
             );
 
-            self::assertTrue($result);
+            self::assertInstanceOf(
+                RedirectResponse::class,
+                $result
+            );
 
             self::assertSame(
                 1,
@@ -659,7 +666,9 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
             self::assertTrue(
                 $repository
                     ->deletedId
-                    ->equals($id)
+                    ->equals(
+                        $character->id()
+                    )
             );
         }
 
@@ -673,8 +682,8 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
     $repository ??=
         new CharacterControllerRepositorySpy();
 
-    $portraitRepository =
-    new CharacterControllerPortraitRepositorySpy();
+    $portraitRepository ??=
+        new CharacterControllerPortraitRepositorySpy();
 
     $portraitLayerRegistry =
         new PortraitLayerRegistry();
@@ -734,7 +743,8 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
 
     $deleteCharacter =
         new DeleteCharacterAction(
-            $repository
+            $repository,
+            $portraitRepository
         );
 
     $definitions = new Definitions();
