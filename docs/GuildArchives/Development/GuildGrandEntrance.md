@@ -1,6 +1,6 @@
 # Guild Hall Initiative — Phase II.2: The Grand Entrance
 
-The Companion's cocoa Guild Navigation now enters the application like a
+The Companion's cocoa Guild Navigation enters the application like a
 physical object rather than appearing as a flat interface element.
 
 ## Motion
@@ -20,14 +20,13 @@ Tablet/mobile uses a shorter travel distance.
 
 `prefers-reduced-motion: reduce` disables the entrance completely.
 
-## The Overgrown Guild Fence
+## Phase II.2.1 refinement
 
-The Companion shell now finishes with a garden-fence footer using the
-Marketrealm illustration created for this phase.
+The Companion no longer renders a plugin-owned footer. The surrounding
+WordPress installation owns the site's footer and can use its own imagery
+without the Companion duplicating that structure.
 
-The runtime application uses a high-quality WebP asset. The original PNG is
-retained under the Illustration Kit as the source master.
+The cocoa Guild Navigation now uses a dedicated woodgrain background instead.
 
-The fence deliberately varies its board and post heights and uses ivy, vines
-and small flowers to reinforce the Great Marketrealm's cultivated,
-storybook-world character.
+The application uses a compressed WebP texture at runtime. The original PNG
+master remains in the Guild Illustration Kit.
