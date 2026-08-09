@@ -32,6 +32,11 @@ return static function (
     );
 
     $router->get(
+        '/characters/{id}/delete',
+        [CharacterController::class, 'confirmDelete']
+    );
+
+    $router->get(
         '/characters/{id}',
         [CharacterController::class, 'show']
     );
