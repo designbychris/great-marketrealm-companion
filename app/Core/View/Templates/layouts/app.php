@@ -58,6 +58,30 @@ $navigationJsVersion =
 
     </div>
 
+    <footer
+        class="gmrc-guild-footer"
+        aria-label="<?php echo esc_attr__(
+            'Great Marketrealm Companion footer',
+            'great-marketrealm-companion'
+        ); ?>"
+    >
+        <div
+            class="gmrc-guild-footer__garden"
+            aria-hidden="true"
+        ></div>
+
+        <div class="gmrc-guild-footer__inscription">
+            <strong>
+                Where adventure meets ingredients.
+            </strong>
+
+            <span>
+                Every adventure. Every hero. Every ingredient.
+                Every story.
+            </span>
+        </div>
+    </footer>
+
 </div>
 
 <script
