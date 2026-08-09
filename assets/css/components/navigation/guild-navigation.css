@@ -933,145 +933,6 @@ span:nth-child(3) {
     }
 }
 
-/* -----------------------------------------------------------------
- * The Overgrown Guild Fence
- * ----------------------------------------------------------------- */
-
-.gmrc-guild-footer {
-    position: relative;
-
-    min-height:
-        clamp(
-            15rem,
-            28vw,
-            25rem
-        );
-
-    overflow: hidden;
-
-    border-top:
-        1px solid
-        rgba(93, 59, 31, 0.28);
-
-    background:
-        #d8bd8a;
-}
-
-.gmrc-guild-footer__garden {
-    position: absolute;
-    inset: 0;
-
-    background-image:
-        url("../../images/guild-hall/footer/guild-garden-fence.webp");
-
-    background-position:
-        center bottom;
-
-    background-repeat:
-        no-repeat;
-
-    background-size:
-        cover;
-
-    transform:
-        scale(1.01);
-}
-
-/*
- * Gentle cocoa vignette makes the fence belong to the same physical
- * interface language as the navigation without muddying the plants.
- */
-.gmrc-guild-footer::before {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-
-    pointer-events: none;
-
-    content: "";
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(64, 38, 23, 0) 0%,
-            rgba(64, 38, 23, 0.03) 45%,
-            rgba(64, 38, 23, 0.32) 78%,
-            rgba(64, 38, 23, 0.82) 100%
-        );
-}
-
-.gmrc-guild-footer__inscription {
-    position: absolute;
-    right: 1rem;
-    bottom: 1rem;
-    left: 1rem;
-    z-index: 2;
-
-    display: grid;
-
-    gap: 0.18rem;
-
-    justify-items: center;
-
-    color: #fff0ce;
-
-    text-align: center;
-
-    text-shadow:
-        0 1px 0
-        rgba(49, 28, 16, 0.7),
-        0 0.2rem 0.7rem
-        rgba(49, 28, 16, 0.55);
-}
-
-.gmrc-guild-footer__inscription strong {
-    font-family:
-        var(
-            --gmrc-font-display,
-            Georgia,
-            serif
-        );
-
-    font-size:
-        clamp(
-            0.9rem,
-            1.4vw,
-            1.15rem
-        );
-
-    letter-spacing: 0.04em;
-}
-
-.gmrc-guild-footer__inscription span {
-    color:
-        rgba(
-            255,
-            240,
-            206,
-            0.82
-        );
-
-    font-size:
-        clamp(
-            0.66rem,
-            1vw,
-            0.82rem
-        );
-
-    letter-spacing: 0.06em;
-}
-
-@media (max-width: 700px) {
-    .gmrc-guild-footer {
-        min-height: 15rem;
-    }
-
-    .gmrc-guild-footer__garden {
-        background-position:
-            55% bottom;
-    }
-}
-
 @media (prefers-reduced-motion: reduce) {
     .gmrc-topbar--guild-navigation {
         animation: none !important;
@@ -1081,7 +942,51 @@ span:nth-child(3) {
         will-change: auto;
     }
 
-    .gmrc-guild-footer__garden {
-        transform: none;
-    }
+}
+
+
+/**
+ * Guild Hall Initiative — Phase II.2.1
+ * Cocoa Woodgrain Refinement
+ *
+ * The WordPress theme owns the site footer. The Companion only textures
+ * its own Guild Navigation bar.
+ */
+
+.gmrc-topbar--guild-navigation {
+    background-color: #402617;
+
+    background-image:
+        linear-gradient(
+            180deg,
+            rgba(37, 20, 11, 0.12),
+            rgba(64, 38, 23, 0.28)
+        ),
+        url("../../images/guild-hall/navigation/cocoa-woodgrain.webp");
+
+    background-position:
+        center,
+        center;
+
+    background-repeat:
+        no-repeat,
+        repeat-x;
+
+    background-size:
+        cover,
+        auto 100%;
+}
+
+/*
+ * A translucent cocoa wash protects navigation contrast and prevents
+ * the woodgrain from competing with labels and Guild gold.
+ */
+.gmrc-sidebar {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(64, 38, 23, 0.72),
+            rgba(64, 38, 23, 0.58) 50%,
+            rgba(64, 38, 23, 0.72)
+        );
 }
