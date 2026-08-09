@@ -1,0 +1,213 @@
+/**
+ * Character Lifecycle Initiative — Phase III
+ * The Complete Registration
+ */
+
+.gmrc-registration-stage {
+    position: relative;
+}
+
+.gmrc-registration-stage::before {
+    position: absolute;
+    top: 1.2rem;
+    left: -0.35rem;
+    width: 0.25rem;
+    height: 3rem;
+    border-radius: 999px;
+    content: "";
+    background: linear-gradient(180deg, #74458a, #b88a37);
+}
+
+.gmrc-registration-abilities {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.gmrc-registration-ability {
+    display: grid;
+    gap: 0.4rem;
+    padding: 0.8rem 0.65rem;
+    border: 1px solid rgba(96, 55, 115, 0.22);
+    background: rgba(255, 247, 218, 0.48);
+    text-align: center;
+}
+
+.gmrc-registration-ability > span {
+    color: #512e66;
+    font-size: 0.67rem;
+    font-weight: 900;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.gmrc-registration-ability select,
+.gmrc-registration-choice select {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.45rem 0.65rem;
+    border: 1px solid rgba(90, 58, 34, 0.34);
+    border-radius: 0.25rem;
+    color: #321f17;
+    background: rgba(255, 249, 229, 0.82);
+    font: inherit;
+}
+
+.gmrc-registration-ability small {
+    min-height: 1.25rem;
+    color: #603773;
+    font-family: var(--gmrc-font-handwritten, "Caveat", cursive);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+[data-registration-choices] {
+    display: grid;
+    gap: 1rem;
+}
+
+[data-registration-choices] .gmrc-form-section__header {
+    grid-column: 1 / -1;
+}
+
+.gmrc-registration-choice {
+    padding: 1rem 1.1rem;
+    border: 1px solid rgba(96, 55, 115, 0.22);
+    background: rgba(255, 247, 218, 0.4);
+}
+
+.gmrc-registration-choice[hidden] {
+    display: none !important;
+}
+
+.gmrc-registration-choice label {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: #512e66;
+    font-family: var(--gmrc-font-heading, Georgia, serif);
+    font-size: 0.84rem;
+    font-weight: 800;
+}
+
+.gmrc-registration-complete-note {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 0.85rem 1rem;
+    color: #512e66;
+    border: 1px dashed rgba(96, 55, 115, 0.34);
+    background: rgba(255, 247, 218, 0.35);
+    text-align: center;
+}
+
+.gmrc-registration-complete-note[hidden] {
+    display: none !important;
+}
+
+.gmrc-registration-review {
+    position: relative;
+    width: min(100%, 58rem);
+    margin: clamp(1.5rem, 4vw, 3rem) auto 1.5rem;
+    padding: clamp(2rem, 4vw, 3.25rem) clamp(1.4rem, 5vw, 4rem);
+    border: 1px solid rgba(112, 76, 38, 0.3);
+    background:
+        radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.38), transparent 42%),
+        linear-gradient(180deg, #fff0c9, #efd79f);
+    box-shadow: 0 1rem 2.4rem rgba(64, 38, 23, 0.16);
+    text-align: center;
+    transform: rotate(-0.12deg);
+}
+
+.gmrc-registration-review__tape {
+    position: absolute;
+    top: -0.7rem;
+    left: 50%;
+    width: 5rem;
+    height: 1.4rem;
+    background: linear-gradient(135deg, #653d8f, #8658ac);
+    box-shadow: 0 0.2rem 0.35rem rgba(64, 38, 23, 0.16);
+    transform: translateX(-50%) rotate(-3deg);
+}
+
+.gmrc-registration-review h2 {
+    margin: 0.15rem 0 0.5rem;
+    color: #321f17;
+    font-family: var(--gmrc-font-handwritten, "Caveat", cursive);
+    font-size: clamp(2.4rem, 4vw, 3.8rem);
+    font-weight: 600;
+    line-height: 1;
+}
+
+.gmrc-registration-review > p {
+    max-width: 37rem;
+    margin: 0 auto 1.4rem;
+}
+
+.gmrc-registration-review__record {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 1.5rem;
+    margin: 0;
+    text-align: left;
+}
+
+.gmrc-registration-review__record div {
+    padding: 0.75rem 0;
+    border-bottom: 1px dotted rgba(82, 54, 34, 0.28);
+}
+
+.gmrc-registration-review__record dt {
+    color: rgba(65, 44, 34, 0.58);
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.gmrc-registration-review__record dd {
+    margin: 0.18rem 0 0;
+    color: #321f17;
+    font-weight: 700;
+}
+
+.gmrc-registration-review__signature {
+    margin-top: 1.4rem !important;
+    color: #512e66;
+    font-family: var(--gmrc-font-handwritten, "Caveat", cursive);
+    font-size: 1.35rem;
+}
+
+.gmrc-registration-review__signature span {
+    display: block;
+}
+
+@media (min-width: 740px) {
+    [data-registration-choices] {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .gmrc-registration-abilities {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .gmrc-registration-abilities,
+    .gmrc-registration-review__record {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 420px) {
+    .gmrc-registration-abilities,
+    .gmrc-registration-review__record {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-registration-review {
+        transform: none;
+    }
+}
