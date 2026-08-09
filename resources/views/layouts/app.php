@@ -10,38 +10,6 @@ $currentUser = wp_get_current_user();
 
     <aside class="gmrc-sidebar">
 
-        <div class="gmrc-sidebar__header">
-
-            <a
-                href="<?php echo esc_url(
-                    remove_query_arg('gmrc_route', get_permalink())
-                ); ?>"
-                class="gmrc-brand"
-            >
-
-                <span
-                    class="gmrc-brand__mascot"
-                    aria-hidden="true"
-                >
-                    🍆
-                </span>
-
-                <span class="gmrc-brand__text">
-
-                    <strong>
-                        Great Marketrealm Companion
-                    </strong>
-
-                    <small>
-                        Keeper of the Kingdoms
-                    </small>
-
-                </span>
-
-            </a>
-
-        </div>
-
         <nav
             class="gmrc-navigation"
             aria-label="Companion navigation"
