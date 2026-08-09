@@ -20,18 +20,23 @@ defined('ABSPATH') || exit;
 trait ResolvesRegistrationInput
 {
     /**
-     * Standard Guild ability array used during registration.
+     * Return the Standard Guild ability array used during registration.
      *
-     * @var array<int,int>
+     * Trait constants require PHP 8.2+, while the Companion supports PHP 8.1.
+     *
+     * @return array<int,int>
      */
-    private const STANDARD_GUILD_ARRAY = [
-        8,
-        10,
-        12,
-        13,
-        14,
-        15,
-    ];
+    private function standardGuildArray(): array
+    {
+        return [
+            8,
+            10,
+            12,
+            13,
+            14,
+            15,
+        ];
+    }
 
     /**
      * Return whether this submission came through the Complete Registration UI.
@@ -128,7 +133,7 @@ trait ResolvesRegistrationInput
                 $strict
                 && ! in_array(
                     $score,
-                    self::STANDARD_GUILD_ARRAY,
+                    $this->standardGuildArray(),
                     true
                 )
             ) {
@@ -155,7 +160,7 @@ trait ResolvesRegistrationInput
 
             sort($submitted);
 
-            $expected = self::STANDARD_GUILD_ARRAY;
+            $expected = $this->standardGuildArray();
             sort($expected);
 
             if ($submitted !== $expected) {
