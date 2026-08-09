@@ -1,0 +1,558 @@
+/**
+ * Character Lifecycle Initiative — Phase III.1
+ * The Registrar's Finishing Touches
+ */
+
+/* ---------------------------------------------------------------
+ * Unified Register Adventurer prompt
+ * --------------------------------------------------------------- */
+
+.gmrc-register-adventurer-prompt {
+    --gmrc-register-paper: #f8e9bd;
+    --gmrc-register-ink: #3f2b21;
+    --gmrc-register-purple: #603773;
+    --gmrc-register-gold: #b68936;
+
+    position: relative;
+
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+
+    gap: clamp(1rem, 3vw, 1.75rem);
+
+    align-items: center;
+
+    min-height: 12rem;
+
+    padding:
+        clamp(1.6rem, 4vw, 2.7rem);
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(104, 70, 37, 0.28);
+
+    background:
+        radial-gradient(
+            circle at 50% 10%,
+            rgba(255, 255, 255, 0.42),
+            transparent 44%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(255, 247, 216, 0.78),
+            rgba(239, 213, 157, 0.66)
+        );
+
+    box-shadow:
+        inset 0 0 2rem
+        rgba(86, 53, 31, 0.05);
+}
+
+.gmrc-register-adventurer-prompt::after {
+    position: absolute;
+    right: 1rem;
+    bottom: 0.75rem;
+
+    width: 5rem;
+    height: 5rem;
+
+    pointer-events: none;
+
+    content: "✦";
+
+    color:
+        rgba(96, 55, 115, 0.08);
+
+    font-size: 5rem;
+    line-height: 1;
+}
+
+.gmrc-register-adventurer-prompt--empty {
+    grid-template-columns: 1fr;
+
+    max-width: 66rem;
+
+    min-height: 21rem;
+
+    margin:
+        clamp(1.5rem, 4vw, 3rem)
+        auto
+        0;
+
+    text-align: center;
+}
+
+.gmrc-register-adventurer-prompt__eyebrow {
+    margin: 0;
+
+    color:
+        rgba(77, 49, 31, 0.68);
+
+    font-family:
+        var(
+            --gmrc-font-book,
+            Georgia,
+            serif
+        );
+
+    font-size: 0.72rem;
+    font-weight: 900;
+
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.gmrc-register-adventurer-prompt__quill {
+    display: grid;
+    place-items: center;
+
+    width: 4.4rem;
+    aspect-ratio: 1;
+
+    color: #fff0ce;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #84599a,
+            #603773 65%,
+            #482456
+        );
+
+    box-shadow:
+        0 0.5rem 1rem
+        rgba(60, 34, 68, 0.18);
+
+    font-size: 2rem;
+}
+
+.gmrc-register-adventurer-prompt--empty
+.gmrc-register-adventurer-prompt__quill {
+    position: absolute;
+    top: 1.2rem;
+    left: 1.3rem;
+
+    width: 3rem;
+
+    font-size: 1.3rem;
+}
+
+.gmrc-register-adventurer-prompt__copy h2 {
+    margin: 0;
+
+    color: var(--gmrc-register-ink);
+
+    font-family:
+        var(
+            --gmrc-font-display,
+            Georgia,
+            serif
+        );
+
+    font-size:
+        clamp(1.45rem, 3vw, 2.15rem);
+
+    line-height: 1.12;
+}
+
+.gmrc-register-adventurer-prompt--empty
+.gmrc-register-adventurer-prompt__copy h2 {
+    font-family:
+        var(
+            --gmrc-font-handwritten,
+            "Caveat",
+            cursive
+        );
+
+    font-size:
+        clamp(2.5rem, 5vw, 4.1rem);
+
+    font-weight: 600;
+}
+
+.gmrc-register-adventurer-prompt__copy p {
+    max-width: 43rem;
+
+    margin:
+        0.65rem
+        0
+        1.1rem;
+
+    color:
+        rgba(63, 43, 33, 0.72);
+
+    line-height: 1.65;
+}
+
+.gmrc-register-adventurer-prompt--empty
+.gmrc-register-adventurer-prompt__copy p {
+    margin:
+        0.8rem
+        auto
+        1.4rem;
+}
+
+.gmrc-register-adventurer-prompt__action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.45rem;
+
+    min-height: 2.8rem;
+
+    text-decoration: none;
+}
+
+.gmrc-register-adventurer-prompt__auby {
+    width:
+        min(
+            100%,
+            28rem
+        );
+
+    margin:
+        0.5rem
+        auto
+        0;
+
+    padding:
+        0.8rem
+        1.1rem;
+
+    color: #4c3127;
+
+    border:
+        1px solid
+        rgba(96, 55, 115, 0.2);
+
+    background:
+        rgba(255, 247, 218, 0.48);
+
+    font-family:
+        var(
+            --gmrc-font-handwritten,
+            "Caveat",
+            cursive
+        );
+
+    font-size: 1.3rem;
+
+    transform: rotate(-1deg);
+}
+
+.gmrc-register-adventurer-prompt__auby p {
+    margin: 0;
+}
+
+.gmrc-register-adventurer-prompt__auby footer {
+    margin-top: 0.2rem;
+
+    color: var(--gmrc-register-purple);
+
+    text-align: right;
+}
+
+/* ---------------------------------------------------------------
+ * Registrar's Desk — Create Character visual language
+ * --------------------------------------------------------------- */
+
+.gmrc-character-creator {
+    --gmrc-registrar-paper: #f7e7bb;
+    --gmrc-registrar-paper-deep: #ead09a;
+    --gmrc-registrar-ink: #412c22;
+    --gmrc-registrar-purple: #603773;
+    --gmrc-registrar-gold: #b88a37;
+
+    width: min(100%, 92rem);
+
+    margin: 0 auto;
+}
+
+.gmrc-character-creator > .gmrc-page-header {
+    max-width: 60rem;
+
+    margin:
+        0
+        auto
+        clamp(1.4rem, 3vw, 2.3rem);
+
+    text-align: center;
+}
+
+.gmrc-character-creator
+.gmrc-page-header h1 {
+    margin:
+        0.15rem
+        0
+        0.45rem;
+
+    color: var(--gmrc-registrar-ink);
+
+    font-family:
+        var(
+            --gmrc-font-handwritten,
+            "Caveat",
+            cursive
+        );
+
+    font-size:
+        clamp(3rem, 6vw, 5.4rem);
+
+    font-weight: 600;
+    line-height: 0.94;
+
+    letter-spacing: 0;
+}
+
+.gmrc-character-creator
+.gmrc-page-header__content::after {
+    display: block;
+
+    width: min(18rem, 60%);
+
+    height: 1px;
+
+    margin:
+        1rem
+        auto
+        0;
+
+    content: "";
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--gmrc-registrar-gold),
+            transparent
+        );
+}
+
+.gmrc-character-form {
+    position: relative;
+
+    gap:
+        clamp(1.2rem, 3vw, 2rem);
+
+    padding:
+        clamp(1rem, 2.2vw, 1.6rem);
+
+    border:
+        1px solid
+        rgba(91, 57, 32, 0.32);
+
+    border-radius: 0.55rem;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(72, 42, 23, 0.08),
+            transparent 3%,
+            transparent 97%,
+            rgba(72, 42, 23, 0.08)
+        ),
+        radial-gradient(
+            circle at 50% 8%,
+            rgba(255, 255, 255, 0.44),
+            transparent 38%
+        ),
+        linear-gradient(
+            180deg,
+            var(--gmrc-registrar-paper),
+            var(--gmrc-registrar-paper-deep)
+        );
+
+    box-shadow:
+        0 1.4rem 3rem
+        rgba(57, 33, 18, 0.17),
+        inset 0 0 0 0.28rem
+        rgba(255, 245, 214, 0.28);
+}
+
+.gmrc-character-form::before {
+    position: absolute;
+    top: -0.6rem;
+    left: clamp(1.5rem, 5vw, 4rem);
+
+    width: 2.2rem;
+    height: 8.5rem;
+
+    content: "";
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            90deg,
+            #512e66,
+            #74458a 50%,
+            #482456
+        );
+
+    box-shadow:
+        0 0.35rem 0.6rem
+        rgba(52, 29, 57, 0.18);
+}
+
+.gmrc-character-form
+.gmrc-form-section {
+    position: relative;
+
+    margin: 0;
+
+    padding:
+        clamp(1.4rem, 3vw, 2.2rem);
+
+    border:
+        1px solid
+        rgba(108, 73, 39, 0.2);
+
+    border-radius: 0.25rem;
+
+    background:
+        rgba(255, 248, 224, 0.38);
+}
+
+.gmrc-character-form
+.gmrc-form-section::after {
+    position: absolute;
+    right: 0.8rem;
+    bottom: 0.5rem;
+
+    content: "❧";
+
+    color:
+        rgba(96, 55, 115, 0.13);
+
+    font-size: 1.5rem;
+}
+
+.gmrc-character-form
+.gmrc-form-section__header {
+    max-width: 52rem;
+
+    margin-bottom: 1.25rem;
+}
+
+.gmrc-character-form
+.gmrc-form-section__header h2 {
+    margin:
+        0.12rem
+        0
+        0.35rem;
+
+    color: var(--gmrc-registrar-ink);
+
+    font-family:
+        var(
+            --gmrc-font-display,
+            Georgia,
+            serif
+        );
+
+    font-size:
+        clamp(1.5rem, 2.6vw, 2.2rem);
+
+    line-height: 1.08;
+}
+
+.gmrc-character-form
+.gmrc-form-section__header p:last-child {
+    max-width: 46rem;
+
+    color:
+        rgba(65, 44, 34, 0.72);
+
+    line-height: 1.6;
+}
+
+.gmrc-character-form
+.gmrc-living-desk {
+    border:
+        1px solid
+        rgba(94, 59, 32, 0.32);
+
+    box-shadow:
+        0 1rem 2rem
+        rgba(57, 33, 18, 0.13);
+}
+
+.gmrc-character-form
+.gmrc-registration-review {
+    border-width: 1px;
+
+    box-shadow:
+        0 1.2rem 2.3rem
+        rgba(57, 33, 18, 0.14);
+}
+
+.gmrc-character-form
+.gmrc-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 0.8rem;
+
+    justify-content: center;
+
+    padding:
+        1.25rem
+        1rem
+        0.5rem;
+
+    border-top:
+        1px solid
+        rgba(105, 70, 39, 0.24);
+}
+
+@media (max-width: 760px) {
+    .gmrc-register-adventurer-prompt {
+        grid-template-columns: 1fr;
+
+        text-align: center;
+    }
+
+    .gmrc-register-adventurer-prompt__quill {
+        margin: 0 auto;
+    }
+
+    .gmrc-register-adventurer-prompt__copy p {
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .gmrc-character-form {
+        padding: 0.75rem;
+    }
+
+    .gmrc-character-form::before {
+        left: 1rem;
+
+        width: 1.6rem;
+        height: 6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .gmrc-register-adventurer-prompt--empty {
+        min-height: 18rem;
+
+        padding-top: 4rem;
+    }
+
+    .gmrc-character-form
+    .gmrc-form-section {
+        padding: 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-register-adventurer-prompt__auby {
+        transform: none;
+    }
+}
