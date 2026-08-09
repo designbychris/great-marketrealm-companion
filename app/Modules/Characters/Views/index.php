@@ -83,36 +83,15 @@ ob_start();
 
         <?php if ($characters === []) : ?>
 		
-        <section class="gmrc-empty-state">
-            <div
-                class="gmrc-empty-state__icon"
-                aria-hidden="true"
-            >
-                ♙
-            </div>
-
-            <div>
-                <h2>No adventurers have arrived yet</h2>
-
-                <p>
-                    Create your first hero and begin their journey through
-                    the Great Marketrealm.
-                </p>
-
-                <a
-                    class="gmrc-button"
-                    href="<?php echo esc_url(
-                        add_query_arg(
-                            'gmrc_route',
-                            'characters/create',
-                            $companionUrl
-                        )
-                    ); ?>"
-                >
-                    Create your first character
-                </a>
-            </div>
-        </section>
+        <?php
+        echo $this->component(
+            'components.entries.register-adventurer-prompt',
+            [
+                'companionUrl' => $companionUrl,
+                'empty' => true,
+            ]
+        );
+        ?>
 
     <?php else : ?>
 
@@ -139,32 +118,15 @@ ob_start();
 		        ?>
 		    <?php endforeach; ?>
 		
-		    <a
-		        class="adventurer-create-entry"
-		        href="<?php echo esc_url(
-		            add_query_arg(
-		                'gmrc_route',
-		                'characters/create',
-		                $companionUrl
-		            )
-		        ); ?>"
-		    >
-		        <span
-		            class="adventurer-create-entry__icon"
-		            aria-hidden="true"
-		        >
-		            ✒
-		        </span>
-		
-		        <span class="adventurer-create-entry__content">
-		            <strong>Inscribe a New Adventurer</strong>
-		
-		            <small>
-		                Prepare a fresh page for another hero of the
-		                Great Marketrealm.
-		            </small>
-		        </span>
-		    </a>
+            <?php
+            echo $this->component(
+                'components.entries.register-adventurer-prompt',
+                [
+                    'companionUrl' => $companionUrl,
+                    'empty' => false,
+                ]
+            );
+            ?>
 		</div>
 
     <?php endif; ?>
