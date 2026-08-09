@@ -11,6 +11,9 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Languages;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiencies;
 use GreatMarketrealmCompanion\Modules\Characters\Rules\CharacterCreationRules;
 
 defined('ABSPATH') || exit;
@@ -45,7 +48,10 @@ final class CharacterFactory
         CharacterName $name,
         Race $race,
         CharacterClass $characterClass,
-        AbilityScores $abilityScores
+        AbilityScores $abilityScores,
+        ?Background $background = null,
+        ?Languages $selectedLanguages = null,
+        ?ToolProficiencies $selectedToolProficiencies = null
     ): Character {
         $startingHitPoints = $this->rules
             ->startingHitPoints(
@@ -61,7 +67,10 @@ final class CharacterFactory
             HitPoints::full(
                 $startingHitPoints
             ),
-            $abilityScores
+            $abilityScores,
+            $background,
+            $selectedLanguages,
+            $selectedToolProficiencies
         );
     }
 
@@ -75,7 +84,10 @@ final class CharacterFactory
         string $name,
         string $race,
         string $characterClass,
-        ?AbilityScores $abilityScores = null
+        ?AbilityScores $abilityScores = null,
+        ?Background $background = null,
+        ?Languages $selectedLanguages = null,
+        ?ToolProficiencies $selectedToolProficiencies = null
     ): Character {
         return $this->create(
             CharacterName::fromString($name),
@@ -84,7 +96,10 @@ final class CharacterFactory
                 $characterClass
             ),
             $abilityScores
-                ?? $this->rules->defaultAbilityScores()
+                ?? $this->rules->defaultAbilityScores(),
+            $background,
+            $selectedLanguages,
+            $selectedToolProficiencies
         );
     }
 }
