@@ -5,6 +5,9 @@ declare(strict_types=1);
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Language;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiency;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\ViewModels\PortraitViewModel;
 
 defined('ABSPATH') || exit;
@@ -94,6 +97,12 @@ $identifierLabel = static function (
 $nameError = $fieldError('name');
 $raceError = $fieldError('race');
 $classError = $fieldError('class');
+$backgroundError = $fieldError('background');
+$abilitiesError = $fieldError('abilities');
+$languageOneError = $fieldError('language_1');
+$languageTwoError = $fieldError('language_2');
+$artisanToolError = $fieldError('artisan_tool');
+$gamingSetError = $fieldError('gaming_set');
 
 $nameValue = isset($old['name'])
     && is_scalar($old['name'])
@@ -121,6 +130,60 @@ if (! CharacterClass::supports($classValue)) {
 $raceOptions = Race::all();
 
 $classOptions = CharacterClass::all();
+$backgroundOptions = Background::all();
+$languageOptions = Language::all();
+$artisanToolOptions = ToolProficiency::artisansTools();
+$gamingSetOptions = ToolProficiency::gamingSets();
+
+$backgroundValue = isset($old['background'])
+    && is_scalar($old['background'])
+        ? (string) $old['background']
+        : '';
+
+if (! Background::supports($backgroundValue)) {
+    $backgroundValue = '';
+}
+
+$abilityDefaults = [
+    'strength' => 15,
+    'dexterity' => 14,
+    'constitution' => 13,
+    'intelligence' => 12,
+    'wisdom' => 10,
+    'charisma' => 8,
+];
+
+$abilityValues = [];
+
+foreach ($abilityDefaults as $ability => $default) {
+    $submitted = $old[$ability] ?? $default;
+
+    $abilityValues[$ability] =
+        is_scalar($submitted)
+            ? (int) $submitted
+            : $default;
+}
+
+$languageOneValue = isset($old['language_1'])
+    && is_scalar($old['language_1'])
+        ? (string) $old['language_1']
+        : '';
+
+$languageTwoValue = isset($old['language_2'])
+    && is_scalar($old['language_2'])
+        ? (string) $old['language_2']
+        : '';
+
+$artisanToolValue = isset($old['artisan_tool'])
+    && is_scalar($old['artisan_tool'])
+        ? (string) $old['artisan_tool']
+        : '';
+
+$gamingSetValue = isset($old['gaming_set'])
+    && is_scalar($old['gaming_set'])
+        ? (string) $old['gaming_set']
+        : '';
+
 
 $aubyNotes = is_array($aubyNotes ?? null)
     ? $aubyNotes
@@ -252,6 +315,12 @@ $charactersUrl = add_query_arg(
             type="hidden"
             name="gmrc_route"
             value="characters"
+        >
+
+        <input
+            type="hidden"
+            name="registration_confirmed"
+            value="1"
         >
 
         <input
@@ -782,6 +851,177 @@ $charactersUrl = add_query_arg(
             <?php endif; ?>
         </section>
 
+        <section class="gmrc-form-section gmrc-registration-stage" data-registration-stage="history">
+            <header class="gmrc-form-section__header">
+                <p class="gmrc-eyebrow">Personal History</p>
+                <h2>Choose a background</h2>
+                <p>Record the skills, languages and practical training gained before adventuring.</p>
+            </header>
+            <fieldset class="gmrc-background-selector" data-registration-backgrounds>
+                <legend class="screen-reader-text">Character background</legend>
+                <div class="gmrc-background-grid">
+                    <?php foreach ($backgroundOptions as $background) : ?>
+                        <?php
+                        $identifier = $background->value();
+                        $isSelected = $identifier === $backgroundValue;
+                        $skills = array_map(
+                            $identifierLabel,
+                            $background->skillProficiencies()->proficiencies()
+                        );
+                        $tools = $background->toolProficiencyIdentifiers();
+                        $needsArtisanTools = in_array(
+                            ToolProficiency::CATEGORY_ARTISANS_TOOLS,
+                            $tools,
+                            true
+                        );
+                        $needsGamingSet = in_array(
+                            ToolProficiency::CATEGORY_GAMING_SET,
+                            $tools,
+                            true
+                        );
+                        ?>
+                        <label class="gmrc-background-option <?php echo $isSelected ? 'gmrc-background-option--selected' : ''; ?>" data-background-option>
+                            <input
+                                class="gmrc-background-option__input"
+                                type="radio"
+                                name="background"
+                                value="<?php echo esc_attr($identifier); ?>"
+                                data-background-label="<?php echo esc_attr($background->label()); ?>"
+                                data-language-choices="<?php echo esc_attr((string) $background->languageChoices()); ?>"
+                                data-needs-artisan-tools="<?php echo $needsArtisanTools ? '1' : '0'; ?>"
+                                data-needs-gaming-set="<?php echo $needsGamingSet ? '1' : '0'; ?>"
+                                <?php checked($isSelected); ?>
+                                required
+                            >
+                            <span class="gmrc-background-option__image" aria-hidden="true">
+                                <span class="gmrc-background-option__monogram"><?php echo esc_html(strtoupper(substr($background->label(), 0, 1))); ?></span>
+                            </span>
+                            <span class="gmrc-background-option__heading">
+                                <strong class="gmrc-background-option__title"><?php echo esc_html($background->label()); ?></strong>
+                                <span class="gmrc-background-option__control" aria-hidden="true"></span>
+                            </span>
+                            <span class="gmrc-background-option__summary"><?php echo esc_html(implode(', ', $skills)); ?></span>
+                            <span class="gmrc-background-option__details" data-background-details <?php echo $isSelected ? '' : 'hidden'; ?>>
+                                <span class="gmrc-background-option__detail">
+                                    <strong>Language choices</strong>
+                                    <span><?php echo esc_html((string) $background->languageChoices()); ?></span>
+                                </span>
+                                <span class="gmrc-background-option__detail">
+                                    <strong>Practical training</strong>
+                                    <span>
+                                        <?php
+                                        $toolLabels = [];
+                                        foreach ($tools as $toolId) {
+                                            $toolLabels[] = ToolProficiency::supports($toolId)
+                                                ? ToolProficiency::fromString($toolId)->label()
+                                                : $identifierLabel($toolId);
+                                        }
+                                        echo esc_html($toolLabels !== [] ? implode(', ', $toolLabels) : 'None');
+                                        ?>
+                                    </span>
+                                </span>
+                            </span>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+            </fieldset>
+            <?php if ($backgroundError !== null) : ?>
+                <p class="gmrc-form-error" role="alert"><?php echo esc_html($backgroundError); ?></p>
+            <?php endif; ?>
+        </section>
+
+        <section class="gmrc-form-section gmrc-registration-stage" data-registration-stage="abilities">
+            <header class="gmrc-form-section__header">
+                <p class="gmrc-eyebrow">Adventuring Measures</p>
+                <h2>Assign the Standard Guild Array</h2>
+                <p>Assign 15, 14, 13, 12, 10 and 8 exactly once.</p>
+            </header>
+            <div class="gmrc-registration-abilities" data-registration-abilities>
+                <?php foreach ([
+                    'strength' => 'Strength',
+                    'dexterity' => 'Dexterity',
+                    'constitution' => 'Constitution',
+                    'intelligence' => 'Intelligence',
+                    'wisdom' => 'Wisdom',
+                    'charisma' => 'Charisma',
+                ] as $ability => $label) : ?>
+                    <label class="gmrc-registration-ability">
+                        <span><?php echo esc_html($label); ?></span>
+                        <select name="<?php echo esc_attr($ability); ?>" data-registration-ability="<?php echo esc_attr($ability); ?>" required>
+                            <?php foreach ([15, 14, 13, 12, 10, 8] as $score) : ?>
+                                <option value="<?php echo esc_attr((string) $score); ?>" <?php selected($abilityValues[$ability], $score); ?>>
+                                    <?php echo esc_html((string) $score); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <small data-registration-modifier="<?php echo esc_attr($ability); ?>"></small>
+                    </label>
+                <?php endforeach; ?>
+            </div>
+            <?php if ($abilitiesError !== null) : ?>
+                <p class="gmrc-form-error" role="alert"><?php echo esc_html($abilitiesError); ?></p>
+            <?php endif; ?>
+        </section>
+
+        <section class="gmrc-form-section gmrc-registration-stage" data-registration-stage="proficiencies" data-registration-choices>
+            <header class="gmrc-form-section__header">
+                <p class="gmrc-eyebrow">Registrar’s Choices</p>
+                <h2>Complete your proficiencies</h2>
+                <p>Only choices required by the selected background are revealed here.</p>
+            </header>
+            <div class="gmrc-registration-choice" data-language-slot="1" hidden>
+                <label for="registration-language-1">First language</label>
+                <select id="registration-language-1" name="language_1">
+                    <option value="">Choose a language</option>
+                    <?php foreach ($languageOptions as $language) : ?>
+                        <option value="<?php echo esc_attr($language->value()); ?>" <?php selected($languageOneValue, $language->value()); ?>>
+                            <?php echo esc_html($language->label()); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <?php if ($languageOneError !== null) : ?><p class="gmrc-form-error" role="alert"><?php echo esc_html($languageOneError); ?></p><?php endif; ?>
+            </div>
+            <div class="gmrc-registration-choice" data-language-slot="2" hidden>
+                <label for="registration-language-2">Second language</label>
+                <select id="registration-language-2" name="language_2">
+                    <option value="">Choose a different language</option>
+                    <?php foreach ($languageOptions as $language) : ?>
+                        <option value="<?php echo esc_attr($language->value()); ?>" <?php selected($languageTwoValue, $language->value()); ?>>
+                            <?php echo esc_html($language->label()); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <?php if ($languageTwoError !== null) : ?><p class="gmrc-form-error" role="alert"><?php echo esc_html($languageTwoError); ?></p><?php endif; ?>
+            </div>
+            <div class="gmrc-registration-choice" data-tool-choice="artisan" hidden>
+                <label for="registration-artisan-tool">Artisan’s Tool</label>
+                <select id="registration-artisan-tool" name="artisan_tool">
+                    <option value="">Choose an artisan’s tool</option>
+                    <?php foreach ($artisanToolOptions as $tool) : ?>
+                        <option value="<?php echo esc_attr($tool->value()); ?>" <?php selected($artisanToolValue, $tool->value()); ?>>
+                            <?php echo esc_html($tool->label()); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <?php if ($artisanToolError !== null) : ?><p class="gmrc-form-error" role="alert"><?php echo esc_html($artisanToolError); ?></p><?php endif; ?>
+            </div>
+            <div class="gmrc-registration-choice" data-tool-choice="gaming" hidden>
+                <label for="registration-gaming-set">Gaming Set</label>
+                <select id="registration-gaming-set" name="gaming_set">
+                    <option value="">Choose a gaming set</option>
+                    <?php foreach ($gamingSetOptions as $tool) : ?>
+                        <option value="<?php echo esc_attr($tool->value()); ?>" <?php selected($gamingSetValue, $tool->value()); ?>>
+                            <?php echo esc_html($tool->label()); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <?php if ($gamingSetError !== null) : ?><p class="gmrc-form-error" role="alert"><?php echo esc_html($gamingSetError); ?></p><?php endif; ?>
+            </div>
+            <p class="gmrc-registration-complete-note" data-registration-no-extra-choices hidden>
+                ✦ This background has no unresolved Registrar choices.
+            </p>
+        </section>
+
         <section
     class="gmrc-living-desk"
     data-living-desk
@@ -1047,12 +1287,28 @@ $charactersUrl = add_query_arg(
     </div>
 </section>
 
+        <section class="gmrc-registration-review" aria-labelledby="gmrc-registration-review-title" data-registration-review>
+            <span class="gmrc-registration-review__tape" aria-hidden="true"></span>
+            <p class="gmrc-eyebrow">Final Registrar Review</p>
+            <h2 id="gmrc-registration-review-title">Review the Guild Record</h2>
+            <p>Auby has checked the ink. The Registrar is waiting for your seal.</p>
+            <dl class="gmrc-registration-review__record">
+                <div><dt>Adventurer</dt><dd data-registration-review-name>Awaiting inscription</dd></div>
+                <div><dt>Heritage</dt><dd data-registration-review-race>Awaiting selection</dd></div>
+                <div><dt>Calling</dt><dd data-registration-review-class>Awaiting selection</dd></div>
+                <div><dt>Background</dt><dd data-registration-review-background>Awaiting selection</dd></div>
+                <div><dt>Guild Array</dt><dd data-registration-review-abilities>Awaiting assignment</dd></div>
+                <div><dt>Registrar choices</dt><dd data-registration-review-choices>Awaiting background</dd></div>
+            </dl>
+            <p class="gmrc-registration-review__signature">Ready for the Guild seal.<span>— Auby</span></p>
+        </section>
+
         <div class="gmrc-form-actions">
             <?php
             echo $this->component(
                 'components.controls.wax-button',
                 [
-                    'label' => 'Record Adventurer',
+                    'label' => 'Seal the Guild Record',
                     'type' => 'submit',
                     'symbol' => '✦',
                     'variant' => 'wax',
