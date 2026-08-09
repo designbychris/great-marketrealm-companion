@@ -135,6 +135,14 @@ $editUrl = add_query_arg(
     $companionUrl
 );
 
+$deleteUrl = add_query_arg(
+    'gmrc_route',
+    'characters/'
+        . rawurlencode($characterId)
+        . '/delete',
+    $companionUrl
+);
+
 $entryReference = strtoupper(
     substr(
         $characterId,
@@ -197,6 +205,19 @@ $abilities = [
                     'symbol' => '✎',
                     'variant' => 'wax',
                     'size' => 'medium',
+                ]
+            );
+
+            echo $this->component(
+                'components.controls.paper-button',
+                [
+                    'label' => 'Delete Adventurer',
+                    'href' => $deleteUrl,
+                    'symbol' => '×',
+                    'variant' => 'danger',
+                    'size' => 'medium',
+                    'ariaLabel' =>
+                        'Delete ' . $name,
                 ]
             );
             ?>
