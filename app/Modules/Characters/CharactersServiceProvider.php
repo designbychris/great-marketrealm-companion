@@ -147,6 +147,9 @@ final class CharactersServiceProvider extends ServiceProvider
                 new DeleteCharacterAction(
                     $container->make(
                         CharacterRepositoryInterface::class
+                    ),
+                    $container->make(
+                        CharacterPortraitRepositoryInterface::class
                     )
                 )
         );
