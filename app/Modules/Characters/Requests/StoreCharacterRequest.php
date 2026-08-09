@@ -7,6 +7,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Requests;
 use GreatMarketrealmCompanion\Core\Http\FormRequest;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
+use GreatMarketrealmCompanion\Modules\Characters\Requests\Concerns\ResolvesRegistrationInput;
 
 defined('ABSPATH') || exit;
 
@@ -24,6 +25,8 @@ defined('ABSPATH') || exit;
  */
 final class StoreCharacterRequest extends FormRequest
 {
+    use ResolvesRegistrationInput;
+
     /**
      * Portrait fields submitted by the live Illuminator.
      *
@@ -120,6 +123,53 @@ final class StoreCharacterRequest extends FormRequest
             'name' => $input->string('name'),
             'race' => $input->string('race'),
             'class' => $input->string('class'),
+        ];
+    }
+
+    /**
+     * Return Complete Registration data.
+     *
+     * Core characterData() intentionally remains the original three-string
+     * contract for imports, API callers and existing tests.
+     *
+     * @return array{
+     *     background:string,
+     *     abilities:array{
+     *         strength:int,
+     *         dexterity:int,
+     *         constitution:int,
+     *         intelligence:int,
+     *         wisdom:int,
+     *         charisma:int
+     *     },
+     *     languages:array<int,string>,
+     *     tools:array<int,string>,
+     *     confirmed:bool
+     * }
+     */
+    public function registrationData(): array
+    {
+        /*
+         * Validate the established core fields first.
+         */
+        $this->validated();
+
+        $background = $this
+            ->registrationBackground();
+
+        $choices = $this
+            ->registrationChoices(
+                $background
+            );
+
+        return [
+            'background' => $background->value(),
+            'abilities' =>
+                $this->registrationAbilityScores(),
+            'languages' => $choices['languages'],
+            'tools' => $choices['tools'],
+            'confirmed' =>
+                $this->registrationIsConfirmed(),
         ];
     }
 

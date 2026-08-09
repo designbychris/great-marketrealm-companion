@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Requests;
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
 use GreatMarketrealmCompanion\Core\Http\FormRequest;
+use GreatMarketrealmCompanion\Modules\Characters\Requests\Concerns\ResolvesRegistrationInput;
 
 defined('ABSPATH') || exit;
 
@@ -19,6 +20,8 @@ defined('ABSPATH') || exit;
  */
 final class UpdateCharacterRequest extends FormRequest
 {
+    use ResolvesRegistrationInput;
+
     /**
      * Determine whether the current user
      * may edit Characters.
@@ -54,6 +57,34 @@ final class UpdateCharacterRequest extends FormRequest
             ],
         ];
     }
+
+    /**
+     * Resolve background-dependent language/tool selections.
+     *
+     * @return array{
+     *     languages:array<int,string>,
+     *     tools:array<int,string>,
+     *     confirmed:bool
+     * }
+     */
+    public function registrationChoicesFor(
+        Background $background
+    ): array {
+        $this->validated();
+
+        $choices = $this
+            ->registrationChoices(
+                $background
+            );
+
+        return [
+            'languages' => $choices['languages'],
+            'tools' => $choices['tools'],
+            'confirmed' =>
+                $this->registrationIsConfirmed(),
+        ];
+    }
+
 
     /**
      * Return validated Character data.
