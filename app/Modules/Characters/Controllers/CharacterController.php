@@ -85,6 +85,10 @@ final class CharacterController
                         QuoteCategories::REGISTER
                     ),
                     'sealRegistry' => $this->sealRegistry,
+                    'flash' => [
+                        'success' => $this->flash->success(),
+                        'error' => $this->flash->error(),
+                    ],
                 ]
             )
         );
@@ -229,16 +233,56 @@ final class CharacterController
     }
 
     /**
+     * Display the Final Farewell confirmation.
+     */
+    public function confirmDelete(
+        string $id
+    ): string {
+        $character = $this->findCharacter($id);
+
+        return $this->views->render(
+            View::make(
+                'characters.delete',
+                [
+                    'character' => $character,
+                    'portrait' => $this
+                        ->portraitRenderer
+                        ->forCharacter(
+                            $character
+                        ),
+                ]
+            )
+        );
+    }
+
+    /**
      * Delete an existing Character.
      */
     public function destroy(
         string $id
-    ): bool {
+    ): RedirectResponse {
+        /*
+         * Resolve through the user-scoped repository first. This confirms
+         * the Character exists and belongs to the current adventurer
+         * before any destructive action is attempted.
+         */
+        $character = $this->findCharacter($id);
+        $name = $character->name()->value();
+
         $this->deleteCharacter->handle(
-            CharacterId::fromString($id)
+            $character->id()
         );
 
-        return true;
+        $this->flash->success(
+            sprintf(
+                '%s has been removed from your Adventurer Register.',
+                $name
+            )
+        );
+
+        return $this->responses->redirect(
+            $this->charactersUrl()
+        );
     }
 
     /**
