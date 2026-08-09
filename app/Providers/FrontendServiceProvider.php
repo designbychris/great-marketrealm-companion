@@ -299,6 +299,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/characters/complete-registration.css',
             ],
             [
+                'handle' => 'gmrc-registrars-finishing-touches',
+                'path' => 'modules/characters/registrars-finishing-touches.css',
+            ],
+            [
                 'handle' => 'gmrc-background-selector',
                 'path' => 'modules/characters/background-selector.css',
             ],
