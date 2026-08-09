@@ -10,6 +10,10 @@ $portraits = is_array($portraits ?? null)
 
 $companionUrl = home_url('/companion/');
 
+$flash = is_array($flash ?? null)
+    ? $flash
+    : [];
+
 /*
  * Capture the Character Register content.
  */
@@ -17,6 +21,42 @@ ob_start();
 ?>
 
 <section class="gmrc-characters">
+    <?php if (! empty($flash['success'])) : ?>
+        <div
+            class="gmrc-register-notice gmrc-register-notice--success"
+            role="status"
+        >
+            <span
+                class="gmrc-register-notice__seal"
+                aria-hidden="true"
+            >✦</span>
+
+            <p>
+                <?php echo esc_html(
+                    $flash['success']
+                ); ?>
+            </p>
+        </div>
+    <?php endif; ?>
+
+    <?php if (! empty($flash['error'])) : ?>
+        <div
+            class="gmrc-register-notice gmrc-register-notice--error"
+            role="alert"
+        >
+            <span
+                class="gmrc-register-notice__seal"
+                aria-hidden="true"
+            >!</span>
+
+            <p>
+                <?php echo esc_html(
+                    $flash['error']
+                ); ?>
+            </p>
+        </div>
+    <?php endif; ?>
+
     <?php
     $ledger = 'The Guild Ledger';
     $volume = 'Volume I';
