@@ -16,6 +16,10 @@
 .gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-mouth,
 .gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
+.gmrc-g2-eyes,
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
+.gmrc-g2-eyelids,
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-outfit,
 .gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-hands,
@@ -75,8 +79,7 @@
 
 .gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-eyes.is-blinking {
-    transform: scaleY(0.075) !important;
-    opacity: 0.96;
+    opacity: 0 !important;
 }
 
 .gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
@@ -174,24 +177,37 @@
 
 
 /**
- * Painted eyelid blink.
+ * Phase III.1 — Living Portrait face alignment.
  *
- * Dedicated eyelids are more reliable than transforming an SVG <use>
- * element containing the open eyes.
+ * Eyes and painted eyelids now participate in the same breathing transform
+ * as the rest of the face. Blinking swaps paint only; it never changes the
+ * face transform, so the Ledger and Portrait Studio stay aligned.
  */
+.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-g2-face-overlay,
+.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-g2-eyes,
+.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-g2-eyelids {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+}
+
 .gmrc-portrait-layers[data-portrait-generation="2"]
 .gmrc-g2-eyelids {
     opacity: 0;
-
     pointer-events: none;
+    transition: opacity 45ms ease-in-out;
+}
 
-    transition:
-        opacity 45ms ease-in-out;
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
+.gmrc-g2-eyes.is-blinking {
+    opacity: 0 !important;
 }
 
 .gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-eyelids.is-blinking {
-    opacity: 1;
+    opacity: 1 !important;
 }
 
 /**
@@ -205,43 +221,13 @@
     transform-origin: left bottom;
 }
 
-/**
- * Generation 2 face overlay.
- *
- * SVG paint order, not CSS z-index, makes the eyelids sit above the eyes.
- */
-.gmrc-portrait-layers[data-portrait-generation="2"]
-.gmrc-g2-face-overlay {
-    pointer-events: none;
-    transform-box: fill-box;
-    transform-origin: center;
-}
-
-.gmrc-portrait-layers[data-portrait-generation="2"]
-.gmrc-g2-eyelids {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 45ms ease-in-out;
-}
-
-.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
-.gmrc-g2-eyelids.is-blinking {
-    opacity: 1 !important;
-}
-
-/**
- * True painted blink.
- *
- * The open-eye illustration disappears for exactly the same interval
- * that the painted closed-eyelid overlay is visible.
- */
-.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
-.gmrc-g2-eyes.is-blinking {
-    opacity: 0 !important;
-    transform: none !important;
-}
-
-.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
-.gmrc-g2-eyelids.is-blinking {
-    opacity: 1 !important;
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-portrait-layers[data-portrait-generation="2"]
+    .gmrc-g2-eyes,
+    .gmrc-portrait-layers[data-portrait-generation="2"]
+    .gmrc-g2-eyelids {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
 }
