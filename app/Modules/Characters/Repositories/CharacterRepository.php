@@ -16,6 +16,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Languages;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiencies;
 use RuntimeException;
 use WP_Post;
 
@@ -46,6 +48,8 @@ final class CharacterRepository implements CharacterRepositoryInterface
     private const META_WISDOM = '_gmrc_wisdom';
     private const META_CHARISMA = '_gmrc_charisma';
     private const META_BACKGROUND = '_gmrc_background';
+    private const META_SELECTED_LANGUAGES = '_gmrc_selected_languages';
+    private const META_SELECTED_TOOLS = '_gmrc_selected_tools';
 
     private string $postType = 'gmrc_character';
 
@@ -244,6 +248,22 @@ final class CharacterRepository implements CharacterRepositoryInterface
                 ->background()
                 ->value()
         );
+
+        update_post_meta(
+            $postId,
+            self::META_SELECTED_LANGUAGES,
+            $character
+                ->selectedLanguages()
+                ->values()
+        );
+
+        update_post_meta(
+            $postId,
+            self::META_SELECTED_TOOLS,
+            $character
+                ->selectedToolProficiencies()
+                ->values()
+        );
         
         update_post_meta(
             $postId,
@@ -395,7 +415,15 @@ final class CharacterRepository implements CharacterRepositoryInterface
             ),
             background: $this->mapBackground(
                 $post->ID
-            )
+            ),
+            selectedLanguages:
+                $this->mapSelectedLanguages(
+                    $post->ID
+                ),
+            selectedToolProficiencies:
+                $this->mapSelectedTools(
+                    $post->ID
+                )
         );
     }
 
@@ -475,6 +503,74 @@ final class CharacterRepository implements CharacterRepositoryInterface
     
         return Background::fromString(
             $stored
+        );
+    }
+
+    /**
+     * Rebuild explicitly selected registration languages.
+     */
+    private function mapSelectedLanguages(
+        int $postId
+    ): Languages {
+        $stored = get_post_meta(
+            $postId,
+            self::META_SELECTED_LANGUAGES,
+            true
+        );
+
+        if (! is_array($stored)) {
+            return Languages::none();
+        }
+
+        $languages = array_values(
+            array_filter(
+                $stored,
+                static fn (
+                    mixed $language
+                ): bool =>
+                    is_string($language)
+                    && \GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Language::supports(
+                        $language
+                    )
+            )
+        );
+
+        return Languages::fromStrings(
+            $languages
+        );
+    }
+
+    /**
+     * Rebuild explicitly selected registration tools.
+     */
+    private function mapSelectedTools(
+        int $postId
+    ): ToolProficiencies {
+        $stored = get_post_meta(
+            $postId,
+            self::META_SELECTED_TOOLS,
+            true
+        );
+
+        if (! is_array($stored)) {
+            return ToolProficiencies::none();
+        }
+
+        $tools = array_values(
+            array_filter(
+                $stored,
+                static fn (
+                    mixed $tool
+                ): bool =>
+                    is_string($tool)
+                    && \GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiency::supports(
+                        $tool
+                    )
+            )
+        );
+
+        return ToolProficiencies::fromStrings(
+            $tools
         );
     }
 
