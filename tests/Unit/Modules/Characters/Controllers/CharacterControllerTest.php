@@ -64,6 +64,7 @@ namespace {
 
 namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
 
+    use GreatMarketrealmCompanion\Core\Http\RedirectResponse;
     use GreatMarketrealmCompanion\Core\Http\Request;
     use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
     use GreatMarketrealmCompanion\Core\Session\FlashStore;
