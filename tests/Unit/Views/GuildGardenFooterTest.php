@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class GuildGardenFooterTest extends TestCase
 {
-    public function testAppLayoutContainsGuildGardenFooter(): void
+    public function testCompanionDoesNotRenderItsOwnSiteFooter(): void
     {
         $root = dirname(__DIR__, 3);
 
@@ -20,31 +20,31 @@ final class GuildGardenFooterTest extends TestCase
 
         self::assertIsString($layout);
 
-        self::assertStringContainsString(
+        self::assertStringNotContainsString(
             'gmrc-guild-footer',
             $layout
         );
 
-        self::assertStringContainsString(
+        self::assertStringNotContainsString(
             'Where adventure meets ingredients.',
             $layout
         );
     }
 
-    public function testFooterArtworkExistsAndIsReferenced(): void
+    public function testNavigationUsesDedicatedCocoaWoodgrainAsset(): void
     {
         $root = dirname(__DIR__, 3);
 
         self::assertFileExists(
             $root
-            . '/assets/images/guild-hall/footer/'
-            . 'guild-garden-fence.webp'
+            . '/assets/images/guild-hall/navigation/'
+            . 'cocoa-woodgrain.webp'
         );
 
         self::assertFileExists(
             $root
-            . '/art/IllustrationKit/GuildHall/Footer/'
-            . 'guild-garden-fence-master.png'
+            . '/art/IllustrationKit/GuildHall/Navigation/'
+            . 'cocoa-woodgrain-master.png'
         );
 
         $css = file_get_contents(
@@ -56,7 +56,12 @@ final class GuildGardenFooterTest extends TestCase
         self::assertIsString($css);
 
         self::assertStringContainsString(
-            'guild-garden-fence.webp',
+            'cocoa-woodgrain.webp',
+            $css
+        );
+
+        self::assertStringNotContainsString(
+            '.gmrc-guild-footer',
             $css
         );
     }
