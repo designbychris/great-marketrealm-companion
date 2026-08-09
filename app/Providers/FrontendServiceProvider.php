@@ -291,6 +291,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/characters/final-farewell.css',
             ],
             [
+                'handle' => 'gmrc-open-ledger',
+                'path' => 'modules/characters/open-ledger.css',
+            ],
+            [
                 'handle' => 'gmrc-background-selector',
                 'path' => 'modules/characters/background-selector.css',
             ],
