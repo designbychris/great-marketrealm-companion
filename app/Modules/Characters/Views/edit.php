@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Language;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiency;
 
 defined('ABSPATH') || exit;
@@ -43,6 +44,9 @@ $currentBackground = $character
     ->background();
 
 $backgroundOptions = Background::all();
+$languageOptions = Language::all();
+$artisanToolOptions = ToolProficiency::artisansTools();
+$gamingSetOptions = ToolProficiency::gamingSets();
 
 $companionUrl = home_url(
     '/companion/'
@@ -149,6 +153,50 @@ $backgroundValue = isset($old['background'])
 if (! Background::supports($backgroundValue)) {
     $backgroundValue = $currentBackground->value();
 }
+
+$selectedLanguages = $character
+    ->selectedLanguages()
+    ->values();
+
+$selectedTools = $character
+    ->selectedToolProficiencies()
+    ->values();
+
+$languageOneValue = isset($old['language_1'])
+    && is_scalar($old['language_1'])
+        ? (string) $old['language_1']
+        : ($selectedLanguages[0] ?? '');
+
+$languageTwoValue = isset($old['language_2'])
+    && is_scalar($old['language_2'])
+        ? (string) $old['language_2']
+        : ($selectedLanguages[1] ?? '');
+
+$artisanToolValue = isset($old['artisan_tool'])
+    && is_scalar($old['artisan_tool'])
+        ? (string) $old['artisan_tool']
+        : '';
+
+$gamingSetValue = isset($old['gaming_set'])
+    && is_scalar($old['gaming_set'])
+        ? (string) $old['gaming_set']
+        : '';
+
+foreach ($selectedTools as $selectedTool) {
+    if (! ToolProficiency::supports($selectedTool)) {
+        continue;
+    }
+
+    $tool = ToolProficiency::fromString($selectedTool);
+
+    if ($tool->isArtisansTool() && $artisanToolValue === '') {
+        $artisanToolValue = $tool->value();
+    }
+
+    if ($tool->isGamingSet() && $gamingSetValue === '') {
+        $gamingSetValue = $tool->value();
+    }
+}
 ?>
 
 <section class="gmrc-character-editor">
@@ -213,6 +261,12 @@ if (! Background::supports($backgroundValue)) {
             type="hidden"
             name="_method"
             value="PUT"
+        >
+
+        <input
+            type="hidden"
+            name="registration_confirmed"
+            value="1"
         >
 
         <?php
@@ -385,6 +439,22 @@ if (! Background::supports($backgroundValue)) {
                                 value="<?php echo esc_attr(
                                     $identifier
                                 ); ?>"
+                                data-background-label="<?php echo esc_attr(
+                                    $background->label()
+                                ); ?>"
+                                data-language-choices="<?php echo esc_attr(
+                                    (string) $background->languageChoices()
+                                ); ?>"
+                                data-needs-artisan-tools="<?php echo in_array(
+                                    ToolProficiency::CATEGORY_ARTISANS_TOOLS,
+                                    $background->toolProficiencyIdentifiers(),
+                                    true
+                                ) ? '1' : '0'; ?>"
+                                data-needs-gaming-set="<?php echo in_array(
+                                    ToolProficiency::CATEGORY_GAMING_SET,
+                                    $background->toolProficiencyIdentifiers(),
+                                    true
+                                ) ? '1' : '0'; ?>"
                                 <?php checked(
                                     $isSelected
                                 ); ?>
@@ -613,6 +683,66 @@ if (! Background::supports($backgroundValue)) {
                 </div>
             <?php endforeach; ?>
         </aside>
+
+        <section class="gmrc-form-section gmrc-registration-stage" data-registration-choices>
+            <header class="gmrc-form-section__header">
+                <p class="gmrc-eyebrow">Registrar’s Choices</p>
+                <h2>Complete background choices</h2>
+                <p>Resolve languages or generic tool categories granted by the amended background.</p>
+            </header>
+
+            <div class="gmrc-registration-choice" data-language-slot="1" hidden>
+                <label for="edit-registration-language-1">First language</label>
+                <select id="edit-registration-language-1" name="language_1">
+                    <option value="">Choose a language</option>
+                    <?php foreach ($languageOptions as $language) : ?>
+                        <option value="<?php echo esc_attr($language->value()); ?>" <?php selected($languageOneValue, $language->value()); ?>>
+                            <?php echo esc_html($language->label()); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="gmrc-registration-choice" data-language-slot="2" hidden>
+                <label for="edit-registration-language-2">Second language</label>
+                <select id="edit-registration-language-2" name="language_2">
+                    <option value="">Choose a different language</option>
+                    <?php foreach ($languageOptions as $language) : ?>
+                        <option value="<?php echo esc_attr($language->value()); ?>" <?php selected($languageTwoValue, $language->value()); ?>>
+                            <?php echo esc_html($language->label()); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="gmrc-registration-choice" data-tool-choice="artisan" hidden>
+                <label for="edit-registration-artisan-tool">Artisan’s Tool</label>
+                <select id="edit-registration-artisan-tool" name="artisan_tool">
+                    <option value="">Choose an artisan’s tool</option>
+                    <?php foreach ($artisanToolOptions as $tool) : ?>
+                        <option value="<?php echo esc_attr($tool->value()); ?>" <?php selected($artisanToolValue, $tool->value()); ?>>
+                            <?php echo esc_html($tool->label()); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="gmrc-registration-choice" data-tool-choice="gaming" hidden>
+                <label for="edit-registration-gaming-set">Gaming Set</label>
+                <select id="edit-registration-gaming-set" name="gaming_set">
+                    <option value="">Choose a gaming set</option>
+                    <?php foreach ($gamingSetOptions as $tool) : ?>
+                        <option value="<?php echo esc_attr($tool->value()); ?>" <?php selected($gamingSetValue, $tool->value()); ?>>
+                            <?php echo esc_html($tool->label()); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <p class="gmrc-registration-complete-note" data-registration-no-extra-choices hidden>
+                ✦ This background has no unresolved Registrar choices.
+            </p>
+        </section>
 
         <aside class="gmrc-form-notice">
             <h2>Current adventuring record</h2>
