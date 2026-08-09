@@ -426,7 +426,7 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
             );
         }
 
-        public function testStoreRedirectsToTheCharacterIndex(): void
+        public function testStoreRedirectsToTheNewCharacterLedger(): void
         {
             $_POST = [
                 'name' => 'Sir Allium',
@@ -434,7 +434,11 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
                 'class' => 'grocer',
             ];
 
-            $controller = $this->controller();
+            $repository = new CharacterControllerRepositorySpy();
+
+            $controller = $this->controller(
+                repository: $repository
+            );
 
             $response = $controller->store(
                 new StoreCharacterRequest()
@@ -445,9 +449,19 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
                 $response->status()
             );
 
+            self::assertNotNull(
+                $repository->savedCharacter
+            );
+
             self::assertSame(
                 'https://example.test/companion/'
-                    . '?gmrc_route=characters',
+                    . '?gmrc_route=characters%2F'
+                    . rawurlencode(
+                        $repository
+                            ->savedCharacter
+                            ->id()
+                            ->value()
+                    ),
                 $response->destination()
             );
 
