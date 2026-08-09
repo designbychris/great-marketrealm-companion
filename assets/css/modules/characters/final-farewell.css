@@ -1,0 +1,495 @@
+/**
+ * Character Lifecycle Initiative — Phase I
+ * The Final Farewell
+ */
+
+.gmrc-final-farewell {
+    display: grid;
+
+    gap:
+        clamp(1.5rem, 3vw, 2.5rem);
+
+    width: min(100%, 76rem);
+
+    margin: 0 auto;
+}
+
+.gmrc-final-farewell__heading {
+    max-width: 54rem;
+
+    margin: 0 auto;
+
+    text-align: center;
+}
+
+.gmrc-final-farewell__heading h1 {
+    margin:
+        0.2rem
+        0
+        0.7rem;
+
+    color:
+        var(
+            --gmrc-ink-strong,
+            #321f17
+        );
+
+    font-family:
+        var(
+            --gmrc-font-handwritten,
+            "Caveat",
+            cursive
+        );
+
+    font-size:
+        clamp(2.6rem, 5vw, 4.8rem);
+
+    font-weight: 600;
+
+    line-height: 0.98;
+}
+
+.gmrc-final-farewell__heading > p:last-child {
+    max-width: 45rem;
+
+    margin:
+        0
+        auto;
+
+    color:
+        var(
+            --gmrc-ink,
+            #4a3022
+        );
+
+    line-height: 1.6;
+}
+
+.gmrc-final-farewell__ledger {
+    position: relative;
+
+    padding:
+        clamp(2rem, 5vw, 4.2rem);
+
+    border:
+        1px solid
+        rgba(114, 74, 37, 0.34);
+
+    background:
+        radial-gradient(
+            circle at 50% 12%,
+            rgba(255, 255, 255, 0.34),
+            transparent 36%
+        ),
+        linear-gradient(
+            180deg,
+            #fff0c9,
+            #efd59b
+        );
+
+    box-shadow:
+        0 1.4rem 3rem
+        rgba(64, 38, 23, 0.18);
+}
+
+.gmrc-final-farewell__ledger::before {
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    content: "";
+
+    opacity: 0.26;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(89, 57, 34, 0.025) 0,
+            rgba(89, 57, 34, 0.025) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+}
+
+.gmrc-final-farewell__tape {
+    position: absolute;
+    top: -0.7rem;
+    z-index: 3;
+
+    width: 5.5rem;
+    height: 1.45rem;
+
+    background:
+        linear-gradient(
+            135deg,
+            #653d8f,
+            #8658ac
+        );
+
+    box-shadow:
+        0 0.2rem 0.35rem
+        rgba(64, 38, 23, 0.16);
+}
+
+.gmrc-final-farewell__tape--left {
+    left: 2.5rem;
+
+    transform: rotate(-7deg);
+}
+
+.gmrc-final-farewell__tape--right {
+    right: 2.5rem;
+
+    transform: rotate(6deg);
+}
+
+.gmrc-final-farewell__identity {
+    position: relative;
+    z-index: 1;
+
+    display: grid;
+    grid-template-columns:
+        minmax(14rem, 0.75fr)
+        minmax(0, 1.25fr);
+
+    gap:
+        clamp(1.5rem, 4vw, 3.5rem);
+
+    align-items: center;
+}
+
+.gmrc-final-farewell__portrait {
+    width: min(100%, 24rem);
+
+    margin: 0 auto;
+}
+
+.gmrc-final-farewell__record {
+    text-align: left;
+}
+
+.gmrc-final-farewell__eyebrow {
+    margin:
+        0
+        0
+        0.3rem;
+
+    color:
+        var(
+            --gmrc-purple-600,
+            #603773
+        );
+
+    font-family:
+        var(
+            --gmrc-font-heading,
+            Georgia,
+            serif
+        );
+
+    font-size: 0.78rem;
+    font-weight: 800;
+
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.gmrc-final-farewell__record h2 {
+    margin:
+        0
+        0
+        0.35rem;
+
+    color:
+        var(
+            --gmrc-ink-strong,
+            #321f17
+        );
+
+    font-family:
+        var(
+            --gmrc-font-handwritten,
+            "Caveat",
+            cursive
+        );
+
+    font-size:
+        clamp(2.4rem, 5vw, 4.25rem);
+
+    font-weight: 600;
+
+    line-height: 1;
+}
+
+.gmrc-final-farewell__summary {
+    margin:
+        0
+        0
+        1.5rem;
+
+    color:
+        var(
+            --gmrc-ink,
+            #4a3022
+        );
+
+    font-weight: 700;
+}
+
+.gmrc-final-farewell__warning {
+    display: grid;
+
+    gap: 0.25rem;
+
+    padding:
+        1rem
+        1.15rem;
+
+    border:
+        1px solid
+        color-mix(
+            in srgb,
+            var(--gmrc-danger, #8f2e2e)
+            45%,
+            transparent
+        );
+
+    border-left:
+        4px solid
+        var(
+            --gmrc-danger,
+            #8f2e2e
+        );
+
+    background:
+        rgba(
+            255,
+            247,
+            235,
+            0.58
+        );
+}
+
+.gmrc-final-farewell__warning strong {
+    color:
+        var(
+            --gmrc-danger,
+            #8f2e2e
+        );
+
+    font-family:
+        var(
+            --gmrc-font-heading,
+            Georgia,
+            serif
+        );
+}
+
+.gmrc-final-farewell__warning span {
+    color:
+        var(
+            --gmrc-ink,
+            #4a3022
+        );
+
+    line-height: 1.5;
+}
+
+.gmrc-final-farewell__auby-note {
+    position: relative;
+    z-index: 1;
+
+    max-width: 48rem;
+
+    margin:
+        clamp(2rem, 5vw, 3.5rem)
+        auto
+        0;
+
+    padding:
+        1.2rem
+        1.5rem;
+
+    color:
+        var(
+            --gmrc-ink,
+            #4a3022
+        );
+
+    border-top:
+        1px solid
+        rgba(96, 55, 115, 0.25);
+
+    border-bottom:
+        1px solid
+        rgba(96, 55, 115, 0.25);
+
+    font-family:
+        var(
+            --gmrc-font-handwritten,
+            "Caveat",
+            cursive
+        );
+
+    font-size:
+        clamp(1.25rem, 2vw, 1.65rem);
+
+    line-height: 1.35;
+
+    text-align: center;
+}
+
+.gmrc-final-farewell__auby-note span {
+    display: block;
+
+    margin-top: 0.4rem;
+
+    color:
+        var(
+            --gmrc-purple-600,
+            #603773
+        );
+
+    font-size: 0.9em;
+}
+
+.gmrc-final-farewell__form {
+    position: relative;
+    z-index: 1;
+
+    margin-top:
+        clamp(1.75rem, 4vw, 2.75rem);
+}
+
+.gmrc-final-farewell__actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 1rem;
+
+    justify-content: center;
+}
+
+.gmrc-final-farewell__register-link {
+    position: relative;
+    z-index: 1;
+
+    display: block;
+
+    width: fit-content;
+
+    margin:
+        1.2rem
+        auto
+        0;
+
+    color:
+        var(
+            --gmrc-purple-700,
+            #512e66
+        );
+
+    font-size: 0.88rem;
+    font-weight: 700;
+
+    text-align: center;
+}
+
+.gmrc-register-notice {
+    display: flex;
+    align-items: center;
+
+    gap: 0.75rem;
+
+    margin-bottom: 1.25rem;
+    padding:
+        0.85rem
+        1rem;
+
+    border:
+        1px solid
+        rgba(105, 78, 40, 0.3);
+
+    background:
+        rgba(
+            255,
+            244,
+            215,
+            0.86
+        );
+
+    box-shadow:
+        0 0.35rem 0.8rem
+        rgba(63, 40, 22, 0.08);
+}
+
+.gmrc-register-notice__seal {
+    display: grid;
+    place-items: center;
+
+    flex: 0 0 2rem;
+
+    width: 2rem;
+    height: 2rem;
+
+    border-radius: 50%;
+
+    color: #fff0ce;
+
+    background:
+        var(
+            --gmrc-purple-600,
+            #603773
+        );
+}
+
+.gmrc-register-notice p {
+    margin: 0;
+
+    color:
+        var(
+            --gmrc-ink,
+            #4a3022
+        );
+
+    font-weight: 700;
+}
+
+.gmrc-register-notice--error
+.gmrc-register-notice__seal {
+    background:
+        var(
+            --gmrc-danger,
+            #8f2e2e
+        );
+}
+
+@media (max-width: 760px) {
+    .gmrc-final-farewell__identity {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-final-farewell__record {
+        text-align: center;
+    }
+
+    .gmrc-final-farewell__warning {
+        text-align: left;
+    }
+
+    .gmrc-final-farewell__actions {
+        flex-direction: column;
+    }
+
+    .gmrc-final-farewell__actions
+    .paper-button {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-final-farewell__ledger {
+        scroll-behavior: auto;
+    }
+}
