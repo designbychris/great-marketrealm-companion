@@ -287,6 +287,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path'   => 'modules/characters/character-inscription-form.css',
             ],
             [
+                'handle' => 'gmrc-final-farewell',
+                'path' => 'modules/characters/final-farewell.css',
+            ],
+            [
                 'handle' => 'gmrc-background-selector',
                 'path' => 'modules/characters/background-selector.css',
             ],
