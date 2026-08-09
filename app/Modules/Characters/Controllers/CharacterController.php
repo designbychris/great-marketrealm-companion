@@ -103,19 +103,44 @@ final class CharacterController
      */
     public function create(): string
     {
-        $old = [];
-    
-        $name = '';
-        $race = '';
-        $characterClass = '';
-    
+        $old = $this->flash->old();
+
+        if (! is_array($old)) {
+            $old = [];
+        }
+
+        $errors = $this->flash->errors();
+
+        $name = isset($old['name'])
+            && is_scalar($old['name'])
+                ? sanitize_text_field(
+                    (string) $old['name']
+                )
+                : '';
+
+        $race = isset($old['race'])
+            && is_scalar($old['race'])
+                ? sanitize_key(
+                    (string) $old['race']
+                )
+                : '';
+
+        $characterClass = isset($old['class'])
+            && is_scalar($old['class'])
+                ? sanitize_key(
+                    (string) $old['class']
+                )
+                : '';
+
         return $this->views->render(
             View::make(
                 'characters.create',
                 [
                     'old' => $old,
-                    'errors' => [],
-                    'flash' => [],
+                    'errors' => $errors ?? [],
+                    'flash' => [
+                        'error' => $this->flash->error(),
+                    ],
                     'raceOptions' => $this
                         ->raceRegistry
                         ->options(),
@@ -225,7 +250,9 @@ final class CharacterController
         );
     
         return $this->responses->redirect(
-            $this->charactersUrl()
+            $this->characterUrl(
+                $character->id()
+            )
         );
     }
 
