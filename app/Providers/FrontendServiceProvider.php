@@ -295,6 +295,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/characters/open-ledger.css',
             ],
             [
+                'handle' => 'gmrc-complete-registration',
+                'path' => 'modules/characters/complete-registration.css',
+            ],
+            [
                 'handle' => 'gmrc-background-selector',
                 'path' => 'modules/characters/background-selector.css',
             ],
@@ -377,6 +381,27 @@ class FrontendServiceProvider extends ServiceProvider
      */
     protected function enqueueScripts(): void
     {
+        $completeRegistrationScriptPath =
+            GMRC_PATH
+            . 'assets/js/modules/characters/'
+            . 'complete-registration.js';
+
+        wp_enqueue_script(
+            'gmrc-complete-registration',
+            GMRC_URL
+                . 'assets/js/modules/characters/'
+                . 'complete-registration.js',
+            [],
+            file_exists(
+                $completeRegistrationScriptPath
+            )
+                ? (string) filemtime(
+                    $completeRegistrationScriptPath
+                )
+                : GMRC_VERSION,
+            true
+        );
+
         $registrarScriptPath =
             GMRC_PATH
             . 'assets/js/components/furniture/registrar.js';
