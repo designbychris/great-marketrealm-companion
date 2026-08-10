@@ -1,0 +1,518 @@
+/**
+ * Character Lifecycle Initiative — Phase III.2
+ * The Guild Dice
+ */
+
+/* ---------------------------------------------------------------
+ * Hanging Ledger tabs
+ * --------------------------------------------------------------- */
+.gmrc-open-ledger .gmrc-ledger-tabs {
+    position: relative;
+    z-index: 12;
+
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+
+    width: calc(50% - 1rem);
+    margin: -2.15rem 0 0 auto;
+    padding: 0 clamp(0.75rem, 2vw, 1.6rem) 0 0;
+
+    pointer-events: none;
+}
+
+.gmrc-open-ledger .gmrc-ledger-tab {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.5rem;
+    align-items: center;
+
+    min-width: 0;
+    min-height: 3.45rem;
+    margin-left: -0.15rem;
+    padding: 0.62rem 0.8rem 0.72rem;
+
+    border: 1px solid rgba(57, 31, 18, 0.78);
+    border-top: 0;
+    border-radius: 0 0 0.48rem 0.48rem;
+
+    color: #f5dfad;
+    background:
+        linear-gradient(90deg, rgba(255,255,255,.025), transparent 18%, rgba(0,0,0,.07)),
+        repeating-linear-gradient(4deg, rgba(255,255,255,.018) 0 1px, transparent 1px 5px),
+        #4a2a18;
+
+    box-shadow:
+        0 0.65rem 0.95rem rgba(43, 24, 14, 0.24),
+        inset 0 -0.2rem rgba(32, 17, 10, 0.22),
+        inset 0 1px rgba(255, 231, 179, 0.12);
+
+    font: inherit;
+    font-size: 0.68rem;
+    font-weight: 850;
+    line-height: 1.1;
+    letter-spacing: 0.035em;
+    text-align: left;
+
+    cursor: pointer;
+    pointer-events: auto;
+
+    transform-origin: center top;
+    transition:
+        transform 150ms ease,
+        background-color 150ms ease,
+        box-shadow 150ms ease;
+}
+
+.gmrc-open-ledger .gmrc-ledger-tab::before {
+    position: absolute;
+    top: -0.45rem;
+    left: 50%;
+
+    width: 0.7rem;
+    height: 0.7rem;
+
+    content: "";
+
+    border: 2px solid #9e7535;
+    border-radius: 50%;
+
+    background: #3b2114;
+
+    box-shadow: 0 0.18rem 0.3rem rgba(42, 23, 13, 0.24);
+
+    transform: translateX(-50%);
+}
+
+.gmrc-open-ledger .gmrc-ledger-tab__icon {
+    display: grid;
+    place-items: center;
+
+    width: 1.7rem;
+    aspect-ratio: 1;
+
+    color: #e5b952;
+
+    border: 1px solid rgba(218, 170, 72, 0.44);
+    border-radius: 0.22rem;
+
+    background: rgba(44, 24, 15, 0.34);
+
+    font-size: 0.95rem;
+}
+
+.gmrc-open-ledger .gmrc-ledger-tab__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gmrc-open-ledger .gmrc-ledger-tab:hover,
+.gmrc-open-ledger .gmrc-ledger-tab:focus-visible {
+    color: #fff0c8;
+    background-color: #58301b;
+    transform: translateY(0.2rem);
+}
+
+.gmrc-open-ledger .gmrc-ledger-tab.is-active {
+    color: #fff3ca;
+    background-color: #603773;
+    box-shadow:
+        0 0.35rem 0.6rem rgba(43, 24, 14, 0.18),
+        inset 0 -0.2rem rgba(44, 23, 51, 0.26),
+        inset 0 0 0 1px rgba(222, 177, 80, 0.28);
+    transform: translateY(0.42rem);
+}
+
+.gmrc-open-ledger .gmrc-ledger-tab:focus-visible {
+    outline: 3px solid #e1b44f;
+    outline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------
+ * Rollable Ledger values
+ * --------------------------------------------------------------- */
+.gmrc-guild-roll-trigger {
+    appearance: none;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.38rem;
+
+    margin: 0;
+    padding: 0.28rem 0.4rem;
+
+    border: 1px solid transparent;
+    border-radius: 0.3rem;
+
+    color: inherit;
+    background: transparent;
+
+    font: inherit;
+
+    cursor: pointer;
+
+    transition:
+        border-color 140ms ease,
+        background-color 140ms ease,
+        transform 140ms ease;
+}
+
+.gmrc-guild-roll-trigger:hover,
+.gmrc-guild-roll-trigger:focus-visible {
+    border-color: rgba(96, 55, 115, 0.34);
+    background: rgba(96, 55, 115, 0.07);
+}
+
+.gmrc-guild-roll-trigger:active {
+    transform: translateY(1px);
+}
+
+.gmrc-guild-roll-trigger:focus-visible {
+    outline: 2px solid #75468d;
+    outline-offset: 2px;
+}
+
+.gmrc-guild-roll-trigger__die {
+    display: grid;
+    place-items: center;
+
+    width: 1.45rem;
+    aspect-ratio: 1;
+
+    color: #fff0c8;
+
+    background: #603773;
+    clip-path: polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+
+    font-size: 0.48rem;
+    font-weight: 900;
+}
+
+.gmrc-guild-roll-trigger__values {
+    display: grid;
+    line-height: 1;
+}
+
+.gmrc-guild-roll-trigger__values small {
+    margin-top: 0.16rem;
+    color: rgba(62, 42, 31, 0.62);
+    font-size: 0.65rem;
+}
+
+.gmrc-guild-roll-trigger--ability {
+    width: 100%;
+    padding: 0.25rem;
+}
+
+.gmrc-guild-roll-trigger--ability .gmrc-guild-roll-trigger__values strong {
+    font-size: 1.3rem;
+}
+
+.gmrc-guild-roll-trigger--compact .gmrc-guild-roll-trigger__die,
+.gmrc-guild-roll-trigger--inline .gmrc-guild-roll-trigger__die {
+    width: 1.2rem;
+}
+
+/* ---------------------------------------------------------------
+ * Guild Dice tray
+ * --------------------------------------------------------------- */
+.gmrc-guild-dice-tray[hidden] {
+    display: none !important;
+}
+
+.gmrc-guild-dice-tray {
+    position: fixed;
+    right: clamp(0.8rem, 3vw, 2rem);
+    bottom: clamp(0.8rem, 3vw, 2rem);
+    z-index: 999;
+
+    width: min(25rem, calc(100vw - 1.6rem));
+    max-height: min(42rem, calc(100vh - 2rem));
+    overflow: auto;
+
+    padding: 1.25rem;
+
+    border: 1px solid rgba(62, 34, 20, 0.76);
+    border-radius: 0.55rem;
+
+    color: #38251c;
+    background:
+        radial-gradient(circle at 50% 0, rgba(255,255,255,.35), transparent 42%),
+        linear-gradient(180deg, #f8e8b9, #e7ca8f);
+
+    box-shadow:
+        0 1.5rem 3.5rem rgba(42, 23, 13, 0.34),
+        inset 0 0 0 0.26rem rgba(255, 242, 204, 0.28);
+
+    animation: gmrc-guild-dice-arrive 180ms ease-out both;
+}
+
+.gmrc-guild-dice-tray__pin {
+    position: absolute;
+    top: -0.42rem;
+    left: 50%;
+
+    width: 2.6rem;
+    height: 0.9rem;
+
+    background: rgba(96, 55, 115, 0.82);
+
+    transform: translateX(-50%) rotate(-2deg);
+}
+
+.gmrc-guild-dice-tray__header {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.gmrc-guild-dice-tray__header h2 {
+    margin: 0.1rem 0 0;
+    color: #442d22;
+    font-family: var(--gmrc-font-handwritten, "Caveat", cursive);
+    font-size: clamp(1.9rem, 6vw, 2.7rem);
+    line-height: 0.95;
+}
+
+.gmrc-guild-dice-tray__close {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    aspect-ratio: 1;
+    border: 0;
+    border-radius: 50%;
+    color: #f6e2ad;
+    background: #4a2a18;
+    font-size: 1.35rem;
+    cursor: pointer;
+}
+
+.gmrc-guild-dice-tray__modifier {
+    margin: 0.85rem 0;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px dotted rgba(82, 51, 29, 0.32);
+}
+
+.gmrc-guild-dice-tray__modifier strong {
+    color: #603773;
+    font-size: 1.15rem;
+}
+
+.gmrc-guild-dice-modes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4rem;
+}
+
+.gmrc-guild-dice-modes button {
+    min-height: 2.6rem;
+    padding: 0.5rem;
+    border: 1px solid rgba(74, 42, 24, 0.5);
+    border-radius: 0.25rem;
+    color: #f8e4b3;
+    background: #4a2a18;
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.gmrc-guild-dice-modes button:hover,
+.gmrc-guild-dice-modes button:focus-visible {
+    background: #603773;
+}
+
+.gmrc-guild-dice-result {
+    display: grid;
+    grid-template-columns: 7.4rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid rgba(96, 55, 115, 0.2);
+    background: rgba(255, 248, 221, 0.5);
+}
+
+.gmrc-guild-d20 {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 7rem;
+    aspect-ratio: 1;
+    color: #fff0c5;
+    background:
+        radial-gradient(circle at 40% 30%, #8957a0, #603773 62%, #42204d);
+    clip-path: polygon(50% 0, 91% 19%, 100% 60%, 72% 94%, 28% 94%, 0 60%, 9% 19%);
+    filter: drop-shadow(0 .55rem .4rem rgba(53,31,20,.25));
+}
+
+.gmrc-guild-d20::before,
+.gmrc-guild-d20::after {
+    position: absolute;
+    inset: 18%;
+    content: "";
+    border: 1px solid rgba(246, 213, 132, 0.34);
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.gmrc-guild-d20::after {
+    transform: rotate(180deg);
+}
+
+.gmrc-guild-d20 span {
+    position: relative;
+    z-index: 2;
+    font-family: Georgia, serif;
+    font-size: 2.25rem;
+    font-weight: 900;
+}
+
+.gmrc-guild-d20.is-rolling {
+    animation: gmrc-guild-d20-roll 620ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.gmrc-guild-d20.is-natural-20 {
+    filter:
+        drop-shadow(0 .55rem .4rem rgba(53,31,20,.25))
+        drop-shadow(0 0 .8rem rgba(219,173,69,.72));
+}
+
+.gmrc-guild-d20.is-natural-1 {
+    opacity: 0.82;
+}
+
+.gmrc-guild-dice-result__mode,
+.gmrc-guild-dice-result__math {
+    margin: 0 0 0.3rem;
+}
+
+.gmrc-guild-dice-result__mode {
+    color: #603773;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.gmrc-guild-dice-result__math {
+    color: rgba(56, 37, 28, 0.72);
+}
+
+.gmrc-guild-dice-result__total {
+    display: block;
+    color: #3c281e;
+    font-family: var(--gmrc-font-handwritten, "Caveat", cursive);
+    font-size: 2.4rem;
+    line-height: 1;
+}
+
+.gmrc-guild-dice-result__auby {
+    margin: 0.7rem 0 0;
+    color: #603773;
+    font-family: var(--gmrc-font-handwritten, "Caveat", cursive);
+    font-size: 1.05rem;
+}
+
+.gmrc-guild-dice-history {
+    margin-top: 1rem;
+    border-top: 1px dotted rgba(82, 51, 29, 0.32);
+    padding-top: 0.8rem;
+}
+
+.gmrc-guild-dice-history h3 {
+    margin: 0 0 0.45rem;
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.gmrc-guild-dice-history ol {
+    margin: 0;
+    padding-left: 1.3rem;
+    font-size: 0.72rem;
+    line-height: 1.45;
+}
+
+@keyframes gmrc-guild-d20-roll {
+    0% {
+        transform: translateY(-1.2rem) rotate(-36deg) scale(.88);
+    }
+    45% {
+        transform: translateY(.25rem) rotate(178deg) scale(1.06);
+    }
+    72% {
+        transform: translateY(-.18rem) rotate(338deg) scale(.98);
+    }
+    100% {
+        transform: none;
+    }
+}
+
+@keyframes gmrc-guild-dice-arrive {
+    from {
+        opacity: 0;
+        transform: translateY(.7rem) scale(.98);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (max-width: 900px) {
+    .gmrc-open-ledger .gmrc-ledger-tabs {
+        width: 100%;
+        margin-top: 0;
+        padding: 0.75rem;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 620px) {
+    .gmrc-open-ledger .gmrc-ledger-tabs {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.35rem;
+    }
+
+    .gmrc-open-ledger .gmrc-ledger-tab {
+        margin: 0;
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+        border-top: 1px solid rgba(57,31,18,.78);
+        border-radius: 0.42rem;
+    }
+
+    .gmrc-open-ledger .gmrc-ledger-tab::before {
+        display: none;
+    }
+
+    .gmrc-guild-dice-result {
+        grid-template-columns: 5.5rem minmax(0, 1fr);
+    }
+
+    .gmrc-guild-d20 {
+        width: 5.2rem;
+    }
+}
+
+@media (max-width: 430px) {
+    .gmrc-guild-dice-modes {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-open-ledger .gmrc-ledger-tab,
+    .gmrc-guild-roll-trigger,
+    .gmrc-guild-dice-tray,
+    .gmrc-guild-d20 {
+        animation: none !important;
+        transition: none !important;
+    }
+}
