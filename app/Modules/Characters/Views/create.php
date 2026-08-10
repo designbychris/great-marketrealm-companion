@@ -114,6 +114,13 @@ $raceValue = isset($old['race'])
         ? (string) $old['race']
         : '';
 
+$heritageValue = isset($old['heritage']) && is_scalar($old['heritage']) ? (string) $old['heritage'] : '';
+$subclassValue = isset($old['subclass']) && is_scalar($old['subclass']) ? (string) $old['subclass'] : '';
+$catalogueRaces = is_array($catalogueRaces ?? null) ? $catalogueRaces : Race::labels();
+$catalogueClasses = is_array($catalogueClasses ?? null) ? $catalogueClasses : CharacterClass::labels();
+$catalogueHeritages = is_array($catalogueHeritages ?? null) ? $catalogueHeritages : [];
+$catalogueSubclasses = is_array($catalogueSubclasses ?? null) ? $catalogueSubclasses : [];
+
 $classValue = isset($old['class'])
     && is_scalar($old['class'])
         ? (string) $old['class']
@@ -127,9 +134,9 @@ if (! CharacterClass::supports($classValue)) {
     $classValue = '';
 }
 
-$raceOptions = Race::all();
+$raceOptions = $catalogueRaces;
 
-$classOptions = CharacterClass::all();
+$classOptions = $catalogueClasses;
 $backgroundOptions = Background::all();
 $languageOptions = Language::all();
 $artisanToolOptions = ToolProficiency::artisansTools();
@@ -483,10 +490,8 @@ $charactersUrl = add_query_arg(
                 </legend>
 
                 <div class="gmrc-choice-grid">
-                    <?php foreach ($raceOptions as $race) : ?>
+                    <?php foreach ($raceOptions as $identifier => $raceLabel) : ?>
                         <?php
-                        $identifier = $race->value();
-
                         $isSelected =
                             $identifier === $raceValue;
 
@@ -494,12 +499,12 @@ $charactersUrl = add_query_arg(
                             'mb_substr'
                         )
                             ? mb_substr(
-                                $race->label(),
+                                $raceLabel,
                                 0,
                                 1
                             )
                             : substr(
-                                $race->label(),
+                                $raceLabel,
                                 0,
                                 1
                             );
@@ -538,7 +543,7 @@ $charactersUrl = add_query_arg(
                                     $identifier
                                 ); ?>"
                                 data-race-label="<?php echo esc_attr(
-                                    $race->label()
+                                    $raceLabel
                                 ); ?>"
                                 <?php checked($isSelected); ?>
                                 required
@@ -567,7 +572,7 @@ $charactersUrl = add_query_arg(
                                         "
                                     >
                                         <?php echo esc_html(
-                                            $race->label()
+                                            $raceLabel
                                         ); ?>
                                     </strong>
 
@@ -602,7 +607,7 @@ $charactersUrl = add_query_arg(
 
                                         <span>
                                             <?php echo esc_html(
-                                                $race->label()
+                                                $raceLabel
                                             ); ?>
                                         </span>
                                     </span>
@@ -637,6 +642,19 @@ $charactersUrl = add_query_arg(
                     <?php echo esc_html($raceError); ?>
                 </p>
             <?php endif; ?>
+
+            <div class="gmrc-catalogue-dependent" data-catalogue-dependent="heritage">
+                <label for="character-heritage"><strong>Choose a heritage / subtype</strong></label>
+                <select id="character-heritage" name="heritage" data-catalogue-child="heritage">
+                    <option value="">No additional subtype</option>
+                    <?php foreach ($catalogueHeritages as $heritage) : ?>
+                        <option value="<?php echo esc_attr((string) ($heritage['key'] ?? '')); ?>" data-parent="<?php echo esc_attr((string) ($heritage['parent'] ?? '')); ?>" <?php selected($heritageValue, (string) ($heritage['key'] ?? '')); ?>>
+                            <?php echo esc_html((string) ($heritage['name'] ?? '')); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <p>Subtype choices are drawn from the Registrar’s Grand Catalogue.</p>
+            </div>
         </section>
 
         <section class="gmrc-form-section">
@@ -668,9 +686,9 @@ $charactersUrl = add_query_arg(
                 </legend>
 
                 <div class="gmrc-choice-grid">
-                    <?php foreach ($classOptions as $class) : ?>
+                    <?php foreach ($classOptions as $identifier => $classLabel) : ?>
                         <?php
-                        $identifier = $class->value();
+                        $class = CharacterClass::fromString((string) $identifier);
 
                         $isSelected =
                             $identifier === $classValue;
@@ -690,12 +708,12 @@ $charactersUrl = add_query_arg(
                             'mb_substr'
                         )
                             ? mb_substr(
-                                $class->label(),
+                                $classLabel,
                                 0,
                                 1
                             )
                             : substr(
-                                $class->label(),
+                                $classLabel,
                                 0,
                                 1
                             );
@@ -734,7 +752,7 @@ $charactersUrl = add_query_arg(
                                     $identifier
                                 ); ?>"
                                 data-class-label="<?php echo esc_attr(
-                                    $class->label()
+                                    $classLabel
                                 ); ?>"
                                 data-hit-die="<?php echo esc_attr(
                                     (string) $class->hitDie()
@@ -772,7 +790,7 @@ $charactersUrl = add_query_arg(
                                         "
                                     >
                                         <?php echo esc_html(
-                                            $class->label()
+                                            $classLabel
                                         ); ?>
                                     </strong>
 
@@ -849,6 +867,19 @@ $charactersUrl = add_query_arg(
                     <?php echo esc_html($classError); ?>
                 </p>
             <?php endif; ?>
+
+            <div class="gmrc-catalogue-dependent" data-catalogue-dependent="subclass">
+                <label for="character-subclass"><strong>Future path / subclass</strong></label>
+                <select id="character-subclass" name="subclass" data-catalogue-child="subclass">
+                    <option value="">Choose later / no subclass yet</option>
+                    <?php foreach ($catalogueSubclasses as $subclass) : ?>
+                        <option value="<?php echo esc_attr((string) ($subclass['key'] ?? '')); ?>" data-parent="<?php echo esc_attr((string) ($subclass['parent'] ?? '')); ?>" <?php selected($subclassValue, (string) ($subclass['key'] ?? '')); ?>>
+                            <?php echo esc_html((string) ($subclass['name'] ?? '')); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <p>This records the intended path without forcing a Level 1 subclass choice.</p>
+            </div>
         </section>
 
         <section class="gmrc-form-section gmrc-registration-stage" data-registration-stage="history">
