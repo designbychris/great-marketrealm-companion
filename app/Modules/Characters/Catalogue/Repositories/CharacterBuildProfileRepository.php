@@ -36,6 +36,10 @@ final class CharacterBuildProfileRepository
 
     private function findPost(CharacterId $id): ?WP_Post
     {
+        if (! function_exists('get_posts')) {
+            return null;
+        }
+
         $posts = get_posts([
             'post_type'=>'gmrc_character','post_status'=>'publish','posts_per_page'=>1,
             'author'=>get_current_user_id(),'meta_key'=>self::META_CHARACTER_ID,'meta_value'=>$id->value(),

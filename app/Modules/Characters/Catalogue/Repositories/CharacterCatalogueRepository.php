@@ -113,7 +113,11 @@ final class CharacterCatalogueRepository
     /** @return array<string,mixed> */
     private function bundledSnapshot(): array
     {
-        $path = GMRC_PATH . 'resources/catalogue/players-handbook.v1.json';
+        $root = defined('GMRC_PATH')
+            ? GMRC_PATH
+            : dirname(__DIR__, 5) . DIRECTORY_SEPARATOR;
+
+        $path = $root . 'resources/catalogue/players-handbook.v1.json';
         $json = is_file($path) ? file_get_contents($path) : false;
         $decoded = is_string($json) ? json_decode($json, true) : null;
         return is_array($decoded) ? $decoded : [
