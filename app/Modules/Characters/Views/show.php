@@ -183,6 +183,7 @@ $backgroundSkills = array_map(
 
 <section
     class="gmrc-open-ledger"
+    data-living-ledger
     aria-labelledby="gmrc-open-ledger-title"
 >
     <header class="gmrc-open-ledger__toolbar">
@@ -243,7 +244,14 @@ $backgroundSkills = array_map(
         </div>
     </header>
 
-    <article class="gmrc-ledger-book">
+    <div
+        id="gmrc-ledger-panel-overview"
+        class="gmrc-ledger-tabpanel"
+        role="tabpanel"
+        aria-labelledby="gmrc-ledger-tab-overview"
+        data-ledger-panel="overview"
+    >
+        <article class="gmrc-ledger-book">
         <span
             class="gmrc-ledger-book__ribbon"
             aria-hidden="true"
@@ -560,324 +568,279 @@ $backgroundSkills = array_map(
         </section>
     </article>
 
-    <article
-        class="gmrc-ledger-book
-            gmrc-ledger-book--second-spread"
+    </div>
+
+    <div
+        id="gmrc-ledger-panel-skills"
+        class="gmrc-ledger-tabpanel"
+        role="tabpanel"
+        aria-labelledby="gmrc-ledger-tab-skills"
+        data-ledger-panel="skills"
+        hidden
     >
-        <div
-            class="gmrc-ledger-book__binding"
-            aria-hidden="true"
-        ></div>
-
-        <section
-            class="gmrc-ledger-page
-                gmrc-ledger-page--skills"
-            aria-labelledby="gmrc-ledger-skills-title"
+        <article
+            class="gmrc-ledger-book gmrc-ledger-book--second-spread"
         >
-            <p class="gmrc-ledger-page__folio">
-                Training & Knowledge · III
-            </p>
-
-            <header class="gmrc-ledger-page__heading">
-                <p class="gmrc-eyebrow">
-                    Trained Talents
-                </p>
-
-                <h2 id="gmrc-ledger-skills-title">
-                    Skills
-                </h2>
-            </header>
-
-            <dl class="gmrc-ledger-skill-list">
-                <?php foreach (
-                    $skillLabels
-                    as $identifier => $label
-                ) : ?>
-                    <?php
-                    $skill = $skills->get(
-                        $identifier
-                    );
-
-                    $skillClass = '';
-
-                    if ($skill->hasExpertise()) {
-                        $skillClass = 'has-expertise';
-                    } elseif ($skill->isProficient()) {
-                        $skillClass = 'is-proficient';
-                    }
-                    ?>
-
-                    <div
-                        class="<?php echo esc_attr(
-                            $skillClass
-                        ); ?>"
-                    >
-                        <dt>
-                            <?php if (
-                                $skill->hasExpertise()
-                            ) : ?>
-                                <span
-                                    aria-label="Expertise"
-                                    title="Expertise"
-                                >◆</span>
-                            <?php elseif (
-                                $skill->isProficient()
-                            ) : ?>
-                                <span
-                                    aria-label="Proficient"
-                                    title="Proficient"
-                                >●</span>
-                            <?php endif; ?>
-
-                            <?php echo esc_html(
-                                $label
-                            ); ?>
-                        </dt>
-
-                        <dd>
-                            <?php echo esc_html(
-                                $skill->signed()
-                            ); ?>
-                        </dd>
-                    </div>
-                <?php endforeach; ?>
-            </dl>
-
-            <p class="gmrc-ledger-legend">
-                <span>● proficient</span>
-                <span>◆ expertise</span>
-            </p>
-
-            <section class="gmrc-ledger-section">
-                <header class="gmrc-ledger-section__heading">
-                    <h3>Background</h3>
-                </header>
-
-                <dl class="gmrc-ledger-background">
-                    <div>
-                        <dt>History</dt>
-                        <dd>
-                            <?php echo esc_html(
-                                $background
-                            ); ?>
-                        </dd>
-                    </div>
-
-                    <div>
-                        <dt>Background talents</dt>
-                        <dd>
-                            <?php echo esc_html(
-                                $backgroundSkills !== []
-                                    ? implode(
-                                        ', ',
-                                        $backgroundSkills
-                                    )
-                                    : 'None'
-                            ); ?>
-                        </dd>
-                    </div>
-
-                    <div>
-                        <dt>Language choices</dt>
-                        <dd>
-                            <?php echo esc_html(
-                                (string) $character
-                                    ->background()
-                                    ->languageChoices()
-                            ); ?>
-                        </dd>
-                    </div>
-                </dl>
-            </section>
-
-            <p
-                class="gmrc-ledger-page__number"
+            <div
+                class="gmrc-ledger-book__binding"
                 aria-hidden="true"
+            ></div>
+
+            <section
+                class="gmrc-ledger-page gmrc-ledger-page--skills"
+                aria-labelledby="gmrc-ledger-skills-title"
             >
-                3
-            </p>
-        </section>
-
-        <section
-            class="gmrc-ledger-page
-                gmrc-ledger-page--archive"
-            aria-labelledby="gmrc-ledger-archive-title"
-        >
-            <p class="gmrc-ledger-page__folio">
-                Guild Archive · IV
-            </p>
-
-            <header class="gmrc-ledger-page__heading">
-                <p class="gmrc-eyebrow">
-                    Recorded Knowledge
+                <p class="gmrc-ledger-page__folio">
+                    Training & Knowledge · III
                 </p>
 
-                <h2 id="gmrc-ledger-archive-title">
-                    Archive Notes
-                </h2>
-            </header>
-
-            <section class="gmrc-ledger-section">
-                <header class="gmrc-ledger-section__heading">
-                    <h3>Languages</h3>
+                <header class="gmrc-ledger-page__heading">
+                    <p class="gmrc-eyebrow">Trained Talents</p>
+                    <h2 id="gmrc-ledger-skills-title">Skills</h2>
                 </header>
 
-                <?php if ($languages->isEmpty()) : ?>
-                    <p class="gmrc-ledger-copy">
-                        No fixed languages are currently recorded.
-                        This background permits
-                        <?php echo esc_html(
-                            (string) $character
-                                ->background()
-                                ->languageChoices()
-                        ); ?>
-                        additional language
-                        <?php echo $character
-                            ->background()
-                            ->languageChoices() === 1
-                                ? 'choice'
-                                : 'choices'; ?>.
-                    </p>
-                <?php else : ?>
-                    <ul class="gmrc-ledger-tags">
-                        <?php foreach (
-                            $languages->all()
-                            as $language
-                        ) : ?>
-                            <li>
-                                <?php echo esc_html(
-                                    $language->label()
-                                ); ?>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
-            </section>
+                <dl class="gmrc-ledger-skill-list">
+                    <?php foreach ($skillLabels as $identifier => $label) : ?>
+                        <?php
+                        $skill = $skills->get($identifier);
+                        $skillClass = '';
 
-            <section class="gmrc-ledger-section">
-                <header class="gmrc-ledger-section__heading">
-                    <h3>Tool Proficiencies</h3>
-                </header>
+                        if ($skill->hasExpertise()) {
+                            $skillClass = 'has-expertise';
+                        } elseif ($skill->isProficient()) {
+                            $skillClass = 'is-proficient';
+                        }
+                        ?>
 
-                <?php if (
-                    $toolProficiencies->isEmpty()
-                ) : ?>
-                    <p class="gmrc-ledger-copy">
-                        No tool proficiencies are recorded.
-                    </p>
-                <?php else : ?>
-                    <ul class="gmrc-ledger-tags">
-                        <?php foreach (
-                            $toolProficiencies->all()
-                            as $tool
-                        ) : ?>
-                            <li>
-                                <?php echo esc_html(
-                                    $tool->label()
-                                ); ?>
-
-                                <?php if (
-                                    $tool->isChoiceCategory()
-                                ) : ?>
-                                    <small>
-                                        Choice required
-                                    </small>
+                        <div class="<?php echo esc_attr($skillClass); ?>">
+                            <dt>
+                                <?php if ($skill->hasExpertise()) : ?>
+                                    <span aria-label="Expertise" title="Expertise">◆</span>
+                                <?php elseif ($skill->isProficient()) : ?>
+                                    <span aria-label="Proficient" title="Proficient">●</span>
                                 <?php endif; ?>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
 
-                    <?php if (
-                        $toolProficiencies
-                            ->hasUnresolvedChoices()
-                    ) : ?>
-                        <p class="gmrc-ledger-copy">
-                            One or more background tool choices
-                            still need to be resolved.
-                        </p>
-                    <?php endif; ?>
-                <?php endif; ?>
-            </section>
+                                <?php echo esc_html($label); ?>
+                            </dt>
 
-            <section class="gmrc-ledger-section">
-                <header class="gmrc-ledger-section__heading">
-                    <h3>Conditions</h3>
-                </header>
+                            <dd><?php echo esc_html($skill->signed()); ?></dd>
+                        </div>
+                    <?php endforeach; ?>
+                </dl>
 
-                <?php if ($conditions->isEmpty()) : ?>
-                    <p class="gmrc-ledger-copy">
-                        No active conditions are recorded.
-                    </p>
-                <?php else : ?>
-                    <ul class="gmrc-ledger-tags">
-                        <?php foreach (
-                            $conditions->all()
-                            as $condition
-                        ) : ?>
-                            <li>
-                                <?php echo esc_html(
-                                    $condition->label()
-                                ); ?>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
+                <p class="gmrc-ledger-legend">
+                    <span>● proficient</span>
+                    <span>◆ expertise</span>
+                </p>
+
+                <p class="gmrc-ledger-page__number" aria-hidden="true">3</p>
             </section>
 
             <section
-                class="gmrc-ledger-future"
+                class="gmrc-ledger-page gmrc-ledger-page--training"
+                aria-labelledby="gmrc-ledger-training-title"
+            >
+                <p class="gmrc-ledger-page__folio">Guild Training · IV</p>
+
+                <header class="gmrc-ledger-page__heading">
+                    <p class="gmrc-eyebrow">Recorded Training</p>
+                    <h2 id="gmrc-ledger-training-title">Proficiencies</h2>
+                </header>
+
+                <section class="gmrc-ledger-section">
+                    <header class="gmrc-ledger-section__heading">
+                        <h3>Background</h3>
+                    </header>
+
+                    <dl class="gmrc-ledger-background">
+                        <div>
+                            <dt>History</dt>
+                            <dd><?php echo esc_html($background); ?></dd>
+                        </div>
+                        <div>
+                            <dt>Background talents</dt>
+                            <dd>
+                                <?php echo esc_html(
+                                    $backgroundSkills !== []
+                                        ? implode(', ', $backgroundSkills)
+                                        : 'None'
+                                ); ?>
+                            </dd>
+                        </div>
+                    </dl>
+                </section>
+
+                <section class="gmrc-ledger-section">
+                    <header class="gmrc-ledger-section__heading">
+                        <h3>Languages</h3>
+                    </header>
+                    <?php if ($languages->isEmpty()) : ?>
+                        <p class="gmrc-ledger-copy">No languages are currently recorded.</p>
+                    <?php else : ?>
+                        <ul class="gmrc-ledger-tags">
+                            <?php foreach ($languages->all() as $language) : ?>
+                                <li><?php echo esc_html($language->label()); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+                </section>
+
+                <section class="gmrc-ledger-section">
+                    <header class="gmrc-ledger-section__heading">
+                        <h3>Tool Proficiencies</h3>
+                    </header>
+                    <?php if ($toolProficiencies->isEmpty()) : ?>
+                        <p class="gmrc-ledger-copy">No tool proficiencies are recorded.</p>
+                    <?php else : ?>
+                        <ul class="gmrc-ledger-tags">
+                            <?php foreach ($toolProficiencies->all() as $tool) : ?>
+                                <li><?php echo esc_html($tool->label()); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+                </section>
+
+                <p class="gmrc-ledger-page__number" aria-hidden="true">4</p>
+            </section>
+        </article>
+    </div>
+
+    <div
+        id="gmrc-ledger-panel-notes"
+        class="gmrc-ledger-tabpanel"
+        role="tabpanel"
+        aria-labelledby="gmrc-ledger-tab-notes"
+        data-ledger-panel="notes"
+        hidden
+    >
+        <article class="gmrc-ledger-book gmrc-ledger-book--archive-spread">
+            <div class="gmrc-ledger-book__binding" aria-hidden="true"></div>
+
+            <section
+                class="gmrc-ledger-page gmrc-ledger-page--archive"
+                aria-labelledby="gmrc-ledger-archive-title"
+            >
+                <p class="gmrc-ledger-page__folio">Guild Archive · V</p>
+
+                <header class="gmrc-ledger-page__heading">
+                    <p class="gmrc-eyebrow">Recorded Knowledge</p>
+                    <h2 id="gmrc-ledger-archive-title">Archive Notes</h2>
+                </header>
+
+                <section class="gmrc-ledger-section">
+                    <header class="gmrc-ledger-section__heading">
+                        <h3>Conditions</h3>
+                    </header>
+                    <?php if ($conditions->isEmpty()) : ?>
+                        <p class="gmrc-ledger-copy">No active conditions are recorded.</p>
+                    <?php else : ?>
+                        <ul class="gmrc-ledger-tags">
+                            <?php foreach ($conditions->all() as $condition) : ?>
+                                <li><?php echo esc_html($condition->label()); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+                </section>
+
+                <section class="gmrc-ledger-section gmrc-ledger-personal-notes">
+                    <header class="gmrc-ledger-section__heading">
+                        <h3>Adventuring Notes</h3>
+                    </header>
+                    <p class="gmrc-ledger-copy">
+                        No personal notes have been inscribed yet. This page is ready for the Guild Journal connection.
+                    </p>
+                    <div class="gmrc-ledger-note-lines" aria-hidden="true">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                </section>
+
+                <p class="gmrc-ledger-page__number" aria-hidden="true">5</p>
+            </section>
+
+            <section
+                class="gmrc-ledger-page gmrc-ledger-page--future"
                 aria-labelledby="gmrc-ledger-future-title"
             >
-                <p class="gmrc-eyebrow">
-                    Pages Yet to Be Written
-                </p>
+                <p class="gmrc-ledger-page__folio">Adventuring Record · VI</p>
 
-                <h3 id="gmrc-ledger-future-title">
-                    Adventuring Record
-                </h3>
+                <header class="gmrc-ledger-page__heading">
+                    <p class="gmrc-eyebrow">Pages Yet to Be Written</p>
+                    <h2 id="gmrc-ledger-future-title">The Road Ahead</h2>
+                </header>
 
                 <div class="gmrc-ledger-future__grid">
                     <article>
                         <span aria-hidden="true">🎒</span>
-
                         <h4>Leather Satchel</h4>
-
-                        <p>
-                            Inventory and equipment will be recorded
-                            here.
-                        </p>
+                        <p>Inventory and equipment will be recorded here.</p>
                     </article>
-
                     <article>
                         <span aria-hidden="true">✦</span>
-
                         <h4>Features</h4>
-
-                        <p>
-                            Race and class features will receive their
-                            own illuminated entries.
-                        </p>
+                        <p>Race and class features will receive illuminated entries.</p>
                     </article>
-
                     <article>
                         <span aria-hidden="true">🏆</span>
-
                         <h4>Honours</h4>
-
-                        <p>
-                            Guild achievements will become stamps
-                            within the Ledger.
-                        </p>
+                        <p>Guild achievements will become stamps within the Ledger.</p>
                     </article>
                 </div>
-            </section>
 
-            <p
-                class="gmrc-ledger-page__number"
-                aria-hidden="true"
-            >
-                4
-            </p>
-        </section>
-    </article>
+                <blockquote class="gmrc-ledger-auby-note gmrc-ledger-auby-note--archive">
+                    <p>“Plenty of room left. That usually means adventure is about to happen.”</p>
+                    <footer>— Auby</footer>
+                </blockquote>
+
+                <p class="gmrc-ledger-page__number" aria-hidden="true">6</p>
+            </section>
+        </article>
+    </div>
+
+    <div
+        class="gmrc-ledger-tabs"
+        role="tablist"
+        aria-label="Open Ledger sections"
+    >
+        <button
+            id="gmrc-ledger-tab-overview"
+            class="gmrc-ledger-tab is-active"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="gmrc-ledger-panel-overview"
+            tabindex="0"
+            data-ledger-tab="overview"
+        >
+            <span aria-hidden="true">▣</span>
+            Overview
+        </button>
+
+        <button
+            id="gmrc-ledger-tab-skills"
+            class="gmrc-ledger-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="gmrc-ledger-panel-skills"
+            tabindex="-1"
+            data-ledger-tab="skills"
+        >
+            <span aria-hidden="true">✦</span>
+            Skills & Training
+        </button>
+
+        <button
+            id="gmrc-ledger-tab-notes"
+            class="gmrc-ledger-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="gmrc-ledger-panel-notes"
+            tabindex="-1"
+            data-ledger-tab="notes"
+        >
+            <span aria-hidden="true">✎</span>
+            Archive Notes
+        </button>
+    </div>
 </section>
