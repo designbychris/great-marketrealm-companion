@@ -28,6 +28,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Models\ItemCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Repositories\CharacterInventoryRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Services\InventoryPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Combat\Services\AttackPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Repositories\CharacterPortraitRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
@@ -546,6 +547,10 @@ final class CharacterController
                             $character,
                             $inventory
                         ),
+                    'attacks' => (new AttackPresenter($catalogue))->present(
+                        $character,
+                        $inventory
+                    ),
                 ]
             )
         );
