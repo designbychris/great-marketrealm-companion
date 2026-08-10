@@ -1,0 +1,1131 @@
+{
+  "version": "3.7.1",
+  "source": {
+    "title": "The Great Marketrealm Players Handbook",
+    "kind": "curated-google-doc-snapshot"
+  },
+  "races": [
+    {
+      "key": "fructan",
+      "name": "Fructan",
+      "description": "Colourful, flavourful fruit-born folk; charismatic and adventurous.",
+      "traits": [
+        "Fruitful Vitality",
+        "Sweet Scent"
+      ],
+      "size": "Medium",
+      "speed": 30,
+      "languages": [
+        "Common",
+        "Fruittongue"
+      ]
+    },
+    {
+      "key": "vegfolk",
+      "name": "Vegfolk",
+      "description": "Grounded and practical vegetable folk of the Root Realms and Leafy Canopies.",
+      "traits": [
+        "Rooted Resolve",
+        "Plantkin"
+      ],
+      "size": "Medium",
+      "speed": 30,
+      "languages": [
+        "Common",
+        "Greenspeech"
+      ]
+    },
+    {
+      "key": "fungifolk",
+      "name": "Fungifolk",
+      "description": "Earthy, enigmatic folk bound to the mycelial networks of the Marketrealm.",
+      "traits": [
+        "Spore Speech",
+        "Spore Cloud",
+        "Fungal Fortitude"
+      ],
+      "size": "Medium",
+      "speed": 25,
+      "languages": [
+        "Common",
+        "Sporetongue"
+      ]
+    },
+    {
+      "key": "rootkin",
+      "name": "Rootkin",
+      "description": "Ancient root-folk tied to deep soil, patience and vegetable memory.",
+      "traits": [
+        "Earthen Fortitude",
+        "Photosynthesis",
+        "Root Sense"
+      ],
+      "size": "Medium",
+      "speed": 25,
+      "languages": [
+        "Common",
+        "Sylvan"
+      ]
+    },
+    {
+      "key": "dairyfolk",
+      "name": "Dairyfolk",
+      "description": "Cultured folk born of cheeses, creams and milk products.",
+      "traits": [
+        "Dairy Fortitude",
+        "Lactose Empathy"
+      ],
+      "size": "Small or Medium",
+      "speed": 25,
+      "languages": [
+        "Common",
+        "Creamtongue"
+      ]
+    },
+    {
+      "key": "frostreem",
+      "name": "Frostreem",
+      "description": "Frozen dairyfolk descended from enchanted custards, gelatos and ice creams.",
+      "traits": [
+        "Cold-Blooded Chill",
+        "Melty Weakness",
+        "Flavour Burst"
+      ],
+      "size": "Small or Medium",
+      "speed": 25,
+      "languages": [
+        "Common",
+        "Dairycant"
+      ]
+    },
+    {
+      "key": "meatfolk",
+      "name": "Sizzlarian / Meatfolk",
+      "description": "Meat-born folk whose Emberwalk reveals their adult path and True Flame Name.",
+      "traits": [
+        "Meaty Hide",
+        "Protein Surge",
+        "Carnivore Legacy"
+      ],
+      "size": "Medium",
+      "speed": 30,
+      "languages": [
+        "Common"
+      ]
+    },
+    {
+      "key": "herbfolk",
+      "name": "Herbanite / Herbfolk",
+      "description": "Fragrant plantfolk born of aromatic roots and leaves.",
+      "traits": [
+        "Photosynthesis",
+        "Herbal Aura",
+        "Spice Tolerance"
+      ],
+      "size": "Medium",
+      "speed": 30,
+      "languages": [
+        "Common"
+      ]
+    },
+    {
+      "key": "recalled",
+      "name": "The Recalled",
+      "description": "Removed, discontinued or spoiled foodstuffs returned with strange memories and patchwork forms.",
+      "traits": [
+        "Rejected Resilience",
+        "Spoilage Aura",
+        "Expiration Echoes"
+      ],
+      "size": "Small or Medium",
+      "speed": 30,
+      "languages": [
+        "Common"
+      ]
+    },
+    {
+      "key": "boxfolk",
+      "name": "Boxfolk",
+      "description": "Awakened preserved, canned and frozen goods with durable shells and perfect memories.",
+      "traits": [
+        "Preserved Shell",
+        "Refrigerated Memory",
+        "Modular Build"
+      ],
+      "size": "Medium",
+      "speed": 30,
+      "languages": [
+        "Common",
+        "Boxsign"
+      ]
+    },
+    {
+      "key": "sweetfolk",
+      "name": "Sweetfolk",
+      "description": "Confection-born folk united by sugarblood and distracting sweetness.",
+      "traits": [
+        "Sugarblood",
+        "Deliciously Distracting"
+      ],
+      "size": "Small or Medium",
+      "speed": 30,
+      "languages": [
+        "Common",
+        "Candish"
+      ]
+    },
+    {
+      "key": "marshmallow-folk",
+      "name": "Marshmallow Folk",
+      "description": "Puffy folk of the Cereal Steppes, sweet, buoyant and unexpectedly flame-touched.",
+      "traits": [
+        "Light as Fluff",
+        "Sugarshock",
+        "Toasty Body",
+        "Float"
+      ],
+      "size": "Small or Medium",
+      "speed": 30,
+      "languages": [
+        "Common",
+        "Sugarcant"
+      ]
+    },
+    {
+      "key": "fluffling",
+      "name": "Fluffling",
+      "description": "Airy beings woven from enchanted sugar threads, cheerful and difficult to pin down.",
+      "traits": [
+        "Cotton Lightness",
+        "Sugar Rush",
+        "Sticky Sweetness",
+        "Delicious Disguise"
+      ],
+      "size": "Small",
+      "speed": 25,
+      "languages": [
+        "Common",
+        "Sylvan"
+      ]
+    },
+    {
+      "key": "drink-folk",
+      "name": "Drinkling",
+      "description": "Fluid folk bound to flow, refreshment and change.",
+      "traits": [
+        "Liquid Form",
+        "Effervescent Vitality",
+        "Hydrodynamic Memory",
+        "Spillproof"
+      ],
+      "size": "Medium",
+      "speed": 30,
+      "languages": [
+        "Common",
+        "Aquan"
+      ]
+    }
+  ],
+  "heritages": [
+    {
+      "key": "applekin",
+      "name": "Applekin",
+      "description": "Applekin heritage of the Fructan family.",
+      "traits": [],
+      "parent": "fructan"
+    },
+    {
+      "key": "bananari",
+      "name": "Bananari",
+      "description": "Bananari heritage of the Fructan family.",
+      "traits": [],
+      "parent": "fructan"
+    },
+    {
+      "key": "berryling",
+      "name": "Berrylings",
+      "description": "Berrylings heritage of the Fructan family.",
+      "traits": [],
+      "parent": "fructan"
+    },
+    {
+      "key": "pinefolk",
+      "name": "Pinefolks",
+      "description": "Pinefolks heritage of the Fructan family.",
+      "traits": [],
+      "parent": "fructan"
+    },
+    {
+      "key": "melonian",
+      "name": "Melonians",
+      "description": "Melonians heritage of the Fructan family.",
+      "traits": [],
+      "parent": "fructan"
+    },
+    {
+      "key": "carrotian",
+      "name": "Carrotians",
+      "description": "Carrotians heritage of the Vegfolk family.",
+      "traits": [],
+      "parent": "vegfolk"
+    },
+    {
+      "key": "garliad",
+      "name": "Garliads",
+      "description": "Garliads heritage of the Vegfolk family.",
+      "traits": [],
+      "parent": "vegfolk"
+    },
+    {
+      "key": "lettuceling",
+      "name": "Lettucelings",
+      "description": "Lettucelings heritage of the Vegfolk family.",
+      "traits": [],
+      "parent": "vegfolk"
+    },
+    {
+      "key": "spudling",
+      "name": "Spudlings",
+      "description": "Spudlings heritage of the Vegfolk family.",
+      "traits": [],
+      "parent": "vegfolk"
+    },
+    {
+      "key": "capsicumite",
+      "name": "Capsicumites",
+      "description": "Capsicumites heritage of the Vegfolk family.",
+      "traits": [],
+      "parent": "vegfolk"
+    },
+    {
+      "key": "stalker",
+      "name": "Stalkers",
+      "description": "Stalkers heritage of the Vegfolk family.",
+      "traits": [],
+      "parent": "vegfolk"
+    },
+    {
+      "key": "stonecap",
+      "name": "Stonecap",
+      "description": "Stonecap heritage of the Fungifolk family.",
+      "traits": [],
+      "parent": "fungifolk"
+    },
+    {
+      "key": "moldkin",
+      "name": "Moldkin",
+      "description": "Moldkin heritage of the Fungifolk family.",
+      "traits": [],
+      "parent": "fungifolk"
+    },
+    {
+      "key": "glowshroom",
+      "name": "Glowshroom",
+      "description": "Glowshroom heritage of the Fungifolk family.",
+      "traits": [],
+      "parent": "fungifolk"
+    },
+    {
+      "key": "creamkin",
+      "name": "Creamkin",
+      "description": "Creamkin heritage of the Dairyfolk family.",
+      "traits": [],
+      "parent": "dairyfolk"
+    },
+    {
+      "key": "rindborn",
+      "name": "Rindborn",
+      "description": "Rindborn heritage of the Dairyfolk family.",
+      "traits": [],
+      "parent": "dairyfolk"
+    },
+    {
+      "key": "wheykin",
+      "name": "Wheykin",
+      "description": "Wheykin heritage of the Dairyfolk family.",
+      "traits": [],
+      "parent": "dairyfolk"
+    },
+    {
+      "key": "gelatari",
+      "name": "Gelatari",
+      "description": "Gelatari heritage of the Frostreem family.",
+      "traits": [],
+      "parent": "frostreem"
+    },
+    {
+      "key": "rippling",
+      "name": "Ripplelings",
+      "description": "Ripplelings heritage of the Frostreem family.",
+      "traits": [],
+      "parent": "frostreem"
+    },
+    {
+      "key": "nutcrust",
+      "name": "Nutcrusts",
+      "description": "Nutcrusts heritage of the Frostreem family.",
+      "traits": [],
+      "parent": "frostreem"
+    },
+    {
+      "key": "herbchurn",
+      "name": "Herbchurns",
+      "description": "Herbchurns heritage of the Frostreem family.",
+      "traits": [],
+      "parent": "frostreem"
+    },
+    {
+      "key": "grillborn",
+      "name": "Grillborn",
+      "description": "Grillborn heritage of the Sizzlarian / Meatfolk family.",
+      "traits": [],
+      "parent": "meatfolk"
+    },
+    {
+      "key": "bloodraw",
+      "name": "Bloodraw",
+      "description": "Bloodraw heritage of the Sizzlarian / Meatfolk family.",
+      "traits": [],
+      "parent": "meatfolk"
+    },
+    {
+      "key": "sauskling",
+      "name": "Sausklings",
+      "description": "Sausklings heritage of the Sizzlarian / Meatfolk family.",
+      "traits": [],
+      "parent": "meatfolk"
+    },
+    {
+      "key": "jerkanite",
+      "name": "Jerkanites",
+      "description": "Jerkanites heritage of the Sizzlarian / Meatfolk family.",
+      "traits": [],
+      "parent": "meatfolk"
+    },
+    {
+      "key": "basilkin",
+      "name": "Basilkin",
+      "description": "Basilkin heritage of the Herbanite / Herbfolk family.",
+      "traits": [],
+      "parent": "herbfolk"
+    },
+    {
+      "key": "sageborn",
+      "name": "Sageborn",
+      "description": "Sageborn heritage of the Herbanite / Herbfolk family.",
+      "traits": [],
+      "parent": "herbfolk"
+    },
+    {
+      "key": "chilite",
+      "name": "Chilites",
+      "description": "Chilites heritage of the Herbanite / Herbfolk family.",
+      "traits": [],
+      "parent": "herbfolk"
+    },
+    {
+      "key": "processed-slime",
+      "name": "Processed Slime",
+      "description": "Processed Slime heritage of the The Recalled family.",
+      "traits": [],
+      "parent": "recalled"
+    },
+    {
+      "key": "preserved-horror",
+      "name": "Preserved Horror",
+      "description": "Preserved Horror heritage of the The Recalled family.",
+      "traits": [],
+      "parent": "recalled"
+    },
+    {
+      "key": "forbidden-flavour",
+      "name": "Forbidden Flavour",
+      "description": "Forbidden Flavour heritage of the The Recalled family.",
+      "traits": [],
+      "parent": "recalled"
+    },
+    {
+      "key": "explosive-batch",
+      "name": "Explosive Batch",
+      "description": "Explosive Batch heritage of the The Recalled family.",
+      "traits": [],
+      "parent": "recalled"
+    },
+    {
+      "key": "canned-steel",
+      "name": "Canned Steel",
+      "description": "Canned Steel heritage of the Boxfolk family.",
+      "traits": [],
+      "parent": "boxfolk"
+    },
+    {
+      "key": "frozen-core",
+      "name": "Frozen Core",
+      "description": "Frozen Core heritage of the Boxfolk family.",
+      "traits": [],
+      "parent": "boxfolk"
+    },
+    {
+      "key": "insulated-box",
+      "name": "Insulated Box",
+      "description": "Insulated Box heritage of the Boxfolk family.",
+      "traits": [],
+      "parent": "boxfolk"
+    },
+    {
+      "key": "gumdrop-gnome",
+      "name": "Gumdrop Gnomes",
+      "description": "Gumdrop Gnomes heritage of the Sweetfolk family.",
+      "traits": [],
+      "parent": "sweetfolk"
+    },
+    {
+      "key": "chocobite",
+      "name": "Chocobites",
+      "description": "Chocobites heritage of the Sweetfolk family.",
+      "traits": [],
+      "parent": "sweetfolk"
+    },
+    {
+      "key": "lollifey",
+      "name": "Lollifey",
+      "description": "Lollifey heritage of the Sweetfolk family.",
+      "traits": [],
+      "parent": "sweetfolk"
+    },
+    {
+      "key": "taffling",
+      "name": "Tafflings",
+      "description": "Tafflings heritage of the Sweetfolk family.",
+      "traits": [],
+      "parent": "sweetfolk"
+    },
+    {
+      "key": "biscottian",
+      "name": "Biscottians",
+      "description": "Biscottians heritage of the Sweetfolk family.",
+      "traits": [],
+      "parent": "sweetfolk"
+    },
+    {
+      "key": "fizzfolk",
+      "name": "Fizzfolk",
+      "description": "Fizzfolk heritage of the Drinkling family.",
+      "traits": [],
+      "parent": "drink-folk"
+    },
+    {
+      "key": "vintage-brewed",
+      "name": "Vintage-Brewed",
+      "description": "Vintage-Brewed heritage of the Drinkling family.",
+      "traits": [],
+      "parent": "drink-folk"
+    },
+    {
+      "key": "juicekin",
+      "name": "Juicekin",
+      "description": "Juicekin heritage of the Drinkling family.",
+      "traits": [],
+      "parent": "drink-folk"
+    },
+    {
+      "key": "steamspout",
+      "name": "Steamspouts",
+      "description": "Steamspouts heritage of the Drinkling family.",
+      "traits": [],
+      "parent": "drink-folk"
+    }
+  ],
+  "classes": [
+    {
+      "key": "grocer",
+      "name": "Grocer",
+      "description": "Grocer adventuring class.",
+      "traits": [],
+      "hit_die": 8
+    },
+    {
+      "key": "cleaver-saint",
+      "name": "Cleaver Saint",
+      "description": "Cleaver Saint adventuring class.",
+      "traits": [],
+      "hit_die": 10
+    },
+    {
+      "key": "artificer",
+      "name": "Artificer",
+      "description": "Artificer adventuring class.",
+      "traits": [],
+      "hit_die": 8
+    },
+    {
+      "key": "barbarian",
+      "name": "Barbarian",
+      "description": "Barbarian adventuring class.",
+      "traits": [],
+      "hit_die": 12
+    },
+    {
+      "key": "bard",
+      "name": "Bard",
+      "description": "Bard adventuring class.",
+      "traits": [],
+      "hit_die": 8
+    },
+    {
+      "key": "cleric",
+      "name": "Cleric",
+      "description": "Cleric adventuring class.",
+      "traits": [],
+      "hit_die": 8
+    },
+    {
+      "key": "druid",
+      "name": "Druid",
+      "description": "Druid adventuring class.",
+      "traits": [],
+      "hit_die": 8
+    },
+    {
+      "key": "fighter",
+      "name": "Fighter",
+      "description": "Fighter adventuring class.",
+      "traits": [],
+      "hit_die": 10
+    },
+    {
+      "key": "monk",
+      "name": "Monk",
+      "description": "Monk adventuring class.",
+      "traits": [],
+      "hit_die": 8
+    },
+    {
+      "key": "paladin",
+      "name": "Paladin",
+      "description": "Paladin adventuring class.",
+      "traits": [],
+      "hit_die": 10
+    },
+    {
+      "key": "ranger",
+      "name": "Ranger",
+      "description": "Ranger adventuring class.",
+      "traits": [],
+      "hit_die": 10
+    },
+    {
+      "key": "rogue",
+      "name": "Rogue",
+      "description": "Rogue adventuring class.",
+      "traits": [],
+      "hit_die": 8
+    },
+    {
+      "key": "sorcerer",
+      "name": "Sorcerer",
+      "description": "Sorcerer adventuring class.",
+      "traits": [],
+      "hit_die": 6
+    },
+    {
+      "key": "warlock",
+      "name": "Warlock",
+      "description": "Warlock adventuring class.",
+      "traits": [],
+      "hit_die": 8
+    },
+    {
+      "key": "wizard",
+      "name": "Wizard",
+      "description": "Wizard adventuring class.",
+      "traits": [],
+      "hit_die": 6
+    }
+  ],
+  "subclasses": [
+    {
+      "key": "discontinued-lineage",
+      "name": "Discontinued Lineage",
+      "description": "Discontinued Lineage path for the Fighter.",
+      "traits": [],
+      "parent": "fighter"
+    },
+    {
+      "key": "butcher",
+      "name": "Butcher",
+      "description": "Butcher path for the Fighter.",
+      "traits": [],
+      "parent": "fighter"
+    },
+    {
+      "key": "the-carver",
+      "name": "The Carver",
+      "description": "The Carver path for the Fighter.",
+      "traits": [],
+      "parent": "fighter"
+    },
+    {
+      "key": "cutlery-knight",
+      "name": "Cutlery Knight",
+      "description": "Cutlery Knight path for the Fighter.",
+      "traits": [],
+      "parent": "fighter"
+    },
+    {
+      "key": "the-vineblade",
+      "name": "The Vineblade",
+      "description": "The Vineblade path for the Fighter.",
+      "traits": [],
+      "parent": "fighter"
+    },
+    {
+      "key": "shelf-sentinel",
+      "name": "Shelf Sentinel",
+      "description": "Shelf Sentinel path for the Fighter.",
+      "traits": [],
+      "parent": "fighter"
+    },
+    {
+      "key": "circle-of-eating-fresh",
+      "name": "Circle of Eating Fresh",
+      "description": "Circle of Eating Fresh path for the Druid.",
+      "traits": [],
+      "parent": "druid"
+    },
+    {
+      "key": "circle-of-the-groveflame",
+      "name": "Circle of the Groveflame",
+      "description": "Circle of the Groveflame path for the Druid.",
+      "traits": [],
+      "parent": "druid"
+    },
+    {
+      "key": "circle-of-the-deep-soil",
+      "name": "Circle of the Deep Soil",
+      "description": "Circle of the Deep Soil path for the Druid.",
+      "traits": [],
+      "parent": "druid"
+    },
+    {
+      "key": "circle-of-the-compost",
+      "name": "Circle of the Compost",
+      "description": "Circle of the Compost path for the Druid.",
+      "traits": [],
+      "parent": "druid"
+    },
+    {
+      "key": "circle-of-curdle",
+      "name": "Circle of Curdle",
+      "description": "Circle of Curdle path for the Druid.",
+      "traits": [],
+      "parent": "druid"
+    },
+    {
+      "key": "circle-of-the-churn",
+      "name": "Circle of the Churn",
+      "description": "Circle of the Churn path for the Druid.",
+      "traits": [],
+      "parent": "druid"
+    },
+    {
+      "key": "juiced-blooded",
+      "name": "Juiced-Blooded",
+      "description": "Juiced-Blooded path for the Sorcerer.",
+      "traits": [],
+      "parent": "sorcerer"
+    },
+    {
+      "key": "sugarspark-soul",
+      "name": "Sugarspark Soul",
+      "description": "Sugarspark Soul path for the Sorcerer.",
+      "traits": [],
+      "parent": "sorcerer"
+    },
+    {
+      "key": "carbonation-soul",
+      "name": "Carbonation Soul",
+      "description": "Carbonation Soul path for the Sorcerer.",
+      "traits": [],
+      "parent": "sorcerer"
+    },
+    {
+      "key": "soda-born",
+      "name": "Soda-Born",
+      "description": "Soda-Born path for the Sorcerer.",
+      "traits": [],
+      "parent": "sorcerer"
+    },
+    {
+      "key": "dairyblooded-soul",
+      "name": "Dairyblooded Soul",
+      "description": "Dairyblooded Soul path for the Sorcerer.",
+      "traits": [],
+      "parent": "sorcerer"
+    },
+    {
+      "key": "school-of-kraft-processed-magic",
+      "name": "School of Kraft Processed Magic",
+      "description": "School of Kraft Processed Magic path for the Wizard.",
+      "traits": [],
+      "parent": "wizard"
+    },
+    {
+      "key": "school-of-aromancy",
+      "name": "School of Aromancy",
+      "description": "School of Aromancy path for the Wizard.",
+      "traits": [],
+      "parent": "wizard"
+    },
+    {
+      "key": "school-of-emulsimancy",
+      "name": "School of Emulsimancy",
+      "description": "School of Emulsimancy path for the Wizard.",
+      "traits": [],
+      "parent": "wizard"
+    },
+    {
+      "key": "school-of-preservation",
+      "name": "School of Preservation",
+      "description": "School of Preservation path for the Wizard.",
+      "traits": [],
+      "parent": "wizard"
+    },
+    {
+      "key": "school-of-shelfmancy",
+      "name": "School of Shelfmancy",
+      "description": "School of Shelfmancy path for the Wizard.",
+      "traits": [],
+      "parent": "wizard"
+    },
+    {
+      "key": "boneweaver",
+      "name": "Boneweaver",
+      "description": "Boneweaver path for the Wizard.",
+      "traits": [],
+      "parent": "wizard"
+    },
+    {
+      "key": "school-of-infusion",
+      "name": "School of Infusion",
+      "description": "School of Infusion path for the Wizard.",
+      "traits": [],
+      "parent": "wizard"
+    },
+    {
+      "key": "school-of-decay-and-preservation",
+      "name": "School of Decay & Preservation",
+      "description": "School of Decay & Preservation path for the Wizard.",
+      "traits": [],
+      "parent": "wizard"
+    },
+    {
+      "key": "path-of-the-great-tony",
+      "name": "Path of the Great Tony",
+      "description": "Path of the Great Tony path for the Barbarian.",
+      "traits": [],
+      "parent": "barbarian"
+    },
+    {
+      "key": "path-of-the-expired",
+      "name": "Path of the Expired",
+      "description": "Path of the Expired path for the Barbarian.",
+      "traits": [],
+      "parent": "barbarian"
+    },
+    {
+      "key": "path-of-the-marbled-rage",
+      "name": "Path of the Marbled Rage",
+      "description": "Path of the Marbled Rage path for the Barbarian.",
+      "traits": [],
+      "parent": "barbarian"
+    },
+    {
+      "key": "path-of-the-rind",
+      "name": "Path of the Rind",
+      "description": "Path of the Rind path for the Barbarian.",
+      "traits": [],
+      "parent": "barbarian"
+    },
+    {
+      "key": "path-of-the-butchered-rage",
+      "name": "Path of the Butchered Rage",
+      "description": "Path of the Butchered Rage path for the Barbarian.",
+      "traits": [],
+      "parent": "barbarian"
+    },
+    {
+      "key": "path-of-the-sugarrush",
+      "name": "Path of the Sugarrush",
+      "description": "Path of the Sugarrush path for the Barbarian.",
+      "traits": [],
+      "parent": "barbarian"
+    },
+    {
+      "key": "path-of-the-pickled-rage",
+      "name": "Path of the Pickled Rage",
+      "description": "Path of the Pickled Rage path for the Barbarian.",
+      "traits": [],
+      "parent": "barbarian"
+    },
+    {
+      "key": "path-of-the-butterbound",
+      "name": "Path of the Butterbound",
+      "description": "Path of the Butterbound path for the Barbarian.",
+      "traits": [],
+      "parent": "barbarian"
+    },
+    {
+      "key": "domain-of-sweetness",
+      "name": "Domain of Sweetness",
+      "description": "Domain of Sweetness path for the Cleric.",
+      "traits": [],
+      "parent": "cleric"
+    },
+    {
+      "key": "domain-of-the-golden-arches",
+      "name": "Domain of the Golden Arches",
+      "description": "Domain of the Golden Arches path for the Cleric.",
+      "traits": [],
+      "parent": "cleric"
+    },
+    {
+      "key": "domain-of-dairy",
+      "name": "Domain of Dairy",
+      "description": "Domain of Dairy path for the Cleric.",
+      "traits": [],
+      "parent": "cleric"
+    },
+    {
+      "key": "domain-of-seasoning",
+      "name": "Domain of Seasoning",
+      "description": "Domain of Seasoning path for the Cleric.",
+      "traits": [],
+      "parent": "cleric"
+    },
+    {
+      "key": "domain-of-cultivation",
+      "name": "Domain of Cultivation",
+      "description": "Domain of Cultivation path for the Cleric.",
+      "traits": [],
+      "parent": "cleric"
+    },
+    {
+      "key": "domain-of-fermentation",
+      "name": "Domain of Fermentation",
+      "description": "Domain of Fermentation path for the Cleric.",
+      "traits": [],
+      "parent": "cleric"
+    },
+    {
+      "key": "the-cheetoblade",
+      "name": "The Cheetoblade",
+      "description": "The Cheetoblade path for the Rogue.",
+      "traits": [],
+      "parent": "rogue"
+    },
+    {
+      "key": "spiceblade",
+      "name": "Spiceblade",
+      "description": "Spiceblade path for the Rogue.",
+      "traits": [],
+      "parent": "rogue"
+    },
+    {
+      "key": "the-breadknife",
+      "name": "The Breadknife",
+      "description": "The Breadknife path for the Rogue.",
+      "traits": [],
+      "parent": "rogue"
+    },
+    {
+      "key": "mastermind-of-the-aisles",
+      "name": "Mastermind of the Aisles",
+      "description": "Mastermind of the Aisles path for the Rogue.",
+      "traits": [],
+      "parent": "rogue"
+    },
+    {
+      "key": "aisle-stalker",
+      "name": "Aisle Stalker",
+      "description": "Aisle Stalker path for the Rogue.",
+      "traits": [],
+      "parent": "rogue"
+    },
+    {
+      "key": "taffy-trickster",
+      "name": "Taffy Trickster",
+      "description": "Taffy Trickster path for the Rogue.",
+      "traits": [],
+      "parent": "rogue"
+    },
+    {
+      "key": "way-of-the-spun-cloud",
+      "name": "Way of the Spun Cloud",
+      "description": "Way of the Spun Cloud path for the Monk.",
+      "traits": [],
+      "parent": "monk"
+    },
+    {
+      "key": "way-of-the-neon-crunch",
+      "name": "Way of the Neon Crunch",
+      "description": "Way of the Neon Crunch path for the Monk.",
+      "traits": [],
+      "parent": "monk"
+    },
+    {
+      "key": "way-of-the-vacuum-seal",
+      "name": "Way of the Vacuum Seal",
+      "description": "Way of the Vacuum Seal path for the Monk.",
+      "traits": [],
+      "parent": "monk"
+    },
+    {
+      "key": "way-of-the-simmering-soul",
+      "name": "Way of the Simmering Soul",
+      "description": "Way of the Simmering Soul path for the Monk.",
+      "traits": [],
+      "parent": "monk"
+    },
+    {
+      "key": "way-of-the-whirling-utensil",
+      "name": "Way of the Whirling Utensil",
+      "description": "Way of the Whirling Utensil path for the Monk.",
+      "traits": [],
+      "parent": "monk"
+    },
+    {
+      "key": "way-of-the-spongecake-soul",
+      "name": "Way of the Spongecake Soul",
+      "description": "Way of the Spongecake Soul path for the Monk.",
+      "traits": [],
+      "parent": "monk"
+    },
+    {
+      "key": "oath-of-inventory",
+      "name": "Oath of Inventory",
+      "description": "Oath of Inventory path for the Paladin.",
+      "traits": [],
+      "parent": "paladin"
+    },
+    {
+      "key": "oath-of-the-colonel",
+      "name": "Oath of the Colonel",
+      "description": "Oath of the Colonel path for the Paladin.",
+      "traits": [],
+      "parent": "paladin"
+    },
+    {
+      "key": "oath-of-the-creamfather",
+      "name": "Oath of the Creamfather",
+      "description": "Oath of the Creamfather path for the Paladin.",
+      "traits": [],
+      "parent": "paladin"
+    },
+    {
+      "key": "college-of-the-seasoned-song",
+      "name": "College of the Seasoned Song",
+      "description": "College of the Seasoned Song path for the Bard.",
+      "traits": [],
+      "parent": "bard"
+    },
+    {
+      "key": "college-of-nostalgia",
+      "name": "College of Nostalgia",
+      "description": "College of Nostalgia path for the Bard.",
+      "traits": [],
+      "parent": "bard"
+    },
+    {
+      "key": "college-of-preservation",
+      "name": "College of Preservation",
+      "description": "College of Preservation path for the Bard.",
+      "traits": [],
+      "parent": "bard"
+    },
+    {
+      "key": "charcutaire",
+      "name": "Charcutaire",
+      "description": "Charcutaire path for the Bard.",
+      "traits": [],
+      "parent": "bard"
+    },
+    {
+      "key": "college-of-culinary-crescendo",
+      "name": "College of Culinary Crescendo",
+      "description": "College of Culinary Crescendo path for the Bard.",
+      "traits": [],
+      "parent": "bard"
+    },
+    {
+      "key": "college-of-confection",
+      "name": "College of Confection",
+      "description": "College of Confection path for the Bard.",
+      "traits": [],
+      "parent": "bard"
+    },
+    {
+      "key": "college-of-churned-verse",
+      "name": "College of Churned Verse",
+      "description": "College of Churned Verse path for the Bard.",
+      "traits": [],
+      "parent": "bard"
+    },
+    {
+      "key": "the-spice-engineer",
+      "name": "The Spice Engineer",
+      "description": "The Spice Engineer path for the Artificer.",
+      "traits": [],
+      "parent": "artificer"
+    },
+    {
+      "key": "the-cheesemonger",
+      "name": "The Cheesemonger",
+      "description": "The Cheesemonger path for the Artificer.",
+      "traits": [],
+      "parent": "artificer"
+    },
+    {
+      "key": "the-sous-sorcerer",
+      "name": "The Sous-Sorcerer",
+      "description": "The Sous-Sorcerer path for the Artificer.",
+      "traits": [],
+      "parent": "artificer"
+    },
+    {
+      "key": "the-culinary-engineer",
+      "name": "The Culinary Engineer",
+      "description": "The Culinary Engineer path for the Artificer.",
+      "traits": [],
+      "parent": "artificer"
+    },
+    {
+      "key": "pact-of-the-mascot",
+      "name": "Pact of the Mascot",
+      "description": "Pact of the Mascot path for the Warlock.",
+      "traits": [],
+      "parent": "warlock"
+    },
+    {
+      "key": "the-forgotten-freezer",
+      "name": "The Forgotten Freezer",
+      "description": "The Forgotten Freezer path for the Warlock.",
+      "traits": [],
+      "parent": "warlock"
+    },
+    {
+      "key": "the-spoilfather",
+      "name": "The Spoilfather",
+      "description": "The Spoilfather path for the Warlock.",
+      "traits": [],
+      "parent": "warlock"
+    },
+    {
+      "key": "the-sugar-fiend",
+      "name": "The Sugar Fiend",
+      "description": "The Sugar Fiend path for the Warlock.",
+      "traits": [],
+      "parent": "warlock"
+    }
+  ]
+}
