@@ -26,6 +26,9 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Languages;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiencies;
 use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Repositories\CharacterPortraitRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\ValueObjects\PortraitAttachmentId;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\SubmittedPortraitRecipeFactory;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
@@ -312,6 +315,141 @@ final class CharacterController
             $this->characterUrl(
                 $character->id()
             )
+        );
+    }
+
+    /**
+     * Replace the generated Guild portrait with a user image.
+     */
+    public function uploadPortrait(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $file = $_FILES['gmrc_custom_portrait'] ?? null;
+
+        if (
+            ! is_array($file)
+            || ! isset($file['tmp_name'], $file['name'])
+            || (int) ($file['error'] ?? UPLOAD_ERR_NO_FILE)
+                !== UPLOAD_ERR_OK
+        ) {
+            $this->flash->error(
+                'Choose a portrait image before asking the Illuminator to frame it.'
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl($character->id())
+            );
+        }
+
+        $allowed = [
+            'image/jpeg',
+            'image/png',
+            'image/webp',
+        ];
+
+        $checked = wp_check_filetype_and_ext(
+            (string) $file['tmp_name'],
+            (string) $file['name']
+        );
+
+        if (
+            ! isset($checked['type'])
+            || ! in_array($checked['type'], $allowed, true)
+        ) {
+            $this->flash->error(
+                'Guild portraits must be JPG, PNG or WebP images.'
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl($character->id())
+            );
+        }
+
+        if ((int) ($file['size'] ?? 0) > 8 * MB_IN_BYTES) {
+            $this->flash->error(
+                'That portrait is too large. Please keep it below 8 MB.'
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl($character->id())
+            );
+        }
+
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        require_once ABSPATH . 'wp-admin/includes/media.php';
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+
+        $attachmentId = media_handle_upload(
+            'gmrc_custom_portrait',
+            0
+        );
+
+        if (is_wp_error($attachmentId)) {
+            $this->flash->error(
+                'The Guild Illuminator could not frame that image. Please try another.'
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl($character->id())
+            );
+        }
+
+        $portraitRepository = new CharacterPortraitRepository();
+
+        $existing = $portraitRepository->find(
+            $character->id()
+        );
+
+        $fallback = $existing instanceof CharacterPortrait
+            ? $existing->recipe()
+            : null;
+
+        $portraitRepository->save(
+            $character->id(),
+            CharacterPortrait::custom(
+                PortraitAttachmentId::fromInt(
+                    (int) $attachmentId
+                ),
+                $fallback
+            )
+        );
+
+        $this->flash->success(
+            'The Guild Illuminator has framed your custom portrait.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl($character->id())
+        );
+    }
+
+    /**
+     * Return a custom portrait to its generated Guild illustration.
+     */
+    public function resetPortrait(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $portraitRepository = new CharacterPortraitRepository();
+
+        $existing = $portraitRepository->find(
+            $character->id()
+        );
+
+        if ($existing instanceof CharacterPortrait) {
+            $portraitRepository->save(
+                $character->id(),
+                $existing->useGeneratedFallback()
+            );
+        }
+
+        $this->flash->success(
+            'The Guild-generated portrait has been restored.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl($character->id())
         );
     }
 
