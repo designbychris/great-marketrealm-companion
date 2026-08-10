@@ -174,6 +174,25 @@ final class HitPoints implements Stringable
         );
     }
 
+
+/**
+ * Increase maximum hit points during level progression.
+ */
+public function increaseMaximum(int $amount): self
+{
+    if ($amount < 1) {
+        throw new InvalidArgumentException(
+            'Maximum hit point growth must be at least 1.'
+        );
+    }
+
+    return new self(
+        current: $this->current + $amount,
+        maximum: $this->maximum + $amount,
+        temporary: $this->temporary
+    );
+}
+
     /**
      * Determine whether the character has at least one hit point.
      */
