@@ -417,6 +417,10 @@ final class Character
 
     /**
      * Award experience to the Character.
+     *
+     * Crossing a threshold automatically certifies each earned level and
+     * grows maximum/current hit points by fixed-average class Hit Die plus
+     * Constitution modifier. Existing damage remains represented.
      */
     public function gainExperience(
         Experience $experience
@@ -430,7 +434,19 @@ final class Character
                 $this->level
             )
         ) {
+            $hitPointGain = max(
+                1,
+                1 + intdiv(
+                    $this->characterClass->hitDie(),
+                    2
+                ) + $this->abilityScores
+                    ->constitution()
+                    ->modifier()
+            );
+
             $this->level = $this->level->next();
+            $this->hitPoints = $this->hitPoints
+                ->increaseMaximum($hitPointGain);
         }
     }
 
