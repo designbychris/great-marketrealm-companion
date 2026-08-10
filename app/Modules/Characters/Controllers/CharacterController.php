@@ -156,12 +156,13 @@ final class CharacterController
                     'flash' => [
                         'error' => $this->flash->error(),
                     ],
-                    'raceOptions' => $this
-                        ->raceRegistry
-                        ->options(),
-                    'classOptions' => $this
-                        ->classRegistry
-                        ->options(),
+                    /*
+                     * New Characters are created from the Grand Catalogue.
+                     * The legacy registries remain available elsewhere for
+                     * previously persisted Character identities.
+                     */
+                    'raceOptions' => $this->catalogue->raceOptions(),
+                    'classOptions' => $this->catalogue->classOptions(),
                     'catalogueRaces' => $this->catalogue->raceOptions(),
                     'catalogueClasses' => $this->catalogue->classOptions(),
                     'catalogueHeritages' => $this->catalogue->heritages(),
