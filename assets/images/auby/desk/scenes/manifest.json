@@ -25,8 +25,9 @@
       "note_title": "First note of the day",
       "note_message": "Fresh parchment. Fresh tea. Fresh adventures. I had better find my good quill.",
       "tea_message": "Fresh tea has just been brewed.",
-      "resolution": "2560x1584",
-      "art_pass": "phase-3.1-finishing-touches"
+      "resolution": "3200x1980",
+      "art_pass": "phase-3.1-finishing-touches",
+      "restoration_pass": "3.1.2"
     },
     {
       "id": "morning",
@@ -51,8 +52,9 @@
       "note_title": "Auby left this here",
       "note_message": "You're just in time. I have the Register open and I only misplaced one page this morning.",
       "tea_message": "The first proper pot of tea is ready.",
-      "resolution": "2560x1584",
-      "art_pass": "phase-3.1-finishing-touches"
+      "resolution": "3200x1980",
+      "art_pass": "phase-3.1-finishing-touches",
+      "restoration_pass": "3.1.2"
     },
     {
       "id": "afternoon",
@@ -78,8 +80,9 @@
       "note_title": "Auby left this here",
       "note_message": "I left your Guild Journal open for you. I was absolutely not reading it. Also, I found a copper coin under the desk. We should probably work out whose it is.",
       "tea_message": "Tea is still warm. Probably.",
-      "resolution": "2560x1584",
-      "art_pass": "phase-3.1-finishing-touches"
+      "resolution": "3200x1980",
+      "art_pass": "phase-3.1-finishing-touches",
+      "restoration_pass": "3.1.2"
     },
     {
       "id": "evening",
@@ -103,8 +106,9 @@
       "note_title": "Evening note",
       "note_message": "I finished the last stack of records. Well... the last stack I am admitting exists.",
       "tea_message": "One last cup before the lamps go down?",
-      "resolution": "2560x1584",
-      "art_pass": "phase-3.1-finishing-touches"
+      "resolution": "3200x1980",
+      "art_pass": "phase-3.1-finishing-touches",
+      "restoration_pass": "3.1.2"
     },
     {
       "id": "night",
@@ -128,8 +132,9 @@
       "note_title": "A late note from Auby",
       "note_message": "Don't forget to get some sleep. This advice is aimed at both of us.",
       "tea_message": "Herbal tea only at this hour.",
-      "resolution": "2560x1584",
-      "art_pass": "phase-3.1-finishing-touches"
+      "resolution": "3200x1980",
+      "art_pass": "phase-3.1-finishing-touches",
+      "restoration_pass": "3.1.2"
     },
     {
       "id": "late-night",
@@ -155,8 +160,9 @@
       "note_title": "Leave this for morning",
       "note_message": "If you need anything, leave me a note. If it is urgent... leave two notes.",
       "tea_message": "The tea has gone cold. Let him sleep.",
-      "resolution": "2560x1584",
-      "art_pass": "phase-3.1-finishing-touches"
+      "resolution": "3200x1980",
+      "art_pass": "phase-3.1-finishing-touches",
+      "restoration_pass": "3.1.2"
     }
   ],
   "hero_library_version": "2.2",
@@ -165,6 +171,20 @@
   "four_scene_restoration": {
     "version": "1.0",
     "scenes": [
+      "morning",
+      "afternoon",
+      "evening",
+      "late-night"
+    ],
+    "aliases": {
+      "dawn": "morning",
+      "night": "late-night"
+    }
+  },
+  "ledger_restoration_pass": {
+    "version": "3.1.2",
+    "runtime_resolution": "3200x1980",
+    "visual_scenes": [
       "morning",
       "afternoon",
       "evening",
