@@ -16,8 +16,8 @@ final class GuildLedgerHangingTabsRegressionTest extends TestCase
         );
 
         self::assertIsString($view);
-        self::assertSame(3, substr_count($view, 'gmrc-ledger-tab__icon'));
-        self::assertSame(3, substr_count($view, 'gmrc-ledger-tab__label'));
+        self::assertSame(4, substr_count($view, 'gmrc-ledger-tab__icon'));
+        self::assertSame(4, substr_count($view, 'gmrc-ledger-tab__label'));
     }
 
     public function testGuildDiceStylesAnchorTabsToRightPage(): void
