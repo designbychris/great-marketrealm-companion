@@ -19,14 +19,6 @@
       "file": "Assets/ground-shadow.svg",
       "label": "Painted ground shadow",
       "variant": "benchmark"
-    },
-    {
-      "id": "g2-auby-finishing-touch-01",
-      "slot": "guild_ornament",
-      "file": "Assets/auby-finishing-touch.svg",
-      "label": "Auby's final brush stroke",
-      "variant": "finishing-touch",
-      "animated": true
     }
   ]
 }
