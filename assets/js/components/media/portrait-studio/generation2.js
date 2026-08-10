@@ -141,9 +141,44 @@
                     return;
                 }
 
+                const breathingGroup =
+                    document.createElementNS(
+                        'http://www.w3.org/2000/svg',
+                        'g'
+                    );
+
+                breathingGroup.classList.add(
+                    'gmrc-g2-breathing-group'
+                );
+
+                generationTwo.appendChild(
+                    breathingGroup
+                );
+
                 ASSETS.forEach(function (asset) {
+                    const layer = useElement(
+                        asset[0],
+                        asset[1]
+                    );
+
+                    const belongsToCharacter =
+                        layer.classList.contains(
+                            'gmrc-g2-character'
+                        )
+                        || layer.classList.contains(
+                            'gmrc-g2-face-overlay'
+                        );
+
+                    if (belongsToCharacter) {
+                        breathingGroup.appendChild(
+                            layer
+                        );
+
+                        return;
+                    }
+
                     generationTwo.appendChild(
-                        useElement(asset[0], asset[1])
+                        layer
                     );
                 });
 
