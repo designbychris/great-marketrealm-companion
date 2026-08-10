@@ -187,6 +187,18 @@ $guildSeal = $sealRegistry->for(
     $characterClass
 );
 
+$arcana = isset($arcana) && is_array($arcana)
+    ? $arcana
+    : [
+        'casting_ability' => null,
+        'casting_modifier' => 0,
+        'spell_attack' => null,
+        'save_dc' => null,
+        'slots' => [],
+        'entries' => [],
+        'has_spells' => false,
+    ];
+
 $backgroundSkills = array_map(
     static fn (
         string $skill
@@ -1068,6 +1080,206 @@ $backgroundSkills = array_map(
         </article>
     </div>
 
+
+<div
+    id="gmrc-ledger-panel-arcana"
+    class="gmrc-ledger-tabpanel"
+    role="tabpanel"
+    aria-labelledby="gmrc-ledger-tab-arcana"
+    data-ledger-panel="arcana"
+    hidden
+>
+    <article class="gmrc-ledger-book gmrc-ledger-book--arcane-spread">
+        <div class="gmrc-ledger-book__binding" aria-hidden="true"></div>
+
+        <section
+            class="gmrc-ledger-page gmrc-ledger-page--arcane-pantry"
+            aria-labelledby="gmrc-arcane-pantry-title"
+        >
+            <p class="gmrc-ledger-page__folio">Arcane Pantry · IX</p>
+
+            <header class="gmrc-ledger-page__heading">
+                <p class="gmrc-eyebrow">Dangerously Magical</p>
+                <h2 id="gmrc-arcane-pantry-title">The Arcane Pantry</h2>
+            </header>
+
+            <?php if ($arcana['casting_ability'] !== null) : ?>
+                <dl class="gmrc-arcane-summary">
+                    <div>
+                        <dt>Casting ability</dt>
+                        <dd><?php echo esc_html($arcana['casting_ability']); ?></dd>
+                    </div>
+                    <div>
+                        <dt>Spell attack</dt>
+                        <dd><?php echo esc_html(
+                            ($arcana['spell_attack'] ?? 0) >= 0
+                                ? '+' . (string) $arcana['spell_attack']
+                                : (string) $arcana['spell_attack']
+                        ); ?></dd>
+                    </div>
+                    <div>
+                        <dt>Save DC</dt>
+                        <dd><?php echo esc_html((string) $arcana['save_dc']); ?></dd>
+                    </div>
+                </dl>
+
+                <?php if ($arcana['slots'] !== []) : ?>
+                    <div class="gmrc-spell-slots" aria-label="Spell slots">
+                        <?php foreach ($arcana['slots'] as $slot) : ?>
+                            <span>
+                                <strong><?php echo esc_html(
+                                    (string) $slot['total']
+                                ); ?></strong>
+                                Level <?php echo esc_html(
+                                    (string) $slot['level']
+                                ); ?> slots
+                            </span>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            <?php else : ?>
+                <div class="gmrc-arcane-summary gmrc-arcane-summary--features">
+                    <span aria-hidden="true">✦</span>
+                    <p>
+                        This adventurer’s magic is written in deeds rather than spell slots.
+                        Class features and special abilities are recorded below.
+                    </p>
+                </div>
+            <?php endif; ?>
+
+            <div class="gmrc-arcane-card-list">
+                <?php if ($arcana['entries'] === []) : ?>
+                    <article class="gmrc-arcane-empty">
+                        <span aria-hidden="true">📜</span>
+                        <h3>Pages Awaiting Discovery</h3>
+                        <p>
+                            No spells or class abilities have been entered for this calling yet.
+                            The Guild Archivists have left plenty of room.
+                        </p>
+                    </article>
+                <?php else : ?>
+                    <?php foreach ($arcana['entries'] as $ability) : ?>
+                        <article class="gmrc-arcane-card">
+                            <header>
+                                <span class="gmrc-arcane-card__kind">
+                                    <?php echo esc_html(
+                                        ucfirst((string) $ability['kind'])
+                                    ); ?>
+                                </span>
+                                <h3><?php echo esc_html($ability['label']); ?></h3>
+                                <p><?php echo esc_html($ability['description']); ?></p>
+                            </header>
+
+                            <dl class="gmrc-arcane-card__facts">
+                                <div><dt>Use</dt><dd><?php echo esc_html($ability['activation']); ?></dd></div>
+                                <div><dt>Range</dt><dd><?php echo esc_html($ability['range']); ?></dd></div>
+                                <div><dt>Duration</dt><dd><?php echo esc_html($ability['duration']); ?></dd></div>
+                                <div><dt>Stock</dt><dd><?php echo esc_html($ability['uses']); ?></dd></div>
+                            </dl>
+
+                            <?php if ($ability['save_dc'] !== null) : ?>
+                                <p class="gmrc-arcane-save">
+                                    <strong>
+                                        DC <?php echo esc_html((string) $ability['save_dc']); ?>
+                                        <?php echo esc_html(ucfirst((string) $ability['save_ability'])); ?>
+                                    </strong>
+                                    saving throw
+                                </p>
+                            <?php endif; ?>
+
+                            <div class="gmrc-arcane-card__rolls">
+                                <?php if ($ability['spell_attack'] !== null) : ?>
+                                    <button
+                                        type="button"
+                                        class="gmrc-guild-roll-trigger"
+                                        data-guild-roll="d20"
+                                        data-roll-kind="spell-attack"
+                                        data-roll-label="<?php echo esc_attr($ability['label'] . ' — Spell Attack'); ?>"
+                                        data-roll-modifier="<?php echo esc_attr((string) $ability['spell_attack']); ?>"
+                                        data-roll-result-suffix="to hit"
+                                    >
+                                        <span aria-hidden="true">20</span>
+                                        Roll Spell Attack
+                                    </button>
+                                <?php endif; ?>
+
+                                <?php if (
+                                    $ability['formula'] !== null
+                                    && $ability['roll_kind'] !== null
+                                ) : ?>
+                                    <button
+                                        type="button"
+                                        class="gmrc-guild-roll-trigger gmrc-guild-roll-trigger--formula"
+                                        data-guild-roll="<?php echo esc_attr($ability['roll_kind']); ?>"
+                                        data-roll-kind="<?php echo esc_attr($ability['roll_kind']); ?>"
+                                        data-roll-label="<?php echo esc_attr(
+                                            $ability['label']
+                                            . ' — '
+                                            . ucfirst((string) $ability['roll_kind'])
+                                        ); ?>"
+                                        data-roll-formula="<?php echo esc_attr($ability['formula']); ?>"
+                                        data-roll-modifier="<?php echo esc_attr((string) $ability['roll_modifier']); ?>"
+                                        data-roll-damage-type="<?php echo esc_attr((string) ($ability['damage_type'] ?? '')); ?>"
+                                    >
+                                        <span aria-hidden="true">✦</span>
+                                        Roll <?php echo esc_html(ucfirst((string) $ability['roll_kind'])); ?>
+                                    </button>
+                                <?php endif; ?>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+
+            <p class="gmrc-ledger-page__number" aria-hidden="true">9</p>
+        </section>
+
+        <section
+            class="gmrc-ledger-page gmrc-ledger-page--arcane-notes"
+            aria-labelledby="gmrc-arcane-notes-title"
+        >
+            <p class="gmrc-ledger-page__folio">Mystic Measures · X</p>
+
+            <header class="gmrc-ledger-page__heading">
+                <p class="gmrc-eyebrow">Auby’s Shelf of Questionable Power</p>
+                <h2 id="gmrc-arcane-notes-title">Spell & Ability Notes</h2>
+            </header>
+
+            <div class="gmrc-arcane-rules">
+                <article>
+                    <strong>d20 + ability + proficiency</strong>
+                    <span>Spell attack</span>
+                </article>
+                <article>
+                    <strong>8 + ability + proficiency</strong>
+                    <span>Spell save DC</span>
+                </article>
+                <article>
+                    <strong>Animated formula dice</strong>
+                    <span>Damage and healing</span>
+                </article>
+            </div>
+
+            <section class="gmrc-ledger-section">
+                <header class="gmrc-ledger-section__heading">
+                    <h3>Prepared for Progression</h3>
+                </header>
+                <p class="gmrc-ledger-copy">
+                    The Pantry catalogue is level-aware and ready for future spell preparation,
+                    limited-use tracking, subclass features and higher-level unlocks.
+                </p>
+            </section>
+
+            <blockquote class="gmrc-ledger-auby-note gmrc-ledger-auby-note--archive">
+                <p>“If the label says ‘do not shake’, I cannot stress enough that it means you.”</p>
+                <footer>— Auby</footer>
+            </blockquote>
+
+            <p class="gmrc-ledger-page__number" aria-hidden="true">10</p>
+        </section>
+    </article>
+</div>
+
     <div
         id="gmrc-ledger-panel-notes"
         class="gmrc-ledger-tabpanel"
@@ -1139,8 +1351,8 @@ $backgroundSkills = array_map(
                     </article>
                     <article>
                         <span aria-hidden="true">✦</span>
-                        <h4>Features</h4>
-                        <p>Race and class features will receive illuminated entries.</p>
+                        <h4>Progression</h4>
+                        <p>New spells and class features will unlock as the adventurer rises.</p>
                     </article>
                     <article>
                         <span aria-hidden="true">🏆</span>
@@ -1219,6 +1431,20 @@ $backgroundSkills = array_map(
             <span class="gmrc-ledger-tab__icon" aria-hidden="true">⚔</span>
             <span class="gmrc-ledger-tab__label">Attacks</span>
         </button>
+
+<button
+    id="gmrc-ledger-tab-arcana"
+    class="gmrc-ledger-tab"
+    type="button"
+    role="tab"
+    aria-selected="false"
+    aria-controls="gmrc-ledger-panel-arcana"
+    tabindex="-1"
+    data-ledger-tab="arcana"
+>
+    <span class="gmrc-ledger-tab__icon" aria-hidden="true">✧</span>
+    <span class="gmrc-ledger-tab__label">Spells & Abilities</span>
+</button>
 
         <button
             id="gmrc-ledger-tab-notes"
