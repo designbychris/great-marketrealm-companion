@@ -1,0 +1,240 @@
+/**
+ * Character Lifecycle Initiative — Phase III.5
+ * The Arcane Pantry.
+ */
+
+.gmrc-ledger-book--arcane-spread {
+    position: relative;
+}
+
+.gmrc-ledger-page--arcane-pantry,
+.gmrc-ledger-page--arcane-notes {
+    min-width: 0;
+}
+
+.gmrc-arcane-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .55rem;
+    margin: 1rem 0;
+}
+
+.gmrc-arcane-summary > div,
+.gmrc-arcane-rules article,
+.gmrc-spell-slots span {
+    padding: .65rem .55rem;
+    border: 1px solid rgba(77, 46, 27, .2);
+    border-radius: .3rem;
+    background: rgba(255, 247, 218, .52);
+    text-align: center;
+}
+
+.gmrc-arcane-summary dt {
+    margin-bottom: .18rem;
+    color: rgba(67, 42, 29, .68);
+    font-size: .62rem;
+    font-weight: 850;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+}
+
+.gmrc-arcane-summary dd {
+    margin: 0;
+    color: #603773;
+    font-family: var(--gmrc-font-display, Georgia, serif);
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.gmrc-arcane-summary--features {
+    display: flex;
+    gap: .65rem;
+    align-items: center;
+    padding: .75rem;
+    color: #4a2a18;
+    background: rgba(244, 226, 174, .6);
+}
+
+.gmrc-arcane-summary--features span {
+    color: #603773;
+    font-size: 1.5rem;
+}
+
+.gmrc-arcane-summary--features p {
+    margin: 0;
+    font-size: .72rem;
+    line-height: 1.45;
+}
+
+.gmrc-spell-slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    margin: -.3rem 0 .9rem;
+}
+
+.gmrc-spell-slots span {
+    min-width: 7rem;
+    padding: .45rem .65rem;
+    color: rgba(66, 42, 29, .75);
+    font-size: .64rem;
+}
+
+.gmrc-spell-slots strong {
+    display: block;
+    color: #603773;
+    font-size: 1rem;
+}
+
+.gmrc-arcane-card-list {
+    display: grid;
+    gap: .75rem;
+}
+
+.gmrc-arcane-card,
+.gmrc-arcane-empty {
+    position: relative;
+    padding: .8rem;
+    border: 1px solid rgba(75, 43, 24, .22);
+    border-radius: .35rem;
+    background:
+        radial-gradient(circle at 95% 0, rgba(96,55,115,.09), transparent 35%),
+        rgba(255, 249, 228, .52);
+    box-shadow: 0 .35rem .65rem rgba(48, 27, 16, .07);
+}
+
+.gmrc-arcane-card__kind {
+    display: inline-block;
+    margin-bottom: .18rem;
+    color: #603773;
+    font-size: .58rem;
+    font-weight: 900;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+}
+
+.gmrc-arcane-card h3,
+.gmrc-arcane-empty h3 {
+    margin: 0 0 .28rem;
+    color: #4a2a18;
+    font-family: var(--gmrc-font-display, Georgia, serif);
+    font-size: 1rem;
+}
+
+.gmrc-arcane-card header p,
+.gmrc-arcane-empty p {
+    margin: 0;
+    color: rgba(66, 42, 29, .72);
+    font-size: .66rem;
+    line-height: 1.45;
+}
+
+.gmrc-arcane-card__facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .28rem .6rem;
+    margin: .65rem 0 0;
+}
+
+.gmrc-arcane-card__facts div {
+    display: flex;
+    justify-content: space-between;
+    gap: .4rem;
+    padding-bottom: .2rem;
+    border-bottom: 1px dotted rgba(75, 43, 24, .2);
+}
+
+.gmrc-arcane-card__facts dt,
+.gmrc-arcane-card__facts dd {
+    margin: 0;
+    font-size: .59rem;
+}
+
+.gmrc-arcane-card__facts dt {
+    font-weight: 850;
+}
+
+.gmrc-arcane-card__facts dd {
+    text-align: right;
+}
+
+.gmrc-arcane-save {
+    margin: .55rem 0 0;
+    padding: .42rem .55rem;
+    border-left: .22rem solid #603773;
+    color: rgba(66, 42, 29, .75);
+    background: rgba(96, 55, 115, .07);
+    font-size: .62rem;
+}
+
+.gmrc-arcane-card__rolls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    margin-top: .65rem;
+}
+
+.gmrc-arcane-card__rolls .gmrc-guild-roll-trigger {
+    flex: 1 1 8.5rem;
+    justify-content: center;
+    min-height: 2.45rem;
+    padding: .45rem .6rem;
+    font-size: .65rem;
+}
+
+.gmrc-arcane-card__rolls .gmrc-guild-roll-trigger span:first-child {
+    display: inline-grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: .35rem;
+    border: 1px solid rgba(230, 188, 91, .5);
+    border-radius: 50%;
+}
+
+.gmrc-arcane-rules {
+    display: grid;
+    gap: .55rem;
+    margin: 1rem 0;
+}
+
+.gmrc-arcane-rules article {
+    text-align: left;
+}
+
+.gmrc-arcane-rules strong,
+.gmrc-arcane-rules span {
+    display: block;
+}
+
+.gmrc-arcane-rules strong {
+    color: #603773;
+    font-family: var(--gmrc-font-display, Georgia, serif);
+    font-size: .85rem;
+}
+
+.gmrc-arcane-rules span {
+    margin-top: .12rem;
+    color: rgba(66, 42, 29, .66);
+    font-size: .62rem;
+}
+
+.gmrc-arcane-empty {
+    text-align: center;
+}
+
+.gmrc-arcane-empty > span {
+    display: block;
+    margin-bottom: .35rem;
+    font-size: 1.7rem;
+}
+
+@media (max-width: 700px) {
+    .gmrc-arcane-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-arcane-card__facts {
+        grid-template-columns: 1fr;
+    }
+}
