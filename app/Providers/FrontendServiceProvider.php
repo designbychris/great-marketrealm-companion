@@ -295,6 +295,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/characters/open-ledger.css',
             ],
             [
+                'handle' => 'gmrc-guild-dice',
+                'path' => 'modules/characters/guild-dice.css',
+            ],
+            [
                 'handle' => 'gmrc-complete-registration',
                 'path' => 'modules/characters/complete-registration.css',
             ],
@@ -398,6 +402,23 @@ class FrontendServiceProvider extends ServiceProvider
             [],
             file_exists($livingLedgerScriptPath)
                 ? (string) filemtime($livingLedgerScriptPath)
+                : GMRC_VERSION,
+            true
+        );
+
+        $guildDiceScriptPath =
+            GMRC_PATH
+            . 'assets/js/modules/characters/'
+            . 'guild-dice.js';
+
+        wp_enqueue_script(
+            'gmrc-guild-dice',
+            GMRC_URL
+                . 'assets/js/modules/characters/'
+                . 'guild-dice.js',
+            [],
+            file_exists($guildDiceScriptPath)
+                ? (string) filemtime($guildDiceScriptPath)
                 : GMRC_VERSION,
             true
         );
