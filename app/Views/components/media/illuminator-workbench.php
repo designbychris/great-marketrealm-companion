@@ -12,11 +12,13 @@ $isCustom = isset($isCustom)
     ? (bool) $isCustom
     : false;
 
-$portraitAction = add_query_arg(
-    'gmrc_route',
-    'characters/' . rawurlencode($characterId) . '/portrait',
-    home_url('/companion/')
+$portraitAction = admin_url(
+    'admin-post.php'
 );
+
+$portraitRoute = 'characters/'
+    . rawurlencode($characterId)
+    . '/portrait';
 ?>
 <section
     class="gmrc-illuminator-workbench"
@@ -42,6 +44,17 @@ $portraitAction = add_query_arg(
         action="<?php echo esc_url($portraitAction); ?>"
         enctype="multipart/form-data"
     >
+        <input
+            type="hidden"
+            name="action"
+            value="gmrc_app_request"
+        >
+        <input
+            type="hidden"
+            name="gmrc_route"
+            value="<?php echo esc_attr($portraitRoute); ?>"
+        >
+
         <?php
         wp_nonce_field(
             'gmrc_character_portrait_' . $characterId,
@@ -94,6 +107,16 @@ $portraitAction = add_query_arg(
             method="post"
             action="<?php echo esc_url($portraitAction); ?>"
         >
+            <input
+                type="hidden"
+                name="action"
+                value="gmrc_app_request"
+            >
+            <input
+                type="hidden"
+                name="gmrc_route"
+                value="<?php echo esc_attr($portraitRoute); ?>"
+            >
             <input type="hidden" name="_method" value="DELETE">
 
             <?php
