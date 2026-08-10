@@ -70,6 +70,24 @@ trait ResolvesRegistrationInput
     }
 
     /**
+     * Resolve the selected ability-generation method.
+     *
+     * Existing submissions predate this selector and therefore remain on
+     * the Standard Guild Array unless they explicitly choose 3d6.
+     */
+    private function registrationAbilityMethod(): string
+    {
+        $method = $this->string(
+            'ability_method',
+            'standard'
+        );
+
+        return $method === 'rolled'
+            ? 'rolled'
+            : 'standard';
+    }
+
+    /**
      * Resolve the six ability scores.
      *
      * Legacy/programmatic submissions may omit these and retain average scores.
@@ -95,6 +113,7 @@ trait ResolvesRegistrationInput
         ];
 
         $strict = $this->registrationIsConfirmed();
+        $method = $this->registrationAbilityMethod();
 
         $values = [];
 
@@ -131,6 +150,7 @@ trait ResolvesRegistrationInput
 
             if (
                 $strict
+                && $method === 'standard'
                 && ! in_array(
                     $score,
                     $this->standardGuildArray(),
@@ -140,6 +160,17 @@ trait ResolvesRegistrationInput
                 $this->registrationFail(
                     $field,
                     'Use only values from the Standard Guild Array: 15, 14, 13, 12, 10 and 8.'
+                );
+            }
+
+            if (
+                $strict
+                && $method === 'rolled'
+                && ($score < 3 || $score > 18)
+            ) {
+                $this->registrationFail(
+                    $field,
+                    'A 3d6 ability score must be between 3 and 18.'
                 );
             }
 
@@ -153,7 +184,10 @@ trait ResolvesRegistrationInput
             $values[$field] = $score;
         }
 
-        if ($strict) {
+        if (
+            $strict
+            && $method === 'standard'
+        ) {
             $submitted = array_values(
                 $values
             );
