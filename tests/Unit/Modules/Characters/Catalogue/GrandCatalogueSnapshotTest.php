@@ -15,7 +15,7 @@ final class GrandCatalogueSnapshotTest extends TestCase
         self::assertIsArray($data);
         self::assertGreaterThanOrEqual(14, count($data['races']));
         self::assertGreaterThanOrEqual(40, count($data['heritages']));
-        self::assertSame(15, count($data['classes']));
+        self::assertSame(13, count($data['classes']));
         self::assertGreaterThanOrEqual(60, count($data['subclasses']));
     }
 
@@ -29,4 +29,24 @@ final class GrandCatalogueSnapshotTest extends TestCase
         self::assertContains('meatfolk', $keys);
         self::assertContains('drink-folk', $keys);
     }
+
+
+    public function testLegacySpecialtiesAreNotBaseClasses(): void
+    {
+        $root = dirname(__DIR__, 5);
+        $data = json_decode(
+            (string) file_get_contents(
+                $root . '/resources/catalogue/players-handbook.v1.json'
+            ),
+            true
+        );
+
+        self::assertIsArray($data);
+
+        $keys = array_column($data['classes'], 'key');
+
+        self::assertNotContains('grocer', $keys);
+        self::assertNotContains('cleaver-saint', $keys);
+    }
+
 }

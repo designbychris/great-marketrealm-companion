@@ -270,9 +270,18 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
                 [
                     'fructan' => 'Fructan',
                     'vegfolk' => 'Vegfolk',
-                    'capsicumite' => 'Capsicumite',
                     'fungifolk' => 'Fungifolk',
                     'rootkin' => 'Rootkin',
+                    'dairyfolk' => 'Dairyfolk',
+                    'frostreem' => 'Frostreem',
+                    'meatfolk' => 'Sizzlarian / Meatfolk',
+                    'herbfolk' => 'Herbanite / Herbfolk',
+                    'recalled' => 'The Recalled',
+                    'boxfolk' => 'Boxfolk',
+                    'sweetfolk' => 'Sweetfolk',
+                    'marshmallow-folk' => 'Marshmallow Folk',
+                    'fluffling' => 'Fluffling',
+                    'drink-folk' => 'Drinkling',
                 ],
                 $view->data()['raceOptions']
             );
@@ -294,8 +303,19 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
 
             self::assertSame(
                 [
-                    'grocer' => 'Grocer',
-                    'cleaver-saint' => 'Cleaver Saint',
+                    'artificer' => 'Artificer',
+                    'barbarian' => 'Barbarian',
+                    'bard' => 'Bard',
+                    'cleric' => 'Cleric',
+                    'druid' => 'Druid',
+                    'fighter' => 'Fighter',
+                    'monk' => 'Monk',
+                    'paladin' => 'Paladin',
+                    'ranger' => 'Ranger',
+                    'rogue' => 'Rogue',
+                    'sorcerer' => 'Sorcerer',
+                    'warlock' => 'Warlock',
+                    'wizard' => 'Wizard',
                 ],
                 $view->data()['classOptions']
             );
