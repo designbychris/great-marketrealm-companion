@@ -37,7 +37,12 @@ final class RisingRegisterPresenter
             'next_level_xp' => $nextRequired,
             'xp_to_next' => $nextRequired === null ? 0 : max(0, $nextRequired - $experience),
             'progress_percent' => $progress,
-            'can_level_up' => $character->canLevelUp(),
+            /*
+             * Character::gainExperience() normalises level immediately
+             * whenever an XP threshold is crossed. A persisted Character
+             * therefore cannot be left in a "ready but not levelled" state.
+             */
+            'can_level_up' => false,
             'is_maximum' => $nextRequired === null,
             'next_level' => $nextRequired === null ? null : $level->value() + 1,
             'current_proficiency' => $character->proficiencyBonus()->signed(),
