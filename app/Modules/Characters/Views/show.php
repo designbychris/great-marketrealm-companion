@@ -146,6 +146,10 @@ $companionUrl = home_url(
     '/companion/'
 );
 
+$appRequestUrl = admin_url(
+    'admin-post.php'
+);
+
 $charactersUrl = add_query_arg(
     'gmrc_route',
     'characters',
@@ -858,11 +862,14 @@ $backgroundSkills = array_map(
                                         . rawurlencode($characterId)
                                         . '/inventory/'
                                         . rawurlencode($item['id']);
-                                    $itemUrl = add_query_arg('gmrc_route', $itemRoute, $companionUrl);
-                                    $equipUrl = add_query_arg('gmrc_route', $itemRoute . '/equip', $companionUrl);
+
+                                    $equipRoute = $itemRoute
+                                        . '/equip';
                                     ?>
 
-                                    <form method="post" action="<?php echo esc_url($itemUrl); ?>" class="gmrc-pack-quantity-form">
+                                    <form method="post" action="<?php echo esc_url($appRequestUrl); ?>" class="gmrc-pack-quantity-form">
+                                        <input type="hidden" name="action" value="gmrc_app_request">
+                                        <input type="hidden" name="gmrc_route" value="<?php echo esc_attr($itemRoute); ?>">
                                         <input type="hidden" name="_method" value="PUT">
                                         <?php wp_nonce_field('gmrc_character_inventory_' . $characterId, 'gmrc_nonce'); ?>
                                         <label>
@@ -873,7 +880,9 @@ $backgroundSkills = array_map(
                                     </form>
 
                                     <?php if ($item['equippable']) : ?>
-                                        <form method="post" action="<?php echo esc_url($equipUrl); ?>">
+                                        <form method="post" action="<?php echo esc_url($appRequestUrl); ?>">
+                                            <input type="hidden" name="action" value="gmrc_app_request">
+                                            <input type="hidden" name="gmrc_route" value="<?php echo esc_attr($equipRoute); ?>">
                                             <?php wp_nonce_field('gmrc_character_inventory_' . $characterId, 'gmrc_nonce'); ?>
                                             <button type="submit">
                                                 <?php echo esc_html($item['equipped'] ? 'Unequip' : 'Equip'); ?>
@@ -881,7 +890,9 @@ $backgroundSkills = array_map(
                                         </form>
                                     <?php endif; ?>
 
-                                    <form method="post" action="<?php echo esc_url($itemUrl); ?>">
+                                    <form method="post" action="<?php echo esc_url($appRequestUrl); ?>">
+                                        <input type="hidden" name="action" value="gmrc_app_request">
+                                        <input type="hidden" name="gmrc_route" value="<?php echo esc_attr($itemRoute); ?>">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <?php wp_nonce_field('gmrc_character_inventory_' . $characterId, 'gmrc_nonce'); ?>
                                         <button type="submit" class="gmrc-pack-remove">Remove</button>
@@ -913,14 +924,14 @@ $backgroundSkills = array_map(
                 </header>
 
                 <?php
-                $inventoryUrl = add_query_arg(
-                    'gmrc_route',
-                    'characters/' . rawurlencode($characterId) . '/inventory',
-                    $companionUrl
-                );
+                $inventoryRoute = 'characters/'
+                    . rawurlencode($characterId)
+                    . '/inventory';
                 ?>
 
-                <form class="gmrc-guild-stores-form" method="post" action="<?php echo esc_url($inventoryUrl); ?>">
+                <form class="gmrc-guild-stores-form" method="post" action="<?php echo esc_url($appRequestUrl); ?>">
+                    <input type="hidden" name="action" value="gmrc_app_request">
+                    <input type="hidden" name="gmrc_route" value="<?php echo esc_attr($inventoryRoute); ?>">
                     <?php wp_nonce_field('gmrc_character_inventory_' . $characterId, 'gmrc_nonce'); ?>
 
                     <label>
