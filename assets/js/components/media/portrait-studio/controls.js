@@ -85,9 +85,22 @@
             );
 
             controls.appendChild(rows);
-            controls.appendChild(
-                this.globalActions()
-            );
+
+            const actions =
+                this.globalActions();
+
+            const ledger =
+                this.app.studio.closest(
+                    '.gmrc-open-ledger'
+                );
+
+            if (ledger instanceof HTMLElement) {
+                actions.classList.add(
+                    'gmrc-portrait-controls__actions--ledger'
+                );
+            } else {
+                controls.appendChild(actions);
+            }
 
             this.status =
                 document.createElement('p');
@@ -111,6 +124,26 @@
                 'afterend',
                 controls
             );
+
+            if (
+                ledger instanceof HTMLElement
+                && actions.parentElement === null
+            ) {
+                const portraitArea =
+                    this.app.studio.closest(
+                        '.gmrc-ledger-page__portrait'
+                    );
+
+                if (portraitArea instanceof HTMLElement) {
+                    portraitArea.appendChild(
+                        actions
+                    );
+                } else {
+                    controls.appendChild(
+                        actions
+                    );
+                }
+            }
         }
 
         row(slot, label) {
