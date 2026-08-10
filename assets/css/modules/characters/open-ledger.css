@@ -1878,3 +1878,197 @@
             1fr !important;
     }
 }
+
+/* ===============================================================
+ * Phase III.2.1.4 — Illuminator final balance pass
+ * =============================================================== */
+
+/*
+ * The detached global portrait actions belong beneath the Illuminator.
+ */
+.gmrc-open-ledger
+.gmrc-ledger-page--identity
+.gmrc-ledger-page__portrait
+> .gmrc-portrait-controls__actions--ledger {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+
+    display: grid !important;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr)) !important;
+
+    gap: 0.55rem !important;
+
+    width: 100% !important;
+    max-width: 24rem !important;
+
+    margin:
+        -0.35rem
+        auto
+        0 !important;
+
+    padding: 0 !important;
+
+    align-self: start !important;
+}
+
+.gmrc-open-ledger
+.gmrc-portrait-controls__actions--ledger
+.gmrc-button {
+    width: 100% !important;
+    min-height: 2.8rem !important;
+}
+
+/*
+ * With the actions now occupying row two on the left, the upload workbench
+ * spans both columns on row three.
+ */
+.gmrc-open-ledger
+.gmrc-ledger-page--identity
+.gmrc-ledger-page__portrait
+> .gmrc-illuminator-workbench {
+    grid-column:
+        1
+        /
+        -1 !important;
+
+    grid-row: 3 !important;
+
+    display: block !important;
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+}
+
+/*
+ * Let the custom upload form itself use the full parchment strip.
+ */
+.gmrc-open-ledger
+.gmrc-illuminator-workbench__header {
+    max-width:
+        46rem;
+
+    margin:
+        0
+        auto
+        1rem;
+
+    text-align: center;
+}
+
+.gmrc-open-ledger
+.gmrc-illuminator-workbench__header
+> p:last-child {
+    max-width:
+        38rem;
+
+    margin:
+        0.45rem
+        auto
+        0 !important;
+}
+
+.gmrc-open-ledger
+.gmrc-illuminator-workbench__upload {
+    display: grid !important;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        auto !important;
+
+    gap:
+        0.65rem
+        0.8rem !important;
+
+    width: 100% !important;
+    max-width:
+        52rem;
+
+    margin:
+        0
+        auto;
+}
+
+.gmrc-open-ledger
+.gmrc-portrait-dropzone {
+    grid-column:
+        1
+        /
+        -1 !important;
+
+    width: 100% !important;
+
+    box-sizing: border-box;
+}
+
+.gmrc-open-ledger
+.gmrc-portrait-file-name {
+    align-self: center;
+
+    min-width: 0;
+
+    overflow-wrap: anywhere;
+}
+
+/*
+ * The right column needs less visual weight now that the row controls are
+ * properly framed.
+ */
+.gmrc-open-ledger
+.gmrc-portrait-controls h3 {
+    font-size:
+        clamp(
+            1.45rem,
+            2.2vw,
+            1.85rem
+        ) !important;
+
+    line-height:
+        1.05 !important;
+
+    margin-bottom:
+        0.75rem !important;
+}
+
+@media (max-width: 1180px) {
+    .gmrc-open-ledger
+    .gmrc-ledger-page--identity
+    .gmrc-ledger-page__portrait
+    > .gmrc-portrait-controls__actions--ledger {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+
+        max-width: 24rem !important;
+    }
+
+    .gmrc-open-ledger
+    .gmrc-ledger-page--identity
+    .gmrc-ledger-page__portrait
+    > .gmrc-illuminator-workbench {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+    }
+}
+
+@media (max-width: 560px) {
+    .gmrc-open-ledger
+    .gmrc-portrait-controls__actions--ledger {
+        grid-template-columns:
+            1fr !important;
+    }
+
+    .gmrc-open-ledger
+    .gmrc-illuminator-workbench__upload {
+        grid-template-columns:
+            1fr !important;
+    }
+
+    .gmrc-open-ledger
+    .gmrc-illuminator-workbench__upload
+    > * {
+        grid-column:
+            1 !important;
+    }
+}

@@ -763,3 +763,48 @@
             normal !important;
     }
 }
+
+/* ===============================================================
+ * Phase III.2.1.4 — Ledger tab flush-edge correction
+ * =============================================================== */
+
+.gmrc-open-ledger
+.gmrc-ledger-tab,
+.gmrc-open-ledger
+.gmrc-ledger-tab.is-active,
+.gmrc-open-ledger
+.gmrc-ledger-tab:hover,
+.gmrc-open-ledger
+.gmrc-ledger-tab:focus-visible {
+    /*
+     * All tabs share one top edge. Active state changes colour/shadow only;
+     * it no longer drops downward and exposes a thin gap above itself.
+     */
+    transform: none !important;
+}
+
+.gmrc-open-ledger
+.gmrc-ledger-tabs {
+    margin-top:
+        -2.05rem !important;
+}
+
+.gmrc-open-ledger
+.gmrc-ledger-tab {
+    font-size:
+        0.8rem !important;
+}
+
+.gmrc-open-ledger
+.gmrc-ledger-tab__label {
+    font-size:
+        0.8rem !important;
+}
+
+@media (max-width: 900px) {
+    .gmrc-open-ledger
+    .gmrc-ledger-tabs {
+        margin-top:
+            0 !important;
+    }
+}
