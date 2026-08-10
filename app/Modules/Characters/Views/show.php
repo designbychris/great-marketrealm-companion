@@ -209,7 +209,7 @@ $backgroundSkills = array_map(
     <header class="gmrc-open-ledger__toolbar">
         <div class="gmrc-open-ledger__toolbar-copy">
             <p class="gmrc-eyebrow">
-                Character Lifecycle Initiative · Phase II
+                The Open Ledger
             </p>
 
             <h1 id="gmrc-open-ledger-title">
