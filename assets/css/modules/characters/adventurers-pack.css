@@ -1,0 +1,299 @@
+/**
+ * Character Lifecycle Initiative — Phase III.3
+ * The Adventurer's Pack.
+ */
+
+.gmrc-ledger-book--equipment {
+    --gmrc-pack-cocoa: #452615;
+    --gmrc-pack-purple: #603773;
+    --gmrc-pack-gold: #c29542;
+    --gmrc-pack-paper: #f7e7b8;
+}
+
+.gmrc-pack-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .55rem;
+    margin: 1rem 0 .65rem;
+}
+
+.gmrc-pack-summary > div {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: .45rem;
+    align-items: center;
+    padding: .55rem .6rem;
+    border: 1px solid rgba(80, 48, 28, .18);
+    border-radius: .3rem;
+    background: rgba(255, 248, 222, .45);
+}
+
+.gmrc-pack-summary__icon {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    color: #f8e4aa;
+    background: var(--gmrc-pack-cocoa);
+    font-size: .9rem;
+}
+
+.gmrc-pack-summary p {
+    margin: 0;
+    color: rgba(62, 40, 29, .72);
+    font-size: .65rem;
+    line-height: 1.25;
+}
+
+.gmrc-pack-summary strong {
+    display: block;
+    color: #402719;
+    font-size: .78rem;
+}
+
+.gmrc-pack-load {
+    height: .48rem;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(71, 42, 25, .28);
+    border-radius: 999px;
+    background: rgba(80, 47, 26, .1);
+}
+
+.gmrc-pack-load span {
+    display: block;
+    height: 100%;
+    max-width: 100%;
+    background: linear-gradient(90deg, #a57832, #603773);
+}
+
+.gmrc-pack-empty {
+    padding: clamp(1.2rem, 4vw, 2rem);
+    text-align: center;
+    border: 1px dashed rgba(96, 55, 115, .35);
+    background: rgba(255, 249, 228, .32);
+}
+
+.gmrc-pack-empty > span {
+    display: block;
+    margin-bottom: .5rem;
+    font-size: 2.4rem;
+}
+
+.gmrc-pack-empty h3 {
+    margin: 0 0 .35rem;
+    font-family: var(--gmrc-font-handwritten, "Caveat", cursive);
+    font-size: 1.65rem;
+}
+
+.gmrc-pack-empty p {
+    margin: 0 auto;
+    max-width: 26rem;
+    color: rgba(61, 40, 29, .72);
+}
+
+.gmrc-pack-list {
+    display: grid;
+    gap: .55rem;
+}
+
+.gmrc-pack-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: .5rem .8rem;
+    padding: .72rem;
+    border: 1px solid rgba(73, 43, 25, .2);
+    border-left: .24rem solid rgba(74, 42, 24, .55);
+    background: rgba(255, 249, 228, .5);
+}
+
+.gmrc-pack-item.is-equipped {
+    border-left-color: var(--gmrc-pack-purple);
+    background: linear-gradient(90deg, rgba(96,55,115,.07), rgba(255,249,228,.58) 22%);
+}
+
+.gmrc-pack-item__category,
+.gmrc-guild-stores-shelves__category {
+    color: var(--gmrc-pack-purple);
+    font-size: .56rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.gmrc-pack-item h3 {
+    margin: .08rem 0 .18rem;
+    color: #41281b;
+    font-family: var(--gmrc-font-display, Georgia, serif);
+    font-size: .95rem;
+}
+
+.gmrc-pack-item p {
+    margin: 0;
+    color: rgba(61, 40, 29, .7);
+    font-size: .62rem;
+    line-height: 1.4;
+}
+
+.gmrc-pack-item__mechanics {
+    margin-top: .28rem !important;
+    color: #603773 !important;
+    font-weight: 800;
+}
+
+.gmrc-pack-item__meta {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    align-items: flex-end;
+    min-width: 4.6rem;
+    color: rgba(62, 40, 29, .66);
+    font-size: .58rem;
+}
+
+.gmrc-equipped-seal {
+    padding: .22rem .42rem;
+    border: 1px solid rgba(96, 55, 115, .45);
+    border-radius: 999px;
+    color: #fff0c6;
+    background: #603773;
+    font-size: .52rem;
+    font-weight: 900;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.gmrc-pack-item__actions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+    padding-top: .45rem;
+    border-top: 1px dotted rgba(72, 42, 25, .2);
+}
+
+.gmrc-pack-item__actions form {
+    margin: 0;
+}
+
+.gmrc-pack-item__actions button,
+.gmrc-pack-quantity-form input,
+.gmrc-guild-stores-form select,
+.gmrc-guild-stores-form input {
+    min-height: 2rem;
+    border: 1px solid rgba(66, 36, 20, .55);
+    border-radius: .25rem;
+}
+
+.gmrc-pack-item__actions button {
+    padding: .34rem .6rem;
+    color: #f8e3a9;
+    background: #4a2a18;
+    font: inherit;
+    font-size: .58rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.gmrc-pack-item__actions button:hover,
+.gmrc-pack-item__actions button:focus-visible {
+    background: #603773;
+}
+
+.gmrc-pack-item__actions .gmrc-pack-remove {
+    color: #6d261e;
+    background: rgba(255, 242, 215, .75);
+}
+
+.gmrc-pack-quantity-form {
+    display: flex;
+    gap: .25rem;
+}
+
+.gmrc-pack-quantity-form input {
+    width: 3.3rem;
+    padding: .25rem;
+    background: #fff4d4;
+}
+
+.gmrc-guild-stores-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 5rem;
+    gap: .7rem;
+    margin: 1rem 0 1.1rem;
+    padding: .85rem;
+    border: 1px solid rgba(81, 48, 27, .22);
+    background: rgba(255, 249, 228, .48);
+}
+
+.gmrc-guild-stores-form label > span {
+    display: block;
+    margin-bottom: .25rem;
+    color: #4a2a18;
+    font-size: .62rem;
+    font-weight: 850;
+}
+
+.gmrc-guild-stores-form select,
+.gmrc-guild-stores-form input {
+    width: 100%;
+    padding: .38rem .45rem;
+    color: #41291d;
+    background: #fff3d0;
+}
+
+.gmrc-guild-stores-form .gmrc-button {
+    grid-column: 1 / -1;
+    justify-self: start;
+}
+
+.gmrc-guild-stores-shelves {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.gmrc-guild-stores-shelves article {
+    padding: .65rem;
+    border: 1px solid rgba(81, 48, 27, .17);
+    background: rgba(255, 249, 228, .38);
+}
+
+.gmrc-guild-stores-shelves h3 {
+    margin: .12rem 0 .24rem;
+    font-size: .82rem;
+}
+
+.gmrc-guild-stores-shelves p,
+.gmrc-guild-stores-shelves small {
+    margin: 0;
+    color: rgba(61, 40, 29, .68);
+    font-size: .58rem;
+    line-height: 1.4;
+}
+
+@media (max-width: 900px) {
+    .gmrc-pack-summary,
+    .gmrc-guild-stores-shelves {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 620px) {
+    .gmrc-pack-item,
+    .gmrc-guild-stores-form {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-pack-item__meta {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .gmrc-guild-stores-form .gmrc-button {
+        grid-column: 1;
+        width: 100%;
+    }
+}
