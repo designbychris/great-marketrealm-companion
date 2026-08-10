@@ -339,6 +339,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/characters/clash-of-the-ledger.css',
             ],
             [
+                'handle' => 'gmrc-arcane-pantry',
+                'path' => 'modules/characters/arcane-pantry.css',
+            ],
+            [
                 'handle' => 'gmrc-complete-registration',
                 'path' => 'modules/characters/complete-registration.css',
             ],
