@@ -82,7 +82,7 @@ final class ArcanePantryPresenterTest extends TestCase
             CharacterName::fromString('Test Adventurer'),
             Race::fromString('fructan'),
             CharacterClass::fromString($class),
-            HitPoints::fromMaximum(8),
+            HitPoints::full(8),
             $scores
         );
 
