@@ -112,8 +112,8 @@ final class AubySealApprovedPlacementTest extends TestCase
             $manifest
         );
 
-        self::assertStringContainsString(
-            'g2-auby-finishing-touch-01',
+        self::assertStringNotContainsString(
+            '"id": "g2-auby-finishing-touch-01"',
             $manifest
         );
     }
