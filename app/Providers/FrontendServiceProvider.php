@@ -361,6 +361,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/characters/rising-register.css',
             ],
             [
+                'handle' => 'gmrc-grand-catalogue',
+                'path' => 'modules/characters/grand-catalogue.css',
+            ],
+            [
                 'handle' => 'gmrc-complete-registration',
                 'path' => 'modules/characters/complete-registration.css',
             ],
@@ -451,6 +455,14 @@ class FrontendServiceProvider extends ServiceProvider
      */
     protected function enqueueScripts(): void
     {
+        wp_enqueue_script(
+            'gmrc-grand-catalogue',
+            GMRC_URL . 'assets/js/modules/characters/grand-catalogue.js',
+            [],
+            GMRC_VERSION,
+            true
+        );
+
         $livingLedgerScriptPath =
             GMRC_PATH
             . 'assets/js/modules/characters/'
