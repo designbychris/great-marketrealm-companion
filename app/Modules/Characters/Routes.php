@@ -46,6 +46,12 @@ return static function (
         [CharacterController::class, 'addInventoryItem']
     );
 
+    $router->post(
+        '/characters/{id}/progression/experience',
+        [CharacterController::class, 'addExperience']
+    );
+
+
     $router->put(
         '/characters/{id}/inventory/{item}',
         [CharacterController::class, 'updateInventoryItem']
