@@ -73,8 +73,8 @@ final class AubyDeskFourSceneRestorationTest extends TestCase
             $size = getimagesize($path);
 
             self::assertIsArray($size);
-            self::assertSame(2560, $size[0]);
-            self::assertSame(1584, $size[1]);
+            self::assertSame(3200, $size[0]);
+            self::assertSame(1980, $size[1]);
         }
     }
 }
