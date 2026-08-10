@@ -254,6 +254,30 @@ final class ArcaneAbilityCatalogue
                 '1 hour',
                 'Limited uses'
             ),
+            new ArcaneAbilityDefinition(
+                'pantry-recovery', 'Pantry Recovery', 'feature', ['wizard'],
+                'During a short rest, reorganise the Arcane Pantry and recover a little spent magical stock.',
+                'Short rest', 'Self', 'Instantaneous', 'Once per long rest',
+                null, null, null, null, false, false, 2
+            ),
+            new ArcaneAbilityDefinition(
+                'stocktake-instinct', 'Stocktake Instinct', 'feature', ['grocer'],
+                'A rapid stocktake reveals overlooked supplies, suspicious substitutions and hidden value.',
+                '1 action', '30 ft', 'Instantaneous', 'Proficiency bonus per long rest',
+                null, null, null, null, false, false, 2
+            ),
+            new ArcaneAbilityDefinition(
+                'action-surge', 'Action Surge', 'feature', ['fighter'],
+                'Dig deep and take one additional action on your turn.',
+                'Free', 'Self', 'Instantaneous', 'Once per short rest',
+                null, null, null, null, false, false, 2
+            ),
+            new ArcaneAbilityDefinition(
+                'sanctified-slice', 'Sanctified Slice', 'feature', ['cleaver-saint'],
+                'Consecrate a strike with a ribbon of brilliant preserving light.',
+                'On hit', 'Weapon range', 'Instantaneous', 'Once per long rest',
+                'damage', '1d8', 'radiant', null, false, false, 2
+            ),
         ];
     }
 

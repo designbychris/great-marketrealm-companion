@@ -29,7 +29,8 @@ final class ArcaneAbilityDefinition
         private ?string $damageType = null,
         private ?string $saveAbility = null,
         private bool $addCastingModifier = false,
-        private bool $spellAttack = false
+        private bool $spellAttack = false,
+        private int $minimumLevel = 1
     ) {
     }
 
@@ -48,6 +49,7 @@ final class ArcaneAbilityDefinition
     public function saveAbility(): ?string { return $this->saveAbility; }
     public function addCastingModifier(): bool { return $this->addCastingModifier; }
     public function isSpellAttack(): bool { return $this->spellAttack; }
+    public function minimumLevel(): int { return $this->minimumLevel; }
 
     public function supportsClass(string $class): bool
     {
