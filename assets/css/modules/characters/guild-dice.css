@@ -516,3 +516,178 @@
         transition: none !important;
     }
 }
+
+/* ===============================================================
+ * Phase III.2.1.2 — Ledger tabs attached to the book
+ *
+ * Final ownership lives in guild-dice.css because this stylesheet
+ * currently supplies the active Ledger tab presentation.
+ * =============================================================== */
+
+.gmrc-open-ledger .gmrc-ledger-tabs {
+    position: relative !important;
+    z-index: 10 !important;
+
+    display: flex !important;
+    flex-wrap: nowrap !important;
+
+    width:
+        calc(
+            50%
+            - 1.15rem
+        ) !important;
+
+    margin:
+        -0.15rem
+        1rem
+        0
+        auto !important;
+
+    padding: 0 !important;
+
+    gap: 0.22rem !important;
+
+    align-items: flex-start !important;
+    justify-content: flex-end !important;
+}
+
+.gmrc-open-ledger .gmrc-ledger-tab {
+    position: relative !important;
+
+    display: inline-grid !important;
+    grid-template-columns:
+        1.35rem
+        auto !important;
+
+    gap: 0.38rem !important;
+    align-items: center !important;
+
+    min-width: 0 !important;
+    min-height: 2.55rem !important;
+
+    margin: 0 !important;
+
+    padding:
+        0.42rem
+        0.62rem
+        0.5rem !important;
+
+    border:
+        1px solid
+        rgba(55, 30, 18, 0.82) !important;
+
+    border-top: 0 !important;
+
+    border-radius:
+        0
+        0
+        0.34rem
+        0.34rem !important;
+
+    color: #f6dfaa !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            #54301b,
+            #3f2416
+        ) !important;
+
+    box-shadow:
+        0
+        0.35rem
+        0.55rem
+        rgba(43, 24, 14, 0.22),
+        inset
+        0
+        -2px
+        rgba(28, 14, 8, 0.24) !important;
+
+    transform: none !important;
+}
+
+.gmrc-open-ledger .gmrc-ledger-tab::before {
+    position: absolute !important;
+    top: 0.22rem !important;
+    left: 0.38rem !important;
+
+    width: 0.28rem !important;
+    height: 0.28rem !important;
+
+    border:
+        1px solid
+        #c89a45 !important;
+
+    border-radius: 50% !important;
+
+    background: #28150d !important;
+
+    box-shadow: none !important;
+
+    transform: none !important;
+}
+
+.gmrc-open-ledger .gmrc-ledger-tab__icon {
+    width: 1.35rem !important;
+    font-size: 0.72rem !important;
+}
+
+.gmrc-open-ledger .gmrc-ledger-tab__label {
+    font-size: 0.64rem !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+}
+
+.gmrc-open-ledger .gmrc-ledger-tab.is-active {
+    color: #fff1c9 !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            #74478a,
+            #5a326c
+        ) !important;
+
+    transform:
+        translateY(
+            0.14rem
+        ) !important;
+}
+
+@media (max-width: 900px) {
+    .gmrc-open-ledger .gmrc-ledger-tabs {
+        width: 100% !important;
+        margin: 0 !important;
+        padding:
+            0.7rem
+            0.5rem
+            0 !important;
+        justify-content: center !important;
+    }
+}
+
+@media (max-width: 620px) {
+    .gmrc-open-ledger .gmrc-ledger-tabs {
+        display: grid !important;
+        grid-template-columns:
+            repeat(
+                3,
+                minmax(0, 1fr)
+            ) !important;
+        gap: 0.3rem !important;
+    }
+
+    .gmrc-open-ledger .gmrc-ledger-tab {
+        grid-template-columns: 1fr !important;
+        justify-items: center !important;
+        border-top:
+            1px solid
+            rgba(55, 30, 18, 0.82) !important;
+        border-radius: 0.34rem !important;
+        text-align: center !important;
+    }
+
+    .gmrc-open-ledger .gmrc-ledger-tab::before {
+        display: none !important;
+    }
+}
