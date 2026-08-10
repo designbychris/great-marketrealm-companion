@@ -72,12 +72,24 @@
             });
         });
 
+        const requested = new URLSearchParams(
+            window.location.search
+        ).get('gmrc_ledger_tab');
+
+        const requestedTab = requested
+            ? tabs.find(function (tab) {
+                return tab.dataset.ledgerTab === requested;
+            })
+            : null;
+
         const selected = tabs.find(function (tab) {
             return tab.getAttribute('aria-selected') === 'true';
         });
 
         activate(
-            selected instanceof HTMLButtonElement ? selected : tabs[0],
+            requestedTab instanceof HTMLButtonElement
+                ? requestedTab
+                : (selected instanceof HTMLButtonElement ? selected : tabs[0]),
             false
         );
     };
