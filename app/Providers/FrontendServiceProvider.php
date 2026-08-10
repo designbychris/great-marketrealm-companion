@@ -179,6 +179,20 @@ class FrontendServiceProvider extends ServiceProvider
         }
     
         if (
+            in_array($method, ['POST', 'DELETE'], true)
+            && preg_match(
+                '#^characters/([^/]+)/portrait$#',
+                $route,
+                $matches
+            )
+        ) {
+            return 'gmrc_character_portrait_'
+                . sanitize_text_field(
+                    $matches[1]
+                );
+        }
+
+        if (
             $method === 'DELETE'
             && preg_match(
                 '#^characters/([^/]+)$#',
@@ -700,6 +714,25 @@ class FrontendServiceProvider extends ServiceProvider
             true
         );
         
+        $illuminatorWorkbenchPath =
+            GMRC_PATH
+            . 'assets/js/components/media/'
+            . 'illuminator-workbench.js';
+
+        wp_enqueue_script(
+            'gmrc-illuminator-workbench',
+            GMRC_URL
+                . 'assets/js/components/media/'
+                . 'illuminator-workbench.js',
+            [],
+            file_exists($illuminatorWorkbenchPath)
+                ? (string) filemtime(
+                    $illuminatorWorkbenchPath
+                )
+                : GMRC_VERSION,
+            true
+        );
+
         $livingPortraitStylePath =
             GMRC_PATH
             . 'assets/css/components/media/generation2-living-portrait.css';
