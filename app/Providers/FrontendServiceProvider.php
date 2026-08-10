@@ -193,6 +193,24 @@ class FrontendServiceProvider extends ServiceProvider
         }
 
         if (
+            in_array(
+                $method,
+                ['POST', 'PUT', 'DELETE'],
+                true
+            )
+            && preg_match(
+                '#^characters/([^/]+)/inventory(?:/[^/]+(?:/equip)?)?$#',
+                $route,
+                $matches
+            )
+        ) {
+            return 'gmrc_character_inventory_'
+                . sanitize_text_field(
+                    $matches[1]
+                );
+        }
+
+        if (
             $method === 'DELETE'
             && preg_match(
                 '#^characters/([^/]+)$#',
@@ -311,6 +329,10 @@ class FrontendServiceProvider extends ServiceProvider
             [
                 'handle' => 'gmrc-guild-dice',
                 'path' => 'modules/characters/guild-dice.css',
+            ],
+            [
+                'handle' => 'gmrc-adventurers-pack',
+                'path' => 'modules/characters/adventurers-pack.css',
             ],
             [
                 'handle' => 'gmrc-complete-registration',
