@@ -377,6 +377,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/characters/spacious-register.css',
             ],
             [
+                'handle' => 'gmrc-dice-of-destiny',
+                'path' => 'modules/characters/dice-of-destiny.css',
+            ],
+            [
                 'handle' => 'gmrc-background-selector',
                 'path' => 'modules/characters/background-selector.css',
             ],
@@ -480,6 +484,23 @@ class FrontendServiceProvider extends ServiceProvider
             [],
             file_exists($livingLedgerScriptPath)
                 ? (string) filemtime($livingLedgerScriptPath)
+                : GMRC_VERSION,
+            true
+        );
+
+        $diceOfDestinyScriptPath =
+            GMRC_PATH
+            . 'assets/js/modules/characters/'
+            . 'dice-of-destiny.js';
+
+        wp_enqueue_script(
+            'gmrc-dice-of-destiny',
+            GMRC_URL
+                . 'assets/js/modules/characters/'
+                . 'dice-of-destiny.js',
+            [],
+            file_exists($diceOfDestinyScriptPath)
+                ? (string) filemtime($diceOfDestinyScriptPath)
                 : GMRC_VERSION,
             true
         );
