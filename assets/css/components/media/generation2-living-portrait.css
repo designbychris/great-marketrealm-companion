@@ -7,27 +7,14 @@
     transform-box: fill-box;
 }
 
-.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
-.gmrc-g2-body,
-.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
-.gmrc-g2-face,
-.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
-.gmrc-g2-brows,
-.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
-.gmrc-g2-mouth,
-.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
-.gmrc-g2-eyes,
-.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
-.gmrc-g2-eyelids,
-.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
-.gmrc-g2-outfit,
-.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
-.gmrc-g2-hands,
-.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
-.gmrc-g2-boots,
-.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
-.gmrc-g2-ledger {
+.gmrc-portrait-layers[data-portrait-generation="2"]
+.gmrc-g2-breathing-group {
+    transform-box: fill-box;
     transform-origin: center bottom;
+}
+
+.gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
+.gmrc-g2-breathing-group {
     animation:
         gmrc-g2-breathe
         5.6s
@@ -70,11 +57,7 @@
 
 .gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
 .gmrc-g2-eyes {
-    transform-box: fill-box;
-    transform-origin: center;
-    transition:
-        transform 65ms ease-in-out,
-        opacity 65ms ease-in-out;
+    transition: opacity 65ms ease-in-out;
 }
 
 .gmrc-portrait-layers[data-portrait-generation="2"][data-illumination-ready="true"]
@@ -164,6 +147,12 @@
 
 @media (prefers-reduced-motion: reduce) {
     .gmrc-portrait-layers[data-portrait-generation="2"]
+    .gmrc-g2-breathing-group {
+        animation: none !important;
+        transform: none !important;
+    }
+
+    .gmrc-portrait-layers[data-portrait-generation="2"]
     .gmrc-g2-character,
     .gmrc-portrait-layers[data-portrait-generation="2"]
     .gmrc-g2-pollen,
@@ -189,8 +178,7 @@
 .gmrc-g2-eyes,
 .gmrc-portrait-layers[data-portrait-generation="2"]
 .gmrc-g2-eyelids {
-    transform-box: fill-box;
-    transform-origin: center bottom;
+    pointer-events: none;
 }
 
 .gmrc-portrait-layers[data-portrait-generation="2"]
