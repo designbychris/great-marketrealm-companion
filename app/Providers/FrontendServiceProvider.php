@@ -335,6 +335,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/characters/adventurers-pack.css',
             ],
             [
+                'handle' => 'gmrc-clash-of-the-ledger',
+                'path' => 'modules/characters/clash-of-the-ledger.css',
+            ],
+            [
                 'handle' => 'gmrc-complete-registration',
                 'path' => 'modules/characters/complete-registration.css',
             ],
