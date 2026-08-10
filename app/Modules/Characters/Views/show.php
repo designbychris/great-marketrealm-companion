@@ -287,6 +287,14 @@ $backgroundSkills = array_map(
                         'portrait' => $portrait,
                     ]
                 );
+
+                echo $this->component(
+                    'components.media.illuminator-workbench',
+                    [
+                        'characterId' => $character->id()->value(),
+                        'isCustom' => $portrait->mode() === 'custom',
+                    ]
+                );
                 ?>
             </div>
 
