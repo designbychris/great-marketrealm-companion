@@ -36,13 +36,23 @@ final class PortraitSvgAssetLibrary
         return 'gmrc-portrait-asset-' . sanitize_key($layerId);
     }
 
-    public function useMarkup(string $layerId): string
-    {
+    public function useMarkup(
+        string $layerId,
+        string $classNames = ''
+    ): string {
+        $classAttribute = $classNames !== ''
+            ? sprintf(
+                ' class="%s"',
+                esc_attr($classNames)
+            )
+            : '';
+
         return sprintf(
-            '<use href="#%1$s" xlink:href="#%1$s" '
+            '<use href="#%1$s" xlink:href="#%1$s"%3$s '
             . 'data-portrait-asset-id="%2$s"></use>',
             esc_attr($this->symbolId($layerId)),
-            esc_attr($layerId)
+            esc_attr($layerId),
+            $classAttribute
         );
     }
 
