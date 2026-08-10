@@ -289,6 +289,10 @@ if ($isCustom) {
             'effects'
         )
     ); ?>"
+    data-portrait-persisted="<?php echo $portraitModel
+        instanceof PortraitViewModel
+            ? 'true'
+            : 'false'; ?>"
 >
     <div class="gmrc-illuminated-portrait__frame">
         <span
@@ -384,7 +388,10 @@ if ($isCustom) {
                 'components.auby.seal-of-approval',
                 [
                     'context' => 'portrait',
-                    'trigger' => 'manual',
+                    'trigger' => $portraitModel
+                        instanceof PortraitViewModel
+                            ? 'static'
+                            : 'manual',
                 ]
             ); ?>
         </div>
