@@ -98,6 +98,8 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Requests {
                 'name',
                 'race',
                 'class',
+                'heritage',
+                'subclass',
                 'portrait_seed',
                 'portrait_background',
                 'portrait_body',
