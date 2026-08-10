@@ -98,6 +98,16 @@
             return;
         }
 
+        const persisted =
+            studio.dataset.portraitPersisted === 'true';
+
+        if (
+            persisted
+            && portrait.dataset.portraitGeneration === '2'
+        ) {
+            portrait.dataset.illuminationReady = 'true';
+        }
+
         scheduleBlink(portrait);
 
         const readinessObserver = new MutationObserver(
