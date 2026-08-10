@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class LivingPortraitAlignmentRegressionTest extends TestCase
 {
-    public function testEyesAndEyelidsShareFaceBreathingMotion(): void
+    public function testEyesAndEyelidsShareTheCommonBreathingGroup(): void
     {
         $root = dirname(__DIR__, 6);
 
@@ -18,20 +18,37 @@ final class LivingPortraitAlignmentRegressionTest extends TestCase
             . 'generation2-living-portrait.css'
         );
 
+        $script = file_get_contents(
+            $root
+            . '/assets/js/components/media/portrait-studio/'
+            . 'generation2.js'
+        );
+
         self::assertIsString($css);
+        self::assertIsString($script);
 
         self::assertStringContainsString(
-            '.gmrc-g2-eyes,',
+            '.gmrc-g2-breathing-group',
             $css
         );
 
         self::assertStringContainsString(
-            '.gmrc-g2-eyelids,',
-            $css
+            'gmrc-g2-breathing-group',
+            $script
+        );
+
+        self::assertStringContainsString(
+            "'gmrc-g2-face-overlay'",
+            $script
         );
 
         self::assertStringContainsString(
             '.gmrc-g2-eyes.is-blinking',
+            $css
+        );
+
+        self::assertStringContainsString(
+            '.gmrc-g2-eyelids.is-blinking',
             $css
         );
 
