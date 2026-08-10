@@ -78,7 +78,7 @@ final class ArcanePantryPresenterTest extends TestCase
         );
 
         $character = Character::create(
-            CharacterId::fromString('01KARCANEPANTRYTEST00000001'),
+            CharacterId::fromString('01KZM4W72K1G12FY75R0BTQREW'),
             CharacterName::fromString('Test Adventurer'),
             Race::fromString('fructan'),
             CharacterClass::fromString($class),
