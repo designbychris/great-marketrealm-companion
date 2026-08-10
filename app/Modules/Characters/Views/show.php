@@ -47,9 +47,11 @@ $experience = $character
     ->experience()
     ->value();
 
-$armourClass = $character
-    ->armourClass()
-    ->value();
+$armourClass = isset($inventoryArmourClass)
+    ? (int) $inventoryArmourClass
+    : $character
+        ->armourClass()
+        ->value();
 
 $proficiencyBonus = $character
     ->proficiencyBonus()
@@ -85,6 +87,18 @@ $toolProficiencies = $character
 
 $conditions = $character
     ->conditions();
+
+$inventory = isset($inventory)
+    && is_array($inventory)
+        ? $inventory
+        : [
+            'rows' => [],
+            'total_weight' => 0,
+            'capacity' => 0,
+            'load_percent' => 0,
+            'catalogue' => [],
+            'equipped_count' => 0,
+        ];
 
 $savingThrowLabels = [
     'strength' => 'Strength',
@@ -744,6 +758,218 @@ $backgroundSkills = array_map(
     </div>
 
     <div
+        id="gmrc-ledger-panel-equipment"
+        class="gmrc-ledger-tabpanel"
+        role="tabpanel"
+        aria-labelledby="gmrc-ledger-tab-equipment"
+        data-ledger-panel="equipment"
+        hidden
+    >
+        <article class="gmrc-ledger-book gmrc-ledger-book--equipment">
+            <span
+                class="gmrc-ledger-book__ribbon"
+                aria-hidden="true"
+            ></span>
+
+            <div
+                class="gmrc-ledger-book__binding"
+                aria-hidden="true"
+            ></div>
+
+            <section
+                class="gmrc-ledger-page gmrc-ledger-page--pack"
+                aria-labelledby="gmrc-ledger-pack-title"
+            >
+                <p class="gmrc-ledger-page__folio">
+                    Adventurer’s Pack · V
+                </p>
+
+                <header class="gmrc-ledger-page__heading">
+                    <p class="gmrc-eyebrow">Auby’s Packing Register</p>
+                    <h2 id="gmrc-ledger-pack-title">Equipment & Inventory</h2>
+                    <p>
+                        Everything currently entrusted to this adventurer,
+                        from trusty steel to emergency biscuits.
+                    </p>
+                </header>
+
+                <section class="gmrc-pack-summary" aria-label="Pack load summary">
+                    <div>
+                        <span class="gmrc-pack-summary__icon" aria-hidden="true">🎒</span>
+                        <p><strong><?php echo esc_html((string) count($inventory['rows'])); ?></strong> kinds of item</p>
+                    </div>
+                    <div>
+                        <span class="gmrc-pack-summary__icon" aria-hidden="true">⚖</span>
+                        <p>
+                            <strong><?php echo esc_html((string) $inventory['total_weight']); ?> lb</strong>
+                            of <?php echo esc_html((string) $inventory['capacity']); ?> lb
+                        </p>
+                    </div>
+                    <div>
+                        <span class="gmrc-pack-summary__icon" aria-hidden="true">✦</span>
+                        <p><strong><?php echo esc_html((string) $inventory['equipped_count']); ?></strong> equipped</p>
+                    </div>
+                </section>
+
+                <div class="gmrc-pack-load" aria-label="Pack load <?php echo esc_attr((string) $inventory['load_percent']); ?> percent">
+                    <span style="width:<?php echo esc_attr((string) $inventory['load_percent']); ?>%"></span>
+                </div>
+
+                <?php if ($inventory['rows'] === []) : ?>
+                    <div class="gmrc-pack-empty">
+                        <span aria-hidden="true">🧺</span>
+                        <h3>The satchel is suspiciously light.</h3>
+                        <p>
+                            Nothing has been entered into the Packing Register yet.
+                            The Guild stores are open on the opposite page.
+                        </p>
+                    </div>
+                <?php else : ?>
+                    <div class="gmrc-pack-list">
+                        <?php foreach ($inventory['rows'] as $item) : ?>
+                            <article class="gmrc-pack-item <?php echo $item['equipped'] ? 'is-equipped' : ''; ?>">
+                                <div class="gmrc-pack-item__main">
+                                    <span class="gmrc-pack-item__category">
+                                        <?php echo esc_html(ucfirst($item['category'])); ?>
+                                    </span>
+                                    <h3><?php echo esc_html($item['label']); ?></h3>
+                                    <p><?php echo esc_html($item['description']); ?></p>
+                                    <?php if ($item['damage_die'] !== null) : ?>
+                                        <p class="gmrc-pack-item__mechanics">
+                                            <?php echo esc_html($item['damage_die'] . ' ' . $item['damage_type']); ?>
+                                            <?php if ($item['properties'] !== []) : ?>
+                                                · <?php echo esc_html(implode(', ', $item['properties'])); ?>
+                                            <?php endif; ?>
+                                        </p>
+                                    <?php endif; ?>
+                                </div>
+
+                                <div class="gmrc-pack-item__meta">
+                                    <?php if ($item['equipped']) : ?>
+                                        <span class="gmrc-equipped-seal">Equipped</span>
+                                    <?php endif; ?>
+                                    <span>Qty <?php echo esc_html((string) $item['quantity']); ?></span>
+                                    <span><?php echo esc_html((string) $item['total_weight']); ?> lb</span>
+                                </div>
+
+                                <div class="gmrc-pack-item__actions">
+                                    <?php
+                                    $itemRoute = 'characters/'
+                                        . rawurlencode($characterId)
+                                        . '/inventory/'
+                                        . rawurlencode($item['id']);
+                                    $itemUrl = add_query_arg('gmrc_route', $itemRoute, $companionUrl);
+                                    $equipUrl = add_query_arg('gmrc_route', $itemRoute . '/equip', $companionUrl);
+                                    ?>
+
+                                    <form method="post" action="<?php echo esc_url($itemUrl); ?>" class="gmrc-pack-quantity-form">
+                                        <input type="hidden" name="_method" value="PUT">
+                                        <?php wp_nonce_field('gmrc_character_inventory_' . $characterId, 'gmrc_nonce'); ?>
+                                        <label>
+                                            <span class="screen-reader-text">Quantity for <?php echo esc_html($item['label']); ?></span>
+                                            <input type="number" name="quantity" min="0" max="99" value="<?php echo esc_attr((string) $item['quantity']); ?>">
+                                        </label>
+                                        <button type="submit">Update</button>
+                                    </form>
+
+                                    <?php if ($item['equippable']) : ?>
+                                        <form method="post" action="<?php echo esc_url($equipUrl); ?>">
+                                            <?php wp_nonce_field('gmrc_character_inventory_' . $characterId, 'gmrc_nonce'); ?>
+                                            <button type="submit">
+                                                <?php echo esc_html($item['equipped'] ? 'Unequip' : 'Equip'); ?>
+                                            </button>
+                                        </form>
+                                    <?php endif; ?>
+
+                                    <form method="post" action="<?php echo esc_url($itemUrl); ?>">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <?php wp_nonce_field('gmrc_character_inventory_' . $characterId, 'gmrc_nonce'); ?>
+                                        <button type="submit" class="gmrc-pack-remove">Remove</button>
+                                    </form>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+
+                <p class="gmrc-ledger-page__number" aria-hidden="true">5</p>
+            </section>
+
+            <section
+                class="gmrc-ledger-page gmrc-ledger-page--stores"
+                aria-labelledby="gmrc-guild-stores-title"
+            >
+                <p class="gmrc-ledger-page__folio">
+                    Guild Stores · VI
+                </p>
+
+                <header class="gmrc-ledger-page__heading">
+                    <p class="gmrc-eyebrow">Quartermaster’s Counter</p>
+                    <h2 id="gmrc-guild-stores-title">Pack Another Item</h2>
+                    <p>
+                        Add a catalogue item to the adventurer’s record.
+                        More exotic Marketrealm gear will join these shelves later.
+                    </p>
+                </header>
+
+                <?php
+                $inventoryUrl = add_query_arg(
+                    'gmrc_route',
+                    'characters/' . rawurlencode($characterId) . '/inventory',
+                    $companionUrl
+                );
+                ?>
+
+                <form class="gmrc-guild-stores-form" method="post" action="<?php echo esc_url($inventoryUrl); ?>">
+                    <?php wp_nonce_field('gmrc_character_inventory_' . $characterId, 'gmrc_nonce'); ?>
+
+                    <label>
+                        <span>Guild stores catalogue</span>
+                        <select name="item_id" required>
+                            <option value="">Choose an item…</option>
+                            <?php foreach ($inventory['catalogue'] as $catalogueItem) : ?>
+                                <option value="<?php echo esc_attr($catalogueItem->id()); ?>">
+                                    <?php echo esc_html($catalogueItem->label()); ?>
+                                    — <?php echo esc_html(ucfirst($catalogueItem->category())); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+
+                    <label class="gmrc-guild-stores-form__quantity">
+                        <span>Quantity</span>
+                        <input type="number" name="quantity" value="1" min="1" max="99">
+                    </label>
+
+                    <button class="gmrc-button gmrc-button--secondary" type="submit">
+                        Add to Adventurer’s Pack
+                    </button>
+                </form>
+
+                <div class="gmrc-guild-stores-shelves">
+                    <?php foreach (array_slice($inventory['catalogue'], 0, 6) as $catalogueItem) : ?>
+                        <article>
+                            <span class="gmrc-guild-stores-shelves__category">
+                                <?php echo esc_html(ucfirst($catalogueItem->category())); ?>
+                            </span>
+                            <h3><?php echo esc_html($catalogueItem->label()); ?></h3>
+                            <p><?php echo esc_html($catalogueItem->description()); ?></p>
+                            <small><?php echo esc_html((string) $catalogueItem->weight()); ?> lb</small>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+
+                <blockquote class="gmrc-ledger-auby-note gmrc-ledger-auby-note--archive">
+                    <p>“I packed the emergency biscuit. Then I packed another emergency biscuit for the emergency involving the first biscuit.”</p>
+                    <footer>— Auby</footer>
+                </blockquote>
+
+                <p class="gmrc-ledger-page__number" aria-hidden="true">6</p>
+            </section>
+        </article>
+    </div>
+
+    <div
         id="gmrc-ledger-panel-notes"
         class="gmrc-ledger-tabpanel"
         role="tabpanel"
@@ -865,6 +1091,20 @@ $backgroundSkills = array_map(
         >
             <span class="gmrc-ledger-tab__icon" aria-hidden="true">✦</span>
             <span class="gmrc-ledger-tab__label">Skills & Training</span>
+        </button>
+
+        <button
+            id="gmrc-ledger-tab-equipment"
+            class="gmrc-ledger-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="gmrc-ledger-panel-equipment"
+            tabindex="-1"
+            data-ledger-tab="equipment"
+        >
+            <span class="gmrc-ledger-tab__icon" aria-hidden="true">🎒</span>
+            <span class="gmrc-ledger-tab__label">Equipment</span>
         </button>
 
         <button
