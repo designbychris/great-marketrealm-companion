@@ -55,8 +55,10 @@ $proficiencyBonus = $character
     ->proficiencyBonus()
     ->signed();
 
-$initiative = $character
-    ->initiative()
+$initiativeValue = $character
+    ->initiative();
+
+$initiative = $initiativeValue
     ->signed();
 
 $speed = $character
@@ -390,9 +392,17 @@ $backgroundSkills = array_map(
                 <div>
                     <dt>Initiative</dt>
                     <dd>
-                        <?php echo esc_html(
-                            $initiative
-                        ); ?>
+                        <?php
+                        echo $this->component(
+                            'components.controls.guild-roll-trigger',
+                            [
+                                'label' => 'Initiative',
+                                'modifier' => $initiativeValue->modifier(),
+                                'primary' => $initiative,
+                                'variant' => 'compact',
+                            ]
+                        );
+                        ?>
                     </dd>
                 </div>
 
@@ -442,23 +452,23 @@ $backgroundSkills = array_map(
                             </dt>
 
                             <dd>
-                                <strong>
-                                    <?php echo esc_html(
-                                        (string) $score->value()
-                                    ); ?>
-                                </strong>
+                                <?php
+                                $modifier = $score->modifier();
+                                $signedModifier = $modifier >= 0
+                                    ? '+' . $modifier
+                                    : (string) $modifier;
 
-                                <span>
-                                    <?php
-                                    $modifier = $score->modifier();
-
-                                    echo esc_html(
-                                        $modifier >= 0
-                                            ? '+' . $modifier
-                                            : (string) $modifier
-                                    );
-                                    ?>
-                                </span>
+                                echo $this->component(
+                                    'components.controls.guild-roll-trigger',
+                                    [
+                                        'label' => $label . ' Check',
+                                        'modifier' => $modifier,
+                                        'primary' => (string) $score->value(),
+                                        'secondary' => $signedModifier,
+                                        'variant' => 'ability',
+                                    ]
+                                );
+                                ?>
                             </dd>
                         </div>
                     <?php endforeach; ?>
@@ -550,9 +560,17 @@ $backgroundSkills = array_map(
                             </dt>
 
                             <dd>
-                                <?php echo esc_html(
-                                    $savingThrow->signed()
-                                ); ?>
+                                <?php
+                                echo $this->component(
+                                    'components.controls.guild-roll-trigger',
+                                    [
+                                        'label' => $label . ' Saving Throw',
+                                        'modifier' => $savingThrow->modifier(),
+                                        'primary' => $savingThrow->signed(),
+                                        'variant' => 'inline',
+                                    ]
+                                );
+                                ?>
                             </dd>
                         </div>
                     <?php endforeach; ?>
@@ -623,7 +641,19 @@ $backgroundSkills = array_map(
                                 <?php echo esc_html($label); ?>
                             </dt>
 
-                            <dd><?php echo esc_html($skill->signed()); ?></dd>
+                            <dd>
+                                <?php
+                                echo $this->component(
+                                    'components.controls.guild-roll-trigger',
+                                    [
+                                        'label' => $label . ' Check',
+                                        'modifier' => $skill->modifier(),
+                                        'primary' => $skill->signed(),
+                                        'variant' => 'inline',
+                                    ]
+                                );
+                                ?>
+                            </dd>
                         </div>
                     <?php endforeach; ?>
                 </dl>
@@ -811,8 +841,8 @@ $backgroundSkills = array_map(
             tabindex="0"
             data-ledger-tab="overview"
         >
-            <span aria-hidden="true">▣</span>
-            Overview
+            <span class="gmrc-ledger-tab__icon" aria-hidden="true">▣</span>
+            <span class="gmrc-ledger-tab__label">Overview</span>
         </button>
 
         <button
@@ -825,8 +855,8 @@ $backgroundSkills = array_map(
             tabindex="-1"
             data-ledger-tab="skills"
         >
-            <span aria-hidden="true">✦</span>
-            Skills & Training
+            <span class="gmrc-ledger-tab__icon" aria-hidden="true">✦</span>
+            <span class="gmrc-ledger-tab__label">Skills & Training</span>
         </button>
 
         <button
@@ -839,8 +869,70 @@ $backgroundSkills = array_map(
             tabindex="-1"
             data-ledger-tab="notes"
         >
-            <span aria-hidden="true">✎</span>
-            Archive Notes
+            <span class="gmrc-ledger-tab__icon" aria-hidden="true">✎</span>
+            <span class="gmrc-ledger-tab__label">Archive Notes</span>
         </button>
     </div>
+
+    <aside
+        class="gmrc-guild-dice-tray"
+        data-guild-dice-tray
+        aria-labelledby="gmrc-guild-dice-title"
+        hidden
+    >
+        <div class="gmrc-guild-dice-tray__pin" aria-hidden="true"></div>
+
+        <header class="gmrc-guild-dice-tray__header">
+            <div>
+                <p class="gmrc-eyebrow">The Guild Dice</p>
+                <h2 id="gmrc-guild-dice-title" data-guild-dice-label>D20 Roll</h2>
+            </div>
+
+            <button
+                class="gmrc-guild-dice-tray__close"
+                type="button"
+                data-guild-dice-close
+                aria-label="Close Guild Dice"
+            >×</button>
+        </header>
+
+        <p class="gmrc-guild-dice-tray__modifier">
+            Modifier
+            <strong data-guild-dice-modifier>+0</strong>
+        </p>
+
+        <div
+            class="gmrc-guild-dice-modes"
+            aria-label="Choose how to roll"
+        >
+            <button type="button" data-guild-roll-mode="normal">Normal</button>
+            <button type="button" data-guild-roll-mode="advantage">Advantage</button>
+            <button type="button" data-guild-roll-mode="disadvantage">Disadvantage</button>
+        </div>
+
+        <div class="gmrc-guild-dice-result" data-guild-dice-result hidden>
+            <div class="gmrc-guild-d20" data-guild-d20 aria-hidden="true">
+                <span data-guild-d20-value>20</span>
+            </div>
+
+            <div class="gmrc-guild-dice-result__copy">
+                <p class="gmrc-guild-dice-result__mode" data-guild-dice-mode></p>
+                <p class="gmrc-guild-dice-result__math" data-guild-dice-math></p>
+                <strong class="gmrc-guild-dice-result__total" data-guild-dice-total></strong>
+                <p class="gmrc-guild-dice-result__auby" data-guild-dice-auby hidden></p>
+            </div>
+        </div>
+
+        <div class="gmrc-guild-dice-history" data-guild-dice-history hidden>
+            <h3>Recent Rolls</h3>
+            <ol data-guild-dice-history-list></ol>
+        </div>
+
+        <p
+            class="screen-reader-text"
+            data-guild-dice-live
+            aria-live="polite"
+            aria-atomic="true"
+        ></p>
+    </aside>
 </section>
