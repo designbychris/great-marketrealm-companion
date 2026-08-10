@@ -15,6 +15,19 @@ defined('ABSPATH') || exit;
  */
 final class ArcanePantryPresenter
 {
+    /** @var array<int,array<int,int>> */
+    private const FULL_CASTER_SLOTS = [
+        1=>[2,0,0,0,0,0,0,0,0], 2=>[3,0,0,0,0,0,0,0,0],
+        3=>[4,2,0,0,0,0,0,0,0], 4=>[4,3,0,0,0,0,0,0,0],
+        5=>[4,3,2,0,0,0,0,0,0], 6=>[4,3,3,0,0,0,0,0,0],
+        7=>[4,3,3,1,0,0,0,0,0], 8=>[4,3,3,2,0,0,0,0,0],
+        9=>[4,3,3,3,1,0,0,0,0], 10=>[4,3,3,3,2,0,0,0,0],
+        11=>[4,3,3,3,2,1,0,0,0], 12=>[4,3,3,3,2,1,0,0,0],
+        13=>[4,3,3,3,2,1,1,0,0], 14=>[4,3,3,3,2,1,1,0,0],
+        15=>[4,3,3,3,2,1,1,1,0], 16=>[4,3,3,3,2,1,1,1,0],
+        17=>[4,3,3,3,2,1,1,1,1], 18=>[4,3,3,3,3,1,1,1,1],
+        19=>[4,3,3,3,3,2,1,1,1], 20=>[4,3,3,3,3,2,2,1,1],
+    ];
     public function __construct(
         private ArcaneAbilityCatalogue $catalogue
     ) {
@@ -40,6 +53,15 @@ final class ArcanePantryPresenter
             ? null
             : 8 + $castingModifier + $proficiency;
 
+        $level = $character->level()->value();
+        $available = array_values(
+            array_filter(
+                $this->catalogue->forClass($class),
+                static fn (ArcaneAbilityDefinition $ability): bool =>
+                    $ability->minimumLevel() <= $level
+            )
+        );
+
         $entries = array_map(
             fn (ArcaneAbilityDefinition $ability): array =>
                 $this->entry(
@@ -47,9 +69,9 @@ final class ArcanePantryPresenter
                     $castingModifier,
                     $spellAttack,
                     $saveDc,
-                    $character->level()->value()
+                    $level
                 ),
-            $this->catalogue->forClass($class)
+            $available
         );
 
         return [
@@ -132,24 +154,47 @@ final class ArcanePantryPresenter
     /** @return array<int, array{level:int,total:int}> */
     private function slots(string $class, int $level): array
     {
-        if ($level < 1) {
-            return [];
-        }
+        if ($level < 1) { return []; }
 
         if ($class === 'warlock') {
-            return [['level' => 1, 'total' => 1]];
+            $pactLevel = match (true) {
+                $level >= 9 => 5,
+                $level >= 7 => 4,
+                $level >= 5 => 3,
+                $level >= 3 => 2,
+                default => 1,
+            };
+            $count = $level >= 11 ? 3 : ($level >= 2 ? 2 : 1);
+            return [['level' => $pactLevel, 'total' => $count]];
         }
 
-        if (
-            in_array(
-                $class,
-                ['artificer', 'bard', 'cleric', 'druid', 'sorcerer', 'wizard'],
-                true
-            )
-        ) {
-            return [['level' => 1, 'total' => 2]];
+        if (in_array($class, ['bard','cleric','druid','sorcerer','wizard'], true)) {
+            return $this->slotRow(self::FULL_CASTER_SLOTS[$level] ?? self::FULL_CASTER_SLOTS[20]);
+        }
+
+        if ($class === 'artificer') {
+            $casterLevel = max(1, (int) ceil($level / 2));
+            return $this->slotRow(self::FULL_CASTER_SLOTS[$casterLevel]);
+        }
+
+        if (in_array($class, ['paladin','ranger'], true)) {
+            if ($level < 2) { return []; }
+            $casterLevel = max(1, intdiv($level, 2));
+            return $this->slotRow(self::FULL_CASTER_SLOTS[$casterLevel]);
         }
 
         return [];
     }
+
+    /** @return array<int,array{level:int,total:int}> */
+    private function slotRow(array $counts): array
+    {
+        $slots = [];
+        foreach ($counts as $index => $count) {
+            if ($count < 1) { continue; }
+            $slots[] = ['level' => $index + 1, 'total' => $count];
+        }
+        return $slots;
+    }
 }
+
