@@ -126,6 +126,16 @@ final class StoreCharacterRequest extends FormRequest
         ];
     }
 
+    /** @return array{heritage:string,subclass:string} */
+    public function catalogueData(): array
+    {
+        $input = $this->validated();
+        return [
+            'heritage' => $input->string('heritage'),
+            'subclass' => $input->string('subclass'),
+        ];
+    }
+
     /**
      * Return Complete Registration data.
      *
