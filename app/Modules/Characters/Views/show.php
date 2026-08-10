@@ -213,12 +213,17 @@ $backgroundSkills = array_map(
             </p>
 
             <h1 id="gmrc-open-ledger-title">
-                The Open Ledger
+                <?php echo esc_html($name); ?>
             </h1>
 
             <p>
-                Adventurer’s Register · Entry
-                <?php echo esc_html(
+                Level <?php echo esc_html(
+                        (string) $level
+                    ); ?>
+                    <?php echo esc_html($race); ?>
+                    <?php echo esc_html(
+                        $characterClass
+                    ); ?> · <?php echo esc_html(
                     $entryReference
                 ); ?>
             </p>
