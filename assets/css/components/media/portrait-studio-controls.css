@@ -304,206 +304,73 @@
     }
 }
 
-/* ---------------------------------------------------------------
- * Phase III.2.1.1 — Open Ledger Workbench layout correction
- * --------------------------------------------------------------- */
+/* ===============================================================
+ * Phase III.2.1.3 — Illuminator control visual polish
+ * =============================================================== */
 
-/*
- * The Open Ledger previously constrained the complete portrait area to 22rem.
- * Expand the portrait/workbench region across the identity page, then let its
- * three children form the actual workstation:
- *
- *   [ Guild portrait ] [ Portrait customisation ]
- *                      [ Custom image workbench  ]
- */
-.gmrc-open-ledger
-.gmrc-ledger-page--identity
-.gmrc-ledger-page__portrait {
+.gmrc-portrait-controls__row {
+    border:
+        1px solid
+        rgba(88, 53, 31, 0.13);
+
+    border-radius:
+        0.26rem;
+
+    background:
+        rgba(255, 249, 228, 0.44);
+}
+
+.gmrc-portrait-controls__button {
+    appearance: none;
+
+    border:
+        1px solid
+        rgba(61, 31, 17, 0.7);
+
+    border-radius:
+        0.28rem;
+
+    color:
+        #f8e5ae;
+
+    background:
+        linear-gradient(
+            180deg,
+            #57331e,
+            #402416
+        );
+
+    box-shadow:
+        inset
+        0
+        1px
+        rgba(255, 234, 178, 0.12),
+        0
+        0.18rem
+        0.3rem
+        rgba(50, 27, 16, 0.15);
+}
+
+.gmrc-portrait-controls__button:hover,
+.gmrc-portrait-controls__button:focus-visible {
+    color:
+        #fff2c8;
+
+    background:
+        linear-gradient(
+            180deg,
+            #75468d,
+            #5a326c
+        );
+}
+
+.gmrc-portrait-controls__actions {
     display: grid;
     grid-template-columns:
-        minmax(15rem, 1.05fr)
-        minmax(14rem, 0.95fr);
-    grid-template-rows:
-        auto
-        auto;
+        repeat(2, minmax(0, 1fr));
+}
 
-    gap:
-        clamp(0.75rem, 1.5vw, 1.15rem);
-
-    align-items: start;
-
+.gmrc-portrait-controls__actions
+.gmrc-button {
     width: 100%;
-    max-width: none;
-
-    margin:
-        0.25rem
-        0
-        1rem;
-
-    transform: none;
-}
-
-/*
- * The paper backing should frame the entire workstation rather than only
- * the old narrow portrait column.
- */
-.gmrc-open-ledger
-.gmrc-ledger-page--identity
-.gmrc-ledger-page__portrait::before {
-    inset:
-        -0.55rem
-        -0.5rem;
-
-    transform: rotate(0.35deg);
-}
-
-/*
- * Portrait remains the visual anchor on the left.
- */
-.gmrc-open-ledger
-.gmrc-ledger-page__portrait
-> .gmrc-illuminated-portrait {
-    grid-column: 1;
-    grid-row: 1 / span 2;
-
-    width: 100%;
-    max-width: 23rem;
-
-    margin:
-        0
-        auto;
-
-    align-self: start;
-}
-
-/*
- * JavaScript inserts the Portrait Customisation panel directly after the
- * illuminated portrait.
- */
-.gmrc-open-ledger
-.gmrc-ledger-page__portrait
-> .gmrc-portrait-controls {
-    grid-column: 2;
-    grid-row: 1;
-
-    width: 100%;
-    min-width: 0;
-
-    align-self: start;
-}
-
-/*
- * Optional uploaded-image controls sit immediately below customisation.
- */
-.gmrc-open-ledger
-.gmrc-ledger-page__portrait
-> .gmrc-illuminator-workbench {
-    grid-column: 2;
-    grid-row: 2;
-
-    width: 100%;
-
-    margin: 0;
-
-    align-self: start;
-}
-
-/*
- * Give the controls slightly denser spacing inside the book.
- */
-.gmrc-open-ledger
-.gmrc-ledger-page__portrait
-.gmrc-portrait-controls {
-    padding:
-        0.85rem
-        0.9rem;
-}
-
-.gmrc-open-ledger
-.gmrc-ledger-page__portrait
-.gmrc-portrait-controls__row {
-    grid-template-columns:
-        minmax(6.2rem, 1fr)
-        repeat(3, 2rem);
-
-    gap: 0.28rem;
-
-    padding:
-        0.28rem
-        0;
-}
-
-.gmrc-open-ledger
-.gmrc-ledger-page__portrait
-.gmrc-portrait-controls__button {
-    min-width: 2rem;
-    min-height: 2rem;
-}
-
-/*
- * The book needs more breathing room on large desktop layouts now that the
- * identity page carries the full Illuminator workstation.
- */
-@media (min-width: 1280px) {
-    .gmrc-open-ledger
-    .gmrc-ledger-book {
-        grid-template-columns:
-            minmax(0, 1.08fr)
-            minmax(0, 0.92fr);
-    }
-}
-
-/*
- * Tablet and narrow desktops return naturally to the familiar stacked
- * portrait → controls → custom image flow.
- */
-@media (max-width: 1180px) {
-    .gmrc-open-ledger
-    .gmrc-ledger-page--identity
-    .gmrc-ledger-page__portrait {
-        grid-template-columns: 1fr;
-
-        width:
-            min(
-                100%,
-                31rem
-            );
-
-        margin:
-            0.25rem
-            auto
-            1rem;
-    }
-
-    .gmrc-open-ledger
-    .gmrc-ledger-page__portrait
-    > .gmrc-illuminated-portrait,
-    .gmrc-open-ledger
-    .gmrc-ledger-page__portrait
-    > .gmrc-portrait-controls,
-    .gmrc-open-ledger
-    .gmrc-ledger-page__portrait
-    > .gmrc-illuminator-workbench {
-        grid-column: 1;
-        grid-row: auto;
-
-        width: 100%;
-    }
-
-    .gmrc-open-ledger
-    .gmrc-ledger-page__portrait
-    > .gmrc-illuminated-portrait {
-        max-width: 23rem;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .gmrc-open-ledger
-    .gmrc-ledger-page--identity
-    .gmrc-ledger-page__portrait,
-    .gmrc-open-ledger
-    .gmrc-ledger-page--identity
-    .gmrc-ledger-page__portrait::before {
-        transform: none !important;
-    }
 }
