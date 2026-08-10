@@ -224,7 +224,10 @@
                 return;
             }
 
-            if (selection.kind === 'damage') {
+            if (
+                selection.kind === 'damage'
+                || selection.kind === 'healing'
+            ) {
                 const damage = rollFormula(selection.formula, false);
                 if (!damage) { return; }
                 const total = damage.total + selection.modifier;
@@ -233,12 +236,27 @@
                     damage.total
                 );
 
-                if (modeNode instanceof HTMLElement) { modeNode.textContent = 'Damage Roll'; }
+                const isHealing =
+                    selection.kind === 'healing';
+
+                const resultLabel = isHealing
+                    ? 'healing'
+                    : (
+                        selection.damageType
+                            ? selection.damageType + ' damage'
+                            : 'damage'
+                    );
+
+                if (modeNode instanceof HTMLElement) {
+                    modeNode.textContent = isHealing
+                        ? 'Healing Roll'
+                        : 'Damage Roll';
+                }
                 if (mathNode instanceof HTMLElement) { mathNode.textContent = selection.formula + ' (' + damage.dice.join(' + ') + ') ' + signed(selection.modifier); }
-                if (totalNode instanceof HTMLElement) { totalNode.textContent = '= ' + total + ' ' + selection.damageType + ' damage'; }
+                if (totalNode instanceof HTMLElement) { totalNode.textContent = '= ' + total + ' ' + resultLabel; }
                 if (result instanceof HTMLElement) { result.hidden = false; }
                 if (aubyNode instanceof HTMLElement) { aubyNode.hidden = true; aubyNode.textContent = ''; }
-                const historyText = selection.label + ': ' + damage.dice.join(' + ') + ' ' + signed(selection.modifier) + ' = ' + total + ' ' + selection.damageType + ' damage';
+                const historyText = selection.label + ': ' + damage.dice.join(' + ') + ' ' + signed(selection.modifier) + ' = ' + total + ' ' + resultLabel;
                 recent.unshift(historyText); recent.splice(MAX_HISTORY); paintHistory();
                 if (live instanceof HTMLElement) { live.textContent = historyText; }
                 return;
