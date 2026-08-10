@@ -22,7 +22,7 @@ final class CompleteRegistrationPresentationTest extends TestCase
         foreach (
             [
                 'Choose a background',
-                'Assign the Standard Guild Array',
+                'Choose how fate measures your adventurer',
                 'Complete your proficiencies',
                 'Review the Guild Record',
                 'Seal the Guild Record',
