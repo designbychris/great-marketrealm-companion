@@ -726,22 +726,23 @@ final class CharacterController
         CharacterId $id,
         ?string $ledgerTab = null
     ): string {
-        $arguments = [
-            'gmrc_route' =>
-                'characters/' . rawurlencode(
-                    $id->value()
-                ),
-        ];
-
-        if ($ledgerTab !== null) {
-            $arguments['gmrc_ledger_tab'] =
-                sanitize_key($ledgerTab);
-        }
-
-        return add_query_arg(
-            $arguments,
+        $url = add_query_arg(
+            'gmrc_route',
+            'characters/' . rawurlencode(
+                $id->value()
+            ),
             home_url('/companion/')
         );
+
+        if ($ledgerTab !== null) {
+            $url = add_query_arg(
+                'gmrc_ledger_tab',
+                sanitize_key($ledgerTab),
+                $url
+            );
+        }
+
+        return $url;
     }
     
     /**
