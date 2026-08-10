@@ -50,6 +50,15 @@ final class Race implements Stringable
         'fructan' => [
             'label' => 'Fructan',
         ],
+        'marshmallow-folk' => [
+            'label' => 'Marshmallow Folk',
+        ],
+        'recalled' => [
+            'label' => 'The Recalled',
+        ],
+        'frostreem' => [
+            'label' => 'Frostreem',
+        ],
         'fungifolk' => [
             'label' => 'Fungifolk',
         ],
