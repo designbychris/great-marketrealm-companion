@@ -184,6 +184,39 @@
             }
         };
 
+        const animateDie = function (
+            value,
+            natural = null
+        ) {
+            if (die instanceof HTMLElement) {
+                die.classList.remove(
+                    'is-rolling',
+                    'is-natural-20',
+                    'is-natural-1'
+                );
+
+                void die.offsetWidth;
+
+                die.classList.add(
+                    'is-rolling'
+                );
+
+                if (natural === 20) {
+                    die.classList.add(
+                        'is-natural-20'
+                    );
+                } else if (natural === 1) {
+                    die.classList.add(
+                        'is-natural-1'
+                    );
+                }
+            }
+
+            if (dieValue instanceof HTMLElement) {
+                dieValue.textContent = String(value);
+            }
+        };
+
         const perform = function (mode) {
             const selection = current();
 
@@ -195,10 +228,14 @@
                 const damage = rollFormula(selection.formula, false);
                 if (!damage) { return; }
                 const total = damage.total + selection.modifier;
+
+                animateDie(
+                    damage.total
+                );
+
                 if (modeNode instanceof HTMLElement) { modeNode.textContent = 'Damage Roll'; }
                 if (mathNode instanceof HTMLElement) { mathNode.textContent = selection.formula + ' (' + damage.dice.join(' + ') + ') ' + signed(selection.modifier); }
                 if (totalNode instanceof HTMLElement) { totalNode.textContent = '= ' + total + ' ' + selection.damageType + ' damage'; }
-                if (dieValue instanceof HTMLElement) { dieValue.textContent = String(damage.total); }
                 if (result instanceof HTMLElement) { result.hidden = false; }
                 if (aubyNode instanceof HTMLElement) { aubyNode.hidden = true; aubyNode.textContent = ''; }
                 const historyText = selection.label + ': ' + damage.dice.join(' + ') + ' ' + signed(selection.modifier) + ' = ' + total + ' ' + selection.damageType + ' damage';
@@ -215,21 +252,10 @@
                     ? 'Disadvantage'
                     : 'Normal Roll';
 
-            if (die instanceof HTMLElement) {
-                die.classList.remove('is-rolling', 'is-natural-20', 'is-natural-1');
-                void die.offsetWidth;
-                die.classList.add('is-rolling');
-
-                if (rolled.natural === 20) {
-                    die.classList.add('is-natural-20');
-                } else if (rolled.natural === 1) {
-                    die.classList.add('is-natural-1');
-                }
-            }
-
-            if (dieValue instanceof HTMLElement) {
-                dieValue.textContent = String(rolled.natural);
-            }
+            animateDie(
+                rolled.natural,
+                rolled.natural
+            );
 
             if (modeNode instanceof HTMLElement) {
                 modeNode.textContent = modeLabel;
