@@ -538,20 +538,6 @@
   ],
   "classes": [
     {
-      "key": "grocer",
-      "name": "Grocer",
-      "description": "Grocer adventuring class.",
-      "traits": [],
-      "hit_die": 8
-    },
-    {
-      "key": "cleaver-saint",
-      "name": "Cleaver Saint",
-      "description": "Cleaver Saint adventuring class.",
-      "traits": [],
-      "hit_die": 10
-    },
-    {
       "key": "artificer",
       "name": "Artificer",
       "description": "Artificer adventuring class.",
