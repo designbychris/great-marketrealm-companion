@@ -199,6 +199,25 @@ $arcana = isset($arcana) && is_array($arcana)
         'has_spells' => false,
     ];
 
+$progression = isset($progression) && is_array($progression)
+    ? $progression
+    : [
+        'level' => $level,
+        'experience' => $experience,
+        'level_start_xp' => 0,
+        'next_level_xp' => null,
+        'xp_to_next' => 0,
+        'progress_percent' => 0,
+        'can_level_up' => false,
+        'is_maximum' => false,
+        'next_level' => null,
+        'current_proficiency' => $proficiencyBonus,
+        'next_proficiency' => null,
+        'hit_die' => '',
+        'next_hit_point_gain' => 0,
+        'current_max_hp' => $hitPoints->maximum(),
+    ];
+
 $backgroundSkills = array_map(
     static fn (
         string $skill
@@ -1280,6 +1299,104 @@ $backgroundSkills = array_map(
     </article>
 </div>
 
+
+<div
+    id="gmrc-ledger-panel-progression"
+    class="gmrc-ledger-tabpanel"
+    role="tabpanel"
+    aria-labelledby="gmrc-ledger-tab-progression"
+    data-ledger-panel="progression"
+    hidden
+>
+    <article class="gmrc-ledger-book gmrc-ledger-book--rising-register">
+        <div class="gmrc-ledger-book__binding" aria-hidden="true"></div>
+
+        <section class="gmrc-ledger-page gmrc-ledger-page--rising-register" aria-labelledby="gmrc-rising-register-title">
+            <p class="gmrc-ledger-page__folio">Rising Register · XI</p>
+            <header class="gmrc-ledger-page__heading">
+                <p class="gmrc-eyebrow">Adventurer Progression</p>
+                <h2 id="gmrc-rising-register-title">The Rising Register</h2>
+            </header>
+
+            <div class="gmrc-rise-level-seal" aria-label="Current level">
+                <span>Level</span>
+                <strong><?php echo esc_html((string) $progression['level']); ?></strong>
+            </div>
+
+            <section class="gmrc-rise-progress" aria-labelledby="gmrc-rise-xp-title">
+                <header>
+                    <h3 id="gmrc-rise-xp-title">Experience Ledger</h3>
+                    <strong><?php echo esc_html(number_format_i18n((int) $progression['experience'])); ?> XP</strong>
+                </header>
+                <div class="gmrc-rise-progress__track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?php echo esc_attr((string) $progression['progress_percent']); ?>" aria-label="Progress toward next level">
+                    <span style="width:<?php echo esc_attr((string) $progression['progress_percent']); ?>%"></span>
+                </div>
+                <?php if ($progression['is_maximum']) : ?>
+                    <p>Maximum level certified. The Guild has run out of larger numbers.</p>
+                <?php else : ?>
+                    <p><?php echo esc_html(number_format_i18n((int) $progression['xp_to_next'])); ?> XP until Level <?php echo esc_html((string) $progression['next_level']); ?>.</p>
+                <?php endif; ?>
+            </section>
+
+            <form class="gmrc-rise-xp-form" method="post" action="<?php echo esc_url($appRequestUrl); ?>">
+                <input type="hidden" name="action" value="gmrc_app_request">
+                <input type="hidden" name="gmrc_route" value="<?php echo esc_attr('characters/' . rawurlencode($characterId) . '/progression/experience'); ?>">
+                <?php wp_nonce_field('gmrc_character_progression_' . $characterId, 'gmrc_nonce'); ?>
+                <label for="gmrc-rise-xp-<?php echo esc_attr($characterId); ?>">
+                    <span>Record earned XP</span>
+                    <input id="gmrc-rise-xp-<?php echo esc_attr($characterId); ?>" type="number" name="experience" min="1" max="1000000" step="1" value="100" required>
+                </label>
+                <button class="gmrc-button gmrc-button--secondary" type="submit">Enter into Register</button>
+            </form>
+
+            <p class="gmrc-ledger-page__number" aria-hidden="true">11</p>
+        </section>
+
+        <section class="gmrc-ledger-page gmrc-ledger-page--level-certification" aria-labelledby="gmrc-level-certification-title">
+            <p class="gmrc-ledger-page__folio">Guild Certification · XII</p>
+            <header class="gmrc-ledger-page__heading">
+                <p class="gmrc-eyebrow">What the next stamp changes</p>
+                <h2 id="gmrc-level-certification-title">Level Certification</h2>
+            </header>
+
+            <dl class="gmrc-rise-measures">
+                <div><dt>Current proficiency</dt><dd><?php echo esc_html((string) $progression['current_proficiency']); ?></dd></div>
+                <div><dt>Next proficiency</dt><dd><?php echo esc_html((string) ($progression['next_proficiency'] ?? '—')); ?></dd></div>
+                <div><dt>Class hit die</dt><dd><?php echo esc_html((string) $progression['hit_die']); ?></dd></div>
+                <div><dt>HP on next level</dt><dd>+<?php echo esc_html((string) $progression['next_hit_point_gain']); ?></dd></div>
+            </dl>
+
+            <?php if (! $progression['is_maximum']) : ?>
+                <div class="gmrc-rise-awaiting">
+                    <span aria-hidden="true">✦</span>
+                    <p>
+                        The next Guild certification is applied automatically when the Experience Ledger reaches
+                        <?php echo esc_html(number_format_i18n((int) $progression['next_level_xp'])); ?> XP.
+                    </p>
+                </div>
+            <?php else : ?>
+                <div class="gmrc-rise-awaiting gmrc-rise-awaiting--complete">
+                    <span aria-hidden="true">★</span>
+                    <p>Level 20: fully certified by the Great Marketrealm Guild.</p>
+                </div>
+            <?php endif; ?>
+
+            <section class="gmrc-ledger-section">
+                <header class="gmrc-ledger-section__heading"><h3>Automatic consequences</h3></header>
+                <ul class="gmrc-rise-effects">
+                    <li>Crossing an XP threshold automatically certifies the new level.</li>
+                    <li>Maximum hit points grow from the class hit die.</li>
+                    <li>Proficiency automatically updates when its level band changes.</li>
+                    <li>Attack rolls, saving throws and skills inherit the new proficiency.</li>
+                    <li>Spell slots and level-gated abilities refresh from the Arcane Pantry.</li>
+                </ul>
+            </section>
+            <blockquote class="gmrc-ledger-auby-note gmrc-ledger-auby-note--archive"><p>“Growth is mostly paperwork with better hit points.”</p><footer>— Auby</footer></blockquote>
+            <p class="gmrc-ledger-page__number" aria-hidden="true">12</p>
+        </section>
+    </article>
+</div>
+
     <div
         id="gmrc-ledger-panel-notes"
         class="gmrc-ledger-tabpanel"
@@ -1444,6 +1561,21 @@ $backgroundSkills = array_map(
 >
     <span class="gmrc-ledger-tab__icon" aria-hidden="true">✧</span>
     <span class="gmrc-ledger-tab__label">Spells & Abilities</span>
+</button>
+
+
+<button
+    id="gmrc-ledger-tab-progression"
+    class="gmrc-ledger-tab"
+    type="button"
+    role="tab"
+    aria-selected="false"
+    aria-controls="gmrc-ledger-panel-progression"
+    tabindex="-1"
+    data-ledger-tab="progression"
+>
+    <span class="gmrc-ledger-tab__icon" aria-hidden="true">↑</span>
+    <span class="gmrc-ledger-tab__label">Progression</span>
 </button>
 
         <button
