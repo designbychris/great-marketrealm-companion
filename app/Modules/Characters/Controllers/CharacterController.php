@@ -33,6 +33,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Combat\Services\AttackPresenter
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\ArcanePantryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\RisingRegisterPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterCatalogueRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterBuildProfileRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Repositories\CharacterPortraitRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
@@ -75,7 +77,9 @@ final class CharacterController
         private RaceRegistry $raceRegistry,
         private ClassRegistry $classRegistry,
         private PortraitRenderer $portraitRenderer,
-        private SubmittedPortraitRecipeFactory $submittedPortraits
+        private SubmittedPortraitRecipeFactory $submittedPortraits,
+        private CharacterCatalogueRepository $catalogue,
+        private CharacterBuildProfileRepository $buildProfiles
     ) {
     }
 
@@ -158,6 +162,10 @@ final class CharacterController
                     'classOptions' => $this
                         ->classRegistry
                         ->options(),
+                    'catalogueRaces' => $this->catalogue->raceOptions(),
+                    'catalogueClasses' => $this->catalogue->classOptions(),
+                    'catalogueHeritages' => $this->catalogue->heritages(),
+                    'catalogueSubclasses' => $this->catalogue->subclasses(),
     
                     /*
                      * The provisional portrait uses the same rendering
@@ -204,6 +212,7 @@ final class CharacterController
     ): RedirectResponse {
         $data = $request->characterData();
         $registration = $request->registrationData();
+        $catalogueData = $request->catalogueData();
 
         $abilities = $registration['abilities'];
 
@@ -255,6 +264,17 @@ final class CharacterController
             $character,
             $portraitRecipe
         );
+
+        if (
+            $this->catalogue->heritageBelongsTo($catalogueData['heritage'], $data['race'])
+            && $this->catalogue->subclassBelongsTo($catalogueData['subclass'], $data['class'])
+        ) {
+            $this->buildProfiles->save(
+                $character->id(),
+                $catalogueData['heritage'],
+                $catalogueData['subclass']
+            );
+        }
     
         $this->flash->success(
             'Your character has entered the Marketrealm!'
