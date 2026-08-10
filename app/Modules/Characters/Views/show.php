@@ -100,6 +100,10 @@ $inventory = isset($inventory)
             'equipped_count' => 0,
         ];
 
+$attacks = isset($attacks) && is_array($attacks)
+    ? $attacks
+    : [];
+
 $savingThrowLabels = [
     'strength' => 'Strength',
     'dexterity' => 'Dexterity',
@@ -986,6 +990,85 @@ $backgroundSkills = array_map(
     </div>
 
     <div
+        id="gmrc-ledger-panel-attacks"
+        class="gmrc-ledger-tabpanel"
+        role="tabpanel"
+        aria-labelledby="gmrc-ledger-tab-attacks"
+        data-ledger-panel="attacks"
+        hidden
+    >
+        <article class="gmrc-ledger-book gmrc-ledger-book--attacks">
+            <span class="gmrc-ledger-book__ribbon" aria-hidden="true"></span>
+            <div class="gmrc-ledger-book__binding" aria-hidden="true"></div>
+
+            <section class="gmrc-ledger-page gmrc-ledger-page--attacks" aria-labelledby="gmrc-ledger-attacks-title">
+                <p class="gmrc-ledger-page__folio">Clash Register · VII</p>
+                <header class="gmrc-ledger-page__heading">
+                    <p class="gmrc-eyebrow">The Clash of the Ledger</p>
+                    <h2 id="gmrc-ledger-attacks-title">Attacks & Weapons</h2>
+                    <p>Equipped weapons are copied here automatically by the Guild Quartermaster.</p>
+                </header>
+
+                <?php if ($attacks === []) : ?>
+                    <div class="gmrc-combat-empty">
+                        <span aria-hidden="true">⚔</span>
+                        <h3>No weapon is readied.</h3>
+                        <p>Equip a weapon in the Adventurer’s Pack and its attack will appear here.</p>
+                    </div>
+                <?php else : ?>
+                    <div class="gmrc-attack-list">
+                        <?php foreach ($attacks as $attack) : ?>
+                            <article class="gmrc-attack-card">
+                                <header class="gmrc-attack-card__header">
+                                    <div>
+                                        <p class="gmrc-attack-card__eyebrow"><?php echo esc_html($attack['range']); ?></p>
+                                        <h3><?php echo esc_html($attack['label']); ?></h3>
+                                    </div>
+                                    <span class="gmrc-attack-card__bonus"><?php echo esc_html(($attack['attack_bonus'] >= 0 ? '+' : '') . (string) $attack['attack_bonus']); ?></span>
+                                </header>
+                                <p><?php echo esc_html($attack['description']); ?></p>
+                                <dl class="gmrc-attack-card__facts">
+                                    <div><dt>Attack ability</dt><dd><?php echo esc_html($attack['ability']); ?></dd></div>
+                                    <div><dt>Damage</dt><dd><?php echo esc_html($attack['damage_die'] . ($attack['damage_modifier'] >= 0 ? ' +' : ' ') . (string) $attack['damage_modifier'] . ' ' . $attack['damage_type']); ?></dd></div>
+                                </dl>
+                                <?php if ($attack['properties'] !== []) : ?>
+                                    <ul class="gmrc-attack-properties" aria-label="Weapon properties">
+                                        <?php foreach ($attack['properties'] as $property) : ?><li><?php echo esc_html(ucfirst($property)); ?></li><?php endforeach; ?>
+                                    </ul>
+                                <?php endif; ?>
+                                <div class="gmrc-attack-card__rolls">
+                                    <button type="button" class="gmrc-guild-roll-trigger" data-guild-roll="d20" data-roll-kind="attack" data-roll-label="<?php echo esc_attr($attack['label'] . ' — Attack'); ?>" data-roll-modifier="<?php echo esc_attr((string) $attack['attack_bonus']); ?>" data-roll-result-suffix="to hit">
+                                        <span aria-hidden="true">⚔</span> Roll Attack
+                                    </button>
+                                    <button type="button" class="gmrc-guild-roll-trigger gmrc-guild-roll-trigger--damage" data-guild-roll="damage" data-roll-kind="damage" data-roll-label="<?php echo esc_attr($attack['label'] . ' — Damage'); ?>" data-roll-formula="<?php echo esc_attr($attack['damage_die']); ?>" data-roll-modifier="<?php echo esc_attr((string) $attack['damage_modifier']); ?>" data-roll-damage-type="<?php echo esc_attr($attack['damage_type']); ?>">
+                                        <span aria-hidden="true">✹</span> Roll Damage
+                                    </button>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+                <p class="gmrc-ledger-page__number" aria-hidden="true">7</p>
+            </section>
+
+            <section class="gmrc-ledger-page gmrc-ledger-page--combat-notes" aria-labelledby="gmrc-combat-notes-title">
+                <p class="gmrc-ledger-page__folio">Combat Notes · VIII</p>
+                <header class="gmrc-ledger-page__heading">
+                    <p class="gmrc-eyebrow">Registrar’s Combat Notes</p>
+                    <h2 id="gmrc-combat-notes-title">How the Guild Counts</h2>
+                </header>
+                <div class="gmrc-combat-rules">
+                    <article><strong>d20 + modifier</strong><span>Attack roll</span></article>
+                    <article><strong>Natural 20</strong><span>Critical hit — double the weapon dice</span></article>
+                    <article><strong>Natural 1</strong><span>The Guild records an especially unfortunate attempt</span></article>
+                </div>
+                <blockquote class="gmrc-ledger-auby-note gmrc-ledger-auby-note--archive"><p>“Point the sharp end away from the paperwork.”</p><footer>— Auby</footer></blockquote>
+                <p class="gmrc-ledger-page__number" aria-hidden="true">8</p>
+            </section>
+        </article>
+    </div>
+
+    <div
         id="gmrc-ledger-panel-notes"
         class="gmrc-ledger-tabpanel"
         role="tabpanel"
@@ -1121,6 +1204,20 @@ $backgroundSkills = array_map(
         >
             <span class="gmrc-ledger-tab__icon" aria-hidden="true">🎒</span>
             <span class="gmrc-ledger-tab__label">Equipment</span>
+        </button>
+
+        <button
+            id="gmrc-ledger-tab-attacks"
+            class="gmrc-ledger-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="gmrc-ledger-panel-attacks"
+            tabindex="-1"
+            data-ledger-tab="attacks"
+        >
+            <span class="gmrc-ledger-tab__icon" aria-hidden="true">⚔</span>
+            <span class="gmrc-ledger-tab__label">Attacks</span>
         </button>
 
         <button
