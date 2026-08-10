@@ -91,6 +91,14 @@ final class StoreCharacterRequest extends FormRequest
                     CharacterClass::identifiers()
                 ),
             ],
+            'heritage' => [
+                'string',
+                'max:100',
+            ],
+            'subclass' => [
+                'string',
+                'max:150',
+            ],
         ];
 
         foreach (
