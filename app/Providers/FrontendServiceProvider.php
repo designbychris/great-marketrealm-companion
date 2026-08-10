@@ -385,6 +385,23 @@ class FrontendServiceProvider extends ServiceProvider
      */
     protected function enqueueScripts(): void
     {
+        $livingLedgerScriptPath =
+            GMRC_PATH
+            . 'assets/js/modules/characters/'
+            . 'living-ledger.js';
+
+        wp_enqueue_script(
+            'gmrc-living-ledger',
+            GMRC_URL
+                . 'assets/js/modules/characters/'
+                . 'living-ledger.js',
+            [],
+            file_exists($livingLedgerScriptPath)
+                ? (string) filemtime($livingLedgerScriptPath)
+                : GMRC_VERSION,
+            true
+        );
+
         $completeRegistrationScriptPath =
             GMRC_PATH
             . 'assets/js/modules/characters/'
