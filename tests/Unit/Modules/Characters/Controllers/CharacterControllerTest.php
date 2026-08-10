@@ -73,6 +73,8 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
     use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
     use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
     use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController;
+    use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterCatalogueRepository;
+    use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterBuildProfileRepository;
     use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
     use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
     use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
@@ -784,7 +786,9 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Controllers {
             $definitions
         ),
         portraitRenderer: $portraitRenderer,
-        submittedPortraits: $submittedPortraits
+        submittedPortraits: $submittedPortraits,
+        catalogue: new CharacterCatalogueRepository(),
+        buildProfiles: new CharacterBuildProfileRepository()
     );
 }
 
