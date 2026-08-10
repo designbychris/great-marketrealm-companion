@@ -21,8 +21,8 @@ final class LivingLedgerTabsRegressionTest extends TestCase
         self::assertStringContainsString('Overview', $view);
         self::assertStringContainsString('Skills & Training', $view);
         self::assertStringContainsString('Archive Notes', $view);
-        self::assertStringContainsString('Attacks', $view);
-        self::assertSame(5, substr_count($view, 'role="tabpanel"'));
+        self::assertStringContainsString('Spells & Abilities', $view);
+        self::assertSame(6, substr_count($view, 'role="tabpanel"'));
     }
 
     public function testLivingLedgerScriptSupportsKeyboardNavigation(): void
