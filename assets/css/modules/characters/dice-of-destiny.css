@@ -1,0 +1,24 @@
+/** Character Lifecycle Initiative — Phase III.7.2.2: The Dice of Destiny. */
+
+.gmrc-destiny-methods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin:1rem 0 1.25rem;padding:0;border:0}
+.gmrc-destiny-method{position:relative;display:grid;grid-template-columns:2.6rem minmax(0,1fr);gap:.7rem;align-items:center;padding:.85rem;border:1px solid rgba(86,53,97,.2);border-radius:.4rem;color:#4a2f20;background:rgba(255,249,225,.55);cursor:pointer}
+.gmrc-destiny-method:has(input:checked){border-color:rgba(86,53,97,.62);background:rgba(96,55,115,.09);box-shadow:inset 0 0 0 2px rgba(96,55,115,.08)}
+.gmrc-destiny-method input{position:absolute;width:1px;height:1px;overflow:hidden;opacity:0}.gmrc-destiny-method:has(input:focus-visible){outline:3px solid #bc8c35;outline-offset:3px}
+.gmrc-destiny-method__seal{display:grid;place-items:center;width:2.45rem;aspect-ratio:1;border:1px solid rgba(74,42,24,.35);border-radius:50%;color:#f7e5b4;background:#603773}
+.gmrc-destiny-method strong,.gmrc-destiny-method small{display:block}.gmrc-destiny-method strong{font-family:var(--gmrc-font-book,Georgia,serif);font-size:1rem}.gmrc-destiny-method small{margin-top:.15rem;color:rgba(65,43,30,.68);font-size:.72rem;line-height:1.4}
+.gmrc-destiny-toolbar[hidden],.gmrc-destiny-roll[hidden]{display:none!important}
+.gmrc-destiny-toolbar{display:flex;gap:1rem;align-items:center;justify-content:space-between;margin-bottom:1rem;padding:.85rem 1rem;border:1px solid rgba(75,43,24,.22);border-radius:.4rem;background:linear-gradient(90deg,rgba(96,55,115,.08),rgba(255,249,225,.52))}
+.gmrc-destiny-toolbar p,.gmrc-destiny-toolbar strong,.gmrc-destiny-toolbar small{display:block;margin:0}.gmrc-destiny-toolbar small{margin-top:.18rem;color:rgba(65,43,30,.68);font-size:.68rem}
+.gmrc-destiny-roll-all,.gmrc-destiny-roll-button{border:1px solid #3c2114;border-radius:.32rem;color:#f8e5ae;background:linear-gradient(180deg,#633b22,#422416);box-shadow:0 .3rem .5rem rgba(42,22,13,.18);font:inherit;font-weight:850;cursor:pointer}
+.gmrc-destiny-roll-all{display:inline-flex;gap:.45rem;align-items:center;justify-content:center;min-height:2.8rem;padding:.55rem .9rem}
+.gmrc-destiny-roll-all:hover,.gmrc-destiny-roll-all:focus-visible,.gmrc-destiny-roll-button:hover,.gmrc-destiny-roll-button:focus-visible{background:linear-gradient(180deg,#75468d,#573168)}
+.gmrc-destiny-roll-all:focus-visible,.gmrc-destiny-roll-button:focus-visible{outline:3px solid #bc8c35;outline-offset:2px}
+.gmrc-destiny-ability{display:grid;grid-template-columns:minmax(7rem,.8fr) minmax(0,1.2fr);gap:.75rem;align-items:center;padding:.75rem;border:1px solid rgba(74,42,24,.16);border-radius:.38rem;background:rgba(255,249,225,.42)}
+.gmrc-destiny-roll{display:grid;grid-template-columns:auto minmax(4.9rem,auto);gap:.45rem .6rem;align-items:center}
+.gmrc-destiny-dice{display:flex;gap:.28rem}.gmrc-destiny-dice span{display:grid;place-items:center;width:2rem;aspect-ratio:1;border:1px solid rgba(50,27,60,.62);border-radius:.34rem;color:#fff0c8;background:radial-gradient(circle at 36% 28%,#8d5aa3,#603773 62%,#402049);font-family:Georgia,serif;font-weight:900}
+.gmrc-destiny-dice span.is-rolling{animation:gmrc-destiny-d6-roll 520ms cubic-bezier(.2,.8,.2,1) both}.gmrc-destiny-roll-button{min-height:2rem;padding:.38rem .6rem;font-size:.68rem}
+.gmrc-destiny-math{grid-column:1/-1;margin:0;color:rgba(64,42,29,.7);font-family:var(--gmrc-font-handwritten,"Caveat",cursive);font-size:.9rem;text-align:left}
+@keyframes gmrc-destiny-d6-roll{0%{transform:translateY(-.75rem) rotate(-25deg) scale(.88)}55%{transform:translateY(.12rem) rotate(165deg) scale(1.08)}100%{transform:none}}
+@media(max-width:900px){.gmrc-destiny-ability{grid-template-columns:1fr}}
+@media(max-width:700px){.gmrc-destiny-methods{grid-template-columns:1fr}.gmrc-destiny-toolbar{align-items:stretch;flex-direction:column}.gmrc-destiny-roll-all{width:100%}}
+@media(prefers-reduced-motion:reduce){.gmrc-destiny-dice span{animation:none!important}}
