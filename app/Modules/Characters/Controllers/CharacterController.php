@@ -16,6 +16,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequest;
 use GreatMarketrealmCompanion\Modules\Characters\Requests\UpdateCharacterRequest;
@@ -31,6 +32,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Inventory\Services\InventoryPre
 use GreatMarketrealmCompanion\Modules\Characters\Combat\Services\AttackPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\ArcanePantryPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\RisingRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Repositories\CharacterPortraitRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
@@ -558,6 +560,8 @@ final class CharacterController
                     ))->present(
                         $character
                     ),
+                    'progression' => (new RisingRegisterPresenter())
+                        ->present($character),
                 ]
             )
         );
@@ -685,6 +689,54 @@ final class CharacterController
 
         return $this->responses->redirect(
             $this->characterUrl($character->id(), 'equipment')
+        );
+    }
+
+
+    /** Record experience earned by the adventurer. */
+    public function addExperience(string $id): RedirectResponse
+    {
+        $character = $this->findCharacter($id);
+        $amount = (int) ($_POST['experience'] ?? 0);
+
+        if ($amount < 1 || $amount > 1000000) {
+            $this->flash->error(
+                'Enter an experience award between 1 and 1,000,000.'
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl($character->id(), 'progression')
+            );
+        }
+
+        $oldLevel = $character->level()->value();
+        $oldMaximum = $character->hitPoints()->maximum();
+
+        $character->gainExperience(
+            Experience::fromInt($amount)
+        );
+
+        $this->characters->save($character);
+
+        $levelsGained = $character->level()->value() - $oldLevel;
+        $hpGained = $character->hitPoints()->maximum() - $oldMaximum;
+
+        $this->flash->success(
+            $levelsGained > 0
+                ? sprintf(
+                    '%d XP recorded. Level %d certified! Maximum hit points increased by %d.',
+                    $amount,
+                    $character->level()->value(),
+                    $hpGained
+                )
+                : sprintf(
+                    '%d XP has been entered into the Rising Register.',
+                    $amount
+                )
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl($character->id(), 'progression')
         );
     }
 
