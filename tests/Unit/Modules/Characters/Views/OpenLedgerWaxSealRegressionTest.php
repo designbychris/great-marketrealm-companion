@@ -27,14 +27,22 @@ final class OpenLedgerWaxSealRegressionTest extends TestCase
 
         self::assertNotFalse($start);
 
+        $end = strpos(
+            $css,
+            '}',
+            $start
+        );
+
+        self::assertNotFalse($end);
+
         $block = substr(
             $css,
             $start,
-            420
+            ($end - $start) + 1
         );
 
         self::assertStringContainsString(
-            'bottom:',
+            'position: absolute;',
             $block
         );
 
@@ -43,8 +51,13 @@ final class OpenLedgerWaxSealRegressionTest extends TestCase
             $block
         );
 
+        self::assertStringContainsString(
+            'bottom:',
+            $block
+        );
+
         self::assertStringNotContainsString(
-            'top:',
+            "\n    top:",
             $block
         );
     }
