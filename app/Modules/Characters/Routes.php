@@ -41,6 +41,26 @@ return static function (
         [CharacterController::class, 'uploadPortrait']
     );
 
+    $router->post(
+        '/characters/{id}/inventory',
+        [CharacterController::class, 'addInventoryItem']
+    );
+
+    $router->put(
+        '/characters/{id}/inventory/{item}',
+        [CharacterController::class, 'updateInventoryItem']
+    );
+
+    $router->post(
+        '/characters/{id}/inventory/{item}/equip',
+        [CharacterController::class, 'equipInventoryItem']
+    );
+
+    $router->delete(
+        '/characters/{id}/inventory/{item}',
+        [CharacterController::class, 'removeInventoryItem']
+    );
+
     $router->delete(
         '/characters/{id}/portrait',
         [CharacterController::class, 'resetPortrait']
