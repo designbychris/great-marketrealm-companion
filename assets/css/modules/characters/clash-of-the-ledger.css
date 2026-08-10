@@ -1,0 +1,22 @@
+/** Phase III.4 — The Clash of the Ledger */
+.gmrc-ledger-book--attacks .gmrc-ledger-page { min-height: 43rem; }
+.gmrc-attack-list { display:grid; gap:1rem; margin-top:1.25rem; }
+.gmrc-attack-card { position:relative; padding:1rem 1.1rem; border:1px solid rgba(73,45,25,.28); border-radius:.45rem; background:rgba(255,249,225,.52); box-shadow:0 .18rem .35rem rgba(54,31,16,.08); }
+.gmrc-attack-card__header { display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; border-bottom:1px solid rgba(89,51,28,.18); padding-bottom:.6rem; margin-bottom:.65rem; }
+.gmrc-attack-card__header h3 { margin:0; font-size:1.35rem; }
+.gmrc-attack-card__eyebrow { margin:0 0 .15rem; font-size:.72rem; text-transform:uppercase; letter-spacing:.12em; font-weight:700; }
+.gmrc-attack-card__bonus { display:grid; place-items:center; min-width:3rem; min-height:3rem; border-radius:50%; background:#4b291c; color:#fff4cf; font-weight:800; font-size:1.05rem; box-shadow:inset 0 0 0 .2rem rgba(255,255,255,.08); }
+.gmrc-attack-card__facts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.55rem; margin:.75rem 0; }
+.gmrc-attack-card__facts div { padding:.5rem .65rem; background:rgba(86,51,28,.07); }
+.gmrc-attack-card__facts dt { font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; font-weight:700; }
+.gmrc-attack-card__facts dd { margin:.12rem 0 0; font-weight:700; }
+.gmrc-attack-properties { display:flex; flex-wrap:wrap; gap:.35rem; list-style:none; padding:0; margin:.7rem 0; }
+.gmrc-attack-properties li { padding:.2rem .55rem; border:1px solid rgba(87,47,26,.25); border-radius:999px; font-size:.76rem; }
+.gmrc-attack-card__rolls { display:flex; flex-wrap:wrap; gap:.55rem; margin-top:.85rem; }
+.gmrc-attack-card__rolls .gmrc-guild-roll-trigger { width:auto; min-width:8.5rem; }
+.gmrc-guild-roll-trigger--damage { background:rgba(95,49,27,.12); }
+.gmrc-combat-empty { text-align:center; padding:3rem 1rem; border:1px dashed rgba(77,46,25,.35); margin-top:1.25rem; }
+.gmrc-combat-empty > span { font-size:2.5rem; }
+.gmrc-combat-rules { display:grid; gap:.8rem; margin:1.25rem 0; }
+.gmrc-combat-rules article { display:flex; justify-content:space-between; gap:1rem; padding:.85rem; border-bottom:1px solid rgba(75,43,24,.2); }
+@media (max-width:700px) { .gmrc-attack-card__facts { grid-template-columns:1fr; } .gmrc-combat-rules article { display:block; } }
