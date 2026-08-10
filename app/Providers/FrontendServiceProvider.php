@@ -373,6 +373,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/characters/registrars-finishing-touches.css',
             ],
             [
+                'handle' => 'gmrc-spacious-register',
+                'path' => 'modules/characters/spacious-register.css',
+            ],
+            [
                 'handle' => 'gmrc-background-selector',
                 'path' => 'modules/characters/background-selector.css',
             ],
