@@ -25,6 +25,9 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScor
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Languages;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiencies;
 use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
+use GreatMarketrealmCompanion\Modules\Characters\Inventory\Models\ItemCatalogue;
+use GreatMarketrealmCompanion\Modules\Characters\Inventory\Repositories\CharacterInventoryRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Inventory\Services\InventoryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Repositories\CharacterPortraitRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
@@ -514,6 +517,15 @@ final class CharacterController
     ): string {
         $character = $this->findCharacter($id);
     
+        $catalogue = new ItemCatalogue();
+        $inventoryRepository = new CharacterInventoryRepository();
+        $inventory = $inventoryRepository->find(
+            $character->id()
+        );
+        $inventoryPresenter = new InventoryPresenter(
+            $catalogue
+        );
+
         return $this->views->render(
             View::make(
                 'characters.show',
@@ -525,11 +537,145 @@ final class CharacterController
                             $character
                         ),
                     'sealRegistry' => $this->sealRegistry,
+                    'inventory' => $inventoryPresenter->present(
+                        $character,
+                        $inventory
+                    ),
+                    'inventoryArmourClass' =>
+                        $inventoryPresenter->armourClass(
+                            $character,
+                            $inventory
+                        ),
                 ]
             )
         );
     }
     
+    /**
+     * Add a catalogue item to the Adventurer's Pack.
+     */
+    public function addInventoryItem(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $itemId = sanitize_key(
+            (string) ($_POST['item_id'] ?? '')
+        );
+        $quantity = max(
+            1,
+            min(99, (int) ($_POST['quantity'] ?? 1))
+        );
+
+        $catalogue = new ItemCatalogue();
+        if ($catalogue->find($itemId) === null) {
+            $this->flash->error(
+                'That item could not be found in the Guild stores.'
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl($character->id())
+            );
+        }
+
+        $repository = new CharacterInventoryRepository();
+        $inventory = $repository->find($character->id());
+        $repository->save(
+            $character->id(),
+            $inventory->add($itemId, $quantity)
+        );
+
+        $this->flash->success(
+            'The item has been packed into the adventurer’s satchel.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl($character->id(), 'equipment')
+        );
+    }
+
+    /**
+     * Change the quantity carried for an inventory item.
+     */
+    public function updateInventoryItem(
+        string $id,
+        string $item
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $quantity = max(
+            0,
+            min(99, (int) ($_POST['quantity'] ?? 1))
+        );
+        $repository = new CharacterInventoryRepository();
+        $inventory = $repository->find($character->id());
+        $repository->save(
+            $character->id(),
+            $inventory->setQuantity(
+                sanitize_key($item),
+                $quantity
+            )
+        );
+
+        $this->flash->success(
+            'The packing register has been updated.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl($character->id(), 'equipment')
+        );
+    }
+
+    /**
+     * Equip or unequip an item from the pack.
+     */
+    public function equipInventoryItem(
+        string $id,
+        string $item
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $itemId = sanitize_key($item);
+        $repository = new CharacterInventoryRepository();
+        $catalogue = new ItemCatalogue();
+        $inventory = $repository->find($character->id());
+        $entry = $inventory->find($itemId);
+
+        if ($entry !== null) {
+            $inventory = $entry->equipped()
+                ? $inventory->unequip($itemId)
+                : $inventory->equip($itemId, $catalogue);
+            $repository->save($character->id(), $inventory);
+        }
+
+        return $this->responses->redirect(
+            $this->characterUrl($character->id(), 'equipment')
+        );
+    }
+
+    /**
+     * Remove an item completely from the Adventurer's Pack.
+     */
+    public function removeInventoryItem(
+        string $id,
+        string $item
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $repository = new CharacterInventoryRepository();
+        $inventory = $repository->find($character->id());
+        $repository->save(
+            $character->id(),
+            $inventory->remove(
+                sanitize_key($item)
+            )
+        );
+
+        $this->flash->success(
+            'The item has been removed from the packing register.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl($character->id(), 'equipment')
+        );
+    }
+
     /**
      * Display the Character editing form.
      */
@@ -577,13 +723,23 @@ final class CharacterController
      * Build a Character detail URL.
      */
     private function characterUrl(
-        CharacterId $id
+        CharacterId $id,
+        ?string $ledgerTab = null
     ): string {
+        $arguments = [
+            'gmrc_route' =>
+                'characters/' . rawurlencode(
+                    $id->value()
+                ),
+        ];
+
+        if ($ledgerTab !== null) {
+            $arguments['gmrc_ledger_tab'] =
+                sanitize_key($ledgerTab);
+        }
+
         return add_query_arg(
-            'gmrc_route',
-            'characters/' . rawurlencode(
-                $id->value()
-            ),
+            $arguments,
             home_url('/companion/')
         );
     }
