@@ -25,7 +25,7 @@ final class Generation2AvailabilityRegressionTest extends TestCase
             $script
         );
 
-        self::assertStringContainsString(
+        self::assertStringNotContainsString(
             'g2-auby-finishing-touch-01',
             $script
         );

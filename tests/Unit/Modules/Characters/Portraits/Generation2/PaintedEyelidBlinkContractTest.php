@@ -58,16 +58,22 @@ final class PaintedEyelidBlinkContractTest extends TestCase
         );
     }
 
-    public function testAubyFinishingTouchAssetExists(): void
+    public function testAubyFinishingTouchIsRetiredFromActiveManifest(): void
     {
         $root = dirname(__DIR__, 6);
 
-        self::assertFileExists(
+        $manifest = file_get_contents(
             $root
             . '/app/Modules/Characters/Portraits/'
             . 'Library/Generation2/Collections/'
-            . 'FructanGrocer/Assets/'
-            . 'auby-finishing-touch.svg'
+            . 'FructanGrocer/manifest.json'
+        );
+
+        self::assertIsString($manifest);
+
+        self::assertStringNotContainsString(
+            '"id": "g2-auby-finishing-touch-01"',
+            $manifest
         );
     }
 }
