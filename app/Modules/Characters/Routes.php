@@ -36,6 +36,16 @@ return static function (
         [CharacterController::class, 'confirmDelete']
     );
 
+    $router->post(
+        '/characters/{id}/portrait',
+        [CharacterController::class, 'uploadPortrait']
+    );
+
+    $router->delete(
+        '/characters/{id}/portrait',
+        [CharacterController::class, 'resetPortrait']
+    );
+
     $router->get(
         '/characters/{id}',
         [CharacterController::class, 'show']
