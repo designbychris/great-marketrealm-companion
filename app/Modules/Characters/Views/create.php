@@ -171,6 +171,12 @@ foreach ($abilityDefaults as $ability => $default) {
             : $default;
 }
 
+$abilityMethodValue = isset($old['ability_method'])
+    && is_scalar($old['ability_method'])
+        && (string) $old['ability_method'] === 'rolled'
+            ? 'rolled'
+            : 'standard';
+
 $languageOneValue = isset($old['language_1'])
     && is_scalar($old['language_1'])
         ? (string) $old['language_1']
@@ -961,38 +967,128 @@ $charactersUrl = add_query_arg(
             <?php endif; ?>
         </section>
 
-        <section class="gmrc-form-section gmrc-registration-stage" data-registration-stage="abilities">
-            <header class="gmrc-form-section__header">
-                <p class="gmrc-eyebrow">Adventuring Measures</p>
-                <h2>Assign the Standard Guild Array</h2>
-                <p>Assign 15, 14, 13, 12, 10 and 8 exactly once.</p>
-            </header>
-            <div class="gmrc-registration-abilities" data-registration-abilities>
-                <?php foreach ([
-                    'strength' => 'Strength',
-                    'dexterity' => 'Dexterity',
-                    'constitution' => 'Constitution',
-                    'intelligence' => 'Intelligence',
-                    'wisdom' => 'Wisdom',
-                    'charisma' => 'Charisma',
-                ] as $ability => $label) : ?>
-                    <label class="gmrc-registration-ability">
-                        <span><?php echo esc_html($label); ?></span>
-                        <select name="<?php echo esc_attr($ability); ?>" data-registration-ability="<?php echo esc_attr($ability); ?>" required>
-                            <?php foreach ([15, 14, 13, 12, 10, 8] as $score) : ?>
-                                <option value="<?php echo esc_attr((string) $score); ?>" <?php selected($abilityValues[$ability], $score); ?>>
-                                    <?php echo esc_html((string) $score); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                        <small data-registration-modifier="<?php echo esc_attr($ability); ?>"></small>
-                    </label>
-                <?php endforeach; ?>
-            </div>
-            <?php if ($abilitiesError !== null) : ?>
-                <p class="gmrc-form-error" role="alert"><?php echo esc_html($abilitiesError); ?></p>
-            <?php endif; ?>
-        </section>
+
+<section
+    class="gmrc-form-section gmrc-registration-stage gmrc-dice-of-destiny"
+    data-registration-stage="abilities"
+    data-dice-of-destiny
+    data-ability-method="<?php echo esc_attr($abilityMethodValue); ?>"
+>
+    <header class="gmrc-form-section__header">
+        <p class="gmrc-eyebrow">Adventuring Measures</p>
+        <h2>Choose how fate measures your adventurer</h2>
+        <p>
+            Assign the reliable Standard Guild Array or let the
+            Guild Dice decide each ability with 3d6.
+        </p>
+    </header>
+
+    <fieldset class="gmrc-destiny-methods">
+        <legend class="screen-reader-text">
+            Ability score generation method
+        </legend>
+
+        <label class="gmrc-destiny-method">
+            <input type="radio" name="ability_method" value="standard"
+                data-destiny-method="standard"
+                <?php checked($abilityMethodValue, 'standard'); ?>>
+            <span class="gmrc-destiny-method__seal" aria-hidden="true">✦</span>
+            <span>
+                <strong>Standard Guild Array</strong>
+                <small>Assign 15, 14, 13, 12, 10 and 8 exactly once.</small>
+            </span>
+        </label>
+
+        <label class="gmrc-destiny-method">
+            <input type="radio" name="ability_method" value="rolled"
+                data-destiny-method="rolled"
+                <?php checked($abilityMethodValue, 'rolled'); ?>>
+            <span class="gmrc-destiny-method__seal" aria-hidden="true">🎲</span>
+            <span>
+                <strong>The Dice of Destiny</strong>
+                <small>Roll three six-sided dice and keep their total for each ability.</small>
+            </span>
+        </label>
+    </fieldset>
+
+    <div class="gmrc-destiny-toolbar" data-destiny-toolbar
+        <?php echo $abilityMethodValue === 'rolled' ? '' : 'hidden'; ?>>
+        <div>
+            <p class="gmrc-eyebrow">Auby’s Questionable Mathematics</p>
+            <strong>Roll all six abilities</strong>
+            <small>Six sets of 3d6. No rerolling the Registrar when he writes down a 5.</small>
+        </div>
+        <button class="gmrc-destiny-roll-all" type="button" data-destiny-roll-all>
+            <span aria-hidden="true">🎲</span>
+            Roll all six
+        </button>
+    </div>
+
+    <div class="gmrc-registration-abilities gmrc-destiny-abilities"
+        data-registration-abilities>
+        <?php foreach ([
+            'strength' => 'Strength',
+            'dexterity' => 'Dexterity',
+            'constitution' => 'Constitution',
+            'intelligence' => 'Intelligence',
+            'wisdom' => 'Wisdom',
+            'charisma' => 'Charisma',
+        ] as $ability => $label) : ?>
+            <article class="gmrc-registration-ability gmrc-destiny-ability"
+                data-destiny-ability="<?php echo esc_attr($ability); ?>">
+                <label>
+                    <span><?php echo esc_html($label); ?></span>
+                    <select name="<?php echo esc_attr($ability); ?>"
+                        data-registration-ability="<?php echo esc_attr($ability); ?>"
+                        data-destiny-score required>
+                        <?php
+                        $standardScores = [15, 14, 13, 12, 10, 8];
+                        $currentScore = (int) $abilityValues[$ability];
+
+                        if (
+                            $abilityMethodValue === 'rolled'
+                            && ! in_array($currentScore, $standardScores, true)
+                        ) :
+                        ?>
+                            <option value="<?php echo esc_attr((string) $currentScore); ?>"
+                                selected data-destiny-rolled-option>
+                                <?php echo esc_html((string) $currentScore); ?>
+                            </option>
+                        <?php endif; ?>
+
+                        <?php foreach ($standardScores as $score) : ?>
+                            <option value="<?php echo esc_attr((string) $score); ?>"
+                                <?php selected($currentScore, $score); ?>>
+                                <?php echo esc_html((string) $score); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <small data-registration-modifier="<?php echo esc_attr($ability); ?>"></small>
+                </label>
+
+                <div class="gmrc-destiny-roll" data-destiny-roll-panel
+                    <?php echo $abilityMethodValue === 'rolled' ? '' : 'hidden'; ?>>
+                    <div class="gmrc-destiny-dice" aria-hidden="true">
+                        <span data-destiny-die>?</span>
+                        <span data-destiny-die>?</span>
+                        <span data-destiny-die>?</span>
+                    </div>
+                    <button class="gmrc-destiny-roll-button" type="button" data-destiny-roll>
+                        Roll 3d6
+                    </button>
+                    <p class="gmrc-destiny-math" data-destiny-math>Awaiting fate</p>
+                </div>
+            </article>
+        <?php endforeach; ?>
+    </div>
+
+    <p class="screen-reader-text" role="status" aria-live="polite"
+        data-destiny-live></p>
+
+    <?php if ($abilitiesError !== null) : ?>
+        <p class="gmrc-form-error" role="alert"><?php echo esc_html($abilitiesError); ?></p>
+    <?php endif; ?>
+</section>
 
         <section class="gmrc-form-section gmrc-registration-stage" data-registration-stage="proficiencies" data-registration-choices>
             <header class="gmrc-form-section__header">
