@@ -13,6 +13,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Rules\CharacterCreationRules;
 use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
+use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterCatalogueRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterBuildProfileRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\CharacterPortraitRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\PortraitLayerRegistryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Repositories\CharacterPortraitRepository;
@@ -70,6 +72,9 @@ final class CharactersServiceProvider extends ServiceProvider
         $container->singleton(
             CharacterCreationRules::class
         );
+
+        $container->singleton(CharacterCatalogueRepository::class);
+        $container->singleton(CharacterBuildProfileRepository::class);
 
         /*
          * Domain services.
@@ -414,6 +419,18 @@ final class CharactersServiceProvider extends ServiceProvider
             'init',
             [$this, 'registerPostType']
         );
+
+        add_action(
+            'init',
+            [$this, 'seedCharacterCatalogue'],
+            20
+        );
+    }
+
+    /** Import the bundled handbook catalogue into WordPress options. */
+    public function seedCharacterCatalogue(): void
+    {
+        $this->app->container()->make(CharacterCatalogueRepository::class)->seed();
     }
 
     /**
