@@ -22,3 +22,94 @@
 @media(max-width:900px){.gmrc-destiny-ability{grid-template-columns:1fr}}
 @media(max-width:700px){.gmrc-destiny-methods{grid-template-columns:1fr}.gmrc-destiny-toolbar{align-items:stretch;flex-direction:column}.gmrc-destiny-roll-all{width:100%}}
 @media(prefers-reduced-motion:reduce){.gmrc-destiny-dice span{animation:none!important}}
+
+/* ===============================================================
+ * Phase III.7.2.2.1 — Dice Table Breathing Room
+ *
+ * Six full Dice of Destiny controls are too dense in one horizontal row.
+ * Give the Registrar a proper 3 × 2 desktop working table instead.
+ * =============================================================== */
+
+.gmrc-dice-of-destiny .gmrc-registration-abilities,
+.gmrc-dice-of-destiny .gmrc-destiny-abilities {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+    gap:
+        1rem;
+}
+
+.gmrc-dice-of-destiny .gmrc-destiny-ability {
+    grid-template-columns:
+        minmax(0, 1fr);
+
+    align-content: start;
+    gap:
+        0.7rem;
+
+    min-width: 0;
+}
+
+.gmrc-dice-of-destiny .gmrc-destiny-ability > label {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(5.25rem, 0.55fr);
+    gap:
+        0.55rem;
+    align-items: center;
+
+    min-width: 0;
+}
+
+.gmrc-dice-of-destiny .gmrc-destiny-ability > label > span {
+    min-width: 0;
+}
+
+.gmrc-dice-of-destiny .gmrc-destiny-ability select {
+    width: 100%;
+    min-width: 0;
+}
+
+.gmrc-dice-of-destiny .gmrc-destiny-roll {
+    grid-template-columns:
+        minmax(0, 1fr)
+        auto;
+
+    width: 100%;
+}
+
+.gmrc-dice-of-destiny .gmrc-destiny-dice {
+    min-width: 0;
+}
+
+.gmrc-dice-of-destiny .gmrc-destiny-roll-button {
+    white-space: nowrap;
+}
+
+@media (max-width: 1050px) {
+    .gmrc-dice-of-destiny .gmrc-registration-abilities,
+    .gmrc-dice-of-destiny .gmrc-destiny-abilities {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+    }
+}
+
+@media (max-width: 680px) {
+    .gmrc-dice-of-destiny .gmrc-registration-abilities,
+    .gmrc-dice-of-destiny .gmrc-destiny-abilities {
+        grid-template-columns:
+            minmax(0, 1fr);
+    }
+
+    .gmrc-dice-of-destiny .gmrc-destiny-ability > label {
+        grid-template-columns:
+            minmax(0, 1fr);
+    }
+}
