@@ -533,7 +533,7 @@
 
     width:
         calc(
-            50%
+            100%
             - 1.15rem
         ) !important;
 
