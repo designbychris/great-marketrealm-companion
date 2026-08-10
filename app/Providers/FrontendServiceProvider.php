@@ -211,6 +211,20 @@ class FrontendServiceProvider extends ServiceProvider
         }
 
         if (
+            $method === 'POST'
+            && preg_match(
+                '#^characters/([^/]+)/progression/experience$#',
+                $route,
+                $matches
+            )
+        ) {
+            return 'gmrc_character_progression_'
+                . sanitize_text_field(
+                    $matches[1]
+                );
+        }
+
+        if (
             $method === 'DELETE'
             && preg_match(
                 '#^characters/([^/]+)$#',
@@ -341,6 +355,10 @@ class FrontendServiceProvider extends ServiceProvider
             [
                 'handle' => 'gmrc-arcane-pantry',
                 'path' => 'modules/characters/arcane-pantry.css',
+            ],
+            [
+                'handle' => 'gmrc-rising-register',
+                'path' => 'modules/characters/rising-register.css',
             ],
             [
                 'handle' => 'gmrc-complete-registration',
