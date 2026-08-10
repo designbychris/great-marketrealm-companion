@@ -24,6 +24,30 @@
         return Math.floor(Math.random() * 20) + 1;
     };
 
+    const secureDie = function (sides) {
+        const safeSides = Math.max(2, Number(sides) || 20);
+        if (window.crypto && typeof window.crypto.getRandomValues === 'function') {
+            const range = 0x100000000;
+            const limit = range - (range % safeSides);
+            const values = new Uint32Array(1);
+            let value = limit;
+            while (value >= limit) { window.crypto.getRandomValues(values); value = values[0]; }
+            return (value % safeSides) + 1;
+        }
+        return Math.floor(Math.random() * safeSides) + 1;
+    };
+
+    const rollFormula = function (formula, critical) {
+        const match = String(formula || '').trim().match(/^(\d+)d(\d+)$/i);
+        if (!match) { return null; }
+        const count = Math.max(1, Number(match[1]));
+        const sides = Math.max(2, Number(match[2]));
+        const dice = [];
+        const totalDice = critical ? count * 2 : count;
+        for (let i = 0; i < totalDice; i += 1) { dice.push(secureDie(sides)); }
+        return { dice: dice, total: dice.reduce(function (sum, value) { return sum + value; }, 0), sides: sides };
+    };
+
     const signed = function (value) {
         const numeric = Number(value) || 0;
         return numeric >= 0 ? '+' + numeric : String(numeric);
@@ -56,7 +80,7 @@
 
         const tray = ledger.querySelector('[data-guild-dice-tray]');
         const triggers = Array.from(
-            ledger.querySelectorAll('[data-guild-roll="d20"]')
+            ledger.querySelectorAll('[data-guild-roll]')
         );
 
         if (!(tray instanceof HTMLElement) || triggers.length === 0) {
@@ -90,7 +114,11 @@
 
             return {
                 label: activeTrigger.dataset.rollLabel || 'D20 Roll',
-                modifier: Number(activeTrigger.dataset.rollModifier) || 0
+                modifier: Number(activeTrigger.dataset.rollModifier) || 0,
+                kind: activeTrigger.dataset.rollKind || 'check',
+                formula: activeTrigger.dataset.rollFormula || '',
+                damageType: activeTrigger.dataset.rollDamageType || '',
+                resultSuffix: activeTrigger.dataset.rollResultSuffix || ''
             };
         };
 
@@ -163,6 +191,22 @@
                 return;
             }
 
+            if (selection.kind === 'damage') {
+                const damage = rollFormula(selection.formula, false);
+                if (!damage) { return; }
+                const total = damage.total + selection.modifier;
+                if (modeNode instanceof HTMLElement) { modeNode.textContent = 'Damage Roll'; }
+                if (mathNode instanceof HTMLElement) { mathNode.textContent = selection.formula + ' (' + damage.dice.join(' + ') + ') ' + signed(selection.modifier); }
+                if (totalNode instanceof HTMLElement) { totalNode.textContent = '= ' + total + ' ' + selection.damageType + ' damage'; }
+                if (dieValue instanceof HTMLElement) { dieValue.textContent = String(damage.total); }
+                if (result instanceof HTMLElement) { result.hidden = false; }
+                if (aubyNode instanceof HTMLElement) { aubyNode.hidden = true; aubyNode.textContent = ''; }
+                const historyText = selection.label + ': ' + damage.dice.join(' + ') + ' ' + signed(selection.modifier) + ' = ' + total + ' ' + selection.damageType + ' damage';
+                recent.unshift(historyText); recent.splice(MAX_HISTORY); paintHistory();
+                if (live instanceof HTMLElement) { live.textContent = historyText; }
+                return;
+            }
+
             const rolled = rollMode(mode);
             const total = rolled.natural + selection.modifier;
             const modeLabel = mode === 'advantage'
@@ -200,12 +244,12 @@
             }
 
             if (totalNode instanceof HTMLElement) {
-                totalNode.textContent = '= ' + total;
+                totalNode.textContent = '= ' + total + (selection.resultSuffix ? ' ' + selection.resultSuffix : '');
             }
 
             if (aubyNode instanceof HTMLElement) {
                 if (rolled.natural === 20) {
-                    aubyNode.textContent = '“I definitely witnessed that.” — Auby';
+                    aubyNode.textContent = selection.kind === 'attack' ? '“Critical hit! Double the weapon dice!” — Auby' : '“I definitely witnessed that.” — Auby';
                     aubyNode.hidden = false;
                 } else if (rolled.natural === 1) {
                     aubyNode.textContent = '“The Guild Records will say: an attempt was made.” — Auby';
