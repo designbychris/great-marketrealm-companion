@@ -44,6 +44,8 @@ final class StoreCharacterRequest extends FormRequest
         'portrait_outfit',
         'portrait_equipment',
         'portrait_accessory',
+        'portrait_class_effects',
+        'portrait_guild_ornament',
         'portrait_frame',
         'portrait_effects',
     ];
@@ -240,6 +242,12 @@ final class StoreCharacterRequest extends FormRequest
                 ),
                 'class_accessory' => $input->string(
                     'portrait_accessory'
+                ),
+                'class_effects' => $input->string(
+                    'portrait_class_effects'
+                ),
+                'guild_ornament' => $input->string(
+                    'portrait_guild_ornament'
                 ),
                 'frame' => $input->string(
                     'portrait_frame'

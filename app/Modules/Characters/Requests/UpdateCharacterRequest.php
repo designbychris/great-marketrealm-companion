@@ -35,6 +35,8 @@ final class UpdateCharacterRequest extends FormRequest
         'portrait_outfit',
         'portrait_equipment',
         'portrait_accessory',
+        'portrait_class_effects',
+        'portrait_guild_ornament',
         'portrait_frame',
         'portrait_effects',
     ];
@@ -150,6 +152,8 @@ final class UpdateCharacterRequest extends FormRequest
                 'outfit' => $input->string('portrait_outfit'),
                 'equipment' => $input->string('portrait_equipment'),
                 'class_accessory' => $input->string('portrait_accessory'),
+                'class_effects' => $input->string('portrait_class_effects'),
+                'guild_ornament' => $input->string('portrait_guild_ornament'),
                 'frame' => $input->string('portrait_frame'),
                 'effects' => $input->string('portrait_effects'),
             ],
