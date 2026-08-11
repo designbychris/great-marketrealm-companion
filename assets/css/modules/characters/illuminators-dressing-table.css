@@ -1,0 +1,519 @@
+/**
+ * Character Lifecycle Initiative — Phase III.7.3.1
+ * The Illuminator's Dressing Table.
+ *
+ * Presentation-only pass. The III.7.2.3 Workbench behaviour remains
+ * untouched; this stylesheet brings Character Creation into the same
+ * parchment / cocoa / purple / brass visual language as the Guild Ledger.
+ */
+
+.gmrc-character-creator
+.gmrc-portrait-controls {
+    --gmrc-dressing-cocoa: #4a2a18;
+    --gmrc-dressing-cocoa-dark: #351d11;
+    --gmrc-dressing-purple: #603773;
+    --gmrc-dressing-purple-light: #75468d;
+    --gmrc-dressing-gold: #c39743;
+    --gmrc-dressing-gold-light: #e1c276;
+    --gmrc-dressing-paper: #f8e9bd;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(74, 42, 24, 0.48);
+
+    border-radius:
+        0.55rem;
+
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            rgba(255, 255, 255, 0.58),
+            transparent 38%
+        ),
+        linear-gradient(
+            180deg,
+            #faedc6 0%,
+            #efd9a5 58%,
+            #e4c584 100%
+        );
+
+    box-shadow:
+        0 1rem 2rem
+        rgba(48, 27, 16, 0.15),
+        inset 0 0 0 0.2rem
+        rgba(255, 247, 218, 0.28);
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls::after {
+    position: absolute;
+
+    right: -1.2rem;
+    bottom: -1.5rem;
+
+    width: 5.5rem;
+    height: 5.5rem;
+
+    border:
+        1px solid
+        rgba(195, 151, 67, 0.2);
+
+    border-radius: 50%;
+
+    content: "";
+
+    box-shadow:
+        inset 0 0 0 0.45rem
+        rgba(96, 55, 115, 0.06);
+
+    pointer-events: none;
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__header {
+    position: relative;
+
+    padding:
+        0
+        0
+        0.85rem;
+
+    border-bottom:
+        1px solid
+        rgba(74, 42, 24, 0.18);
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__header::after {
+    position: absolute;
+
+    bottom: -0.18rem;
+    left: 0;
+
+    width: 4.25rem;
+    height: 0.3rem;
+
+    border-radius: 999px;
+
+    content: "";
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--gmrc-dressing-purple),
+            var(--gmrc-dressing-gold)
+        );
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__header
+.gmrc-eyebrow {
+    color:
+        var(--gmrc-dressing-purple);
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__header h3 {
+    color:
+        var(--gmrc-dressing-cocoa);
+
+    font-size:
+        clamp(1.08rem, 1.6vw, 1.3rem);
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__rows {
+    gap:
+        0.55rem;
+
+    margin-top:
+        0.95rem;
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__row {
+    position: relative;
+
+    grid-template-columns:
+        minmax(7.75rem, 1fr)
+        repeat(3, 2.55rem)
+        minmax(3.8rem, auto);
+
+    gap:
+        0.45rem;
+
+    padding:
+        0.55rem;
+
+    border:
+        1px solid
+        rgba(74, 42, 24, 0.16);
+
+    border-radius:
+        0.42rem;
+
+    background:
+        rgba(255, 249, 229, 0.42);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.38);
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__label {
+    color:
+        var(--gmrc-dressing-cocoa-dark);
+
+    font-family:
+        var(
+            --gmrc-font-display,
+            Georgia,
+            serif
+        );
+
+    font-size:
+        0.76rem;
+
+    font-weight:
+        800;
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__button {
+    position: relative;
+
+    min-width:
+        2.55rem;
+
+    min-height:
+        2.55rem;
+
+    border:
+        1px solid
+        rgba(53, 29, 17, 0.82);
+
+    border-radius:
+        0.38rem;
+
+    color:
+        #fff2c8;
+
+    background:
+        linear-gradient(
+            180deg,
+            #5b3420,
+            var(--gmrc-dressing-cocoa-dark)
+        );
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.12),
+        0 0.18rem 0.35rem
+        rgba(48, 27, 16, 0.18);
+
+    transition:
+        transform 140ms ease,
+        background 140ms ease,
+        box-shadow 140ms ease;
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__button:nth-of-type(2) {
+    border-color:
+        rgba(75, 40, 88, 0.92);
+
+    background:
+        linear-gradient(
+            180deg,
+            var(--gmrc-dressing-purple-light),
+            var(--gmrc-dressing-purple)
+        );
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__button:hover {
+    color:
+        #fff8df;
+
+    background:
+        linear-gradient(
+            180deg,
+            var(--gmrc-dressing-purple-light),
+            var(--gmrc-dressing-purple)
+        );
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.18),
+        0 0.3rem 0.55rem
+        rgba(48, 27, 16, 0.22);
+
+    transform:
+        translateY(-2px);
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__button:active {
+    box-shadow:
+        inset 0 0.12rem 0.3rem
+        rgba(35, 18, 11, 0.35);
+
+    transform:
+        translateY(1px);
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__button:focus-visible,
+.gmrc-character-creator
+.gmrc-portrait-controls__actions
+.gmrc-button:focus-visible {
+    outline:
+        3px solid
+        var(--gmrc-dressing-gold-light);
+
+    outline-offset:
+        3px;
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__position {
+    justify-content:
+        center;
+
+    min-height:
+        1.9rem;
+
+    padding:
+        0.2rem 0.45rem;
+
+    border:
+        1px solid
+        rgba(74, 42, 24, 0.2);
+
+    border-radius:
+        999px;
+
+    color:
+        rgba(53, 29, 17, 0.76);
+
+    background:
+        rgba(255, 248, 220, 0.58);
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__actions {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap:
+        0.65rem;
+
+    margin-top:
+        1rem;
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__actions
+.gmrc-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    min-height:
+        2.9rem;
+
+    padding:
+        0.68rem 0.9rem;
+
+    border:
+        1px solid
+        rgba(75, 40, 88, 0.88);
+
+    border-radius:
+        0.38rem;
+
+    color:
+        #fff2c8;
+
+    font-size:
+        0.72rem;
+
+    font-weight:
+        850;
+
+    letter-spacing:
+        0.025em;
+
+    text-align:
+        center;
+
+    background:
+        linear-gradient(
+            180deg,
+            var(--gmrc-dressing-purple-light),
+            var(--gmrc-dressing-purple)
+        );
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.16),
+        0 0.25rem 0.55rem
+        rgba(48, 27, 16, 0.18);
+
+    cursor: pointer;
+
+    transition:
+        transform 140ms ease,
+        box-shadow 140ms ease,
+        filter 140ms ease;
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__actions
+.gmrc-button--ghost {
+    border-color:
+        rgba(74, 42, 24, 0.66);
+
+    color:
+        var(--gmrc-dressing-cocoa-dark);
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff3cc,
+            #e8cd91
+        );
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__actions
+.gmrc-button:hover {
+    filter:
+        brightness(1.06);
+
+    transform:
+        translateY(-2px);
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__actions
+.gmrc-button:active {
+    transform:
+        translateY(1px);
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__locked {
+    margin-top:
+        0.95rem;
+
+    border:
+        1px dashed
+        rgba(96, 55, 115, 0.4);
+
+    background:
+        rgba(255, 249, 228, 0.5);
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__locked > span {
+    border:
+        1px solid
+        rgba(195, 151, 67, 0.72);
+
+    box-shadow:
+        inset 0 0 0 0.18rem
+        rgba(255, 255, 255, 0.08);
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__status {
+    margin:
+        0.8rem
+        0
+        0;
+
+    padding:
+        0.6rem
+        0
+        0;
+
+    color:
+        rgba(53, 29, 17, 0.68);
+
+    font-style:
+        italic;
+}
+
+@media (max-width: 860px) {
+    .gmrc-character-creator
+    .gmrc-living-desk__illuminator {
+        grid-template-columns:
+            1fr;
+    }
+
+    .gmrc-character-creator
+    .gmrc-portrait-controls {
+        width:
+            min(100%, 34rem);
+
+        margin-inline:
+            auto;
+    }
+}
+
+@media (max-width: 560px) {
+    .gmrc-character-creator
+    .gmrc-portrait-controls__row {
+        grid-template-columns:
+            minmax(0, 1fr)
+            repeat(3, 2.5rem);
+    }
+
+    .gmrc-character-creator
+    .gmrc-portrait-controls__position {
+        grid-column:
+            1
+            / -1;
+
+        justify-content:
+            flex-start;
+
+        width:
+            max-content;
+    }
+
+    .gmrc-character-creator
+    .gmrc-portrait-controls__actions {
+        grid-template-columns:
+            1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-character-creator
+    .gmrc-portrait-controls__button,
+    .gmrc-character-creator
+    .gmrc-portrait-controls__actions
+    .gmrc-button {
+        transition:
+            none;
+    }
+
+    .gmrc-character-creator
+    .gmrc-portrait-controls__button:hover,
+    .gmrc-character-creator
+    .gmrc-portrait-controls__actions
+    .gmrc-button:hover {
+        transform:
+            none;
+    }
+}
