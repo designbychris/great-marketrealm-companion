@@ -191,3 +191,95 @@
     .gmrc-private-studio .gmrc-portrait-controls__button { transition: none; }
     .gmrc-private-studio .gmrc-portrait-controls__button:hover { transform: none; }
 }
+
+/* ===============================================================
+ * Phase III.7.3.2.1.1 — Finished Ledger portrait desk
+ * =============================================================== */
+
+/*
+ * The finished Ledger keeps the Guild portrait and upload toolkit together
+ * as one compact desk: portrait left, custom-upload panel right.
+ */
+.gmrc-open-ledger
+.gmrc-ledger-page__portrait {
+    display:
+        grid;
+
+    grid-template-columns:
+        minmax(15rem, 0.9fr)
+        minmax(17rem, 1.1fr);
+
+    gap:
+        clamp(1rem, 2.4vw, 2rem);
+
+    align-items:
+        start;
+
+    justify-items:
+        stretch;
+
+    width:
+        100%;
+}
+
+.gmrc-open-ledger
+.gmrc-ledger-page__portrait
+> .gmrc-illuminated-portrait {
+    width:
+        min(100%, 25rem);
+
+    margin-inline:
+        auto;
+}
+
+.gmrc-open-ledger
+.gmrc-ledger-page__portrait
+> .gmrc-illuminator-workbench {
+    align-self:
+        start;
+
+    width:
+        100%;
+
+    max-width:
+        32rem;
+
+    margin:
+        0;
+}
+
+.gmrc-open-ledger
+.gmrc-ledger-page__portrait
+.gmrc-illuminator-workbench__header {
+    text-align:
+        left;
+}
+
+.gmrc-open-ledger
+.gmrc-ledger-page__portrait
+.gmrc-illuminator-workbench__header
+> * {
+    margin-inline:
+        0;
+}
+
+@media (max-width: 920px) {
+    .gmrc-open-ledger
+    .gmrc-ledger-page__portrait {
+        grid-template-columns:
+            1fr;
+
+        justify-items:
+            center;
+    }
+
+    .gmrc-open-ledger
+    .gmrc-ledger-page__portrait
+    > .gmrc-illuminator-workbench {
+        max-width:
+            34rem;
+
+        margin-inline:
+            auto;
+    }
+}

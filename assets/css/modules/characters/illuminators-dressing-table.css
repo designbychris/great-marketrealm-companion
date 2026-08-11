@@ -604,3 +604,101 @@
             repeat(3, 2.35rem);
     }
 }
+
+/* ===============================================================
+ * Phase III.7.3.2.1.1 — Creator Workbench layout finish
+ * =============================================================== */
+
+/*
+ * The Character Creator previously inherited the older one-line Workbench
+ * grid. Give the label a full row and keep the controls beneath it so long
+ * labels never collide with the previous/random/next buttons.
+ */
+.gmrc-character-creator
+.gmrc-portrait-controls__row {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 2.55rem)
+        minmax(3.8rem, auto);
+
+    grid-template-areas:
+        "label label label label"
+        "previous random next position";
+
+    gap:
+        0.48rem;
+
+    align-items:
+        center;
+
+    min-width:
+        0;
+
+    padding:
+        0.68rem;
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__label {
+    grid-area:
+        label;
+
+    display:
+        block;
+
+    width:
+        100%;
+
+    margin:
+        0;
+
+    white-space:
+        normal;
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__button:nth-of-type(1) {
+    grid-area:
+        previous;
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__button:nth-of-type(2) {
+    grid-area:
+        random;
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__button:nth-of-type(3) {
+    grid-area:
+        next;
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__position {
+    grid-area:
+        position;
+
+    justify-self:
+        end;
+
+    width:
+        auto;
+
+    min-width:
+        3.8rem;
+
+    margin:
+        0;
+}
+
+@media (max-width: 560px) {
+    .gmrc-character-creator
+    .gmrc-portrait-controls__row {
+        grid-template-columns:
+            repeat(3, 2.45rem)
+            minmax(3.55rem, auto);
+    }
+}
