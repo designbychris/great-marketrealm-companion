@@ -23,7 +23,7 @@ final class DiceOfDestinyRegistrationTest extends TestCase
             $source
         );
         self::assertStringContainsString(
-            "$method === 'rolled'",
+            "\$method === 'rolled'",
             $source
         );
         self::assertStringContainsString(
@@ -31,7 +31,7 @@ final class DiceOfDestinyRegistrationTest extends TestCase
             $source
         );
         self::assertStringContainsString(
-            "$method === 'standard'",
+            "\$method === 'standard'",
             $source
         );
         self::assertStringContainsString(
