@@ -283,6 +283,16 @@ if ($isCustom) {
             'class_accessory'
         )
     ); ?>"
+    data-portrait-class-effects="<?php echo esc_attr(
+        $layerValue(
+            'class_effects'
+        )
+    ); ?>"
+    data-portrait-guild-ornament="<?php echo esc_attr(
+        $layerValue(
+            'guild_ornament'
+        )
+    ); ?>"
     data-portrait-frame="<?php echo esc_attr(
         $layerValue(
             'frame'
