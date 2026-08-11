@@ -42,6 +42,8 @@ final class SubmittedPortraitRecipeFactory
         'outfit',
         'equipment',
         'class_accessory',
+        'class_effects',
+        'guild_ornament',
         'frame',
         'effects',
     ];

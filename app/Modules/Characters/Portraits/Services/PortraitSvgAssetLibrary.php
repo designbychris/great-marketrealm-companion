@@ -135,7 +135,8 @@ final class PortraitSvgAssetLibrary
             'effects-gold-motes-01' => 'Effects/gold-motes.svg',
             'frame-guild-gold-01' => 'Frames/guild-gold.svg',
             ],
-            PortraitRaceAssetMap::assets()
+            PortraitRaceAssetMap::assets(),
+            PortraitClassAssetMap::assets()
         );
     }
 

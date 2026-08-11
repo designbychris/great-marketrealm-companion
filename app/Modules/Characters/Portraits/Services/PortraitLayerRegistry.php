@@ -96,33 +96,40 @@ final class PortraitLayerRegistry implements PortraitLayerRegistryInterface
     {
         $characterClass = sanitize_key($characterClass);
 
-        $defaults = [
-            'outfit' => [
-                $characterClass . '-outfit-01',
-                $characterClass . '-outfit-02',
-                $characterClass . '-outfit-03',
-            ],
-            'equipment' => [
-                $characterClass . '-equipment-01',
-                $characterClass . '-equipment-02',
-                $characterClass . '-equipment-03',
-            ],
-            'class_accessory' => [
-                $characterClass . '-accessory-none',
-                $characterClass . '-accessory-01',
-                $characterClass . '-accessory-02',
-            ],
-            'class_effects' => [
-                $characterClass . '-effects-none',
-                $characterClass . '-effects-01',
-                $characterClass . '-effects-02',
-            ],
-            'guild_ornament' => [
-                $characterClass . '-ornament-none',
-                $characterClass . '-ornament-01',
-                $characterClass . '-ornament-02',
-            ],
-        ];
+        $expanded =
+            PortraitClassAssetMap::forClass(
+                $characterClass
+            );
+
+        $defaults = $expanded !== []
+            ? $expanded
+            : [
+                'outfit' => [
+                    $characterClass . '-outfit-01',
+                    $characterClass . '-outfit-02',
+                    $characterClass . '-outfit-03',
+                ],
+                'equipment' => [
+                    $characterClass . '-equipment-01',
+                    $characterClass . '-equipment-02',
+                    $characterClass . '-equipment-03',
+                ],
+                'class_accessory' => [
+                    $characterClass . '-accessory-none',
+                    $characterClass . '-accessory-01',
+                    $characterClass . '-accessory-02',
+                ],
+                'class_effects' => [
+                    $characterClass . '-effects-none',
+                    $characterClass . '-effects-01',
+                    $characterClass . '-effects-02',
+                ],
+                'guild_ornament' => [
+                    $characterClass . '-ornament-none',
+                    $characterClass . '-ornament-01',
+                    $characterClass . '-ornament-02',
+                ],
+            ];
 
         $filtered = apply_filters(
             'gmrc_portrait_class_layers',
