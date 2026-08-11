@@ -76,6 +76,24 @@
         },
     ];
 
+    const versionedUrl = function (url, version) {
+        if (
+            typeof version !== 'string'
+            || version === ''
+        ) {
+            return url;
+        }
+
+        const separator = url.includes('?')
+            ? '&'
+            : '?';
+
+        return url
+            + separator
+            + 'ver='
+            + encodeURIComponent(version);
+    };
+
     const sceneForHour = function (scenes, hour) {
         return scenes.find(function (scene) {
             return Array.isArray(scene.hours)
@@ -99,7 +117,18 @@
             return;
         }
 
-        const base = desk.dataset.aubySceneBase || '';
+        const base =
+            desk.dataset.aubySceneBase
+            || '';
+
+        const version =
+            desk.dataset.aubySceneVersion
+            || '';
+
+        const sceneUrl = versionedUrl(
+            base + scene.image,
+            version
+        );
 
         desk.dataset.guildHallDaypart = '';
         desk.dataset.ambient = '';
@@ -112,14 +141,38 @@
 
         desk.style.setProperty(
             '--gmrc-auby-desk-scene',
-            'url("' + base + scene.image + '")'
+            'url("' + sceneUrl + '")'
         );
 
-        setText(desk, '[data-auby-desk-title]', scene.heading);
-        setText(desk, '[data-auby-desk-status]', scene.status);
-        setText(desk, '[data-auby-note-title]', scene.note_title);
-        setText(desk, '[data-auby-note-message]', scene.note_message);
-        setText(desk, '[data-auby-tea-message]', scene.tea_message);
+        setText(
+            desk,
+            '[data-auby-desk-title]',
+            scene.heading
+        );
+
+        setText(
+            desk,
+            '[data-auby-desk-status]',
+            scene.status
+        );
+
+        setText(
+            desk,
+            '[data-auby-note-title]',
+            scene.note_title
+        );
+
+        setText(
+            desk,
+            '[data-auby-note-message]',
+            scene.note_message
+        );
+
+        setText(
+            desk,
+            '[data-auby-tea-message]',
+            scene.tea_message
+        );
 
         const note = desk.querySelector(
             '[data-auby-sticky-note]'
@@ -143,7 +196,8 @@
                     detail: {
                         scene: scene.id,
                         daypart:
-                            scene.daypart || scene.id,
+                            scene.daypart
+                            || scene.id,
                     },
                 }
             )
@@ -151,16 +205,31 @@
     };
 
     const loadScenes = function (desk) {
-        const base = desk.dataset.aubySceneBase || '';
+        const base =
+            desk.dataset.aubySceneBase
+            || '';
+
+        const version =
+            desk.dataset.aubySceneVersion
+            || '';
 
         if (!('fetch' in window)) {
-            return Promise.resolve(fallbackScenes);
+            return Promise.resolve(
+                fallbackScenes
+            );
         }
+
+        const manifestUrl = versionedUrl(
+            base + 'manifest.json',
+            version
+        );
 
         return window
             .fetch(
-                base + 'manifest.json',
-                { credentials: 'same-origin' }
+                manifestUrl,
+                {
+                    credentials: 'same-origin',
+                }
             )
             .then(function (response) {
                 if (!response.ok) {
@@ -174,7 +243,9 @@
             .then(function (manifest) {
                 if (
                     !manifest
-                    || !Array.isArray(manifest.scenes)
+                    || !Array.isArray(
+                        manifest.scenes
+                    )
                 ) {
                     return fallbackScenes;
                 }
@@ -204,7 +275,9 @@
 
     const boot = function () {
         document
-            .querySelectorAll('[data-auby-desk]')
+            .querySelectorAll(
+                '[data-auby-desk]'
+            )
             .forEach(initialise);
     };
 
