@@ -1,0 +1,265 @@
+/**
+ * Character Lifecycle Initiative — Phase III.7.2.3
+ * The Illuminator's Workbench.
+ */
+
+.gmrc-portrait-controls {
+    padding:
+        clamp(
+            1rem,
+            2vw,
+            1.35rem
+        );
+}
+
+.gmrc-portrait-controls__header {
+    margin-bottom:
+        0.9rem;
+}
+
+.gmrc-portrait-controls__header .gmrc-eyebrow {
+    margin:
+        0
+        0
+        0.2rem;
+
+    color:
+        var(
+            --gmrc-workbench-purple,
+            #603773
+        );
+
+    font-size:
+        0.66rem;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.12em;
+
+    text-transform:
+        uppercase;
+}
+
+.gmrc-portrait-controls__header h3 {
+    margin:
+        0;
+
+    font-size:
+        clamp(
+            1rem,
+            1.4vw,
+            1.18rem
+        );
+}
+
+.gmrc-portrait-controls__header > p:last-child {
+    max-width:
+        34rem;
+
+    margin:
+        0.35rem
+        0
+        0;
+
+    color:
+        rgba(66, 44, 33, 0.7);
+
+    font-size:
+        0.72rem;
+
+    line-height:
+        1.45;
+}
+
+.gmrc-portrait-controls__rows {
+    gap:
+        0.5rem;
+}
+
+.gmrc-portrait-controls__row {
+    grid-template-columns:
+        minmax(7.5rem, 1fr)
+        repeat(
+            3,
+            2.35rem
+        )
+        minmax(3.6rem, auto);
+
+    gap:
+        0.4rem;
+
+    min-width:
+        0;
+
+    padding:
+        0.5rem;
+}
+
+.gmrc-portrait-controls__label {
+    min-width:
+        0;
+}
+
+.gmrc-portrait-controls__button {
+    min-width:
+        2.35rem;
+
+    min-height:
+        2.35rem;
+
+    font-size:
+        0.88rem;
+}
+
+.gmrc-portrait-controls__position {
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        flex-end;
+
+    min-width:
+        3.6rem;
+
+    color:
+        rgba(66, 44, 33, 0.62);
+
+    font-size:
+        0.66rem;
+
+    font-weight:
+        800;
+
+    font-variant-numeric:
+        tabular-nums;
+
+    white-space:
+        nowrap;
+}
+
+.gmrc-portrait-controls__locked {
+    display:
+        grid;
+
+    grid-template-columns:
+        2.5rem
+        minmax(0, 1fr);
+
+    gap:
+        0.75rem;
+
+    align-items:
+        center;
+
+    padding:
+        0.8rem;
+
+    border:
+        1px dashed
+        rgba(74, 42, 24, 0.32);
+
+    border-radius:
+        0.35rem;
+
+    background:
+        rgba(255, 249, 228, 0.46);
+}
+
+.gmrc-portrait-controls__locked > span {
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    width:
+        2.5rem;
+
+    aspect-ratio:
+        1;
+
+    border-radius:
+        50%;
+
+    color:
+        #f7e5b4;
+
+    background:
+        #603773;
+}
+
+.gmrc-portrait-controls__locked p,
+.gmrc-portrait-controls__locked strong,
+.gmrc-portrait-controls__locked small {
+    display:
+        block;
+
+    margin:
+        0;
+}
+
+.gmrc-portrait-controls__locked strong {
+    color:
+        #4a2a18;
+
+    font-family:
+        var(
+            --gmrc-font-display,
+            Georgia,
+            serif
+        );
+
+    font-size:
+        0.82rem;
+}
+
+.gmrc-portrait-controls__locked small {
+    margin-top:
+        0.2rem;
+
+    color:
+        rgba(66, 44, 33, 0.65);
+
+    font-size:
+        0.66rem;
+
+    line-height:
+        1.4;
+}
+
+.gmrc-portrait-controls__status {
+    padding-top:
+        0.55rem;
+
+    border-top:
+        1px dotted
+        rgba(74, 42, 24, 0.22);
+}
+
+@media (max-width: 720px) {
+    .gmrc-portrait-controls__row {
+        grid-template-columns:
+            minmax(0, 1fr)
+            repeat(
+                3,
+                2.35rem
+            );
+    }
+
+    .gmrc-portrait-controls__position {
+        grid-column:
+            1
+            / -1;
+
+        justify-content:
+            flex-start;
+
+        padding-left:
+            0.1rem;
+    }
+}
