@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img">
+<defs>
+      <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
+        <stop stop-color="#9c7041"/><stop offset="1" stop-color="#d5a65f"/>
+      </linearGradient>
+      <radialGradient id="shine" cx="35%" cy="25%" r="65%">
+        <stop stop-color="#fff8dc" stop-opacity=".62"/>
+        <stop offset=".52" stop-color="#fff8dc" stop-opacity=".08"/>
+        <stop offset="1" stop-color="#fff8dc" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+<g data-portrait-layer="race" data-race-family="boxfolk">
+<ellipse cx="240" cy="457" rx="132" ry="90"
+      fill="url(#skin)" stroke="#5e432c" stroke-width="7"/>
+    <path d="M160 438C166 354 192 315 240 302C288 315 314 354 320 438Z"
+      fill="url(#skin)" stroke="#5e432c" stroke-width="7"/>
+<rect x="160" y="112" width="160" height="225" rx="18"
+          fill="url(#skin)" stroke="#5e432c" stroke-width="8"/>
+        <path d="M160 143L240 99L320 143M240 99V145" fill="none" stroke="#f3d79b" stroke-width="8" stroke-linejoin="round"/>
+<ellipse cx="211" cy="184" rx="43" ry="65" fill="url(#shine)" transform="rotate(18 211 184)"/>
+</g>
+</svg>

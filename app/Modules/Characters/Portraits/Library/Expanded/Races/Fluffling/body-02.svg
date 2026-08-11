@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img">
+<defs>
+      <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
+        <stop stop-color="#ba72b1"/><stop offset="1" stop-color="#f2a6cf"/>
+      </linearGradient>
+      <radialGradient id="shine" cx="35%" cy="25%" r="65%">
+        <stop stop-color="#fff8dc" stop-opacity=".62"/>
+        <stop offset=".52" stop-color="#fff8dc" stop-opacity=".08"/>
+        <stop offset="1" stop-color="#fff8dc" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+<g data-portrait-layer="race" data-race-family="fluffling">
+<ellipse cx="240" cy="457" rx="132" ry="90"
+      fill="url(#skin)" stroke="#744e78" stroke-width="7"/>
+    <path d="M160 438C166 354 192 315 240 302C288 315 314 354 320 438Z"
+      fill="url(#skin)" stroke="#744e78" stroke-width="7"/>
+<path d="M135 225Q116 175 158 146Q166 95 216 104Q249 69 282 108Q332 101 335 151Q375 178 347 226Q370 272 326 296Q310 339 264 329Q228 363 195 330Q147 338 139 292Q100 267 135 225Z"
+          fill="url(#skin)" stroke="#744e78" stroke-width="8"/>
+        <path d="M155 165Q240 113 324 165" fill="none" stroke="#fff4ff" stroke-opacity=".42" stroke-width="14" stroke-linecap="round"/>
+<ellipse cx="211" cy="184" rx="43" ry="65" fill="url(#shine)" transform="rotate(18 211 184)"/>
+</g>
+</svg>

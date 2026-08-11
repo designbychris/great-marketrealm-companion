@@ -95,7 +95,8 @@ final class PortraitSvgAssetLibrary
      */
     private function generationOneAssets(): array
     {
-        return [
+        return array_merge(
+            [
             'background-parchment-01' => 'Backgrounds/parchment.svg',
             'background-market-arch-01' => 'Backgrounds/market-arch.svg',
             'background-guild-hall-01' => 'Backgrounds/guild-hall.svg',
@@ -133,7 +134,9 @@ final class PortraitSvgAssetLibrary
 
             'effects-gold-motes-01' => 'Effects/gold-motes.svg',
             'frame-guild-gold-01' => 'Frames/guild-gold.svg',
-        ];
+            ],
+            PortraitRaceAssetMap::assets()
+        );
     }
 
     private function generationOnePath(

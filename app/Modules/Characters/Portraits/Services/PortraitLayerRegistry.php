@@ -57,8 +57,11 @@ final class PortraitLayerRegistry implements PortraitLayerRegistryInterface
     {
         $race = sanitize_key($race);
 
+        $expanded =
+            PortraitRaceAssetMap::forRace($race);
+
         $defaults = [
-            'body' => [
+            'body' => $expanded['body'] ?? [
                 $race . '-body-01',
                 $race . '-body-02',
             ],
@@ -72,10 +75,8 @@ final class PortraitLayerRegistry implements PortraitLayerRegistryInterface
                 $race . '-palette-02',
                 $race . '-palette-03',
             ],
-            'heritage' => [
+            'heritage' => $expanded['heritage'] ?? [
                 $race . '-heritage-none',
-                $race . '-heritage-01',
-                $race . '-heritage-02',
             ],
         ];
 

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img">
+<defs>
+      <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
+        <stop stop-color="#a84d79"/><stop offset="1" stop-color="#e68ead"/>
+      </linearGradient>
+      <radialGradient id="shine" cx="35%" cy="25%" r="65%">
+        <stop stop-color="#fff8dc" stop-opacity=".62"/>
+        <stop offset=".52" stop-color="#fff8dc" stop-opacity=".08"/>
+        <stop offset="1" stop-color="#fff8dc" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+<g data-portrait-layer="race" data-race-family="sweetfolk">
+<ellipse cx="240" cy="457" rx="132" ry="90"
+      fill="url(#skin)" stroke="#63324e" stroke-width="7"/>
+    <path d="M160 438C166 354 192 315 240 302C288 315 314 354 320 438Z"
+      fill="url(#skin)" stroke="#63324e" stroke-width="7"/>
+<circle cx="240" cy="225" r="112" fill="url(#skin)" stroke="#63324e" stroke-width="8"/>
+        <path d="M157 185L112 157L124 219ZM323 185L368 157L356 219Z"
+          fill="#f0b2c9" stroke="#63324e" stroke-width="6" stroke-linejoin="round"/>
+<ellipse cx="211" cy="184" rx="43" ry="65" fill="url(#shine)" transform="rotate(18 211 184)"/>
+</g>
+</svg>

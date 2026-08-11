@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img">
+<defs>
+      <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
+        <stop stop-color="#82536a"/><stop offset="1" stop-color="#c8879f"/>
+      </linearGradient>
+      <radialGradient id="shine" cx="35%" cy="25%" r="65%">
+        <stop stop-color="#fff8dc" stop-opacity=".62"/>
+        <stop offset=".52" stop-color="#fff8dc" stop-opacity=".08"/>
+        <stop offset="1" stop-color="#fff8dc" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+<g data-portrait-layer="race" data-race-family="fungifolk">
+<ellipse cx="240" cy="457" rx="132" ry="90"
+      fill="url(#skin)" stroke="#4f3541" stroke-width="7"/>
+    <path d="M160 438C166 354 192 315 240 302C288 315 314 354 320 438Z"
+      fill="url(#skin)" stroke="#4f3541" stroke-width="7"/>
+<path d="M188 163Q190 108 240 108Q290 108 292 163L291 291Q284 344 240 344Q196 344 189 291Z"
+          fill="#eadabc" stroke="#4f3541" stroke-width="7"/>
+        <path d="M103 159Q121 65 240 49Q359 65 377 159Q312 194 240 194Q168 194 103 159Z"
+          fill="url(#skin)" stroke="#4f3541" stroke-width="8"/>
+        <path d="M134 151Q240 178 346 151" fill="none" stroke="#fff0c5" stroke-opacity=".34" stroke-width="9"/>
+<ellipse cx="211" cy="184" rx="43" ry="65" fill="url(#shine)" transform="rotate(18 211 184)"/>
+</g>
+</svg>
