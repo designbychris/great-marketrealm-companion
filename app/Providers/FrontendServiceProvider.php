@@ -413,6 +413,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/characters/illuminators-dressing-table.css',
             ],
             [
+                'handle' => 'gmrc-illuminators-private-studio',
+                'path' => 'modules/characters/illuminators-private-studio.css',
+            ],
+            [
                 'handle' => 'gmrc-auby-note',
                 'path' => 'components/furniture/auby-note.css',
             ],
