@@ -517,3 +517,90 @@
             none;
     }
 }
+
+/* ===============================================================
+ * Phase III.7.3.2 — Dressing Table refinement
+ * =============================================================== */
+
+.gmrc-character-creator
+.gmrc-portrait-controls__row {
+    grid-template-columns:
+        minmax(8.65rem, 1.18fr)
+        repeat(3, 2.4rem)
+        minmax(3.4rem, auto);
+
+    column-gap:
+        0.5rem;
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__button {
+    min-width:
+        2.4rem;
+
+    min-height:
+        2.4rem;
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__position {
+    min-width:
+        3.4rem;
+
+    padding-inline:
+        0.38rem;
+
+    font-size:
+        0.62rem;
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__actions {
+    position:
+        relative;
+
+    margin-top:
+        1.2rem;
+
+    padding-top:
+        1rem;
+
+    border-top:
+        1px solid
+        rgba(74, 42, 24, 0.18);
+}
+
+.gmrc-character-creator
+.gmrc-portrait-controls__actions::before {
+    position:
+        absolute;
+
+    top:
+        -0.42rem;
+    left:
+        50%;
+
+    padding:
+        0 0.5rem;
+
+    color:
+        var(--gmrc-dressing-gold);
+
+    content:
+        "✦";
+
+    background:
+        #ead19a;
+
+    transform:
+        translateX(-50%);
+}
+
+@media (max-width: 560px) {
+    .gmrc-character-creator
+    .gmrc-portrait-controls__row {
+        grid-template-columns:
+            minmax(0, 1fr)
+            repeat(3, 2.35rem);
+    }
+}
