@@ -219,3 +219,149 @@
         transform: none !important;
     }
 }
+
+/**
+ * Phase III.7.3.4 — The Living Illuminator.
+ *
+ * Expanded portrait-library characters receive race-led ambient movement
+ * without pretending that their SVGs contain Golden Apple anatomy hooks.
+ * The whole race layer breathes, while class equipment settles at a slightly
+ * different rhythm.  Bespoke Generation 2 portraits continue to use the
+ * painted animation system above.
+ */
+.gmrc-portrait-layers[data-portrait-generation="1"][data-living-ready="true"]
+.gmrc-portrait-layer--race,
+.gmrc-portrait-layers[data-portrait-generation="1"][data-living-ready="true"]
+.gmrc-portrait-layer--class,
+.gmrc-portrait-layers[data-portrait-generation="1"][data-living-ready="true"]
+.gmrc-portrait-layer--effects {
+    transform-box: fill-box;
+}
+
+.gmrc-portrait-layers[data-portrait-generation="1"][data-living-ready="true"]
+.gmrc-portrait-layer--race {
+    transform-origin: center bottom;
+    animation: gmrc-living-gentle 6.4s ease-in-out infinite;
+}
+
+.gmrc-portrait-layers[data-portrait-generation="1"][data-living-ready="true"]
+.gmrc-portrait-layer--class {
+    transform-origin: center bottom;
+    animation: gmrc-living-equipment 6.4s ease-in-out infinite;
+    animation-delay: 120ms;
+}
+
+.gmrc-portrait-layers[data-living-portrait="sprightly"]
+.gmrc-portrait-layer--race {
+    animation-name: gmrc-living-sprightly;
+    animation-duration: 5.4s;
+}
+
+.gmrc-portrait-layers[data-living-portrait="sporebound"]
+.gmrc-portrait-layer--race {
+    animation-name: gmrc-living-sporebound;
+    animation-duration: 7.6s;
+}
+
+.gmrc-portrait-layers[data-living-portrait="effervescent"]
+.gmrc-portrait-layer--race {
+    animation-name: gmrc-living-effervescent;
+    animation-duration: 4.8s;
+}
+
+.gmrc-portrait-layers[data-living-portrait="clockwork"]
+.gmrc-portrait-layer--race {
+    animation-name: gmrc-living-clockwork;
+    animation-duration: 6.8s;
+}
+
+.gmrc-portrait-layers[data-living-portrait="buoyant"]
+.gmrc-portrait-layer--race {
+    animation-name: gmrc-living-buoyant;
+    animation-duration: 5.8s;
+}
+
+.gmrc-portrait-layers[data-living-portrait="frosted"]
+.gmrc-portrait-layer--race {
+    animation-name: gmrc-living-frosted;
+    animation-duration: 7.2s;
+}
+
+.gmrc-portrait-layers[data-living-portrait="grounded"]
+.gmrc-portrait-layer--race {
+    animation-name: gmrc-living-grounded;
+    animation-duration: 7s;
+}
+
+.gmrc-portrait-layers[data-living-portrait="uncanny"]
+.gmrc-portrait-layer--race {
+    animation-name: gmrc-living-uncanny;
+    animation-duration: 8.2s;
+}
+
+@keyframes gmrc-living-gentle {
+    0%, 100% { transform: translateY(0) scaleY(1); }
+    50% { transform: translateY(-1px) scaleY(1.004); }
+}
+
+@keyframes gmrc-living-sprightly {
+    0%, 100% { transform: translateY(0) rotate(-0.15deg); }
+    50% { transform: translateY(-2px) rotate(0.2deg); }
+}
+
+@keyframes gmrc-living-sporebound {
+    0%, 100% { transform: translateY(0) scaleX(1); }
+    50% { transform: translateY(-1.2px) scaleX(1.004); }
+}
+
+@keyframes gmrc-living-effervescent {
+    0%, 100% { transform: translateY(0); }
+    45% { transform: translateY(-2.4px); }
+    55% { transform: translateY(-1.6px); }
+}
+
+@keyframes gmrc-living-clockwork {
+    0%, 46%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-1px) rotate(0.18deg); }
+    54% { transform: translateY(-1px) rotate(-0.12deg); }
+}
+
+@keyframes gmrc-living-buoyant {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-2px) scale(1.003); }
+}
+
+@keyframes gmrc-living-frosted {
+    0%, 100% { transform: translateY(0); opacity: 0.99; }
+    50% { transform: translateY(-1px); opacity: 1; }
+}
+
+@keyframes gmrc-living-grounded {
+    0%, 100% { transform: translateY(0) scaleY(1); }
+    50% { transform: translateY(-0.7px) scaleY(1.002); }
+}
+
+@keyframes gmrc-living-uncanny {
+    0%, 42%, 100% { transform: translate(0, 0); }
+    44% { transform: translate(0.5px, -0.5px); }
+    46% { transform: translate(-0.4px, 0); }
+    48% { transform: translate(0, 0); }
+}
+
+@keyframes gmrc-living-equipment {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-0.55px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-portrait-layers[data-portrait-generation="1"]
+    .gmrc-portrait-layer--race,
+    .gmrc-portrait-layers[data-portrait-generation="1"]
+    .gmrc-portrait-layer--class,
+    .gmrc-portrait-layers[data-portrait-generation="1"]
+    .gmrc-portrait-layer--effects {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+}
