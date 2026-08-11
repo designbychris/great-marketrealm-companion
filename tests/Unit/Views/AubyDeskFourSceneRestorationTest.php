@@ -29,9 +29,11 @@ final class AubyDeskFourSceneRestorationTest extends TestCase
 
         self::assertSame(
             [
+                'dawn',
                 'morning',
                 'afternoon',
                 'evening',
+                'night',
                 'late-night',
             ],
             $restoration['scenes'] ?? null
@@ -54,9 +56,11 @@ final class AubyDeskFourSceneRestorationTest extends TestCase
 
         foreach (
             [
+                'dawn',
                 'morning',
                 'afternoon',
                 'evening',
+                'night',
                 'late-night',
             ]
             as $scene
