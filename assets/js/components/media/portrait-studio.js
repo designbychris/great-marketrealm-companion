@@ -700,7 +700,8 @@
 const applyRecipe = function (
     name,
     race,
-    characterClass
+    characterClass,
+    catalogueHeritage = ''
 ) {
     /*
      * The separators prevent combinations such as
@@ -710,6 +711,7 @@ const applyRecipe = function (
         name.toLocaleLowerCase(),
         race,
         characterClass,
+        catalogueHeritage,
     ].join('|');
 
     const backgroundVariant =
@@ -824,19 +826,26 @@ const applyRecipe = function (
                 + bodyVariant
             : '';
 
-    const heritageLayerId =
+    const requestedHeritageLayerId =
         race !== ''
-            ? (
-                heritageVariant === 1
-                    ? race
-                        + '-heritage-none'
-                    : race
-                        + '-heritage-0'
-                        + (
-                            heritageVariant - 1
-                        )
-            )
-            : '';
+            && catalogueHeritage !== ''
+                ? race
+                    + '-heritage-'
+                    + catalogueHeritage
+                : (
+                    race !== ''
+                        ? race + '-heritage-none'
+                        : ''
+                );
+
+    const heritageLayerId =
+        availableAsset(
+            requestedHeritageLayerId
+        ) || (
+            race !== ''
+                ? race + '-heritage-none'
+                : ''
+        );
 
     const preferredOutfitLayerId =
         characterClass !== ''
@@ -1038,7 +1047,12 @@ const applyRecipe = function (
 
     renderAssetLayer(
         raceLayer,
-        [bodyLayerId]
+        [
+            bodyLayerId,
+            heritageLayerId,
+        ].filter(function (layerId) {
+            return availableAsset(layerId) !== '';
+        })
     );
 
     renderAssetLayer(
@@ -1256,6 +1270,20 @@ const applyRecipe = function (
                                 .classLabel || ''
                             : '';
 
+                const heritageSelect =
+                    form.querySelector(
+                        'select[name="heritage"]'
+                    );
+
+                const heritageValue =
+                    heritageSelect
+                        instanceof HTMLSelectElement
+                            ? heritageSelect.value
+                            : '';
+
+                studio.dataset.portraitHeritageKey =
+                    heritageValue;
+
                 studio.dataset.portraitRace =
                     raceValue;
 
@@ -1334,7 +1362,8 @@ const applyRecipe = function (
                 applyRecipe(
                     name,
                     raceValue,
-                    classValue
+                    classValue,
+                    heritageValue
                 );
 
                 /*

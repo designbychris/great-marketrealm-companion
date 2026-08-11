@@ -8,7 +8,7 @@
 
     const CONTROL_SLOTS = [
         ['background', 'Background'],
-        ['body', 'Heritage form'],
+        ['body', 'Body form'],
         ['eyes', 'Eyes'],
         ['mouth', 'Expression'],
         ['outfit', 'Outfit'],
