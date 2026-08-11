@@ -9,6 +9,7 @@
     class PortraitStudioApplication {
         constructor(studio, index) {
             this.studio = studio;
+
             this.id = studio.id
                 || 'gmrc-portrait-studio-' + index;
 
@@ -35,11 +36,6 @@
         }
 
         boot() {
-            /*
-             * The legacy renderer finishes synchronously during its
-             * DOMContentLoaded listener. Queueing lets us snapshot the
-             * completed deterministic recipe rather than empty fields.
-             */
             window.setTimeout(
                 function () {
                     this.state.refreshInitial();
@@ -51,6 +47,11 @@
             this.studio.addEventListener(
                 'gmrc:portrait:recipe-applied',
                 function () {
+                    /*
+                     * A race/class/name change creates a new deterministic
+                     * recipe. That recipe becomes Reset's baseline and
+                     * controls are rebuilt for the newly available assets.
+                     */
                     this.state.refreshInitial();
                     this.controls.mount();
                 }.bind(this)
@@ -58,47 +59,84 @@
         }
 
         move(slot, direction) {
-            const next = this.variants.move(
-                slot,
-                this.state.value(slot),
-                direction
-            );
+            const next =
+                this.variants.move(
+                    slot,
+                    this.state.value(slot),
+                    direction
+                );
 
             if (next === null) {
-                return;
+                return false;
+            }
+
+            if (!this.updater.apply(slot, next)) {
+                return false;
             }
 
             this.state.set(slot, next);
-            this.updater.apply(slot, next);
+
+            return true;
         }
 
         randomise(slot) {
-            this.randomiser.layer(slot);
+            return this.randomiser.layer(slot);
+        }
+
+        adjustableSlots() {
+            return studioApi.controlSlots.filter(
+                function (slot) {
+                    return this.variants
+                        .isAdjustable(slot);
+                },
+                this
+            );
         }
 
         randomiseAll() {
-            this.randomiser.all(
-                studioApi.controlSlots
+            return this.randomiser.all(
+                this.adjustableSlots()
             );
         }
 
         reset() {
             const values = this.state.initial;
+            let changed = false;
 
             Object.entries(values).forEach(
                 function (entry) {
-                    this.state.set(
-                        entry[0],
-                        entry[1]
-                    );
+                    const slot = entry[0];
+                    const value = entry[1];
 
-                    this.updater.apply(
-                        entry[0],
-                        entry[1]
-                    );
+                    if (
+                        !studioApi.controlSlots.includes(slot)
+                    ) {
+                        this.state.set(
+                            slot,
+                            value
+                        );
+
+                        return;
+                    }
+
+                    if (
+                        this.updater.apply(
+                            slot,
+                            value
+                        )
+                    ) {
+                        this.state.set(
+                            slot,
+                            value
+                        );
+
+                        changed = true;
+                    }
                 },
                 this
             );
+
+            return changed;
         }
     }
 

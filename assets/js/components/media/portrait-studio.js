@@ -1337,6 +1337,25 @@ const applyRecipe = function (
                     classValue
                 );
 
+                /*
+                 * The modular Workbench snapshots this freshly generated
+                 * deterministic recipe as its Reset baseline and rebuilds
+                 * controls for the newly selected race/class.
+                 */
+                studio.dispatchEvent(
+                    new CustomEvent(
+                        'gmrc:portrait:recipe-applied',
+                        {
+                            bubbles: true,
+                            detail: {
+                                name: name,
+                                race: raceValue,
+                                characterClass: classValue,
+                            },
+                        }
+                    )
+                );
+
                 if (animate) {
                     awaken();
                 }

@@ -14,17 +14,21 @@
         }
 
         layer(slot) {
-            const next = this.variants.random(
-                slot,
-                this.state.value(slot)
-            );
+            const next =
+                this.variants.random(
+                    slot,
+                    this.state.value(slot)
+                );
 
             if (next === null) {
                 return false;
             }
 
+            if (!this.updater.apply(slot, next)) {
+                return false;
+            }
+
             this.state.set(slot, next);
-            this.updater.apply(slot, next);
 
             return true;
         }
@@ -34,7 +38,8 @@
 
             slots.forEach(
                 function (slot) {
-                    changed = this.layer(slot)
+                    changed =
+                        this.layer(slot)
                         || changed;
                 },
                 this

@@ -43,7 +43,9 @@
                 return [];
             }
 
-            const race = this.studio.dataset.portraitRace || '';
+            const race =
+                this.studio.dataset.portraitRace || '';
+
             const characterClass =
                 this.studio.dataset.portraitClass || '';
 
@@ -56,7 +58,9 @@
                     if (
                         slot === 'body'
                         && race !== ''
-                        && assetId.indexOf(race + '-') !== 0
+                        && assetId.indexOf(
+                            race + '-'
+                        ) !== 0
                     ) {
                         return false;
                     }
@@ -80,14 +84,45 @@
                 .sort();
         }
 
-        move(slot, current, direction) {
+        count(slot) {
+            return this.forSlot(slot).length;
+        }
+
+        isAdjustable(slot) {
+            return this.count(slot) > 1;
+        }
+
+        position(slot, current) {
             const variants = this.forSlot(slot);
 
             if (variants.length === 0) {
+                return {
+                    index: 0,
+                    total: 0,
+                };
+            }
+
+            const currentIndex =
+                variants.indexOf(current);
+
+            return {
+                index:
+                    currentIndex >= 0
+                        ? currentIndex + 1
+                        : 1,
+                total: variants.length,
+            };
+        }
+
+        move(slot, current, direction) {
+            const variants = this.forSlot(slot);
+
+            if (variants.length <= 1) {
                 return null;
             }
 
-            const currentIndex = variants.indexOf(current);
+            const currentIndex =
+                variants.indexOf(current);
 
             if (currentIndex < 0) {
                 return variants[0];
@@ -107,12 +142,8 @@
         random(slot, current) {
             const variants = this.forSlot(slot);
 
-            if (variants.length === 0) {
+            if (variants.length <= 1) {
                 return null;
-            }
-
-            if (variants.length === 1) {
-                return variants[0];
             }
 
             const alternatives = variants.filter(
@@ -121,9 +152,14 @@
                 }
             );
 
+            if (alternatives.length === 0) {
+                return null;
+            }
+
             return alternatives[
                 Math.floor(
-                    Math.random() * alternatives.length
+                    Math.random()
+                    * alternatives.length
                 )
             ];
         }

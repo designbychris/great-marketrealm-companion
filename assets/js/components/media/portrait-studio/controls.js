@@ -22,18 +22,27 @@
         constructor(app) {
             this.app = app;
             this.status = null;
+            this.positions = new Map();
         }
 
         mount() {
+            const parent =
+                this.app.studio.parentElement;
+
+            if (!(parent instanceof HTMLElement)) {
+                return;
+            }
+
             const existing =
-                this.app.studio.parentElement
-                    .querySelector(
-                        '.gmrc-portrait-controls'
-                    );
+                parent.querySelector(
+                    '.gmrc-portrait-controls'
+                );
 
             if (existing instanceof HTMLElement) {
                 existing.remove();
             }
+
+            this.positions.clear();
 
             const controls =
                 document.createElement('section');
@@ -46,6 +55,19 @@
                 this.app.id + '-controls-title'
             );
 
+            const header =
+                document.createElement('header');
+
+            header.className =
+                'gmrc-portrait-controls__header';
+
+            const eyebrow =
+                document.createElement('p');
+
+            eyebrow.className = 'gmrc-eyebrow';
+            eyebrow.textContent =
+                'Guild Illuminator';
+
             const heading =
                 document.createElement('h3');
 
@@ -55,7 +77,20 @@
             heading.textContent =
                 'Portrait customisation';
 
-            controls.appendChild(heading);
+            const intro =
+                document.createElement('p');
+
+            intro.textContent =
+                'Turn the Illuminator’s selectors to adjust '
+                + 'the variations currently available for this portrait.';
+
+            header.append(
+                eyebrow,
+                heading,
+                intro
+            );
+
+            controls.appendChild(header);
 
             const rows =
                 document.createElement('div');
@@ -63,28 +98,49 @@
             rows.className =
                 'gmrc-portrait-controls__rows';
 
+            let adjustable = 0;
+
             CONTROL_SLOTS.forEach(
                 function (definition) {
-                    const variants =
-                        this.app.variants.forSlot(
-                            definition[0]
-                        );
+                    const slot = definition[0];
 
-                    if (variants.length === 0) {
+                    if (
+                        !this.app.variants
+                            .isAdjustable(slot)
+                    ) {
                         return;
                     }
 
                     rows.appendChild(
                         this.row(
-                            definition[0],
+                            slot,
                             definition[1]
                         )
                     );
+
+                    adjustable += 1;
                 },
                 this
             );
 
-            controls.appendChild(rows);
+            if (adjustable > 0) {
+                controls.appendChild(rows);
+            } else {
+                const note =
+                    document.createElement('div');
+
+                note.className =
+                    'gmrc-portrait-controls__locked';
+
+                note.innerHTML =
+                    '<span aria-hidden="true">✦</span>'
+                    + '<p><strong>This illumination is already using '
+                    + 'its only available painted set.</strong>'
+                    + '<small>Additional variants will appear here as '
+                    + 'the Guild portrait library expands.</small></p>';
+
+                controls.appendChild(note);
+            }
 
             const actions =
                 this.globalActions();
@@ -98,7 +154,7 @@
                 actions.classList.add(
                     'gmrc-portrait-controls__actions--ledger'
                 );
-            } else {
+            } else if (adjustable > 0) {
                 controls.appendChild(actions);
             }
 
@@ -127,6 +183,7 @@
 
             if (
                 ledger instanceof HTMLElement
+                && adjustable > 0
                 && actions.parentElement === null
             ) {
                 const portraitArea =
@@ -144,56 +201,95 @@
                     );
                 }
             }
+
+            this.refreshAll();
         }
 
         row(slot, label) {
-            const row = document.createElement('div');
+            const row =
+                document.createElement('div');
+
             row.className =
                 'gmrc-portrait-controls__row';
 
-            const name = document.createElement('span');
+            row.dataset.portraitControlSlot = slot;
+
+            const name =
+                document.createElement('span');
+
             name.className =
                 'gmrc-portrait-controls__label';
+
             name.textContent = label;
 
-            row.appendChild(name);
-            row.appendChild(
-                this.button(
-                    'Previous ' + label.toLowerCase(),
-                    '←',
-                    function () {
-                        this.app.move(slot, -1);
-                        this.announce(
-                            label + ' moved to previous variant.'
-                        );
+            const previous = this.button(
+                'Previous ' + label.toLowerCase(),
+                '←',
+                function () {
+                    if (!this.app.move(slot, -1)) {
+                        return;
                     }
-                )
+
+                    this.refresh(slot);
+                    this.announceCurrent(
+                        slot,
+                        label
+                    );
+                }
             );
 
-            row.appendChild(
-                this.button(
-                    'Randomise ' + label.toLowerCase(),
-                    '🎲',
-                    function () {
-                        this.app.randomise(slot);
-                        this.announce(
-                            label + ' randomised.'
-                        );
+            const random = this.button(
+                'Randomise ' + label.toLowerCase(),
+                '🎲',
+                function () {
+                    if (!this.app.randomise(slot)) {
+                        return;
                     }
-                )
+
+                    this.refresh(slot);
+                    this.announceCurrent(
+                        slot,
+                        label
+                    );
+                }
             );
 
-            row.appendChild(
-                this.button(
-                    'Next ' + label.toLowerCase(),
-                    '→',
-                    function () {
-                        this.app.move(slot, 1);
-                        this.announce(
-                            label + ' moved to next variant.'
-                        );
+            const next = this.button(
+                'Next ' + label.toLowerCase(),
+                '→',
+                function () {
+                    if (!this.app.move(slot, 1)) {
+                        return;
                     }
-                )
+
+                    this.refresh(slot);
+                    this.announceCurrent(
+                        slot,
+                        label
+                    );
+                }
+            );
+
+            const position =
+                document.createElement('span');
+
+            position.className =
+                'gmrc-portrait-controls__position';
+
+            position.dataset.portraitControlPosition =
+                slot;
+
+            this.positions.set(
+                slot,
+                position
+            );
+
+            row.append(
+                name,
+                previous,
+                random,
+                next,
+                position
             );
 
             return row;
@@ -208,12 +304,16 @@
 
             actions.appendChild(
                 this.button(
-                    'Randomise the whole portrait',
+                    'Randomise every adjustable portrait layer',
                     'Randomise portrait',
                     function () {
-                        this.app.randomiseAll();
+                        if (!this.app.randomiseAll()) {
+                            return;
+                        }
+
+                        this.refreshAll();
                         this.announce(
-                            'The whole portrait was randomised.'
+                            'All available portrait variations were randomised.'
                         );
                     },
                     'gmrc-button gmrc-button--secondary'
@@ -222,12 +322,13 @@
 
             actions.appendChild(
                 this.button(
-                    'Reset portrait to its deterministic default',
+                    'Reset portrait to its current deterministic default',
                     'Reset portrait',
                     function () {
                         this.app.reset();
+                        this.refreshAll();
                         this.announce(
-                            'The portrait was reset to its original design.'
+                            'The portrait was restored to its deterministic Guild design.'
                         );
                     },
                     'gmrc-button gmrc-button--ghost'
@@ -237,11 +338,17 @@
             return actions;
         }
 
-        button(label, text, callback, className = '') {
+        button(
+            label,
+            text,
+            callback,
+            className = ''
+        ) {
             const button =
                 document.createElement('button');
 
             button.type = 'button';
+
             button.className =
                 className
                 || 'gmrc-portrait-controls__button';
@@ -261,6 +368,62 @@
             return button;
         }
 
+        refresh(slot) {
+            const output =
+                this.positions.get(slot);
+
+            if (!(output instanceof HTMLElement)) {
+                return;
+            }
+
+            const position =
+                this.app.variants.position(
+                    slot,
+                    this.app.state.value(slot)
+                );
+
+            output.textContent =
+                position.total > 0
+                    ? position.index
+                        + ' of '
+                        + position.total
+                    : '—';
+
+            output.setAttribute(
+                'aria-label',
+                'Variant '
+                + position.index
+                + ' of '
+                + position.total
+            );
+        }
+
+        refreshAll() {
+            this.positions.forEach(
+                function (_, slot) {
+                    this.refresh(slot);
+                },
+                this
+            );
+        }
+
+        announceCurrent(slot, label) {
+            const position =
+                this.app.variants.position(
+                    slot,
+                    this.app.state.value(slot)
+                );
+
+            this.announce(
+                label
+                + ' is now variant '
+                + position.index
+                + ' of '
+                + position.total
+                + '.'
+            );
+        }
+
         announce(message) {
             if (this.status instanceof HTMLElement) {
                 this.status.textContent = message;
@@ -269,9 +432,11 @@
     }
 
     studioApi.Controls = PortraitStudioControls;
-    studioApi.controlSlots = CONTROL_SLOTS.map(
-        function (definition) {
-            return definition[0];
-        }
-    );
+
+    studioApi.controlSlots =
+        CONTROL_SLOTS.map(
+            function (definition) {
+                return definition[0];
+            }
+        );
 })(window);
