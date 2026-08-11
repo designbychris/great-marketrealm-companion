@@ -14,7 +14,9 @@
         ['outfit', 'Outfit'],
         ['equipment', 'Equipment'],
         ['class_accessory', 'Accessory'],
-        ['effects', 'Effects'],
+        ['class_effects', 'Class aura'],
+        ['guild_ornament', 'Guild ornament'],
+        ['effects', 'Ambient effects'],
         ['frame', 'Frame'],
     ];
 

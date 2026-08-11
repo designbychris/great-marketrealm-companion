@@ -14,6 +14,8 @@
         outfit: /-outfit-/,
         equipment: /-equipment-/,
         class_accessory: /-accessory-/,
+        class_effects: /-effects-/,
+        guild_ornament: /-ornament-/,
         effects: /^effects-/,
         frame: /^frame-/,
     };
@@ -49,7 +51,7 @@
             const characterClass =
                 this.studio.dataset.portraitClass || '';
 
-            return this.allAssetIds()
+            const variants = this.allAssetIds()
                 .filter(function (assetId) {
                     if (!pattern.test(assetId)) {
                         return false;
@@ -70,6 +72,8 @@
                             'outfit',
                             'equipment',
                             'class_accessory',
+                            'class_effects',
+                            'guild_ornament',
                         ].includes(slot)
                         && characterClass !== ''
                         && assetId.indexOf(
@@ -82,6 +86,29 @@
                     return true;
                 })
                 .sort();
+
+            if (characterClass !== '') {
+                const optionalClassSlots = {
+                    class_accessory:
+                        characterClass + '-accessory-none',
+                    class_effects:
+                        characterClass + '-effects-none',
+                    guild_ornament:
+                        characterClass + '-ornament-none',
+                };
+
+                const noneVariant =
+                    optionalClassSlots[slot];
+
+                if (
+                    noneVariant
+                    && !variants.includes(noneVariant)
+                ) {
+                    variants.unshift(noneVariant);
+                }
+            }
+
+            return variants;
         }
 
         count(slot) {

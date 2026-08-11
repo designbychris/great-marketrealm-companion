@@ -23,6 +23,8 @@
         outfit: '.gmrc-portrait-layer--class',
         equipment: '.gmrc-portrait-layer--class',
         class_accessory: '.gmrc-portrait-layer--accessory',
+        class_effects: '.gmrc-portrait-layer--class-effects',
+        guild_ornament: '.gmrc-portrait-layer--guild-ornament',
         effects: '.gmrc-portrait-layer--effects',
         frame: '.gmrc-portrait-layer--frame',
     };
