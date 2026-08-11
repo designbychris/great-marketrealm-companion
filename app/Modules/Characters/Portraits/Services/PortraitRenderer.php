@@ -79,6 +79,37 @@ final class PortraitRenderer
     }
 
     /**
+     * Build the generated fallback specifically for the private Workbench.
+     *
+     * A custom upload may remain active on the Ledger while its generated
+     * fallback continues to be edited here.
+     */
+    public function forWorkbench(
+        Character $character
+    ): PortraitViewModel {
+        $portrait = $this->portraits->find(
+            $character->id()
+        );
+
+        $recipe = $portrait
+            instanceof CharacterPortrait
+                ? $portrait->recipe()
+                : null;
+
+        if (! $recipe instanceof PortraitRecipe) {
+            $recipe = $this->recipes
+                ->forCharacter($character);
+        }
+
+        return $this->viewModel(
+            $character,
+            CharacterPortrait::generated(
+                $recipe
+            )
+        );
+    }
+
+    /**
      * Build the provisional portrait used by the live creator.
      *
      * A Character entity does not yet exist at this point, so the
