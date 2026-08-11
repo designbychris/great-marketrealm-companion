@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="rogue outfit 1">
+<g data-portrait-layer="outfit" data-wardrobe-class="rogue" data-wardrobe-variant="1">
+
+<path d="M132 548L151 423Q164 361 205 337L240 375L275 337Q316 361 329 423L348 548Z"
+ fill="#3f3943" stroke="#252229" stroke-width="8" stroke-linejoin="round"/>
+<path d="M205 337L240 375L275 337" fill="none" stroke="#665262" stroke-width="11" stroke-linecap="round"/>
+<path d="M158 431Q240 474 322 431" fill="none" stroke="#665262" stroke-width="8" opacity=".78"/>
+<path d="M176 522H304" stroke="#252229" stroke-width="9" opacity=".45"/>
+<path d="M151 394Q240 350 329 394L311 427Q240 397 169 427Z" fill="#302d34" stroke="#1e1b22" stroke-width="7"/><path d="M184 480L296 480" stroke="#7b6674" stroke-width="11"/>
+</g>
+</svg>

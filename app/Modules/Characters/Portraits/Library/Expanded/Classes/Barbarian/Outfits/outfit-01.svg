@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="barbarian outfit 1">
+<g data-portrait-layer="outfit" data-wardrobe-class="barbarian" data-wardrobe-variant="1">
+
+<path d="M132 548L151 423Q164 361 205 337L240 375L275 337Q316 361 329 423L348 548Z"
+ fill="#7d4a32" stroke="#40271d" stroke-width="8" stroke-linejoin="round"/>
+<path d="M205 337L240 375L275 337" fill="none" stroke="#b5754d" stroke-width="11" stroke-linecap="round"/>
+<path d="M158 431Q240 474 322 431" fill="none" stroke="#b5754d" stroke-width="8" opacity=".78"/>
+<path d="M176 522H304" stroke="#40271d" stroke-width="9" opacity=".45"/>
+<path d="M150 391L187 350L213 389L240 348L268 389L294 350L330 391" fill="#8b6d53" stroke="#4e3325" stroke-width="7"/><path d="M168 458L312 458" stroke="#d1a272" stroke-width="11" stroke-dasharray="13 9"/>
+</g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="wizard outfit 2">
+<g data-portrait-layer="outfit" data-wardrobe-class="wizard" data-wardrobe-variant="2">
+
+<path d="M122 548L145 408Q157 358 198 329L240 392L282 329Q323 358 335 408L358 548Z"
+ fill="#7d5ca3" stroke="#302446" stroke-width="8" stroke-linejoin="round"/>
+<path d="M198 329L240 392L282 329" fill="#4f3b77" stroke="#302446" stroke-width="6" stroke-linejoin="round"/>
+<path d="M151 419Q240 455 329 419" fill="none" stroke="#8b62b5" stroke-width="8" opacity=".72"/>
+<path d="M168 502Q240 525 312 502" fill="none" stroke="#4f3b77" stroke-width="10" opacity=".8"/>
+<path d="M158 405Q240 360 322 405" fill="none" stroke="#8b62b5" stroke-width="12"/><path d="M195 493L240 458L285 493" fill="none" stroke="#d5b15e" stroke-width="8"/>
+</g>
+</svg>

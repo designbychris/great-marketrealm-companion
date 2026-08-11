@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="druid outfit 2">
+<g data-portrait-layer="outfit" data-wardrobe-class="druid" data-wardrobe-variant="2">
+
+<path d="M122 548L145 408Q157 358 198 329L240 392L282 329Q323 358 335 408L358 548Z"
+ fill="#8f9f5d" stroke="#30452e" stroke-width="8" stroke-linejoin="round"/>
+<path d="M198 329L240 392L282 329" fill="#537347" stroke="#30452e" stroke-width="6" stroke-linejoin="round"/>
+<path d="M151 419Q240 455 329 419" fill="none" stroke="#77a95e" stroke-width="8" opacity=".72"/>
+<path d="M168 502Q240 525 312 502" fill="none" stroke="#537347" stroke-width="10" opacity=".8"/>
+<path d="M159 408Q198 376 221 406Q240 367 259 406Q282 376 321 408" fill="#6f8b4c" stroke="#355033" stroke-width="7"/><path d="M179 504Q240 468 301 504" fill="none" stroke="#9bb16a" stroke-width="9"/>
+</g>
+</svg>

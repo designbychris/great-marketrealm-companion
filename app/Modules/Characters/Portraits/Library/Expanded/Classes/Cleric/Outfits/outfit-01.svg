@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="cleric outfit 1">
+<g data-portrait-layer="outfit" data-wardrobe-class="cleric" data-wardrobe-variant="1">
+
+<path d="M132 548L151 423Q164 361 205 337L240 375L275 337Q316 361 329 423L348 548Z"
+ fill="#e3d6b5" stroke="#55423d" stroke-width="8" stroke-linejoin="round"/>
+<path d="M205 337L240 375L275 337" fill="none" stroke="#805c8b" stroke-width="11" stroke-linecap="round"/>
+<path d="M158 431Q240 474 322 431" fill="none" stroke="#805c8b" stroke-width="8" opacity=".78"/>
+<path d="M176 522H304" stroke="#55423d" stroke-width="9" opacity=".45"/>
+<path d="M220 363V532M260 363V532" stroke="#f1e2b0" stroke-width="18" opacity=".8"/><circle cx="240" cy="445" r="15" fill="#d2ad57" stroke="#fff2bf" stroke-width="5"/>
+</g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="paladin outfit 2">
+<g data-portrait-layer="outfit" data-wardrobe-class="paladin" data-wardrobe-variant="2">
+
+<path d="M122 548L145 408Q157 358 198 329L240 392L282 329Q323 358 335 408L358 548Z"
+ fill="#755082" stroke="#4a3b42" stroke-width="8" stroke-linejoin="round"/>
+<path d="M198 329L240 392L282 329" fill="#d7d1bd" stroke="#4a3b42" stroke-width="6" stroke-linejoin="round"/>
+<path d="M151 419Q240 455 329 419" fill="none" stroke="#f1ca62" stroke-width="8" opacity=".72"/>
+<path d="M168 502Q240 525 312 502" fill="none" stroke="#d7d1bd" stroke-width="10" opacity=".8"/>
+<path d="M151 392L199 347L240 383L281 347L329 392L312 466L168 466Z" fill="#bfc3c2" stroke="#51454e" stroke-width="8"/><path d="M240 376V514" stroke="#d7b65f" stroke-width="13"/>
+</g>
+</svg>

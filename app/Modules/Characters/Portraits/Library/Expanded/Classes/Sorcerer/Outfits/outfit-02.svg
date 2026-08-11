@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="sorcerer outfit 2">
+<g data-portrait-layer="outfit" data-wardrobe-class="sorcerer" data-wardrobe-variant="2">
+
+<path d="M122 548L145 408Q157 358 198 329L240 392L282 329Q323 358 335 408L358 548Z"
+ fill="#c25b83" stroke="#462643" stroke-width="8" stroke-linejoin="round"/>
+<path d="M198 329L240 392L282 329" fill="#7d3e74" stroke="#462643" stroke-width="6" stroke-linejoin="round"/>
+<path d="M151 419Q240 455 329 419" fill="none" stroke="#df6aa5" stroke-width="8" opacity=".72"/>
+<path d="M168 502Q240 525 312 502" fill="none" stroke="#7d3e74" stroke-width="10" opacity=".8"/>
+<path d="M166 393Q240 353 314 393" fill="none" stroke="#df6aa5" stroke-width="13"/><path d="M194 485Q240 451 286 485" fill="none" stroke="#dd9ac0" stroke-width="8"/>
+</g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="artificer outfit 1">
+<g data-portrait-layer="outfit" data-wardrobe-class="artificer" data-wardrobe-variant="1">
+
+<path d="M132 548L151 423Q164 361 205 337L240 375L275 337Q316 361 329 423L348 548Z"
+ fill="#8a5c3e" stroke="#4a3024" stroke-width="8" stroke-linejoin="round"/>
+<path d="M205 337L240 375L275 337" fill="none" stroke="#c99145" stroke-width="11" stroke-linecap="round"/>
+<path d="M158 431Q240 474 322 431" fill="none" stroke="#c99145" stroke-width="8" opacity=".78"/>
+<path d="M176 522H304" stroke="#4a3024" stroke-width="9" opacity=".45"/>
+<path d="M176 394L201 513M304 394L279 513" stroke="#d2ad72" stroke-width="8"/><circle cx="240" cy="447" r="17" fill="#6a3d78" stroke="#e2c778" stroke-width="5"/>
+</g>
+</svg>

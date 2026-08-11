@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="monk class effect">
+<g data-portrait-layer="class_effects" data-wardrobe-class="monk" data-wardrobe-variant="1">
+<circle cx="240" cy="225" r="142" fill="none" stroke="#6d3c7e" stroke-width="5" stroke-dasharray="12 16" opacity=".45"/><path d="M91 293Q128 254 162 293Q128 333 91 293ZM389 293Q352 254 318 293Q352 333 389 293Z" fill="none" stroke="#6d3c7e" stroke-width="6" opacity=".55"/>
+</g>
+</svg>

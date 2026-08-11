@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="monk outfit 1">
+<g data-portrait-layer="outfit" data-wardrobe-class="monk" data-wardrobe-variant="1">
+
+<path d="M132 548L151 423Q164 361 205 337L240 375L275 337Q316 361 329 423L348 548Z"
+ fill="#9a633f" stroke="#503522" stroke-width="8" stroke-linejoin="round"/>
+<path d="M205 337L240 375L275 337" fill="none" stroke="#d4a45f" stroke-width="11" stroke-linecap="round"/>
+<path d="M158 431Q240 474 322 431" fill="none" stroke="#d4a45f" stroke-width="8" opacity=".78"/>
+<path d="M176 522H304" stroke="#503522" stroke-width="9" opacity=".45"/>
+<path d="M156 430L324 430" stroke="#6d3c7e" stroke-width="16"/><path d="M240 430L212 522" stroke="#6d3c7e" stroke-width="12"/>
+</g>
+</svg>

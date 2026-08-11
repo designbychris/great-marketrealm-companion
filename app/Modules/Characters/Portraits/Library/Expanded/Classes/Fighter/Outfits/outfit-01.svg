@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="fighter outfit 1">
+<g data-portrait-layer="outfit" data-wardrobe-class="fighter" data-wardrobe-variant="1">
+
+<path d="M132 548L151 423Q164 361 205 337L240 375L275 337Q316 361 329 423L348 548Z"
+ fill="#66717b" stroke="#343b42" stroke-width="8" stroke-linejoin="round"/>
+<path d="M205 337L240 375L275 337" fill="none" stroke="#a2a8ac" stroke-width="11" stroke-linecap="round"/>
+<path d="M158 431Q240 474 322 431" fill="none" stroke="#a2a8ac" stroke-width="8" opacity=".78"/>
+<path d="M176 522H304" stroke="#343b42" stroke-width="9" opacity=".45"/>
+<path d="M155 392L203 351L240 390L277 351L325 392L306 455L174 455Z" fill="#8f989f" stroke="#3b4146" stroke-width="7"/><path d="M190 472H290" stroke="#c3c7c6" stroke-width="10"/>
+</g>
+</svg>

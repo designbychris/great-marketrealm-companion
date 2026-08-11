@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="warlock outfit 1">
+<g data-portrait-layer="outfit" data-wardrobe-class="warlock" data-wardrobe-variant="1">
+
+<path d="M132 548L151 423Q164 361 205 337L240 375L275 337Q316 361 329 423L348 548Z"
+ fill="#342c42" stroke="#201c2a" stroke-width="8" stroke-linejoin="round"/>
+<path d="M205 337L240 375L275 337" fill="none" stroke="#68466f" stroke-width="11" stroke-linecap="round"/>
+<path d="M158 431Q240 474 322 431" fill="none" stroke="#68466f" stroke-width="8" opacity=".78"/>
+<path d="M176 522H304" stroke="#201c2a" stroke-width="9" opacity=".45"/>
+<path d="M158 394Q240 344 322 394" fill="#292535" stroke="#1c1922" stroke-width="8"/><path d="M182 467Q240 500 298 467" fill="none" stroke="#755280" stroke-width="9"/>
+</g>
+</svg>

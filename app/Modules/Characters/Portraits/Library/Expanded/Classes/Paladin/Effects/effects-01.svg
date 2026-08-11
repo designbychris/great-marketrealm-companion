@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="paladin class effect">
+<g data-portrait-layer="class_effects" data-wardrobe-class="paladin" data-wardrobe-variant="1">
+<path d="M240 48L258 91L304 96L269 126L279 172L240 147L201 172L211 126L176 96L222 91Z" fill="#f1ca62" opacity=".45"/><circle cx="240" cy="218" r="142" fill="none" stroke="#f1ca62" stroke-width="5" opacity=".3"/>
+</g>
+</svg>

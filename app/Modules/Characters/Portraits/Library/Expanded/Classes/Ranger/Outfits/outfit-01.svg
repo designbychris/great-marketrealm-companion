@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="ranger outfit 1">
+<g data-portrait-layer="outfit" data-wardrobe-class="ranger" data-wardrobe-variant="1">
+
+<path d="M132 548L151 423Q164 361 205 337L240 375L275 337Q316 361 329 423L348 548Z"
+ fill="#526343" stroke="#2f3929" stroke-width="8" stroke-linejoin="round"/>
+<path d="M205 337L240 375L275 337" fill="none" stroke="#87704c" stroke-width="11" stroke-linecap="round"/>
+<path d="M158 431Q240 474 322 431" fill="none" stroke="#87704c" stroke-width="8" opacity=".78"/>
+<path d="M176 522H304" stroke="#2f3929" stroke-width="9" opacity=".45"/>
+<path d="M150 389Q240 337 330 389L307 425Q240 395 173 425Z" fill="#3f5038" stroke="#283326" stroke-width="7"/><path d="M178 478L302 478" stroke="#8e7652" stroke-width="12"/>
+</g>
+</svg>

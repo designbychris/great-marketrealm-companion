@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="warlock class effect">
+<g data-portrait-layer="class_effects" data-wardrobe-class="warlock" data-wardrobe-variant="1">
+<path d="M72 244Q107 204 142 244Q107 284 72 244ZM408 244Q373 204 338 244Q373 284 408 244Z" fill="none" stroke="#7b45a1" stroke-width="7" opacity=".55"/><circle cx="107" cy="244" r="10" fill="#7b45a1" opacity=".65"/><circle cx="373" cy="244" r="10" fill="#7b45a1" opacity=".65"/>
+</g>
+</svg>
