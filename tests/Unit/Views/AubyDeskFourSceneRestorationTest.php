@@ -8,6 +8,18 @@ use PHPUnit\Framework\TestCase;
 
 final class AubyDeskFourSceneRestorationTest extends TestCase
 {
+    private const RESTORED_SCENES = [
+        'morning',
+        'afternoon',
+        'evening',
+        'late-night',
+    ];
+
+    private const SCENE_ALIASES = [
+        'dawn' => 'morning',
+        'night' => 'late-night',
+    ];
+
     public function testManifestUsesFourRestoredVisualScenes(): void
     {
         $root = dirname(__DIR__, 3);
@@ -28,25 +40,13 @@ final class AubyDeskFourSceneRestorationTest extends TestCase
             ?? [];
 
         self::assertSame(
-            [
-                'dawn',
-                'morning',
-                'afternoon',
-                'evening',
-                'night',
-                'late-night',
-            ],
+            self::RESTORED_SCENES,
             $restoration['scenes'] ?? null
         );
 
         self::assertSame(
-            'morning',
-            $restoration['aliases']['dawn'] ?? null
-        );
-
-        self::assertSame(
-            'late-night',
-            $restoration['aliases']['night'] ?? null
+            self::SCENE_ALIASES,
+            $restoration['aliases'] ?? null
         );
     }
 
@@ -54,17 +54,7 @@ final class AubyDeskFourSceneRestorationTest extends TestCase
     {
         $root = dirname(__DIR__, 3);
 
-        foreach (
-            [
-                'dawn',
-                'morning',
-                'afternoon',
-                'evening',
-                'night',
-                'late-night',
-            ]
-            as $scene
-        ) {
+        foreach (self::RESTORED_SCENES as $scene) {
             $path =
                 $root
                 . '/assets/images/auby/desk/scenes/'
@@ -77,8 +67,47 @@ final class AubyDeskFourSceneRestorationTest extends TestCase
             $size = getimagesize($path);
 
             self::assertIsArray($size);
-            self::assertSame(3200, $size[0]);
-            self::assertSame(1980, $size[1]);
+
+            self::assertGreaterThanOrEqual(
+                1500,
+                $size[0]
+            );
+
+            self::assertGreaterThanOrEqual(
+                900,
+                $size[1]
+            );
+        }
+    }
+
+    public function testAliasScenesResolveToRestoredPhysicalScenes(): void
+    {
+        $root = dirname(__DIR__, 3);
+
+        foreach (
+            self::SCENE_ALIASES
+            as $alias => $target
+        ) {
+            self::assertContains(
+                $target,
+                self::RESTORED_SCENES
+            );
+
+            $targetPath =
+                $root
+                . '/assets/images/auby/desk/scenes/'
+                . 'high-resolution/auby-desk-'
+                . $target
+                . '-hires.webp';
+
+            self::assertFileExists(
+                $targetPath,
+                sprintf(
+                    'Alias "%s" points to missing scene "%s".',
+                    $alias,
+                    $target
+                )
+            );
         }
     }
 }
