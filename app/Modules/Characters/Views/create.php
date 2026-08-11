@@ -415,6 +415,20 @@ $charactersUrl = add_query_arg(
         
         <input
             type="hidden"
+            name="portrait_class_effects"
+            value=""
+            data-portrait-field="class_effects"
+        >
+
+        <input
+            type="hidden"
+            name="portrait_guild_ornament"
+            value=""
+            data-portrait-field="guild_ornament"
+        >
+
+        <input
+            type="hidden"
             name="portrait_frame"
             value=""
             data-portrait-field="frame"
