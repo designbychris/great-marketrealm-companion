@@ -108,6 +108,10 @@ $isCustom =
     && is_string($customPortraitUrl)
     && $customPortraitUrl !== '';
 
+$controlsEnabled = isset($controlsEnabled)
+    ? (bool) $controlsEnabled
+    : true;
+
 /*
  * Resolve generated SVG markup.
  *
@@ -293,6 +297,9 @@ if ($isCustom) {
         instanceof PortraitViewModel
             ? 'true'
             : 'false'; ?>"
+    data-portrait-controls="<?php echo $controlsEnabled
+        ? 'true'
+        : 'false'; ?>"
 >
     <div class="gmrc-illuminated-portrait__frame">
         <span
