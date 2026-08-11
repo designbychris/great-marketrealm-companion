@@ -111,6 +111,8 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Requests {
                 'portrait_outfit',
                 'portrait_equipment',
                 'portrait_accessory',
+                'portrait_class_effects',
+                'portrait_guild_ornament',
                 'portrait_frame',
                 'portrait_effects',
             ],
