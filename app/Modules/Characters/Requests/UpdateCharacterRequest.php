@@ -22,6 +22,23 @@ final class UpdateCharacterRequest extends FormRequest
 {
     use ResolvesRegistrationInput;
 
+    /** @var array<int,string> */
+    private const PORTRAIT_FIELDS = [
+        'portrait_seed',
+        'portrait_background',
+        'portrait_body',
+        'portrait_head',
+        'portrait_eyes',
+        'portrait_mouth',
+        'portrait_palette',
+        'portrait_heritage',
+        'portrait_outfit',
+        'portrait_equipment',
+        'portrait_accessory',
+        'portrait_frame',
+        'portrait_effects',
+    ];
+
     /**
      * Determine whether the current user
      * may edit Characters.
@@ -38,7 +55,7 @@ final class UpdateCharacterRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => [
                 'required',
                 'string',
@@ -56,6 +73,15 @@ final class UpdateCharacterRequest extends FormRequest
                 ),
             ],
         ];
+
+        foreach (self::PORTRAIT_FIELDS as $field) {
+            $rules[$field] = [
+                'string',
+                'max:150',
+            ];
+        }
+
+        return $rules;
     }
 
     /**
@@ -103,6 +129,30 @@ final class UpdateCharacterRequest extends FormRequest
             'background' => $input->string(
                 'background'
             ),
+        ];
+    }
+
+    /** @return array{seed:string,layers:array<string,string>} */
+    public function portraitData(): array
+    {
+        $input = $this->validated();
+
+        return [
+            'seed' => $input->string('portrait_seed'),
+            'layers' => [
+                'background' => $input->string('portrait_background'),
+                'body' => $input->string('portrait_body'),
+                'head' => $input->string('portrait_head'),
+                'eyes' => $input->string('portrait_eyes'),
+                'mouth' => $input->string('portrait_mouth'),
+                'palette' => $input->string('portrait_palette'),
+                'heritage' => $input->string('portrait_heritage'),
+                'outfit' => $input->string('portrait_outfit'),
+                'equipment' => $input->string('portrait_equipment'),
+                'class_accessory' => $input->string('portrait_accessory'),
+                'frame' => $input->string('portrait_frame'),
+                'effects' => $input->string('portrait_effects'),
+            ],
         ];
     }
 }
