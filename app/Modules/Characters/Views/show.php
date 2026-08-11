@@ -343,6 +343,7 @@ $backgroundSkills = array_map(
                     'components.media.illuminated-portrait',
                     [
                         'portrait' => $portrait,
+                        'controlsEnabled' => false,
                     ]
                 );
 

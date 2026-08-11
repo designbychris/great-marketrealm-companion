@@ -182,6 +182,31 @@ $gamingSetValue = isset($old['gaming_set'])
         ? (string) $old['gaming_set']
         : '';
 
+
+$portraitLayer = static function (
+    string $slot
+) use ($portrait): string {
+    if (
+        ! isset($portrait)
+        || ! is_object($portrait)
+        || ! method_exists($portrait, 'layer')
+    ) {
+        return '';
+    }
+
+    $value = $portrait->layer($slot);
+
+    return is_string($value)
+        ? $value
+        : '';
+};
+
+$portraitSeed = isset($portrait)
+    && is_object($portrait)
+    && method_exists($portrait, 'seed')
+        ? (string) ($portrait->seed() ?? '')
+        : '';
+
 foreach ($selectedTools as $selectedTool) {
     if (! ToolProficiency::supports($selectedTool)) {
         continue;
@@ -269,6 +294,20 @@ foreach ($selectedTools as $selectedTool) {
             value="1"
         >
 
+        <input type="hidden" name="portrait_seed" value="<?php echo esc_attr($portraitSeed); ?>" data-portrait-field="seed">
+        <input type="hidden" name="portrait_background" value="<?php echo esc_attr($portraitLayer('background')); ?>" data-portrait-field="background">
+        <input type="hidden" name="portrait_body" value="<?php echo esc_attr($portraitLayer('body')); ?>" data-portrait-field="body">
+        <input type="hidden" name="portrait_head" value="<?php echo esc_attr($portraitLayer('head')); ?>" data-portrait-field="head">
+        <input type="hidden" name="portrait_eyes" value="<?php echo esc_attr($portraitLayer('eyes')); ?>" data-portrait-field="eyes">
+        <input type="hidden" name="portrait_mouth" value="<?php echo esc_attr($portraitLayer('mouth')); ?>" data-portrait-field="mouth">
+        <input type="hidden" name="portrait_palette" value="<?php echo esc_attr($portraitLayer('palette')); ?>" data-portrait-field="palette">
+        <input type="hidden" name="portrait_heritage" value="<?php echo esc_attr($portraitLayer('heritage')); ?>" data-portrait-field="heritage">
+        <input type="hidden" name="portrait_outfit" value="<?php echo esc_attr($portraitLayer('outfit')); ?>" data-portrait-field="outfit">
+        <input type="hidden" name="portrait_equipment" value="<?php echo esc_attr($portraitLayer('equipment')); ?>" data-portrait-field="equipment">
+        <input type="hidden" name="portrait_accessory" value="<?php echo esc_attr($portraitLayer('class_accessory')); ?>" data-portrait-field="class_accessory">
+        <input type="hidden" name="portrait_frame" value="<?php echo esc_attr($portraitLayer('frame')); ?>" data-portrait-field="frame">
+        <input type="hidden" name="portrait_effects" value="<?php echo esc_attr($portraitLayer('effects')); ?>" data-portrait-field="effects">
+
         <?php
         wp_nonce_field(
             'gmrc_update_character_' . $characterId,
@@ -352,6 +391,46 @@ foreach ($selectedTools as $selectedTool) {
                     </p>
                 </div>
             </div>
+        </section>
+
+        <section class="gmrc-form-section gmrc-private-studio" aria-labelledby="gmrc-private-studio-title">
+            <header class="gmrc-private-studio__header">
+                <p class="gmrc-eyebrow">Guild Illuminator</p>
+                <h2 id="gmrc-private-studio-title">The Illuminator’s Private Studio</h2>
+                <p>
+                    Adjust the generated Guild portrait beneath this
+                    adventurer’s record, then save the page when it is ready.
+                </p>
+            </header>
+
+            <div class="gmrc-private-studio__workspace">
+                <div class="gmrc-private-studio__portrait">
+                    <?php
+                    echo $this->component(
+                        'components.media.illuminated-portrait',
+                        [
+                            'portrait' => $portrait,
+                            'controlsEnabled' => true,
+                        ]
+                    );
+                    ?>
+                </div>
+
+                <div class="gmrc-private-studio__controls" data-private-studio-controls>
+                    <p class="gmrc-private-studio__waiting">
+                        ✦ The Illuminator is arranging the portrait tools…
+                    </p>
+                </div>
+            </div>
+
+            <aside class="gmrc-private-studio__note">
+                <span aria-hidden="true">✦</span>
+                <p>
+                    <strong>Custom uploaded portraits stay untouched.</strong>
+                    These controls amend the generated Guild illustration
+                    underneath, ready for whenever it is restored.
+                </p>
+            </aside>
         </section>
 
         <section class="gmrc-form-section">
