@@ -405,6 +405,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' =>   'components/media/portrait-studio-controls.css',
             ],
             [
+                'handle' => 'gmrc-illuminators-workbench-polish',
+                'path' => 'modules/characters/illuminators-workbench-polish.css',
+            ],
+            [
                 'handle' => 'gmrc-auby-note',
                 'path' => 'components/furniture/auby-note.css',
             ],
