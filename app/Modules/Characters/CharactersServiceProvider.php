@@ -25,6 +25,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitSvgA
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\SubmittedPortraitRecipeFactory;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\BackgroundLayerRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\BodyLayerRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\HeritageLayerRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\ClassLayerRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\EffectsLayerRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\Layers\AccessoryLayerRenderer;
@@ -194,6 +195,9 @@ final class CharactersServiceProvider extends ServiceProvider
                             $container->make(PortraitSvgAssetLibrary::class)
                         ),
                         new BodyLayerRenderer(
+                            $container->make(PortraitSvgAssetLibrary::class)
+                        ),
+                        new HeritageLayerRenderer(
                             $container->make(PortraitSvgAssetLibrary::class)
                         ),
                         new AssetFaceLayerRenderer(
