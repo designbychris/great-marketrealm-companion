@@ -7,6 +7,51 @@
 
     const timers = new WeakMap();
 
+    /**
+     * Phase III.7.3.4 — The Living Illuminator.
+     *
+     * Generation 1 / expanded-library portraits do not have the bespoke
+     * painted anatomy hooks used by Project Golden Apple.  Instead they
+     * receive a deliberately subtle race-led motion profile.  Keeping the
+     * profile on the SVG dataset means CSS owns the movement while this
+     * controller remains responsible for lifecycle and accessibility.
+     */
+    const livingProfiles = Object.freeze({
+        fructan: 'sprightly',
+        vegfolk: 'sprightly',
+        herbfolk: 'sprightly',
+        rootkin: 'grounded',
+        fungifolk: 'sporebound',
+        'drink-folk': 'effervescent',
+        boxfolk: 'clockwork',
+        dairyfolk: 'gentle',
+        sweetfolk: 'buoyant',
+        fluffling: 'buoyant',
+        'marshmallow-folk': 'buoyant',
+        frostreem: 'frosted',
+        meatfolk: 'grounded',
+        meatkin: 'grounded',
+        recalled: 'uncanny',
+        melonian: 'sprightly',
+        stalker: 'sprightly'
+    });
+
+    const applyLivingProfile = function (studio, portrait) {
+        if (portrait.dataset.portraitGeneration === '2') {
+            portrait.dataset.livingPortrait = 'golden-apple';
+            return;
+        }
+
+        const race = (studio.dataset.portraitRace || '')
+            .trim()
+            .toLowerCase();
+
+        const profile = livingProfiles[race] || 'gentle';
+
+        portrait.dataset.livingPortrait = profile;
+        portrait.dataset.livingReady = 'true';
+    };
+
     const clearTimer = function (portrait) {
         const timer = timers.get(portrait);
 
@@ -98,6 +143,8 @@
             return;
         }
 
+        applyLivingProfile(studio, portrait);
+
         const persisted =
             studio.dataset.portraitPersisted === 'true';
 
@@ -137,6 +184,7 @@
         studio.addEventListener(
             'gmrc:portrait:generation-changed',
             function () {
+                applyLivingProfile(studio, portrait);
                 scheduleBlink(portrait);
             }
         );
