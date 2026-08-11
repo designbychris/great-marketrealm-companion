@@ -71,9 +71,15 @@
             '.gmrc-portrait-layers'
         );
 
+        /*
+         * Generation 2 composition is a Character Creator concern.
+         * Persisted portraits already contain the correct server-rendered
+         * collection and the Private Studio must preserve that markup.
+         */
         if (
             !(form instanceof HTMLFormElement)
             || !(svg instanceof SVGElement)
+            || studio.dataset.portraitPersisted === 'true'
         ) {
             return;
         }

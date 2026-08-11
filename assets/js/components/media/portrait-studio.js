@@ -438,10 +438,21 @@
             const form = studio.closest('form');
 
             /*
-             * Saved portraits are rendered by PHP and do not need
-             * the live provisional recipe.
+             * Saved portraits are rendered by PHP and must never be
+             * replaced by the Character Creator's provisional recipe.
+             *
+             * The Edit Adventurer Private Studio deliberately lives inside
+             * a form, so checking for a form alone is no longer enough.
+             * Its race/class fields are display-only; allowing this legacy
+             * controller to run there would resolve both values as empty and
+             * erase the persisted body, heritage and class layers.
+             *
+             * Persisted portraits are owned by the modular Workbench.
              */
-            if (!(form instanceof HTMLFormElement)) {
+            if (
+                !(form instanceof HTMLFormElement)
+                || studio.dataset.portraitPersisted === 'true'
+            ) {
                 return;
             }
 
