@@ -150,6 +150,8 @@
                     !(studio instanceof HTMLElement)
                     || studio.dataset
                         .portraitControlsReady === 'true'
+                    || studio.dataset
+                        .portraitControls === 'false'
                 ) {
                     return;
                 }

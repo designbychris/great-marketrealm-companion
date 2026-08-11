@@ -176,10 +176,28 @@
 
             controls.appendChild(this.status);
 
-            this.app.studio.insertAdjacentElement(
-                'afterend',
-                controls
-            );
+            const privateStudio =
+                this.app.studio.closest(
+                    '.gmrc-private-studio'
+                );
+
+            const privateControls =
+                privateStudio instanceof HTMLElement
+                    ? privateStudio.querySelector(
+                        '[data-private-studio-controls]'
+                    )
+                    : null;
+
+            if (privateControls instanceof HTMLElement) {
+                privateControls.replaceChildren(
+                    controls
+                );
+            } else {
+                this.app.studio.insertAdjacentElement(
+                    'afterend',
+                    controls
+                );
+            }
 
             if (
                 ledger instanceof HTMLElement
