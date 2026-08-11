@@ -305,6 +305,8 @@ foreach ($selectedTools as $selectedTool) {
         <input type="hidden" name="portrait_outfit" value="<?php echo esc_attr($portraitLayer('outfit')); ?>" data-portrait-field="outfit">
         <input type="hidden" name="portrait_equipment" value="<?php echo esc_attr($portraitLayer('equipment')); ?>" data-portrait-field="equipment">
         <input type="hidden" name="portrait_accessory" value="<?php echo esc_attr($portraitLayer('class_accessory')); ?>" data-portrait-field="class_accessory">
+        <input type="hidden" name="portrait_class_effects" value="<?php echo esc_attr($portraitLayer('class_effects')); ?>" data-portrait-field="class_effects">
+        <input type="hidden" name="portrait_guild_ornament" value="<?php echo esc_attr($portraitLayer('guild_ornament')); ?>" data-portrait-field="guild_ornament">
         <input type="hidden" name="portrait_frame" value="<?php echo esc_attr($portraitLayer('frame')); ?>" data-portrait-field="frame">
         <input type="hidden" name="portrait_effects" value="<?php echo esc_attr($portraitLayer('effects')); ?>" data-portrait-field="effects">
 
