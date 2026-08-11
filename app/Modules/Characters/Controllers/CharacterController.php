@@ -336,6 +336,53 @@ final class CharacterController
             $character
         );
 
+        $submittedRecipe = $this
+            ->submittedPortraits
+            ->create(
+                $request->portraitData(),
+                $character->race()->value(),
+                $character
+                    ->characterClass()
+                    ->value()
+            );
+
+        if ($submittedRecipe !== null) {
+            $portraitRepository =
+                new CharacterPortraitRepository();
+
+            $existingPortrait =
+                $portraitRepository->find(
+                    $character->id()
+                );
+
+            if (
+                $existingPortrait
+                    instanceof CharacterPortrait
+                && $existingPortrait
+                    ->mode()
+                    ->isCustom()
+                && $existingPortrait
+                    ->attachmentId()
+                    instanceof PortraitAttachmentId
+            ) {
+                $portraitRepository->save(
+                    $character->id(),
+                    CharacterPortrait::custom(
+                        $existingPortrait
+                            ->attachmentId(),
+                        $submittedRecipe
+                    )
+                );
+            } else {
+                $portraitRepository->save(
+                    $character->id(),
+                    CharacterPortrait::generated(
+                        $submittedRecipe
+                    )
+                );
+            }
+        }
+
         $this->flash->success(
             'The adventurer’s register has been updated.'
         );
@@ -774,6 +821,11 @@ final class CharacterController
                 'characters.edit',
                 [
                     'character' => $character,
+                    'portrait' => $this
+                        ->portraitRenderer
+                        ->forWorkbench(
+                            $character
+                        ),
                     'raceOptions' => $this
                         ->raceRegistry
                         ->options(),
