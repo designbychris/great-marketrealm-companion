@@ -4,10 +4,46 @@ declare(strict_types=1);
 
 defined('ABSPATH') || exit;
 
-$note = trim((string) ($note ?? __('I left your Guild Journal open for you. I was absolutely not reading it.', 'great-marketrealm-companion')));
-$sceneBase = GMRC_URL . 'assets/images/auby/desk/scenes/';
+$note = trim(
+    (string) (
+        $note
+        ?? __(
+            'I left your Guild Journal open for you. '
+            . 'I was absolutely not reading it.',
+            'great-marketrealm-companion'
+        )
+    )
+);
+
+$sceneBase =
+    GMRC_URL
+    . 'assets/images/auby/desk/scenes/';
+
+$scenePath =
+    GMRC_PATH
+    . 'assets/images/auby/desk/scenes/';
+
+$initialScene = 'afternoon';
+
+$initialSceneRelative =
+    'high-resolution/auby-desk-'
+    . $initialScene
+    . '-hires.webp';
+
+$initialSceneFile =
+    $scenePath
+    . $initialSceneRelative;
+
+$initialSceneUrl =
+    $sceneBase
+    . $initialSceneRelative;
+
+if (is_file($initialSceneFile)) {
+    $initialSceneUrl .= '?ver='
+        . (string) filemtime($initialSceneFile);
+}
 ?>
-<section class="gmrc-auby-desk" data-auby-desk data-guild-hall-daypart="afternoon" data-auby-scene-base="<?php echo esc_url($sceneBase); ?>" style="<?php echo esc_attr('--gmrc-auby-desk-scene: url(' . $sceneBase . 'high-resolution/auby-desk-afternoon-hires.webp);'); ?>" aria-labelledby="gmrc-auby-desk-title">
+<section class="gmrc-auby-desk" data-auby-desk data-guild-hall-daypart="<?php echo esc_attr($initialScene); ?>" data-auby-scene-base="<?php echo esc_url($sceneBase); ?>" style="<?php echo esc_attr( '--gmrc-auby-desk-scene: url("'. $initialSceneUrl . '");' ); ?>" aria-labelledby="gmrc-auby-desk-title" >
     <span class="gmrc-auby-desk__window-glow" data-auby-ambient="window-glow" aria-hidden="true"></span>
     <span class="gmrc-auby-desk__lamp-glow" data-auby-ambient="lamp-glow" aria-hidden="true"></span>
     <span class="gmrc-auby-desk__steam gmrc-auby-desk__steam--one" data-auby-ambient="steam" aria-hidden="true"></span>
