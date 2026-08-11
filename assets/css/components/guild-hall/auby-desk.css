@@ -87,8 +87,9 @@
  * Zzz can only exist in the late-night scene AND when the
  * manifest explicitly enables the sleep ambience.
  */
-.gmrc-auby-desk[data-guild-hall-daypart="late-night"]
-[data-ambient~="sleep"]
+.gmrc-auby-desk[data-guild-hall-daypart="late-night"][
+    data-ambient~="sleep"
+]
 .gmrc-auby-desk__sleep {
     display: block;
     opacity: 1;
