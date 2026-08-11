@@ -24,10 +24,10 @@ final class AubyDeskHeroLibraryTest extends TestCase
         ) {
             self::assertFileExists(
                 $root
-                . '/assets/images/auby/desk/scenes/'
+                . '/assets/images/auby/desk/scenes/high-resolution/'
                 . 'auby-desk-'
                 . $scene
-                . '-hero.webp'
+                . '-hires.webp'
             );
         }
     }
