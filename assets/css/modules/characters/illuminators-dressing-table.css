@@ -702,3 +702,22 @@
             minmax(3.55rem, auto);
     }
 }
+
+/* ===============================================================
+ * Phase III.7.3.3 — Guild Wardrobe creator polish
+ * =============================================================== */
+
+.gmrc-character-creator
+.gmrc-portrait-controls__row[
+    data-portrait-control-slot="class_effects"
+],
+.gmrc-character-creator
+.gmrc-portrait-controls__row[
+    data-portrait-control-slot="guild_ornament"
+] {
+    border-color:
+        rgba(96, 55, 115, 0.28);
+
+    background:
+        rgba(239, 222, 184, 0.52);
+}

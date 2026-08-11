@@ -283,3 +283,49 @@
             auto;
     }
 }
+
+/* ===============================================================
+ * Phase III.7.3.3 — Guild Wardrobe Workbench polish
+ * =============================================================== */
+
+.gmrc-private-studio
+.gmrc-portrait-controls__row[
+    data-portrait-control-slot="class_effects"
+],
+.gmrc-private-studio
+.gmrc-portrait-controls__row[
+    data-portrait-control-slot="guild_ornament"
+] {
+    border-color:
+        rgba(96, 55, 115, 0.28);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255, 249, 229, 0.54),
+            rgba(234, 215, 178, 0.58)
+        );
+}
+
+.gmrc-private-studio
+.gmrc-portrait-controls__row[
+    data-portrait-control-slot="outfit"
+]
+.gmrc-portrait-controls__label::after,
+.gmrc-private-studio
+.gmrc-portrait-controls__row[
+    data-portrait-control-slot="equipment"
+]
+.gmrc-portrait-controls__label::after {
+    margin-left:
+        0.5rem;
+
+    color:
+        #8c6a35;
+
+    content:
+        "✦";
+
+    font-size:
+        0.62rem;
+}
