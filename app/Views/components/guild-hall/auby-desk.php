@@ -23,6 +23,49 @@ $scenePath =
     GMRC_PATH
     . 'assets/images/auby/desk/scenes/';
 
+/*
+ * One version token covers the manifest and every high-resolution desk
+ * scene. Replacing any scene therefore produces a new browser/CDN URL
+ * for both the manifest and the scene selected by JavaScript.
+ */
+$sceneVersionCandidates = [
+    $scenePath . 'manifest.json',
+];
+
+$highResolutionScenes = glob(
+    $scenePath
+    . 'high-resolution/'
+    . 'auby-desk-*-hires.webp'
+);
+
+if (is_array($highResolutionScenes)) {
+    $sceneVersionCandidates = array_merge(
+        $sceneVersionCandidates,
+        $highResolutionScenes
+    );
+}
+
+$sceneVersion = 0;
+
+foreach ($sceneVersionCandidates as $candidate) {
+    if (! is_file($candidate)) {
+        continue;
+    }
+
+    $modified = filemtime($candidate);
+
+    if (
+        is_int($modified)
+        && $modified > $sceneVersion
+    ) {
+        $sceneVersion = $modified;
+    }
+}
+
+$sceneVersionValue = $sceneVersion > 0
+    ? (string) $sceneVersion
+    : (string) GMRC_VERSION;
+
 $initialScene = 'afternoon';
 
 $initialSceneRelative =
@@ -30,20 +73,26 @@ $initialSceneRelative =
     . $initialScene
     . '-hires.webp';
 
-$initialSceneFile =
-    $scenePath
-    . $initialSceneRelative;
-
 $initialSceneUrl =
     $sceneBase
-    . $initialSceneRelative;
+    . $initialSceneRelative
+    . '?ver='
+    . rawurlencode($sceneVersionValue);
 
-if (is_file($initialSceneFile)) {
-    $initialSceneUrl .= '?ver='
-        . (string) filemtime($initialSceneFile);
-}
+$initialSceneStyle =
+    '--gmrc-auby-desk-scene: url("'
+    . $initialSceneUrl
+    . '");';
 ?>
-<section class="gmrc-auby-desk" data-auby-desk data-guild-hall-daypart="<?php echo esc_attr($initialScene); ?>" data-auby-scene-base="<?php echo esc_url($sceneBase); ?>" style="<?php echo esc_attr( '--gmrc-auby-desk-scene: url("'. $initialSceneUrl . '");' ); ?>" aria-labelledby="gmrc-auby-desk-title" >
+<section
+    class="gmrc-auby-desk"
+    data-auby-desk
+    data-guild-hall-daypart="<?php echo esc_attr($initialScene); ?>"
+    data-auby-scene-base="<?php echo esc_url($sceneBase); ?>"
+    data-auby-scene-version="<?php echo esc_attr($sceneVersionValue); ?>"
+    style="<?php echo esc_attr($initialSceneStyle); ?>"
+    aria-labelledby="gmrc-auby-desk-title"
+>
     <span class="gmrc-auby-desk__window-glow" data-auby-ambient="window-glow" aria-hidden="true"></span>
     <span class="gmrc-auby-desk__lamp-glow" data-auby-ambient="lamp-glow" aria-hidden="true"></span>
     <span class="gmrc-auby-desk__steam gmrc-auby-desk__steam--one" data-auby-ambient="steam" aria-hidden="true"></span>
@@ -112,6 +161,7 @@ if (is_file($initialSceneFile)) {
             <h2 id="gmrc-auby-desk-title" data-auby-desk-title><?php esc_html_e('Someone has been busy.', 'great-marketrealm-companion'); ?></h2>
             <p class="gmrc-auby-desk__status" data-auby-desk-status><?php esc_html_e('Auby appears to be thinking very hard about something. Possibly cake.', 'great-marketrealm-companion'); ?></p>
         </header>
+
         <div class="gmrc-auby-desk__note">
             <?php echo $this->component(
                 'components.auby.sticky-note',
