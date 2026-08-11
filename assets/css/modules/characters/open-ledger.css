@@ -1371,7 +1371,8 @@
 .gmrc-open-ledger
 .gmrc-ledger-page--identity
 .gmrc-ledger-page__portrait {
-    display: grid !important;
+    /*display: grid !important;*/
+    display:flex!important;
     grid-template-columns:
         minmax(17rem, 1fr)
         minmax(16rem, 1fr) !important;
@@ -1395,6 +1396,8 @@
 
     transform: none !important;
 }
+
+.gmrc-illuminator-workbench__upload button.gmrc-button {width:100%!important;display:block!important;min-width:200px!important;}
 
 .gmrc-open-ledger
 .gmrc-ledger-page--identity
