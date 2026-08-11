@@ -1,0 +1,193 @@
+/** Phase III.7.3.2.1 — The Illuminator's Private Studio. */
+
+.gmrc-private-studio {
+    --gmrc-private-cocoa-dark: #351d11;
+    --gmrc-private-purple: #603773;
+    --gmrc-private-purple-light: #75468d;
+}
+
+.gmrc-private-studio__header {
+    max-width: 46rem;
+    margin-bottom: 1rem;
+}
+
+.gmrc-private-studio__workspace {
+    display: grid;
+    grid-template-columns: minmax(16rem,.78fr) minmax(19rem,1.22fr);
+    gap: clamp(1rem,2vw,1.7rem);
+    align-items: start;
+}
+
+.gmrc-private-studio__portrait {
+    position: sticky;
+    top: 1rem;
+    min-width: 0;
+}
+
+.gmrc-private-studio__portrait .gmrc-illuminated-portrait {
+    width: min(100%,24rem);
+    margin-inline: auto;
+}
+
+.gmrc-private-studio__controls { min-width: 0; }
+
+.gmrc-private-studio__waiting {
+    margin: 0;
+    padding: 1rem;
+    border: 1px dashed rgba(96,55,115,.3);
+    border-radius: .45rem;
+    color: rgba(74,42,24,.62);
+    text-align: center;
+    background: rgba(255,248,225,.36);
+}
+
+.gmrc-private-studio .gmrc-portrait-controls {
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid rgba(74,42,24,.42);
+    border-radius: .55rem;
+    background: linear-gradient(180deg,rgba(251,237,198,.96),rgba(232,202,139,.93));
+}
+
+.gmrc-private-studio .gmrc-portrait-controls__rows {
+    display: grid;
+    gap: .65rem;
+}
+
+.gmrc-private-studio .gmrc-portrait-controls__row {
+    display: grid;
+    grid-template-columns: repeat(3,2.7rem) minmax(4rem,auto);
+    grid-template-areas:
+        "label label label label"
+        "previous random next position";
+    gap: .48rem;
+    align-items: center;
+    padding: .68rem;
+    border: 1px solid rgba(74,42,24,.17);
+    border-radius: .45rem;
+    background: rgba(255,249,229,.5);
+}
+
+.gmrc-private-studio .gmrc-portrait-controls__label {
+    grid-area: label;
+    color: var(--gmrc-private-cocoa-dark);
+    font-family: var(--gmrc-font-display,Georgia,serif);
+    font-size: .78rem;
+    font-weight: 850;
+}
+
+.gmrc-private-studio .gmrc-portrait-controls__button {
+    min-width: 2.7rem;
+    min-height: 2.7rem;
+    border: 1px solid rgba(53,29,17,.82);
+    border-radius: .4rem;
+    color: #fff2c8;
+    background: linear-gradient(180deg,#5b3420,var(--gmrc-private-cocoa-dark));
+}
+
+.gmrc-private-studio .gmrc-portrait-controls__button:nth-of-type(1) { grid-area: previous; }
+.gmrc-private-studio .gmrc-portrait-controls__button:nth-of-type(2) {
+    grid-area: random;
+    background: linear-gradient(180deg,var(--gmrc-private-purple-light),var(--gmrc-private-purple));
+}
+.gmrc-private-studio .gmrc-portrait-controls__button:nth-of-type(3) { grid-area: next; }
+
+.gmrc-private-studio .gmrc-portrait-controls__button:hover {
+    background: linear-gradient(180deg,var(--gmrc-private-purple-light),var(--gmrc-private-purple));
+    transform: translateY(-1px);
+}
+
+.gmrc-private-studio .gmrc-portrait-controls__button:focus-visible {
+    outline: 3px solid #e1c276;
+    outline-offset: 2px;
+}
+
+.gmrc-private-studio .gmrc-portrait-controls__position {
+    grid-area: position;
+    justify-self: end;
+    min-height: 2.2rem;
+    padding: .25rem .55rem;
+    border: 1px solid rgba(74,42,24,.2);
+    border-radius: 999px;
+    background: rgba(255,248,220,.65);
+    font-size: .65rem;
+    font-weight: 850;
+    white-space: nowrap;
+}
+
+.gmrc-private-studio .gmrc-portrait-controls__actions {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: .65rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(74,42,24,.18);
+}
+
+.gmrc-private-studio .gmrc-portrait-controls__actions .gmrc-button { width: 100%; }
+
+.gmrc-private-studio__note {
+    display: grid;
+    grid-template-columns: 2.4rem minmax(0,1fr);
+    gap: .7rem;
+    margin-top: 1rem;
+    padding: .75rem;
+    border: 1px dashed rgba(96,55,115,.32);
+    border-radius: .45rem;
+    background: rgba(255,249,229,.36);
+}
+
+.gmrc-private-studio__note > span {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    color: #f7e5b4;
+    background: var(--gmrc-private-purple);
+}
+
+.gmrc-private-studio__note p {
+    margin: 0;
+    color: rgba(62,40,27,.72);
+    font-size: .72rem;
+    line-height: 1.45;
+}
+
+.gmrc-private-studio__note strong {
+    display: block;
+    color: var(--gmrc-private-cocoa-dark);
+}
+
+/* Finished Ledger: centred portrait + upload toolkit only. */
+.gmrc-open-ledger .gmrc-ledger-page__portrait {
+    display: grid;
+    justify-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.gmrc-open-ledger .gmrc-ledger-page__portrait > .gmrc-illuminated-portrait {
+    width: min(100%,25rem);
+    margin-inline: auto;
+}
+
+.gmrc-open-ledger .gmrc-ledger-page__portrait > .gmrc-illuminator-workbench {
+    width: min(100%,31rem);
+    margin-inline: auto;
+}
+
+@media (max-width:900px) {
+    .gmrc-private-studio__workspace { grid-template-columns: 1fr; }
+    .gmrc-private-studio__portrait { position: static; }
+}
+
+@media (max-width:560px) {
+    .gmrc-private-studio .gmrc-portrait-controls__actions { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+    .gmrc-private-studio .gmrc-portrait-controls__button { transition: none; }
+    .gmrc-private-studio .gmrc-portrait-controls__button:hover { transform: none; }
+}
