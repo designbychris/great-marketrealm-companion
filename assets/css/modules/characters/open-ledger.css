@@ -2075,3 +2075,33 @@
             1 !important;
     }
 }
+
+/* ===============================================================
+ * Phase III.7.4 — The Complete Adventurer
+ * Registrar's Final Audit
+ * =============================================================== */
+.gmrc-complete-adventurer {
+    display: grid;
+    gap: 1rem;
+    padding: clamp(1rem, 2vw, 1.4rem) clamp(1rem, 2.4vw, 1.7rem);
+    border: 1px solid rgba(95, 55, 115, 0.28);
+    border-radius: 0.8rem;
+    background: linear-gradient(135deg, rgba(248, 232, 191, 0.78), rgba(238, 211, 155, 0.62));
+    box-shadow: inset 0 0 0 1px rgba(255, 248, 222, 0.5), 0 0.65rem 1.5rem rgba(68, 42, 24, 0.08);
+}
+.gmrc-complete-adventurer__header {display:flex;align-items:end;justify-content:space-between;gap:1.25rem}
+.gmrc-complete-adventurer__header h2 {margin:.1rem 0 .2rem;color:var(--gmrc-ledger-purple);font-family:var(--gmrc-font-display,Georgia,serif);font-size:clamp(1.35rem,2.2vw,2rem)}
+.gmrc-complete-adventurer__header p:last-child {margin:0;color:rgba(65,44,34,.72)}
+.gmrc-complete-adventurer__count {flex:0 0 auto;padding:.5rem .75rem;border:1px solid rgba(96,55,115,.24);border-radius:999px;color:#603773;background:rgba(255,248,220,.65);font-size:.78rem;letter-spacing:.04em;text-transform:uppercase}
+.gmrc-complete-adventurer__folios {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.55rem}
+.gmrc-complete-adventurer__folio {display:grid;grid-template-columns:auto minmax(0,1fr);gap:.6rem;align-items:start;min-width:0;padding:.7rem;border:1px solid rgba(105,70,39,.2);border-radius:.5rem;color:#412c22;background:rgba(255,247,219,.6);font:inherit;text-align:left;cursor:pointer}
+.gmrc-complete-adventurer__folio:hover {border-color:rgba(96,55,115,.42);background:rgba(255,249,229,.9)}
+.gmrc-complete-adventurer__folio:focus-visible {outline:3px solid #b88a37;outline-offset:2px}
+.gmrc-complete-adventurer__symbol {display:grid;place-items:center;width:1.8rem;height:1.8rem;border-radius:50%;color:#f8e9bf;background:#603773;font-size:.88rem}
+.gmrc-complete-adventurer__folio-copy {display:grid;gap:.08rem;min-width:0}
+.gmrc-complete-adventurer__folio-copy strong {color:#412c22;font-size:.78rem}
+.gmrc-complete-adventurer__folio-copy>span {color:#603773;font-size:.69rem;font-weight:800;letter-spacing:.025em;text-transform:uppercase}
+.gmrc-complete-adventurer__folio-copy small {display:block;margin-top:.18rem;overflow:hidden;color:rgba(65,44,34,.64);font-size:.67rem;line-height:1.3}
+@media(max-width:1180px){.gmrc-complete-adventurer__folios{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:760px){.gmrc-complete-adventurer__header{align-items:start;flex-direction:column}.gmrc-complete-adventurer__folios{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.gmrc-complete-adventurer__folios{grid-template-columns:1fr}}
