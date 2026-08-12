@@ -418,9 +418,9 @@ final class Character
     /**
      * Award experience to the Character.
      *
-     * Crossing a threshold automatically certifies each earned level and
-     * grows maximum/current hit points by fixed-average class Hit Die plus
-     * Constitution modifier. Existing damage remains represented.
+     * Experience and Guild-certified level are deliberately separate.
+     * Crossing an XP threshold makes the Character eligible for advancement;
+     * the level itself is only changed by the Advancement workflow.
      */
     public function gainExperience(
         Experience $experience
@@ -428,26 +428,40 @@ final class Character
         $this->experience = $this->experience->gain(
             $experience->value()
         );
+    }
 
-        while (
-            $this->experience->canLevelUp(
-                $this->level
-            )
-        ) {
-            $hitPointGain = max(
-                1,
-                1 + intdiv(
-                    $this->characterClass->hitDie(),
-                    2
-                ) + $this->abilityScores
-                    ->constitution()
-                    ->modifier()
-            );
+    /**
+     * Determine whether earned experience permits another certification.
+     */
+    public function canAdvance(): bool
+    {
+        return $this->experience->canLevelUp(
+            $this->level
+        );
+    }
 
-            $this->level = $this->level->next();
-            $this->hitPoints = $this->hitPoints
-                ->increaseMaximum($hitPointGain);
-        }
+    /**
+     * Return the highest level unlocked by earned experience.
+     */
+    public function highestEligibleLevel(): Level
+    {
+        $earned = $this->experience->currentLevel();
+
+        return $earned->value() < $this->level->value()
+            ? $this->level
+            : $earned;
+    }
+
+    /**
+     * Return the number of level certifications currently waiting.
+     */
+    public function pendingAdvancementLevels(): int
+    {
+        return max(
+            0,
+            $this->highestEligibleLevel()->value()
+                - $this->level->value()
+        );
     }
 
     /**
