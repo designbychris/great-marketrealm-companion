@@ -771,6 +771,21 @@ class FrontendServiceProvider extends ServiceProvider
             true
         );
 
+        $livingEffectsScriptPath =
+            GMRC_PATH
+            . 'assets/js/components/media/portrait-studio/living-effects.js';
+
+        wp_enqueue_script(
+            'gmrc-portrait-studio-living-effects',
+            GMRC_URL
+                . 'assets/js/components/media/portrait-studio/living-effects.js',
+            ['gmrc-portrait-studio-living-portrait'],
+            file_exists($livingEffectsScriptPath)
+                ? (string) filemtime($livingEffectsScriptPath)
+                : GMRC_VERSION,
+            true
+        );
+
         $registrarsDeskScriptPath =
             GMRC_PATH
             . 'assets/js/components/furniture/'
@@ -782,7 +797,7 @@ class FrontendServiceProvider extends ServiceProvider
                 . 'assets/js/components/furniture/'
                 . 'registrars-desk.js',
             [
-                'gmrc-portrait-studio-living-portrait',
+                'gmrc-portrait-studio-living-effects',
             ],
             file_exists($registrarsDeskScriptPath)
                 ? (string) filemtime(
