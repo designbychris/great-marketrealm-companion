@@ -344,6 +344,63 @@ $backgroundSkills = array_map(
                 </strong>
             </header>
 
+            <?php if (
+                ! empty($completeAdventurer['certified'])
+            ) : ?>
+                <aside
+                    class="gmrc-adventurers-seal"
+                    data-adventurers-seal
+                    data-auby-seal-surface
+                    aria-labelledby="gmrc-adventurers-seal-title"
+                >
+                    <div class="gmrc-adventurers-seal__mark">
+                        <?php echo $this->component(
+                            'components.auby.seal-of-approval',
+                            [
+                                'variant' => 'gold',
+                                'context' => 'adventurer',
+                                'trigger' => 'visible',
+                            ]
+                        ); ?>
+                    </div>
+
+                    <div class="gmrc-adventurers-seal__copy">
+                        <p class="gmrc-eyebrow">Guild Certified</p>
+
+                        <h3 id="gmrc-adventurers-seal-title">
+                            <?php echo esc_html(
+                                (string) (
+                                    $completeAdventurer['seal_title']
+                                    ?? 'The Adventurer’s Seal'
+                                )
+                            ); ?>
+                        </h3>
+
+                        <strong>
+                            <?php echo esc_html(
+                                (string) (
+                                    $completeAdventurer['seal_status']
+                                    ?? ''
+                                )
+                            ); ?>
+                        </strong>
+
+                        <p>
+                            <?php echo esc_html(
+                                (string) (
+                                    $completeAdventurer['seal_copy']
+                                    ?? ''
+                                )
+                            ); ?>
+                        </p>
+
+                        <small>
+                            Certified by the Guild Registrar
+                        </small>
+                    </div>
+                </aside>
+            <?php endif; ?>
+
             <div class="gmrc-complete-adventurer__folios">
                 <?php foreach (
                     ($completeAdventurer['sections'] ?? [])
