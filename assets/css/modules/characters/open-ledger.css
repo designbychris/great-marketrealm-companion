@@ -2105,3 +2105,95 @@
 @media(max-width:1180px){.gmrc-complete-adventurer__folios{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:760px){.gmrc-complete-adventurer__header{align-items:start;flex-direction:column}.gmrc-complete-adventurer__folios{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.gmrc-complete-adventurer__folios{grid-template-columns:1fr}}
+
+/* ===============================================================
+ * Phase III.7.4.1 — The Adventurer's Seal
+ * =============================================================== */
+
+.gmrc-adventurers-seal {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(1rem, 2vw, 1.5rem);
+    align-items: center;
+    padding: clamp(1rem, 2vw, 1.35rem) clamp(1rem, 2.4vw, 1.6rem);
+    overflow: hidden;
+    border: 1px solid rgba(159, 112, 34, 0.34);
+    border-radius: 0.75rem;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 247, 215, 0.9),
+        rgba(231, 201, 137, 0.62)
+    );
+    box-shadow: inset 0 0 0 1px rgba(255, 252, 233, 0.62);
+}
+
+.gmrc-adventurers-seal::after {
+    position: absolute;
+    inset: 0.45rem;
+    pointer-events: none;
+    border: 1px dashed rgba(132, 90, 31, 0.2);
+    border-radius: 0.55rem;
+    content: "";
+}
+
+.gmrc-adventurers-seal__mark {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    min-width: 7rem;
+}
+
+.gmrc-adventurers-seal
+.gmrc-auby-seal--adventurer {
+    --gmrc-auby-seal-size: clamp(5.75rem, 8vw, 7.4rem);
+    --gmrc-auby-seal-rotation: -6deg;
+}
+
+.gmrc-adventurers-seal__copy {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: 0.3rem;
+}
+
+.gmrc-adventurers-seal__copy h3 {
+    margin: 0;
+    color: #603773;
+    font-family: var(--gmrc-font-display, Georgia, serif);
+    font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+}
+
+.gmrc-adventurers-seal__copy > strong {
+    color: #8a6226;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.gmrc-adventurers-seal__copy p:not(.gmrc-eyebrow) {
+    max-width: 48rem;
+    margin: 0.2rem 0 0;
+    color: rgba(65, 44, 34, 0.72);
+    line-height: 1.5;
+}
+
+.gmrc-adventurers-seal__copy small {
+    margin-top: 0.25rem;
+    color: rgba(96, 55, 115, 0.72);
+    font-family: var(--gmrc-font-display, Georgia, serif);
+    font-style: italic;
+}
+
+@media (max-width: 620px) {
+    .gmrc-adventurers-seal {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .gmrc-adventurers-seal__copy p {
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
