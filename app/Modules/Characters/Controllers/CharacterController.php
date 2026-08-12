@@ -34,6 +34,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Combat\Services\AttackPresenter
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\ArcanePantryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\RisingRegisterPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\AdvancementLedgerPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterCatalogueRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterBuildProfileRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
@@ -799,25 +800,18 @@ final class CharacterController
             );
         }
 
-        $oldLevel = $character->level()->value();
-        $oldMaximum = $character->hitPoints()->maximum();
-
         $character->gainExperience(
             Experience::fromInt($amount)
         );
 
         $this->characters->save($character);
 
-        $levelsGained = $character->level()->value() - $oldLevel;
-        $hpGained = $character->hitPoints()->maximum() - $oldMaximum;
-
         $this->flash->success(
-            $levelsGained > 0
+            $character->canAdvance()
                 ? sprintf(
-                    '%d XP recorded. Level %d certified! Maximum hit points increased by %d.',
+                    '%d XP recorded. The Registrar has marked Level %d ready for advancement.',
                     $amount,
-                    $character->level()->value(),
-                    $hpGained
+                    $character->level()->next()->value()
                 )
                 : sprintf(
                     '%d XP has been entered into the Rising Register.',
@@ -827,6 +821,27 @@ final class CharacterController
 
         return $this->responses->redirect(
             $this->characterUrl($character->id(), 'progression')
+        );
+    }
+
+    /**
+     * Display the Advancement Ledger for the next pending certification.
+     */
+    public function advancement(
+        string $id
+    ): string {
+        $character = $this->findCharacter($id);
+
+        return $this->views->render(
+            View::make(
+                'characters.advancement',
+                [
+                    'character' => $character,
+                    'advancement' => (
+                        new AdvancementLedgerPresenter()
+                    )->present($character),
+                ]
+            )
         );
     }
 
