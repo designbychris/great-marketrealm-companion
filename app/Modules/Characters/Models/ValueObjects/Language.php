@@ -27,16 +27,9 @@ final class Language implements Stringable
      */
     private const LANGUAGES = [
         /*
-         * Common and standard-compatible languages.
+         * Common is the shared trade language of the Marketrealm.
          */
         'common' => 'Common',
-        'dwarvish' => 'Dwarvish',
-        'elvish' => 'Elvish',
-        'giant' => 'Giant',
-        'gnomish' => 'Gnomish',
-        'goblin' => 'Goblin',
-        'halfling' => 'Halfling',
-        'orc' => 'Orc',
 
         /*
          * Great Marketrealm languages.
