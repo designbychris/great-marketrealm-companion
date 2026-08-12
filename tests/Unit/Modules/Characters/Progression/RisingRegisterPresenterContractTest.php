@@ -21,7 +21,7 @@ final class RisingRegisterPresenterContractTest extends TestCase
         self::assertIsString($presenter);
 
         self::assertStringContainsString(
-            "'can_level_up' => $character->canAdvance()",
+            "'can_level_up' => \$character->canAdvance()",
             $presenter
         );
 
