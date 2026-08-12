@@ -55,4 +55,32 @@ final class AdvancementLedgerPresentationTest extends TestCase
             $view
         );
     }
+    public function testAdvancementLedgerShowsRisingFolios(): void
+    {
+        $root = dirname(__DIR__, 5);
+
+        $view = file_get_contents(
+            $root
+            . '/app/Modules/Characters/Views/'
+            . 'advancement.php'
+        );
+
+        self::assertIsString($view);
+
+        self::assertStringContainsString(
+            'data-rising-folios',
+            $view
+        );
+
+        self::assertStringContainsString(
+            'Vitality and Proficiency',
+            $view
+        );
+
+        self::assertStringContainsString(
+            'folios ready',
+            $view
+        );
+    }
+
 }

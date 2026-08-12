@@ -35,6 +35,10 @@ final class AdvancementLedgerPresenterTest extends TestCase
         self::assertSame(5, $state['highest_eligible_level']);
         self::assertSame(4, $state['levels_waiting']);
         self::assertFalse($state['commit_available']);
+        self::assertSame(2, $state['folio_total']);
+        self::assertSame(1, $state['folio_ready_count']);
+        self::assertSame(1, $state['folio_attention_count']);
+        self::assertFalse($state['folios_complete']);
     }
 
     public function testPreviewProvidesHpAndProficiencyFacts(): void
