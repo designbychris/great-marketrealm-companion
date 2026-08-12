@@ -147,6 +147,7 @@ final class CompleteAdventurerPresenter
 
         return [
             'complete' => $complete,
+            'certified' => $complete,
             'ready_count' => $readyCount,
             'total' => $total,
             'label' => $complete
@@ -155,6 +156,15 @@ final class CompleteAdventurerPresenter
             'summary' => $complete
                 ? 'Every major Guild folio is connected to this adventurer.'
                 : 'One or more Guild folios need the Registrar’s attention.',
+            'seal_title' => $complete
+                ? 'The Adventurer’s Seal'
+                : 'Awaiting Guild Certification',
+            'seal_status' => $complete
+                ? 'Guild Record Complete'
+                : 'Registrar Review Required',
+            'seal_copy' => $complete
+                ? 'All seven folios have been inspected and entered into the Great Marketrealm Register.'
+                : 'The Guild Seal will be granted when every required folio is ready.',
             'sections' => $sections,
         ];
     }
