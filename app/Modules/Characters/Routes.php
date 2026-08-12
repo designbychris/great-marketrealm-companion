@@ -51,6 +51,11 @@ return static function (
         [CharacterController::class, 'addExperience']
     );
 
+    $router->get(
+        '/characters/{id}/progression/advance',
+        [CharacterController::class, 'advancement']
+    );
+
 
     $router->put(
         '/characters/{id}/inventory/{item}',
