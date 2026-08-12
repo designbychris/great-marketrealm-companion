@@ -35,6 +35,9 @@ use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCata
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\ArcanePantryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\RisingRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\AdvancementLedgerPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Choices\ChoiceMode;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Choices\ChoiceRequirement;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\AdvancementChoiceStore;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterCatalogueRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterBuildProfileRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
@@ -831,16 +834,130 @@ final class CharacterController
         string $id
     ): string {
         $character = $this->findCharacter($id);
+        $presenter = new AdvancementLedgerPresenter();
+        $preview = $presenter->present($character);
+        $choices = [];
+
+        if (! empty($preview['eligible'])) {
+            $choices = (
+                new AdvancementChoiceStore()
+            )->all(
+                $character->id(),
+                (int) $preview['target_level']
+            );
+        }
 
         return $this->views->render(
             View::make(
                 'characters.advancement',
                 [
                     'character' => $character,
-                    'advancement' => (
-                        new AdvancementLedgerPresenter()
-                    )->present($character),
+                    'advancement' => $presenter->present(
+                        $character,
+                        $choices
+                    ),
+                    'flash' => [
+                        'success' => $this->flash->success(),
+                        'error' => $this->flash->error(),
+                    ],
                 ]
+            )
+        );
+    }
+
+    /**
+     * Record a temporary Choice Folio selection.
+     *
+     * No Character mutation occurs here. The choice remains in the current
+     * advancement session until a later phase seals the whole advancement.
+     */
+    public function recordAdvancementChoice(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $preview = (
+            new AdvancementLedgerPresenter()
+        )->present($character);
+
+        if (empty($preview['eligible'])) {
+            $this->flash->error(
+                'This adventurer is not currently eligible for advancement.'
+            );
+
+            return $this->responses->redirect(
+                $this->advancementUrl(
+                    $character->id()
+                )
+            );
+        }
+
+        $choiceKey = sanitize_key(
+            (string) ($_POST['choice_key'] ?? '')
+        );
+
+        $rawSelections =
+            $_POST['choice'] ?? [];
+
+        $selections = is_array($rawSelections)
+            ? $rawSelections
+            : [$rawSelections];
+
+        if ($choiceKey !== 'vitality-hit-points') {
+            $this->flash->error(
+                'That advancement choice is not recognised by the Registrar.'
+            );
+
+            return $this->responses->redirect(
+                $this->advancementUrl(
+                    $character->id()
+                )
+            );
+        }
+
+        $requirement = new ChoiceRequirement(
+            'vitality-hit-points',
+            ChoiceMode::SINGLE,
+            [
+                'average',
+                'roll',
+            ]
+        );
+
+        $normalised = $requirement->normalise(
+            array_map(
+                'strval',
+                $selections
+            )
+        );
+
+        if (! $requirement->satisfiedBy($normalised)) {
+            $this->flash->error(
+                'Choose one hit point advancement method before continuing.'
+            );
+
+            return $this->responses->redirect(
+                $this->advancementUrl(
+                    $character->id()
+                )
+            );
+        }
+
+        (
+            new AdvancementChoiceStore()
+        )->put(
+            $character->id(),
+            (int) $preview['target_level'],
+            $choiceKey,
+            $normalised
+        );
+
+        $this->flash->success(
+            'The choice has been recorded in the temporary Advancement Ledger.'
+        );
+
+        return $this->responses->redirect(
+            $this->advancementUrl(
+                $character->id()
             )
         );
     }
@@ -891,6 +1008,21 @@ final class CharacterController
         }
     
         return $character;
+    }
+
+    /**
+     * Build the temporary Advancement Ledger URL.
+     */
+    private function advancementUrl(
+        CharacterId $id
+    ): string {
+        return add_query_arg(
+            'gmrc_route',
+            'characters/'
+                . rawurlencode($id->value())
+                . '/progression/advance',
+            home_url('/companion/')
+        );
     }
 
     /**
