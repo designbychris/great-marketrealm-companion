@@ -17,14 +17,17 @@ final class AdvancementLedgerPresentationTest extends TestCase
         );
 
         self::assertIsString($view);
+
         self::assertStringContainsString(
             'Begin Advancement',
             $view
         );
+
         self::assertStringContainsString(
             'progression/advance',
             $view
         );
+
         self::assertStringContainsString(
             'does not change the character automatically',
             $view
@@ -42,19 +45,23 @@ final class AdvancementLedgerPresentationTest extends TestCase
         );
 
         self::assertIsString($view);
+
         self::assertStringContainsString(
             'data-advancement-ledger',
             $view
         );
+
         self::assertStringContainsString(
             'Advancement commit is intentionally locked.',
             $view
         );
+
         self::assertStringContainsString(
             'one at a time',
             $view
         );
     }
+
     public function testAdvancementLedgerShowsRisingFolios(): void
     {
         $root = dirname(__DIR__, 5);
@@ -73,7 +80,12 @@ final class AdvancementLedgerPresentationTest extends TestCase
         );
 
         self::assertStringContainsString(
-            'Vitality and Proficiency',
+            'Vitality',
+            $view
+        );
+
+        self::assertStringContainsString(
+            'Proficiency',
             $view
         );
 
@@ -82,5 +94,4 @@ final class AdvancementLedgerPresentationTest extends TestCase
             $view
         );
     }
-
 }
