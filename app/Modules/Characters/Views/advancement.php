@@ -23,6 +23,18 @@ $ledgerUrl = add_query_arg(
     ],
     home_url('/companion/')
 );
+
+$choiceUrl = add_query_arg(
+    'gmrc_route',
+    'characters/'
+        . rawurlencode($characterId)
+        . '/progression/advance/choice',
+    home_url('/companion/')
+);
+
+$flash = isset($flash) && is_array($flash)
+    ? $flash
+    : [];
 ?>
 
 <section
@@ -32,7 +44,7 @@ $ledgerUrl = add_query_arg(
 >
     <header class="gmrc-advancement-ledger__hero">
         <div>
-            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.2</p>
+            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.3</p>
             <h1 id="gmrc-advancement-ledger-title">The Advancement Ledger</h1>
             <p>
                 The Registrar has opened a temporary advancement folio for
@@ -61,6 +73,28 @@ $ledgerUrl = add_query_arg(
             </span>
         </div>
     </header>
+
+    <?php if (! empty($flash['success'])) : ?>
+        <div
+            class="gmrc-advancement-ledger__flash is-success"
+            role="status"
+        >
+            <?php echo esc_html(
+                (string) $flash['success']
+            ); ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (! empty($flash['error'])) : ?>
+        <div
+            class="gmrc-advancement-ledger__flash is-error"
+            role="alert"
+        >
+            <?php echo esc_html(
+                (string) $flash['error']
+            ); ?>
+        </div>
+    <?php endif; ?>
 
     <?php if (empty($advancement['eligible'])) : ?>
         <section class="gmrc-advancement-ledger__notice">
@@ -218,25 +252,132 @@ $ledgerUrl = add_query_arg(
                             ! empty($folio['choices'])
                             && is_array($folio['choices'])
                         ) : ?>
-                            <div class="gmrc-rising-folio__choices">
-                                <strong>
-                                    Choices coming in the next advancement pass
-                                </strong>
+                            <?php
+                            $choiceKey = (string) (
+                                $folio['facts']['choice_key']
+                                ?? ''
+                            );
 
-                                <ul>
+                            $selected = (string) (
+                                $folio['facts']['selected']
+                                ?? ''
+                            );
+                            ?>
+
+                            <form
+                                class="gmrc-rising-folio__choices"
+                                method="post"
+                                action="<?php echo esc_url($choiceUrl); ?>"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="gmrc_route"
+                                    value="<?php echo esc_attr(
+                                        'characters/'
+                                        . rawurlencode($characterId)
+                                        . '/progression/advance/choice'
+                                    ); ?>"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="choice_key"
+                                    value="<?php echo esc_attr($choiceKey); ?>"
+                                >
+
+                                <?php wp_nonce_field(
+                                    'gmrc_character_advancement_'
+                                    . $characterId,
+                                    'gmrc_nonce'
+                                ); ?>
+
+                                <fieldset>
+                                    <legend>
+                                        Choose one option
+                                    </legend>
+
                                     <?php foreach (
                                         $folio['choices']
                                         as $choice
                                     ) : ?>
-                                        <li><?php echo esc_html(
-                                            (string) (
-                                                $choice['label']
-                                                ?? ''
-                                            )
-                                        ); ?></li>
+                                        <?php
+                                        $choiceValue = (string) (
+                                            $choice['key']
+                                            ?? ''
+                                        );
+                                        ?>
+
+                                        <label>
+                                            <input
+                                                type="radio"
+                                                name="choice"
+                                                value="<?php echo esc_attr(
+                                                    $choiceValue
+                                                ); ?>"
+                                                <?php checked(
+                                                    $selected,
+                                                    $choiceValue
+                                                ); ?>
+                                            >
+
+                                            <span>
+                                                <strong><?php echo esc_html(
+                                                    (string) (
+                                                        $choice['label']
+                                                        ?? ''
+                                                    )
+                                                ); ?></strong>
+
+                                                <?php if (
+                                                    isset($choice['value'])
+                                                ) : ?>
+                                                    <small>
+                                                        +<?php echo esc_html(
+                                                            (string) $choice['value']
+                                                        ); ?> maximum HP
+                                                    </small>
+                                                <?php elseif (
+                                                    isset($choice['die'])
+                                                ) : ?>
+                                                    <small>
+                                                        <?php echo esc_html(
+                                                            (string) $choice['die']
+                                                        ); ?>
+                                                        <?php echo (int) (
+                                                            $choice['modifier']
+                                                            ?? 0
+                                                        ) >= 0
+                                                            ? '+'
+                                                            : ''; ?>
+                                                        <?php echo esc_html(
+                                                            (string) (
+                                                                $choice['modifier']
+                                                                ?? 0
+                                                            )
+                                                        ); ?>
+                                                    </small>
+                                                <?php endif; ?>
+                                            </span>
+                                        </label>
                                     <?php endforeach; ?>
-                                </ul>
-                            </div>
+                                </fieldset>
+
+                                <button
+                                    type="submit"
+                                    class="gmrc-button gmrc-button--primary"
+                                >
+                                    <?php echo ! empty($folio['ready'])
+                                        ? 'Update Choice'
+                                        : 'Record Choice'; ?>
+                                </button>
+
+                                <?php if (! empty($folio['ready'])) : ?>
+                                    <p class="gmrc-rising-folio__recorded">
+                                        ✓ Choice recorded in this temporary
+                                        advancement.
+                                    </p>
+                                <?php endif; ?>
+                            </form>
                         <?php endif; ?>
                     </article>
                 <?php endforeach; ?>
@@ -299,10 +440,10 @@ $ledgerUrl = add_query_arg(
                 </ul>
 
                 <p class="gmrc-advancement-ledger__foundation">
-                    The first Rising Folios now cover Vitality and
-                    Proficiency. Class features, spells, paths and talents
-                    will join this collection as their progression rules are
-                    added in later Ascending Register passes.
+                    Choice Folios can now record and validate temporary
+                    decisions. Vitality is the first interactive folio;
+                    spells, paths, talents and class features will reuse the
+                    same choice contract as their progression rules arrive.
                 </p>
             </section>
         </div>
@@ -334,9 +475,10 @@ $ledgerUrl = add_query_arg(
             <div>
                 <strong>Advancement commit is intentionally locked.</strong>
                 <p>
-                    Phase III.8.2 can now identify which folios need the
-                    adventurer’s attention, but it still does not persist any
-                    decision. The Guild cannot certify the new level yet.
+                    Phase III.8.3 can record temporary folio choices, but
+                    no selection has touched the Character itself. The Guild
+                    cannot certify the new level until later phases can review
+                    and commit every advancement change atomically.
                 </p>
             </div>
         </section>
