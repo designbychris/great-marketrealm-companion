@@ -21,7 +21,7 @@ final class AdventurersSealPresentationTest extends TestCase
         self::assertIsString($presenter);
 
         self::assertStringContainsString(
-            "'certified' => $complete",
+            "'certified' => \$complete",
             $presenter
         );
 
