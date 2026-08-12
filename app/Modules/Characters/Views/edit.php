@@ -412,6 +412,7 @@ foreach ($selectedTools as $selectedTool) {
                         'components.media.illuminated-portrait',
                         [
                             'portrait' => $portrait,
+                            'portraitPersisted' => true,
                             'controlsEnabled' => true,
                         ]
                     );
