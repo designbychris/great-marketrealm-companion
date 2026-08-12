@@ -2427,3 +2427,103 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* ===============================================================
+ * Phase III.8.3 — The Choice Folios
+ * =============================================================== */
+
+.gmrc-advancement-ledger__flash {
+    margin-top: 1rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(96, 55, 115, 0.24);
+    border-radius: 0.55rem;
+    background: rgba(245, 235, 250, 0.72);
+}
+
+.gmrc-advancement-ledger__flash.is-success {
+    border-color: rgba(78, 120, 75, 0.34);
+    color: #405d37;
+    background: rgba(236, 247, 225, 0.82);
+}
+
+.gmrc-advancement-ledger__flash.is-error {
+    border-color: rgba(154, 69, 51, 0.34);
+    color: #7f3b30;
+    background: rgba(252, 232, 224, 0.84);
+}
+
+.gmrc-rising-folio__choices {
+    display: grid;
+    gap: 0.8rem;
+}
+
+.gmrc-rising-folio__choices fieldset {
+    display: grid;
+    gap: 0.55rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.gmrc-rising-folio__choices legend {
+    margin-bottom: 0.35rem;
+    color: #8a6226;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.035em;
+    text-transform: uppercase;
+}
+
+.gmrc-rising-folio__choices label {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.65rem;
+    align-items: start;
+    padding: 0.7rem 0.75rem;
+    border: 1px solid rgba(105, 70, 39, 0.16);
+    border-radius: 0.45rem;
+    cursor: pointer;
+    background: rgba(255, 253, 241, 0.68);
+}
+
+.gmrc-rising-folio__choices label:has(input:checked) {
+    border-color: rgba(96, 55, 115, 0.42);
+    background: rgba(239, 229, 246, 0.72);
+}
+
+.gmrc-rising-folio__choices input[type="radio"] {
+    margin-top: 0.2rem;
+}
+
+.gmrc-rising-folio__choices label span {
+    display: grid;
+    gap: 0.12rem;
+}
+
+.gmrc-rising-folio__choices label strong {
+    color: #603773;
+    font-size: 0.88rem;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.gmrc-rising-folio__choices label small {
+    color: rgba(65, 44, 34, 0.68);
+}
+
+.gmrc-rising-folio__choices .gmrc-button {
+    justify-self: start;
+}
+
+.gmrc-rising-folio__recorded {
+    margin: 0;
+    color: #4d6f43;
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+@supports not selector(label:has(input:checked)) {
+    .gmrc-rising-folio__choices label {
+        background: rgba(255, 253, 241, 0.68);
+    }
+}
