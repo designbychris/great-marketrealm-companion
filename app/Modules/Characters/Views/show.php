@@ -304,6 +304,86 @@ $backgroundSkills = array_map(
         </div>
     </header>
 
+    <?php if (
+        isset($completeAdventurer)
+        && is_array($completeAdventurer)
+    ) : ?>
+        <section
+            class="gmrc-complete-adventurer <?php echo esc_attr(
+                ! empty($completeAdventurer['complete'])
+                    ? 'is-complete'
+                    : 'needs-review'
+            ); ?>"
+            aria-labelledby="gmrc-complete-adventurer-title"
+            data-complete-adventurer
+        >
+            <header class="gmrc-complete-adventurer__header">
+                <div>
+                    <p class="gmrc-eyebrow">Registrar’s Final Audit</p>
+                    <h2 id="gmrc-complete-adventurer-title">
+                        <?php echo esc_html(
+                            (string) ($completeAdventurer['label'] ?? '')
+                        ); ?>
+                    </h2>
+                    <p>
+                        <?php echo esc_html(
+                            (string) ($completeAdventurer['summary'] ?? '')
+                        ); ?>
+                    </p>
+                </div>
+
+                <strong class="gmrc-complete-adventurer__count">
+                    <?php echo esc_html(
+                        (string) ($completeAdventurer['ready_count'] ?? 0)
+                    ); ?>
+                    /
+                    <?php echo esc_html(
+                        (string) ($completeAdventurer['total'] ?? 0)
+                    ); ?>
+                    folios ready
+                </strong>
+            </header>
+
+            <div class="gmrc-complete-adventurer__folios">
+                <?php foreach (
+                    ($completeAdventurer['sections'] ?? [])
+                    as $folio
+                ) : ?>
+                    <button
+                        type="button"
+                        class="gmrc-complete-adventurer__folio <?php echo esc_attr(
+                            ! empty($folio['ready'])
+                                ? 'is-ready'
+                                : 'needs-review'
+                        ); ?>"
+                        data-ledger-jump="<?php echo esc_attr(
+                            (string) ($folio['panel'] ?? 'overview')
+                        ); ?>"
+                        aria-label="Open <?php echo esc_attr(
+                            (string) ($folio['label'] ?? 'Guild folio')
+                        ); ?> folio"
+                    >
+                        <span class="gmrc-complete-adventurer__symbol" aria-hidden="true"><?php echo esc_html(
+                            (string) ($folio['symbol'] ?? '•')
+                        ); ?></span>
+
+                        <span class="gmrc-complete-adventurer__folio-copy">
+                            <strong><?php echo esc_html(
+                                (string) ($folio['label'] ?? '')
+                            ); ?></strong>
+                            <span><?php echo esc_html(
+                                (string) ($folio['status'] ?? '')
+                            ); ?></span>
+                            <small><?php echo esc_html(
+                                (string) ($folio['detail'] ?? '')
+                            ); ?></small>
+                        </span>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+        </section>
+    <?php endif; ?>
+
     <div
         id="gmrc-ledger-panel-overview"
         class="gmrc-ledger-tabpanel"
