@@ -26,8 +26,13 @@ final class AdvancementLedgerPresenter
     }
 
     /** @return array<string,mixed> */
-    public function present(Character $character): array
-    {
+    /**
+     * @param array<string,array<int,string>> $choices
+     */
+    public function present(
+        Character $character,
+        array $choices = []
+    ): array {
         $current = $character->level();
         $eligible = $character->canAdvance();
         $target = $eligible
@@ -44,7 +49,8 @@ final class AdvancementLedgerPresenter
         $folios = $eligible
             ? $this->folioBuilder->forAdvancement(
                 $character,
-                $target->value()
+                $target->value(),
+                $choices
             )
             : null;
 
@@ -141,6 +147,7 @@ final class AdvancementLedgerPresenter
             'folios_complete' => $folios
                 ? $folios->allReady()
                 : false,
+            'recorded_choices' => $choices,
             'commit_available' => false,
         ];
     }

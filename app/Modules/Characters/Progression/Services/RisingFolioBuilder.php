@@ -24,16 +24,22 @@ final class RisingFolioBuilder
             new ProficiencyFolio();
     }
 
+    /**
+     * @param array<string,array<int,string>> $choices
+     */
     public function forAdvancement(
         Character $character,
-        int $targetLevel
+        int $targetLevel,
+        array $choices = []
     ): FolioCollection {
         $folios = new FolioCollection();
 
         $folios->add(
             $this->vitality->build(
                 $character,
-                $targetLevel
+                $targetLevel,
+                $choices['vitality-hit-points']
+                    ?? []
             )
         );
 
