@@ -47,4 +47,26 @@ final class AdvancementRoutesRegressionTest extends TestCase
             $controller
         );
     }
+    public function testChoiceFolioRouteIsRegistered(): void
+    {
+        $root = dirname(__DIR__, 5);
+
+        $routes = file_get_contents(
+            $root
+            . '/app/Modules/Characters/Routes.php'
+        );
+
+        self::assertIsString($routes);
+
+        self::assertStringContainsString(
+            "'/characters/{id}/progression/advance/choice'",
+            $routes
+        );
+
+        self::assertStringContainsString(
+            "[CharacterController::class, 'recordAdvancementChoice']",
+            $routes
+        );
+    }
+
 }

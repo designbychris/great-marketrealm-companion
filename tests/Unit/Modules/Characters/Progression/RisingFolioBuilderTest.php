@@ -58,6 +58,36 @@ final class RisingFolioBuilderTest extends TestCase
         self::assertCount(2, $vitality['choices']);
     }
 
+    public function testRecordedVitalityChoiceMakesFolioReady(): void
+    {
+        $folios = (
+            new RisingFolioBuilder()
+        )->forAdvancement(
+            $this->character(),
+            2,
+            [
+                'vitality-hit-points' => [
+                    'average',
+                ],
+            ]
+        );
+
+        self::assertSame(2, $folios->readyCount());
+        self::assertSame(0, $folios->attentionCount());
+        self::assertTrue($folios->allReady());
+
+        $vitality = $folios->toArray()[0];
+
+        self::assertSame(
+            'average',
+            $vitality['facts']['selected']
+        );
+
+        self::assertTrue(
+            $vitality['ready']
+        );
+    }
+
     private function character(): Character
     {
         return Character::create(

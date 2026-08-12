@@ -62,6 +62,38 @@ final class AdvancementLedgerPresenterTest extends TestCase
         );
     }
 
+    public function testRecordedChoicesFlowIntoFolioCompletion(): void
+    {
+        $character = $this->character();
+        $character->gainExperience(
+            Experience::fromInt(300)
+        );
+
+        $state = (
+            new AdvancementLedgerPresenter()
+        )->present(
+            $character,
+            [
+                'vitality-hit-points' => [
+                    'roll',
+                ],
+            ]
+        );
+
+        self::assertSame(2, $state['folio_ready_count']);
+        self::assertSame(0, $state['folio_attention_count']);
+        self::assertTrue($state['folios_complete']);
+        self::assertSame(
+            'roll',
+            $state['recorded_choices']
+                ['vitality-hit-points'][0]
+        );
+
+        self::assertFalse(
+            $state['commit_available']
+        );
+    }
+
     private function character(): Character
     {
         return Character::create(
