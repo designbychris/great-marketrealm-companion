@@ -8,16 +8,21 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ProficiencyBonus;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Models\ClassProgressionCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Rules\ExperienceTable;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\RisingFolioBuilder;
 
 defined('ABSPATH') || exit;
 
 final class AdvancementLedgerPresenter
 {
     public function __construct(
-        private ?ClassProgressionCatalogue $catalogue = null
+        private ?ClassProgressionCatalogue $catalogue = null,
+        private ?RisingFolioBuilder $folioBuilder = null
     ) {
         $this->catalogue ??=
             new ClassProgressionCatalogue();
+
+        $this->folioBuilder ??=
+            new RisingFolioBuilder();
     }
 
     /** @return array<string,mixed> */
@@ -32,6 +37,13 @@ final class AdvancementLedgerPresenter
         $classEntry = $eligible
             ? $this->catalogue->forLevel(
                 $character->characterClass(),
+                $target->value()
+            )
+            : null;
+
+        $folios = $eligible
+            ? $this->folioBuilder->forAdvancement(
+                $character,
                 $target->value()
             )
             : null;
@@ -114,6 +126,21 @@ final class AdvancementLedgerPresenter
                 ]
                 : [],
             'class_progression' => $classEntry,
+            'folios' => $folios
+                ? $folios->toArray()
+                : [],
+            'folio_total' => $folios
+                ? $folios->total()
+                : 0,
+            'folio_ready_count' => $folios
+                ? $folios->readyCount()
+                : 0,
+            'folio_attention_count' => $folios
+                ? $folios->attentionCount()
+                : 0,
+            'folios_complete' => $folios
+                ? $folios->allReady()
+                : false,
             'commit_available' => false,
         ];
     }
