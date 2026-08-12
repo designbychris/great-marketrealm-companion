@@ -159,6 +159,8 @@
     align-items: center;
 }
 
+.gmrc-final-farewell__identity .gmrc-portrait-controls {display:none!important;}
+
 .gmrc-final-farewell__portrait {
     width: min(100%, 24rem);
 
