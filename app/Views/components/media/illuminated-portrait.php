@@ -113,6 +113,17 @@ $controlsEnabled = isset($controlsEnabled)
     : true;
 
 /*
+ * Persistence is a page/lifecycle concern, not a ViewModel concern.
+ *
+ * Character Creation also uses a provisional PortraitViewModel, so the
+ * presence of a model cannot be used to decide whether the live creator
+ * engines should initialise.
+ */
+$portraitPersisted = isset($portraitPersisted)
+    ? (bool) $portraitPersisted
+    : false;
+
+/*
  * Resolve generated SVG markup.
  *
  * Saved Characters receive this from PortraitViewModel.
@@ -303,10 +314,9 @@ if ($isCustom) {
             'effects'
         )
     ); ?>"
-    data-portrait-persisted="<?php echo $portraitModel
-        instanceof PortraitViewModel
-            ? 'true'
-            : 'false'; ?>"
+    data-portrait-persisted="<?php echo $portraitPersisted
+        ? 'true'
+        : 'false'; ?>"
     data-portrait-controls="<?php echo $controlsEnabled
         ? 'true'
         : 'false'; ?>"
