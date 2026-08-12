@@ -176,6 +176,14 @@ $deleteUrl = add_query_arg(
     $companionUrl
 );
 
+$advancementUrl = add_query_arg(
+    'gmrc_route',
+    'characters/'
+        . rawurlencode($characterId)
+        . '/progression/advance',
+    $companionUrl
+);
+
 $entryReference = strtoupper(
     substr(
         $characterId,
@@ -209,6 +217,8 @@ $progression = isset($progression) && is_array($progression)
         'xp_to_next' => 0,
         'progress_percent' => 0,
         'can_level_up' => false,
+        'pending_levels' => 0,
+        'highest_eligible_level' => $level,
         'is_maximum' => false,
         'next_level' => null,
         'current_proficiency' => $proficiencyBonus,
@@ -1472,6 +1482,16 @@ $backgroundSkills = array_map(
                 </div>
                 <?php if ($progression['is_maximum']) : ?>
                     <p>Maximum level certified. The Guild has run out of larger numbers.</p>
+                <?php elseif ($progression['can_level_up']) : ?>
+                    <p>
+                        Level <?php echo esc_html((string) $progression['next_level']); ?>
+                        is ready for Guild advancement.
+                        <?php if ((int) $progression['pending_levels'] > 1) : ?>
+                            <?php echo esc_html(
+                                (string) $progression['pending_levels']
+                            ); ?> certifications are currently waiting.
+                        <?php endif; ?>
+                    </p>
                 <?php else : ?>
                     <p><?php echo esc_html(number_format_i18n((int) $progression['xp_to_next'])); ?> XP until Level <?php echo esc_html((string) $progression['next_level']); ?>.</p>
                 <?php endif; ?>
@@ -1505,12 +1525,41 @@ $backgroundSkills = array_map(
                 <div><dt>HP on next level</dt><dd>+<?php echo esc_html((string) $progression['next_hit_point_gain']); ?></dd></div>
             </dl>
 
-            <?php if (! $progression['is_maximum']) : ?>
+            <?php if (
+                ! $progression['is_maximum']
+                && $progression['can_level_up']
+            ) : ?>
+                <div class="gmrc-rise-awaiting gmrc-rise-awaiting--ready">
+                    <span aria-hidden="true">✦</span>
+                    <div>
+                        <strong>Advancement ready</strong>
+                        <p>
+                            Enough experience has been recorded for Level
+                            <?php echo esc_html(
+                                (string) $progression['next_level']
+                            ); ?>.
+                            The current certified level remains unchanged
+                            until the Advancement Ledger is completed.
+                        </p>
+                        <a
+                            class="gmrc-button gmrc-button--primary"
+                            href="<?php echo esc_url($advancementUrl); ?>"
+                        >
+                            Begin Advancement
+                        </a>
+                    </div>
+                </div>
+            <?php elseif (! $progression['is_maximum']) : ?>
                 <div class="gmrc-rise-awaiting">
                     <span aria-hidden="true">✦</span>
                     <p>
-                        The next Guild certification is applied automatically when the Experience Ledger reaches
-                        <?php echo esc_html(number_format_i18n((int) $progression['next_level_xp'])); ?> XP.
+                        The next advancement becomes available when the
+                        Experience Ledger reaches
+                        <?php echo esc_html(
+                            number_format_i18n(
+                                (int) $progression['next_level_xp']
+                            )
+                        ); ?> XP.
                     </p>
                 </div>
             <?php else : ?>
@@ -1523,11 +1572,11 @@ $backgroundSkills = array_map(
             <section class="gmrc-ledger-section">
                 <header class="gmrc-ledger-section__heading"><h3>Automatic consequences</h3></header>
                 <ul class="gmrc-rise-effects">
-                    <li>Crossing an XP threshold automatically certifies the new level.</li>
-                    <li>Maximum hit points grow from the class hit die.</li>
-                    <li>Proficiency automatically updates when its level band changes.</li>
-                    <li>Attack rolls, saving throws and skills inherit the new proficiency.</li>
-                    <li>Spell slots and level-gated abilities refresh from the Arcane Pantry.</li>
+                    <li>Crossing an XP threshold unlocks an Advancement Ledger; it does not change the character automatically.</li>
+                    <li>Each certification advances exactly one level, even when several thresholds have been crossed.</li>
+                    <li>Hit point growth will be chosen during advancement rather than silently applied.</li>
+                    <li>Proficiency, class features and spell progression are previewed before the advancement is sealed.</li>
+                    <li>No character changes are committed until the player completes the advancement process.</li>
                 </ul>
             </section>
             <blockquote class="gmrc-ledger-auby-note gmrc-ledger-auby-note--archive"><p>“Growth is mostly paperwork with better hit points.”</p><footer>— Auby</footer></blockquote>
