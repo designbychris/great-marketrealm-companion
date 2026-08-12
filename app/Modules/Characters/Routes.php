@@ -56,6 +56,11 @@ return static function (
         [CharacterController::class, 'advancement']
     );
 
+    $router->post(
+        '/characters/{id}/progression/advance/choice',
+        [CharacterController::class, 'recordAdvancementChoice']
+    );
+
 
     $router->put(
         '/characters/{id}/inventory/{item}',
