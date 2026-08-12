@@ -31,13 +31,6 @@ final class LanguageTest extends TestCase
     {
         return [
             'common' => ['common', 'common'],
-            'dwarvish' => ['dwarvish', 'dwarvish'],
-            'elvish' => ['elvish', 'elvish'],
-            'giant' => ['giant', 'giant'],
-            'gnomish' => ['gnomish', 'gnomish'],
-            'goblin' => ['goblin', 'goblin'],
-            'halfling' => ['halfling', 'halfling'],
-            'orc' => ['orc', 'orc'],
             'fructan' => ['fructan', 'fructan'],
             'vegcant' => ['vegcant', 'vegcant'],
             'mycelian' => ['mycelian', 'mycelian'],
@@ -116,13 +109,6 @@ final class LanguageTest extends TestCase
     {
         return [
             'common' => ['common', 'Common'],
-            'dwarvish' => ['dwarvish', 'Dwarvish'],
-            'elvish' => ['elvish', 'Elvish'],
-            'giant' => ['giant', 'Giant'],
-            'gnomish' => ['gnomish', 'Gnomish'],
-            'goblin' => ['goblin', 'Goblin'],
-            'halfling' => ['halfling', 'Halfling'],
-            'orc' => ['orc', 'Orc'],
             'fructan' => ['fructan', 'Fructan'],
             'vegcant' => ['vegcant', 'Vegcant'],
             'mycelian' => ['mycelian', 'Mycelian'],
@@ -159,13 +145,6 @@ final class LanguageTest extends TestCase
     {
         return [
             'common' => ['common'],
-            'dwarvish' => ['dwarvish'],
-            'elvish' => ['elvish'],
-            'giant' => ['giant'],
-            'gnomish' => ['gnomish'],
-            'goblin' => ['goblin'],
-            'halfling' => ['halfling'],
-            'orc' => ['orc'],
             'fructan' => ['fructan'],
             'vegcant' => ['vegcant'],
             'mycelian' => ['mycelian'],
@@ -188,6 +167,33 @@ final class LanguageTest extends TestCase
                 'shelf_script'
             )
         );
+    }
+
+    #[DataProvider('legacyFantasyLanguageProvider')]
+    public function testLegacyFantasyLanguagesAreNotSupported(
+        string $language
+    ): void {
+        self::assertFalse(
+            Language::supports(
+                $language
+            )
+        );
+    }
+
+    /**
+     * @return array<string,array{string}>
+     */
+    public static function legacyFantasyLanguageProvider(): array
+    {
+        return [
+            'dwarvish' => ['dwarvish'],
+            'elvish' => ['elvish'],
+            'giant' => ['giant'],
+            'gnomish' => ['gnomish'],
+            'goblin' => ['goblin'],
+            'halfling' => ['halfling'],
+            'orc' => ['orc'],
+        ];
     }
 
     public function testDoesNotSupportUnknownLanguage(): void
@@ -277,7 +283,7 @@ final class LanguageTest extends TestCase
         $languages = Language::all();
 
         self::assertCount(
-            14,
+            7,
             $languages
         );
 
@@ -299,13 +305,6 @@ final class LanguageTest extends TestCase
         self::assertSame(
             [
                 'common',
-                'dwarvish',
-                'elvish',
-                'giant',
-                'gnomish',
-                'goblin',
-                'halfling',
-                'orc',
                 'fructan',
                 'vegcant',
                 'mycelian',
