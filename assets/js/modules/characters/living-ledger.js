@@ -72,6 +72,46 @@
             });
         });
 
+        ledger
+            .querySelectorAll('[data-ledger-jump]')
+            .forEach(function (trigger) {
+                trigger.addEventListener(
+                    'click',
+                    function () {
+                        const target = trigger.dataset.ledgerJump;
+
+                        const tab = tabs.find(
+                            function (candidate) {
+                                return candidate.dataset.ledgerTab
+                                    === target;
+                            }
+                        );
+
+                        if (!(tab instanceof HTMLButtonElement)) {
+                            return;
+                        }
+
+                        activate(tab, true);
+
+                        const panelId = tab.getAttribute('aria-controls');
+                        const panel = panelId
+                            ? ledger.querySelector('#' + panelId)
+                            : null;
+
+                        if (panel instanceof HTMLElement) {
+                            panel.scrollIntoView({
+                                behavior: window.matchMedia(
+                                    '(prefers-reduced-motion: reduce)'
+                                ).matches
+                                    ? 'auto'
+                                    : 'smooth',
+                                block: 'start',
+                            });
+                        }
+                    }
+                );
+            });
+
         const requested = new URLSearchParams(
             window.location.search
         ).get('gmrc_ledger_tab');
