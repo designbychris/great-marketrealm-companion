@@ -26,6 +26,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScor
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Languages;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiencies;
 use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
+use GreatMarketrealmCompanion\Modules\Characters\Services\CompleteAdventurerPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Models\ItemCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Repositories\CharacterInventoryRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Services\InventoryPresenter;
@@ -599,37 +600,58 @@ final class CharacterController
             $catalogue
         );
 
+        $portrait = $this
+            ->portraitRenderer
+            ->forCharacter(
+                $character
+            );
+
+        $inventoryState = $inventoryPresenter->present(
+            $character,
+            $inventory
+        );
+
+        $attacks = (new AttackPresenter($catalogue))->present(
+            $character,
+            $inventory
+        );
+
+        $arcana = (new ArcanePantryPresenter(
+            new ArcaneAbilityCatalogue()
+        ))->present(
+            $character
+        );
+
+        $progression = (new RisingRegisterPresenter())
+            ->present($character);
+
+        $completeAdventurer = (new CompleteAdventurerPresenter())
+            ->present(
+                $character,
+                $portrait,
+                $inventoryState,
+                $attacks,
+                $arcana,
+                $progression
+            );
+
         return $this->views->render(
             View::make(
                 'characters.show',
                 [
                     'character' => $character,
-                    'portrait' => $this
-                        ->portraitRenderer
-                        ->forCharacter(
-                            $character
-                        ),
+                    'portrait' => $portrait,
                     'sealRegistry' => $this->sealRegistry,
-                    'inventory' => $inventoryPresenter->present(
-                        $character,
-                        $inventory
-                    ),
+                    'inventory' => $inventoryState,
                     'inventoryArmourClass' =>
                         $inventoryPresenter->armourClass(
                             $character,
                             $inventory
                         ),
-                    'attacks' => (new AttackPresenter($catalogue))->present(
-                        $character,
-                        $inventory
-                    ),
-                    'arcana' => (new ArcanePantryPresenter(
-                        new ArcaneAbilityCatalogue()
-                    ))->present(
-                        $character
-                    ),
-                    'progression' => (new RisingRegisterPresenter())
-                        ->present($character),
+                    'attacks' => $attacks,
+                    'arcana' => $arcana,
+                    'progression' => $progression,
+                    'completeAdventurer' => $completeAdventurer,
                 ]
             )
         );
