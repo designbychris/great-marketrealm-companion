@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class RisingRegisterPresenterContractTest extends TestCase
 {
-    public function testPresenterDoesNotRequireManualLevelUpState(): void
+    public function testPresenterExposesManualAdvancementState(): void
     {
         $root = dirname(__DIR__, 5);
 
@@ -20,13 +20,18 @@ final class RisingRegisterPresenterContractTest extends TestCase
 
         self::assertIsString($presenter);
 
-        self::assertStringNotContainsString(
-            '->canLevelUp()',
+        self::assertStringContainsString(
+            "'can_level_up' => $character->canAdvance()",
             $presenter
         );
 
         self::assertStringContainsString(
-            "'can_level_up' => false",
+            "'pending_levels'",
+            $presenter
+        );
+
+        self::assertStringContainsString(
+            "'highest_eligible_level'",
             $presenter
         );
     }

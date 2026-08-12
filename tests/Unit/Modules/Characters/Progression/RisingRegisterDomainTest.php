@@ -13,15 +13,17 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use PHPUnit\Framework\TestCase;
 final class RisingRegisterDomainTest extends TestCase
 {
-    public function testExperienceCanUnlockAndCertifyLevelTwo(): void
+    public function testExperienceUnlocksLevelTwoWithoutCertifyingIt(): void
     {
         $character = $this->character();
         $character->gainExperience(
             \GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience::fromInt(300)
         );
-        self::assertSame(2, $character->level()->value());
+        self::assertSame(1, $character->level()->value());
         self::assertSame(300, $character->experience()->value());
-        self::assertSame(14, $character->hitPoints()->maximum());
+        self::assertSame(8, $character->hitPoints()->maximum());
+        self::assertTrue($character->canAdvance());
+        self::assertSame(1, $character->pendingAdvancementLevels());
     }
     private function character(): Character
     {

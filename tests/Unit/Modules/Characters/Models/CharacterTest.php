@@ -390,35 +390,50 @@ final class CharacterTest extends TestCase
         );
     }
 
-    public function test_gaining_enough_experience_levels_the_character_up(): void
-    {
-        $character = $this->createCharacter();
 
-        $character->gainExperience(
-            Experience::fromInt(300)
-        );
+public function test_gaining_enough_experience_unlocks_advancement(): void
+{
+    $character = $this->createCharacter();
 
-        self::assertTrue(
-            $character
-                ->level()
-                ->equals(Level::fromInt(2))
-        );
-    }
+    $character->gainExperience(
+        Experience::fromInt(300)
+    );
 
-    public function test_large_experience_gains_can_level_multiple_times(): void
-    {
-        $character = $this->createCharacter();
+    self::assertTrue($character->canAdvance());
 
-        $character->gainExperience(
-            Experience::fromInt(6500)
-        );
+    self::assertTrue(
+        $character
+            ->level()
+            ->equals(Level::one())
+    );
+}
 
-        self::assertTrue(
-            $character
-                ->level()
-                ->equals(Level::fromInt(5))
-        );
-    }
+
+public function test_large_experience_gains_queue_multiple_advancements(): void
+{
+    $character = $this->createCharacter();
+
+    $character->gainExperience(
+        Experience::fromInt(6500)
+    );
+
+    self::assertSame(
+        4,
+        $character->pendingAdvancementLevels()
+    );
+
+    self::assertTrue(
+        $character
+            ->highestEligibleLevel()
+            ->equals(Level::fromInt(5))
+    );
+
+    self::assertTrue(
+        $character
+            ->level()
+            ->equals(Level::one())
+    );
+}
 
     public function test_it_can_take_damage(): void
     {
@@ -699,28 +714,34 @@ final class CharacterTest extends TestCase
         );
     }
     
-    public function test_proficiency_bonus_updates_when_experience_increases_level(): void
-    {
-        $character = $this->createCharacter();
-    
-        self::assertSame(
-            2,
-            $character
-                ->proficiencyBonus()
-                ->value()
-        );
-    
-        $character->gainExperience(
-            Experience::fromInt(6500)
-        );
-    
-        self::assertSame(
-            3,
-            $character
-                ->proficiencyBonus()
-                ->value()
-        );
-    }
+
+public function test_proficiency_bonus_does_not_change_before_advancement(): void
+{
+    $character = $this->createCharacter();
+
+    self::assertSame(
+        2,
+        $character
+            ->proficiencyBonus()
+            ->value()
+    );
+
+    $character->gainExperience(
+        Experience::fromInt(6500)
+    );
+
+    self::assertSame(
+        2,
+        $character
+            ->proficiencyBonus()
+            ->value()
+    );
+
+    self::assertSame(
+        4,
+        $character->pendingAdvancementLevels()
+    );
+}
     
     public function test_reconstituted_character_derives_proficiency_bonus_from_restored_level(): void
     {
