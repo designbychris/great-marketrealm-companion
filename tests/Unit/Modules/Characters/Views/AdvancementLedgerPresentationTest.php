@@ -80,12 +80,17 @@ final class AdvancementLedgerPresentationTest extends TestCase
         );
 
         self::assertStringContainsString(
-            'Vitality',
+            '$advancement[\'folios\']',
             $view
         );
 
         self::assertStringContainsString(
-            'Proficiency',
+            'data-rising-folio=',
+            $view
+        );
+
+        self::assertStringContainsString(
+            '$folio[\'label\']',
             $view
         );
 
@@ -94,6 +99,7 @@ final class AdvancementLedgerPresentationTest extends TestCase
             $view
         );
     }
+
     public function testVitalityChoiceFolioIsInteractive(): void
     {
         $root = dirname(__DIR__, 5);
@@ -131,5 +137,4 @@ final class AdvancementLedgerPresentationTest extends TestCase
             $view
         );
     }
-
 }
