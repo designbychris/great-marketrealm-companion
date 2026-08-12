@@ -1237,6 +1237,7 @@ $charactersUrl = add_query_arg(
                     'components.media.illuminated-portrait',
                     [
                         'portrait' => $portrait,
+                        'portraitPersisted' => false,
                     ]
                 );
 
