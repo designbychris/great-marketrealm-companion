@@ -31,6 +31,11 @@ $appRequestUrl = admin_url(
 $flash = isset($flash) && is_array($flash)
     ? $flash
     : [];
+
+$advancementSeal = isset($advancementSeal)
+    && is_array($advancementSeal)
+        ? $advancementSeal
+        : [];
 ?>
 
 <section
@@ -40,13 +45,12 @@ $flash = isset($flash) && is_array($flash)
 >
     <header class="gmrc-advancement-ledger__hero">
         <div>
-            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.3</p>
+            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.4</p>
             <h1 id="gmrc-advancement-ledger-title">The Advancement Ledger</h1>
             <p>
-                The Registrar has opened a temporary advancement folio for
+                The Registrar has opened a pending advancement folio for
                 <?php echo esc_html($character->name()->value()); ?>.
-                Nothing is committed until the Guild seals the completed
-                advancement.
+                Your choices are retained with this adventurer, but nothing changes on the Character until later Guild certification.
             </p>
         </div>
 
@@ -375,7 +379,7 @@ $flash = isset($flash) && is_array($flash)
 
                                 <?php if (! empty($folio['ready'])) : ?>
                                     <p class="gmrc-rising-folio__recorded">
-                                        ✓ Choice recorded in this temporary
+                                        ✓ Choice saved in this pending
                                         advancement.
                                     </p>
                                 <?php endif; ?>
@@ -385,6 +389,149 @@ $flash = isset($flash) && is_array($flash)
                 <?php endforeach; ?>
             </div>
         </section>
+
+        <?php if (
+            ! empty($advancementSeal['available'])
+        ) : ?>
+            <section
+                class="gmrc-advancement-seal <?php echo ! empty(
+                    $advancementSeal['ready']
+                )
+                    ? 'is-ready'
+                    : 'is-pending'; ?>"
+                data-advancement-seal
+                <?php if (
+                    ! empty($advancementSeal['ready'])
+                ) : ?>
+                    data-auby-seal-surface
+                <?php endif; ?>
+                aria-labelledby="gmrc-advancement-seal-title"
+            >
+                <?php if (
+                    ! empty($advancementSeal['ready'])
+                ) : ?>
+                    <div class="gmrc-advancement-seal__mark">
+                        <?php echo $this->component(
+                            'components.auby.seal-of-approval',
+                            [
+                                'variant' => 'gold',
+                                'context' => 'advancement',
+                                'trigger' => 'visible',
+                            ]
+                        ); ?>
+                    </div>
+                <?php else : ?>
+                    <div
+                        class="gmrc-advancement-seal__pending-mark"
+                        aria-hidden="true"
+                    >
+                        🔏
+                    </div>
+                <?php endif; ?>
+
+                <div class="gmrc-advancement-seal__body">
+                    <header>
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Registrar’s Final Review
+                            </p>
+
+                            <h2 id="gmrc-advancement-seal-title">
+                                <?php echo esc_html(
+                                    (string) (
+                                        $advancementSeal['title']
+                                        ?? ''
+                                    )
+                                ); ?>
+                            </h2>
+
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $advancementSeal['status']
+                                        ?? ''
+                                    )
+                                ); ?>
+                            </strong>
+
+                            <p>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $advancementSeal['copy']
+                                        ?? ''
+                                    )
+                                ); ?>
+                            </p>
+                        </div>
+
+                        <span class="gmrc-advancement-seal__count">
+                            <?php echo esc_html(
+                                (string) (
+                                    $advancementSeal[
+                                        'folio_ready_count'
+                                    ] ?? 0
+                                )
+                            ); ?>
+                            /
+                            <?php echo esc_html(
+                                (string) (
+                                    $advancementSeal[
+                                        'folio_total'
+                                    ] ?? 0
+                                )
+                            ); ?>
+                            reviewed
+                        </span>
+                    </header>
+
+                    <div class="gmrc-advancement-seal__review">
+                        <?php foreach (
+                            ($advancementSeal['review'] ?? [])
+                            as $review
+                        ) : ?>
+                            <article class="<?php echo ! empty(
+                                $review['ready']
+                            )
+                                ? 'is-ready'
+                                : 'is-waiting'; ?>">
+                                <span aria-hidden="true">
+                                    <?php echo ! empty(
+                                        $review['ready']
+                                    )
+                                        ? '✓'
+                                        : '!'; ?>
+                                </span>
+
+                                <div>
+                                    <strong><?php echo esc_html(
+                                        (string) (
+                                            $review['label']
+                                            ?? ''
+                                        )
+                                    ); ?></strong>
+
+                                    <p><?php echo esc_html(
+                                        (string) (
+                                            $review['detail']
+                                            ?? ''
+                                        )
+                                    ); ?></p>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <?php if (
+                        ! empty($advancementSeal['ready'])
+                    ) : ?>
+                        <p class="gmrc-advancement-seal__certified">
+                            Certified for final Guild processing by the
+                            Registrar. No Character changes have been applied.
+                        </p>
+                    <?php endif; ?>
+                </div>
+            </section>
+        <?php endif; ?>
 
         <div class="gmrc-advancement-ledger__grid">
             <section>
@@ -442,10 +589,10 @@ $flash = isset($flash) && is_array($flash)
                 </ul>
 
                 <p class="gmrc-advancement-ledger__foundation">
-                    Choice Folios can now record and validate temporary
-                    decisions. Vitality is the first interactive folio;
-                    spells, paths, talents and class features will reuse the
-                    same choice contract as their progression rules arrive.
+                    Choice Folios now live inside a durable pending
+                    advancement. Leaving this page does not discard the
+                    Registrar’s paperwork. Future spell, path, talent and
+                    class-feature folios will use the same saved draft.
                 </p>
             </section>
         </div>
@@ -477,10 +624,10 @@ $flash = isset($flash) && is_array($flash)
             <div>
                 <strong>Advancement commit is intentionally locked.</strong>
                 <p>
-                    Phase III.8.3 can record temporary folio choices, but
-                    no selection has touched the Character itself. The Guild
-                    cannot certify the new level until later phases can review
-                    and commit every advancement change atomically.
+                    Phase III.8.4 can retain the pending advancement and
+                    issue the Advancement Seal once every current folio is
+                    ready. The Character is still untouched; Phase III.8.5
+                    will own the final atomic Guild certification.
                 </p>
             </div>
         </section>
