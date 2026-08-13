@@ -79,6 +79,69 @@ final class AdvancementSealPresenter
             ?? $currentLevel
         );
 
+        $review = [
+            [
+                'key' => 'level',
+                'label' => 'Level',
+                'detail' => sprintf(
+                    '%d → %d',
+                    $currentLevel,
+                    $targetLevel
+                ),
+                'ready' => $eligible,
+            ],
+            [
+                'key' => 'vitality',
+                'label' => 'Vitality',
+                'detail' => $hpDetail,
+                'ready' =>
+                    $vitalityChoice !== '',
+            ],
+            [
+                'key' => 'proficiency',
+                'label' => 'Proficiency',
+                'detail' => sprintf(
+                    '%s → %s',
+                    (string) (
+                        $advancement[
+                            'current_proficiency'
+                        ] ?? ''
+                    ),
+                    (string) (
+                        $advancement[
+                            'target_proficiency'
+                        ] ?? ''
+                    )
+                ),
+                'ready' => true,
+            ],
+        ];
+
+        $classProgression = is_array(
+            $advancement['class_progression']
+            ?? null
+        )
+            ? $advancement['class_progression']
+            : [];
+
+        if ($classProgression !== []) {
+            $review[] = [
+                'key' => 'calling',
+                'label' => 'Calling',
+                'detail' => sprintf(
+                    '%s Level %d progression reviewed.',
+                    (string) (
+                        $classProgression['label']
+                        ?? $character
+                            ->characterClass()
+                            ->label()
+                    ),
+                    $targetLevel
+                ),
+                'ready' => true,
+            ];
+        }
+
         return [
             'available' => $eligible,
             'ready' => $ready,
@@ -103,43 +166,7 @@ final class AdvancementSealPresenter
                     'folio_total'
                 ] ?? 0
             ),
-            'review' => [
-                [
-                    'key' => 'level',
-                    'label' => 'Level',
-                    'detail' => sprintf(
-                        '%d → %d',
-                        $currentLevel,
-                        $targetLevel
-                    ),
-                    'ready' => $eligible,
-                ],
-                [
-                    'key' => 'vitality',
-                    'label' => 'Vitality',
-                    'detail' => $hpDetail,
-                    'ready' =>
-                        $vitalityChoice !== '',
-                ],
-                [
-                    'key' => 'proficiency',
-                    'label' => 'Proficiency',
-                    'detail' => sprintf(
-                        '%s → %s',
-                        (string) (
-                            $advancement[
-                                'current_proficiency'
-                            ] ?? ''
-                        ),
-                        (string) (
-                            $advancement[
-                                'target_proficiency'
-                            ] ?? ''
-                        )
-                    ),
-                    'ready' => true,
-                ],
-            ],
+            'review' => $review,
             /*
              * The Seal means "review-ready", not "mutated".
              * Phase III.8.5 will own the atomic certification.

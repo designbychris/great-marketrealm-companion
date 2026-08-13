@@ -94,6 +94,38 @@ final class AdvancementLedgerPresenter
             ];
         }
 
+        if (
+            $eligible
+            && is_array(
+                $classEntry['automatic']
+                ?? null
+            )
+        ) {
+            foreach (
+                $classEntry['automatic']
+                as $gain
+            ) {
+                if (! is_array($gain)) {
+                    continue;
+                }
+
+                $automatic[] = [
+                    'key' => (string) (
+                        $gain['key']
+                        ?? 'calling-gain'
+                    ),
+                    'label' => (string) (
+                        $gain['label']
+                        ?? 'Calling Gain'
+                    ),
+                    'detail' => (string) (
+                        $gain['detail']
+                        ?? ''
+                    ),
+                ];
+            }
+        }
+
         return [
             'eligible' => $eligible,
             'current_level' => $current->value(),

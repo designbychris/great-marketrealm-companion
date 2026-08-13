@@ -116,6 +116,15 @@ final class GuildCertificationService
                     ->signed(),
             'choices' =>
                 $pending->choices(),
+            'calling' => is_array(
+                $advancement[
+                    'class_progression'
+                ] ?? null
+            )
+                ? $advancement[
+                    'class_progression'
+                ]
+                : [],
             'certified_at' =>
                 gmdate('c'),
         ];

@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Services;
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\FolioCollection;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\CallingFolio;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\ProficiencyFolio;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\VitalityFolio;
 
@@ -15,13 +16,17 @@ final class RisingFolioBuilder
 {
     public function __construct(
         private ?VitalityFolio $vitality = null,
-        private ?ProficiencyFolio $proficiency = null
+        private ?ProficiencyFolio $proficiency = null,
+        private ?CallingFolio $calling = null
     ) {
         $this->vitality ??=
             new VitalityFolio();
 
         $this->proficiency ??=
             new ProficiencyFolio();
+
+        $this->calling ??=
+            new CallingFolio();
     }
 
     /**
@@ -45,6 +50,13 @@ final class RisingFolioBuilder
 
         $folios->add(
             $this->proficiency->build(
+                $character,
+                $targetLevel
+            )
+        );
+
+        $folios->add(
+            $this->calling->build(
                 $character,
                 $targetLevel
             )

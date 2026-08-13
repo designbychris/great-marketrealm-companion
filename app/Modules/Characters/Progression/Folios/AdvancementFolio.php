@@ -11,6 +11,7 @@ final class AdvancementFolio
     /**
      * @param array<string,mixed> $facts
      * @param array<int,array<string,mixed>> $choices
+     * @param array<int,array<string,mixed>> $delegated
      */
     public function __construct(
         private string $key,
@@ -19,7 +20,8 @@ final class AdvancementFolio
         private string $status,
         private bool $requiresChoice,
         private array $facts = [],
-        private array $choices = []
+        private array $choices = [],
+        private array $delegated = []
     ) {
         $this->status = FolioStatus::validate(
             $status
@@ -54,6 +56,7 @@ final class AdvancementFolio
             'ready' => $this->isReady(),
             'facts' => $this->facts,
             'choices' => $this->choices,
+            'delegated' => $this->delegated,
         ];
     }
 }
