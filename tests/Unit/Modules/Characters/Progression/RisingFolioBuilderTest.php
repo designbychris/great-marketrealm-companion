@@ -29,15 +29,15 @@ final class RisingFolioBuilderTest extends TestCase
         $states = $folios->toArray();
 
         self::assertSame(
-            ['vitality', 'proficiency'],
+            ['vitality', 'proficiency', 'calling'],
             array_column(
                 $states,
                 'key'
             )
         );
 
-        self::assertSame(2, $folios->total());
-        self::assertSame(3, $folios->readyCount());
+        self::assertSame(3, $folios->total());
+        self::assertSame(2, $folios->readyCount());
         self::assertSame(1, $folios->attentionCount());
     }
 
@@ -72,7 +72,7 @@ final class RisingFolioBuilderTest extends TestCase
             ]
         );
 
-        self::assertSame(2, $folios->readyCount());
+        self::assertSame(3, $folios->readyCount());
         self::assertSame(0, $folios->attentionCount());
         self::assertTrue($folios->allReady());
 
