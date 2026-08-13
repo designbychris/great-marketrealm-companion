@@ -808,14 +808,3 @@
             0 !important;
     }
 }
-
-/** CHRIS AMENDS **/
-
-@media screen and (max-width:1200px){
-    .gmrc-open-ledger .gmrc-ledger-tabs {margin-top:0px!important;}
-}
-
-@media screen and (max-width:1050px){
-    .gmrc-open-ledger .gmrc-ledger-tabs {margin-top:10px!important;}
-    .gmrc-open-ledger .gmrc-ledger-tab {width:200px!important;border-radius:0.34rem!important;}
-}
