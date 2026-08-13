@@ -45,7 +45,7 @@ $advancementSeal = isset($advancementSeal)
 >
     <header class="gmrc-advancement-ledger__hero">
         <div>
-            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.4</p>
+            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.5</p>
             <h1 id="gmrc-advancement-ledger-title">The Advancement Ledger</h1>
             <p>
                 The Registrar has opened a pending advancement folio for
@@ -619,18 +619,88 @@ $advancementSeal = isset($advancementSeal)
             </section>
         <?php endif; ?>
 
-        <section class="gmrc-advancement-ledger__sealed">
-            <span aria-hidden="true">🔒</span>
-            <div>
-                <strong>Advancement commit is intentionally locked.</strong>
-                <p>
-                    Phase III.8.4 can retain the pending advancement and
-                    issue the Advancement Seal once every current folio is
-                    ready. The Character is still untouched; Phase III.8.5
-                    will own the final atomic Guild certification.
-                </p>
-            </div>
-        </section>
+        <?php if (
+            ! empty($advancementSeal['ready'])
+        ) : ?>
+            <section
+                class="gmrc-guild-certification"
+                data-guild-certification
+                aria-labelledby="gmrc-guild-certification-title"
+            >
+                <div class="gmrc-guild-certification__mark" aria-hidden="true">
+                    ✦
+                </div>
+
+                <div>
+                    <p class="gmrc-eyebrow">
+                        Final Guild Entry
+                    </p>
+
+                    <h2 id="gmrc-guild-certification-title">
+                        Certify this Advancement
+                    </h2>
+
+                    <p>
+                        This action enters the reviewed Level and Vitality
+                        changes into the permanent Character record. The
+                        completed certification cannot be applied twice.
+                    </p>
+
+                    <form
+                        method="post"
+                        action="<?php echo esc_url($appRequestUrl); ?>"
+                    >
+                        <input
+                            type="hidden"
+                            name="action"
+                            value="gmrc_app_request"
+                        >
+
+                        <input
+                            type="hidden"
+                            name="gmrc_route"
+                            value="<?php echo esc_attr(
+                                'characters/'
+                                . rawurlencode($characterId)
+                                . '/progression/advance/certify'
+                            ); ?>"
+                        >
+
+                        <?php wp_nonce_field(
+                            'gmrc_character_advancement_'
+                            . $characterId,
+                            'gmrc_nonce'
+                        ); ?>
+
+                        <button
+                            type="submit"
+                            class="gmrc-button gmrc-button--primary"
+                        >
+                            Certify Advancement
+                        </button>
+                    </form>
+
+                    <small>
+                        The Registrar will re-check every folio before
+                        altering the Guild Record.
+                    </small>
+                </div>
+            </section>
+        <?php else : ?>
+            <section class="gmrc-advancement-ledger__sealed">
+                <span aria-hidden="true">🔒</span>
+                <div>
+                    <strong>
+                        Guild Certification remains locked.
+                    </strong>
+                    <p>
+                        Every required folio must be ready and the
+                        Advancement Seal issued before permanent Character
+                        changes can be certified.
+                    </p>
+                </div>
+            </section>
+        <?php endif; ?>
     <?php endif; ?>
 
     <footer class="gmrc-advancement-ledger__footer">
