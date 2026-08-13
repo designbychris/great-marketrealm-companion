@@ -45,7 +45,7 @@ $advancementSeal = isset($advancementSeal)
 >
     <header class="gmrc-advancement-ledger__hero">
         <div>
-            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.5</p>
+            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.6</p>
             <h1 id="gmrc-advancement-ledger-title">The Advancement Ledger</h1>
             <p>
                 The Registrar has opened a pending advancement folio for
@@ -246,6 +246,57 @@ $advancementSeal = isset($advancementSeal)
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </dl>
+                        <?php endif; ?>
+
+                        <?php if (
+                            ! empty($folio['delegated'])
+                            && is_array($folio['delegated'])
+                        ) : ?>
+                            <div class="gmrc-rising-folio__delegated">
+                                <strong>
+                                    Specialist folios identified
+                                </strong>
+
+                                <ul>
+                                    <?php foreach (
+                                        $folio['delegated']
+                                        as $delegated
+                                    ) : ?>
+                                        <li>
+                                            <span aria-hidden="true">↗</span>
+
+                                            <div>
+                                                <strong><?php echo esc_html(
+                                                    (string) (
+                                                        $delegated['label']
+                                                        ?? ''
+                                                    )
+                                                ); ?></strong>
+
+                                                <p><?php echo esc_html(
+                                                    (string) (
+                                                        $delegated['detail']
+                                                        ?? ''
+                                                    )
+                                                ); ?></p>
+
+                                                <?php if (
+                                                    ! empty(
+                                                        $delegated['phase']
+                                                    )
+                                                ) : ?>
+                                                    <small>
+                                                        Assigned to Phase
+                                                        <?php echo esc_html(
+                                                            (string) $delegated['phase']
+                                                        ); ?>
+                                                    </small>
+                                                <?php endif; ?>
+                                            </div>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
                         <?php endif; ?>
 
                         <?php if (
@@ -589,10 +640,10 @@ $advancementSeal = isset($advancementSeal)
                 </ul>
 
                 <p class="gmrc-advancement-ledger__foundation">
-                    Choice Folios now live inside a durable pending
-                    advancement. Leaving this page does not discard the
-                    Registrar’s paperwork. Future spell, path, talent and
-                    class-feature folios will use the same saved draft.
+                    The Calling catalogue now identifies level-specific
+                    class progression and delegates specialist decisions to
+                    their proper folios. Spellbook, Path and Measure-of-Growth
+                    choices will join the same saved advancement draft.
                 </p>
             </section>
         </div>
