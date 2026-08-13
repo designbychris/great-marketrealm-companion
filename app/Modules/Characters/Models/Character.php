@@ -465,6 +465,34 @@ final class Character
     }
 
     /**
+     * Apply one Guild-certified level advancement.
+     *
+     * Experience eligibility is checked again here so the domain cannot be
+     * advanced merely because a controller asked it to.
+     */
+    public function certifyAdvancement(
+        int $hitPointGain
+    ): void {
+        if (! $this->canAdvance()) {
+            throw new \LogicException(
+                'The Character is not eligible for Guild advancement.'
+            );
+        }
+
+        if ($this->level->isMaximum()) {
+            throw new \LogicException(
+                'A Character cannot advance beyond Level 20.'
+            );
+        }
+
+        $this->hitPoints = $this
+            ->hitPoints
+            ->increaseMaximum($hitPointGain);
+
+        $this->level = $this->level->next();
+    }
+
+    /**
      * Apply damage to the Character.
      */
     public function takeDamage(int $amount): void
