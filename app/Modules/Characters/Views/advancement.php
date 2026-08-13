@@ -45,7 +45,7 @@ $advancementSeal = isset($advancementSeal)
 >
     <header class="gmrc-advancement-ledger__hero">
         <div>
-            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.6</p>
+            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.7</p>
             <h1 id="gmrc-advancement-ledger-title">The Advancement Ledger</h1>
             <p>
                 The Registrar has opened a pending advancement folio for
@@ -309,9 +309,26 @@ $advancementSeal = isset($advancementSeal)
                                 ?? ''
                             );
 
-                            $selected = (string) (
-                                $folio['facts']['selected']
-                                ?? ''
+                            $choiceMode = (string) (
+                                $folio['facts']['choice_mode']
+                                ?? 'single'
+                            );
+
+                            $selectedValues = is_array(
+                                $folio['facts']['selected_values']
+                                ?? null
+                            )
+                                ? $folio['facts']['selected_values']
+                                : array_filter([
+                                    (string) (
+                                        $folio['facts']['selected']
+                                        ?? ''
+                                    ),
+                                ]);
+
+                            $choiceMinimum = (int) (
+                                $folio['facts']['choice_minimum']
+                                ?? 1
                             );
                             ?>
 
@@ -350,7 +367,14 @@ $advancementSeal = isset($advancementSeal)
 
                                 <fieldset>
                                     <legend>
-                                        Choose one option
+                                        <?php echo $choiceMinimum > 1
+                                            ? esc_html(
+                                                sprintf(
+                                                    'Choose %d options',
+                                                    $choiceMinimum
+                                                )
+                                            )
+                                            : 'Choose one option'; ?>
                                     </legend>
 
                                     <?php foreach (
@@ -366,14 +390,25 @@ $advancementSeal = isset($advancementSeal)
 
                                         <label>
                                             <input
-                                                type="radio"
-                                                name="choice"
+                                                type="<?php echo esc_attr(
+                                                    $choiceMode === 'single'
+                                                        ? 'radio'
+                                                        : 'checkbox'
+                                                ); ?>"
+                                                name="<?php echo esc_attr(
+                                                    $choiceMode === 'single'
+                                                        ? 'choice'
+                                                        : 'choice[]'
+                                                ); ?>"
                                                 value="<?php echo esc_attr(
                                                     $choiceValue
                                                 ); ?>"
                                                 <?php checked(
-                                                    $selected,
-                                                    $choiceValue
+                                                    in_array(
+                                                        $choiceValue,
+                                                        $selectedValues,
+                                                        true
+                                                    )
                                                 ); ?>
                                             >
 
@@ -384,6 +419,27 @@ $advancementSeal = isset($advancementSeal)
                                                         ?? ''
                                                     )
                                                 ); ?></strong>
+
+                                                <?php if (
+                                                    ! empty($choice['detail'])
+                                                ) : ?>
+                                                    <small>
+                                                        <?php echo esc_html(
+                                                            (string) $choice['detail']
+                                                        ); ?>
+                                                    </small>
+                                                <?php endif; ?>
+
+                                                <?php if (
+                                                    isset($choice['spell_level'])
+                                                    && (int) $choice['spell_level'] > 0
+                                                ) : ?>
+                                                    <small>
+                                                        Level <?php echo esc_html(
+                                                            (string) $choice['spell_level']
+                                                        ); ?> spell
+                                                    </small>
+                                                <?php endif; ?>
 
                                                 <?php if (
                                                     isset($choice['value'])
