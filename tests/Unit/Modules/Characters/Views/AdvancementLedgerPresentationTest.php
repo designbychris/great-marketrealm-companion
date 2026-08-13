@@ -137,4 +137,42 @@ final class AdvancementLedgerPresentationTest extends TestCase
             $view
         );
     }
+    public function testAdvancementLedgerShowsAdvancementSealReview(): void
+    {
+        $root = dirname(__DIR__, 5);
+
+        $view = file_get_contents(
+            $root
+            . '/app/Modules/Characters/Views/'
+            . 'advancement.php'
+        );
+
+        self::assertIsString($view);
+
+        self::assertStringContainsString(
+            'data-advancement-seal',
+            $view
+        );
+
+        self::assertStringContainsString(
+            'Registrar’s Final Review',
+            $view
+        );
+
+        self::assertStringContainsString(
+            'components.auby.seal-of-approval',
+            $view
+        );
+
+        self::assertStringContainsString(
+            "'context' => 'advancement'",
+            $view
+        );
+
+        self::assertStringContainsString(
+            'No Character changes have been applied.',
+            $view
+        );
+    }
+
 }
