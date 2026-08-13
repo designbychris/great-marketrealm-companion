@@ -112,7 +112,8 @@ final class ArcaneAbilityCatalogue
                 '1d8',
                 null,
                 null,
-                true
+                true,
+                spellLevel: 1
             ),
             new ArcaneAbilityDefinition(
                 'pantry-ward',
@@ -123,7 +124,8 @@ final class ArcaneAbilityCatalogue
                 '1 reaction',
                 'Self',
                 '1 round',
-                '1st-level slot'
+                '1st-level slot',
+                spellLevel: 1
             ),
             new ArcaneAbilityDefinition(
                 'market-missile',
