@@ -227,7 +227,7 @@ class FrontendServiceProvider extends ServiceProvider
         if (
             $method === 'POST'
             && preg_match(
-                '#^characters/([^/]+)/progression/advance/choice$#',
+                '#^characters/([^/]+)/progression/advance/(?:choice|certify)$#',
                 $route,
                 $matches
             )
