@@ -2527,3 +2527,9 @@
         background: rgba(255, 253, 241, 0.68);
     }
 }
+
+/** CHRIS FIXES **/
+
+@media screen and (max-size:1200px){
+    .gmrc-open-ledger .gmrc-ledger-page--identity .gmrc-ledger-page__portrait {display:block!important;}
+}
