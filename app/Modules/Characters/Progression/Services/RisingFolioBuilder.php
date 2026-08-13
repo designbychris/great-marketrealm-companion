@@ -9,6 +9,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\FolioCollect
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\CallingFolio;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\ProficiencyFolio;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\VitalityFolio;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\SpellbookFolio;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\CantripFolio;
 
 defined('ABSPATH') || exit;
 
@@ -17,7 +19,9 @@ final class RisingFolioBuilder
     public function __construct(
         private ?VitalityFolio $vitality = null,
         private ?ProficiencyFolio $proficiency = null,
-        private ?CallingFolio $calling = null
+        private ?CallingFolio $calling = null,
+        private ?SpellbookFolio $spellbook = null,
+        private ?CantripFolio $cantrips = null
     ) {
         $this->vitality ??=
             new VitalityFolio();
@@ -27,6 +31,12 @@ final class RisingFolioBuilder
 
         $this->calling ??=
             new CallingFolio();
+
+        $this->spellbook ??=
+            new SpellbookFolio();
+
+        $this->cantrips ??=
+            new CantripFolio();
     }
 
     /**
@@ -61,6 +71,26 @@ final class RisingFolioBuilder
                 $targetLevel
             )
         );
+
+        $spellbook = $this->spellbook->build(
+            $character,
+            $targetLevel,
+            $choices['wizard-spells'] ?? []
+        );
+
+        if ($spellbook instanceof \GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\AdvancementFolio) {
+            $folios->add($spellbook);
+        }
+
+        $cantrips = $this->cantrips->build(
+            $character,
+            $targetLevel,
+            $choices['wizard-cantrips'] ?? []
+        );
+
+        if ($cantrips instanceof \GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\AdvancementFolio) {
+            $folios->add($cantrips);
+        }
 
         return $folios;
     }

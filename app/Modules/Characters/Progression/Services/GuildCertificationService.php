@@ -82,6 +82,13 @@ final class GuildCertificationService
             $pending->choices()
         );
 
+        $character->learnArcana(
+            $pending->choices()['wizard-spells']
+                ?? [],
+            $pending->choices()['wizard-cantrips']
+                ?? []
+        );
+
         $character->certifyAdvancement(
             $hpGain
         );
@@ -116,6 +123,8 @@ final class GuildCertificationService
                     ->signed(),
             'choices' =>
                 $pending->choices(),
+            'spellbook' =>
+                $character->spellbook()->toArray(),
             'calling' => is_array(
                 $advancement[
                     'class_progression'

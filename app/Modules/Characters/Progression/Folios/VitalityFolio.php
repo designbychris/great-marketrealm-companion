@@ -83,6 +83,7 @@ final class VitalityFolio
                     $requirement->maximum(),
                 'selected' =>
                     $selected[0] ?? '',
+                'selected_values' => $selected,
             ],
             [
                 [

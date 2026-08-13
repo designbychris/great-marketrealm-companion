@@ -142,6 +142,33 @@ final class AdvancementSealPresenter
             ];
         }
 
+        foreach (
+            ($advancement['folios'] ?? [])
+            as $folio
+        ) {
+            if (
+                ! is_array($folio)
+                || ! in_array(
+                    (string) ($folio['key'] ?? ''),
+                    ['spellbook', 'cantrips'],
+                    true
+                )
+            ) {
+                continue;
+            }
+
+            $review[] = [
+                'key' => (string) $folio['key'],
+                'label' => (string) (
+                    $folio['label'] ?? 'Spellbook'
+                ),
+                'detail' => (string) (
+                    $folio['summary'] ?? ''
+                ),
+                'ready' => ! empty($folio['ready']),
+            ];
+        }
+
         return [
             'available' => $eligible,
             'ready' => $ready,
