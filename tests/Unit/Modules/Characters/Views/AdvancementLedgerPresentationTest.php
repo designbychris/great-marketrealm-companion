@@ -118,7 +118,17 @@ final class AdvancementLedgerPresentationTest extends TestCase
         );
 
         self::assertStringContainsString(
-            'name="choice"',
+            "$choiceMode === 'single'",
+            $view
+        );
+
+        self::assertStringContainsString(
+            "? 'choice'",
+            $view
+        );
+
+        self::assertStringContainsString(
+            ": 'choice[]'",
             $view
         );
 

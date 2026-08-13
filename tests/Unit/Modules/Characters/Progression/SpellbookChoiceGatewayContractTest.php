@@ -16,6 +16,9 @@ final class SpellbookChoiceGatewayContractTest extends TestCase
         );
         self::assertIsString($controller);
         self::assertStringContainsString('AdvancementChoiceRequirementResolver', $controller);
-        self::assertStringNotContainsString("$choiceKey !== 'vitality-hit-points'", $controller);
+        self::assertStringNotContainsString(
+            "\$choiceKey !== 'vitality-hit-points'",
+            $controller
+        );
     }
 }

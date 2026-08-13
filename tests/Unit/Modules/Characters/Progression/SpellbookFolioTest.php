@@ -24,7 +24,21 @@ final class SpellbookFolioTest extends TestCase
         $state = $folio->toArray();
         self::assertFalse($state['ready']);
         self::assertSame(2, $state['facts']['choice_minimum']);
-        self::assertSame(['pantry-ward', 'market-missile'], array_column($state['choices'], 'key'));
+        self::assertSame(
+            ['pantry-ward', 'market-missile'],
+            array_column(
+                $state['choices'],
+                'key'
+            )
+        );
+
+        self::assertSame(
+            [1, 1],
+            array_column(
+                $state['choices'],
+                'spell_level'
+            )
+        );
     }
 
     public function testTwoRecordedSpellChoicesMakeFolioReady(): void

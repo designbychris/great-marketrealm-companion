@@ -15,7 +15,14 @@ final class ArcanePantrySpellbookContractTest extends TestCase
             $root . '/app/Modules/Characters/Arcana/Services/ArcanePantryPresenter.php'
         );
         self::assertIsString($presenter);
-        self::assertStringContainsString("'learned' => $learned", $presenter);
-        self::assertStringContainsString("'spellbook' => $character->spellbook()->toArray()", $presenter);
+        self::assertStringContainsString(
+            "'learned' => \$learned",
+            $presenter
+        );
+
+        self::assertStringContainsString(
+            "'spellbook' => \$character->spellbook()->toArray()",
+            $presenter
+        );
     }
 }
