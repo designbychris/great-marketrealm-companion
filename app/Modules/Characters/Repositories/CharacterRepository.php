@@ -18,6 +18,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Languages;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiencies;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Spellbook;
 use RuntimeException;
 use WP_Post;
 
@@ -50,6 +51,7 @@ final class CharacterRepository implements CharacterRepositoryInterface
     private const META_BACKGROUND = '_gmrc_background';
     private const META_SELECTED_LANGUAGES = '_gmrc_selected_languages';
     private const META_SELECTED_TOOLS = '_gmrc_selected_tools';
+    private const META_SPELLBOOK = '_gmrc_spellbook';
 
     private string $postType = 'gmrc_character';
 
@@ -267,6 +269,12 @@ final class CharacterRepository implements CharacterRepositoryInterface
         
         update_post_meta(
             $postId,
+            self::META_SPELLBOOK,
+            $character->spellbook()->toArray()
+        );
+
+        update_post_meta(
+            $postId,
             self::META_LEVEL,
             $character->level()->value()
         );
@@ -423,8 +431,28 @@ final class CharacterRepository implements CharacterRepositoryInterface
             selectedToolProficiencies:
                 $this->mapSelectedTools(
                     $post->ID
-                )
+                ),
+            spellbook: $this->mapSpellbook(
+                $post->ID
+            )
         );
+    }
+
+    /**
+     * Rebuild the certified Character spellbook.
+     */
+    private function mapSpellbook(
+        int $postId
+    ): Spellbook {
+        $stored = get_post_meta(
+            $postId,
+            self::META_SPELLBOOK,
+            true
+        );
+
+        return is_array($stored)
+            ? Spellbook::fromArray($stored)
+            : Spellbook::empty();
     }
 
     /**
