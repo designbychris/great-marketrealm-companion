@@ -24,12 +24,8 @@ $ledgerUrl = add_query_arg(
     home_url('/companion/')
 );
 
-$choiceUrl = add_query_arg(
-    'gmrc_route',
-    'characters/'
-        . rawurlencode($characterId)
-        . '/progression/advance/choice',
-    home_url('/companion/')
+$appRequestUrl = admin_url(
+    'admin-post.php'
 );
 
 $flash = isset($flash) && is_array($flash)
@@ -267,8 +263,14 @@ $flash = isset($flash) && is_array($flash)
                             <form
                                 class="gmrc-rising-folio__choices"
                                 method="post"
-                                action="<?php echo esc_url($choiceUrl); ?>"
+                                action="<?php echo esc_url($appRequestUrl); ?>"
                             >
+                                <input
+                                    type="hidden"
+                                    name="action"
+                                    value="gmrc_app_request"
+                                >
+
                                 <input
                                     type="hidden"
                                     name="gmrc_route"
