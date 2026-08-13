@@ -34,7 +34,7 @@ final class AdvancementLedgerPresentationTest extends TestCase
         );
     }
 
-    public function testAdvancementLedgerIsReadOnlyInFoundationPass(): void
+    public function testGuildCertificationIsLockedUntilSealIsReady(): void
     {
         $root = dirname(__DIR__, 5);
 
@@ -52,7 +52,7 @@ final class AdvancementLedgerPresentationTest extends TestCase
         );
 
         self::assertStringContainsString(
-            'Advancement commit is intentionally locked.',
+            'Guild Certification remains locked.',
             $view
         );
 

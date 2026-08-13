@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class AdvancementChoiceGatewayContractTest extends TestCase
 {
-    public function testGatewayRecognisesAdvancementChoiceNonceAction(): void
+    public function testGatewayRecognisesAdvancementChoiceAndCertificationNonceAction(): void
     {
         $root = dirname(__DIR__, 3);
 
@@ -20,7 +20,7 @@ final class AdvancementChoiceGatewayContractTest extends TestCase
         self::assertIsString($provider);
 
         self::assertStringContainsString(
-            '#^characters/([^/]+)/progression/advance/choice$#',
+            '#^characters/([^/]+)/progression/advance/(?:choice|certify)$#',
             $provider
         );
 

@@ -30,7 +30,7 @@ final class HitPointGainResolverTest extends TestCase
             ]
         );
 
-        self::assertSame(6, $gain);
+        self::assertSame(5, $gain);
     }
 
     public function testMissingVitalityChoiceCannotBeCertified(): void

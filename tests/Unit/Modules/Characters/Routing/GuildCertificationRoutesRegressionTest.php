@@ -32,7 +32,7 @@ final class GuildCertificationRoutesRegressionTest extends TestCase
 
     public function testCertificationUsesAdvancementNonceGateway(): void
     {
-        $root = dirname(__DIR__, 4);
+        $root = dirname(__DIR__, 5);
 
         $provider = file_get_contents(
             $root
