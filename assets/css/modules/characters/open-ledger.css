@@ -2890,3 +2890,46 @@
     grid-template-columns:
         repeat(auto-fit, minmax(10rem, 1fr));
 }
+
+/* ===============================================================
+ * Phase III.8.7 — The Spellbook Folios
+ * =============================================================== */
+
+.gmrc-rising-folio__choices label span small {
+    display: block;
+    margin-top: 0.12rem;
+    color: rgba(65, 44, 34, 0.64);
+    line-height: 1.35;
+}
+
+.gmrc-rising-folio[data-rising-folio="spellbook"],
+.gmrc-rising-folio[data-rising-folio="cantrips"] {
+    border-color: rgba(76, 68, 145, 0.28);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(242, 238, 255, 0.78),
+            rgba(255, 250, 226, 0.78)
+        );
+}
+
+.gmrc-rising-folio[data-rising-folio="spellbook"]
+.gmrc-rising-folio__choices label,
+.gmrc-rising-folio[data-rising-folio="cantrips"]
+.gmrc-rising-folio__choices label {
+    border-color: rgba(76, 68, 145, 0.18);
+    background: rgba(250, 248, 255, 0.74);
+}
+
+.gmrc-arcane-card__learned {
+    display: inline-flex;
+    margin-left: 0.45rem;
+    padding: 0.16rem 0.42rem;
+    border-radius: 999px;
+    color: #45663d;
+    background: rgba(224, 241, 214, 0.82);
+    font-size: 0.66rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
