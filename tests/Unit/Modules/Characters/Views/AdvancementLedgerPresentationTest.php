@@ -175,4 +175,37 @@ final class AdvancementLedgerPresentationTest extends TestCase
             $view
         );
     }
+    public function testSealedAdvancementCanBeGuildCertified(): void
+    {
+        $root = dirname(__DIR__, 5);
+
+        $view = file_get_contents(
+            $root
+            . '/app/Modules/Characters/Views/'
+            . 'advancement.php'
+        );
+
+        self::assertIsString($view);
+
+        self::assertStringContainsString(
+            'data-guild-certification',
+            $view
+        );
+
+        self::assertStringContainsString(
+            '/progression/advance/certify',
+            $view
+        );
+
+        self::assertStringContainsString(
+            'Certify Advancement',
+            $view
+        );
+
+        self::assertStringContainsString(
+            'cannot be applied twice',
+            $view
+        );
+    }
+
 }
