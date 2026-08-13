@@ -29,16 +29,16 @@ final class RisingFolioBuilderTest extends TestCase
         $states = $folios->toArray();
 
         self::assertSame(
-            ['vitality', 'proficiency', 'calling'],
+            ['vitality', 'proficiency', 'calling', 'spellbook'],
             array_column(
                 $states,
                 'key'
             )
         );
 
-        self::assertSame(3, $folios->total());
+        self::assertSame(4, $folios->total());
         self::assertSame(2, $folios->readyCount());
-        self::assertSame(1, $folios->attentionCount());
+        self::assertSame(2, $folios->attentionCount());
     }
 
     public function testVitalityFolioCarriesHpChoiceFacts(): void
@@ -73,8 +73,8 @@ final class RisingFolioBuilderTest extends TestCase
         );
 
         self::assertSame(3, $folios->readyCount());
-        self::assertSame(0, $folios->attentionCount());
-        self::assertTrue($folios->allReady());
+        self::assertSame(1, $folios->attentionCount());
+        self::assertFalse($folios->allReady());
 
         $vitality = $folios->toArray()[0];
 
@@ -86,6 +86,22 @@ final class RisingFolioBuilderTest extends TestCase
         self::assertTrue(
             $vitality['ready']
         );
+    }
+
+    public function testRecordedVitalityAndSpellbookChoicesMakeAllCurrentFoliosReady(): void
+    {
+        $folios = (new RisingFolioBuilder())->forAdvancement(
+            $this->character(),
+            2,
+            [
+                'vitality-hit-points' => ['average'],
+                'wizard-spells' => ['pantry-ward', 'market-missile'],
+            ]
+        );
+
+        self::assertSame(4, $folios->readyCount());
+        self::assertSame(0, $folios->attentionCount());
+        self::assertTrue($folios->allReady());
     }
 
     private function character(): Character

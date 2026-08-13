@@ -236,4 +236,16 @@ final class AdvancementLedgerPresentationTest extends TestCase
         );
     }
 
+    public function testSpellbookFoliosSupportChooseNCheckboxes(): void
+    {
+        $root = dirname(__DIR__, 5);
+        $view = file_get_contents(
+            $root . '/app/Modules/Characters/Views/advancement.php'
+        );
+        self::assertIsString($view);
+        self::assertStringContainsString("choice_mode", $view);
+        self::assertStringContainsString("choice[]", $view);
+        self::assertStringContainsString("selected_values", $view);
+    }
+
 }
