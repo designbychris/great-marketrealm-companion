@@ -1340,6 +1340,18 @@ $advancementHistory = isset($advancementHistory)
                                         ucfirst((string) $ability['kind'])
                                     ); ?>
                                 </span>
+                                <?php if (
+                                    ! empty($ability['learned'])
+                                    && in_array(
+                                        $ability['kind'],
+                                        ['spell', 'cantrip'],
+                                        true
+                                    )
+                                ) : ?>
+                                    <span class="gmrc-arcane-card__learned">
+                                        In Spellbook ✓
+                                    </span>
+                                <?php endif; ?>
                                 <h3><?php echo esc_html($ability['label']); ?></h3>
                                 <p><?php echo esc_html($ability['description']); ?></p>
                             </header>
