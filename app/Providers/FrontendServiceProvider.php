@@ -225,6 +225,20 @@ class FrontendServiceProvider extends ServiceProvider
         }
 
         if (
+            $method === 'POST'
+            && preg_match(
+                '#^characters/([^/]+)/progression/advance/choice$#',
+                $route,
+                $matches
+            )
+        ) {
+            return 'gmrc_character_advancement_'
+                . sanitize_text_field(
+                    $matches[1]
+                );
+        }
+
+        if (
             $method === 'DELETE'
             && preg_match(
                 '#^characters/([^/]+)$#',
