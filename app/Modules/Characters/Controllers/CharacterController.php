@@ -40,6 +40,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Choices\ChoiceRequi
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\AdvancementChoiceStore;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\PendingAdvancementRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\AdvancementSealPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\GuildCertificationService;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\AdvancementHistoryRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterCatalogueRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterBuildProfileRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
@@ -631,6 +633,12 @@ final class CharacterController
         $progression = (new RisingRegisterPresenter())
             ->present($character);
 
+        $advancementHistory = (
+            new AdvancementHistoryRepository()
+        )->all(
+            $character->id()
+        );
+
         $completeAdventurer = (new CompleteAdventurerPresenter())
             ->present(
                 $character,
@@ -657,6 +665,8 @@ final class CharacterController
                     'attacks' => $attacks,
                     'arcana' => $arcana,
                     'progression' => $progression,
+                    'advancementHistory' =>
+                        $advancementHistory,
                     'completeAdventurer' => $completeAdventurer,
                 ]
             )
@@ -1024,6 +1034,50 @@ final class CharacterController
         return $this->responses->redirect(
             $this->advancementUrl(
                 $character->id()
+            )
+        );
+    }
+
+    /**
+     * Apply a sealed pending advancement to the permanent Guild Record.
+     */
+    public function certifyAdvancement(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+
+        try {
+            $result = (
+                new GuildCertificationService(
+                    $this->characters,
+                    new PendingAdvancementRepository(),
+                    new AdvancementHistoryRepository()
+                )
+            )->certify($character);
+        } catch (RuntimeException|\LogicException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->advancementUrl(
+                    $character->id()
+                )
+            );
+        }
+
+        $this->flash->success(
+            sprintf(
+                'Guild Certification complete: Level %d entered into the Register with +%d maximum HP.',
+                (int) $result['target_level'],
+                (int) $result['hit_point_gain']
+            )
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'progression'
             )
         );
     }
