@@ -2528,8 +2528,165 @@
     }
 }
 
-/** CHRIS FIXES **/
+/* ===============================================================
+ * Phase III.8.4 — The Advancement Seal
+ * =============================================================== */
 
-@media screen and (max-size:1200px){
-    .gmrc-open-ledger .gmrc-ledger-page--identity .gmrc-ledger-page__portrait {display:block!important;}
+.gmrc-advancement-seal {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(1rem, 2vw, 1.5rem);
+    align-items: center;
+    margin-top: 1rem;
+    padding: clamp(1.1rem, 2.5vw, 1.7rem);
+    border: 1px solid rgba(135, 94, 34, 0.3);
+    border-radius: 0.75rem;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 248, 220, 0.95),
+            rgba(236, 213, 164, 0.82)
+        );
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 240, 0.55);
+}
+
+.gmrc-advancement-seal.is-ready {
+    border-color: rgba(184, 132, 39, 0.52);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 249, 219, 0.98),
+            rgba(238, 207, 137, 0.9)
+        );
+}
+
+.gmrc-advancement-seal__mark {
+    width: clamp(6rem, 10vw, 8rem);
+}
+
+.gmrc-advancement-seal__pending-mark {
+    display: grid;
+    place-items: center;
+    width: clamp(5rem, 9vw, 7rem);
+    aspect-ratio: 1;
+    border: 2px dashed rgba(96, 55, 115, 0.3);
+    border-radius: 50%;
+    color: #603773;
+    background: rgba(245, 235, 250, 0.52);
+    font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.gmrc-advancement-seal__body > header {
+    display: flex;
+    gap: 1rem;
+    align-items: start;
+    justify-content: space-between;
+}
+
+.gmrc-advancement-seal__body h2 {
+    margin: 0.1rem 0 0.3rem;
+    color: #603773;
+    font-family:
+        var(--gmrc-font-display, Georgia, serif);
+    font-size: clamp(1.65rem, 3vw, 2.65rem);
+}
+
+.gmrc-advancement-seal__body header > div > strong {
+    color: #93651f;
+    font-size: 0.75rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.gmrc-advancement-seal__body header > div > p:last-child {
+    max-width: 48rem;
+    margin: 0.45rem 0 0;
+    color: rgba(65, 44, 34, 0.72);
+    line-height: 1.5;
+}
+
+.gmrc-advancement-seal__count {
+    flex: 0 0 auto;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid rgba(147, 101, 31, 0.26);
+    border-radius: 999px;
+    color: #7e581e;
+    background: rgba(255, 250, 232, 0.62);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.gmrc-advancement-seal__review {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 0.55rem;
+    margin-top: 1rem;
+}
+
+.gmrc-advancement-seal__review article {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.55rem;
+    align-items: start;
+    padding: 0.7rem;
+    border: 1px solid rgba(105, 70, 39, 0.14);
+    border-radius: 0.45rem;
+    background: rgba(255, 253, 240, 0.56);
+}
+
+.gmrc-advancement-seal__review article > span {
+    display: grid;
+    place-items: center;
+    width: 1.65rem;
+    height: 1.65rem;
+    border-radius: 50%;
+    color: #fff5d6;
+    background: #587c4d;
+    font-size: 0.75rem;
+    font-weight: 900;
+}
+
+.gmrc-advancement-seal__review article.is-waiting > span {
+    background: #b17821;
+}
+
+.gmrc-advancement-seal__review article strong {
+    color: #603773;
+    font-family:
+        var(--gmrc-font-display, Georgia, serif);
+}
+
+.gmrc-advancement-seal__review article p {
+    margin: 0.15rem 0 0;
+    color: rgba(65, 44, 34, 0.68);
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+.gmrc-advancement-seal__certified {
+    margin: 0.9rem 0 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(147, 101, 31, 0.2);
+    color: #76511b;
+    font-family:
+        var(--gmrc-font-display, Georgia, serif);
+    font-style: italic;
+}
+
+@media (max-width: 760px) {
+    .gmrc-advancement-seal {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-advancement-seal__body > header {
+        flex-direction: column;
+    }
+
+    .gmrc-advancement-seal__review {
+        grid-template-columns: 1fr;
+    }
 }
