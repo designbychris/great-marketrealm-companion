@@ -244,6 +244,12 @@ $backgroundSkills = array_map(
         ->skillProficiencies()
         ->proficiencies()
 );
+
+$advancementHistory = isset($advancementHistory)
+    && is_array($advancementHistory)
+        ? $advancementHistory
+        : [];
+
 ?>
 
 <section
@@ -1567,6 +1573,69 @@ $backgroundSkills = array_map(
                     <span aria-hidden="true">★</span>
                     <p>Level 20: fully certified by the Great Marketrealm Guild.</p>
                 </div>
+            <?php endif; ?>
+
+            <?php if ($advancementHistory !== []) : ?>
+                <section
+                    class="gmrc-rise-certification-history"
+                    aria-labelledby="gmrc-certification-history-title"
+                >
+                    <header>
+                        <p class="gmrc-eyebrow">
+                            Guild Archive
+                        </p>
+                        <h3 id="gmrc-certification-history-title">
+                            Certified Advancements
+                        </h3>
+                    </header>
+
+                    <ol>
+                        <?php foreach (
+                            array_reverse($advancementHistory)
+                            as $certification
+                        ) : ?>
+                            <li>
+                                <span aria-hidden="true">✓</span>
+                                <div>
+                                    <strong>
+                                        Guild Certified — Level
+                                        <?php echo esc_html(
+                                            (string) (
+                                                $certification[
+                                                    'target_level'
+                                                ] ?? ''
+                                            )
+                                        ); ?>
+                                    </strong>
+                                    <p>
+                                        Level <?php echo esc_html(
+                                            (string) (
+                                                $certification[
+                                                    'from_level'
+                                                ] ?? ''
+                                            )
+                                        ); ?>
+                                        →
+                                        <?php echo esc_html(
+                                            (string) (
+                                                $certification[
+                                                    'target_level'
+                                                ] ?? ''
+                                            )
+                                        ); ?>
+                                        · +<?php echo esc_html(
+                                            (string) (
+                                                $certification[
+                                                    'hit_point_gain'
+                                                ] ?? 0
+                                            )
+                                        ); ?> Maximum HP
+                                    </p>
+                                </div>
+                            </li>
+                        <?php endforeach; ?>
+                    </ol>
+                </section>
             <?php endif; ?>
 
             <section class="gmrc-ledger-section">
