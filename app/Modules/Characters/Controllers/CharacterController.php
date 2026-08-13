@@ -41,6 +41,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\Advanc
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\PendingAdvancementRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\AdvancementSealPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\GuildCertificationService;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\AdvancementChoiceRequirementResolver;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\AdvancementHistoryRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterCatalogueRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterBuildProfileRepository;
@@ -966,7 +967,15 @@ final class CharacterController
             ? $rawSelections
             : [$rawSelections];
 
-        if ($choiceKey !== 'vitality-hit-points') {
+        $requirement = (
+            new AdvancementChoiceRequirementResolver()
+        )->resolve(
+            $character,
+            (int) $preview['target_level'],
+            $choiceKey
+        );
+
+        if ($requirement === null) {
             $this->flash->error(
                 'That advancement choice is not recognised by the Registrar.'
             );
@@ -978,15 +987,6 @@ final class CharacterController
             );
         }
 
-        $requirement = new ChoiceRequirement(
-            'vitality-hit-points',
-            ChoiceMode::SINGLE,
-            [
-                'average',
-                'roll',
-            ]
-        );
-
         $normalised = $requirement->normalise(
             array_map(
                 'strval',
@@ -996,7 +996,7 @@ final class CharacterController
 
         if (! $requirement->satisfiedBy($normalised)) {
             $this->flash->error(
-                'Choose one hit point advancement method before continuing.'
+                'Complete the required folio selections before continuing.'
             );
 
             return $this->responses->redirect(
