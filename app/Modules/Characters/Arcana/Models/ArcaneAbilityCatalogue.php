@@ -137,7 +137,8 @@ final class ArcaneAbilityCatalogue
                 '1st-level slot',
                 'damage',
                 '3d4',
-                'force'
+                'force',
+                spellLevel: 1
             ),
             new ArcaneAbilityDefinition(
                 'fresh-stock',

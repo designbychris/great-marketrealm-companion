@@ -69,7 +69,10 @@ final class ArcanePantryPresenter
                     $castingModifier,
                     $spellAttack,
                     $saveDc,
-                    $level
+                    $level,
+                    $character->spellbook()->knows(
+                        $ability->id()
+                    )
                 ),
             $available
         );
@@ -86,6 +89,7 @@ final class ArcanePantryPresenter
                 $character->level()->value()
             ),
             'entries' => $entries,
+            'spellbook' => $character->spellbook()->toArray(),
             'has_spells' => count(
                 array_filter(
                     $entries,
@@ -106,7 +110,8 @@ final class ArcanePantryPresenter
         int $castingModifier,
         ?int $spellAttack,
         ?int $saveDc,
-        int $level
+        int $level,
+        bool $learned
     ): array {
         $modifier = 0;
 
@@ -138,6 +143,8 @@ final class ArcanePantryPresenter
                 ? $spellAttack
                 : null,
             'roll_modifier' => $modifier,
+            'learned' => $learned,
+            'spell_level' => $ability->spellLevel(),
         ];
     }
 
