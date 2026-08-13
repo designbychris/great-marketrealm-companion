@@ -38,6 +38,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\Advancemen
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Choices\ChoiceMode;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Choices\ChoiceRequirement;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\AdvancementChoiceStore;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\PendingAdvancementRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\AdvancementSealPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterCatalogueRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterBuildProfileRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
@@ -839,22 +841,74 @@ final class CharacterController
         $choices = [];
 
         if (! empty($preview['eligible'])) {
-            $choices = (
-                new AdvancementChoiceStore()
-            )->all(
+            $targetLevel = (int) $preview[
+                'target_level'
+            ];
+
+            $repository =
+                new PendingAdvancementRepository();
+
+            $pending = $repository->resumeOrBegin(
                 $character->id(),
-                (int) $preview['target_level']
+                $character->level()->value(),
+                $targetLevel
             );
+
+            $choices = $pending->choices();
+
+            /*
+             * Phase III.8.3 stored choices only in the PHP session.
+             * If one still exists, migrate it into the durable character
+             * advancement record the first time this page is revisited.
+             */
+            if ($choices === []) {
+                $legacyStore =
+                    new AdvancementChoiceStore();
+
+                $legacyChoices = $legacyStore->all(
+                    $character->id(),
+                    $targetLevel
+                );
+
+                foreach (
+                    $legacyChoices
+                    as $choiceKey => $selections
+                ) {
+                    $pending->recordChoice(
+                        $choiceKey,
+                        $selections
+                    );
+                }
+
+                if ($legacyChoices !== []) {
+                    $repository->save($pending);
+
+                    $legacyStore->clear(
+                        $character->id(),
+                        $targetLevel
+                    );
+
+                    $choices = $pending->choices();
+                }
+            }
         }
+
+        $advancement = $presenter->present(
+            $character,
+            $choices
+        );
 
         return $this->views->render(
             View::make(
                 'characters.advancement',
                 [
                     'character' => $character,
-                    'advancement' => $presenter->present(
+                    'advancement' => $advancement,
+                    'advancementSeal' => (
+                        new AdvancementSealPresenter()
+                    )->present(
                         $character,
-                        $choices
+                        $advancement
                     ),
                     'flash' => [
                         'success' => $this->flash->success(),
@@ -943,16 +997,28 @@ final class CharacterController
         }
 
         (
-            new AdvancementChoiceStore()
-        )->put(
+            new PendingAdvancementRepository()
+        )->recordChoice(
             $character->id(),
+            $character->level()->value(),
             (int) $preview['target_level'],
             $choiceKey,
             $normalised
         );
 
+        /*
+         * Remove any older session-only copy now that the choice has
+         * been written to the character's durable pending advancement.
+         */
+        (
+            new AdvancementChoiceStore()
+        )->clear(
+            $character->id(),
+            (int) $preview['target_level']
+        );
+
         $this->flash->success(
-            'The choice has been recorded in the temporary Advancement Ledger.'
+            'The choice has been saved to the pending Advancement Ledger.'
         );
 
         return $this->responses->redirect(
