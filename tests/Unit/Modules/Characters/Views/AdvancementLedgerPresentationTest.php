@@ -113,7 +113,7 @@ final class AdvancementLedgerPresentationTest extends TestCase
         self::assertIsString($view);
 
         self::assertStringContainsString(
-            '/progression/advance/choice',
+            'admin-post.php',
             $view
         );
 
@@ -133,10 +133,11 @@ final class AdvancementLedgerPresentationTest extends TestCase
         );
 
         self::assertStringContainsString(
-            'temporary advancement',
+            'pending advancement',
             $view
         );
     }
+
     public function testAdvancementLedgerShowsAdvancementSealReview(): void
     {
         $root = dirname(__DIR__, 5);
@@ -174,5 +175,4 @@ final class AdvancementLedgerPresentationTest extends TestCase
             $view
         );
     }
-
 }
