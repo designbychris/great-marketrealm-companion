@@ -2811,3 +2811,82 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* ===============================================================
+ * Phase III.8.6 — The Calling Folios
+ * =============================================================== */
+
+.gmrc-rising-folio__delegated {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 0.8rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(96, 55, 115, 0.13);
+}
+
+.gmrc-rising-folio__delegated > strong {
+    color: #8a6226;
+    font-size: 0.72rem;
+    letter-spacing: 0.045em;
+    text-transform: uppercase;
+}
+
+.gmrc-rising-folio__delegated ul {
+    display: grid;
+    gap: 0.45rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.gmrc-rising-folio__delegated li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.55rem;
+    align-items: start;
+    padding: 0.65rem 0.7rem;
+    border: 1px dashed rgba(96, 55, 115, 0.23);
+    border-radius: 0.42rem;
+    background: rgba(245, 235, 250, 0.45);
+}
+
+.gmrc-rising-folio__delegated li > span {
+    display: grid;
+    place-items: center;
+    width: 1.45rem;
+    height: 1.45rem;
+    border-radius: 50%;
+    color: #fff4d3;
+    background: #603773;
+    font-size: 0.72rem;
+    font-weight: 900;
+}
+
+.gmrc-rising-folio__delegated li strong {
+    color: #603773;
+    font-family:
+        var(--gmrc-font-display, Georgia, serif);
+    font-size: 0.9rem;
+}
+
+.gmrc-rising-folio__delegated li p {
+    margin: 0.12rem 0 0;
+    color: rgba(65, 44, 34, 0.66);
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+.gmrc-rising-folio__delegated li small {
+    display: inline-block;
+    margin-top: 0.25rem;
+    color: #8a6226;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.gmrc-advancement-seal__review {
+    grid-template-columns:
+        repeat(auto-fit, minmax(10rem, 1fr));
+}
