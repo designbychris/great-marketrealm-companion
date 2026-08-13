@@ -24,6 +24,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Conditions;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Languages;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiencies;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Spellbook;
 
 defined('ABSPATH') || exit;
 
@@ -54,6 +55,7 @@ final class Character
         private Conditions $conditions,
         private Languages $selectedLanguages,
         private ToolProficiencies $selectedToolProficiencies,
+        private Spellbook $spellbook,
     ) {
     }
 
@@ -70,6 +72,7 @@ final class Character
         ?Background $background = null,
         ?Languages $selectedLanguages = null,
         ?ToolProficiencies $selectedToolProficiencies = null,
+        ?Spellbook $spellbook = null,
     ): self {
         return new self(
             id: $id,
@@ -91,6 +94,8 @@ final class Character
             selectedToolProficiencies:
                 $selectedToolProficiencies
                 ?? ToolProficiencies::none(),
+            spellbook: $spellbook
+                ?? Spellbook::empty(),
         );
     }
 
@@ -113,6 +118,7 @@ final class Character
         ?Background $background = null,
         ?Languages $selectedLanguages = null,
         ?ToolProficiencies $selectedToolProficiencies = null,
+        ?Spellbook $spellbook = null,
     ): self {
         return new self(
             id: $id,
@@ -135,6 +141,8 @@ final class Character
             selectedToolProficiencies:
                 $selectedToolProficiencies
                 ?? ToolProficiencies::none(),
+            spellbook: $spellbook
+                ?? Spellbook::empty(),
         );
     }
 
@@ -361,6 +369,28 @@ final class Character
     public function selectedToolProficiencies(): ToolProficiencies
     {
         return $this->selectedToolProficiencies;
+    }
+
+    /**
+     * Return the Character's permanently certified spellbook.
+     */
+    public function spellbook(): Spellbook
+    {
+        return $this->spellbook;
+    }
+
+    /**
+     * @param array<int,string> $spells
+     * @param array<int,string> $cantrips
+     */
+    public function learnArcana(
+        array $spells = [],
+        array $cantrips = []
+    ): void {
+        $this->spellbook = $this->spellbook->learn(
+            $spells,
+            $cantrips
+        );
     }
 
     /**
