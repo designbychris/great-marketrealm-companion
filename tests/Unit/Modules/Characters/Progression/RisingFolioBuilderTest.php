@@ -37,7 +37,7 @@ final class RisingFolioBuilderTest extends TestCase
         );
 
         self::assertSame(2, $folios->total());
-        self::assertSame(1, $folios->readyCount());
+        self::assertSame(3, $folios->readyCount());
         self::assertSame(1, $folios->attentionCount());
     }
 

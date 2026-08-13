@@ -208,4 +208,32 @@ final class AdvancementLedgerPresentationTest extends TestCase
         );
     }
 
+    public function testCallingFolioCanShowDelegatedSpecialistFolios(): void
+    {
+        $root = dirname(__DIR__, 5);
+
+        $view = file_get_contents(
+            $root
+            . '/app/Modules/Characters/Views/'
+            . 'advancement.php'
+        );
+
+        self::assertIsString($view);
+
+        self::assertStringContainsString(
+            "folio['delegated']",
+            $view
+        );
+
+        self::assertStringContainsString(
+            'Specialist folios identified',
+            $view
+        );
+
+        self::assertStringContainsString(
+            'Assigned to Phase',
+            $view
+        );
+    }
+
 }

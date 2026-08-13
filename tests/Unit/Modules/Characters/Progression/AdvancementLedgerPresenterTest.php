@@ -35,8 +35,8 @@ final class AdvancementLedgerPresenterTest extends TestCase
         self::assertSame(5, $state['highest_eligible_level']);
         self::assertSame(4, $state['levels_waiting']);
         self::assertFalse($state['commit_available']);
-        self::assertSame(2, $state['folio_total']);
-        self::assertSame(1, $state['folio_ready_count']);
+        self::assertSame(3, $state['folio_total']);
+        self::assertSame(2, $state['folio_ready_count']);
         self::assertSame(1, $state['folio_attention_count']);
         self::assertFalse($state['folios_complete']);
     }
@@ -57,7 +57,7 @@ final class AdvancementLedgerPresenterTest extends TestCase
         self::assertSame('+2', $state['current_proficiency']);
         self::assertSame('+2', $state['target_proficiency']);
         self::assertSame(
-            'foundation',
+            'reference',
             $state['class_progression']['catalogue_status']
         );
     }
@@ -80,7 +80,7 @@ final class AdvancementLedgerPresenterTest extends TestCase
             ]
         );
 
-        self::assertSame(2, $state['folio_ready_count']);
+        self::assertSame(3, $state['folio_ready_count']);
         self::assertSame(0, $state['folio_attention_count']);
         self::assertTrue($state['folios_complete']);
         self::assertSame(
