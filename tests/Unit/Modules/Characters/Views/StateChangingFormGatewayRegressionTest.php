@@ -92,4 +92,42 @@ final class StateChangingFormGatewayRegressionTest extends TestCase
             )
         );
     }
+    public function testAdvancementChoiceFormUsesApplicationRequestGateway(): void
+    {
+        $root = dirname(__DIR__, 5);
+
+        $view = file_get_contents(
+            $root
+            . '/app/Modules/Characters/Views/'
+            . 'advancement.php'
+        );
+
+        self::assertIsString($view);
+
+        self::assertStringContainsString(
+            "admin_url(\n    'admin-post.php'",
+            $view
+        );
+
+        self::assertStringContainsString(
+            'name="action"',
+            $view
+        );
+
+        self::assertStringContainsString(
+            'value="gmrc_app_request"',
+            $view
+        );
+
+        self::assertStringContainsString(
+            '/progression/advance/choice',
+            $view
+        );
+
+        self::assertStringNotContainsString(
+            'action="<?php echo esc_url($choiceUrl); ?>"',
+            $view
+        );
+    }
+
 }
