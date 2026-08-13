@@ -118,7 +118,7 @@ final class AdvancementLedgerPresentationTest extends TestCase
         );
 
         self::assertStringContainsString(
-            "$choiceMode === 'single'",
+            "\$choiceMode === 'single'",
             $view
         );
 
