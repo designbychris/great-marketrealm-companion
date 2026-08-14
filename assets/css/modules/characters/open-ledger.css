@@ -3016,3 +3016,48 @@
 .gmrc-button[disabled]:focus {
     transform: none;
 }
+
+/* ===============================================================
+ * Phase III.8.8 — The Paths of Calling
+ * =============================================================== */
+
+.gmrc-path-choice__intro {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.65rem;
+    align-items: start;
+    margin: 0 0 0.8rem;
+    padding: 0.8rem;
+    border: 1px solid rgba(96, 55, 115, 0.2);
+    border-radius: 0.45rem;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(242, 230, 248, 0.76),
+            rgba(255, 247, 215, 0.74)
+        );
+}
+
+.gmrc-path-choice__intro > span {
+    display: grid;
+    place-items: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    color: #fff2cb;
+    background: #603773;
+    font-size: 0.82rem;
+}
+
+.gmrc-path-choice__intro p {
+    margin: 0;
+    color: rgba(65, 44, 34, 0.76);
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.gmrc-path-choice__intro strong {
+    color: #603773;
+    font-family:
+        var(--gmrc-font-display, Georgia, serif);
+}
