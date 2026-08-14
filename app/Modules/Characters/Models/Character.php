@@ -25,6 +25,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Languages;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiencies;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Spellbook;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CallingPath;
 
 defined('ABSPATH') || exit;
 
@@ -56,6 +57,7 @@ final class Character
         private Languages $selectedLanguages,
         private ToolProficiencies $selectedToolProficiencies,
         private Spellbook $spellbook,
+        private CallingPath $callingPath,
     ) {
     }
 
@@ -73,6 +75,7 @@ final class Character
         ?Languages $selectedLanguages = null,
         ?ToolProficiencies $selectedToolProficiencies = null,
         ?Spellbook $spellbook = null,
+        ?CallingPath $callingPath = null,
     ): self {
         return new self(
             id: $id,
@@ -96,6 +99,8 @@ final class Character
                 ?? ToolProficiencies::none(),
             spellbook: $spellbook
                 ?? Spellbook::empty(),
+            callingPath: $callingPath
+                ?? CallingPath::none(),
         );
     }
 
@@ -119,6 +124,7 @@ final class Character
         ?Languages $selectedLanguages = null,
         ?ToolProficiencies $selectedToolProficiencies = null,
         ?Spellbook $spellbook = null,
+        ?CallingPath $callingPath = null,
     ): self {
         return new self(
             id: $id,
@@ -143,6 +149,8 @@ final class Character
                 ?? ToolProficiencies::none(),
             spellbook: $spellbook
                 ?? Spellbook::empty(),
+            callingPath: $callingPath
+                ?? CallingPath::none(),
         );
     }
 
@@ -377,6 +385,41 @@ final class Character
     public function spellbook(): Spellbook
     {
         return $this->spellbook;
+    }
+
+    /**
+     * Return the permanently certified Path of Calling.
+     */
+    public function callingPath(): CallingPath
+    {
+        return $this->callingPath;
+    }
+
+    /**
+     * Permanently enter a Path of Calling into the Guild Record.
+     *
+     * Paths are intentionally immutable once certified. Future respec rules,
+     * if any, must be a separate explicit lifecycle.
+     */
+    public function chooseCallingPath(
+        CallingPath $path
+    ): void {
+        if (! $path->isChosen()) {
+            throw new \LogicException(
+                'A certified Calling Path cannot be empty.'
+            );
+        }
+
+        if (
+            $this->callingPath->isChosen()
+            && ! $this->callingPath->equals($path)
+        ) {
+            throw new \LogicException(
+                'This adventurer already has a certified Calling Path.'
+            );
+        }
+
+        $this->callingPath = $path;
     }
 
     /**
