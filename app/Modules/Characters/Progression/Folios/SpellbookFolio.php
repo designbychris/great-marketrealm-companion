@@ -38,6 +38,73 @@ final class SpellbookFolio
             return null;
         }
 
+        $available = $this->candidates->spells(
+            $character,
+            (int) $entry['maximum_spell_level']
+        );
+
+        $requested = max(
+            0,
+            (int) (
+                $entry['spells_learned']
+                ?? 0
+            )
+        );
+
+        if (
+            $requested > 0
+            && count($available) < $requested
+        ) {
+            return new AdvancementFolio(
+                'spellbook',
+                'Spellbook Folio',
+                sprintf(
+                    'The Arcane Pantry currently contains only %d eligible new %s, but this Wizard must learn %d. The Guild cannot certify this advancement until the spell catalogue is restocked.',
+                    count($available),
+                    count($available) === 1
+                        ? 'spell'
+                        : 'spells',
+                    $requested
+                ),
+                FolioStatus::ATTENTION,
+                true,
+                [
+                    'target_level' => $targetLevel,
+                    'maximum_spell_level' =>
+                        (int) $entry['maximum_spell_level'],
+                    'choice_key' =>
+                        (string) (
+                            $entry['spell_choice_key']
+                            ?? 'wizard-spells'
+                        ),
+                    'choice_mode' =>
+                        \GreatMarketrealmCompanion\Modules\Characters\Progression\Choices\ChoiceMode::CHOOSE_N,
+                    'choice_minimum' =>
+                        $requested,
+                    'choice_maximum' =>
+                        $requested,
+                    'selected_values' => [],
+                    'known_spells' => count(
+                        $character->spellbook()->spells()
+                    ),
+                    'available_choices' =>
+                        count($available),
+                    'catalogue_shortfall' =>
+                        $requested - count($available),
+                ],
+                array_map(
+                    static fn ($ability): array => [
+                        'key' => $ability->id(),
+                        'label' => $ability->label(),
+                        'detail' => $ability->description(),
+                        'spell_level' =>
+                            $ability->spellLevel(),
+                    ],
+                    $available
+                )
+            );
+        }
+
         $requirement = $this->requirements->resolve(
             $character,
             $targetLevel,
@@ -47,11 +114,6 @@ final class SpellbookFolio
         if ($requirement === null) {
             return null;
         }
-
-        $available = $this->candidates->spells(
-            $character,
-            (int) $entry['maximum_spell_level']
-        );
 
         $selected = $requirement->normalise($selections);
         $ready = $requirement->satisfiedBy($selected);
@@ -79,6 +141,9 @@ final class SpellbookFolio
                 'known_spells' => count(
                     $character->spellbook()->spells()
                 ),
+                'available_choices' =>
+                    count($available),
+                'catalogue_shortfall' => 0,
             ],
             array_map(
                 static fn ($ability): array => [
