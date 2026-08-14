@@ -29,16 +29,16 @@ final class RisingFolioBuilderTest extends TestCase
         $states = $folios->toArray();
 
         self::assertSame(
-            ['vitality', 'proficiency', 'calling', 'spellbook'],
+            ['vitality', 'proficiency', 'calling', 'path', 'spellbook'],
             array_column(
                 $states,
                 'key'
             )
         );
 
-        self::assertSame(4, $folios->total());
+        self::assertSame(5, $folios->total());
         self::assertSame(2, $folios->readyCount());
-        self::assertSame(2, $folios->attentionCount());
+        self::assertSame(3, $folios->attentionCount());
     }
 
     public function testVitalityFolioCarriesHpChoiceFacts(): void
@@ -73,7 +73,7 @@ final class RisingFolioBuilderTest extends TestCase
         );
 
         self::assertSame(3, $folios->readyCount());
-        self::assertSame(1, $folios->attentionCount());
+        self::assertSame(2, $folios->attentionCount());
         self::assertFalse($folios->allReady());
 
         $vitality = $folios->toArray()[0];
@@ -96,10 +96,11 @@ final class RisingFolioBuilderTest extends TestCase
             [
                 'vitality-hit-points' => ['average'],
                 'wizard-spells' => ['pantry-ward', 'market-missile'],
+                'wizard-arcane-tradition' => ['school-of-aromancy'],
             ]
         );
 
-        self::assertSame(4, $folios->readyCount());
+        self::assertSame(5, $folios->readyCount());
         self::assertSame(0, $folios->attentionCount());
         self::assertTrue($folios->allReady());
     }

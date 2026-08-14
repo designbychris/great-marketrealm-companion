@@ -35,9 +35,9 @@ final class AdvancementLedgerPresenterTest extends TestCase
         self::assertSame(5, $state['highest_eligible_level']);
         self::assertSame(4, $state['levels_waiting']);
         self::assertFalse($state['commit_available']);
-        self::assertSame(4, $state['folio_total']);
+        self::assertSame(5, $state['folio_total']);
         self::assertSame(2, $state['folio_ready_count']);
-        self::assertSame(2, $state['folio_attention_count']);
+        self::assertSame(3, $state['folio_attention_count']);
         self::assertFalse($state['folios_complete']);
     }
 
@@ -81,10 +81,13 @@ final class AdvancementLedgerPresenterTest extends TestCase
                     'pantry-ward',
                     'market-missile',
                 ],
+                'wizard-arcane-tradition' => [
+                    'school-of-aromancy',
+                ],
             ]
         );
 
-        self::assertSame(4, $state['folio_ready_count']);
+        self::assertSame(5, $state['folio_ready_count']);
         self::assertSame(0, $state['folio_attention_count']);
         self::assertTrue($state['folios_complete']);
         self::assertSame(
