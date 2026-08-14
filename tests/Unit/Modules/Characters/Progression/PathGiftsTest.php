@@ -21,6 +21,10 @@ final class PathGiftsTest extends TestCase
             ['spell-stored-container'],
             $gifts->values()
         );
+
+        self::assertTrue(
+            $gifts->has('Spell Stored Container')
+        );
     }
 
     public function testGrantKeepsExistingGiftsAndAddsNewOnes(): void

@@ -32,7 +32,11 @@ final class PathGifts
 
     public function has(string $giftKey): bool
     {
-        return in_array(sanitize_key($giftKey), $this->values, true);
+        return in_array(
+            self::normaliseKey($giftKey),
+            $this->values,
+            true
+        );
     }
 
     /** @return array<int,string> */
@@ -50,8 +54,20 @@ final class PathGifts
     private function normalise(array $values): array
     {
         return array_values(array_unique(array_filter(array_map(
-            static fn (mixed $value): string => sanitize_key((string) $value),
+            static fn (mixed $value): string =>
+                self::normaliseKey((string) $value),
             $values
         ))));
+    }
+
+    private static function normaliseKey(string $value): string
+    {
+        $value = preg_replace(
+            '/\s+/',
+            '-',
+            trim($value)
+        ) ?? '';
+
+        return sanitize_key($value);
     }
 }
