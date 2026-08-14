@@ -52,6 +52,35 @@ final class SpellbookFolioTest extends TestCase
         self::assertTrue($folio->toArray()['ready']);
     }
 
+
+    public function testMarketrealmCatalogueStocksLevelTwoWizardStudies(): void
+    {
+        $catalogue = new \GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCatalogue();
+
+        $wizardSpells = array_values(
+            array_filter(
+                $catalogue->forClass('wizard'),
+                static fn ($ability): bool =>
+                    $ability->kind() === 'spell'
+                    && $ability->spellLevel() === 2
+            )
+        );
+
+        self::assertSame(
+            [
+                'aisle-step',
+                'stockroom-veil',
+                'price-freeze',
+                'crate-levitation',
+            ],
+            array_map(
+                static fn ($ability): string =>
+                    $ability->id(),
+                $wizardSpells
+            )
+        );
+    }
+
     private function character(): Character
     {
         return Character::create(
