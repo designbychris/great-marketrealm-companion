@@ -45,7 +45,7 @@ $advancementSeal = isset($advancementSeal)
 >
     <header class="gmrc-advancement-ledger__hero">
         <div>
-            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.7</p>
+            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.7.1</p>
             <h1 id="gmrc-advancement-ledger-title">The Advancement Ledger</h1>
             <p>
                 The Registrar has opened a pending advancement folio for
@@ -330,12 +330,66 @@ $advancementSeal = isset($advancementSeal)
                                 $folio['facts']['choice_minimum']
                                 ?? 1
                             );
+
+                            $choiceMaximum = (int) (
+                                $folio['facts']['choice_maximum']
+                                ?? $choiceMinimum
+                            );
+
+                            $selectedCount = count(
+                                $selectedValues
+                            );
+
+                            $choiceReady = $choiceMode === 'single'
+                                ? $selectedCount >= 1
+                                : (
+                                    $selectedCount >= $choiceMinimum
+                                    && $selectedCount <= $choiceMaximum
+                                );
+
+                            $choiceKind = str_contains(
+                                $choiceKey,
+                                'cantrip'
+                            )
+                                ? 'cantrip'
+                                : (
+                                    str_contains(
+                                        $choiceKey,
+                                        'spell'
+                                    )
+                                        ? 'spell'
+                                        : 'option'
+                                );
+
+                            $choiceTarget = in_array(
+                                $choiceKind,
+                                ['spell', 'cantrip'],
+                                true
+                            )
+                                ? 'spellbook'
+                                : 'folio';
                             ?>
 
                             <form
                                 class="gmrc-rising-folio__choices"
                                 method="post"
                                 action="<?php echo esc_url($appRequestUrl); ?>"
+                                data-advancement-choice
+                                data-choice-mode="<?php echo esc_attr(
+                                    $choiceMode
+                                ); ?>"
+                                data-choice-minimum="<?php echo esc_attr(
+                                    (string) $choiceMinimum
+                                ); ?>"
+                                data-choice-maximum="<?php echo esc_attr(
+                                    (string) $choiceMaximum
+                                ); ?>"
+                                data-choice-kind="<?php echo esc_attr(
+                                    $choiceKind
+                                ); ?>"
+                                data-choice-target="<?php echo esc_attr(
+                                    $choiceTarget
+                                ); ?>"
                             >
                                 <input
                                     type="hidden"
@@ -364,6 +418,87 @@ $advancementSeal = isset($advancementSeal)
                                     . $characterId,
                                     'gmrc_nonce'
                                 ); ?>
+
+                                <?php if (
+                                    $choiceMode !== 'single'
+                                ) : ?>
+                                    <div class="gmrc-choice-readiness">
+                                        <p class="gmrc-choice-readiness__intro">
+                                            <?php if (
+                                                $choiceKind === 'spell'
+                                            ) : ?>
+                                                Looks like you can learn some
+                                                new spells! Select
+                                                <strong><?php echo esc_html(
+                                                    (string) $choiceMinimum
+                                                ); ?>
+                                                <?php echo esc_html(
+                                                    $choiceMinimum === 1
+                                                        ? 'spell'
+                                                        : 'spells'
+                                                ); ?></strong>
+                                                to add to your spellbook.
+                                            <?php elseif (
+                                                $choiceKind === 'cantrip'
+                                            ) : ?>
+                                                Looks like you can learn
+                                                <?php echo $choiceMinimum === 1
+                                                    ? 'a new cantrip!'
+                                                    : 'some new cantrips!'; ?>
+                                                Select
+                                                <strong><?php echo esc_html(
+                                                    (string) $choiceMinimum
+                                                ); ?>
+                                                <?php echo esc_html(
+                                                    $choiceMinimum === 1
+                                                        ? 'cantrip'
+                                                        : 'cantrips'
+                                                ); ?></strong>
+                                                to add to your spellbook.
+                                            <?php else : ?>
+                                                Select
+                                                <strong><?php echo esc_html(
+                                                    (string) $choiceMinimum
+                                                ); ?>
+                                                <?php echo esc_html(
+                                                    $choiceMinimum === 1
+                                                        ? 'option'
+                                                        : 'options'
+                                                ); ?></strong>
+                                                to complete this folio.
+                                            <?php endif; ?>
+                                        </p>
+
+                                        <p
+                                            class="gmrc-choice-readiness__counter"
+                                            data-choice-readiness-status
+                                            aria-live="polite"
+                                            aria-atomic="true"
+                                        >
+                                            <?php echo esc_html(
+                                                sprintf(
+                                                    '%1$d of %2$d %3$s selected%4$s',
+                                                    $selectedCount,
+                                                    $choiceMinimum,
+                                                    $choiceKind === 'option'
+                                                        ? (
+                                                            $choiceMinimum === 1
+                                                                ? 'option'
+                                                                : 'options'
+                                                        )
+                                                        : (
+                                                            $choiceMinimum === 1
+                                                                ? $choiceKind
+                                                                : $choiceKind . 's'
+                                                        ),
+                                                    $choiceReady
+                                                        ? ' — ready to record.'
+                                                        : '.'
+                                                )
+                                            ); ?>
+                                        </p>
+                                    </div>
+                                <?php endif; ?>
 
                                 <fieldset>
                                     <legend>
@@ -478,6 +613,14 @@ $advancementSeal = isset($advancementSeal)
                                 <button
                                     type="submit"
                                     class="gmrc-button gmrc-button--primary"
+                                    data-choice-submit
+                                    <?php if (
+                                        $choiceMode !== 'single'
+                                        && ! $choiceReady
+                                    ) : ?>
+                                        disabled
+                                        aria-disabled="true"
+                                    <?php endif; ?>
                                 >
                                     <?php echo ! empty($folio['ready'])
                                         ? 'Update Choice'
