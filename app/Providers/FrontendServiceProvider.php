@@ -601,6 +601,27 @@ class FrontendServiceProvider extends ServiceProvider
             GMRC_VERSION,
             true
         );
+
+        $advancementChoiceReadinessPath =
+            GMRC_PATH
+            . 'assets/js/modules/characters/'
+            . 'advancement-choice-readiness.js';
+
+        wp_enqueue_script(
+            'gmrc-advancement-choice-readiness',
+            GMRC_URL
+                . 'assets/js/modules/characters/'
+                . 'advancement-choice-readiness.js',
+            [],
+            file_exists(
+                $advancementChoiceReadinessPath
+            )
+                ? (string) filemtime(
+                    $advancementChoiceReadinessPath
+                )
+                : GMRC_VERSION,
+            true
+        );
         $previewScriptPath =
             GMRC_PATH
             . 'assets/js/modules/characters/character-creation-preview.js';
