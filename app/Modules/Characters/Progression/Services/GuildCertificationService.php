@@ -6,6 +6,8 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Services;
 
 use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CallingPath;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Models\PathProgressionCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\AdvancementHistoryRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\PendingAdvancementRepository;
 use RuntimeException;
@@ -89,6 +91,47 @@ final class GuildCertificationService
                 ?? []
         );
 
+        $pathDefinition = (
+            new PathProgressionCatalogue()
+        )->forClass(
+            $character->characterClass()
+        );
+
+        if (
+            is_array($pathDefinition)
+            && ! $character
+                ->callingPath()
+                ->isChosen()
+            && $targetLevel >= (int) (
+                $pathDefinition[
+                    'selection_level'
+                ] ?? 0
+            )
+        ) {
+            $pathKey = (string) (
+                $pathDefinition['choice_key']
+                ?? ''
+            );
+
+            $pathValue = (string) (
+                $pending
+                    ->choices()[$pathKey][0]
+                ?? ''
+            );
+
+            if ($pathValue === '') {
+                throw new RuntimeException(
+                    'The required Path of Calling has not been recorded.'
+                );
+            }
+
+            $character->chooseCallingPath(
+                CallingPath::fromString(
+                    $pathValue
+                )
+            );
+        }
+
         $character->certifyAdvancement(
             $hpGain
         );
@@ -125,6 +168,10 @@ final class GuildCertificationService
                 $pending->choices(),
             'spellbook' =>
                 $character->spellbook()->toArray(),
+            'calling_path' =>
+                $character
+                    ->callingPath()
+                    ->value(),
             'calling' => is_array(
                 $advancement[
                     'class_progression'

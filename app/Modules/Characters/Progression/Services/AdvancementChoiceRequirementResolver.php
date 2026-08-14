@@ -9,6 +9,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Choices\ChoiceMode;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Choices\ChoiceRequirement;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Models\SpellcastingProgressionCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Services\WizardSpellCandidateCatalogue;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Models\PathProgressionCatalogue;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
 
 defined('ABSPATH') || exit;
 
@@ -16,12 +18,20 @@ final class AdvancementChoiceRequirementResolver
 {
     public function __construct(
         private ?SpellcastingProgressionCatalogue $spellcasting = null,
-        private ?WizardSpellCandidateCatalogue $candidates = null
+        private ?WizardSpellCandidateCatalogue $candidates = null,
+        private ?PathProgressionCatalogue $paths = null,
+        private ?PathCandidateCatalogue $pathCandidates = null
     ) {
         $this->spellcasting ??=
             new SpellcastingProgressionCatalogue();
         $this->candidates ??=
             new WizardSpellCandidateCatalogue();
+
+        $this->paths ??=
+            new PathProgressionCatalogue();
+
+        $this->pathCandidates ??=
+            new PathCandidateCatalogue();
     }
 
     public function resolve(
@@ -34,6 +44,44 @@ final class AdvancementChoiceRequirementResolver
                 'vitality-hit-points',
                 ChoiceMode::SINGLE,
                 ['average', 'roll']
+            );
+        }
+
+        $path = $this->paths->forClass(
+            $character->characterClass()
+        );
+
+        if (
+            is_array($path)
+            && ! $character
+                ->callingPath()
+                ->isChosen()
+            && $targetLevel >= (int) (
+                $path['selection_level']
+                ?? 0
+            )
+            && $choiceKey === (string) (
+                $path['choice_key']
+                ?? ''
+            )
+        ) {
+            $available =
+                $this->pathCandidates->forClass(
+                    $character
+                        ->characterClass()
+                );
+
+            if ($available === []) {
+                return null;
+            }
+
+            return new ChoiceRequirement(
+                $choiceKey,
+                ChoiceMode::SINGLE,
+                array_column(
+                    $available,
+                    'key'
+                )
             );
         }
 

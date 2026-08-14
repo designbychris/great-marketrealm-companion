@@ -150,7 +150,7 @@ final class AdvancementSealPresenter
                 ! is_array($folio)
                 || ! in_array(
                     (string) ($folio['key'] ?? ''),
-                    ['spellbook', 'cantrips'],
+                    ['path', 'spellbook', 'cantrips'],
                     true
                 )
             ) {

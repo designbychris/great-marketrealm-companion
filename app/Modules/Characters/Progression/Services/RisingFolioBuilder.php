@@ -11,6 +11,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\ProficiencyF
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\VitalityFolio;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\SpellbookFolio;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\CantripFolio;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\PathFolio;
 
 defined('ABSPATH') || exit;
 
@@ -21,7 +22,8 @@ final class RisingFolioBuilder
         private ?ProficiencyFolio $proficiency = null,
         private ?CallingFolio $calling = null,
         private ?SpellbookFolio $spellbook = null,
-        private ?CantripFolio $cantrips = null
+        private ?CantripFolio $cantrips = null,
+        private ?PathFolio $path = null
     ) {
         $this->vitality ??=
             new VitalityFolio();
@@ -37,6 +39,9 @@ final class RisingFolioBuilder
 
         $this->cantrips ??=
             new CantripFolio();
+
+        $this->path ??=
+            new PathFolio();
     }
 
     /**
@@ -71,6 +76,18 @@ final class RisingFolioBuilder
                 $targetLevel
             )
         );
+
+        $path = $this->path->build(
+            $character,
+            $targetLevel,
+            $choices
+        );
+
+        if (
+            $path instanceof \GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\AdvancementFolio
+        ) {
+            $folios->add($path);
+        }
 
         $spellbook = $this->spellbook->build(
             $character,
