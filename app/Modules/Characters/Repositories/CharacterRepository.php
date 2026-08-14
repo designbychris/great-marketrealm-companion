@@ -114,6 +114,15 @@ final class CharacterRepository implements CharacterRepositoryInterface
             $postId,
             $character
         );
+
+        $this->clearPersistenceCache(
+            $postId
+        );
+
+        $this->assertPersistedState(
+            $postId,
+            $character
+        );
     }
 
     /**
@@ -149,11 +158,22 @@ final class CharacterRepository implements CharacterRepositoryInterface
         $posts = get_posts([
             'post_type' => $this->postType,
             'post_status' => 'publish',
-            'posts_per_page' => 1,
+            'posts_per_page' => 2,
             'author' => get_current_user_id(),
             'meta_key' => self::META_CHARACTER_ID,
             'meta_value' => $id->value(),
+            'orderby' => 'ID',
+            'order' => 'ASC',
         ]);
+
+        if (count($posts) > 1) {
+            throw new RuntimeException(
+                sprintf(
+                    'The Guild Register contains duplicate records for Character %s. Advancement has been stopped to protect the permanent record.',
+                    $id->value()
+                )
+            );
+        }
 
         $post = $posts[0] ?? null;
 
@@ -316,6 +336,59 @@ final class CharacterRepository implements CharacterRepositoryInterface
                 $postId,
                 '_gmrc_' . $key,
                 $score->value()
+            );
+        }
+    }
+
+    /**
+     * Remove WordPress object-cache entries that can otherwise leave the
+     * next request hydrating pre-certification Character metadata.
+     */
+    private function clearPersistenceCache(
+        int $postId
+    ): void {
+        if (function_exists('clean_post_cache')) {
+            \clean_post_cache($postId);
+        }
+
+        if (function_exists('wp_cache_delete')) {
+            \wp_cache_delete(
+                $postId,
+                'post_meta'
+            );
+        }
+    }
+
+    /**
+     * Certification must never be reported as successful unless the domain
+     * level can be read back from the permanent WordPress record.
+     */
+    private function assertPersistedState(
+        int $postId,
+        Character $character
+    ): void {
+        $storedCharacterId = (string) get_post_meta(
+            $postId,
+            self::META_CHARACTER_ID,
+            true
+        );
+
+        $storedLevel = (int) get_post_meta(
+            $postId,
+            self::META_LEVEL,
+            true
+        );
+
+        if (
+            $storedCharacterId !== $character->id()->value()
+            || $storedLevel !== $character->level()->value()
+        ) {
+            throw new RuntimeException(
+                sprintf(
+                    'The Guild could not verify Character persistence after saving. Expected Level %d but the permanent Register returned Level %d.',
+                    $character->level()->value(),
+                    $storedLevel
+                )
             );
         }
     }
