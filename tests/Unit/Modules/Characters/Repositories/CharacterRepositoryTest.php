@@ -505,6 +505,88 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Repositories {
             );
         }
 
+
+        public function testCertifiedLevelPersistsAcrossRepositoryReload(): void
+        {
+            $repository = new CharacterRepository();
+
+            $character = Character::reconstitute(
+                CharacterId::generate(),
+                CharacterName::fromString('Magic'),
+                Race::fromString('frostreem'),
+                CharacterClass::fromString('wizard'),
+                Level::fromInt(2),
+                Experience::fromInt(900),
+                HitPoints::full(14),
+                AbilityScores::average()
+            );
+
+            $repository->save($character);
+
+            $character->certifyAdvancement(5);
+            $repository->save($character);
+
+            $reloaded = $repository->find(
+                $character->id()
+            );
+
+            self::assertInstanceOf(
+                Character::class,
+                $reloaded
+            );
+
+            self::assertSame(
+                3,
+                $reloaded->level()->value()
+            );
+
+            self::assertSame(
+                19,
+                $reloaded->hitPoints()->maximum()
+            );
+        }
+
+        public function testDuplicateCharacterIdsFailInsteadOfSelectingAnAmbiguousPost(): void
+        {
+            $repository = new CharacterRepository();
+            $character = $this->character();
+
+            $repository->save($character);
+
+            $firstPostId = array_key_first(
+                CharacterRepositoryWordPressState::$posts
+            );
+
+            self::assertIsInt($firstPostId);
+
+            $duplicatePostId = 999;
+
+            CharacterRepositoryWordPressState::$posts[$duplicatePostId] =
+                new \WP_Post([
+                    'ID' => $duplicatePostId,
+                    'post_type' => 'gmrc_character',
+                    'post_status' => 'publish',
+                    'post_title' => 'Duplicate Sir Allium',
+                    'post_author' =>
+                        CharacterRepositoryWordPressState::$currentUserId,
+                ]);
+
+            CharacterRepositoryWordPressState::$meta[$duplicatePostId] =
+                CharacterRepositoryWordPressState::$meta[$firstPostId];
+
+            $this->expectException(
+                \RuntimeException::class
+            );
+
+            $this->expectExceptionMessage(
+                'duplicate records'
+            );
+
+            $repository->find(
+                $character->id()
+            );
+        }
+
         public function testRetrievesAllCharactersForCurrentUser(): void
         {
             $repository = new CharacterRepository();
