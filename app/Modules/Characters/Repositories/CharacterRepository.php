@@ -19,6 +19,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Languages;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiencies;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Spellbook;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CallingPath;
 use RuntimeException;
 use WP_Post;
 
@@ -52,6 +53,7 @@ final class CharacterRepository implements CharacterRepositoryInterface
     private const META_SELECTED_LANGUAGES = '_gmrc_selected_languages';
     private const META_SELECTED_TOOLS = '_gmrc_selected_tools';
     private const META_SPELLBOOK = '_gmrc_spellbook';
+    private const META_CALLING_PATH = '_gmrc_subclass';
 
     private string $postType = 'gmrc_character';
 
@@ -275,6 +277,12 @@ final class CharacterRepository implements CharacterRepositoryInterface
 
         update_post_meta(
             $postId,
+            self::META_CALLING_PATH,
+            $character->callingPath()->value()
+        );
+
+        update_post_meta(
+            $postId,
             self::META_LEVEL,
             $character->level()->value()
         );
@@ -434,6 +442,9 @@ final class CharacterRepository implements CharacterRepositoryInterface
                 ),
             spellbook: $this->mapSpellbook(
                 $post->ID
+            ),
+            callingPath: $this->mapCallingPath(
+                $post->ID
             )
         );
     }
@@ -453,6 +464,29 @@ final class CharacterRepository implements CharacterRepositoryInterface
         return is_array($stored)
             ? Spellbook::fromArray($stored)
             : Spellbook::empty();
+    }
+
+    /**
+     * Rebuild the permanently certified Path of Calling.
+     *
+     * This intentionally reads the same `_gmrc_subclass` metadata used by
+     * the Grand Catalogue build profile so older Characters migrate without
+     * a duplicate field.
+     */
+    private function mapCallingPath(
+        int $postId
+    ): CallingPath {
+        $stored = get_post_meta(
+            $postId,
+            self::META_CALLING_PATH,
+            true
+        );
+
+        return CallingPath::fromString(
+            is_string($stored)
+                ? $stored
+                : ''
+        );
     }
 
     /**
