@@ -45,7 +45,7 @@ $advancementSeal = isset($advancementSeal)
 >
     <header class="gmrc-advancement-ledger__hero">
         <div>
-            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.7.1</p>
+            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.8</p>
             <h1 id="gmrc-advancement-ledger-title">The Advancement Ledger</h1>
             <p>
                 The Registrar has opened a pending advancement folio for
@@ -496,6 +496,27 @@ $advancementSeal = isset($advancementSeal)
                                                         : '.'
                                                 )
                                             ); ?>
+                                        </p>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if (
+                                    $folio['key'] === 'path'
+                                ) : ?>
+                                    <div class="gmrc-path-choice__intro">
+                                        <span aria-hidden="true">✦</span>
+                                        <p>
+                                            Your Calling is opening a deeper
+                                            road. Choose the
+                                            <strong><?php echo esc_html(
+                                                (string) (
+                                                    $folio['facts']['path_label']
+                                                    ?? 'Path of Calling'
+                                                )
+                                            ); ?></strong>
+                                            that will be entered into your
+                                            permanent Guild Record when this
+                                            advancement is certified.
                                         </p>
                                     </div>
                                 <?php endif; ?>
