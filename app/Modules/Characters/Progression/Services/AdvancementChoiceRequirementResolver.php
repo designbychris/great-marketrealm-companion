@@ -136,15 +136,23 @@ final class AdvancementChoiceRequirementResolver
         array $allowed,
         int $requested
     ): ?ChoiceRequirement {
-        $required = min(
-            max(0, $requested),
-            count($allowed)
+        $required = max(
+            0,
+            $requested
         );
 
-        if ($required < 1) {
+        if (
+            $required < 1
+            || $allowed === []
+        ) {
             return null;
         }
 
+        /*
+         * Do not silently weaken a progression rule merely because the
+         * current catalogue is short of options. SpellbookFolio surfaces a
+         * clear catalogue-shortfall state when this occurs.
+         */
         return new ChoiceRequirement(
             $key,
             ChoiceMode::CHOOSE_N,
