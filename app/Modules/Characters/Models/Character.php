@@ -26,6 +26,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Languages;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiencies;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Spellbook;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CallingPath;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\PathGifts;
 
 defined('ABSPATH') || exit;
 
@@ -58,6 +59,7 @@ final class Character
         private ToolProficiencies $selectedToolProficiencies,
         private Spellbook $spellbook,
         private CallingPath $callingPath,
+        private PathGifts $pathGifts,
     ) {
     }
 
@@ -76,6 +78,7 @@ final class Character
         ?ToolProficiencies $selectedToolProficiencies = null,
         ?Spellbook $spellbook = null,
         ?CallingPath $callingPath = null,
+        ?PathGifts $pathGifts = null,
     ): self {
         return new self(
             id: $id,
@@ -101,6 +104,8 @@ final class Character
                 ?? Spellbook::empty(),
             callingPath: $callingPath
                 ?? CallingPath::none(),
+            pathGifts: $pathGifts
+                ?? PathGifts::none(),
         );
     }
 
@@ -125,6 +130,7 @@ final class Character
         ?ToolProficiencies $selectedToolProficiencies = null,
         ?Spellbook $spellbook = null,
         ?CallingPath $callingPath = null,
+        ?PathGifts $pathGifts = null,
     ): self {
         return new self(
             id: $id,
@@ -151,6 +157,8 @@ final class Character
                 ?? Spellbook::empty(),
             callingPath: $callingPath
                 ?? CallingPath::none(),
+            pathGifts: $pathGifts
+                ?? PathGifts::none(),
         );
     }
 
@@ -393,6 +401,24 @@ final class Character
     public function callingPath(): CallingPath
     {
         return $this->callingPath;
+    }
+
+    /**
+     * Return the permanently certified Gifts of the Path.
+     */
+    public function pathGifts(): PathGifts
+    {
+        return $this->pathGifts;
+    }
+
+    /**
+     * Permanently grant Path features during Guild Certification.
+     *
+     * @param array<int,string> $giftKeys
+     */
+    public function grantPathGifts(array $giftKeys): void
+    {
+        $this->pathGifts = $this->pathGifts->grant($giftKeys);
     }
 
     /**

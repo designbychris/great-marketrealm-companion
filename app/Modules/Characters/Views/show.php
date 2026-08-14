@@ -250,6 +250,16 @@ $advancementHistory = isset($advancementHistory)
         ? $advancementHistory
         : [];
 
+$pathGifts = isset($pathGifts)
+    && is_array($pathGifts)
+        ? $pathGifts
+        : [
+            'path' => '',
+            'path_label' => '',
+            'gifts' => [],
+            'count' => 0,
+        ];
+
 $callingPath = $character
     ->callingPath()
     ->value();
@@ -1607,6 +1617,46 @@ $callingPathLabel = $callingPath !== ''
                     <span aria-hidden="true">★</span>
                     <p>Level 20: fully certified by the Great Marketrealm Guild.</p>
                 </div>
+            <?php endif; ?>
+
+            <?php if (
+                ! empty($pathGifts['gifts'])
+                && is_array($pathGifts['gifts'])
+            ) : ?>
+                <section
+                    class="gmrc-path-gifts-ledger"
+                    aria-labelledby="gmrc-path-gifts-title"
+                >
+                    <header>
+                        <div>
+                            <p class="gmrc-eyebrow">Gifts of the Path</p>
+                            <h3 id="gmrc-path-gifts-title">
+                                <?php echo esc_html(
+                                    (string) ($pathGifts['path_label'] ?? 'Path of Calling')
+                                ); ?>
+                            </h3>
+                        </div>
+                        <strong>
+                            <?php echo esc_html((string) ($pathGifts['count'] ?? 0)); ?>
+                            certified
+                        </strong>
+                    </header>
+
+                    <div class="gmrc-path-gifts-ledger__grid">
+                        <?php foreach ($pathGifts['gifts'] as $gift) : ?>
+                            <article>
+                                <span aria-hidden="true">✦</span>
+                                <div>
+                                    <small>
+                                        Level <?php echo esc_html((string) ($gift['level'] ?? '')); ?> Gift
+                                    </small>
+                                    <h4><?php echo esc_html((string) ($gift['label'] ?? '')); ?></h4>
+                                    <p><?php echo esc_html((string) ($gift['summary'] ?? '')); ?></p>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                </section>
             <?php endif; ?>
 
             <?php if ($advancementHistory !== []) : ?>

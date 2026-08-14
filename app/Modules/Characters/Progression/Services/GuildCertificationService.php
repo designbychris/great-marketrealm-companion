@@ -8,6 +8,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryIn
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CallingPath;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Models\PathProgressionCatalogue;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Models\PathGiftCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\AdvancementHistoryRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\PendingAdvancementRepository;
 use RuntimeException;
@@ -132,6 +133,22 @@ final class GuildCertificationService
             );
         }
 
+        $pathGiftsGranted = [];
+
+        if ($character->callingPath()->isChosen()) {
+            $pathGiftsGranted = (new PathGiftCatalogue())->unlocked(
+                $character->callingPath()->value(),
+                $targetLevel,
+                $character->pathGifts()
+            );
+
+            $character->grantPathGifts(array_values(array_map(
+                static fn (array $gift): string =>
+                    (string) ($gift['key'] ?? ''),
+                $pathGiftsGranted
+            )));
+        }
+
         $character->certifyAdvancement(
             $hpGain
         );
@@ -172,6 +189,10 @@ final class GuildCertificationService
                 $character
                     ->callingPath()
                     ->value(),
+            'path_gifts' =>
+                $character->pathGifts()->values(),
+            'path_gifts_granted' =>
+                $pathGiftsGranted,
             'calling' => is_array(
                 $advancement[
                     'class_progression'

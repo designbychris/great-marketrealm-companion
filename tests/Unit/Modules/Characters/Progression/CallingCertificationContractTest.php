@@ -57,5 +57,10 @@ final class CallingCertificationContractTest extends TestCase
             "'phase' => 'III.8.9'",
             $wizard
         );
+
+        self::assertStringContainsString(
+            "'phase' => 'III.8.10'",
+            $wizard
+        );
     }
 }

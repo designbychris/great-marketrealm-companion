@@ -25,6 +25,7 @@ final class WizardProgressionTest extends TestCase
             [
                 'spellbook',
                 'path',
+                'path-gifts',
             ],
             array_column(
                 $entry['delegated'],
@@ -78,6 +79,29 @@ final class WizardProgressionTest extends TestCase
             [],
             $entry['automatic']
         );
+    }
+
+    public function testPathFeatureMilestonesBelongToGiftsOfThePath(): void
+    {
+        $definition =
+            new WizardProgression();
+
+        foreach ([6, 10, 14] as $level) {
+            $entry = $definition->forLevel(
+                CharacterClass::fromString(
+                    'wizard'
+                ),
+                $level
+            );
+
+            self::assertContains(
+                'path-gifts',
+                array_column(
+                    $entry['delegated'],
+                    'folio'
+                )
+            );
+        }
     }
 
     public function testHighLevelWizardMilestonesRemainDelegatedToSpecialists(): void

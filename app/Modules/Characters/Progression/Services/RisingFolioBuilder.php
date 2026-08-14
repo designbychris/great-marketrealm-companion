@@ -12,6 +12,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\VitalityFoli
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\SpellbookFolio;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\CantripFolio;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\PathFolio;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\PathGiftFolio;
 
 defined('ABSPATH') || exit;
 
@@ -23,7 +24,8 @@ final class RisingFolioBuilder
         private ?CallingFolio $calling = null,
         private ?SpellbookFolio $spellbook = null,
         private ?CantripFolio $cantrips = null,
-        private ?PathFolio $path = null
+        private ?PathFolio $path = null,
+        private ?PathGiftFolio $pathGifts = null
     ) {
         $this->vitality ??=
             new VitalityFolio();
@@ -42,6 +44,9 @@ final class RisingFolioBuilder
 
         $this->path ??=
             new PathFolio();
+
+        $this->pathGifts ??=
+            new PathGiftFolio();
     }
 
     /**
@@ -87,6 +92,18 @@ final class RisingFolioBuilder
             $path instanceof \GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\AdvancementFolio
         ) {
             $folios->add($path);
+        }
+
+        $pathGifts = $this->pathGifts->build(
+            $character,
+            $targetLevel,
+            $choices
+        );
+
+        if (
+            $pathGifts instanceof \GreatMarketrealmCompanion\Modules\Characters\Progression\Folios\AdvancementFolio
+        ) {
+            $folios->add($pathGifts);
         }
 
         $spellbook = $this->spellbook->build(

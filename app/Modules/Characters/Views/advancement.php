@@ -45,7 +45,7 @@ $advancementSeal = isset($advancementSeal)
 >
     <header class="gmrc-advancement-ledger__hero">
         <div>
-            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.8</p>
+            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.9</p>
             <h1 id="gmrc-advancement-ledger-title">The Advancement Ledger</h1>
             <p>
                 The Registrar has opened a pending advancement folio for
@@ -246,6 +246,50 @@ $advancementSeal = isset($advancementSeal)
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </dl>
+                        <?php endif; ?>
+
+                        <?php if (
+                            (string) ($folio['key'] ?? '') === 'path-gifts'
+                            && ! empty($folio['facts']['gifts'])
+                            && is_array($folio['facts']['gifts'])
+                        ) : ?>
+                            <div class="gmrc-path-gifts-folio">
+                                <p class="gmrc-path-gifts-folio__intro">
+                                    Auby found new abilities tucked inside
+                                    <?php echo esc_html(
+                                        (string) ($folio['facts']['path_label'] ?? 'your Path')
+                                    ); ?>.
+                                    These are automatic Path gifts and will become permanent
+                                    when the advancement is Guild Certified.
+                                </p>
+
+                                <div class="gmrc-path-gifts-folio__grid">
+                                    <?php foreach ($folio['facts']['gifts'] as $gift) : ?>
+                                        <article>
+                                            <span aria-hidden="true">✦</span>
+                                            <div>
+                                                <small>
+                                                    Level <?php echo esc_html((string) ($gift['level'] ?? '')); ?> Gift
+                                                </small>
+                                                <h4><?php echo esc_html((string) ($gift['label'] ?? '')); ?></h4>
+                                                <p><?php echo esc_html((string) ($gift['summary'] ?? '')); ?></p>
+                                                <details>
+                                                    <summary>Read the Guild note</summary>
+                                                    <p><?php echo esc_html((string) ($gift['detail'] ?? '')); ?></p>
+                                                </details>
+                                            </div>
+                                        </article>
+                                    <?php endforeach; ?>
+                                </div>
+
+                                <?php if (! empty($folio['facts']['catch_up'])) : ?>
+                                    <p class="gmrc-path-gifts-folio__catch-up">
+                                        ✦ Registrar’s catch-up: this Path gift belongs to an earlier
+                                        level and is being entered now because the Gifts register did
+                                        not yet exist when that level was certified.
+                                    </p>
+                                <?php endif; ?>
+                            </div>
                         <?php endif; ?>
 
                         <?php if (

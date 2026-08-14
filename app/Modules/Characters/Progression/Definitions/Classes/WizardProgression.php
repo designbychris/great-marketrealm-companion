@@ -39,6 +39,14 @@ final class WizardProgression implements ClassProgressionDefinitionInterface
                     'The Wizard chooses an Arcane Tradition through The Paths of Calling.',
                 'phase' => 'III.8.8',
             ],
+            [
+                'key' => 'arcane-tradition-gifts',
+                'folio' => 'path-gifts',
+                'label' => 'Gifts of the Path',
+                'detail' =>
+                    'The chosen Arcane Tradition may grant immediate features through The Gifts of the Path.',
+                'phase' => 'III.8.9',
+            ],
         ],
         3 => [
             [
@@ -65,7 +73,7 @@ final class WizardProgression implements ClassProgressionDefinitionInterface
                 'label' => 'Measure of Growth',
                 'detail' =>
                     'Ability improvement or talent selection belongs to The Measure of Growth.',
-                'phase' => 'III.8.9',
+                'phase' => 'III.8.10',
             ],
         ],
         5 => [
@@ -89,11 +97,11 @@ final class WizardProgression implements ClassProgressionDefinitionInterface
             ],
             [
                 'key' => 'arcane-tradition-feature',
-                'folio' => 'path',
+                'folio' => 'path-gifts',
                 'label' => 'Arcane Tradition Feature',
                 'detail' =>
-                    'The selected Arcane Tradition grants its next feature through The Paths of Calling.',
-                'phase' => 'III.8.8',
+                    'The selected Arcane Tradition grants its next feature through The Gifts of the Path.',
+                'phase' => 'III.8.9',
             ],
         ],
         7 => [
@@ -121,7 +129,7 @@ final class WizardProgression implements ClassProgressionDefinitionInterface
                 'label' => 'Measure of Growth',
                 'detail' =>
                     'Ability improvement or talent selection belongs to The Measure of Growth.',
-                'phase' => 'III.8.9',
+                'phase' => 'III.8.10',
             ],
         ],
         9 => [
@@ -145,11 +153,11 @@ final class WizardProgression implements ClassProgressionDefinitionInterface
             ],
             [
                 'key' => 'arcane-tradition-feature',
-                'folio' => 'path',
+                'folio' => 'path-gifts',
                 'label' => 'Arcane Tradition Feature',
                 'detail' =>
-                    'The selected Arcane Tradition grants its next feature through The Paths of Calling.',
-                'phase' => 'III.8.8',
+                    'The selected Arcane Tradition grants its next feature through The Gifts of the Path.',
+                'phase' => 'III.8.9',
             ],
         ],
         11 => [
@@ -177,7 +185,7 @@ final class WizardProgression implements ClassProgressionDefinitionInterface
                 'label' => 'Measure of Growth',
                 'detail' =>
                     'Ability improvement or talent selection belongs to The Measure of Growth.',
-                'phase' => 'III.8.9',
+                'phase' => 'III.8.10',
             ],
         ],
         13 => [
@@ -201,11 +209,11 @@ final class WizardProgression implements ClassProgressionDefinitionInterface
             ],
             [
                 'key' => 'arcane-tradition-feature',
-                'folio' => 'path',
+                'folio' => 'path-gifts',
                 'label' => 'Arcane Tradition Feature',
                 'detail' =>
-                    'The selected Arcane Tradition grants its next feature through The Paths of Calling.',
-                'phase' => 'III.8.8',
+                    'The selected Arcane Tradition grants its next feature through The Gifts of the Path.',
+                'phase' => 'III.8.9',
             ],
         ],
         15 => [
@@ -233,7 +241,7 @@ final class WizardProgression implements ClassProgressionDefinitionInterface
                 'label' => 'Measure of Growth',
                 'detail' =>
                     'Ability improvement or talent selection belongs to The Measure of Growth.',
-                'phase' => 'III.8.9',
+                'phase' => 'III.8.10',
             ],
         ],
         17 => [
@@ -271,7 +279,7 @@ final class WizardProgression implements ClassProgressionDefinitionInterface
                 'label' => 'Measure of Growth',
                 'detail' =>
                     'Ability improvement or talent selection belongs to The Measure of Growth.',
-                'phase' => 'III.8.9',
+                'phase' => 'III.8.10',
             ],
         ],
         20 => [

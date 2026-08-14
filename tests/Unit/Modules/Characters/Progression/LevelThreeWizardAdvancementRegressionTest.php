@@ -112,8 +112,8 @@ final class LevelThreeWizardAdvancementRegressionTest extends TestCase
             ]
         );
 
-        self::assertSame(4, $state['folio_total']);
-        self::assertSame(4, $state['folio_ready_count']);
+        self::assertSame(5, $state['folio_total']);
+        self::assertSame(5, $state['folio_ready_count']);
         self::assertSame(0, $state['folio_attention_count']);
         self::assertTrue($state['folios_complete']);
     }

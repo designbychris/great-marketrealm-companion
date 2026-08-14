@@ -35,6 +35,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCata
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\ArcanePantryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\RisingRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\AdvancementLedgerPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Services\PathGiftPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Choices\ChoiceMode;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Choices\ChoiceRequirement;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\AdvancementChoiceStore;
@@ -634,6 +635,9 @@ final class CharacterController
         $progression = (new RisingRegisterPresenter())
             ->present($character);
 
+        $pathGifts = (new PathGiftPresenter())
+            ->present($character);
+
         $advancementHistory = (
             new AdvancementHistoryRepository()
         )->all(
@@ -666,6 +670,7 @@ final class CharacterController
                     'attacks' => $attacks,
                     'arcana' => $arcana,
                     'progression' => $progression,
+                    'pathGifts' => $pathGifts,
                     'advancementHistory' =>
                         $advancementHistory,
                     'completeAdventurer' => $completeAdventurer,

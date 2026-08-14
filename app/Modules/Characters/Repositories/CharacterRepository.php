@@ -20,6 +20,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Languages;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiencies;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Spellbook;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CallingPath;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\PathGifts;
 use RuntimeException;
 use WP_Post;
 
@@ -54,6 +55,7 @@ final class CharacterRepository implements CharacterRepositoryInterface
     private const META_SELECTED_TOOLS = '_gmrc_selected_tools';
     private const META_SPELLBOOK = '_gmrc_spellbook';
     private const META_CALLING_PATH = '_gmrc_subclass';
+    private const META_PATH_GIFTS = '_gmrc_path_gifts';
 
     private string $postType = 'gmrc_character';
 
@@ -303,6 +305,12 @@ final class CharacterRepository implements CharacterRepositoryInterface
 
         update_post_meta(
             $postId,
+            self::META_PATH_GIFTS,
+            $character->pathGifts()->values()
+        );
+
+        update_post_meta(
+            $postId,
             self::META_LEVEL,
             $character->level()->value()
         );
@@ -379,9 +387,23 @@ final class CharacterRepository implements CharacterRepositoryInterface
             true
         );
 
+        $storedPathGifts = get_post_meta(
+            $postId,
+            self::META_PATH_GIFTS,
+            true
+        );
+
+        $persistedPathGifts = PathGifts::fromArray(
+            is_array($storedPathGifts)
+                ? $storedPathGifts
+                : []
+        );
+
         if (
             $storedCharacterId !== $character->id()->value()
             || $storedLevel !== $character->level()->value()
+            || $persistedPathGifts->values()
+                !== $character->pathGifts()->values()
         ) {
             throw new RuntimeException(
                 sprintf(
@@ -518,6 +540,9 @@ final class CharacterRepository implements CharacterRepositoryInterface
             ),
             callingPath: $this->mapCallingPath(
                 $post->ID
+            ),
+            pathGifts: $this->mapPathGifts(
+                $post->ID
             )
         );
     }
@@ -559,6 +584,24 @@ final class CharacterRepository implements CharacterRepositoryInterface
             is_string($stored)
                 ? $stored
                 : ''
+        );
+    }
+
+    /**
+     * Rebuild the permanently certified Gifts of the Path.
+     */
+    private function mapPathGifts(int $postId): PathGifts
+    {
+        $stored = get_post_meta(
+            $postId,
+            self::META_PATH_GIFTS,
+            true
+        );
+
+        return PathGifts::fromArray(
+            is_array($stored)
+                ? $stored
+                : []
         );
     }
 
