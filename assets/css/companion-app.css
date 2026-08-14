@@ -484,6 +484,7 @@ a.gmrc-navigation__item:hover {
     font: inherit;
     font-weight: 750;
     text-decoration: none;
+    cursor:pointer!important;
 }
 
 .gmrc-button:hover {
