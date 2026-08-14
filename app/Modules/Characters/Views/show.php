@@ -250,6 +250,20 @@ $advancementHistory = isset($advancementHistory)
         ? $advancementHistory
         : [];
 
+$callingPath = $character
+    ->callingPath()
+    ->value();
+
+$callingPathLabel = $callingPath !== ''
+    ? ucwords(
+        str_replace(
+            '-',
+            ' ',
+            $callingPath
+        )
+    )
+    : '';
+
 ?>
 
 <section
@@ -274,7 +288,15 @@ $advancementHistory = isset($advancementHistory)
                     <?php echo esc_html($race); ?>
                     <?php echo esc_html(
                         $characterClass
-                    ); ?> · <?php echo esc_html(
+                    ); ?>
+                    <?php if (
+                        $callingPathLabel !== ''
+                    ) : ?>
+                        · <?php echo esc_html(
+                            $callingPathLabel
+                        ); ?>
+                    <?php endif; ?>
+                    · <?php echo esc_html(
                     $entryReference
                 ); ?>
             </p>
