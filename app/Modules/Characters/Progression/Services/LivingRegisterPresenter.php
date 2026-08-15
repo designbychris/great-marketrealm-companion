@@ -34,6 +34,7 @@ final class LivingRegisterPresenter
         $pathState = $this->pathGifts->present($character);
         $latest = $history === [] ? null : $history[array_key_last($history)];
         $latest = is_array($latest) ? $latest : null;
+        $chronicle = $this->chronicle($history);
 
         return [
             'level' => $character->level()->value(),
@@ -55,6 +56,8 @@ final class LivingRegisterPresenter
             'latest_certification' => $latest,
             'fresh_ink' => $this->freshInk($latest),
             'has_fresh_ink' => $latest !== null,
+            'chronicle' => $chronicle,
+            'has_chronicle' => $chronicle !== [],
             'is_living_record' => true,
         ];
     }
@@ -96,6 +99,37 @@ final class LivingRegisterPresenter
             ))),
             'certified_at' => (string) ($latest['certified_at'] ?? ''),
         ];
+    }
+
+
+    /**
+     * @param array<int,array<string,mixed>> $history
+     * @return array<int,array<string,mixed>>
+     */
+    private function chronicle(array $history): array
+    {
+        $entries = [];
+        $total = count($history);
+
+        foreach (array_reverse($history, true) as $index => $entry) {
+            if (! is_array($entry)) {
+                continue;
+            }
+
+            $ink = $this->freshInk($entry);
+
+            if ($ink === null) {
+                continue;
+            }
+
+            $entries[] = $ink + [
+                'sequence' => ((int) $index) + 1,
+                'is_latest' => ((int) $index) === ($total - 1),
+                'certification_key' => (string) ($entry['certification_key'] ?? ''),
+            ];
+        }
+
+        return $entries;
     }
 
     /** @param array<string,mixed> $choices @return array<int,string> */

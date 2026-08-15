@@ -1704,62 +1704,37 @@ $callingPathLabel = $callingPath !== ''
                 </section>
             <?php endif; ?>
 
-            <?php if ($advancementHistory !== []) : ?>
-                <section
-                    class="gmrc-rise-certification-history"
-                    aria-labelledby="gmrc-certification-history-title"
-                >
+            <?php if (! empty($livingRegister['has_chronicle']) && is_array($livingRegister['chronicle'])) : ?>
+                <section class="gmrc-living-register__chronicle" aria-labelledby="gmrc-sealed-chronicle-title" data-sealed-chronicle>
                     <header>
-                        <p class="gmrc-eyebrow">
-                            Guild Archive
-                        </p>
-                        <h3 id="gmrc-certification-history-title">
-                            Certified Advancements
-                        </h3>
+                        <div>
+                            <p class="gmrc-eyebrow">Permanent Guild History</p>
+                            <h3 id="gmrc-sealed-chronicle-title">The Sealed Chronicle</h3>
+                            <p>Every completed certification remains here as part of the adventurer’s living record.</p>
+                        </div>
+                        <strong><?php echo esc_html((string) count($livingRegister['chronicle'])); ?> sealed</strong>
                     </header>
 
-                    <ol>
-                        <?php foreach (
-                            array_reverse($advancementHistory)
-                            as $certification
-                        ) : ?>
-                            <li>
-                                <span aria-hidden="true">✓</span>
-                                <div>
-                                    <strong>
-                                        Guild Certified — Level
-                                        <?php echo esc_html(
-                                            (string) (
-                                                $certification[
-                                                    'target_level'
-                                                ] ?? ''
-                                            )
-                                        ); ?>
-                                    </strong>
-                                    <p>
-                                        Level <?php echo esc_html(
-                                            (string) (
-                                                $certification[
-                                                    'from_level'
-                                                ] ?? ''
-                                            )
-                                        ); ?>
-                                        →
-                                        <?php echo esc_html(
-                                            (string) (
-                                                $certification[
-                                                    'target_level'
-                                                ] ?? ''
-                                            )
-                                        ); ?>
-                                        · +<?php echo esc_html(
-                                            (string) (
-                                                $certification[
-                                                    'hit_point_gain'
-                                                ] ?? 0
-                                            )
-                                        ); ?> Maximum HP
-                                    </p>
+                    <ol class="gmrc-living-register__chronicle-list">
+                        <?php foreach ($livingRegister['chronicle'] as $entry) : ?>
+                            <li<?php echo ! empty($entry['is_latest']) ? ' class="is-latest"' : ''; ?>>
+                                <span class="gmrc-living-register__seal" aria-hidden="true">✓</span>
+                                <div class="gmrc-living-register__chronicle-entry">
+                                    <header>
+                                        <div>
+                                            <small>Certification <?php echo esc_html((string) $entry['sequence']); ?><?php echo ! empty($entry['is_latest']) ? ' · Latest' : ''; ?></small>
+                                            <h4>Level <?php echo esc_html((string) $entry['from_level']); ?> → <?php echo esc_html((string) $entry['target_level']); ?></h4>
+                                        </div>
+                                        <?php if ((string) $entry['certified_at'] !== '') : ?>
+                                            <time datetime="<?php echo esc_attr((string) $entry['certified_at']); ?>"><?php echo esc_html(substr((string) $entry['certified_at'], 0, 10)); ?></time>
+                                        <?php endif; ?>
+                                    </header>
+                                    <ul>
+                                        <?php if ((int) $entry['hit_point_gain'] > 0) : ?><li>+<?php echo esc_html((string) $entry['hit_point_gain']); ?> maximum HP</li><?php endif; ?>
+                                        <?php if ($entry['spells_learned'] !== []) : ?><li><?php echo esc_html((string) count($entry['spells_learned'])); ?> spell<?php echo count($entry['spells_learned']) === 1 ? '' : 's'; ?> learned</li><?php endif; ?>
+                                        <?php if ($entry['cantrips_learned'] !== []) : ?><li><?php echo esc_html((string) count($entry['cantrips_learned'])); ?> cantrip<?php echo count($entry['cantrips_learned']) === 1 ? '' : 's'; ?> learned</li><?php endif; ?>
+                                        <?php if ($entry['path_gifts_granted'] !== []) : ?><li><?php echo esc_html(implode(', ', $entry['path_gifts_granted'])); ?></li><?php endif; ?>
+                                    </ul>
                                 </div>
                             </li>
                         <?php endforeach; ?>

@@ -20,6 +20,10 @@ final class LivingRegisterPresentationTest extends TestCase
         self::assertStringContainsString("\$livingRegister['path_gift_count']", $view);
         self::assertStringContainsString('Fresh Ink in the Register', $view);
         self::assertStringContainsString("\$livingRegister['fresh_ink']", $view);
+        self::assertStringContainsString('data-sealed-chronicle', $view);
+        self::assertStringContainsString('The Sealed Chronicle', $view);
+        self::assertStringContainsString("\$livingRegister['chronicle']", $view);
+        self::assertStringNotContainsString('gmrc-rise-certification-history', $view);
         self::assertStringContainsString('Next Guild Certification', $view);
     }
 
@@ -33,5 +37,8 @@ final class LivingRegisterPresentationTest extends TestCase
         self::assertFileExists(
             $root . '/assets/css/modules/characters/living-register.css'
         );
+        $css = file_get_contents($root . '/assets/css/modules/characters/living-register.css');
+        self::assertIsString($css);
+        self::assertStringContainsString('gmrc-living-register__chronicle', $css);
     }
 }

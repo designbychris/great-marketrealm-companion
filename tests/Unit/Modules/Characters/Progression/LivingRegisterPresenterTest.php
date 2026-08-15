@@ -109,6 +109,60 @@ final class LivingRegisterPresenterTest extends TestCase
         self::assertSame(['Packaging Proficiency'], $state['fresh_ink']['path_gifts_granted']);
     }
 
+    public function testCertificationHistoryBecomesNewestFirstSealedChronicle(): void
+    {
+        $character = Character::reconstitute(
+            CharacterId::fromString('01KZM4W72K1G12FY75R0BTQREW'),
+            CharacterName::fromString('Wiz'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('wizard'),
+            Level::fromInt(4),
+            Experience::fromInt(2700),
+            HitPoints::fromValues(24, 24),
+            $this->abilities()
+        );
+
+        $state = (new LivingRegisterPresenter())->present($character, [
+            [
+                'certification_key' => 'wiz:1:2',
+                'from_level' => 1,
+                'target_level' => 2,
+                'hit_point_gain' => 6,
+                'certified_at' => '2026-08-10T09:00:00+00:00',
+            ],
+            [
+                'certification_key' => 'wiz:2:3',
+                'from_level' => 2,
+                'target_level' => 3,
+                'hit_point_gain' => 5,
+                'choices' => ['wizard-spells' => ['pantry-ward']],
+                'certified_at' => '2026-08-12T09:00:00+00:00',
+            ],
+            [
+                'certification_key' => 'wiz:3:4',
+                'from_level' => 3,
+                'target_level' => 4,
+                'hit_point_gain' => 5,
+                'path_gifts_granted' => [[
+                    'key' => 'spell-stored-container',
+                    'label' => 'Spell-Stored Container',
+                ]],
+                'certified_at' => '2026-08-15T07:30:00+00:00',
+            ],
+        ]);
+
+        self::assertTrue($state['has_chronicle']);
+        self::assertCount(3, $state['chronicle']);
+        self::assertSame(3, $state['chronicle'][0]['sequence']);
+        self::assertTrue($state['chronicle'][0]['is_latest']);
+        self::assertSame(4, $state['chronicle'][0]['target_level']);
+        self::assertSame(['Spell-Stored Container'], $state['chronicle'][0]['path_gifts_granted']);
+        self::assertSame(2, $state['chronicle'][1]['sequence']);
+        self::assertSame(['pantry-ward'], $state['chronicle'][1]['spells_learned']);
+        self::assertSame(1, $state['chronicle'][2]['sequence']);
+        self::assertFalse($state['chronicle'][2]['is_latest']);
+    }
+
     public function testFreshInkIsAbsentWithoutCertificationHistory(): void
     {
         $state = (new LivingRegisterPresenter())->present(

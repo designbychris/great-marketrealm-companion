@@ -17,3 +17,20 @@
 .gmrc-living-register__changes li{display:grid;gap:.12rem;padding-top:.5rem;border-top:1px solid rgba(75,43,24,.12)}
 .gmrc-living-register__changes strong{color:#603773;font-size:.72rem}
 .gmrc-living-register__changes span{color:rgba(66,42,29,.72);font-size:.64rem;line-height:1.45}
+
+/** Phase III.9.3: The Sealed Chronicle. */
+.gmrc-living-register__chronicle{margin:1.15rem 0;padding-top:.9rem;border-top:1px solid rgba(75,43,24,.2)}
+.gmrc-living-register__chronicle>header{display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem}
+.gmrc-living-register__chronicle>header h3{margin:.08rem 0 .2rem;color:#4a2a18;font-family:var(--gmrc-font-display,Georgia,serif);font-size:1rem}
+.gmrc-living-register__chronicle>header p:last-child{margin:.15rem 0 0;color:rgba(66,42,29,.68);font-size:.64rem;line-height:1.45}
+.gmrc-living-register__chronicle>header>strong{flex:none;padding:.22rem .42rem;border:1px solid rgba(96,55,115,.22);border-radius:999px;color:#603773;font-size:.58rem;text-transform:uppercase;letter-spacing:.06em}
+.gmrc-living-register__chronicle-list{display:grid;gap:.58rem;margin:.85rem 0 0;padding:0;list-style:none}
+.gmrc-living-register__chronicle-list>li{display:grid;grid-template-columns:auto 1fr;gap:.55rem;padding:.68rem;border:1px solid rgba(75,43,24,.14);border-radius:.35rem;background:rgba(255,249,228,.36)}
+.gmrc-living-register__chronicle-list>li.is-latest{border-color:rgba(96,55,115,.3);background:rgba(246,236,250,.32)}
+.gmrc-living-register__seal{display:grid;width:1.35rem;height:1.35rem;place-items:center;border-radius:50%;background:#603773;color:#fff;font-size:.65rem;font-weight:900}
+.gmrc-living-register__chronicle-entry>header{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem}
+.gmrc-living-register__chronicle-entry small{color:rgba(66,42,29,.58);font-size:.53rem;font-weight:900;letter-spacing:.05em;text-transform:uppercase}
+.gmrc-living-register__chronicle-entry h4{margin:.05rem 0;color:#4a2a18;font-family:var(--gmrc-font-display,Georgia,serif);font-size:.78rem}
+.gmrc-living-register__chronicle-entry time{color:rgba(66,42,29,.55);font-size:.55rem;white-space:nowrap}
+.gmrc-living-register__chronicle-entry ul{display:flex;flex-wrap:wrap;gap:.22rem .55rem;margin:.35rem 0 0;padding:0;list-style:none;color:rgba(66,42,29,.72);font-size:.6rem}
+.gmrc-living-register__chronicle-entry li::before{content:'✦';margin-right:.22rem;color:#603773}
