@@ -280,6 +280,7 @@ $callingPathLabel = $callingPath !== ''
 <section
     class="gmrc-open-ledger"
     data-living-ledger
+    data-character-id="<?php echo esc_attr($characterId); ?>"
     aria-labelledby="gmrc-open-ledger-title"
 >
     <header class="gmrc-open-ledger__toolbar">
@@ -2448,7 +2449,24 @@ $callingPathLabel = $callingPath !== ''
         </div>
 
         <div class="gmrc-guild-dice-history" data-guild-dice-history hidden>
-            <h3>Recent Rolls</h3>
+            <div class="gmrc-guild-dice-history__heading">
+                <div>
+                    <p class="gmrc-guild-dice-history__eyebrow">
+                        The Dice Ledger
+                    </p>
+                    <h3>Recent Rolls</h3>
+                </div>
+                <button
+                    type="button"
+                    class="gmrc-guild-dice-history__clear"
+                    data-guild-dice-history-clear
+                >
+                    Clear Ledger
+                </button>
+            </div>
+            <p class="gmrc-guild-dice-history__note">
+                Kept for this adventurer during this browser session.
+            </p>
             <ol data-guild-dice-history-list></ol>
         </div>
 

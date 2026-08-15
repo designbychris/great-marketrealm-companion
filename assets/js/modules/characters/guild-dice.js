@@ -1,7 +1,7 @@
 (function (window, document) {
     'use strict';
 
-    const MAX_HISTORY = 6;
+    const MAX_HISTORY = 12;
     const MAX_FREE_DICE = 20;
     const SUPPORTED_DICE = [4, 6, 8, 10, 12, 20, 100];
 
@@ -149,6 +149,9 @@
         const confetti = tray.querySelector('[data-guild-dice-confetti]');
         const history = tray.querySelector('[data-guild-dice-history]');
         const historyList = tray.querySelector('[data-guild-dice-history-list]');
+        const historyClear = tray.querySelector(
+            '[data-guild-dice-history-clear]'
+        );
         const live = tray.querySelector('[data-guild-dice-live]');
         const close = tray.querySelector('[data-guild-dice-close]');
         const modeButtons = Array.from(
@@ -161,7 +164,52 @@
         const freeRoll = tray.querySelector('[data-guild-free-roll]');
 
         let activeTrigger = null;
+        const characterId = ledger.dataset.characterId || 'unknown';
+        const historyKey = 'gmrc:guild-dice:history:' + characterId;
         const recent = [];
+
+        const loadHistory = function () {
+            if (!window.sessionStorage) {
+                return;
+            }
+
+            try {
+                const stored = JSON.parse(
+                    window.sessionStorage.getItem(historyKey) || '[]'
+                );
+
+                if (!Array.isArray(stored)) {
+                    return;
+                }
+
+                stored.slice(0, MAX_HISTORY).forEach(function (entry) {
+                    if (
+                        entry
+                        && typeof entry === 'object'
+                        && typeof entry.text === 'string'
+                    ) {
+                        recent.push(entry);
+                    }
+                });
+            } catch (error) {
+                window.sessionStorage.removeItem(historyKey);
+            }
+        };
+
+        const persistHistory = function () {
+            if (!window.sessionStorage) {
+                return;
+            }
+
+            try {
+                window.sessionStorage.setItem(
+                    historyKey,
+                    JSON.stringify(recent)
+                );
+            } catch (error) {
+                // Dice rolling must remain available if storage is blocked.
+            }
+        };
 
         const current = function () {
             if (!(activeTrigger instanceof HTMLButtonElement)) {
@@ -274,20 +322,54 @@
 
             recent.forEach(function (entry) {
                 const item = document.createElement('li');
-                item.textContent = entry;
+                const copy = document.createElement('span');
+                const meta = document.createElement('small');
+
+                copy.textContent = entry.text;
+                meta.textContent = entry.time || 'This session';
+
+                item.dataset.rollKind = entry.kind || 'roll';
+                item.append(copy, meta);
                 historyList.appendChild(item);
             });
 
             history.hidden = recent.length === 0;
         };
 
-        const remember = function (entry) {
-            recent.unshift(entry);
+        const remember = function (entry, metadata) {
+            const details = metadata || {};
+            const recorded = {
+                text: entry,
+                kind: details.kind || 'roll',
+                formula: details.formula || '',
+                dice: Array.isArray(details.dice) ? details.dice : [],
+                modifier: Number(details.modifier) || 0,
+                total: Number(details.total) || 0,
+                natural: Number(details.natural) || 0,
+                reaction: details.reaction || 'none',
+                time: new Date().toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })
+            };
+
+            recent.unshift(recorded);
             recent.splice(MAX_HISTORY);
+            persistHistory();
             paintHistory();
 
             if (live instanceof HTMLElement) {
                 live.textContent = entry;
+            }
+        };
+
+        const clearHistory = function () {
+            recent.splice(0, recent.length);
+            persistHistory();
+            paintHistory();
+
+            if (live instanceof HTMLElement) {
+                live.textContent = 'The Dice Ledger has been cleared.';
             }
         };
 
@@ -515,7 +597,14 @@
                 + ' = '
                 + total
                 + ' '
-                + resultLabel
+                + resultLabel,
+                {
+                    kind: selection.kind,
+                    formula: selection.formula,
+                    dice: rolled.dice,
+                    modifier: selection.modifier,
+                    total: total
+                }
             );
         };
 
@@ -590,7 +679,16 @@
                     reactionAnnouncement
                         ? ' — ' + reactionAnnouncement
                         : ''
-                )
+                ),
+                {
+                    kind: selection.kind,
+                    formula: '1d20',
+                    dice: rolled.dice,
+                    modifier: selection.modifier,
+                    total: total,
+                    natural: rolled.natural,
+                    reaction: naturalReaction(rolled.natural)
+                }
             );
         };
 
@@ -711,9 +809,29 @@
                 + signed(modifier)
                 + ' = '
                 + total
-                + (freeReaction ? ' — ' + freeReaction : '')
+                + (freeReaction ? ' — ' + freeReaction : ''),
+                {
+                    kind: 'free-roll',
+                    formula: formula,
+                    dice: values,
+                    modifier: modifier,
+                    total: total,
+                    natural: sides === 20 && quantity === 1
+                        ? values[0]
+                        : 0,
+                    reaction: sides === 20 && quantity === 1
+                        ? naturalReaction(values[0])
+                        : 'none'
+                }
             );
         };
+
+        if (historyClear instanceof HTMLButtonElement) {
+            historyClear.addEventListener('click', clearHistory);
+        }
+
+        loadHistory();
+        paintHistory();
 
         triggers.forEach(function (trigger) {
             trigger.addEventListener('click', function () {

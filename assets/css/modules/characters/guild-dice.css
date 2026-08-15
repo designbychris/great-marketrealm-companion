@@ -1318,7 +1318,7 @@
 
     margin: 0 !important;
     padding: 0 !important;
-    padding-left:10px!important;
+
     gap:
         0.2rem !important;
 
@@ -1498,4 +1498,63 @@
         grid-template-columns:
             1fr !important;
     }
+}
+
+
+/* ===============================================================
+ * Phase III.10.7 — The Dice Ledger
+ * =============================================================== */
+.gmrc-guild-dice-history__heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+}
+
+.gmrc-guild-dice-history__heading h3 {
+    margin: .08rem 0 0;
+}
+
+.gmrc-guild-dice-history__eyebrow,
+.gmrc-guild-dice-history__note {
+    margin: 0;
+}
+
+.gmrc-guild-dice-history__eyebrow {
+    font-size: .62rem;
+    font-weight: 900;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.gmrc-guild-dice-history__note {
+    margin-top: .35rem;
+    font-size: .72rem;
+    opacity: .72;
+}
+
+.gmrc-guild-dice-history__clear {
+    flex: 0 0 auto;
+    padding: .42rem .65rem;
+    border: 1px solid currentColor;
+    border-radius: .35rem;
+    font: inherit;
+    font-size: .68rem;
+    font-weight: 850;
+    cursor: pointer;
+}
+
+.gmrc-guild-dice-history ol {
+    display: grid;
+    gap: .42rem;
+}
+
+.gmrc-guild-dice-history li {
+    display: grid;
+    gap: .14rem;
+}
+
+.gmrc-guild-dice-history li small {
+    font-size: .66rem;
+    opacity: .68;
 }
