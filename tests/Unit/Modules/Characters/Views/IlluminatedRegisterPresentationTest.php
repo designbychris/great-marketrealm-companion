@@ -30,6 +30,18 @@ final class IlluminatedRegisterPresentationTest extends TestCase
         self::assertStringContainsString('$portraitModel?->attachmentUrl()', $component);
         self::assertStringContainsString('data-register-portrait', $component);
         self::assertStringContainsString('portrait-frame__generated', $component);
+        self::assertStringContainsString(
+            'gmrc-illuminated-portrait--has-race',
+            $component
+        );
+        self::assertStringContainsString(
+            'gmrc-illuminated-portrait--has-class',
+            $component
+        );
+        self::assertStringContainsString(
+            'gmrc-illuminated-portrait--complete',
+            $component
+        );
         self::assertStringContainsString('portrait-frame__image', $component);
         self::assertStringContainsString('portrait-frame__initials', $component);
         self::assertStringContainsString("'portrait' => \$characterPortrait", $index);
