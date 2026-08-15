@@ -185,15 +185,8 @@ $guildSeal = $sealRegistry->for(
                         >
                     <?php elseif ($generatedPortraitSvg !== '') : ?>
                         <div
-                            class="
-                                portrait-frame__generated
-                                gmrc-illuminated-portrait
-                                gmrc-illuminated-portrait--mode-generated
-                                gmrc-illuminated-portrait--named
-                                gmrc-illuminated-portrait--has-race
-                                gmrc-illuminated-portrait--has-class
-                                gmrc-illuminated-portrait--complete
-                            "
+                            class="portrait-frame__generated"
+                            data-register-generated-portrait
                             aria-label="<?php echo esc_attr(
                                 sprintf(
                                     'Guild Illuminator portrait of %s',

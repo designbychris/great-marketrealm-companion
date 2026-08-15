@@ -31,14 +31,18 @@ final class IlluminatedRegisterPresentationTest extends TestCase
         self::assertStringContainsString('data-register-portrait', $component);
         self::assertStringContainsString('portrait-frame__generated', $component);
         self::assertStringContainsString(
+            'data-register-generated-portrait',
+            $component
+        );
+        self::assertStringNotContainsString(
             'gmrc-illuminated-portrait--has-race',
             $component
         );
-        self::assertStringContainsString(
+        self::assertStringNotContainsString(
             'gmrc-illuminated-portrait--has-class',
             $component
         );
-        self::assertStringContainsString(
+        self::assertStringNotContainsString(
             'gmrc-illuminated-portrait--complete',
             $component
         );
@@ -65,6 +69,14 @@ final class IlluminatedRegisterPresentationTest extends TestCase
         self::assertStringContainsString('Open %s’s Character Ledger', $component);
         self::assertStringContainsString('.portrait-frame--illuminated', $css);
         self::assertStringContainsString('.portrait-frame__generated', $css);
+        self::assertStringContainsString(
+            '.portrait-frame__generated .gmrc-portrait-layer--race',
+            $css
+        );
+        self::assertStringContainsString(
+            '.portrait-frame__generated .gmrc-portrait-layer--effects',
+            $css
+        );
         self::assertStringContainsString('.portrait-frame__image', $css);
         self::assertStringContainsString('.portrait-frame__link:focus-visible', $css);
     }

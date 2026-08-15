@@ -1712,3 +1712,38 @@
 		scroll-behavior: auto;
 	}
 }
+
+
+/*
+ * Illuminated Register static paint state.
+ *
+ * The Register intentionally does not use .gmrc-illuminated-portrait because
+ * that class is the live Portrait Studio JavaScript boot selector. These
+ * scoped rules reproduce the completed painted state without initialising
+ * portrait customisation, generation switching, or living-editor behaviour.
+ */
+.portrait-frame__generated .gmrc-portrait-layer--race,
+.portrait-frame__generated .gmrc-portrait-layer--class {
+	opacity: 1;
+	filter: blur(0) saturate(1);
+	transform:
+		translateY(var(--gmrc-portrait-figure-shift, 0))
+		scale(1);
+	animation: none !important;
+}
+
+.portrait-frame__generated .gmrc-portrait-layer--effects {
+	opacity: 1;
+	filter: none;
+	transform: translateY(0) scale(1);
+	animation: none !important;
+}
+
+.portrait-frame__generated .gmrc-portrait-layers__equipment {
+	animation: none !important;
+}
+
+.portrait-frame__generated .gmrc-portrait-layers__spark {
+	opacity: 0.72;
+	animation: none !important;
+}
