@@ -38,6 +38,25 @@ final class LivingRegisterPresentationTest extends TestCase
         self::assertStringContainsString('Next Guild Certification', $view);
     }
 
+    public function testLivingRegisterRefinementKeepsLongHistoryAccessible(): void
+    {
+        $root = dirname(__DIR__, 5);
+        $view = file_get_contents($root . '/app/Modules/Characters/Views/show.php');
+
+        self::assertIsString($view);
+        self::assertStringContainsString('aria-describedby="gmrc-living-register-intro"', $view);
+        self::assertStringContainsString('data-living-register-index', $view);
+        self::assertStringContainsString('aria-label="Living Register sections"', $view);
+        self::assertStringContainsString('href="#gmrc-fresh-ink-title"', $view);
+        self::assertStringContainsString('href="#gmrc-journey-measure-title"', $view);
+        self::assertStringContainsString('href="#gmrc-change-record-title"', $view);
+        self::assertStringContainsString('href="#gmrc-sealed-chronicle-title"', $view);
+        self::assertStringContainsString('tabindex="-1"', $view);
+        self::assertStringContainsString('<span class="screen-reader-text"> to </span>', $view);
+        self::assertStringContainsString('Latest certification', $view);
+        self::assertStringContainsString("if (! \$progression['is_maximum'])", $view);
+    }
+
     public function testLivingRegisterStylesAreRegistered(): void
     {
         $root = dirname(__DIR__, 5);
@@ -57,5 +76,8 @@ final class LivingRegisterPresentationTest extends TestCase
         self::assertStringContainsString('gmrc-living-register__change-moments', $css);
         self::assertStringContainsString('gmrc-living-register__empty-state', $css);
         self::assertStringContainsString('gmrc-living-register__final-seal', $css);
+        self::assertStringContainsString('gmrc-living-register__index', $css);
+        self::assertStringContainsString(':focus-visible', $css);
+        self::assertStringContainsString('prefers-reduced-motion:reduce', $css);
     }
 }

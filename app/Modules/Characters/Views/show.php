@@ -1561,12 +1561,12 @@ $callingPathLabel = $callingPath !== ''
             <p class="gmrc-ledger-page__number" aria-hidden="true">11</p>
         </section>
 
-        <section class="gmrc-ledger-page gmrc-ledger-page--level-certification gmrc-ledger-page--living-register" aria-labelledby="gmrc-living-register-title" data-living-register>
+        <section class="gmrc-ledger-page gmrc-ledger-page--level-certification gmrc-ledger-page--living-register" aria-labelledby="gmrc-living-register-title" aria-describedby="gmrc-living-register-intro" data-living-register>
             <p class="gmrc-ledger-page__folio">Living Register · XII</p>
             <header class="gmrc-ledger-page__heading">
                 <p class="gmrc-eyebrow">Current Guild Record</p>
                 <h2 id="gmrc-living-register-title">The Living Register</h2>
-                <p>Only completed Guild certifications are entered here. Pending advancement paperwork remains in the Rising Register until it is sealed.</p>
+                <p id="gmrc-living-register-intro">Only completed Guild certifications are entered here. Pending advancement paperwork remains in the Rising Register until it is sealed.</p>
             </header>
 
             <dl class="gmrc-living-register__summary" aria-label="Current certified progression record">
@@ -1599,9 +1599,19 @@ $callingPathLabel = $callingPath !== ''
                 </aside>
             <?php endif; ?>
 
+            <?php if (! empty($livingRegister['has_chronicle'])) : ?>
+                <nav class="gmrc-living-register__index" aria-label="Living Register sections" data-living-register-index>
+                    <span>Register index</span>
+                    <?php if (! empty($livingRegister['has_fresh_ink'])) : ?><a href="#gmrc-fresh-ink-title">Fresh Ink</a><?php endif; ?>
+                    <?php if (! empty($livingRegister['has_journey_measure'])) : ?><a href="#gmrc-journey-measure-title">Journey Measure</a><?php endif; ?>
+                    <?php if (! empty($livingRegister['has_change_record'])) : ?><a href="#gmrc-change-record-title">Record of Change</a><?php endif; ?>
+                    <a href="#gmrc-sealed-chronicle-title">Sealed Chronicle</a>
+                </nav>
+            <?php endif; ?>
+
             <?php if (! empty($livingRegister['has_fresh_ink']) && is_array($livingRegister['fresh_ink'])) : ?>
                 <?php $freshInk = $livingRegister['fresh_ink']; ?>
-                <section class="gmrc-living-register__fresh-ink" aria-labelledby="gmrc-fresh-ink-title">
+                <section class="gmrc-living-register__fresh-ink" aria-labelledby="gmrc-fresh-ink-title" tabindex="-1">
                     <header>
                         <p class="gmrc-eyebrow">Most recent certification</p>
                         <h3 id="gmrc-fresh-ink-title">Fresh Ink in the Register</h3>
@@ -1625,6 +1635,7 @@ $callingPathLabel = $callingPath !== ''
                 </section>
             <?php endif; ?>
 
+            <?php if (! $progression['is_maximum']) : ?>
             <section class="gmrc-living-register__next" aria-labelledby="gmrc-level-certification-title">
                 <header>
                     <p class="gmrc-eyebrow">What the next stamp changes</p>
@@ -1638,6 +1649,7 @@ $callingPathLabel = $callingPath !== ''
                     <div><dt>HP on next level</dt><dd>+<?php echo esc_html((string) $progression['next_hit_point_gain']); ?></dd></div>
                 </dl>
             </section>
+            <?php endif; ?>
 
             <?php if (
                 ! $progression['is_maximum']
@@ -1725,7 +1737,7 @@ $callingPathLabel = $callingPath !== ''
 
             <?php if (! empty($livingRegister['has_journey_measure']) && is_array($livingRegister['journey_measure'] ?? null)) : ?>
                 <?php $journeyMeasure = $livingRegister['journey_measure']; ?>
-                <section class="gmrc-living-register__journey" aria-labelledby="gmrc-journey-measure-title" data-journey-measure>
+                <section class="gmrc-living-register__journey" aria-labelledby="gmrc-journey-measure-title" data-journey-measure tabindex="-1">
                     <header>
                         <div>
                             <p class="gmrc-eyebrow">The Measure of the Journey</p>
@@ -1747,7 +1759,7 @@ $callingPathLabel = $callingPath !== ''
 
             <?php if (! empty($livingRegister['has_change_record']) && is_array($livingRegister['change_record'] ?? null)) : ?>
                 <?php $changeRecord = $livingRegister['change_record']; ?>
-                <section class="gmrc-living-register__change-record" aria-labelledby="gmrc-change-record-title" data-living-change-record>
+                <section class="gmrc-living-register__change-record" aria-labelledby="gmrc-change-record-title" data-living-change-record tabindex="-1">
                     <header>
                         <div>
                             <p class="gmrc-eyebrow">The Living Record of Change</p>
@@ -1760,13 +1772,13 @@ $callingPathLabel = $callingPath !== ''
                     <dl class="gmrc-living-register__change-grid">
                         <div>
                             <dt>Certified Level</dt>
-                            <dd><?php echo esc_html((string) $changeRecord['starting_level']); ?> <span aria-hidden="true">→</span> <?php echo esc_html((string) $changeRecord['current_level']); ?></dd>
+                            <dd><?php echo esc_html((string) $changeRecord['starting_level']); ?> <span aria-hidden="true">→</span><span class="screen-reader-text"> to </span> <?php echo esc_html((string) $changeRecord['current_level']); ?></dd>
                         </div>
                         <div>
                             <dt>Maximum HP</dt>
                             <dd>
                                 <?php if ((int) $changeRecord['starting_maximum_hp'] > 0) : ?>
-                                    <?php echo esc_html((string) $changeRecord['starting_maximum_hp']); ?> <span aria-hidden="true">→</span> <?php echo esc_html((string) $changeRecord['current_maximum_hp']); ?>
+                                    <?php echo esc_html((string) $changeRecord['starting_maximum_hp']); ?> <span aria-hidden="true">→</span><span class="screen-reader-text"> to </span> <?php echo esc_html((string) $changeRecord['current_maximum_hp']); ?>
                                 <?php else : ?>
                                     +<?php echo esc_html((string) $changeRecord['maximum_hp_change']); ?> certified
                                 <?php endif; ?>
@@ -1789,7 +1801,7 @@ $callingPathLabel = $callingPath !== ''
             <?php endif; ?>
 
             <?php if (! empty($livingRegister['has_chronicle']) && is_array($livingRegister['chronicle'])) : ?>
-                <section class="gmrc-living-register__chronicle" aria-labelledby="gmrc-sealed-chronicle-title" data-sealed-chronicle>
+                <section class="gmrc-living-register__chronicle" aria-labelledby="gmrc-sealed-chronicle-title" data-sealed-chronicle tabindex="-1">
                     <header>
                         <div>
                             <p class="gmrc-eyebrow">Permanent Guild History</p>
@@ -1811,7 +1823,7 @@ $callingPathLabel = $callingPath !== ''
                                 <div class="gmrc-living-register__chronicle-entry">
                                     <header>
                                         <div>
-                                            <small>Certification <?php echo esc_html((string) $entry['sequence']); ?><?php echo ! empty($entry['is_latest']) ? ' · Latest' : ''; ?></small>
+                                            <small>Certification <?php echo esc_html((string) $entry['sequence']); ?><?php echo ! empty($entry['is_latest']) ? ' · Latest certification' : ''; ?></small>
                                             <h4>Level <?php echo esc_html((string) $entry['from_level']); ?> → <?php echo esc_html((string) $entry['target_level']); ?></h4>
                                         </div>
                                         <?php if ((string) $entry['certified_at'] !== '') : ?>
