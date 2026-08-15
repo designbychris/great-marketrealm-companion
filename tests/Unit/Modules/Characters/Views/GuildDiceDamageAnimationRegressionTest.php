@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class GuildDiceDamageAnimationRegressionTest extends TestCase
 {
-    public function testDamageRollUsesSharedDiceAnimation(): void
+    public function testDamageAndD20RollsUseSharedDiceStageAnimation(): void
     {
         $root = dirname(__DIR__, 5);
 
@@ -21,25 +21,22 @@ final class GuildDiceDamageAnimationRegressionTest extends TestCase
         self::assertIsString($script);
 
         self::assertStringContainsString(
-            'const animateDie = function (',
+            'const paintDice = function (',
             $script
         );
 
         self::assertStringContainsString(
-            "animateDie(\n"
-            . "                    damage.total",
+            'paintDice(rolled.dice, rolled.sides, null);',
             $script
         );
 
         self::assertStringContainsString(
-            "animateDie(\n"
-            . "                rolled.natural,",
+            'paintDice(rolled.dice, 20, rolled.keptIndex);',
             $script
         );
 
         self::assertStringContainsString(
-            "die.classList.add(\n"
-            . "                    'is-rolling'",
+            "stage.classList.add('is-rolling');",
             $script
         );
     }
