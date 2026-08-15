@@ -13,6 +13,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterCl
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\HitPoints;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use PHPUnit\Framework\TestCase;
 
@@ -26,6 +28,59 @@ final class ArcanePantryPresenterTest extends TestCase
         self::assertSame(5, $arcana['spell_attack']);
         self::assertSame(13, $arcana['save_dc']);
         self::assertSame(2, $arcana['slots'][0]['total']);
+    }
+
+    public function testWizardEntriesAreIndexedBySpellLevelAndFeatures(): void
+    {
+        $average = AbilityScore::fromInt(10);
+        $intelligence = AbilityScore::fromInt(16);
+
+        $character = Character::reconstitute(
+            CharacterId::fromString('01KZM4W72K1G12FY75R0BTQREW'),
+            CharacterName::fromString('Magic'),
+            Race::fromString('frostreem'),
+            CharacterClass::fromString('wizard'),
+            Level::fromInt(4),
+            Experience::fromInt(2700),
+            HitPoints::fromValues(22, 22),
+            AbilityScores::fromScores(
+                $average,
+                $average,
+                $average,
+                $intelligence,
+                $average,
+                $average
+            )
+        );
+
+        $arcana = (new ArcanePantryPresenter(
+            new ArcaneAbilityCatalogue()
+        ))->present($character);
+
+        self::assertSame(
+            ['cantrips', 'level-1', 'level-2', 'features'],
+            array_column($arcana['shelves'], 'key')
+        );
+        self::assertSame(
+            ['Cantrips', 'Level 1', 'Level 2', 'Features'],
+            array_column($arcana['shelves'], 'label')
+        );
+        self::assertSame(
+            ['Produce Spark'],
+            array_column($arcana['shelves'][0]['entries'], 'label')
+        );
+        self::assertContains(
+            'Pantry Ward',
+            array_column($arcana['shelves'][1]['entries'], 'label')
+        );
+        self::assertContains(
+            'Aisle Step',
+            array_column($arcana['shelves'][2]['entries'], 'label')
+        );
+        self::assertContains(
+            'Pantry Recovery',
+            array_column($arcana['shelves'][3]['entries'], 'label')
+        );
     }
 
     public function testGrocerReceivesClassFeaturesWithoutSpellSlots(): void

@@ -35,6 +35,34 @@ final class ArcanePantryPresentationTest extends TestCase
         );
     }
 
+    public function testArcanePantryProvidesAccessibleIndexedShelves(): void
+    {
+        $root = dirname(__DIR__, 5);
+
+        $view = file_get_contents(
+            $root . '/app/Modules/Characters/Views/show.php'
+        );
+        $script = file_get_contents(
+            $root . '/assets/js/modules/characters/arcane-pantry.js'
+        );
+
+        self::assertIsString($view);
+        self::assertIsString($script);
+        self::assertStringContainsString('data-arcane-index', $view);
+        self::assertStringContainsString('role="tablist"', $view);
+        self::assertStringContainsString('data-arcane-tab=', $view);
+        self::assertStringContainsString('data-arcane-panel=', $view);
+        self::assertStringContainsString('aria-selected=', $view);
+        self::assertStringContainsString('aria-controls=', $view);
+        self::assertStringContainsString('$arcana[\'shelves\']', $view);
+        self::assertStringContainsString("event.key === 'ArrowRight'", $script);
+        self::assertStringContainsString("event.key === 'ArrowLeft'", $script);
+        self::assertStringContainsString("event.key === 'Home'", $script);
+        self::assertStringContainsString("event.key === 'End'", $script);
+        self::assertStringContainsString("candidate.setAttribute(", $script);
+        self::assertStringContainsString("panel.hidden = !active;", $script);
+    }
+
     public function testArcanePantryStylesAreRegistered(): void
     {
         $root = dirname(__DIR__, 5);
@@ -53,6 +81,19 @@ final class ArcanePantryPresentationTest extends TestCase
             $root
             . '/assets/css/modules/characters/'
             . 'arcane-pantry.css'
+        );
+        self::assertFileExists(
+            $root
+            . '/assets/js/modules/characters/'
+            . 'arcane-pantry.js'
+        );
+        self::assertStringContainsString(
+            'gmrc-arcane-pantry',
+            $provider
+        );
+        self::assertStringContainsString(
+            "'arcane-pantry.js'",
+            $provider
         );
     }
 

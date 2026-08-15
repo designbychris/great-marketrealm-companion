@@ -535,6 +535,23 @@ class FrontendServiceProvider extends ServiceProvider
             true
         );
 
+        $arcanePantryScriptPath =
+            GMRC_PATH
+            . 'assets/js/modules/characters/'
+            . 'arcane-pantry.js';
+
+        wp_enqueue_script(
+            'gmrc-arcane-pantry',
+            GMRC_URL
+                . 'assets/js/modules/characters/'
+                . 'arcane-pantry.js',
+            [],
+            file_exists($arcanePantryScriptPath)
+                ? (string) filemtime($arcanePantryScriptPath)
+                : GMRC_VERSION,
+            true
+        );
+
         $guildDiceScriptPath =
             GMRC_PATH
             . 'assets/js/modules/characters/'

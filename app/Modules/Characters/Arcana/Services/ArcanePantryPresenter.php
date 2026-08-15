@@ -89,6 +89,7 @@ final class ArcanePantryPresenter
                 $character->level()->value()
             ),
             'entries' => $entries,
+            'shelves' => $this->indexedShelves($entries),
             'spellbook' => $character->spellbook()->toArray(),
             'has_spells' => count(
                 array_filter(
@@ -146,6 +147,86 @@ final class ArcanePantryPresenter
             'learned' => $learned,
             'spell_level' => $ability->spellLevel(),
         ];
+    }
+
+    /**
+     * Group available Arcane Pantry entries into player-facing shelves.
+     *
+     * Cantrips are kept distinct from numbered spell levels. Class features
+     * remain available on their own shelf rather than being forced into a
+     * fictional spell level.
+     *
+     * @param array<int,array<string,mixed>> $entries
+     * @return array<int,array{
+     *     key:string,
+     *     label:string,
+     *     kind:string,
+     *     level:?int,
+     *     entries:array<int,array<string,mixed>>
+     * }>
+     */
+    private function indexedShelves(array $entries): array
+    {
+        $cantrips = [];
+        $levels = [];
+        $features = [];
+
+        foreach ($entries as $entry) {
+            $kind = (string) ($entry['kind'] ?? '');
+            $spellLevel = max(
+                0,
+                (int) ($entry['spell_level'] ?? 0)
+            );
+
+            if ($kind === 'cantrip') {
+                $cantrips[] = $entry;
+                continue;
+            }
+
+            if ($kind === 'spell') {
+                $level = max(1, $spellLevel);
+                $levels[$level][] = $entry;
+                continue;
+            }
+
+            $features[] = $entry;
+        }
+
+        ksort($levels);
+
+        $shelves = [];
+
+        if ($cantrips !== []) {
+            $shelves[] = [
+                'key' => 'cantrips',
+                'label' => 'Cantrips',
+                'kind' => 'cantrip',
+                'level' => null,
+                'entries' => $cantrips,
+            ];
+        }
+
+        foreach ($levels as $level => $spells) {
+            $shelves[] = [
+                'key' => 'level-' . $level,
+                'label' => 'Level ' . $level,
+                'kind' => 'spell',
+                'level' => $level,
+                'entries' => $spells,
+            ];
+        }
+
+        if ($features !== []) {
+            $shelves[] = [
+                'key' => 'features',
+                'label' => 'Features',
+                'kind' => 'feature',
+                'level' => null,
+                'entries' => $features,
+            ];
+        }
+
+        return $shelves;
     }
 
     private function castingAbility(string $class): ?string

@@ -1518,8 +1518,8 @@ $callingPathLabel = $callingPath !== ''
                 </div>
             <?php endif; ?>
 
-            <div class="gmrc-arcane-card-list">
-                <?php if ($arcana['entries'] === []) : ?>
+            <?php if ($arcana['entries'] === []) : ?>
+                <div class="gmrc-arcane-card-list">
                     <article class="gmrc-arcane-empty">
                         <span aria-hidden="true">📜</span>
                         <h3>Pages Awaiting Discovery</h3>
@@ -1528,97 +1528,173 @@ $callingPathLabel = $callingPath !== ''
                             The Guild Archivists have left plenty of room.
                         </p>
                     </article>
-                <?php else : ?>
-                    <?php foreach ($arcana['entries'] as $ability) : ?>
-                        <article class="gmrc-arcane-card">
-                            <header>
-                                <span class="gmrc-arcane-card__kind">
-                                    <?php echo esc_html(
-                                        ucfirst((string) $ability['kind'])
-                                    ); ?>
-                                </span>
-                                <?php if (
-                                    ! empty($ability['learned'])
-                                    && in_array(
-                                        $ability['kind'],
-                                        ['spell', 'cantrip'],
-                                        true
-                                    )
-                                ) : ?>
-                                    <span class="gmrc-arcane-card__learned">
-                                        In Spellbook ✓
+                </div>
+            <?php else : ?>
+                <div
+                    class="gmrc-arcane-index"
+                    data-arcane-index
+                >
+                    <div
+                        class="gmrc-arcane-tabs"
+                        role="tablist"
+                        aria-label="Arcane Pantry shelves"
+                    >
+                        <?php foreach ($arcana['shelves'] as $shelfIndex => $shelf) : ?>
+                            <?php
+                            $shelfKey = sanitize_key(
+                                (string) $shelf['key']
+                            );
+                            $tabId = 'gmrc-arcane-tab-' . $shelfKey;
+                            $panelId = 'gmrc-arcane-panel-' . $shelfKey;
+                            $selected = $shelfIndex === 0;
+                            ?>
+                            <button
+                                id="<?php echo esc_attr($tabId); ?>"
+                                type="button"
+                                class="gmrc-arcane-tabs__tab<?php echo $selected ? ' is-active' : ''; ?>"
+                                role="tab"
+                                aria-selected="<?php echo $selected ? 'true' : 'false'; ?>"
+                                aria-controls="<?php echo esc_attr($panelId); ?>"
+                                tabindex="<?php echo $selected ? '0' : '-1'; ?>"
+                                data-arcane-tab="<?php echo esc_attr($shelfKey); ?>"
+                            >
+                                <span><?php echo esc_html((string) $shelf['label']); ?></span>
+                                <small><?php echo esc_html(
+                                    (string) count($shelf['entries'])
+                                ); ?></small>
+                            </button>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="gmrc-arcane-shelves">
+                        <?php foreach ($arcana['shelves'] as $shelfIndex => $shelf) : ?>
+                            <?php
+                            $shelfKey = sanitize_key(
+                                (string) $shelf['key']
+                            );
+                            $tabId = 'gmrc-arcane-tab-' . $shelfKey;
+                            $panelId = 'gmrc-arcane-panel-' . $shelfKey;
+                            $selected = $shelfIndex === 0;
+                            ?>
+                            <section
+                                id="<?php echo esc_attr($panelId); ?>"
+                                class="gmrc-arcane-shelf<?php echo $selected ? ' is-active' : ''; ?>"
+                                role="tabpanel"
+                                aria-labelledby="<?php echo esc_attr($tabId); ?>"
+                                data-arcane-panel="<?php echo esc_attr($shelfKey); ?>"
+                                <?php echo $selected ? '' : 'hidden'; ?>
+                            >
+                                <header class="gmrc-arcane-shelf__heading">
+                                    <p class="gmrc-eyebrow">Indexed Shelf</p>
+                                    <h3><?php echo esc_html((string) $shelf['label']); ?></h3>
+                                    <span>
+                                        <?php echo esc_html(
+                                            sprintf(
+                                                '%d entr%s',
+                                                count($shelf['entries']),
+                                                count($shelf['entries']) === 1
+                                                    ? 'y'
+                                                    : 'ies'
+                                            )
+                                        ); ?>
                                     </span>
-                                <?php endif; ?>
-                                <h3><?php echo esc_html($ability['label']); ?></h3>
-                                <p><?php echo esc_html($ability['description']); ?></p>
-                            </header>
+                                </header>
 
-                            <dl class="gmrc-arcane-card__facts">
-                                <div><dt>Use</dt><dd><?php echo esc_html($ability['activation']); ?></dd></div>
-                                <div><dt>Range</dt><dd><?php echo esc_html($ability['range']); ?></dd></div>
-                                <div><dt>Duration</dt><dd><?php echo esc_html($ability['duration']); ?></dd></div>
-                                <div><dt>Stock</dt><dd><?php echo esc_html($ability['uses']); ?></dd></div>
-                            </dl>
+                                <div class="gmrc-arcane-card-list">
+                                    <?php foreach ($shelf['entries'] as $ability) : ?>
+                                        <article class="gmrc-arcane-card">
+                                            <header>
+                                                <span class="gmrc-arcane-card__kind">
+                                                    <?php echo esc_html(
+                                                        ucfirst((string) $ability['kind'])
+                                                    ); ?>
+                                                </span>
+                                                <?php if (
+                                                    ! empty($ability['learned'])
+                                                    && in_array(
+                                                        $ability['kind'],
+                                                        ['spell', 'cantrip'],
+                                                        true
+                                                    )
+                                                ) : ?>
+                                                    <span class="gmrc-arcane-card__learned">
+                                                        In Spellbook ✓
+                                                    </span>
+                                                <?php endif; ?>
+                                                <h3><?php echo esc_html($ability['label']); ?></h3>
+                                                <p><?php echo esc_html($ability['description']); ?></p>
+                                            </header>
 
-                            <?php if ($ability['save_dc'] !== null) : ?>
-                                <p class="gmrc-arcane-save">
-                                    <strong>
-                                        DC <?php echo esc_html((string) $ability['save_dc']); ?>
-                                        <?php echo esc_html(ucfirst((string) $ability['save_ability'])); ?>
-                                    </strong>
-                                    saving throw
-                                </p>
-                            <?php endif; ?>
+                                            <dl class="gmrc-arcane-card__facts">
+                                                <div><dt>Use</dt><dd><?php echo esc_html($ability['activation']); ?></dd></div>
+                                                <div><dt>Range</dt><dd><?php echo esc_html($ability['range']); ?></dd></div>
+                                                <div><dt>Duration</dt><dd><?php echo esc_html($ability['duration']); ?></dd></div>
+                                                <div><dt>Stock</dt><dd><?php echo esc_html($ability['uses']); ?></dd></div>
+                                            </dl>
 
-                            <div class="gmrc-arcane-card__rolls">
-                                <?php if ($ability['spell_attack'] !== null) : ?>
-                                    <button
-                                        type="button"
-                                        class="gmrc-guild-roll-trigger"
-                                        data-guild-roll="d20"
-                                        data-roll-kind="spell-attack"
-                                        data-roll-source="<?php echo esc_attr((string) $ability['label']); ?>"
-                                        data-roll-ability="<?php echo esc_attr((string) ($arcana['casting_ability'] ?? '')); ?>"
-                                        data-roll-proficiency="proficient"
-                                        data-roll-label="<?php echo esc_attr($ability['label'] . ' — Spell Attack'); ?>"
-                                        data-roll-modifier="<?php echo esc_attr((string) $ability['spell_attack']); ?>"
-                                        data-roll-result-suffix="to hit"
-                                    >
-                                        <span aria-hidden="true">20</span>
-                                        Roll Spell Attack
-                                    </button>
-                                <?php endif; ?>
+                                            <?php if ($ability['save_dc'] !== null) : ?>
+                                                <p class="gmrc-arcane-save">
+                                                    <strong>
+                                                        DC <?php echo esc_html((string) $ability['save_dc']); ?>
+                                                        <?php echo esc_html(ucfirst((string) $ability['save_ability'])); ?>
+                                                    </strong>
+                                                    saving throw
+                                                </p>
+                                            <?php endif; ?>
 
-                                <?php if (
-                                    $ability['formula'] !== null
-                                    && $ability['roll_kind'] !== null
-                                ) : ?>
-                                    <button
-                                        type="button"
-                                        class="gmrc-guild-roll-trigger gmrc-guild-roll-trigger--formula"
-                                        data-guild-roll="<?php echo esc_attr($ability['roll_kind']); ?>"
-                                        data-roll-kind="<?php echo esc_attr($ability['roll_kind']); ?>"
-                                        data-roll-source="<?php echo esc_attr((string) $ability['label']); ?>"
-                                        data-roll-ability="<?php echo esc_attr((string) ($arcana['casting_ability'] ?? '')); ?>"
-                                        data-roll-proficiency="none"
-                                        data-roll-label="<?php echo esc_attr(
-                                            $ability['label']
-                                            . ' — '
-                                            . ucfirst((string) $ability['roll_kind'])
-                                        ); ?>"
-                                        data-roll-formula="<?php echo esc_attr($ability['formula']); ?>"
-                                        data-roll-modifier="<?php echo esc_attr((string) $ability['roll_modifier']); ?>"
-                                        data-roll-damage-type="<?php echo esc_attr((string) ($ability['damage_type'] ?? '')); ?>"
-                                    >
-                                        <span aria-hidden="true">✦</span>
-                                        Roll <?php echo esc_html(ucfirst((string) $ability['roll_kind'])); ?>
-                                    </button>
-                                <?php endif; ?>
-                            </div>
-                        </article>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </div>
+                                            <div class="gmrc-arcane-card__rolls">
+                                                <?php if ($ability['spell_attack'] !== null) : ?>
+                                                    <button
+                                                        type="button"
+                                                        class="gmrc-guild-roll-trigger"
+                                                        data-guild-roll="d20"
+                                                        data-roll-kind="spell-attack"
+                                                        data-roll-source="<?php echo esc_attr((string) $ability['label']); ?>"
+                                                        data-roll-ability="<?php echo esc_attr((string) ($arcana['casting_ability'] ?? '')); ?>"
+                                                        data-roll-proficiency="proficient"
+                                                        data-roll-label="<?php echo esc_attr($ability['label'] . ' — Spell Attack'); ?>"
+                                                        data-roll-modifier="<?php echo esc_attr((string) $ability['spell_attack']); ?>"
+                                                        data-roll-result-suffix="to hit"
+                                                    >
+                                                        <span aria-hidden="true">20</span>
+                                                        Roll Spell Attack
+                                                    </button>
+                                                <?php endif; ?>
+
+                                                <?php if (
+                                                    $ability['formula'] !== null
+                                                    && $ability['roll_kind'] !== null
+                                                ) : ?>
+                                                    <button
+                                                        type="button"
+                                                        class="gmrc-guild-roll-trigger gmrc-guild-roll-trigger--formula"
+                                                        data-guild-roll="<?php echo esc_attr($ability['roll_kind']); ?>"
+                                                        data-roll-kind="<?php echo esc_attr($ability['roll_kind']); ?>"
+                                                        data-roll-source="<?php echo esc_attr((string) $ability['label']); ?>"
+                                                        data-roll-ability="<?php echo esc_attr((string) ($arcana['casting_ability'] ?? '')); ?>"
+                                                        data-roll-proficiency="none"
+                                                        data-roll-label="<?php echo esc_attr(
+                                                            $ability['label']
+                                                            . ' — '
+                                                            . ucfirst((string) $ability['roll_kind'])
+                                                        ); ?>"
+                                                        data-roll-formula="<?php echo esc_attr($ability['formula']); ?>"
+                                                        data-roll-modifier="<?php echo esc_attr((string) $ability['roll_modifier']); ?>"
+                                                        data-roll-damage-type="<?php echo esc_attr((string) ($ability['damage_type'] ?? '')); ?>"
+                                                    >
+                                                        <span aria-hidden="true">✦</span>
+                                                        Roll <?php echo esc_html(ucfirst((string) $ability['roll_kind'])); ?>
+                                                    </button>
+                                                <?php endif; ?>
+                                            </div>
+                                        </article>
+                                    <?php endforeach; ?>
+                                </div>
+                            </section>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
 
             <p class="gmrc-ledger-page__number" aria-hidden="true">9</p>
         </section>
