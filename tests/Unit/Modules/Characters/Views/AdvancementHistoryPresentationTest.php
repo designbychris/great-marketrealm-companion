@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class AdvancementHistoryPresentationTest extends TestCase
 {
-    public function testRisingRegisterShowsCompletedCertifications(): void
+    public function testCompletedCertificationsMoveIntoSealedChronicle(): void
     {
         $root = dirname(__DIR__, 5);
 
@@ -19,18 +19,28 @@ final class AdvancementHistoryPresentationTest extends TestCase
 
         self::assertIsString($view);
 
-        self::assertStringContainsString(
+        self::assertStringNotContainsString(
             'gmrc-rise-certification-history',
             $view
         );
 
-        self::assertStringContainsString(
+        self::assertStringNotContainsString(
             'Certified Advancements',
             $view
         );
 
         self::assertStringContainsString(
-            'Guild Certified — Level',
+            'data-sealed-chronicle',
+            $view
+        );
+
+        self::assertStringContainsString(
+            'The Sealed Chronicle',
+            $view
+        );
+
+        self::assertStringContainsString(
+            "\$livingRegister['chronicle']",
             $view
         );
     }
