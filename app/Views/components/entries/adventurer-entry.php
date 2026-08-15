@@ -13,6 +13,7 @@ declare(strict_types=1);
  */
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\ViewModels\PortraitViewModel;
 use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
 
 defined('ABSPATH') || exit;
@@ -27,6 +28,29 @@ if (
 ) {
     return;
 }
+
+$portraitModel =
+    isset($portrait)
+    && $portrait instanceof PortraitViewModel
+        ? $portrait
+        : null;
+
+$customPortraitUrl = $portraitModel?->attachmentUrl();
+
+$isCustomPortrait =
+    $portraitModel instanceof PortraitViewModel
+    && $portraitModel->isCustom()
+    && is_string($customPortraitUrl)
+    && $customPortraitUrl !== '';
+
+$generatedPortraitSvg =
+    $portraitModel instanceof PortraitViewModel
+        ? trim($portraitModel->svg())
+        : '';
+
+$hasIlluminatedPortrait =
+    $isCustomPortrait
+    || $generatedPortraitSvg !== '';
 
 $characterId = $character
     ->id()
@@ -124,18 +148,71 @@ $guildSeal = $sealRegistry->for(
             </strong>
         </span>
 
-        <figure class="portrait-frame portrait-frame--card">
-            <div class="portrait-frame__inner">
-                <span
-                    class="portrait-frame__initials"
-                    aria-hidden="true"
-                >
-                    <?php echo esc_html($initial); ?>
-                </span>
-            </div>
+        <figure
+            class="portrait-frame portrait-frame--card<?php echo $hasIlluminatedPortrait
+                ? ' portrait-frame--illuminated'
+                : ' portrait-frame--fallback'; ?>"
+            data-register-portrait
+            data-portrait-mode="<?php echo esc_attr(
+                $portraitModel?->mode() ?? 'fallback'
+            ); ?>"
+        >
+            <a
+                class="portrait-frame__link"
+                href="<?php echo esc_url($viewUrl); ?>"
+                aria-label="<?php echo esc_attr(
+                    sprintf(
+                        'Open %s’s Character Ledger',
+                        $name
+                    )
+                ); ?>"
+            >
+                <div class="portrait-frame__inner">
+                    <?php if ($isCustomPortrait) : ?>
+                        <img
+                            class="portrait-frame__image"
+                            src="<?php echo esc_url(
+                                (string) $customPortraitUrl
+                            ); ?>"
+                            alt="<?php echo esc_attr(
+                                sprintf(
+                                    'Guild portrait of %s',
+                                    $name
+                                )
+                            ); ?>"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                    <?php elseif ($generatedPortraitSvg !== '') : ?>
+                        <div
+                            class="portrait-frame__generated"
+                            aria-label="<?php echo esc_attr(
+                                sprintf(
+                                    'Guild Illuminator portrait of %s',
+                                    $name
+                                )
+                            ); ?>"
+                            role="img"
+                        >
+                            <?php
+                            echo $generatedPortraitSvg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                            ?>
+                        </div>
+                    <?php else : ?>
+                        <span
+                            class="portrait-frame__initials"
+                            aria-hidden="true"
+                        >
+                            <?php echo esc_html($initial); ?>
+                        </span>
+                    <?php endif; ?>
+                </div>
+            </a>
 
             <figcaption class="portrait-frame__caption">
-                Registered Adventurer
+                <?php echo $hasIlluminatedPortrait
+                    ? 'Guild Illuminated Adventurer'
+                    : 'Registered Adventurer'; ?>
             </figcaption>
         </figure>
     </div>
