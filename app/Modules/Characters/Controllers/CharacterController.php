@@ -816,6 +816,36 @@ final class CharacterController
     public function updateVitalMeasures(string $id): RedirectResponse
     {
         $character = $this->findCharacter($id);
+        $source = sanitize_key(
+            (string) ($_POST['vital_source'] ?? '')
+        );
+        $returnTab = sanitize_key(
+            (string) ($_POST['vital_return_tab'] ?? 'overview')
+        );
+
+        if (! in_array(
+            $returnTab,
+            [
+                'overview',
+                'skills',
+                'equipment',
+                'attacks',
+                'arcana',
+                'progression',
+                'archive',
+            ],
+            true
+        )) {
+            $returnTab = 'overview';
+        }
+
+        if ($source === 'diceworks') {
+            return $this->applyDiceworksVitalResult(
+                $character,
+                $returnTab
+            );
+        }
+
         $maximum = $character->hitPoints()->maximum();
         $current = (int) ($_POST['current_hp'] ?? -1);
         $temporary = (int) ($_POST['temporary_hp'] ?? -1);
@@ -848,6 +878,73 @@ final class CharacterController
 
         return $this->responses->redirect(
             $this->characterUrl($character->id())
+        );
+    }
+
+    /**
+     * Commit a semantic Diceworks result through the Character domain.
+     */
+    private function applyDiceworksVitalResult(
+        Character $character,
+        string $returnTab
+    ): RedirectResponse {
+        $action = sanitize_key(
+            (string) ($_POST['vital_action'] ?? '')
+        );
+        $amount = (int) ($_POST['vital_amount'] ?? 0);
+
+        if (
+            ! in_array($action, ['damage', 'healing'], true)
+            || $amount < 1
+            || $amount > 9999
+        ) {
+            $this->flash->error(
+                'That Diceworks result could not be applied to Adventuring Measures.'
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    $returnTab
+                )
+            );
+        }
+
+        $before = $character->hitPoints();
+
+        if ($action === 'damage') {
+            $character->takeDamage($amount);
+        } else {
+            $character->heal($amount);
+        }
+
+        $after = $character->hitPoints();
+
+        $this->characters->save($character);
+
+        $this->flash->success(
+            $action === 'damage'
+                ? sprintf(
+                    'Applied %d damage. Temporary HP %d → %d · Current HP %d → %d.',
+                    $amount,
+                    $before->temporary(),
+                    $after->temporary(),
+                    $before->current(),
+                    $after->current()
+                )
+                : sprintf(
+                    'Applied %d healing. Current HP %d → %d.',
+                    $amount,
+                    $before->current(),
+                    $after->current()
+                )
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                $returnTab
+            )
         );
     }
 

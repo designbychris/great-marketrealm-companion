@@ -808,6 +808,31 @@ $callingPathLabel = $callingPath !== ''
                         'gmrc_nonce'
                     ); ?>
 
+                    <input
+                        type="hidden"
+                        name="vital_source"
+                        value=""
+                        data-vital-source
+                    >
+                    <input
+                        type="hidden"
+                        name="vital_action"
+                        value=""
+                        data-vital-commit-action
+                    >
+                    <input
+                        type="hidden"
+                        name="vital_amount"
+                        value=""
+                        data-vital-commit-amount
+                    >
+                    <input
+                        type="hidden"
+                        name="vital_return_tab"
+                        value="overview"
+                        data-vital-return-tab
+                    >
+
                     <div class="gmrc-vital-measures__grid">
                         <fieldset>
                             <legend>Current HP</legend>
@@ -2435,6 +2460,21 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-guild-dice-result__math" data-guild-dice-math></p>
                 <strong class="gmrc-guild-dice-result__total" data-guild-dice-total></strong>
                 <p class="gmrc-guild-dice-result__auby" data-guild-dice-auby hidden></p>
+
+                <div
+                    class="gmrc-guild-dice-result__vitals"
+                    data-guild-dice-vitals
+                    hidden
+                >
+                    <button
+                        type="button"
+                        data-guild-dice-apply-vitals
+                    ></button>
+                    <p
+                        data-guild-dice-vitals-status
+                        aria-live="polite"
+                    ></p>
+                </div>
             </div>
         </div>
 

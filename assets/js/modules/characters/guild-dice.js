@@ -142,6 +142,14 @@
         const mathNode = tray.querySelector('[data-guild-dice-math]');
         const totalNode = tray.querySelector('[data-guild-dice-total]');
         const aubyNode = tray.querySelector('[data-guild-dice-auby]');
+        const vitalTarget = ledger.querySelector('[data-vital-measures]');
+        const vitalActions = tray.querySelector('[data-guild-dice-vitals]');
+        const applyVitals = tray.querySelector(
+            '[data-guild-dice-apply-vitals]'
+        );
+        const vitalStatus = tray.querySelector(
+            '[data-guild-dice-vitals-status]'
+        );
         const reaction = tray.querySelector('[data-guild-dice-reaction]');
         const reactionBanner = tray.querySelector(
             '[data-guild-dice-reaction-banner]'
@@ -161,12 +169,15 @@
         const freeRoll = tray.querySelector('[data-guild-free-roll]');
 
         let activeTrigger = null;
+        let pendingVitalResult = null;
         const recent = [];
 
         const current = function () {
             if (!(activeTrigger instanceof HTMLButtonElement)) {
                 return null;
             }
+
+            const panel = activeTrigger.closest('[data-ledger-panel]');
 
             return {
                 label: activeTrigger.dataset.rollLabel || 'D20 Roll',
@@ -177,7 +188,10 @@
                 proficiency: activeTrigger.dataset.rollProficiency || 'none',
                 formula: activeTrigger.dataset.rollFormula || '',
                 damageType: activeTrigger.dataset.rollDamageType || '',
-                resultSuffix: activeTrigger.dataset.rollResultSuffix || ''
+                resultSuffix: activeTrigger.dataset.rollResultSuffix || '',
+                returnTab: panel instanceof HTMLElement
+                    ? panel.dataset.ledgerPanel || 'overview'
+                    : 'overview'
             };
         };
 
@@ -288,6 +302,66 @@
 
             if (live instanceof HTMLElement) {
                 live.textContent = entry;
+            }
+        };
+
+        const clearVitalAction = function () {
+            pendingVitalResult = null;
+
+            if (vitalActions instanceof HTMLElement) {
+                vitalActions.hidden = true;
+            }
+
+            if (applyVitals instanceof HTMLButtonElement) {
+                applyVitals.textContent = '';
+                applyVitals.disabled = false;
+            }
+
+            if (vitalStatus instanceof HTMLElement) {
+                vitalStatus.textContent = '';
+            }
+        };
+
+        const prepareVitalAction = function (
+            selection,
+            amount
+        ) {
+            clearVitalAction();
+
+            if (
+                ! ['damage', 'healing'].includes(selection.kind)
+                || amount < 1
+                || !(vitalTarget instanceof HTMLElement)
+                || !(vitalActions instanceof HTMLElement)
+                || !(applyVitals instanceof HTMLButtonElement)
+            ) {
+                return;
+            }
+
+            pendingVitalResult = {
+                action: selection.kind,
+                amount: amount,
+                source: selection.source || selection.label,
+                returnTab: selection.returnTab || 'overview'
+            };
+
+            const noun = selection.kind === 'healing'
+                ? 'Healing'
+                : 'Damage';
+
+            applyVitals.textContent = 'Apply '
+                + amount
+                + ' '
+                + noun;
+            applyVitals.disabled = false;
+            vitalActions.hidden = false;
+
+            if (vitalStatus instanceof HTMLElement) {
+                vitalStatus.textContent = 'Ready to apply '
+                    + amount
+                    + ' '
+                    + selection.kind
+                    + ' to this adventurer.';
             }
         };
 
@@ -442,6 +516,7 @@
             }
 
             clearReaction();
+            clearVitalAction();
             hideAuby();
 
             const normal = modeButtons.find(function (button) {
@@ -502,6 +577,7 @@
             }
 
             hideAuby();
+            prepareVitalAction(selection, total);
             showResult();
 
             remember(
@@ -520,6 +596,8 @@
         };
 
         const performD20 = function (selection, mode) {
+            clearVitalAction();
+
             const rolled = rollMode(mode);
             const total = rolled.natural + selection.modifier;
             const modeLabel = mode === 'advantage'
@@ -649,6 +727,7 @@
             const formula = quantity + 'd' + sides;
 
             clearReaction();
+            clearVitalAction();
             paintDice(values, sides, null);
 
             const freeReaction = sides === 20 && quantity === 1
@@ -750,6 +829,33 @@
                 ) {
                     freeQuantity.focus();
                 }
+            });
+        }
+
+        if (applyVitals instanceof HTMLButtonElement) {
+            applyVitals.addEventListener('click', function () {
+                if (
+                    ! pendingVitalResult
+                    || !(vitalTarget instanceof HTMLElement)
+                ) {
+                    return;
+                }
+
+                applyVitals.disabled = true;
+
+                if (vitalStatus instanceof HTMLElement) {
+                    vitalStatus.textContent = 'Entering the result into Adventuring Measures…';
+                }
+
+                vitalTarget.dispatchEvent(
+                    new CustomEvent(
+                        'gmrc:vital-apply',
+                        {
+                            bubbles: false,
+                            detail: pendingVitalResult
+                        }
+                    )
+                );
             });
         }
 
