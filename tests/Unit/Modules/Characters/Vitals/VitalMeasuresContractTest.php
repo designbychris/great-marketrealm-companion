@@ -38,6 +38,20 @@ final class VitalMeasuresContractTest extends TestCase
             '$this->characters->save($character);',
             $controller
         );
+
+        $provider = file_get_contents(
+            $root . '/app/Providers/FrontendServiceProvider.php'
+        );
+
+        self::assertIsString($provider);
+        self::assertStringContainsString(
+            '#^characters/([^/]+)/vital-measures$#',
+            $provider
+        );
+        self::assertStringContainsString(
+            "return 'gmrc_character_vitals_'",
+            $provider
+        );
     }
 
     public function testLedgerAllowsCurrentAndTemporaryHpButKeepsMaximumReadOnly(): void

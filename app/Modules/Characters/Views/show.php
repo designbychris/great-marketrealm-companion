@@ -520,6 +520,118 @@ $callingPathLabel = $callingPath !== ''
         </section>
     <?php endif; ?>
 
+    <nav
+        class="gmrc-ledger-index"
+        aria-label="Character Ledger index"
+    >
+        <p class="gmrc-ledger-index__label">Guild Ledger Index</p>
+    <div
+        class="gmrc-ledger-tabs"
+        role="tablist"
+        aria-label="Open Ledger sections"
+    >
+        <button
+            id="gmrc-ledger-tab-overview"
+            class="gmrc-ledger-tab is-active"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="gmrc-ledger-panel-overview"
+            tabindex="0"
+            data-ledger-tab="overview"
+        >
+            <span class="gmrc-ledger-tab__icon" aria-hidden="true">▣</span>
+            <span class="gmrc-ledger-tab__label">Overview</span>
+        </button>
+
+        <button
+            id="gmrc-ledger-tab-skills"
+            class="gmrc-ledger-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="gmrc-ledger-panel-skills"
+            tabindex="-1"
+            data-ledger-tab="skills"
+        >
+            <span class="gmrc-ledger-tab__icon" aria-hidden="true">✦</span>
+            <span class="gmrc-ledger-tab__label">Skills & Training</span>
+        </button>
+
+        <button
+            id="gmrc-ledger-tab-equipment"
+            class="gmrc-ledger-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="gmrc-ledger-panel-equipment"
+            tabindex="-1"
+            data-ledger-tab="equipment"
+        >
+            <span class="gmrc-ledger-tab__icon" aria-hidden="true">🎒</span>
+            <span class="gmrc-ledger-tab__label">Equipment</span>
+        </button>
+
+        <button
+            id="gmrc-ledger-tab-attacks"
+            class="gmrc-ledger-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="gmrc-ledger-panel-attacks"
+            tabindex="-1"
+            data-ledger-tab="attacks"
+        >
+            <span class="gmrc-ledger-tab__icon" aria-hidden="true">⚔</span>
+            <span class="gmrc-ledger-tab__label">Attacks</span>
+        </button>
+
+<button
+    id="gmrc-ledger-tab-arcana"
+    class="gmrc-ledger-tab"
+    type="button"
+    role="tab"
+    aria-selected="false"
+    aria-controls="gmrc-ledger-panel-arcana"
+    tabindex="-1"
+    data-ledger-tab="arcana"
+>
+    <span class="gmrc-ledger-tab__icon" aria-hidden="true">✧</span>
+    <span class="gmrc-ledger-tab__label">Spells & Abilities</span>
+</button>
+
+
+<button
+    id="gmrc-ledger-tab-progression"
+    class="gmrc-ledger-tab"
+    type="button"
+    role="tab"
+    aria-selected="false"
+    aria-controls="gmrc-ledger-panel-progression"
+    tabindex="-1"
+    data-ledger-tab="progression"
+>
+    <span class="gmrc-ledger-tab__icon" aria-hidden="true">↑</span>
+    <span class="gmrc-ledger-tab__label">Progression</span>
+</button>
+
+        <button
+            id="gmrc-ledger-tab-notes"
+            class="gmrc-ledger-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="gmrc-ledger-panel-notes"
+            tabindex="-1"
+            data-ledger-tab="notes"
+        >
+            <span class="gmrc-ledger-tab__icon" aria-hidden="true">✎</span>
+            <span class="gmrc-ledger-tab__label">Archive Notes</span>
+        </button>
+    </div>
+
+    </nav>
+
     <div
         id="gmrc-ledger-panel-overview"
         class="gmrc-ledger-tabpanel"
@@ -808,30 +920,6 @@ $callingPathLabel = $callingPath !== ''
                         'gmrc_nonce'
                     ); ?>
 
-                    <input
-                        type="hidden"
-                        name="vital_source"
-                        value=""
-                        data-vital-source
-                    >
-                    <input
-                        type="hidden"
-                        name="vital_action"
-                        value=""
-                        data-vital-commit-action
-                    >
-                    <input
-                        type="hidden"
-                        name="vital_amount"
-                        value=""
-                        data-vital-commit-amount
-                    >
-                    <input
-                        type="hidden"
-                        name="vital_return_tab"
-                        value="overview"
-                        data-vital-return-tab
-                    >
 
                     <div class="gmrc-vital-measures__grid">
                         <fieldset>
@@ -2232,111 +2320,6 @@ $callingPathLabel = $callingPath !== ''
         </article>
     </div>
 
-    <div
-        class="gmrc-ledger-tabs"
-        role="tablist"
-        aria-label="Open Ledger sections"
-    >
-        <button
-            id="gmrc-ledger-tab-overview"
-            class="gmrc-ledger-tab is-active"
-            type="button"
-            role="tab"
-            aria-selected="true"
-            aria-controls="gmrc-ledger-panel-overview"
-            tabindex="0"
-            data-ledger-tab="overview"
-        >
-            <span class="gmrc-ledger-tab__icon" aria-hidden="true">▣</span>
-            <span class="gmrc-ledger-tab__label">Overview</span>
-        </button>
-
-        <button
-            id="gmrc-ledger-tab-skills"
-            class="gmrc-ledger-tab"
-            type="button"
-            role="tab"
-            aria-selected="false"
-            aria-controls="gmrc-ledger-panel-skills"
-            tabindex="-1"
-            data-ledger-tab="skills"
-        >
-            <span class="gmrc-ledger-tab__icon" aria-hidden="true">✦</span>
-            <span class="gmrc-ledger-tab__label">Skills & Training</span>
-        </button>
-
-        <button
-            id="gmrc-ledger-tab-equipment"
-            class="gmrc-ledger-tab"
-            type="button"
-            role="tab"
-            aria-selected="false"
-            aria-controls="gmrc-ledger-panel-equipment"
-            tabindex="-1"
-            data-ledger-tab="equipment"
-        >
-            <span class="gmrc-ledger-tab__icon" aria-hidden="true">🎒</span>
-            <span class="gmrc-ledger-tab__label">Equipment</span>
-        </button>
-
-        <button
-            id="gmrc-ledger-tab-attacks"
-            class="gmrc-ledger-tab"
-            type="button"
-            role="tab"
-            aria-selected="false"
-            aria-controls="gmrc-ledger-panel-attacks"
-            tabindex="-1"
-            data-ledger-tab="attacks"
-        >
-            <span class="gmrc-ledger-tab__icon" aria-hidden="true">⚔</span>
-            <span class="gmrc-ledger-tab__label">Attacks</span>
-        </button>
-
-<button
-    id="gmrc-ledger-tab-arcana"
-    class="gmrc-ledger-tab"
-    type="button"
-    role="tab"
-    aria-selected="false"
-    aria-controls="gmrc-ledger-panel-arcana"
-    tabindex="-1"
-    data-ledger-tab="arcana"
->
-    <span class="gmrc-ledger-tab__icon" aria-hidden="true">✧</span>
-    <span class="gmrc-ledger-tab__label">Spells & Abilities</span>
-</button>
-
-
-<button
-    id="gmrc-ledger-tab-progression"
-    class="gmrc-ledger-tab"
-    type="button"
-    role="tab"
-    aria-selected="false"
-    aria-controls="gmrc-ledger-panel-progression"
-    tabindex="-1"
-    data-ledger-tab="progression"
->
-    <span class="gmrc-ledger-tab__icon" aria-hidden="true">↑</span>
-    <span class="gmrc-ledger-tab__label">Progression</span>
-</button>
-
-        <button
-            id="gmrc-ledger-tab-notes"
-            class="gmrc-ledger-tab"
-            type="button"
-            role="tab"
-            aria-selected="false"
-            aria-controls="gmrc-ledger-panel-notes"
-            tabindex="-1"
-            data-ledger-tab="notes"
-        >
-            <span class="gmrc-ledger-tab__icon" aria-hidden="true">✎</span>
-            <span class="gmrc-ledger-tab__label">Archive Notes</span>
-        </button>
-    </div>
-
     <aside
         class="gmrc-guild-dice-tray"
         data-guild-dice-tray
@@ -2461,20 +2444,6 @@ $callingPathLabel = $callingPath !== ''
                 <strong class="gmrc-guild-dice-result__total" data-guild-dice-total></strong>
                 <p class="gmrc-guild-dice-result__auby" data-guild-dice-auby hidden></p>
 
-                <div
-                    class="gmrc-guild-dice-result__vitals"
-                    data-guild-dice-vitals
-                    hidden
-                >
-                    <button
-                        type="button"
-                        data-guild-dice-apply-vitals
-                    ></button>
-                    <p
-                        data-guild-dice-vitals-status
-                        aria-live="polite"
-                    ></p>
-                </div>
             </div>
         </div>
 

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class DiceworksVitalMeasuresBridgeTest extends TestCase
 {
-    public function testDiceworksOffersExplicitSemanticVitalActions(): void
+    public function testDiceworksDoesNotApplyUntargetedDamageOrHealing(): void
     {
         $root = dirname(__DIR__, 5);
         $view = file_get_contents(
@@ -20,45 +20,37 @@ final class DiceworksVitalMeasuresBridgeTest extends TestCase
 
         self::assertIsString($view);
         self::assertIsString($dice);
-        self::assertStringContainsString(
-            'data-guild-dice-vitals',
-            $view
-        );
-        self::assertStringContainsString(
+        self::assertStringNotContainsString(
             'data-guild-dice-apply-vitals',
             $view
         );
-        self::assertStringContainsString(
-            'data-guild-dice-vitals-status',
+        self::assertStringNotContainsString(
+            'data-guild-dice-vitals',
             $view
         );
-        self::assertStringContainsString(
-            "['damage', 'healing'].includes(selection.kind)",
-            $dice
-        );
-        self::assertStringContainsString(
+        self::assertStringNotContainsString(
             "prepareVitalAction(selection, total);",
             $dice
         );
-        self::assertStringContainsString(
-            "'Apply '",
-            $dice
-        );
-        self::assertStringContainsString(
+        self::assertStringNotContainsString(
             "'gmrc:vital-apply'",
             $dice
         );
         self::assertStringContainsString(
-            'detail: pendingVitalResult',
+            "selection.kind === 'healing'",
             $dice
         );
         self::assertStringContainsString(
-            'clearVitalAction();',
+            "'Damage Roll'",
+            $dice
+        );
+        self::assertStringContainsString(
+            "'Healing Roll'",
             $dice
         );
     }
 
-    public function testVitalMeasuresCommitsDiceResultsThroughCharacterDomain(): void
+    public function testManualVitalMeasuresRemainIndependentOfDiceTargeting(): void
     {
         $root = dirname(__DIR__, 5);
         $view = file_get_contents(
@@ -75,55 +67,31 @@ final class DiceworksVitalMeasuresBridgeTest extends TestCase
         self::assertIsString($ledger);
         self::assertIsString($controller);
         self::assertStringContainsString(
+            'data-vital-measures-form',
+            $view
+        );
+        self::assertStringContainsString(
+            'name="current_hp"',
+            $view
+        );
+        self::assertStringContainsString(
+            'name="temporary_hp"',
+            $view
+        );
+        self::assertStringNotContainsString(
             'data-vital-source',
             $view
         );
-        self::assertStringContainsString(
-            'data-vital-commit-action',
-            $view
-        );
-        self::assertStringContainsString(
-            'data-vital-commit-amount',
-            $view
-        );
-        self::assertStringContainsString(
-            'data-vital-return-tab',
-            $view
-        );
-        self::assertStringContainsString(
+        self::assertStringNotContainsString(
             "'gmrc:vital-apply'",
             $ledger
         );
         self::assertStringContainsString(
-            "commitSource.value = 'diceworks';",
-            $ledger
-        );
-        self::assertStringContainsString(
-            'form.requestSubmit();',
-            $ledger
-        );
-        self::assertStringContainsString(
-            "if (\$source === 'diceworks')",
+            'public function updateVitalMeasures',
             $controller
         );
         self::assertStringContainsString(
-            'private function applyDiceworksVitalResult',
-            $controller
-        );
-        self::assertStringContainsString(
-            "\$character->takeDamage(\$amount);",
-            $controller
-        );
-        self::assertStringContainsString(
-            "\$character->heal(\$amount);",
-            $controller
-        );
-        self::assertStringContainsString(
-            'Temporary HP %d → %d · Current HP %d → %d.',
-            $controller
-        );
-        self::assertStringContainsString(
-            'Applied %d healing. Current HP %d → %d.',
+            '$character->updateVitalMeasures(',
             $controller
         );
     }

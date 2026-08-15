@@ -1,40 +1,28 @@
 # Phase III.10.6 — Diceworks Meets Vital Measures
 
-Guild Diceworks can now offer an explicit action for a rolled damage or healing result and commit that result through the Adventurer's Vital Measures boundary.
+This phase established the architectural boundary between Guild Diceworks and the Adventurer's Vital Measures.
 
-## Player flow
+The first implementation proved that a semantic dice result could be handed to the live HP subsystem. During browser testing, however, we identified an important targeting rule: an attack or healing roll does not necessarily target the player character whose Ledger produced the roll.
 
-A damage or healing formula roll may produce a contextual action such as:
+## Preserved architecture
 
-- `Apply 7 Damage`
-- `Apply 5 Healing`
+The useful boundary remains:
 
-Rolling does **not** change hit points. The player must choose the Apply action deliberately.
+- Diceworks produces contextual damage/healing results.
+- Vital Measures owns player-character Current HP and Temporary HP.
+- Character/HitPoints domain rules remain authoritative for damage and healing.
 
-D20 checks, saving throws, attacks, spell attacks and Guild Free Rolls remain result-only and do not expose a Vital Measures action.
+## Targeting correction
 
-## Application boundary
+Phase III.10.6.1 removes the untargeted `Apply Damage` / `Apply Healing` action from Diceworks.
 
-Diceworks does not calculate hit-point state. It dispatches a semantic `gmrc:vital-apply` request containing:
+A future combat-target system must explicitly identify the recipient before a roll result can mutate HP. Valid future targets may include:
 
-- action (`damage` or `healing`);
-- rolled amount;
-- source;
-- originating Ledger tab.
+- self;
+- another player character;
+- an allied NPC;
+- a hostile NPC or monster controlled by the DM.
 
-Vital Measures owns the form submission. The server-side Character controller recognises Diceworks commits and delegates to:
+Until that target exists, Diceworks remains result-only.
 
-- `Character::takeDamage()` for damage;
-- `Character::heal()` for healing.
-
-The `HitPoints` domain therefore remains authoritative for temporary-HP absorption, zero-floor damage and maximum-HP healing caps.
-
-## Feedback
-
-After persistence, the Guild flash message reports the applied result. Damage reports Temporary HP and Current HP before/after values; healing reports Current HP before/after values.
-
-The redirect returns to the Ledger tab from which the roll originated.
-
-## Boundary
-
-Maximum HP remains untouched. Diceworks does not write progression or Living Register history and does not automatically apply any roll.
+Manual Adventuring Measures continue to support Current HP and Temporary HP changes for the player character.

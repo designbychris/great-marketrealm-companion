@@ -3228,3 +3228,80 @@
 .gmrc-vital-measures__note{margin:0;color:rgba(66,42,29,.66);font-size:.58rem;line-height:1.45}
 .gmrc-vital-measures button:focus-visible,.gmrc-vital-measures input:focus-visible{outline:3px solid #b88a37;outline-offset:2px}
 @media(max-width:700px){.gmrc-vital-measures__grid{grid-template-columns:1fr}.gmrc-vital-measures__quick{grid-template-columns:1fr 1fr}.gmrc-vital-measures__quick label{grid-column:1/-1}}
+
+
+/* ===============================================================
+ * Phase III.10.6.1 — The Ledger Index Moves Upfront
+ * =============================================================== */
+.gmrc-ledger-index {
+    position: relative;
+    z-index: 10;
+    margin:
+        clamp(.75rem, 2vw, 1.25rem)
+        0
+        clamp(1rem, 2vw, 1.5rem);
+    padding: .72rem .8rem .8rem;
+    border: 1px solid rgba(86, 53, 97, .24);
+    border-radius: .42rem;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(96, 55, 115, .08),
+            transparent 42%
+        ),
+        rgba(255, 248, 222, .38);
+    box-shadow:
+        0 .35rem .8rem rgba(60, 37, 20, .08);
+}
+
+.gmrc-ledger-index__label {
+    margin: 0 0 .42rem;
+    color: var(--gmrc-ledger-purple, #603773);
+    font-size: .58rem;
+    font-weight: 900;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+}
+
+.gmrc-ledger-index .gmrc-ledger-tabs {
+    justify-content: flex-start;
+    margin-top: 0;
+    padding: 0;
+}
+
+.gmrc-ledger-index .gmrc-ledger-tab {
+    min-height: 2.75rem;
+    padding: .55rem .85rem;
+    border-bottom-width: 1px;
+    border-radius: .36rem;
+    font-size: .7rem;
+}
+
+.gmrc-ledger-index .gmrc-ledger-tab.is-active {
+    transform: translateY(-.08rem);
+    box-shadow:
+        0 .3rem .55rem rgba(50, 27, 17, .14),
+        inset 0 0 0 1px rgba(213, 168, 73, .34);
+}
+
+@media (max-width: 620px) {
+    .gmrc-ledger-index {
+        padding: .65rem;
+    }
+
+    .gmrc-ledger-index .gmrc-ledger-tabs {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .gmrc-ledger-index .gmrc-ledger-tab {
+        justify-content: flex-start;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 430px) {
+    .gmrc-ledger-index .gmrc-ledger-tabs {
+        grid-template-columns: 1fr;
+    }
+}

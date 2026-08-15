@@ -98,21 +98,6 @@
                 const consciousness = vitals.querySelector(
                     '[data-vital-consciousness]'
                 );
-                const form = vitals.querySelector(
-                    '[data-vital-measures-form]'
-                );
-                const commitSource = vitals.querySelector(
-                    '[data-vital-source]'
-                );
-                const commitAction = vitals.querySelector(
-                    '[data-vital-commit-action]'
-                );
-                const commitAmount = vitals.querySelector(
-                    '[data-vital-commit-amount]'
-                );
-                const returnTab = vitals.querySelector(
-                    '[data-vital-return-tab]'
-                );
                 const maximum = Number(vitals.dataset.maximumHp) || 1;
 
                 if (
@@ -199,48 +184,6 @@
                             refresh();
                         });
                     });
-
-                vitals.addEventListener(
-                    'gmrc:vital-apply',
-                    function (event) {
-                        const detail = event instanceof CustomEvent
-                            ? event.detail
-                            : null;
-                        const action = detail
-                            && typeof detail.action === 'string'
-                                ? detail.action
-                                : '';
-                        const requested = detail
-                            ? Math.floor(Number(detail.amount) || 0)
-                            : 0;
-                        const requestedTab = detail
-                            && typeof detail.returnTab === 'string'
-                                ? detail.returnTab
-                                : 'overview';
-
-                        if (
-                            ! ['damage', 'healing'].includes(action)
-                            || requested < 1
-                            || requested > 9999
-                            || !(form instanceof HTMLFormElement)
-                            || !(commitSource instanceof HTMLInputElement)
-                            || !(commitAction instanceof HTMLInputElement)
-                            || !(commitAmount instanceof HTMLInputElement)
-                        ) {
-                            return;
-                        }
-
-                        commitSource.value = 'diceworks';
-                        commitAction.value = action;
-                        commitAmount.value = String(requested);
-
-                        if (returnTab instanceof HTMLInputElement) {
-                            returnTab.value = requestedTab;
-                        }
-
-                        form.requestSubmit();
-                    }
-                );
 
                 current.addEventListener('change', refresh);
                 temporary.addEventListener('change', refresh);

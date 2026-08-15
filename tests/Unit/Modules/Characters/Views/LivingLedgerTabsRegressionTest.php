@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class LivingLedgerTabsRegressionTest extends TestCase
 {
-    public function testOpenLedgerProvidesAccessibleBottomTabs(): void
+    public function testOpenLedgerProvidesAccessibleUpfrontIndex(): void
     {
         $root = dirname(__DIR__, 5);
         $view = file_get_contents(
@@ -23,6 +23,18 @@ final class LivingLedgerTabsRegressionTest extends TestCase
         self::assertStringContainsString('Archive Notes', $view);
         self::assertStringContainsString('Spells & Abilities', $view);
         self::assertStringContainsString('Progression', $view);
+        self::assertStringContainsString(
+            'class="gmrc-ledger-index"',
+            $view
+        );
+        self::assertStringContainsString(
+            'Guild Ledger Index',
+            $view
+        );
+        self::assertLessThan(
+            strpos($view, 'id="gmrc-ledger-panel-overview"'),
+            strpos($view, 'class="gmrc-ledger-index"')
+        );
         /*
          * Count only the seven top-level Living Ledger panels.
          *
