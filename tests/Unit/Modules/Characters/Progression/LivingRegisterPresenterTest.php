@@ -163,6 +163,55 @@ final class LivingRegisterPresenterTest extends TestCase
         self::assertFalse($state['chronicle'][2]['is_latest']);
     }
 
+    public function testChronicleMarksMeaningfulGuildMilestones(): void
+    {
+        $character = Character::reconstitute(
+            CharacterId::fromString('01KZM4W72K1G12FY75R0BTQREW'),
+            CharacterName::fromString('Wiz'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('wizard'),
+            Level::fromInt(5),
+            Experience::fromInt(6500),
+            HitPoints::fromValues(30, 30),
+            $this->abilities(),
+            callingPath: CallingPath::fromString('school-of-shelfmancy')
+        );
+
+        $state = (new LivingRegisterPresenter())->present($character, [
+            [
+                'from_level' => 1,
+                'target_level' => 2,
+                'calling_path' => '',
+            ],
+            [
+                'from_level' => 2,
+                'target_level' => 3,
+                'calling_path' => 'school-of-shelfmancy',
+            ],
+            [
+                'from_level' => 3,
+                'target_level' => 4,
+                'calling_path' => 'school-of-shelfmancy',
+                'path_gifts_granted' => [[
+                    'key' => 'spell-stored-container',
+                    'label' => 'Spell-Stored Container',
+                ]],
+            ],
+            [
+                'from_level' => 4,
+                'target_level' => 5,
+                'calling_path' => 'school-of-shelfmancy',
+            ],
+        ]);
+
+        self::assertTrue($state['has_milestones']);
+        self::assertSame(4, $state['milestone_count']);
+        self::assertSame('level-5', $state['chronicle'][0]['milestones'][0]['key']);
+        self::assertSame('path-gift', $state['chronicle'][1]['milestones'][0]['key']);
+        self::assertSame('calling-path', $state['chronicle'][2]['milestones'][0]['key']);
+        self::assertSame('first-seal', $state['chronicle'][3]['milestones'][0]['key']);
+    }
+
     public function testFreshInkIsAbsentWithoutCertificationHistory(): void
     {
         $state = (new LivingRegisterPresenter())->present(

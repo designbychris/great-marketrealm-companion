@@ -35,6 +35,10 @@ final class LivingRegisterPresenter
         $latest = $history === [] ? null : $history[array_key_last($history)];
         $latest = is_array($latest) ? $latest : null;
         $chronicle = $this->chronicle($history);
+        $milestoneCount = array_sum(array_map(
+            static fn (array $entry): int => count($entry['milestones'] ?? []),
+            $chronicle
+        ));
 
         return [
             'level' => $character->level()->value(),
@@ -58,6 +62,8 @@ final class LivingRegisterPresenter
             'has_fresh_ink' => $latest !== null,
             'chronicle' => $chronicle,
             'has_chronicle' => $chronicle !== [],
+            'milestone_count' => $milestoneCount,
+            'has_milestones' => $milestoneCount > 0,
             'is_living_record' => true,
         ];
     }
@@ -126,10 +132,56 @@ final class LivingRegisterPresenter
                 'sequence' => ((int) $index) + 1,
                 'is_latest' => ((int) $index) === ($total - 1),
                 'certification_key' => (string) ($entry['certification_key'] ?? ''),
+                'milestones' => $this->milestones($history, (int) $index, $entry),
             ];
         }
 
         return $entries;
+    }
+
+
+    /**
+     * @param array<int,array<string,mixed>> $history
+     * @param array<string,mixed> $entry
+     * @return array<int,array{key:string,label:string,symbol:string}>
+     */
+    private function milestones(array $history, int $index, array $entry): array
+    {
+        $marks = [];
+        $targetLevel = (int) ($entry['target_level'] ?? 0);
+
+        if ($index === 0) {
+            $marks[] = $this->milestone('first-seal', 'First Guild Seal', '◆');
+        }
+
+        $path = (string) ($entry['calling_path'] ?? '');
+        $previousPath = $index > 0 && is_array($history[$index - 1] ?? null)
+            ? (string) ($history[$index - 1]['calling_path'] ?? '')
+            : '';
+
+        if ($path !== '' && $previousPath === '') {
+            $marks[] = $this->milestone('calling-path', 'Calling Path Entered', '✦');
+        }
+
+        if (is_array($entry['path_gifts_granted'] ?? null) && $entry['path_gifts_granted'] !== []) {
+            $marks[] = $this->milestone('path-gift', 'Gift of the Path', '✧');
+        }
+
+        if (in_array($targetLevel, [5, 10, 15, 20], true)) {
+            $marks[] = $this->milestone(
+                'level-' . $targetLevel,
+                'Level ' . $targetLevel . ' Guild Milestone',
+                '★'
+            );
+        }
+
+        return $marks;
+    }
+
+    /** @return array{key:string,label:string,symbol:string} */
+    private function milestone(string $key, string $label, string $symbol): array
+    {
+        return compact('key', 'label', 'symbol');
     }
 
     /** @param array<string,mixed> $choices @return array<int,string> */

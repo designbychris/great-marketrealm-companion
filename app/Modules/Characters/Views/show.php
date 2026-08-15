@@ -1712,7 +1712,12 @@ $callingPathLabel = $callingPath !== ''
                             <h3 id="gmrc-sealed-chronicle-title">The Sealed Chronicle</h3>
                             <p>Every completed certification remains here as part of the adventurer’s living record.</p>
                         </div>
-                        <strong><?php echo esc_html((string) count($livingRegister['chronicle'])); ?> sealed</strong>
+                        <strong>
+                            <?php echo esc_html((string) count($livingRegister['chronicle'])); ?> sealed
+                            <?php if (! empty($livingRegister['has_milestones'])) : ?>
+                                · <?php echo esc_html((string) $livingRegister['milestone_count']); ?> milestone<?php echo (int) $livingRegister['milestone_count'] === 1 ? '' : 's'; ?>
+                            <?php endif; ?>
+                        </strong>
                     </header>
 
                     <ol class="gmrc-living-register__chronicle-list">
@@ -1735,6 +1740,16 @@ $callingPathLabel = $callingPath !== ''
                                         <?php if ($entry['cantrips_learned'] !== []) : ?><li><?php echo esc_html((string) count($entry['cantrips_learned'])); ?> cantrip<?php echo count($entry['cantrips_learned']) === 1 ? '' : 's'; ?> learned</li><?php endif; ?>
                                         <?php if ($entry['path_gifts_granted'] !== []) : ?><li><?php echo esc_html(implode(', ', $entry['path_gifts_granted'])); ?></li><?php endif; ?>
                                     </ul>
+                                    <?php if (! empty($entry['milestones']) && is_array($entry['milestones'])) : ?>
+                                        <ul class="gmrc-living-register__milestones" aria-label="Guild milestones">
+                                            <?php foreach ($entry['milestones'] as $milestone) : ?>
+                                                <li data-guild-milestone="<?php echo esc_attr((string) ($milestone['key'] ?? '')); ?>">
+                                                    <span aria-hidden="true"><?php echo esc_html((string) ($milestone['symbol'] ?? '✦')); ?></span>
+                                                    <?php echo esc_html((string) ($milestone['label'] ?? 'Guild Milestone')); ?>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    <?php endif; ?>
                                 </div>
                             </li>
                         <?php endforeach; ?>

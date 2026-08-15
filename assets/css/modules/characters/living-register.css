@@ -34,3 +34,7 @@
 .gmrc-living-register__chronicle-entry time{color:rgba(66,42,29,.55);font-size:.55rem;white-space:nowrap}
 .gmrc-living-register__chronicle-entry ul{display:flex;flex-wrap:wrap;gap:.22rem .55rem;margin:.35rem 0 0;padding:0;list-style:none;color:rgba(66,42,29,.72);font-size:.6rem}
 .gmrc-living-register__chronicle-entry li::before{content:'✦';margin-right:.22rem;color:#603773}
+.gmrc-living-register__milestones{display:flex;flex-wrap:wrap;gap:.28rem;margin:.48rem 0 0!important;padding-top:.42rem!important;border-top:1px dashed rgba(96,55,115,.18)}
+.gmrc-living-register__milestones li{display:inline-flex;align-items:center;gap:.24rem;padding:.2rem .38rem;border:1px solid rgba(157,112,35,.3);border-radius:999px;background:rgba(255,244,196,.42);color:#6d4c16;font-size:.54rem;font-weight:800;letter-spacing:.02em}
+.gmrc-living-register__milestones li::before{content:none!important}
+.gmrc-living-register__milestones span{font-size:.62rem;color:#8e671b}

@@ -23,6 +23,8 @@ final class LivingRegisterPresentationTest extends TestCase
         self::assertStringContainsString('data-sealed-chronicle', $view);
         self::assertStringContainsString('The Sealed Chronicle', $view);
         self::assertStringContainsString("\$livingRegister['chronicle']", $view);
+        self::assertStringContainsString('data-guild-milestone', $view);
+        self::assertStringContainsString("\$livingRegister['milestone_count']", $view);
         self::assertStringNotContainsString('gmrc-rise-certification-history', $view);
         self::assertStringContainsString('Next Guild Certification', $view);
     }
@@ -40,5 +42,6 @@ final class LivingRegisterPresentationTest extends TestCase
         $css = file_get_contents($root . '/assets/css/modules/characters/living-register.css');
         self::assertIsString($css);
         self::assertStringContainsString('gmrc-living-register__chronicle', $css);
+        self::assertStringContainsString('gmrc-living-register__milestones', $css);
     }
 }
