@@ -93,6 +93,23 @@ final class HitPoints implements Stringable
     }
 
     /**
+     * Replace mutable play-state hit points while preserving certified maximum.
+     *
+     * This is used by the Character Ledger during play. Maximum hit points are
+     * deliberately not accepted here because they belong to progression.
+     */
+    public function withLiveState(
+        int $current,
+        int $temporary
+    ): self {
+        return new self(
+            current: $current,
+            maximum: $this->maximum,
+            temporary: $temporary
+        );
+    }
+
+    /**
      * Apply damage and return the resulting hit point state.
      *
      * Temporary hit points absorb damage before current hit points.

@@ -100,6 +100,26 @@ final class HitPointsTest extends TestCase
         );
     }
 
+    public function testLiveStateCanChangeCurrentAndTemporaryWithoutChangingMaximum(): void
+    {
+        $hitPoints = HitPoints::fromValues(
+            current: 10,
+            maximum: 12,
+            temporary: 5
+        );
+
+        $updated = $hitPoints->withLiveState(
+            current: 7,
+            temporary: 2
+        );
+
+        self::assertSame(7, $updated->current());
+        self::assertSame(12, $updated->maximum());
+        self::assertSame(2, $updated->temporary());
+        self::assertSame(10, $hitPoints->current());
+        self::assertSame(5, $hitPoints->temporary());
+    }
+
     public function testCanTakeDamage(): void
     {
         $hitPoints = HitPoints::full(12);

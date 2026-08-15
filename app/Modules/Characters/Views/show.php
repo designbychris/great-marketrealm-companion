@@ -770,11 +770,15 @@ $callingPathLabel = $callingPath !== ''
             <section
                 class="gmrc-ledger-section
                     gmrc-ledger-section--hit-points"
+                data-vital-measures
+                data-maximum-hp="<?php echo esc_attr(
+                    (string) $hitPoints->maximum()
+                ); ?>"
             >
                 <header class="gmrc-ledger-section__heading">
                     <h3>Hit Points</h3>
 
-                    <span>
+                    <span data-vital-consciousness>
                         <?php echo esc_html(
                             $character->isConscious()
                                 ? 'Conscious'
@@ -783,34 +787,138 @@ $callingPathLabel = $callingPath !== ''
                     </span>
                 </header>
 
-                <dl class="gmrc-ledger-hit-points">
-                    <div>
-                        <dt>Current</dt>
-                        <dd>
-                            <?php echo esc_html(
-                                (string) $hitPoints->current()
-                            ); ?>
-                        </dd>
-                    </div>
+                <form
+                    class="gmrc-vital-measures"
+                    method="post"
+                    action="<?php echo esc_url($appRequestUrl); ?>"
+                    data-vital-measures-form
+                >
+                    <input type="hidden" name="action" value="gmrc_app_request">
+                    <input
+                        type="hidden"
+                        name="gmrc_route"
+                        value="<?php echo esc_attr(
+                            'characters/'
+                            . rawurlencode($characterId)
+                            . '/vital-measures'
+                        ); ?>"
+                    >
+                    <?php wp_nonce_field(
+                        'gmrc_character_vitals_' . $characterId,
+                        'gmrc_nonce'
+                    ); ?>
 
-                    <div>
-                        <dt>Maximum</dt>
-                        <dd>
-                            <?php echo esc_html(
+                    <div class="gmrc-vital-measures__grid">
+                        <fieldset>
+                            <legend>Current HP</legend>
+                            <div class="gmrc-vital-measures__stepper">
+                                <button
+                                    type="button"
+                                    data-vital-adjust="current"
+                                    data-vital-delta="-1"
+                                    aria-label="Reduce current hit points by 1"
+                                >−</button>
+                                <input
+                                    type="number"
+                                    name="current_hp"
+                                    min="0"
+                                    max="<?php echo esc_attr(
+                                        (string) $hitPoints->maximum()
+                                    ); ?>"
+                                    value="<?php echo esc_attr(
+                                        (string) $hitPoints->current()
+                                    ); ?>"
+                                    inputmode="numeric"
+                                    data-vital-current
+                                    aria-label="Current hit points"
+                                    required
+                                >
+                                <button
+                                    type="button"
+                                    data-vital-adjust="current"
+                                    data-vital-delta="1"
+                                    aria-label="Increase current hit points by 1"
+                                >+</button>
+                            </div>
+                        </fieldset>
+
+                        <div class="gmrc-vital-measures__maximum">
+                            <span>Maximum HP</span>
+                            <strong><?php echo esc_html(
                                 (string) $hitPoints->maximum()
-                            ); ?>
-                        </dd>
+                            ); ?></strong>
+                            <small>Guild certified</small>
+                        </div>
+
+                        <fieldset>
+                            <legend>Temporary HP</legend>
+                            <div class="gmrc-vital-measures__stepper">
+                                <button
+                                    type="button"
+                                    data-vital-adjust="temporary"
+                                    data-vital-delta="-1"
+                                    aria-label="Reduce temporary hit points by 1"
+                                >−</button>
+                                <input
+                                    type="number"
+                                    name="temporary_hp"
+                                    min="0"
+                                    max="999"
+                                    value="<?php echo esc_attr(
+                                        (string) $hitPoints->temporary()
+                                    ); ?>"
+                                    inputmode="numeric"
+                                    data-vital-temporary
+                                    aria-label="Temporary hit points"
+                                    required
+                                >
+                                <button
+                                    type="button"
+                                    data-vital-adjust="temporary"
+                                    data-vital-delta="1"
+                                    aria-label="Increase temporary hit points by 1"
+                                >+</button>
+                            </div>
+                        </fieldset>
                     </div>
 
-                    <div>
-                        <dt>Temporary</dt>
-                        <dd>
-                            <?php echo esc_html(
-                                (string) $hitPoints->temporary()
-                            ); ?>
-                        </dd>
+                    <div class="gmrc-vital-measures__quick">
+                        <label>
+                            <span>Quick amount</span>
+                            <input
+                                type="number"
+                                min="1"
+                                max="999"
+                                value="1"
+                                inputmode="numeric"
+                                data-vital-amount
+                            >
+                        </label>
+                        <button
+                            type="button"
+                            class="gmrc-vital-measures__damage"
+                            data-vital-action="damage"
+                        >Apply Damage</button>
+                        <button
+                            type="button"
+                            class="gmrc-vital-measures__heal"
+                            data-vital-action="heal"
+                        >Apply Healing</button>
                     </div>
-                </dl>
+
+                    <p class="gmrc-vital-measures__note">
+                        Damage uses temporary HP first. Healing cannot exceed
+                        maximum HP. Save to enter the changes into the live
+                        Adventuring Measures.
+                    </p>
+
+                    <button
+                        type="submit"
+                        class="gmrc-button gmrc-button--secondary"
+                    >
+                        Save Adventuring Measures
+                    </button>
+                </form>
             </section>
 
             <section class="gmrc-ledger-section">

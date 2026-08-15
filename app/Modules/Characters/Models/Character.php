@@ -592,6 +592,23 @@ final class Character
     }
 
     /**
+     * Update mutable hit point values used during active play.
+     *
+     * The certified maximum remains untouched.
+     */
+    public function updateVitalMeasures(
+        int $current,
+        int $temporary
+    ): void {
+        $this->hitPoints = $this
+            ->hitPoints
+            ->withLiveState(
+                $current,
+                $temporary
+            );
+    }
+
+    /**
      * Apply damage to the Character.
      */
     public function takeDamage(int $amount): void

@@ -810,6 +810,47 @@ final class CharacterController
     }
 
 
+    /**
+     * Update mutable current and temporary hit points during active play.
+     */
+    public function updateVitalMeasures(string $id): RedirectResponse
+    {
+        $character = $this->findCharacter($id);
+        $maximum = $character->hitPoints()->maximum();
+        $current = (int) ($_POST['current_hp'] ?? -1);
+        $temporary = (int) ($_POST['temporary_hp'] ?? -1);
+
+        if (
+            $current < 0
+            || $current > $maximum
+            || $temporary < 0
+            || $temporary > 999
+        ) {
+            $this->flash->error(
+                'Current HP must be between 0 and maximum HP, and temporary HP between 0 and 999.'
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl($character->id())
+            );
+        }
+
+        $character->updateVitalMeasures(
+            $current,
+            $temporary
+        );
+
+        $this->characters->save($character);
+
+        $this->flash->success(
+            'The Adventuring Measures have been updated.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl($character->id())
+        );
+    }
+
     /** Record experience earned by the adventurer. */
     public function addExperience(string $id): RedirectResponse
     {

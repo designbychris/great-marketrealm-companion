@@ -3204,3 +3204,27 @@
 .gmrc-complete-adventurer.is-audit-collapsed{padding-bottom:1rem}
 .gmrc-complete-adventurer.is-audit-collapsed .gmrc-complete-adventurer__header{margin-bottom:0}
 @media(max-width:760px){.gmrc-complete-adventurer__header-actions{width:100%;justify-content:flex-start}}
+
+
+/* ===============================================================
+ * Phase III.10.4 — The Adventurer's Vital Measures
+ * =============================================================== */
+.gmrc-vital-measures{display:grid;gap:.75rem}
+.gmrc-vital-measures__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem}
+.gmrc-vital-measures fieldset,.gmrc-vital-measures__maximum{margin:0;padding:.58rem;border:1px solid rgba(96,55,115,.18);border-radius:.35rem;background:rgba(255,249,228,.42)}
+.gmrc-vital-measures legend,.gmrc-vital-measures__maximum>span{color:rgba(66,42,29,.62);font-size:.54rem;font-weight:900;letter-spacing:.05em;text-transform:uppercase}
+.gmrc-vital-measures__stepper{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:.3rem;align-items:center;margin-top:.3rem}
+.gmrc-vital-measures__stepper button{width:2rem;height:2rem;border:1px solid rgba(74,42,24,.42);border-radius:50%;color:#f8e4b3;background:#603773;font:inherit;font-weight:900;cursor:pointer}
+.gmrc-vital-measures__stepper input,.gmrc-vital-measures__quick input{width:100%;min-height:2rem;padding:.3rem .4rem;border:1px solid rgba(74,42,24,.28);border-radius:.25rem;background:#fffaf0;font:inherit;text-align:center}
+.gmrc-vital-measures__maximum{display:grid;place-items:center;text-align:center}
+.gmrc-vital-measures__maximum strong{color:#603773;font-family:var(--gmrc-font-display,Georgia,serif);font-size:1.45rem}
+.gmrc-vital-measures__maximum small{color:rgba(66,42,29,.58);font-size:.54rem}
+.gmrc-vital-measures__quick{display:grid;grid-template-columns:minmax(5rem,.7fr) 1fr 1fr;gap:.45rem;align-items:end}
+.gmrc-vital-measures__quick label{display:grid;gap:.2rem}
+.gmrc-vital-measures__quick label span{font-size:.54rem;font-weight:800}
+.gmrc-vital-measures__quick button{min-height:2.2rem;border:1px solid rgba(74,42,24,.4);border-radius:.28rem;font:inherit;font-size:.68rem;font-weight:900;cursor:pointer}
+.gmrc-vital-measures__damage{color:#fff1df;background:#7a3f35}
+.gmrc-vital-measures__heal{color:#f5ffe9;background:#4f7046}
+.gmrc-vital-measures__note{margin:0;color:rgba(66,42,29,.66);font-size:.58rem;line-height:1.45}
+.gmrc-vital-measures button:focus-visible,.gmrc-vital-measures input:focus-visible{outline:3px solid #b88a37;outline-offset:2px}
+@media(max-width:700px){.gmrc-vital-measures__grid{grid-template-columns:1fr}.gmrc-vital-measures__quick{grid-template-columns:1fr 1fr}.gmrc-vital-measures__quick label{grid-column:1/-1}}

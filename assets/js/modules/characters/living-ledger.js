@@ -89,6 +89,107 @@
                 });
             });
 
+        ledger
+            .querySelectorAll('[data-vital-measures]')
+            .forEach(function (vitals) {
+                const current = vitals.querySelector('[data-vital-current]');
+                const temporary = vitals.querySelector('[data-vital-temporary]');
+                const amount = vitals.querySelector('[data-vital-amount]');
+                const consciousness = vitals.querySelector(
+                    '[data-vital-consciousness]'
+                );
+                const maximum = Number(vitals.dataset.maximumHp) || 1;
+
+                if (
+                    !(current instanceof HTMLInputElement)
+                    || !(temporary instanceof HTMLInputElement)
+                ) {
+                    return;
+                }
+
+                const clamp = function (value, minimum, maximumValue) {
+                    return Math.min(
+                        maximumValue,
+                        Math.max(minimum, Math.floor(Number(value) || 0))
+                    );
+                };
+
+                const refresh = function () {
+                    current.value = String(
+                        clamp(current.value, 0, maximum)
+                    );
+                    temporary.value = String(
+                        clamp(temporary.value, 0, 999)
+                    );
+
+                    if (consciousness instanceof HTMLElement) {
+                        consciousness.textContent = Number(current.value) > 0
+                            ? 'Conscious'
+                            : 'Unconscious';
+                    }
+                };
+
+                vitals
+                    .querySelectorAll('[data-vital-adjust]')
+                    .forEach(function (button) {
+                        button.addEventListener('click', function () {
+                            const target = button.dataset.vitalAdjust;
+                            const delta = Number(button.dataset.vitalDelta) || 0;
+                            const input = target === 'temporary'
+                                ? temporary
+                                : current;
+                            const limit = target === 'temporary'
+                                ? 999
+                                : maximum;
+
+                            input.value = String(
+                                clamp(Number(input.value) + delta, 0, limit)
+                            );
+                            refresh();
+                            input.focus();
+                        });
+                    });
+
+                vitals
+                    .querySelectorAll('[data-vital-action]')
+                    .forEach(function (button) {
+                        button.addEventListener('click', function () {
+                            const action = button.dataset.vitalAction;
+                            const requested = amount instanceof HTMLInputElement
+                                ? clamp(amount.value, 1, 999)
+                                : 1;
+
+                            if (action === 'damage') {
+                                let remaining = requested;
+                                const tempValue = Number(temporary.value) || 0;
+                                const absorbed = Math.min(tempValue, remaining);
+
+                                temporary.value = String(tempValue - absorbed);
+                                remaining -= absorbed;
+                                current.value = String(
+                                    Math.max(
+                                        0,
+                                        (Number(current.value) || 0) - remaining
+                                    )
+                                );
+                            } else if (action === 'heal') {
+                                current.value = String(
+                                    Math.min(
+                                        maximum,
+                                        (Number(current.value) || 0) + requested
+                                    )
+                                );
+                            }
+
+                            refresh();
+                        });
+                    });
+
+                current.addEventListener('change', refresh);
+                temporary.addEventListener('change', refresh);
+                refresh();
+            });
+
         if (tabs.length === 0 || panels.length === 0) {
             return;
         }

@@ -47,6 +47,11 @@ return static function (
     );
 
     $router->post(
+        '/characters/{id}/vital-measures',
+        [CharacterController::class, 'updateVitalMeasures']
+    );
+
+    $router->post(
         '/characters/{id}/progression/experience',
         [CharacterController::class, 'addExperience']
     );
