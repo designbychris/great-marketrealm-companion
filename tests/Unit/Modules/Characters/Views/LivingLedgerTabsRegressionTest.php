@@ -23,7 +23,17 @@ final class LivingLedgerTabsRegressionTest extends TestCase
         self::assertStringContainsString('Archive Notes', $view);
         self::assertStringContainsString('Spells & Abilities', $view);
         self::assertStringContainsString('Progression', $view);
-        self::assertSame(7, substr_count($view, 'role="tabpanel"'));
+        /*
+         * Count only the seven top-level Living Ledger panels.
+         *
+         * The Indexed Arcane Pantry has its own nested ARIA tabpanels, so a
+         * global role="tabpanel" count would incorrectly treat those shelves
+         * as additional Ledger pages.
+         */
+        self::assertSame(
+            7,
+            substr_count($view, 'data-ledger-panel=')
+        );
     }
 
     public function testLivingLedgerScriptSupportsKeyboardNavigation(): void
