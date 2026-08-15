@@ -1580,6 +1580,32 @@ $callingPathLabel = $callingPath !== ''
                 <div><dt>Certifications</dt><dd><?php echo esc_html((string) $livingRegister['certification_count']); ?></dd></div>
             </dl>
 
+            <?php if (! empty($livingRegister['has_fresh_ink']) && is_array($livingRegister['fresh_ink'])) : ?>
+                <?php $freshInk = $livingRegister['fresh_ink']; ?>
+                <section class="gmrc-living-register__fresh-ink" aria-labelledby="gmrc-fresh-ink-title">
+                    <header>
+                        <p class="gmrc-eyebrow">Most recent certification</p>
+                        <h3 id="gmrc-fresh-ink-title">Fresh Ink in the Register</h3>
+                        <p>The Guild’s latest sealed changes to this adventurer.</p>
+                    </header>
+                    <ul class="gmrc-living-register__changes">
+                        <li><strong>Level <?php echo esc_html((string) $freshInk['target_level']); ?></strong><span>Certified from Level <?php echo esc_html((string) $freshInk['from_level']); ?>.</span></li>
+                        <?php if ((int) $freshInk['hit_point_gain'] > 0) : ?>
+                            <li><strong>+<?php echo esc_html((string) $freshInk['hit_point_gain']); ?> maximum HP</strong><span><?php echo esc_html((string) $freshInk['old_maximum_hp']); ?> → <?php echo esc_html((string) $freshInk['new_maximum_hp']); ?> HP.</span></li>
+                        <?php endif; ?>
+                        <?php if ($freshInk['spells_learned'] !== []) : ?>
+                            <li><strong><?php echo esc_html((string) count($freshInk['spells_learned'])); ?> spell<?php echo count($freshInk['spells_learned']) === 1 ? '' : 's'; ?> entered</strong><span><?php echo esc_html(implode(', ', array_map(static fn (string $key): string => ucwords(str_replace('-', ' ', $key)), $freshInk['spells_learned']))); ?></span></li>
+                        <?php endif; ?>
+                        <?php if ($freshInk['cantrips_learned'] !== []) : ?>
+                            <li><strong><?php echo esc_html((string) count($freshInk['cantrips_learned'])); ?> cantrip<?php echo count($freshInk['cantrips_learned']) === 1 ? '' : 's'; ?> entered</strong><span><?php echo esc_html(implode(', ', array_map(static fn (string $key): string => ucwords(str_replace('-', ' ', $key)), $freshInk['cantrips_learned']))); ?></span></li>
+                        <?php endif; ?>
+                        <?php if ($freshInk['path_gifts_granted'] !== []) : ?>
+                            <li><strong>Path Gifts granted</strong><span><?php echo esc_html(implode(', ', $freshInk['path_gifts_granted'])); ?></span></li>
+                        <?php endif; ?>
+                    </ul>
+                </section>
+            <?php endif; ?>
+
             <section class="gmrc-living-register__next" aria-labelledby="gmrc-level-certification-title">
                 <header>
                     <p class="gmrc-eyebrow">What the next stamp changes</p>

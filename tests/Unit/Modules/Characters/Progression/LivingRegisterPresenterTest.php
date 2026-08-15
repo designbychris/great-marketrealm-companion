@@ -66,6 +66,66 @@ final class LivingRegisterPresenterTest extends TestCase
         self::assertTrue($state['is_living_record']);
     }
 
+    public function testLatestCertificationBecomesFreshInk(): void
+    {
+        $character = Character::reconstitute(
+            CharacterId::fromString('01KZM4W72K1G12FY75R0BTQREW'),
+            CharacterName::fromString('Wiz'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('wizard'),
+            Level::fromInt(4),
+            Experience::fromInt(2700),
+            HitPoints::fromValues(24, 24),
+            $this->abilities(),
+            spellbook: Spellbook::fromArray([]),
+            callingPath: CallingPath::fromString('school-of-shelfmancy')
+        );
+
+        $state = (new LivingRegisterPresenter())->present($character, [[
+            'from_level' => 3,
+            'target_level' => 4,
+            'hit_point_gain' => 6,
+            'old_maximum_hp' => 18,
+            'new_maximum_hp' => 24,
+            'proficiency' => '+2',
+            'choices' => [
+                'wizard-spells' => ['market-missile', 'pantry-ward'],
+                'wizard-cantrips' => ['produce-spark'],
+            ],
+            'path_gifts_granted' => [
+                ['key' => 'packaging-proficiency', 'label' => 'Packaging Proficiency'],
+            ],
+            'certified_at' => '2026-08-15T07:30:00+00:00',
+        ]]);
+
+        self::assertTrue($state['has_fresh_ink']);
+        self::assertSame(3, $state['fresh_ink']['from_level']);
+        self::assertSame(4, $state['fresh_ink']['target_level']);
+        self::assertSame(6, $state['fresh_ink']['hit_point_gain']);
+        self::assertSame(18, $state['fresh_ink']['old_maximum_hp']);
+        self::assertSame(24, $state['fresh_ink']['new_maximum_hp']);
+        self::assertSame(['market-missile', 'pantry-ward'], $state['fresh_ink']['spells_learned']);
+        self::assertSame(['produce-spark'], $state['fresh_ink']['cantrips_learned']);
+        self::assertSame(['Packaging Proficiency'], $state['fresh_ink']['path_gifts_granted']);
+    }
+
+    public function testFreshInkIsAbsentWithoutCertificationHistory(): void
+    {
+        $state = (new LivingRegisterPresenter())->present(
+            Character::create(
+                CharacterId::fromString('01KZM4W72K1G12FY75R0BTQREW'),
+                CharacterName::fromString('Wiz'),
+                Race::fromString('fructan'),
+                CharacterClass::fromString('wizard'),
+                HitPoints::full(8),
+                $this->abilities()
+            )
+        );
+
+        self::assertFalse($state['has_fresh_ink']);
+        self::assertNull($state['fresh_ink']);
+    }
+
     public function testUnchosenPathProducesAnEmptyPathRecord(): void
     {
         $state = (new LivingRegisterPresenter())->present(

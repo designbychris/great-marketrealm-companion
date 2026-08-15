@@ -33,6 +33,7 @@ final class LivingRegisterPresenter
         $spellbook = $character->spellbook();
         $pathState = $this->pathGifts->present($character);
         $latest = $history === [] ? null : $history[array_key_last($history)];
+        $latest = is_array($latest) ? $latest : null;
 
         return [
             'level' => $character->level()->value(),
@@ -51,8 +52,67 @@ final class LivingRegisterPresenter
             'path_gifts' => $pathState['gifts'] ?? [],
             'path_gift_count' => (int) ($pathState['count'] ?? 0),
             'certification_count' => count($history),
-            'latest_certification' => is_array($latest) ? $latest : null,
+            'latest_certification' => $latest,
+            'fresh_ink' => $this->freshInk($latest),
+            'has_fresh_ink' => $latest !== null,
             'is_living_record' => true,
         ];
     }
+
+    /**
+     * Turn the latest immutable certification archive entry into a concise
+     * account of what the Guild most recently entered into the Register.
+     *
+     * @param array<string,mixed>|null $latest
+     * @return array<string,mixed>|null
+     */
+    private function freshInk(?array $latest): ?array
+    {
+        if ($latest === null) {
+            return null;
+        }
+
+        $choices = is_array($latest['choices'] ?? null)
+            ? $latest['choices']
+            : [];
+        $gifts = is_array($latest['path_gifts_granted'] ?? null)
+            ? $latest['path_gifts_granted']
+            : [];
+
+        return [
+            'from_level' => (int) ($latest['from_level'] ?? 0),
+            'target_level' => (int) ($latest['target_level'] ?? 0),
+            'hit_point_gain' => (int) ($latest['hit_point_gain'] ?? 0),
+            'old_maximum_hp' => (int) ($latest['old_maximum_hp'] ?? 0),
+            'new_maximum_hp' => (int) ($latest['new_maximum_hp'] ?? 0),
+            'proficiency' => (string) ($latest['proficiency'] ?? ''),
+            'spells_learned' => $this->choiceValues($choices, 'wizard-spells'),
+            'cantrips_learned' => $this->choiceValues($choices, 'wizard-cantrips'),
+            'path_gifts_granted' => array_values(array_filter(array_map(
+                static fn (mixed $gift): string => is_array($gift)
+                    ? (string) ($gift['label'] ?? $gift['key'] ?? '')
+                    : '',
+                $gifts
+            ))),
+            'certified_at' => (string) ($latest['certified_at'] ?? ''),
+        ];
+    }
+
+    /** @param array<string,mixed> $choices @return array<int,string> */
+    private function choiceValues(array $choices, string $key): array
+    {
+        $values = $choices[$key] ?? [];
+
+        if (! is_array($values)) {
+            return [];
+        }
+
+        return array_values(array_filter(array_map(
+            static fn (mixed $value): string => is_scalar($value)
+                ? (string) $value
+                : '',
+            $values
+        )));
+    }
+
 }

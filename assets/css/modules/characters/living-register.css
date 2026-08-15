@@ -7,3 +7,13 @@
 .gmrc-living-register__next{margin-top:1rem;padding-top:.85rem;border-top:1px solid rgba(75,43,24,.2)}
 .gmrc-living-register__next>header h3{margin:.08rem 0 .35rem;color:#4a2a18;font-family:var(--gmrc-font-display,Georgia,serif);font-size:1rem}
 @media(max-width:700px){.gmrc-living-register__summary{grid-template-columns:1fr}}
+
+
+/** Phase III.9.2: Fresh Ink. */
+.gmrc-living-register__fresh-ink{margin:1.1rem 0;padding:.9rem .95rem;border:1px solid rgba(96,55,115,.2);border-radius:.4rem;background:rgba(255,249,228,.48)}
+.gmrc-living-register__fresh-ink h3{margin:.08rem 0 .25rem;color:#4a2a18;font-family:var(--gmrc-font-display,Georgia,serif);font-size:1rem}
+.gmrc-living-register__fresh-ink>header>p:last-child{margin:.2rem 0 0;color:rgba(66,42,29,.68);font-size:.64rem;line-height:1.5}
+.gmrc-living-register__changes{display:grid;gap:.55rem;margin:.8rem 0 0;padding:0;list-style:none}
+.gmrc-living-register__changes li{display:grid;gap:.12rem;padding-top:.5rem;border-top:1px solid rgba(75,43,24,.12)}
+.gmrc-living-register__changes strong{color:#603773;font-size:.72rem}
+.gmrc-living-register__changes span{color:rgba(66,42,29,.72);font-size:.64rem;line-height:1.45}

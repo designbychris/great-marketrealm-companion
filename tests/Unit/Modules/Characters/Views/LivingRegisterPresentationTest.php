@@ -18,6 +18,8 @@ final class LivingRegisterPresentationTest extends TestCase
         self::assertStringContainsString('The Living Register', $view);
         self::assertStringContainsString('Current certified progression record', $view);
         self::assertStringContainsString("\$livingRegister['path_gift_count']", $view);
+        self::assertStringContainsString('Fresh Ink in the Register', $view);
+        self::assertStringContainsString("\$livingRegister['fresh_ink']", $view);
         self::assertStringContainsString('Next Guild Certification', $view);
     }
 
