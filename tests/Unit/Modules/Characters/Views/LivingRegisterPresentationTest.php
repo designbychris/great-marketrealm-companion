@@ -25,6 +25,9 @@ final class LivingRegisterPresentationTest extends TestCase
         self::assertStringContainsString("\$livingRegister['chronicle']", $view);
         self::assertStringContainsString('data-guild-milestone', $view);
         self::assertStringContainsString("\$livingRegister['milestone_count']", $view);
+        self::assertStringContainsString('data-journey-measure', $view);
+        self::assertStringContainsString('The Measure of the Journey', $view);
+        self::assertStringContainsString("\$livingRegister['journey_measure']", $view);
         self::assertStringNotContainsString('gmrc-rise-certification-history', $view);
         self::assertStringContainsString('Next Guild Certification', $view);
     }
@@ -43,5 +46,6 @@ final class LivingRegisterPresentationTest extends TestCase
         self::assertIsString($css);
         self::assertStringContainsString('gmrc-living-register__chronicle', $css);
         self::assertStringContainsString('gmrc-living-register__milestones', $css);
+        self::assertStringContainsString('gmrc-living-register__journey-grid', $css);
     }
 }

@@ -38,3 +38,15 @@
 .gmrc-living-register__milestones li{display:inline-flex;align-items:center;gap:.24rem;padding:.2rem .38rem;border:1px solid rgba(157,112,35,.3);border-radius:999px;background:rgba(255,244,196,.42);color:#6d4c16;font-size:.54rem;font-weight:800;letter-spacing:.02em}
 .gmrc-living-register__milestones li::before{content:none!important}
 .gmrc-living-register__milestones span{font-size:.62rem;color:#8e671b}
+
+/** Phase III.9.5: The Measure of the Journey. */
+.gmrc-living-register__journey{margin:1.15rem 0;padding:.86rem .9rem;border:1px solid rgba(157,112,35,.24);border-radius:.4rem;background:linear-gradient(180deg,rgba(255,248,218,.52),rgba(248,238,205,.28))}
+.gmrc-living-register__journey>header{display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem}
+.gmrc-living-register__journey>header h3{margin:.08rem 0 .2rem;color:#4a2a18;font-family:var(--gmrc-font-display,Georgia,serif);font-size:1rem}
+.gmrc-living-register__journey>header p:last-child{margin:.15rem 0 0;color:rgba(66,42,29,.68);font-size:.64rem;line-height:1.45}
+.gmrc-living-register__journey>header>strong{flex:none;padding:.22rem .42rem;border:1px solid rgba(157,112,35,.3);border-radius:999px;color:#6d4c16;font-size:.58rem;text-transform:uppercase;letter-spacing:.06em}
+.gmrc-living-register__journey-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.42rem;margin:.75rem 0 0;padding:0}
+.gmrc-living-register__journey-grid div{min-width:0;padding:.52rem .48rem;border-top:1px solid rgba(157,112,35,.2);text-align:center}
+.gmrc-living-register__journey-grid dt{color:rgba(66,42,29,.58);font-size:.5rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase}
+.gmrc-living-register__journey-grid dd{margin:.16rem 0 0;color:#603773;font-family:var(--gmrc-font-display,Georgia,serif);font-size:.82rem;font-weight:900}
+@media(max-width:900px){.gmrc-living-register__journey-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}

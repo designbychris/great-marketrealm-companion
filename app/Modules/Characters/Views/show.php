@@ -1704,6 +1704,28 @@ $callingPathLabel = $callingPath !== ''
                 </section>
             <?php endif; ?>
 
+            <?php if (! empty($livingRegister['has_journey_measure']) && is_array($livingRegister['journey_measure'] ?? null)) : ?>
+                <?php $journeyMeasure = $livingRegister['journey_measure']; ?>
+                <section class="gmrc-living-register__journey" aria-labelledby="gmrc-journey-measure-title" data-journey-measure>
+                    <header>
+                        <div>
+                            <p class="gmrc-eyebrow">The Measure of the Journey</p>
+                            <h3 id="gmrc-journey-measure-title">What the Chronicle Has Carried</h3>
+                            <p>A compact measure of growth drawn only from completed Guild Certifications.</p>
+                        </div>
+                        <strong><?php echo esc_html((string) $journeyMeasure['certifications']); ?> seals</strong>
+                    </header>
+
+                    <dl class="gmrc-living-register__journey-grid">
+                        <div><dt>Maximum HP gained</dt><dd>+<?php echo esc_html((string) $journeyMeasure['maximum_hp_gained']); ?></dd></div>
+                        <div><dt>Spells entered</dt><dd><?php echo esc_html((string) $journeyMeasure['spells_learned']); ?></dd></div>
+                        <div><dt>Cantrips entered</dt><dd><?php echo esc_html((string) $journeyMeasure['cantrips_learned']); ?></dd></div>
+                        <div><dt>Path Gifts granted</dt><dd><?php echo esc_html((string) $journeyMeasure['path_gifts_granted']); ?></dd></div>
+                        <div><dt>Guild Milestones</dt><dd><?php echo esc_html((string) $journeyMeasure['milestones']); ?></dd></div>
+                    </dl>
+                </section>
+            <?php endif; ?>
+
             <?php if (! empty($livingRegister['has_chronicle']) && is_array($livingRegister['chronicle'])) : ?>
                 <section class="gmrc-living-register__chronicle" aria-labelledby="gmrc-sealed-chronicle-title" data-sealed-chronicle>
                     <header>

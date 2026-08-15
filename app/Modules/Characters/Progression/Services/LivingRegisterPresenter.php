@@ -39,6 +39,7 @@ final class LivingRegisterPresenter
             static fn (array $entry): int => count($entry['milestones'] ?? []),
             $chronicle
         ));
+        $journey = $this->journeyMeasure($chronicle);
 
         return [
             'level' => $character->level()->value(),
@@ -64,6 +65,8 @@ final class LivingRegisterPresenter
             'has_chronicle' => $chronicle !== [],
             'milestone_count' => $milestoneCount,
             'has_milestones' => $milestoneCount > 0,
+            'journey_measure' => $journey,
+            'has_journey_measure' => $chronicle !== [],
             'is_living_record' => true,
         ];
     }
@@ -182,6 +185,45 @@ final class LivingRegisterPresenter
     private function milestone(string $key, string $label, string $symbol): array
     {
         return compact('key', 'label', 'symbol');
+    }
+
+
+    /**
+     * Summarise the retained Chronicle without creating another source of
+     * progression truth. Every figure here is derived from sealed entries.
+     *
+     * @param array<int,array<string,mixed>> $chronicle
+     * @return array<string,int|string>
+     */
+    private function journeyMeasure(array $chronicle): array
+    {
+        $totals = [
+            'certifications' => count($chronicle),
+            'maximum_hp_gained' => 0,
+            'spells_learned' => 0,
+            'cantrips_learned' => 0,
+            'path_gifts_granted' => 0,
+            'milestones' => 0,
+            'first_certified_at' => '',
+            'latest_certified_at' => '',
+        ];
+
+        foreach ($chronicle as $entry) {
+            $totals['maximum_hp_gained'] += max(0, (int) ($entry['hit_point_gain'] ?? 0));
+            $totals['spells_learned'] += count($entry['spells_learned'] ?? []);
+            $totals['cantrips_learned'] += count($entry['cantrips_learned'] ?? []);
+            $totals['path_gifts_granted'] += count($entry['path_gifts_granted'] ?? []);
+            $totals['milestones'] += count($entry['milestones'] ?? []);
+        }
+
+        if ($chronicle !== []) {
+            $latest = $chronicle[0];
+            $first = $chronicle[array_key_last($chronicle)];
+            $totals['latest_certified_at'] = (string) ($latest['certified_at'] ?? '');
+            $totals['first_certified_at'] = (string) ($first['certified_at'] ?? '');
+        }
+
+        return $totals;
     }
 
     /** @param array<string,mixed> $choices @return array<int,string> */

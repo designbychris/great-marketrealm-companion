@@ -212,6 +212,62 @@ final class LivingRegisterPresenterTest extends TestCase
         self::assertSame('first-seal', $state['chronicle'][3]['milestones'][0]['key']);
     }
 
+    public function testChronicleProducesAReadOnlyMeasureOfTheJourney(): void
+    {
+        $character = Character::reconstitute(
+            CharacterId::fromString('01KZM4W72K1G12FY75R0BTQREW'),
+            CharacterName::fromString('Wiz'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('wizard'),
+            Level::fromInt(4),
+            Experience::fromInt(2700),
+            HitPoints::fromValues(24, 24),
+            $this->abilities()
+        );
+
+        $state = (new LivingRegisterPresenter())->present($character, [
+            [
+                'from_level' => 1,
+                'target_level' => 2,
+                'hit_point_gain' => 6,
+                'choices' => ['wizard-spells' => ['market-missile']],
+                'certified_at' => '2026-08-10T09:00:00+00:00',
+            ],
+            [
+                'from_level' => 2,
+                'target_level' => 3,
+                'hit_point_gain' => 5,
+                'calling_path' => 'school-of-shelfmancy',
+                'choices' => [
+                    'wizard-spells' => ['pantry-ward'],
+                    'wizard-cantrips' => ['produce-spark'],
+                ],
+                'certified_at' => '2026-08-12T09:00:00+00:00',
+            ],
+            [
+                'from_level' => 3,
+                'target_level' => 4,
+                'hit_point_gain' => 5,
+                'calling_path' => 'school-of-shelfmancy',
+                'path_gifts_granted' => [[
+                    'key' => 'spell-stored-container',
+                    'label' => 'Spell-Stored Container',
+                ]],
+                'certified_at' => '2026-08-15T07:30:00+00:00',
+            ],
+        ]);
+
+        self::assertTrue($state['has_journey_measure']);
+        self::assertSame(3, $state['journey_measure']['certifications']);
+        self::assertSame(16, $state['journey_measure']['maximum_hp_gained']);
+        self::assertSame(2, $state['journey_measure']['spells_learned']);
+        self::assertSame(1, $state['journey_measure']['cantrips_learned']);
+        self::assertSame(1, $state['journey_measure']['path_gifts_granted']);
+        self::assertSame(3, $state['journey_measure']['milestones']);
+        self::assertSame('2026-08-10T09:00:00+00:00', $state['journey_measure']['first_certified_at']);
+        self::assertSame('2026-08-15T07:30:00+00:00', $state['journey_measure']['latest_certified_at']);
+    }
+
     public function testFreshInkIsAbsentWithoutCertificationHistory(): void
     {
         $state = (new LivingRegisterPresenter())->present(
