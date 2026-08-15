@@ -14,6 +14,81 @@
             ledger.querySelectorAll('[role="tabpanel"][data-ledger-panel]')
         );
 
+        ledger
+            .querySelectorAll('[data-complete-adventurer]')
+            .forEach(function (audit) {
+                const toggle = audit.querySelector(
+                    '[data-registrar-audit-toggle]'
+                );
+                const content = audit.querySelector(
+                    '[data-registrar-audit-content]'
+                );
+
+                if (
+                    !(toggle instanceof HTMLButtonElement)
+                    || !(content instanceof HTMLElement)
+                ) {
+                    return;
+                }
+
+                const label = toggle.querySelector(
+                    '[data-registrar-audit-toggle-label]'
+                );
+                const symbol = toggle.querySelector(
+                    '[data-registrar-audit-toggle-symbol]'
+                );
+                const storageKey = toggle.dataset.auditStorageKey || '';
+
+                const setCollapsed = function (collapsed, persist) {
+                    content.hidden = collapsed;
+                    audit.classList.toggle('is-audit-collapsed', collapsed);
+                    toggle.setAttribute(
+                        'aria-expanded',
+                        collapsed ? 'false' : 'true'
+                    );
+
+                    if (label instanceof HTMLElement) {
+                        label.textContent = collapsed
+                            ? 'Show Audit'
+                            : 'Hide Audit';
+                    }
+
+                    if (symbol instanceof HTMLElement) {
+                        symbol.textContent = collapsed ? '+' : '−';
+                    }
+
+                    if (!persist || storageKey === '') {
+                        return;
+                    }
+
+                    try {
+                        window.localStorage.setItem(
+                            storageKey,
+                            collapsed ? 'true' : 'false'
+                        );
+                    } catch (error) {
+                        // Storage can be unavailable in privacy-restricted contexts.
+                    }
+                };
+
+                let collapsed = false;
+
+                if (storageKey !== '') {
+                    try {
+                        collapsed = window.localStorage.getItem(storageKey)
+                            === 'true';
+                    } catch (error) {
+                        collapsed = false;
+                    }
+                }
+
+                setCollapsed(collapsed, false);
+
+                toggle.addEventListener('click', function () {
+                    setCollapsed(!content.hidden, true);
+                });
+            });
+
         if (tabs.length === 0 || panels.length === 0) {
             return;
         }

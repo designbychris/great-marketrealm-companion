@@ -380,18 +380,47 @@ $callingPathLabel = $callingPath !== ''
                     </p>
                 </div>
 
-                <strong class="gmrc-complete-adventurer__count">
-                    <?php echo esc_html(
-                        (string) ($completeAdventurer['ready_count'] ?? 0)
-                    ); ?>
-                    /
-                    <?php echo esc_html(
-                        (string) ($completeAdventurer['total'] ?? 0)
-                    ); ?>
-                    folios ready
-                </strong>
+                <div class="gmrc-complete-adventurer__header-actions">
+                    <strong class="gmrc-complete-adventurer__count">
+                        <?php echo esc_html(
+                            (string) ($completeAdventurer['ready_count'] ?? 0)
+                        ); ?>
+                        /
+                        <?php echo esc_html(
+                            (string) ($completeAdventurer['total'] ?? 0)
+                        ); ?>
+                        folios ready
+                    </strong>
+
+                    <button
+                        type="button"
+                        class="gmrc-complete-adventurer__toggle"
+                        data-registrar-audit-toggle
+                        data-audit-storage-key="<?php echo esc_attr(
+                            'gmrc-audit-collapsed-' . $characterId
+                        ); ?>"
+                        aria-expanded="true"
+                        aria-controls="gmrc-registrars-audit-content-<?php echo esc_attr(
+                            $characterId
+                        ); ?>"
+                    >
+                        <span data-registrar-audit-toggle-label>Hide Audit</span>
+                        <span
+                            class="gmrc-complete-adventurer__toggle-symbol"
+                            data-registrar-audit-toggle-symbol
+                            aria-hidden="true"
+                        >−</span>
+                    </button>
+                </div>
             </header>
 
+            <div
+                id="gmrc-registrars-audit-content-<?php echo esc_attr(
+                    $characterId
+                ); ?>"
+                class="gmrc-complete-adventurer__content"
+                data-registrar-audit-content
+            >
             <?php if (
                 ! empty($completeAdventurer['certified'])
             ) : ?>
@@ -485,6 +514,7 @@ $callingPathLabel = $callingPath !== ''
                         </span>
                     </button>
                 <?php endforeach; ?>
+            </div>
             </div>
         </section>
     <?php endif; ?>
