@@ -1578,7 +1578,26 @@ $callingPathLabel = $callingPath !== ''
                 <div><dt>Path Gifts</dt><dd><?php echo esc_html((string) $livingRegister['path_gift_count']); ?></dd></div>
                 <div><dt>Learned Arcana</dt><dd><?php echo esc_html((string) $livingRegister['arcana_known']); ?></dd></div>
                 <div><dt>Certifications</dt><dd><?php echo esc_html((string) $livingRegister['certification_count']); ?></dd></div>
+                <div><dt>Register Standing</dt><dd><?php echo esc_html((string) $livingRegister['register_status']); ?></dd></div>
             </dl>
+
+            <?php if (! empty($livingRegister['is_unsealed_journey'])) : ?>
+                <aside class="gmrc-living-register__empty-state" data-living-register-empty>
+                    <span aria-hidden="true">◇</span>
+                    <div>
+                        <strong>The Chronicle awaits its first advancement seal.</strong>
+                        <p>This adventurer’s current certified state is already recorded above. Fresh Ink, milestones and journey history will appear after the first completed Guild advancement.</p>
+                    </div>
+                </aside>
+            <?php elseif (! empty($livingRegister['is_maximum_level'])) : ?>
+                <aside class="gmrc-living-register__final-seal" data-living-register-final-seal>
+                    <span aria-hidden="true">★</span>
+                    <div>
+                        <strong>The Final Level is sealed.</strong>
+                        <p>Level 20 stands fully certified in the Living Register. The Chronicle remains open for remembrance, but no higher Guild level awaits.</p>
+                    </div>
+                </aside>
+            <?php endif; ?>
 
             <?php if (! empty($livingRegister['has_fresh_ink']) && is_array($livingRegister['fresh_ink'])) : ?>
                 <?php $freshInk = $livingRegister['fresh_ink']; ?>

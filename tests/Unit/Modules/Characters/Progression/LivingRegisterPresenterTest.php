@@ -329,6 +329,105 @@ final class LivingRegisterPresenterTest extends TestCase
         self::assertSame(3, $state['change_record']['first_arcana']['level']);
     }
 
+    public function testSparseAndMalformedLegacyHistoryIsNormalisedBeforeChronicleLogic(): void
+    {
+        $character = Character::reconstitute(
+            CharacterId::fromString('01KZM4W72K1G12FY75R0BTQREW'),
+            CharacterName::fromString('Wiz'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('wizard'),
+            Level::fromInt(3),
+            Experience::fromInt(900),
+            HitPoints::fromValues(19, 19),
+            $this->abilities()
+        );
+
+        $state = (new LivingRegisterPresenter())->present($character, [
+            4 => ['from_level' => 1, 'target_level' => 2, 'hit_point_gain' => 6],
+            8 => 'legacy debris',
+            12 => [],
+            20 => ['from_level' => 2, 'target_level' => 3, 'hit_point_gain' => 5],
+        ]);
+
+        self::assertSame(2, $state['certification_count']);
+        self::assertCount(2, $state['chronicle']);
+        self::assertSame(2, $state['chronicle'][0]['sequence']);
+        self::assertTrue($state['chronicle'][0]['is_latest']);
+        self::assertSame(3, $state['fresh_ink']['target_level']);
+        self::assertSame('Guild record in good standing', $state['register_status']);
+    }
+
+    public function testFreshInkRecognisesNonWizardSpellChoiceKeys(): void
+    {
+        $character = Character::reconstitute(
+            CharacterId::fromString('01KZM4W72K1G12FY75R0BTQREW'),
+            CharacterName::fromString('Wiz'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('wizard'),
+            Level::fromInt(2),
+            Experience::fromInt(300),
+            HitPoints::fromValues(14, 14),
+            $this->abilities()
+        );
+
+        $state = (new LivingRegisterPresenter())->present($character, [[
+            'from_level' => 1,
+            'target_level' => 2,
+            'choices' => [
+                'sorcerer-spells' => ['market-missile'],
+                'sorcerer-cantrips' => ['produce-spark'],
+                'wizard-spells' => ['pantry-ward', 'market-missile'],
+            ],
+        ]]);
+
+        self::assertSame(
+            ['market-missile', 'pantry-ward'],
+            $state['fresh_ink']['spells_learned']
+        );
+        self::assertSame(
+            ['produce-spark'],
+            $state['fresh_ink']['cantrips_learned']
+        );
+    }
+
+    public function testRegisterStandingHandlesUnsealedAndMaximumLevelCharacters(): void
+    {
+        $unsealed = (new LivingRegisterPresenter())->present(
+            Character::create(
+                CharacterId::fromString('01KZM4W72K1G12FY75R0BTQREW'),
+                CharacterName::fromString('Wiz'),
+                Race::fromString('fructan'),
+                CharacterClass::fromString('wizard'),
+                HitPoints::full(8),
+                $this->abilities()
+            )
+        );
+
+        self::assertTrue($unsealed['is_unsealed_journey']);
+        self::assertFalse($unsealed['is_maximum_level']);
+        self::assertSame('Awaiting first advancement seal', $unsealed['register_status']);
+
+        $maximum = Character::reconstitute(
+            CharacterId::fromString('01KZM4W72K1G12FY75R0BTQREW'),
+            CharacterName::fromString('Wiz'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('wizard'),
+            Level::fromInt(20),
+            Experience::fromInt(355000),
+            HitPoints::fromValues(100, 100),
+            $this->abilities()
+        );
+
+        $sealed = (new LivingRegisterPresenter())->present($maximum, [[
+            'from_level' => 19,
+            'target_level' => 20,
+        ]]);
+
+        self::assertFalse($sealed['is_unsealed_journey']);
+        self::assertTrue($sealed['is_maximum_level']);
+        self::assertSame('Final level fully certified', $sealed['register_status']);
+    }
+
     public function testFreshInkIsAbsentWithoutCertificationHistory(): void
     {
         $state = (new LivingRegisterPresenter())->present(
@@ -362,7 +461,9 @@ final class LivingRegisterPresenterTest extends TestCase
         self::assertFalse($state['has_path']);
         self::assertSame('', $state['path_label']);
         self::assertSame(0, $state['path_gift_count']);
+        self::assertSame(0, $state['arcana_known']);
         self::assertSame(0, $state['certification_count']);
+        self::assertFalse($state['has_chronicle']);
     }
 
     private function abilities(): AbilityScores

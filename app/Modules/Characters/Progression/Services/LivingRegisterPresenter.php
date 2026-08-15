@@ -32,9 +32,11 @@ final class LivingRegisterPresenter
     {
         $spellbook = $character->spellbook();
         $pathState = $this->pathGifts->present($character);
-        $latest = $history === [] ? null : $history[array_key_last($history)];
-        $latest = is_array($latest) ? $latest : null;
-        $chronicle = $this->chronicle($history);
+        $certifications = $this->normaliseHistory($history);
+        $latest = $certifications === []
+            ? null
+            : $certifications[array_key_last($certifications)];
+        $chronicle = $this->chronicle($certifications);
         $milestoneCount = array_sum(array_map(
             static fn (array $entry): int => count($entry['milestones'] ?? []),
             $chronicle
@@ -58,7 +60,7 @@ final class LivingRegisterPresenter
             'arcana_known' => count($spellbook->spells()) + count($spellbook->cantrips()),
             'path_gifts' => $pathState['gifts'] ?? [],
             'path_gift_count' => (int) ($pathState['count'] ?? 0),
-            'certification_count' => count($history),
+            'certification_count' => count($certifications),
             'latest_certification' => $latest,
             'fresh_ink' => $this->freshInk($latest),
             'has_fresh_ink' => $latest !== null,
@@ -70,6 +72,13 @@ final class LivingRegisterPresenter
             'has_journey_measure' => $chronicle !== [],
             'change_record' => $changeRecord,
             'has_change_record' => $chronicle !== [],
+            'is_maximum_level' => $character->level()->value() >= 20,
+            'is_unsealed_journey' => $certifications === [],
+            'register_status' => $certifications === []
+                ? 'Awaiting first advancement seal'
+                : ($character->level()->value() >= 20
+                    ? 'Final level fully certified'
+                    : 'Guild record in good standing'),
             'is_living_record' => true,
         ];
     }
@@ -101,8 +110,8 @@ final class LivingRegisterPresenter
             'old_maximum_hp' => (int) ($latest['old_maximum_hp'] ?? 0),
             'new_maximum_hp' => (int) ($latest['new_maximum_hp'] ?? 0),
             'proficiency' => (string) ($latest['proficiency'] ?? ''),
-            'spells_learned' => $this->choiceValues($choices, 'wizard-spells'),
-            'cantrips_learned' => $this->choiceValues($choices, 'wizard-cantrips'),
+            'spells_learned' => $this->choiceValuesMatching($choices, '-spells'),
+            'cantrips_learned' => $this->choiceValuesMatching($choices, '-cantrips'),
             'path_gifts_granted' => array_values(array_filter(array_map(
                 static fn (mixed $gift): string => is_array($gift)
                     ? (string) ($gift['label'] ?? $gift['key'] ?? '')
@@ -297,6 +306,53 @@ final class LivingRegisterPresenter
             'sequence' => (int) ($entry['sequence'] ?? 0),
             'certified_at' => (string) ($entry['certified_at'] ?? ''),
         ];
+    }
+
+    /**
+     * Legacy archives can contain sparse numeric keys or non-array debris.
+     * Reindex only usable certification rows before any chronological logic.
+     *
+     * @param array<int|string,mixed> $history
+     * @return array<int,array<string,mixed>>
+     */
+    private function normaliseHistory(array $history): array
+    {
+        return array_values(array_filter(
+            $history,
+            static fn (mixed $entry): bool => is_array($entry)
+                && (
+                    array_key_exists('target_level', $entry)
+                    || array_key_exists('from_level', $entry)
+                    || array_key_exists('certification_key', $entry)
+                )
+        ));
+    }
+
+    /**
+     * Collect advancement choices by semantic suffix so non-Wizard casters
+     * receive the same Living Register treatment without class-specific code.
+     *
+     * @param array<string,mixed> $choices
+     * @return array<int,string>
+     */
+    private function choiceValuesMatching(array $choices, string $suffix): array
+    {
+        $values = [];
+
+        foreach ($choices as $key => $choice) {
+            if (! is_string($key) || ! str_ends_with($key, $suffix) || ! is_array($choice)) {
+                continue;
+            }
+
+            $values = array_merge($values, array_values(array_filter(array_map(
+                static fn (mixed $value): string => is_scalar($value)
+                    ? (string) $value
+                    : '',
+                $choice
+            ))));
+        }
+
+        return array_values(array_unique($values));
     }
 
     /** @param array<string,mixed> $choices @return array<int,string> */
