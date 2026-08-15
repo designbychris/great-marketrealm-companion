@@ -48,6 +48,42 @@ final class LivingLedgerTabsRegressionTest extends TestCase
         );
     }
 
+    public function testUpfrontLedgerIndexIsStyledAsTopOfBookTabs(): void
+    {
+        $root = dirname(__DIR__, 5);
+        $css = file_get_contents(
+            $root
+            . '/assets/css/modules/characters/'
+            . 'guild-dice.css'
+        );
+
+        self::assertIsString($css);
+        self::assertStringContainsString(
+            '.gmrc-open-ledger .gmrc-ledger-index',
+            $css
+        );
+        self::assertStringContainsString(
+            'justify-content: flex-start !important;',
+            $css
+        );
+        self::assertStringContainsString(
+            'border-bottom:',
+            $css
+        );
+        self::assertStringContainsString(
+            'calc(-1 * clamp(1.5rem, 3vw, 2.8rem))',
+            $css
+        );
+        self::assertStringContainsString(
+            '.gmrc-ledger-index__label',
+            $css
+        );
+        self::assertStringContainsString(
+            'border-radius:',
+            $css
+        );
+    }
+
     public function testLivingLedgerScriptSupportsKeyboardNavigation(): void
     {
         $root = dirname(__DIR__, 5);
