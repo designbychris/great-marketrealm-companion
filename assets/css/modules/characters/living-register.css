@@ -50,3 +50,22 @@
 .gmrc-living-register__journey-grid dt{color:rgba(66,42,29,.58);font-size:.5rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase}
 .gmrc-living-register__journey-grid dd{margin:.16rem 0 0;color:#603773;font-family:var(--gmrc-font-display,Georgia,serif);font-size:.82rem;font-weight:900}
 @media(max-width:900px){.gmrc-living-register__journey-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/** Phase III.9.6: The Living Record of Change. */
+.gmrc-living-register__change-record{margin:1.15rem 0;padding:.9rem;border:1px solid rgba(96,55,115,.2);border-radius:.4rem;background:linear-gradient(180deg,rgba(246,236,250,.34),rgba(255,249,228,.34))}
+.gmrc-living-register__change-record>header{display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem}
+.gmrc-living-register__change-record>header h3{margin:.08rem 0 .2rem;color:#4a2a18;font-family:var(--gmrc-font-display,Georgia,serif);font-size:1rem}
+.gmrc-living-register__change-record>header p:last-child{margin:.15rem 0 0;color:rgba(66,42,29,.68);font-size:.64rem;line-height:1.45}
+.gmrc-living-register__change-record>header>strong{flex:none;padding:.22rem .42rem;border:1px solid rgba(96,55,115,.25);border-radius:999px;color:#603773;font-size:.58rem;text-transform:uppercase;letter-spacing:.06em}
+.gmrc-living-register__change-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;margin:.78rem 0 0;padding:0}
+.gmrc-living-register__change-grid div{padding:.55rem .6rem;border-top:1px solid rgba(96,55,115,.16)}
+.gmrc-living-register__change-grid dt{color:rgba(66,42,29,.58);font-size:.5rem;font-weight:900;letter-spacing:.05em;text-transform:uppercase}
+.gmrc-living-register__change-grid dd{margin:.16rem 0 0;color:#603773;font-family:var(--gmrc-font-display,Georgia,serif);font-size:.84rem;font-weight:900}
+.gmrc-living-register__change-grid dd span{padding:0 .16rem;color:#9d7023}
+.gmrc-living-register__change-moments{display:grid;gap:.38rem;margin:.7rem 0 0;padding:.65rem 0 0;border-top:1px dashed rgba(96,55,115,.18);list-style:none}
+.gmrc-living-register__change-moments li{display:grid;grid-template-columns:1.2rem 1fr;gap:.38rem;align-items:start}
+.gmrc-living-register__change-moments>li>span{color:#9d7023;font-size:.75rem;text-align:center}
+.gmrc-living-register__change-moments strong{display:block;color:#4a2a18;font-size:.64rem}
+.gmrc-living-register__change-moments small{display:block;margin-top:.08rem;color:rgba(66,42,29,.62);font-size:.55rem;line-height:1.4}
+@media(max-width:700px){.gmrc-living-register__change-grid{grid-template-columns:1fr}}

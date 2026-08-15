@@ -40,6 +40,7 @@ final class LivingRegisterPresenter
             $chronicle
         ));
         $journey = $this->journeyMeasure($chronicle);
+        $changeRecord = $this->changeRecord($chronicle, $character);
 
         return [
             'level' => $character->level()->value(),
@@ -67,6 +68,8 @@ final class LivingRegisterPresenter
             'has_milestones' => $milestoneCount > 0,
             'journey_measure' => $journey,
             'has_journey_measure' => $chronicle !== [],
+            'change_record' => $changeRecord,
+            'has_change_record' => $chronicle !== [],
             'is_living_record' => true,
         ];
     }
@@ -135,6 +138,7 @@ final class LivingRegisterPresenter
                 'sequence' => ((int) $index) + 1,
                 'is_latest' => ((int) $index) === ($total - 1),
                 'certification_key' => (string) ($entry['certification_key'] ?? ''),
+                'calling_path' => (string) ($entry['calling_path'] ?? ''),
                 'milestones' => $this->milestones($history, (int) $index, $entry),
             ];
         }
@@ -224,6 +228,75 @@ final class LivingRegisterPresenter
         }
 
         return $totals;
+    }
+
+
+    /**
+     * Describe the certified journey from the earliest retained seal to the
+     * Character's current permanent state. This remains a read-only projection
+     * over the Chronicle; it never becomes mutable progression state.
+     *
+     * @param array<int,array<string,mixed>> $chronicle
+     * @return array<string,mixed>
+     */
+    private function changeRecord(array $chronicle, Character $character): array
+    {
+        if ($chronicle === []) {
+            return [];
+        }
+
+        $oldestFirst = array_reverse($chronicle);
+        $first = $oldestFirst[0];
+        $firstPath = null;
+        $firstGift = null;
+        $firstArcana = null;
+
+        foreach ($oldestFirst as $entry) {
+            if ($firstPath === null && (string) ($entry['calling_path'] ?? '') !== '') {
+                $firstPath = $this->changeMoment($entry);
+            }
+
+            if ($firstGift === null && ($entry['path_gifts_granted'] ?? []) !== []) {
+                $firstGift = $this->changeMoment($entry);
+            }
+
+            if (
+                $firstArcana === null
+                && (($entry['spells_learned'] ?? []) !== [] || ($entry['cantrips_learned'] ?? []) !== [])
+            ) {
+                $firstArcana = $this->changeMoment($entry);
+            }
+        }
+
+        $startingMaximumHp = (int) ($first['old_maximum_hp'] ?? 0);
+        $currentMaximumHp = $character->hitPoints()->maximum();
+
+        return [
+            'starting_level' => max(1, (int) ($first['from_level'] ?? 1)),
+            'current_level' => $character->level()->value(),
+            'levels_gained' => max(0, $character->level()->value() - max(1, (int) ($first['from_level'] ?? 1))),
+            'starting_maximum_hp' => $startingMaximumHp,
+            'current_maximum_hp' => $currentMaximumHp,
+            'maximum_hp_change' => $startingMaximumHp > 0
+                ? max(0, $currentMaximumHp - $startingMaximumHp)
+                : (int) array_sum(array_map(
+                    static fn (array $entry): int => max(0, (int) ($entry['hit_point_gain'] ?? 0)),
+                    $chronicle
+                )),
+            'first_path' => $firstPath,
+            'first_path_gift' => $firstGift,
+            'first_arcana' => $firstArcana,
+        ];
+    }
+
+    /** @param array<string,mixed> $entry @return array{level:int,sequence:int,certified_at:string} */
+    private function changeMoment(array $entry): array
+    {
+        return [
+            'level' => (int) ($entry['target_level'] ?? 0),
+            'sequence' => (int) ($entry['sequence'] ?? 0),
+            'certified_at' => (string) ($entry['certified_at'] ?? ''),
+        ];
     }
 
     /** @param array<string,mixed> $choices @return array<int,string> */

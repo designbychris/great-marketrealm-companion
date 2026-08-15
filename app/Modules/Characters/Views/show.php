@@ -1726,6 +1726,49 @@ $callingPathLabel = $callingPath !== ''
                 </section>
             <?php endif; ?>
 
+            <?php if (! empty($livingRegister['has_change_record']) && is_array($livingRegister['change_record'] ?? null)) : ?>
+                <?php $changeRecord = $livingRegister['change_record']; ?>
+                <section class="gmrc-living-register__change-record" aria-labelledby="gmrc-change-record-title" data-living-change-record>
+                    <header>
+                        <div>
+                            <p class="gmrc-eyebrow">The Living Record of Change</p>
+                            <h3 id="gmrc-change-record-title">From First Seal to Present Day</h3>
+                            <p>The Guild’s clearest measure of how this adventurer has changed across certified advancement.</p>
+                        </div>
+                        <strong>+<?php echo esc_html((string) $changeRecord['levels_gained']); ?> levels</strong>
+                    </header>
+
+                    <dl class="gmrc-living-register__change-grid">
+                        <div>
+                            <dt>Certified Level</dt>
+                            <dd><?php echo esc_html((string) $changeRecord['starting_level']); ?> <span aria-hidden="true">→</span> <?php echo esc_html((string) $changeRecord['current_level']); ?></dd>
+                        </div>
+                        <div>
+                            <dt>Maximum HP</dt>
+                            <dd>
+                                <?php if ((int) $changeRecord['starting_maximum_hp'] > 0) : ?>
+                                    <?php echo esc_html((string) $changeRecord['starting_maximum_hp']); ?> <span aria-hidden="true">→</span> <?php echo esc_html((string) $changeRecord['current_maximum_hp']); ?>
+                                <?php else : ?>
+                                    +<?php echo esc_html((string) $changeRecord['maximum_hp_change']); ?> certified
+                                <?php endif; ?>
+                            </dd>
+                        </div>
+                    </dl>
+
+                    <ol class="gmrc-living-register__change-moments" aria-label="First certified changes">
+                        <?php if (is_array($changeRecord['first_path'] ?? null)) : ?>
+                            <li><span aria-hidden="true">✦</span><div><strong>Calling Path entered</strong><small>First recorded at Level <?php echo esc_html((string) $changeRecord['first_path']['level']); ?> · Certification <?php echo esc_html((string) $changeRecord['first_path']['sequence']); ?></small></div></li>
+                        <?php endif; ?>
+                        <?php if (is_array($changeRecord['first_path_gift'] ?? null)) : ?>
+                            <li><span aria-hidden="true">✧</span><div><strong>First Gift of the Path</strong><small>First granted at Level <?php echo esc_html((string) $changeRecord['first_path_gift']['level']); ?> · Certification <?php echo esc_html((string) $changeRecord['first_path_gift']['sequence']); ?></small></div></li>
+                        <?php endif; ?>
+                        <?php if (is_array($changeRecord['first_arcana'] ?? null)) : ?>
+                            <li><span aria-hidden="true">◇</span><div><strong>Arcana expanded</strong><small>First recorded spell or cantrip growth at Level <?php echo esc_html((string) $changeRecord['first_arcana']['level']); ?> · Certification <?php echo esc_html((string) $changeRecord['first_arcana']['sequence']); ?></small></div></li>
+                        <?php endif; ?>
+                    </ol>
+                </section>
+            <?php endif; ?>
+
             <?php if (! empty($livingRegister['has_chronicle']) && is_array($livingRegister['chronicle'])) : ?>
                 <section class="gmrc-living-register__chronicle" aria-labelledby="gmrc-sealed-chronicle-title" data-sealed-chronicle>
                     <header>

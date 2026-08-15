@@ -268,6 +268,67 @@ final class LivingRegisterPresenterTest extends TestCase
         self::assertSame('2026-08-15T07:30:00+00:00', $state['journey_measure']['latest_certified_at']);
     }
 
+    public function testChronicleProducesALivingRecordOfChange(): void
+    {
+        $character = Character::reconstitute(
+            CharacterId::fromString('01KZM4W72K1G12FY75R0BTQREW'),
+            CharacterName::fromString('Wiz'),
+            Race::fromString('fructan'),
+            CharacterClass::fromString('wizard'),
+            Level::fromInt(5),
+            Experience::fromInt(6500),
+            HitPoints::fromValues(30, 30),
+            $this->abilities(),
+            callingPath: CallingPath::fromString('school-of-shelfmancy')
+        );
+
+        $state = (new LivingRegisterPresenter())->present($character, [
+            [
+                'from_level' => 1,
+                'target_level' => 2,
+                'old_maximum_hp' => 8,
+                'new_maximum_hp' => 14,
+                'hit_point_gain' => 6,
+            ],
+            [
+                'from_level' => 2,
+                'target_level' => 3,
+                'calling_path' => 'school-of-shelfmancy',
+                'choices' => ['wizard-spells' => ['pantry-ward']],
+                'hit_point_gain' => 5,
+            ],
+            [
+                'from_level' => 3,
+                'target_level' => 4,
+                'calling_path' => 'school-of-shelfmancy',
+                'path_gifts_granted' => [[
+                    'key' => 'spell-stored-container',
+                    'label' => 'Spell-Stored Container',
+                ]],
+                'hit_point_gain' => 5,
+            ],
+            [
+                'from_level' => 4,
+                'target_level' => 5,
+                'calling_path' => 'school-of-shelfmancy',
+                'hit_point_gain' => 6,
+            ],
+        ]);
+
+        self::assertTrue($state['has_change_record']);
+        self::assertSame(1, $state['change_record']['starting_level']);
+        self::assertSame(5, $state['change_record']['current_level']);
+        self::assertSame(4, $state['change_record']['levels_gained']);
+        self::assertSame(8, $state['change_record']['starting_maximum_hp']);
+        self::assertSame(30, $state['change_record']['current_maximum_hp']);
+        self::assertSame(22, $state['change_record']['maximum_hp_change']);
+        self::assertSame(3, $state['change_record']['first_path']['level']);
+        self::assertSame(2, $state['change_record']['first_path']['sequence']);
+        self::assertSame(4, $state['change_record']['first_path_gift']['level']);
+        self::assertSame(3, $state['change_record']['first_path_gift']['sequence']);
+        self::assertSame(3, $state['change_record']['first_arcana']['level']);
+    }
+
     public function testFreshInkIsAbsentWithoutCertificationHistory(): void
     {
         $state = (new LivingRegisterPresenter())->present(
