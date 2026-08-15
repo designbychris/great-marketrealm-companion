@@ -53,6 +53,18 @@
         return numeric >= 0 ? '+' + numeric : String(numeric);
     };
 
+    const naturalReaction = function (natural) {
+        if (natural === 20) {
+            return 'natural-20';
+        }
+
+        if (natural === 1) {
+            return 'natural-1';
+        }
+
+        return 'none';
+    };
+
     const rollMode = function (mode) {
         const first = secureD20();
 
@@ -96,6 +108,11 @@
         const mathNode = tray.querySelector('[data-guild-dice-math]');
         const totalNode = tray.querySelector('[data-guild-dice-total]');
         const aubyNode = tray.querySelector('[data-guild-dice-auby]');
+        const reaction = tray.querySelector('[data-guild-dice-reaction]');
+        const reactionBanner = tray.querySelector(
+            '[data-guild-dice-reaction-banner]'
+        );
+        const confetti = tray.querySelector('[data-guild-dice-confetti]');
         const history = tray.querySelector('[data-guild-dice-history]');
         const historyList = tray.querySelector('[data-guild-dice-history-list]');
         const live = tray.querySelector('[data-guild-dice-live]');
@@ -138,6 +155,76 @@
             history.hidden = recent.length === 0;
         };
 
+        const clearReaction = function () {
+            if (reaction instanceof HTMLElement) {
+                reaction.dataset.reaction = 'none';
+            }
+
+            if (reactionBanner instanceof HTMLElement) {
+                reactionBanner.textContent = '';
+            }
+
+            if (confetti instanceof HTMLElement) {
+                confetti.replaceChildren();
+            }
+        };
+
+        const addConfettiPiece = function (index, lonely) {
+            if (!(confetti instanceof HTMLElement)) {
+                return;
+            }
+
+            const piece = document.createElement('i');
+            piece.className = 'gmrc-guild-dice-confetti-piece';
+            piece.setAttribute('aria-hidden', 'true');
+            piece.style.setProperty('--gmrc-confetti-index', String(index));
+
+            if (lonely) {
+                piece.classList.add('is-lonely');
+            }
+
+            confetti.appendChild(piece);
+        };
+
+        const paintReaction = function (natural, kind) {
+            clearReaction();
+
+            const state = naturalReaction(natural);
+
+            if (state === 'none') {
+                return '';
+            }
+
+            if (reaction instanceof HTMLElement) {
+                reaction.dataset.reaction = state;
+            }
+
+            if (state === 'natural-20') {
+                if (reactionBanner instanceof HTMLElement) {
+                    reactionBanner.textContent = kind === 'attack'
+                        ? 'Natural 20 — Critical Hit!'
+                        : 'Natural 20!';
+                }
+
+                for (let index = 0; index < 28; index += 1) {
+                    addConfettiPiece(index, false);
+                }
+
+                return kind === 'attack'
+                    ? 'Natural 20. Critical hit.'
+                    : 'Natural 20.';
+            }
+
+            if (reactionBanner instanceof HTMLElement) {
+                reactionBanner.textContent = 'Natural 1 — Oh dear.';
+            }
+
+            // One. Lonely. Piece. Of. Confetti.
+            addConfettiPiece(0, true);
+
+            return 'Natural 1.';
+        };
+
         const openTray = function (trigger) {
             activeTrigger = trigger;
             const selection = current();
@@ -160,6 +247,8 @@
             if (result instanceof HTMLElement) {
                 result.hidden = true;
             }
+
+            clearReaction();
 
             if (aubyNode instanceof HTMLElement) {
                 aubyNode.hidden = true;
@@ -228,6 +317,7 @@
                 selection.kind === 'damage'
                 || selection.kind === 'healing'
             ) {
+                clearReaction();
                 const damage = rollFormula(selection.formula, false);
                 if (!damage) { return; }
                 const total = damage.total + selection.modifier;
@@ -291,12 +381,17 @@
                 totalNode.textContent = '= ' + total + (selection.resultSuffix ? ' ' + selection.resultSuffix : '');
             }
 
+            const reactionAnnouncement = paintReaction(
+                rolled.natural,
+                selection.kind
+            );
+
             if (aubyNode instanceof HTMLElement) {
                 if (rolled.natural === 20) {
                     aubyNode.textContent = selection.kind === 'attack' ? '“Critical hit! Double the weapon dice!” — Auby' : '“I definitely witnessed that.” — Auby';
                     aubyNode.hidden = false;
                 } else if (rolled.natural === 1) {
-                    aubyNode.textContent = '“The Guild Records will say: an attempt was made.” — Auby';
+                    aubyNode.textContent = '“The Guild has elected not to record that one.” — Auby';
                     aubyNode.hidden = false;
                 } else {
                     aubyNode.hidden = true;
@@ -317,7 +412,8 @@
                 + total
                 + ' ('
                 + modeLabel
-                + ')';
+                + ')'
+                + (reactionAnnouncement ? ' — ' + reactionAnnouncement : '');
 
             recent.unshift(historyText);
             recent.splice(MAX_HISTORY);

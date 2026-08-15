@@ -2132,6 +2132,22 @@ $callingPathLabel = $callingPath !== ''
         </div>
 
         <div class="gmrc-guild-dice-result" data-guild-dice-result hidden>
+            <div
+                class="gmrc-guild-dice-reaction"
+                data-guild-dice-reaction
+                data-reaction="none"
+                aria-hidden="true"
+            >
+                <span
+                    class="gmrc-guild-dice-reaction__banner"
+                    data-guild-dice-reaction-banner
+                ></span>
+                <span
+                    class="gmrc-guild-dice-reaction__confetti"
+                    data-guild-dice-confetti
+                ></span>
+            </div>
+
             <div class="gmrc-guild-d20" data-guild-d20 aria-hidden="true">
                 <span data-guild-d20-value>20</span>
             </div>
