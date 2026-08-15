@@ -375,6 +375,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/characters/rising-register.css',
             ],
             [
+                'handle' => 'gmrc-living-register',
+                'path' => 'modules/characters/living-register.css',
+            ],
+            [
                 'handle' => 'gmrc-grand-catalogue',
                 'path' => 'modules/characters/grand-catalogue.css',
             ],

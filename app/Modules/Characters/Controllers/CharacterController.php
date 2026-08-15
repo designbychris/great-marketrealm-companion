@@ -34,6 +34,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Combat\Services\AttackPresenter
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\ArcanePantryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\RisingRegisterPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\LivingRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\AdvancementLedgerPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Services\PathGiftPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Choices\ChoiceMode;
@@ -644,6 +645,9 @@ final class CharacterController
             $character->id()
         );
 
+        $livingRegister = (new LivingRegisterPresenter())
+            ->present($character, $advancementHistory);
+
         $completeAdventurer = (new CompleteAdventurerPresenter())
             ->present(
                 $character,
@@ -673,6 +677,7 @@ final class CharacterController
                     'pathGifts' => $pathGifts,
                     'advancementHistory' =>
                         $advancementHistory,
+                    'livingRegister' => $livingRegister,
                     'completeAdventurer' => $completeAdventurer,
                 ]
             )

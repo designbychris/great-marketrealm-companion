@@ -1561,19 +1561,38 @@ $callingPathLabel = $callingPath !== ''
             <p class="gmrc-ledger-page__number" aria-hidden="true">11</p>
         </section>
 
-        <section class="gmrc-ledger-page gmrc-ledger-page--level-certification" aria-labelledby="gmrc-level-certification-title">
-            <p class="gmrc-ledger-page__folio">Guild Certification · XII</p>
+        <section class="gmrc-ledger-page gmrc-ledger-page--level-certification gmrc-ledger-page--living-register" aria-labelledby="gmrc-living-register-title" data-living-register>
+            <p class="gmrc-ledger-page__folio">Living Register · XII</p>
             <header class="gmrc-ledger-page__heading">
-                <p class="gmrc-eyebrow">What the next stamp changes</p>
-                <h2 id="gmrc-level-certification-title">Level Certification</h2>
+                <p class="gmrc-eyebrow">Current Guild Record</p>
+                <h2 id="gmrc-living-register-title">The Living Register</h2>
+                <p>Only completed Guild certifications are entered here. Pending advancement paperwork remains in the Rising Register until it is sealed.</p>
             </header>
 
-            <dl class="gmrc-rise-measures">
-                <div><dt>Current proficiency</dt><dd><?php echo esc_html((string) $progression['current_proficiency']); ?></dd></div>
-                <div><dt>Next proficiency</dt><dd><?php echo esc_html((string) ($progression['next_proficiency'] ?? '—')); ?></dd></div>
-                <div><dt>Class hit die</dt><dd><?php echo esc_html((string) $progression['hit_die']); ?></dd></div>
-                <div><dt>HP on next level</dt><dd>+<?php echo esc_html((string) $progression['next_hit_point_gain']); ?></dd></div>
+            <dl class="gmrc-living-register__summary" aria-label="Current certified progression record">
+                <div><dt>Certified Level</dt><dd><?php echo esc_html((string) $livingRegister['level']); ?></dd></div>
+                <div><dt>Calling</dt><dd><?php echo esc_html((string) $livingRegister['calling']); ?></dd></div>
+                <div><dt>Path</dt><dd><?php echo esc_html((string) ($livingRegister['path_label'] !== '' ? $livingRegister['path_label'] : 'Not yet certified')); ?></dd></div>
+                <div><dt>Proficiency</dt><dd><?php echo esc_html((string) $livingRegister['proficiency']); ?></dd></div>
+                <div><dt>Vitality</dt><dd><?php echo esc_html((string) $livingRegister['current_hp']); ?> / <?php echo esc_html((string) $livingRegister['maximum_hp']); ?> HP</dd></div>
+                <div><dt>Path Gifts</dt><dd><?php echo esc_html((string) $livingRegister['path_gift_count']); ?></dd></div>
+                <div><dt>Learned Arcana</dt><dd><?php echo esc_html((string) $livingRegister['arcana_known']); ?></dd></div>
+                <div><dt>Certifications</dt><dd><?php echo esc_html((string) $livingRegister['certification_count']); ?></dd></div>
             </dl>
+
+            <section class="gmrc-living-register__next" aria-labelledby="gmrc-level-certification-title">
+                <header>
+                    <p class="gmrc-eyebrow">What the next stamp changes</p>
+                    <h3 id="gmrc-level-certification-title">Next Guild Certification</h3>
+                </header>
+
+                <dl class="gmrc-rise-measures">
+                    <div><dt>Current proficiency</dt><dd><?php echo esc_html((string) $progression['current_proficiency']); ?></dd></div>
+                    <div><dt>Next proficiency</dt><dd><?php echo esc_html((string) ($progression['next_proficiency'] ?? '—')); ?></dd></div>
+                    <div><dt>Class hit die</dt><dd><?php echo esc_html((string) $progression['hit_die']); ?></dd></div>
+                    <div><dt>HP on next level</dt><dd>+<?php echo esc_html((string) $progression['next_hit_point_gain']); ?></dd></div>
+                </dl>
+            </section>
 
             <?php if (
                 ! $progression['is_maximum']

@@ -1,0 +1,9 @@
+/** Character Lifecycle Initiative — Phase III.9.1: The Living Register. */
+.gmrc-ledger-page--living-register .gmrc-ledger-page__heading>p:last-child{max-width:31rem;color:rgba(66,42,29,.68);font-size:.64rem;line-height:1.5}
+.gmrc-living-register__summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;margin:1rem 0;padding:0}
+.gmrc-living-register__summary div{min-width:0;padding:.62rem .68rem;border:1px solid rgba(96,55,115,.2);border-radius:.32rem;background:linear-gradient(180deg,rgba(255,249,228,.7),rgba(244,231,196,.45))}
+.gmrc-living-register__summary dt{color:rgba(66,42,29,.58);font-size:.55rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase}
+.gmrc-living-register__summary dd{margin:.18rem 0 0;overflow-wrap:anywhere;color:#603773;font-family:var(--gmrc-font-display,Georgia,serif);font-size:.82rem;font-weight:800;line-height:1.25}
+.gmrc-living-register__next{margin-top:1rem;padding-top:.85rem;border-top:1px solid rgba(75,43,24,.2)}
+.gmrc-living-register__next>header h3{margin:.08rem 0 .35rem;color:#4a2a18;font-family:var(--gmrc-font-display,Georgia,serif);font-size:1rem}
+@media(max-width:700px){.gmrc-living-register__summary{grid-template-columns:1fr}}
