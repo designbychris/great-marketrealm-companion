@@ -953,3 +953,255 @@
         transition: none !important;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.10.2 — The Guild Dice Set
+ * Multiple die families, dice pools and free rolling.
+ * =============================================================== */
+.gmrc-guild-free-roll {
+    margin: 0 0 0.85rem;
+    border: 1px solid rgba(96, 55, 115, 0.2);
+    border-radius: 0.34rem;
+    background: rgba(255, 248, 221, 0.42);
+}
+
+.gmrc-guild-free-roll summary {
+    padding: 0.58rem 0.7rem;
+    color: #603773;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.055em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.gmrc-guild-free-roll summary:focus-visible,
+.gmrc-guild-free-roll input:focus-visible,
+.gmrc-guild-free-roll select:focus-visible,
+.gmrc-guild-free-roll__button:focus-visible {
+    outline: 3px solid #b88a37;
+    outline-offset: 2px;
+}
+
+.gmrc-guild-free-roll__controls {
+    display: grid;
+    grid-template-columns: 0.8fr 1fr 0.9fr;
+    gap: 0.48rem;
+    padding: 0 0.7rem 0.7rem;
+}
+
+.gmrc-guild-free-roll__controls label {
+    display: grid;
+    gap: 0.22rem;
+    min-width: 0;
+}
+
+.gmrc-guild-free-roll__controls label span {
+    color: rgba(56, 37, 28, 0.68);
+    font-size: 0.58rem;
+    font-weight: 800;
+}
+
+.gmrc-guild-free-roll__controls input,
+.gmrc-guild-free-roll__controls select {
+    width: 100%;
+    min-height: 2.25rem;
+    padding: 0.35rem 0.45rem;
+    border: 1px solid rgba(74, 42, 24, 0.38);
+    border-radius: 0.25rem;
+    color: #38251c;
+    background: rgba(255, 252, 239, 0.86);
+    font: inherit;
+    font-size: 0.75rem;
+}
+
+.gmrc-guild-free-roll__button {
+    grid-column: 1 / -1;
+    min-height: 2.35rem;
+    border: 1px solid rgba(74, 42, 24, 0.58);
+    border-radius: 0.25rem;
+    color: #f8e4b3;
+    background: #603773;
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.gmrc-guild-free-roll__button:hover {
+    background: #4a2a18;
+}
+
+.gmrc-guild-dice-result {
+    grid-template-columns: minmax(7.4rem, 1.15fr) minmax(0, 1fr);
+}
+
+.gmrc-guild-dice-stage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    align-items: center;
+    justify-content: center;
+    min-height: 7rem;
+    padding: 0.35rem;
+}
+
+.gmrc-guild-dice-stage.is-pool {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(2.25rem, 1fr));
+    gap: 0.28rem;
+    align-content: center;
+}
+
+.gmrc-guild-dice-stage.is-large-pool {
+    grid-template-columns: repeat(5, minmax(1.8rem, 1fr));
+}
+
+.gmrc-guild-die {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: clamp(3.35rem, 9vw, 5rem);
+    aspect-ratio: 1;
+    color: #fff0c5;
+    background:
+        radial-gradient(circle at 38% 28%, #9363aa, #603773 60%, #42204d);
+    filter: drop-shadow(0 .35rem .28rem rgba(53,31,20,.25));
+    transform-origin: center;
+}
+
+.gmrc-guild-die strong {
+    position: relative;
+    z-index: 2;
+    font-family: Georgia, serif;
+    font-size: clamp(1.05rem, 4vw, 1.65rem);
+    font-weight: 900;
+    line-height: 1;
+}
+
+.gmrc-guild-dice-stage.is-pool .gmrc-guild-die {
+    width: 100%;
+    max-width: 3.25rem;
+    margin: auto;
+}
+
+.gmrc-guild-dice-stage.is-large-pool .gmrc-guild-die strong {
+    font-size: 0.82rem;
+}
+
+.gmrc-guild-die.is-kept {
+    filter:
+        drop-shadow(0 .35rem .28rem rgba(53,31,20,.25))
+        drop-shadow(0 0 .62rem rgba(218,171,55,.72));
+}
+
+.gmrc-guild-die.is-kept::after {
+    position: absolute;
+    right: -0.12rem;
+    bottom: -0.12rem;
+    z-index: 3;
+    display: grid;
+    width: 1.05rem;
+    aspect-ratio: 1;
+    place-items: center;
+    content: "✓";
+    border-radius: 50%;
+    color: #4a2a18;
+    background: #e1b44f;
+    font-size: 0.56rem;
+    font-weight: 900;
+}
+
+/* d4 — tetrahedral silhouette */
+.gmrc-guild-die--d4 {
+    clip-path: polygon(50% 2%, 98% 92%, 2% 92%);
+}
+
+/* d6 — cube face */
+.gmrc-guild-die--d6 {
+    border-radius: 0.45rem;
+    clip-path: none;
+}
+
+/* d8 — octahedral diamond */
+.gmrc-guild-die--d8 {
+    clip-path: polygon(50% 0, 95% 50%, 50% 100%, 5% 50%);
+}
+
+/* d10 — pentagonal trapezohedron silhouette */
+.gmrc-guild-die--d10 {
+    clip-path: polygon(50% 0, 92% 28%, 82% 82%, 50% 100%, 18% 82%, 8% 28%);
+}
+
+/* d12 — broad dodecahedral face */
+.gmrc-guild-die--d12 {
+    clip-path: polygon(50% 0, 88% 14%, 100% 50%, 82% 88%, 50% 100%, 18% 88%, 0 50%, 12% 14%);
+}
+
+/* d20 — icosahedral silhouette */
+.gmrc-guild-die--d20 {
+    clip-path: polygon(50% 0, 91% 19%, 100% 60%, 72% 94%, 28% 94%, 0 60%, 9% 19%);
+}
+
+/* d100 — percentile die, visually distinct from the d20. */
+.gmrc-guild-die--d100 {
+    clip-path: polygon(50% 0, 72% 5%, 90% 19%, 100% 40%, 96% 64%, 82% 85%, 61% 98%, 37% 98%, 16% 85%, 3% 64%, 0 40%, 10% 19%, 28% 5%);
+}
+
+.gmrc-guild-dice-stage.is-rolling .gmrc-guild-die {
+    animation: gmrc-guild-die-roll 520ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.gmrc-guild-dice-stage.is-rolling .gmrc-guild-die:nth-child(2n) {
+    animation-delay: 35ms;
+}
+
+.gmrc-guild-dice-stage.is-rolling .gmrc-guild-die:nth-child(3n) {
+    animation-delay: 70ms;
+}
+
+@keyframes gmrc-guild-die-roll {
+    0% {
+        opacity: 0.5;
+        transform: translateY(-0.8rem) rotate(-28deg) scale(.86);
+    }
+    58% {
+        opacity: 1;
+        transform: translateY(.12rem) rotate(155deg) scale(1.06);
+    }
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (max-width: 620px) {
+    .gmrc-guild-dice-result {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-guild-dice-stage {
+        min-height: 5rem;
+    }
+
+    .gmrc-guild-die {
+        width: 4rem;
+    }
+}
+
+@media (max-width: 430px) {
+    .gmrc-guild-free-roll__controls {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .gmrc-guild-free-roll__controls label:last-of-type {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-guild-dice-stage.is-rolling .gmrc-guild-die {
+        animation: none !important;
+    }
+}

@@ -2122,6 +2122,58 @@ $callingPathLabel = $callingPath !== ''
             <strong data-guild-dice-modifier>+0</strong>
         </p>
 
+        <details class="gmrc-guild-free-roll" data-guild-free-roll-panel>
+            <summary>Guild Free Roll</summary>
+            <div class="gmrc-guild-free-roll__controls">
+                <label>
+                    <span>Quantity</span>
+                    <input
+                        type="number"
+                        min="1"
+                        max="20"
+                        step="1"
+                        value="1"
+                        inputmode="numeric"
+                        data-guild-free-quantity
+                    >
+                </label>
+
+                <label>
+                    <span>Die</span>
+                    <select data-guild-free-die>
+                        <option value="4">d4</option>
+                        <option value="6" selected>d6</option>
+                        <option value="8">d8</option>
+                        <option value="10">d10</option>
+                        <option value="12">d12</option>
+                        <option value="20">d20</option>
+                        <option value="100">d100</option>
+                    </select>
+                </label>
+
+                <label>
+                    <span>Modifier</span>
+                    <input
+                        type="number"
+                        min="-99"
+                        max="99"
+                        step="1"
+                        value="0"
+                        inputmode="numeric"
+                        data-guild-free-modifier
+                    >
+                </label>
+
+                <button
+                    type="button"
+                    class="gmrc-guild-free-roll__button"
+                    data-guild-free-roll
+                >
+                    Roll Dice
+                </button>
+            </div>
+        </details>
+
         <div
             class="gmrc-guild-dice-modes"
             aria-label="Choose how to roll"
@@ -2148,9 +2200,11 @@ $callingPathLabel = $callingPath !== ''
                 ></span>
             </div>
 
-            <div class="gmrc-guild-d20" data-guild-d20 aria-hidden="true">
-                <span data-guild-d20-value>20</span>
-            </div>
+            <div
+                class="gmrc-guild-dice-stage"
+                data-guild-dice-stage
+                aria-hidden="true"
+            ></div>
 
             <div class="gmrc-guild-dice-result__copy">
                 <p class="gmrc-guild-dice-result__mode" data-guild-dice-mode></p>

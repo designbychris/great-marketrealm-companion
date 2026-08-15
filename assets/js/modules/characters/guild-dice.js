@@ -2,14 +2,18 @@
     'use strict';
 
     const MAX_HISTORY = 6;
+    const MAX_FREE_DICE = 20;
+    const SUPPORTED_DICE = [4, 6, 8, 10, 12, 20, 100];
 
-    const secureD20 = function () {
+    const secureDie = function (sides) {
+        const safeSides = Math.max(2, Number(sides) || 20);
+
         if (
             window.crypto
             && typeof window.crypto.getRandomValues === 'function'
         ) {
             const range = 0x100000000;
-            const limit = range - (range % 20);
+            const limit = range - (range % safeSides);
             const values = new Uint32Array(1);
             let value = limit;
 
@@ -18,34 +22,56 @@
                 value = values[0];
             }
 
-            return (value % 20) + 1;
-        }
-
-        return Math.floor(Math.random() * 20) + 1;
-    };
-
-    const secureDie = function (sides) {
-        const safeSides = Math.max(2, Number(sides) || 20);
-        if (window.crypto && typeof window.crypto.getRandomValues === 'function') {
-            const range = 0x100000000;
-            const limit = range - (range % safeSides);
-            const values = new Uint32Array(1);
-            let value = limit;
-            while (value >= limit) { window.crypto.getRandomValues(values); value = values[0]; }
             return (value % safeSides) + 1;
         }
+
         return Math.floor(Math.random() * safeSides) + 1;
     };
 
+    const secureD20 = function () {
+        return secureDie(20);
+    };
+
+    const normaliseFormula = function (formula) {
+        const match = String(formula || '')
+            .trim()
+            .match(/^(\d+)d(4|6|8|10|12|20|100)$/i);
+
+        if (!match) {
+            return null;
+        }
+
+        return {
+            count: Math.min(MAX_FREE_DICE, Math.max(1, Number(match[1]))),
+            sides: Number(match[2])
+        };
+    };
+
     const rollFormula = function (formula, critical) {
-        const match = String(formula || '').trim().match(/^(\d+)d(\d+)$/i);
-        if (!match) { return null; }
-        const count = Math.max(1, Number(match[1]));
-        const sides = Math.max(2, Number(match[2]));
+        const parsed = normaliseFormula(formula);
+
+        if (!parsed) {
+            return null;
+        }
+
+        const totalDice = critical
+            ? parsed.count * 2
+            : parsed.count;
         const dice = [];
-        const totalDice = critical ? count * 2 : count;
-        for (let i = 0; i < totalDice; i += 1) { dice.push(secureDie(sides)); }
-        return { dice: dice, total: dice.reduce(function (sum, value) { return sum + value; }, 0), sides: sides };
+
+        for (let index = 0; index < totalDice; index += 1) {
+            dice.push(secureDie(parsed.sides));
+        }
+
+        return {
+            dice: dice,
+            total: dice.reduce(function (sum, value) {
+                return sum + value;
+            }, 0),
+            sides: parsed.sides,
+            count: totalDice,
+            formula: totalDice + 'd' + parsed.sides
+        };
     };
 
     const signed = function (value) {
@@ -71,17 +97,21 @@
         if (mode === 'normal') {
             return {
                 natural: first,
-                dice: [first]
+                dice: [first],
+                keptIndex: 0
             };
         }
 
         const second = secureD20();
+        const keepHigher = mode === 'advantage';
+        const natural = keepHigher
+            ? Math.max(first, second)
+            : Math.min(first, second);
 
         return {
-            natural: mode === 'advantage'
-                ? Math.max(first, second)
-                : Math.min(first, second),
-            dice: [first, second]
+            natural: natural,
+            dice: [first, second],
+            keptIndex: first === natural ? 0 : 1
         };
     };
 
@@ -102,8 +132,7 @@
         const label = tray.querySelector('[data-guild-dice-label]');
         const modifierNode = tray.querySelector('[data-guild-dice-modifier]');
         const result = tray.querySelector('[data-guild-dice-result]');
-        const die = tray.querySelector('[data-guild-d20]');
-        const dieValue = tray.querySelector('[data-guild-d20-value]');
+        const stage = tray.querySelector('[data-guild-dice-stage]');
         const modeNode = tray.querySelector('[data-guild-dice-mode]');
         const mathNode = tray.querySelector('[data-guild-dice-math]');
         const totalNode = tray.querySelector('[data-guild-dice-total]');
@@ -120,6 +149,11 @@
         const modeButtons = Array.from(
             tray.querySelectorAll('[data-guild-roll-mode]')
         );
+        const freePanel = tray.querySelector('[data-guild-free-roll-panel]');
+        const freeQuantity = tray.querySelector('[data-guild-free-quantity]');
+        const freeDie = tray.querySelector('[data-guild-free-die]');
+        const freeModifier = tray.querySelector('[data-guild-free-modifier]');
+        const freeRoll = tray.querySelector('[data-guild-free-roll]');
 
         let activeTrigger = null;
         const recent = [];
@@ -140,7 +174,10 @@
         };
 
         const paintHistory = function () {
-            if (!(history instanceof HTMLElement) || !(historyList instanceof HTMLOListElement)) {
+            if (
+                !(history instanceof HTMLElement)
+                || !(historyList instanceof HTMLOListElement)
+            ) {
                 return;
             }
 
@@ -153,6 +190,16 @@
             });
 
             history.hidden = recent.length === 0;
+        };
+
+        const remember = function (entry) {
+            recent.unshift(entry);
+            recent.splice(MAX_HISTORY);
+            paintHistory();
+
+            if (live instanceof HTMLElement) {
+                live.textContent = entry;
+            }
         };
 
         const clearReaction = function () {
@@ -225,6 +272,57 @@
             return 'Natural 1.';
         };
 
+        const makeDie = function (value, sides, kept) {
+            const die = document.createElement('span');
+            die.className = 'gmrc-guild-die gmrc-guild-die--d' + sides;
+            die.dataset.dieSides = String(sides);
+            die.dataset.dieValue = String(value);
+
+            if (kept) {
+                die.classList.add('is-kept');
+            }
+
+            const valueNode = document.createElement('strong');
+            valueNode.textContent = String(value);
+            die.appendChild(valueNode);
+
+            return die;
+        };
+
+        const paintDice = function (values, sides, keptIndex) {
+            if (!(stage instanceof HTMLElement)) {
+                return;
+            }
+
+            stage.replaceChildren();
+            stage.classList.toggle('is-pool', values.length > 4);
+            stage.classList.toggle('is-large-pool', values.length > 8);
+
+            values.forEach(function (value, index) {
+                stage.appendChild(
+                    makeDie(value, sides, keptIndex === index)
+                );
+            });
+
+            void stage.offsetWidth;
+            stage.classList.remove('is-rolling');
+            void stage.offsetWidth;
+            stage.classList.add('is-rolling');
+        };
+
+        const showResult = function () {
+            if (result instanceof HTMLElement) {
+                result.hidden = false;
+            }
+        };
+
+        const hideAuby = function () {
+            if (aubyNode instanceof HTMLElement) {
+                aubyNode.hidden = true;
+                aubyNode.textContent = '';
+            }
+        };
+
         const openTray = function (trigger) {
             activeTrigger = trigger;
             const selection = current();
@@ -248,12 +346,12 @@
                 result.hidden = true;
             }
 
-            clearReaction();
-
-            if (aubyNode instanceof HTMLElement) {
-                aubyNode.hidden = true;
-                aubyNode.textContent = '';
+            if (stage instanceof HTMLElement) {
+                stage.replaceChildren();
             }
+
+            clearReaction();
+            hideAuby();
 
             const normal = modeButtons.find(function (button) {
                 return button.dataset.guildRollMode === 'normal';
@@ -273,85 +371,62 @@
             }
         };
 
-        const animateDie = function (
-            value,
-            natural = null
-        ) {
-            if (die instanceof HTMLElement) {
-                die.classList.remove(
-                    'is-rolling',
-                    'is-natural-20',
-                    'is-natural-1'
-                );
+        const performFormula = function (selection) {
+            clearReaction();
 
-                void die.offsetWidth;
+            const rolled = rollFormula(selection.formula, false);
 
-                die.classList.add(
-                    'is-rolling'
-                );
-
-                if (natural === 20) {
-                    die.classList.add(
-                        'is-natural-20'
-                    );
-                } else if (natural === 1) {
-                    die.classList.add(
-                        'is-natural-1'
-                    );
-                }
+            if (!rolled) {
+                return;
             }
 
-            if (dieValue instanceof HTMLElement) {
-                dieValue.textContent = String(value);
+            paintDice(rolled.dice, rolled.sides, null);
+
+            const total = rolled.total + selection.modifier;
+            const isHealing = selection.kind === 'healing';
+            const resultLabel = isHealing
+                ? 'healing'
+                : (
+                    selection.damageType
+                        ? selection.damageType + ' damage'
+                        : 'damage'
+                );
+
+            if (modeNode instanceof HTMLElement) {
+                modeNode.textContent = isHealing
+                    ? 'Healing Roll'
+                    : 'Damage Roll';
             }
+
+            if (mathNode instanceof HTMLElement) {
+                mathNode.textContent = selection.formula
+                    + ' ('
+                    + rolled.dice.join(' + ')
+                    + ') '
+                    + signed(selection.modifier);
+            }
+
+            if (totalNode instanceof HTMLElement) {
+                totalNode.textContent = '= ' + total + ' ' + resultLabel;
+            }
+
+            hideAuby();
+            showResult();
+
+            remember(
+                selection.label
+                + ': '
+                + rolled.dice.join(' + ')
+                + ' '
+                + signed(selection.modifier)
+                + ' = '
+                + total
+                + ' '
+                + resultLabel
+            );
         };
 
-        const perform = function (mode) {
-            const selection = current();
-
-            if (!selection) {
-                return;
-            }
-
-            if (
-                selection.kind === 'damage'
-                || selection.kind === 'healing'
-            ) {
-                clearReaction();
-                const damage = rollFormula(selection.formula, false);
-                if (!damage) { return; }
-                const total = damage.total + selection.modifier;
-
-                animateDie(
-                    damage.total
-                );
-
-                const isHealing =
-                    selection.kind === 'healing';
-
-                const resultLabel = isHealing
-                    ? 'healing'
-                    : (
-                        selection.damageType
-                            ? selection.damageType + ' damage'
-                            : 'damage'
-                    );
-
-                if (modeNode instanceof HTMLElement) {
-                    modeNode.textContent = isHealing
-                        ? 'Healing Roll'
-                        : 'Damage Roll';
-                }
-                if (mathNode instanceof HTMLElement) { mathNode.textContent = selection.formula + ' (' + damage.dice.join(' + ') + ') ' + signed(selection.modifier); }
-                if (totalNode instanceof HTMLElement) { totalNode.textContent = '= ' + total + ' ' + resultLabel; }
-                if (result instanceof HTMLElement) { result.hidden = false; }
-                if (aubyNode instanceof HTMLElement) { aubyNode.hidden = true; aubyNode.textContent = ''; }
-                const historyText = selection.label + ': ' + damage.dice.join(' + ') + ' ' + signed(selection.modifier) + ' = ' + total + ' ' + resultLabel;
-                recent.unshift(historyText); recent.splice(MAX_HISTORY); paintHistory();
-                if (live instanceof HTMLElement) { live.textContent = historyText; }
-                return;
-            }
-
+        const performD20 = function (selection, mode) {
             const rolled = rollMode(mode);
             const total = rolled.natural + selection.modifier;
             const modeLabel = mode === 'advantage'
@@ -360,10 +435,7 @@
                     ? 'Disadvantage'
                     : 'Normal Roll';
 
-            animateDie(
-                rolled.natural,
-                rolled.natural
-            );
+            paintDice(rolled.dice, 20, rolled.keptIndex);
 
             if (modeNode instanceof HTMLElement) {
                 modeNode.textContent = modeLabel;
@@ -378,7 +450,13 @@
             }
 
             if (totalNode instanceof HTMLElement) {
-                totalNode.textContent = '= ' + total + (selection.resultSuffix ? ' ' + selection.resultSuffix : '');
+                totalNode.textContent = '= '
+                    + total
+                    + (
+                        selection.resultSuffix
+                            ? ' ' + selection.resultSuffix
+                            : ''
+                    );
             }
 
             const reactionAnnouncement = paintReaction(
@@ -388,22 +466,22 @@
 
             if (aubyNode instanceof HTMLElement) {
                 if (rolled.natural === 20) {
-                    aubyNode.textContent = selection.kind === 'attack' ? '“Critical hit! Double the weapon dice!” — Auby' : '“I definitely witnessed that.” — Auby';
+                    aubyNode.textContent = selection.kind === 'attack'
+                        ? '“Critical hit! Double the weapon dice!” — Auby'
+                        : '“I definitely witnessed that.” — Auby';
                     aubyNode.hidden = false;
                 } else if (rolled.natural === 1) {
                     aubyNode.textContent = '“The Guild has elected not to record that one.” — Auby';
                     aubyNode.hidden = false;
                 } else {
-                    aubyNode.hidden = true;
-                    aubyNode.textContent = '';
+                    hideAuby();
                 }
             }
 
-            if (result instanceof HTMLElement) {
-                result.hidden = false;
-            }
+            showResult();
 
-            const historyText = selection.label
+            remember(
+                selection.label
                 + ': '
                 + rolled.natural
                 + ' '
@@ -413,15 +491,126 @@
                 + ' ('
                 + modeLabel
                 + ')'
-                + (reactionAnnouncement ? ' — ' + reactionAnnouncement : '');
+                + (
+                    reactionAnnouncement
+                        ? ' — ' + reactionAnnouncement
+                        : ''
+                )
+            );
+        };
 
-            recent.unshift(historyText);
-            recent.splice(MAX_HISTORY);
-            paintHistory();
+        const perform = function (mode) {
+            const selection = current();
 
-            if (live instanceof HTMLElement) {
-                live.textContent = historyText;
+            if (!selection) {
+                return;
             }
+
+            if (
+                selection.kind === 'damage'
+                || selection.kind === 'healing'
+            ) {
+                performFormula(selection);
+                return;
+            }
+
+            performD20(selection, mode);
+        };
+
+        const performFreeRoll = function () {
+            const requestedQuantity = Number(
+                freeQuantity instanceof HTMLInputElement
+                    ? freeQuantity.value
+                    : 1
+            );
+            const requestedSides = Number(
+                freeDie instanceof HTMLSelectElement
+                    ? freeDie.value
+                    : 6
+            );
+            const modifier = Number(
+                freeModifier instanceof HTMLInputElement
+                    ? freeModifier.value
+                    : 0
+            ) || 0;
+
+            const quantity = Math.min(
+                MAX_FREE_DICE,
+                Math.max(1, Math.floor(requestedQuantity || 1))
+            );
+            const sides = SUPPORTED_DICE.includes(requestedSides)
+                ? requestedSides
+                : 6;
+            const values = [];
+
+            for (let index = 0; index < quantity; index += 1) {
+                values.push(secureDie(sides));
+            }
+
+            const subtotal = values.reduce(function (sum, value) {
+                return sum + value;
+            }, 0);
+            const total = subtotal + modifier;
+            const formula = quantity + 'd' + sides;
+
+            clearReaction();
+            paintDice(values, sides, null);
+
+            const freeReaction = sides === 20 && quantity === 1
+                ? paintReaction(values[0], 'free-roll')
+                : '';
+
+            if (label instanceof HTMLElement) {
+                label.textContent = 'Guild Free Roll';
+            }
+
+            if (modifierNode instanceof HTMLElement) {
+                modifierNode.textContent = signed(modifier);
+            }
+
+            if (modeNode instanceof HTMLElement) {
+                modeNode.textContent = formula;
+            }
+
+            if (mathNode instanceof HTMLElement) {
+                mathNode.textContent = values.join(' + ')
+                    + ' '
+                    + signed(modifier);
+            }
+
+            if (totalNode instanceof HTMLElement) {
+                totalNode.textContent = '= ' + total;
+            }
+
+            hideAuby();
+
+            if (
+                sides === 20
+                && quantity === 1
+                && aubyNode instanceof HTMLElement
+            ) {
+                if (values[0] === 20) {
+                    aubyNode.textContent = '“I definitely witnessed that.” — Auby';
+                    aubyNode.hidden = false;
+                } else if (values[0] === 1) {
+                    aubyNode.textContent = '“The Guild has elected not to record that one.” — Auby';
+                    aubyNode.hidden = false;
+                }
+            }
+
+            showResult();
+
+            remember(
+                'Guild Free Roll: '
+                + formula
+                + ' ('
+                + values.join(' + ')
+                + ') '
+                + signed(modifier)
+                + ' = '
+                + total
+                + (freeReaction ? ' — ' + freeReaction : '')
+            );
         };
 
         triggers.forEach(function (trigger) {
@@ -435,6 +624,32 @@
                 perform(button.dataset.guildRollMode || 'normal');
             });
         });
+
+        if (freeRoll instanceof HTMLButtonElement) {
+            freeRoll.addEventListener('click', performFreeRoll);
+        }
+
+        if (freeQuantity instanceof HTMLInputElement) {
+            freeQuantity.addEventListener('change', function () {
+                freeQuantity.value = String(
+                    Math.min(
+                        MAX_FREE_DICE,
+                        Math.max(1, Math.floor(Number(freeQuantity.value) || 1))
+                    )
+                );
+            });
+        }
+
+        if (freePanel instanceof HTMLDetailsElement) {
+            freePanel.addEventListener('toggle', function () {
+                if (
+                    freePanel.open
+                    && freeQuantity instanceof HTMLInputElement
+                ) {
+                    freeQuantity.focus();
+                }
+            });
+        }
 
         if (close instanceof HTMLButtonElement) {
             close.addEventListener('click', closeTray);
