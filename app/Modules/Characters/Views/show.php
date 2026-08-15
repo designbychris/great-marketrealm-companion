@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Skills;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\ViewModels\PortraitViewModel;
 use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
 
@@ -683,6 +684,10 @@ $callingPathLabel = $callingPath !== ''
                                 'modifier' => $initiativeValue->modifier(),
                                 'primary' => $initiative,
                                 'variant' => 'compact',
+                                'kind' => 'initiative',
+                                'source' => 'Initiative',
+                                'ability' => 'Dexterity',
+                                'proficiency' => 'none',
                             ]
                         );
                         ?>
@@ -749,6 +754,10 @@ $callingPathLabel = $callingPath !== ''
                                         'primary' => (string) $score->value(),
                                         'secondary' => $signedModifier,
                                         'variant' => 'ability',
+                                        'kind' => 'ability-check',
+                                        'source' => $label,
+                                        'ability' => $label,
+                                        'proficiency' => 'none',
                                     ]
                                 );
                                 ?>
@@ -851,6 +860,12 @@ $callingPathLabel = $callingPath !== ''
                                         'modifier' => $savingThrow->modifier(),
                                         'primary' => $savingThrow->signed(),
                                         'variant' => 'inline',
+                                        'kind' => 'saving-throw',
+                                        'source' => $label . ' Save',
+                                        'ability' => $label,
+                                        'proficiency' => $savingThrow->isProficient()
+                                            ? 'proficient'
+                                            : 'none',
                                     ]
                                 );
                                 ?>
@@ -933,6 +948,18 @@ $callingPathLabel = $callingPath !== ''
                                         'modifier' => $skill->modifier(),
                                         'primary' => $skill->signed(),
                                         'variant' => 'inline',
+                                        'kind' => 'skill-check',
+                                        'source' => $label,
+                                        'ability' => ucfirst(
+                                            Skills::governingAbility($identifier)
+                                        ),
+                                        'proficiency' => $skill->hasExpertise()
+                                            ? 'expertise'
+                                            : (
+                                                $skill->isProficient()
+                                                    ? 'proficient'
+                                                    : 'none'
+                                            ),
                                     ]
                                 );
                                 ?>
@@ -1442,6 +1469,9 @@ $callingPathLabel = $callingPath !== ''
                                         class="gmrc-guild-roll-trigger"
                                         data-guild-roll="d20"
                                         data-roll-kind="spell-attack"
+                                        data-roll-source="<?php echo esc_attr((string) $ability['label']); ?>"
+                                        data-roll-ability="<?php echo esc_attr((string) ($arcana['casting_ability'] ?? '')); ?>"
+                                        data-roll-proficiency="proficient"
                                         data-roll-label="<?php echo esc_attr($ability['label'] . ' — Spell Attack'); ?>"
                                         data-roll-modifier="<?php echo esc_attr((string) $ability['spell_attack']); ?>"
                                         data-roll-result-suffix="to hit"
@@ -1460,6 +1490,9 @@ $callingPathLabel = $callingPath !== ''
                                         class="gmrc-guild-roll-trigger gmrc-guild-roll-trigger--formula"
                                         data-guild-roll="<?php echo esc_attr($ability['roll_kind']); ?>"
                                         data-roll-kind="<?php echo esc_attr($ability['roll_kind']); ?>"
+                                        data-roll-source="<?php echo esc_attr((string) $ability['label']); ?>"
+                                        data-roll-ability="<?php echo esc_attr((string) ($arcana['casting_ability'] ?? '')); ?>"
+                                        data-roll-proficiency="none"
                                         data-roll-label="<?php echo esc_attr(
                                             $ability['label']
                                             . ' — '
@@ -2121,6 +2154,13 @@ $callingPathLabel = $callingPath !== ''
             Modifier
             <strong data-guild-dice-modifier>+0</strong>
         </p>
+        <dl class="gmrc-guild-roll-context" data-guild-roll-context hidden>
+            <div><dt>Roll</dt><dd data-guild-context-kind></dd></div>
+            <div><dt>Source</dt><dd data-guild-context-source></dd></div>
+            <div><dt>Ability</dt><dd data-guild-context-ability></dd></div>
+            <div><dt>Training</dt><dd data-guild-context-proficiency></dd></div>
+        </dl>
+
 
         <details class="gmrc-guild-free-roll" data-guild-free-roll-panel>
             <summary>Guild Free Roll</summary>

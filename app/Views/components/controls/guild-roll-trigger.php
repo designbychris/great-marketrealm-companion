@@ -25,6 +25,22 @@ $variant = isset($variant) && is_string($variant)
 $modifierLabel = $modifier >= 0
     ? 'plus ' . $modifier
     : 'minus ' . abs($modifier);
+
+$kind = isset($kind) && is_string($kind)
+    ? sanitize_key($kind)
+    : 'check';
+
+$source = isset($source) && is_string($source)
+    ? $source
+    : $label;
+
+$ability = isset($ability) && is_string($ability)
+    ? $ability
+    : '';
+
+$proficiency = isset($proficiency) && is_string($proficiency)
+    ? $proficiency
+    : 'none';
 ?>
 
 <button
@@ -33,6 +49,10 @@ $modifierLabel = $modifier >= 0
     data-guild-roll="d20"
     data-roll-label="<?php echo esc_attr($label); ?>"
     data-roll-modifier="<?php echo esc_attr((string) $modifier); ?>"
+    data-roll-kind="<?php echo esc_attr($kind); ?>"
+    data-roll-source="<?php echo esc_attr($source); ?>"
+    data-roll-ability="<?php echo esc_attr($ability); ?>"
+    data-roll-proficiency="<?php echo esc_attr($proficiency); ?>"
     aria-label="<?php echo esc_attr(
         sprintf(
             'Roll %s with modifier %s',

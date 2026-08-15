@@ -131,6 +131,11 @@
 
         const label = tray.querySelector('[data-guild-dice-label]');
         const modifierNode = tray.querySelector('[data-guild-dice-modifier]');
+        const context = tray.querySelector('[data-guild-roll-context]');
+        const contextKind = tray.querySelector('[data-guild-context-kind]');
+        const contextSource = tray.querySelector('[data-guild-context-source]');
+        const contextAbility = tray.querySelector('[data-guild-context-ability]');
+        const contextProficiency = tray.querySelector('[data-guild-context-proficiency]');
         const result = tray.querySelector('[data-guild-dice-result]');
         const stage = tray.querySelector('[data-guild-dice-stage]');
         const modeNode = tray.querySelector('[data-guild-dice-mode]');
@@ -167,10 +172,94 @@
                 label: activeTrigger.dataset.rollLabel || 'D20 Roll',
                 modifier: Number(activeTrigger.dataset.rollModifier) || 0,
                 kind: activeTrigger.dataset.rollKind || 'check',
+                source: activeTrigger.dataset.rollSource || '',
+                ability: activeTrigger.dataset.rollAbility || '',
+                proficiency: activeTrigger.dataset.rollProficiency || 'none',
                 formula: activeTrigger.dataset.rollFormula || '',
                 damageType: activeTrigger.dataset.rollDamageType || '',
                 resultSuffix: activeTrigger.dataset.rollResultSuffix || ''
             };
+        };
+
+        const readableKind = function (kind) {
+            const labels = {
+                'ability-check': 'Ability Check',
+                'skill-check': 'Skill Check',
+                'saving-throw': 'Saving Throw',
+                'initiative': 'Initiative',
+                'attack': 'Weapon Attack',
+                'spell-attack': 'Spell Attack',
+                'damage': 'Damage',
+                'healing': 'Healing',
+                'check': 'D20 Check',
+                'free-roll': 'Free Roll'
+            };
+
+            return labels[kind] || 'Guild Roll';
+        };
+
+        const readableProficiency = function (proficiency) {
+            if (proficiency === 'expertise') {
+                return 'Expertise';
+            }
+
+            if (proficiency === 'proficient') {
+                return 'Proficient';
+            }
+
+            return 'Untrained';
+        };
+
+        const contextSummary = function (selection) {
+            const parts = [readableKind(selection.kind)];
+
+            if (selection.source) {
+                parts.push(selection.source);
+            }
+
+            if (selection.ability) {
+                parts.push(selection.ability);
+            }
+
+            if (
+                selection.proficiency
+                && selection.proficiency !== 'none'
+            ) {
+                parts.push(readableProficiency(selection.proficiency));
+            }
+
+            return parts.join(' · ');
+        };
+
+        const paintContext = function (selection) {
+            if (!(context instanceof HTMLElement)) {
+                return;
+            }
+
+            if (!selection) {
+                context.hidden = true;
+                return;
+            }
+
+            if (contextKind instanceof HTMLElement) {
+                contextKind.textContent = readableKind(selection.kind);
+            }
+
+            if (contextSource instanceof HTMLElement) {
+                contextSource.textContent = selection.source || 'Guild Dice';
+            }
+
+            if (contextAbility instanceof HTMLElement) {
+                contextAbility.textContent = selection.ability || '—';
+            }
+
+            if (contextProficiency instanceof HTMLElement) {
+                contextProficiency.textContent = readableProficiency(
+                    selection.proficiency
+                );
+            }
+
+            context.hidden = false;
         };
 
         const paintHistory = function () {
@@ -342,6 +431,8 @@
                 modifierNode.textContent = signed(selection.modifier);
             }
 
+            paintContext(selection);
+
             if (result instanceof HTMLElement) {
                 result.hidden = true;
             }
@@ -414,7 +505,9 @@
             showResult();
 
             remember(
-                selection.label
+                contextSummary(selection)
+                + ' — '
+                + selection.label
                 + ': '
                 + rolled.dice.join(' + ')
                 + ' '
@@ -481,7 +574,9 @@
             showResult();
 
             remember(
-                selection.label
+                contextSummary(selection)
+                + ' — '
+                + selection.label
                 + ': '
                 + rolled.natural
                 + ' '
@@ -563,6 +658,13 @@
             if (label instanceof HTMLElement) {
                 label.textContent = 'Guild Free Roll';
             }
+
+            paintContext({
+                kind: 'free-roll',
+                source: formula,
+                ability: '',
+                proficiency: 'none'
+            });
 
             if (modifierNode instanceof HTMLElement) {
                 modifierNode.textContent = signed(modifier);
