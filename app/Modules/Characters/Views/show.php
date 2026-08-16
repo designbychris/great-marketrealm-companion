@@ -351,6 +351,15 @@ $callingPathLabel = $callingPath !== ''
                 ]
             );
             ?>
+
+            <button
+                type="button"
+                class="gmrc-guild-dice-launcher"
+                data-guild-dice-launcher
+            >
+                <span aria-hidden="true">★</span>
+                Quick Rolls
+            </button>
         </div>
     </header>
 
@@ -2354,6 +2363,34 @@ $callingPathLabel = $callingPath !== ''
             <div><dt>Training</dt><dd data-guild-context-proficiency></dd></div>
         </dl>
 
+        <button
+            type="button"
+            class="gmrc-guild-favourite-toggle"
+            data-guild-favourite-toggle
+            hidden
+        >
+            <span aria-hidden="true" data-guild-favourite-symbol>☆</span>
+            <span data-guild-favourite-label>Add to Quick Rolls</span>
+        </button>
+
+        <section
+            class="gmrc-guild-quick-rolls"
+            data-guild-quick-rolls
+            aria-labelledby="gmrc-guild-quick-rolls-title"
+            hidden
+        >
+            <header class="gmrc-guild-quick-rolls__heading">
+                <div>
+                    <p class="gmrc-eyebrow">Pinned Favourites</p>
+                    <h3 id="gmrc-guild-quick-rolls-title">Quick Rolls</h3>
+                </div>
+                <span data-guild-quick-roll-count></span>
+            </header>
+            <div
+                class="gmrc-guild-quick-rolls__list"
+                data-guild-quick-roll-list
+            ></div>
+        </section>
 
         <details class="gmrc-guild-free-roll" data-guild-free-roll-panel>
             <summary>Guild Free Roll</summary>
@@ -2403,6 +2440,15 @@ $callingPathLabel = $callingPath !== ''
                     data-guild-free-roll
                 >
                     Roll Dice
+                </button>
+
+                <button
+                    type="button"
+                    class="gmrc-guild-free-roll__pin"
+                    data-guild-free-roll-pin
+                >
+                    <span aria-hidden="true">☆</span>
+                    Save as Quick Roll
                 </button>
             </div>
         </details>

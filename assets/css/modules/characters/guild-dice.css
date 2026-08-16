@@ -1558,3 +1558,165 @@
     font-size: .66rem;
     opacity: .68;
 }
+
+
+/* ===============================================================
+ * Phase III.10.8 — Roll Favourites & Quick Rolls
+ * =============================================================== */
+.gmrc-guild-dice-launcher {
+    display: inline-flex;
+    align-items: center;
+    gap: .42rem;
+    min-height: 2.55rem;
+    padding: .5rem .78rem;
+    border: 1px solid rgba(78, 48, 24, .42);
+    border-radius: .35rem;
+    color: #4a2a18;
+    background: #f0d99f;
+    box-shadow: 0 .22rem .45rem rgba(56, 32, 17, .12);
+    font: inherit;
+    font-size: .72rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.gmrc-guild-dice-launcher:hover {
+    background: #f7e7bb;
+}
+
+.gmrc-guild-dice-launcher:focus-visible,
+.gmrc-guild-favourite-toggle:focus-visible,
+.gmrc-guild-free-roll__pin:focus-visible,
+.gmrc-guild-quick-roll__roll:focus-visible,
+.gmrc-guild-quick-roll__remove:focus-visible {
+    outline: 3px solid #b88a37;
+    outline-offset: 2px;
+}
+
+.gmrc-guild-favourite-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: .38rem;
+    width: 100%;
+    min-height: 2.25rem;
+    margin: 0 0 .72rem;
+    padding: .42rem .58rem;
+    border: 1px dashed rgba(96, 55, 115, .32);
+    border-radius: .3rem;
+    color: #603773;
+    background: rgba(255, 249, 225, .56);
+    font: inherit;
+    font-size: .68rem;
+    font-weight: 850;
+    cursor: pointer;
+}
+
+.gmrc-guild-favourite-toggle[hidden] {
+    display: none !important;
+}
+
+.gmrc-guild-favourite-toggle[aria-pressed="true"] {
+    border-style: solid;
+    background: rgba(232, 205, 125, .28);
+}
+
+.gmrc-guild-quick-rolls {
+    display: grid;
+    gap: .5rem;
+    margin: 0 0 .85rem;
+    padding: .65rem;
+    border: 1px solid rgba(96, 55, 115, .2);
+    border-radius: .36rem;
+    background: rgba(255, 248, 222, .46);
+}
+
+.gmrc-guild-quick-rolls[hidden] {
+    display: none !important;
+}
+
+.gmrc-guild-quick-rolls__heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: .7rem;
+}
+
+.gmrc-guild-quick-rolls__heading h3,
+.gmrc-guild-quick-rolls__heading p {
+    margin: 0;
+}
+
+.gmrc-guild-quick-rolls__heading h3 {
+    margin-top: .08rem;
+    color: #4a2a18;
+    font-size: .88rem;
+}
+
+.gmrc-guild-quick-rolls__heading > span {
+    color: rgba(66, 42, 29, .58);
+    font-size: .58rem;
+    font-weight: 900;
+}
+
+.gmrc-guild-quick-rolls__list {
+    display: grid;
+    gap: .34rem;
+}
+
+.gmrc-guild-quick-roll {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: .28rem;
+}
+
+.gmrc-guild-quick-roll__roll,
+.gmrc-guild-quick-roll__remove,
+.gmrc-guild-free-roll__pin {
+    min-height: 2.18rem;
+    border: 1px solid rgba(74, 42, 24, .34);
+    border-radius: .26rem;
+    font: inherit;
+    cursor: pointer;
+}
+
+.gmrc-guild-quick-roll__roll {
+    padding: .38rem .52rem;
+    overflow: hidden;
+    color: #f8e4b3;
+    background: #603773;
+    font-size: .66rem;
+    font-weight: 850;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.gmrc-guild-quick-roll__roll:disabled {
+    cursor: not-allowed;
+    opacity: .54;
+}
+
+.gmrc-guild-quick-roll__remove {
+    width: 2.18rem;
+    padding: 0;
+    color: #6d372e;
+    background: rgba(255, 249, 232, .82);
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+.gmrc-guild-free-roll__pin {
+    grid-column: 1 / -1;
+    padding: .38rem .5rem;
+    color: #603773;
+    background: rgba(255, 249, 232, .84);
+    font-size: .66rem;
+    font-weight: 850;
+}
+
+@media (max-width: 620px) {
+    .gmrc-guild-dice-launcher {
+        width: 100%;
+        justify-content: center;
+    }
+}

@@ -2,6 +2,7 @@
     'use strict';
 
     const MAX_HISTORY = 12;
+    const MAX_FAVOURITES = 8;
     const MAX_FREE_DICE = 20;
     const SUPPORTED_DICE = [4, 6, 8, 10, 12, 20, 100];
 
@@ -121,6 +122,7 @@
         }
 
         const tray = ledger.querySelector('[data-guild-dice-tray]');
+        const launcher = ledger.querySelector('[data-guild-dice-launcher]');
         const triggers = Array.from(
             ledger.querySelectorAll('[data-guild-roll]')
         );
@@ -162,11 +164,94 @@
         const freeDie = tray.querySelector('[data-guild-free-die]');
         const freeModifier = tray.querySelector('[data-guild-free-modifier]');
         const freeRoll = tray.querySelector('[data-guild-free-roll]');
+        const freeRollPin = tray.querySelector('[data-guild-free-roll-pin]');
+        const favouriteToggle = tray.querySelector(
+            '[data-guild-favourite-toggle]'
+        );
+        const favouriteSymbol = tray.querySelector(
+            '[data-guild-favourite-symbol]'
+        );
+        const favouriteLabel = tray.querySelector(
+            '[data-guild-favourite-label]'
+        );
+        const quickRolls = tray.querySelector('[data-guild-quick-rolls]');
+        const quickRollList = tray.querySelector(
+            '[data-guild-quick-roll-list]'
+        );
+        const quickRollCount = tray.querySelector(
+            '[data-guild-quick-roll-count]'
+        );
 
         let activeTrigger = null;
         const characterId = ledger.dataset.characterId || 'unknown';
         const historyKey = 'gmrc:guild-dice:history:' + characterId;
+        const favouritesKey = 'gmrc:guild-dice:favourites:' + characterId;
         const recent = [];
+        const favourites = [];
+
+        const loadFavourites = function () {
+            if (!window.localStorage) {
+                return;
+            }
+
+            try {
+                const stored = JSON.parse(
+                    window.localStorage.getItem(favouritesKey) || '[]'
+                );
+
+                if (!Array.isArray(stored)) {
+                    return;
+                }
+
+                stored.slice(0, MAX_FAVOURITES).forEach(function (entry) {
+                    if (
+                        entry
+                        && typeof entry === 'object'
+                        && typeof entry.type === 'string'
+                        && typeof entry.key === 'string'
+                    ) {
+                        favourites.push(entry);
+                    }
+                });
+            } catch (error) {
+                window.localStorage.removeItem(favouritesKey);
+            }
+        };
+
+        const persistFavourites = function () {
+            if (!window.localStorage) {
+                return;
+            }
+
+            try {
+                window.localStorage.setItem(
+                    favouritesKey,
+                    JSON.stringify(favourites)
+                );
+            } catch (error) {
+                // Favourites are optional; rolling must remain available.
+            }
+        };
+
+        const triggerReference = function (trigger) {
+            if (!(trigger instanceof HTMLButtonElement)) {
+                return '';
+            }
+
+            return [
+                trigger.dataset.rollKind || 'check',
+                trigger.dataset.rollSource || '',
+                trigger.dataset.rollLabel || '',
+                trigger.dataset.rollFormula || '',
+                trigger.dataset.rollDamageType || ''
+            ].join('|');
+        };
+
+        const findTriggerByReference = function (reference) {
+            return triggers.find(function (trigger) {
+                return triggerReference(trigger) === reference;
+            }) || null;
+        };
 
         const loadHistory = function () {
             if (!window.sessionStorage) {
@@ -227,6 +312,261 @@
                 damageType: activeTrigger.dataset.rollDamageType || '',
                 resultSuffix: activeTrigger.dataset.rollResultSuffix || ''
             };
+        };
+
+        const favouriteIndex = function (key) {
+            return favourites.findIndex(function (entry) {
+                return entry.key === key;
+            });
+        };
+
+        const updateFavouriteToggle = function () {
+            if (
+                !(favouriteToggle instanceof HTMLButtonElement)
+                || !(favouriteSymbol instanceof HTMLElement)
+                || !(favouriteLabel instanceof HTMLElement)
+            ) {
+                return;
+            }
+
+            if (!(activeTrigger instanceof HTMLButtonElement)) {
+                favouriteToggle.hidden = true;
+                return;
+            }
+
+            const key = triggerReference(activeTrigger);
+            const pinned = favouriteIndex(key) !== -1;
+
+            favouriteToggle.hidden = false;
+            favouriteToggle.dataset.favouriteKey = key;
+            favouriteToggle.setAttribute(
+                'aria-pressed',
+                pinned ? 'true' : 'false'
+            );
+            favouriteSymbol.textContent = pinned ? '★' : '☆';
+            favouriteLabel.textContent = pinned
+                ? 'Remove from Quick Rolls'
+                : 'Add to Quick Rolls';
+        };
+
+        const removeFavourite = function (key) {
+            const index = favouriteIndex(key);
+
+            if (index === -1) {
+                return;
+            }
+
+            const removed = favourites[index];
+
+            favourites.splice(index, 1);
+            persistFavourites();
+            paintQuickRolls();
+            updateFavouriteToggle();
+
+            if (live instanceof HTMLElement) {
+                live.textContent = 'Removed '
+                    + (removed.label || 'Quick Roll')
+                    + ' from Quick Rolls.';
+            }
+        };
+
+        const addCharacterFavourite = function (trigger) {
+            const key = triggerReference(trigger);
+
+            if (key === '' || favouriteIndex(key) !== -1) {
+                return;
+            }
+
+            if (favourites.length >= MAX_FAVOURITES) {
+                if (live instanceof HTMLElement) {
+                    live.textContent = 'Quick Rolls can hold up to '
+                        + MAX_FAVOURITES
+                        + ' favourites.';
+                }
+                return;
+            }
+
+            favourites.push({
+                type: 'character',
+                key: key,
+                label: trigger.dataset.rollLabel || 'Guild Roll'
+            });
+
+            persistFavourites();
+            paintQuickRolls();
+            updateFavouriteToggle();
+
+            if (live instanceof HTMLElement) {
+                live.textContent = 'Added '
+                    + (trigger.dataset.rollLabel || 'Guild Roll')
+                    + ' to Quick Rolls.';
+            }
+        };
+
+        const freeRollDefinition = function () {
+            const quantity = Math.min(
+                MAX_FREE_DICE,
+                Math.max(
+                    1,
+                    Math.floor(
+                        Number(
+                            freeQuantity instanceof HTMLInputElement
+                                ? freeQuantity.value
+                                : 1
+                        ) || 1
+                    )
+                )
+            );
+            const sides = Number(
+                freeDie instanceof HTMLSelectElement
+                    ? freeDie.value
+                    : 6
+            );
+            const modifier = Number(
+                freeModifier instanceof HTMLInputElement
+                    ? freeModifier.value
+                    : 0
+            ) || 0;
+            const safeSides = SUPPORTED_DICE.includes(sides)
+                ? sides
+                : 6;
+            const formula = quantity + 'd' + safeSides;
+            const key = 'free|' + formula + '|' + modifier;
+
+            return {
+                type: 'free',
+                key: key,
+                label: formula + ' ' + signed(modifier),
+                quantity: quantity,
+                sides: safeSides,
+                modifier: modifier
+            };
+        };
+
+        const addFreeFavourite = function () {
+            const definition = freeRollDefinition();
+
+            if (favouriteIndex(definition.key) !== -1) {
+                if (live instanceof HTMLElement) {
+                    live.textContent = definition.label
+                        + ' is already in Quick Rolls.';
+                }
+                return;
+            }
+
+            if (favourites.length >= MAX_FAVOURITES) {
+                if (live instanceof HTMLElement) {
+                    live.textContent = 'Quick Rolls can hold up to '
+                        + MAX_FAVOURITES
+                        + ' favourites.';
+                }
+                return;
+            }
+
+            favourites.push(definition);
+            persistFavourites();
+            paintQuickRolls();
+
+            if (live instanceof HTMLElement) {
+                live.textContent = 'Added '
+                    + definition.label
+                    + ' to Quick Rolls.';
+            }
+        };
+
+        const runFavourite = function (entry) {
+            if (entry.type === 'character') {
+                const trigger = findTriggerByReference(entry.key);
+
+                if (!(trigger instanceof HTMLButtonElement)) {
+                    return;
+                }
+
+                openTray(trigger);
+                perform('normal');
+                return;
+            }
+
+            if (
+                entry.type === 'free'
+                && freeQuantity instanceof HTMLInputElement
+                && freeDie instanceof HTMLSelectElement
+                && freeModifier instanceof HTMLInputElement
+            ) {
+                freeQuantity.value = String(entry.quantity || 1);
+                freeDie.value = String(entry.sides || 6);
+                freeModifier.value = String(entry.modifier || 0);
+                activeTrigger = null;
+                updateFavouriteToggle();
+                performFreeRoll();
+            }
+        };
+
+        const paintQuickRolls = function () {
+            if (
+                !(quickRolls instanceof HTMLElement)
+                || !(quickRollList instanceof HTMLElement)
+            ) {
+                return;
+            }
+
+            quickRollList.replaceChildren();
+
+            favourites.forEach(function (entry) {
+                const wrapper = document.createElement('div');
+                const roll = document.createElement('button');
+                const remove = document.createElement('button');
+                const trigger = entry.type === 'character'
+                    ? findTriggerByReference(entry.key)
+                    : null;
+
+                wrapper.className = 'gmrc-guild-quick-roll';
+                roll.type = 'button';
+                roll.className = 'gmrc-guild-quick-roll__roll';
+
+                if (entry.type === 'character') {
+                    if (trigger instanceof HTMLButtonElement) {
+                        const modifier = Number(
+                            trigger.dataset.rollModifier
+                        ) || 0;
+                        roll.textContent = (entry.label || 'Guild Roll')
+                            + ' '
+                            + signed(modifier);
+                    } else {
+                        roll.textContent = (entry.label || 'Guild Roll')
+                            + ' — unavailable';
+                        roll.disabled = true;
+                    }
+                } else {
+                    roll.textContent = entry.label || 'Free Roll';
+                }
+
+                roll.addEventListener('click', function () {
+                    runFavourite(entry);
+                });
+
+                remove.type = 'button';
+                remove.className = 'gmrc-guild-quick-roll__remove';
+                remove.setAttribute(
+                    'aria-label',
+                    'Remove ' + (entry.label || 'Quick Roll')
+                );
+                remove.textContent = '×';
+                remove.addEventListener('click', function () {
+                    removeFavourite(entry.key);
+                });
+
+                wrapper.append(roll, remove);
+                quickRollList.appendChild(wrapper);
+            });
+
+            quickRolls.hidden = favourites.length === 0;
+
+            if (quickRollCount instanceof HTMLElement) {
+                quickRollCount.textContent = favourites.length
+                    + '/'
+                    + MAX_FAVOURITES;
+            }
         };
 
         const readableKind = function (kind) {
@@ -525,6 +865,7 @@
 
             clearReaction();
             hideAuby();
+            updateFavouriteToggle();
 
             const normal = modeButtons.find(function (button) {
                 return button.dataset.guildRollMode === 'normal';
@@ -532,6 +873,53 @@
 
             if (normal instanceof HTMLButtonElement) {
                 normal.focus();
+            }
+        };
+
+        const openQuickRollsTray = function () {
+            activeTrigger = null;
+            tray.hidden = false;
+            tray.classList.add('is-open');
+
+            if (label instanceof HTMLElement) {
+                label.textContent = 'Quick Rolls';
+            }
+
+            if (modifierNode instanceof HTMLElement) {
+                modifierNode.textContent = '+0';
+            }
+
+            if (context instanceof HTMLElement) {
+                context.hidden = true;
+            }
+
+            if (result instanceof HTMLElement) {
+                result.hidden = true;
+            }
+
+            if (stage instanceof HTMLElement) {
+                stage.replaceChildren();
+            }
+
+            clearReaction();
+            hideAuby();
+            updateFavouriteToggle();
+            paintQuickRolls();
+
+            const firstQuickRoll = quickRollList instanceof HTMLElement
+                ? quickRollList.querySelector(
+                    '.gmrc-guild-quick-roll__roll:not(:disabled)'
+                )
+                : null;
+
+            if (firstQuickRoll instanceof HTMLButtonElement) {
+                firstQuickRoll.focus();
+            } else if (freePanel instanceof HTMLDetailsElement) {
+                const summary = freePanel.querySelector('summary');
+
+                if (summary instanceof HTMLElement) {
+                    summary.focus();
+                }
             }
         };
 
@@ -711,6 +1099,9 @@
         };
 
         const performFreeRoll = function () {
+            activeTrigger = null;
+            updateFavouriteToggle();
+
             const requestedQuantity = Number(
                 freeQuantity instanceof HTMLInputElement
                     ? freeQuantity.value
@@ -830,8 +1221,34 @@
             historyClear.addEventListener('click', clearHistory);
         }
 
+        if (favouriteToggle instanceof HTMLButtonElement) {
+            favouriteToggle.addEventListener('click', function () {
+                if (!(activeTrigger instanceof HTMLButtonElement)) {
+                    return;
+                }
+
+                const key = triggerReference(activeTrigger);
+
+                if (favouriteIndex(key) !== -1) {
+                    removeFavourite(key);
+                } else {
+                    addCharacterFavourite(activeTrigger);
+                }
+            });
+        }
+
+        if (freeRollPin instanceof HTMLButtonElement) {
+            freeRollPin.addEventListener('click', addFreeFavourite);
+        }
+
+        loadFavourites();
+        paintQuickRolls();
         loadHistory();
         paintHistory();
+
+        if (launcher instanceof HTMLButtonElement) {
+            launcher.addEventListener('click', openQuickRollsTray);
+        }
 
         triggers.forEach(function (trigger) {
             trigger.addEventListener('click', function () {
