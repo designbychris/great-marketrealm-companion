@@ -1720,3 +1720,114 @@
         justify-content: center;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.10.9 — Situational Modifiers
+ * =============================================================== */
+.gmrc-guild-situational {
+    margin: 0 0 .8rem;
+    border: 1px solid rgba(96, 55, 115, .2);
+    border-radius: .34rem;
+    background: rgba(255, 248, 222, .44);
+}
+
+.gmrc-guild-situational summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .65rem;
+    padding: .55rem .65rem;
+    color: #603773;
+    font-size: .68rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.gmrc-guild-situational summary small {
+    color: rgba(66, 42, 29, .62);
+    font-size: .56rem;
+    font-weight: 800;
+}
+
+.gmrc-guild-situational__controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .48rem;
+    padding: 0 .65rem .65rem;
+}
+
+.gmrc-guild-situational__controls label {
+    display: grid;
+    gap: .2rem;
+}
+
+.gmrc-guild-situational__controls label > span {
+    color: rgba(66, 42, 29, .66);
+    font-size: .56rem;
+    font-weight: 850;
+}
+
+.gmrc-guild-situational__controls input,
+.gmrc-guild-situational__controls select {
+    width: 100%;
+    min-height: 2.2rem;
+    padding: .34rem .42rem;
+    border: 1px solid rgba(74, 42, 24, .3);
+    border-radius: .26rem;
+    background: rgba(255, 252, 239, .88);
+    font: inherit;
+    font-size: .7rem;
+}
+
+.gmrc-guild-situational__shortcuts {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: .3rem;
+}
+
+.gmrc-guild-situational__shortcuts button {
+    min-height: 2rem;
+    border: 1px solid rgba(74, 42, 24, .34);
+    border-radius: .26rem;
+    color: #603773;
+    background: rgba(255, 249, 232, .82);
+    font: inherit;
+    font-size: .66rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.gmrc-guild-situational__controls > p {
+    grid-column: 1 / -1;
+    margin: 0;
+    color: rgba(66, 42, 29, .64);
+    font-size: .56rem;
+    line-height: 1.45;
+}
+
+.gmrc-guild-situational summary:focus-visible,
+.gmrc-guild-situational input:focus-visible,
+.gmrc-guild-situational select:focus-visible,
+.gmrc-guild-situational button:focus-visible {
+    outline: 3px solid #b88a37;
+    outline-offset: 2px;
+}
+
+.gmrc-guild-die.is-situational {
+    filter:
+        drop-shadow(0 .35rem .28rem rgba(53,31,20,.25))
+        drop-shadow(0 0 .72rem rgba(184,138,55,.8));
+}
+
+@media (max-width: 430px) {
+    .gmrc-guild-situational__controls {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-guild-situational__shortcuts,
+    .gmrc-guild-situational__controls > p {
+        grid-column: 1;
+    }
+}

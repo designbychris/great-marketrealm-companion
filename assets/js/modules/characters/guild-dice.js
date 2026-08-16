@@ -181,6 +181,21 @@
         const quickRollCount = tray.querySelector(
             '[data-guild-quick-roll-count]'
         );
+        const situationalPanel = tray.querySelector(
+            '[data-guild-situational-panel]'
+        );
+        const situationalSummary = tray.querySelector(
+            '[data-guild-situational-summary]'
+        );
+        const situationalFlat = tray.querySelector(
+            '[data-guild-situational-flat]'
+        );
+        const situationalDie = tray.querySelector(
+            '[data-guild-situational-die]'
+        );
+        const situationalShortcuts = Array.from(
+            tray.querySelectorAll('[data-guild-situational-shortcut]')
+        );
 
         let activeTrigger = null;
         const characterId = ledger.dataset.characterId || 'unknown';
@@ -569,6 +584,112 @@
             }
         };
 
+        const situationalAdjustment = function () {
+            const flat = Math.min(
+                20,
+                Math.max(
+                    -20,
+                    Math.floor(
+                        Number(
+                            situationalFlat instanceof HTMLInputElement
+                                ? situationalFlat.value
+                                : 0
+                        ) || 0
+                    )
+                )
+            );
+            const requestedSides = Number(
+                situationalDie instanceof HTMLSelectElement
+                    ? situationalDie.value
+                    : 0
+            );
+            const dieSides = [4, 6, 8, 10, 12].includes(requestedSides)
+                ? requestedSides
+                : 0;
+            const dieValue = dieSides > 0
+                ? secureDie(dieSides)
+                : 0;
+
+            return {
+                flat: flat,
+                dieSides: dieSides,
+                dieValue: dieValue,
+                total: flat + dieValue
+            };
+        };
+
+        const situationalText = function (adjustment) {
+            const parts = [];
+
+            if (adjustment.flat !== 0) {
+                parts.push('situational ' + signed(adjustment.flat));
+            }
+
+            if (adjustment.dieSides > 0) {
+                parts.push(
+                    'situational d'
+                    + adjustment.dieSides
+                    + ' (' + adjustment.dieValue + ')'
+                );
+            }
+
+            return parts.join(' + ');
+        };
+
+        const refreshSituationalSummary = function () {
+            if (!(situationalSummary instanceof HTMLElement)) {
+                return;
+            }
+
+            const flat = Math.min(
+                20,
+                Math.max(
+                    -20,
+                    Math.floor(
+                        Number(
+                            situationalFlat instanceof HTMLInputElement
+                                ? situationalFlat.value
+                                : 0
+                        ) || 0
+                    )
+                )
+            );
+            const sides = Number(
+                situationalDie instanceof HTMLSelectElement
+                    ? situationalDie.value
+                    : 0
+            );
+            const parts = [];
+
+            if (flat !== 0) {
+                parts.push(signed(flat));
+            }
+
+            if ([4, 6, 8, 10, 12].includes(sides)) {
+                parts.push('+d' + sides);
+            }
+
+            situationalSummary.textContent = parts.length > 0
+                ? parts.join(' ') + ' · next roll only'
+                : 'Next roll only';
+        };
+
+        const resetSituational = function () {
+            if (situationalFlat instanceof HTMLInputElement) {
+                situationalFlat.value = '0';
+            }
+
+            if (situationalDie instanceof HTMLSelectElement) {
+                situationalDie.value = '0';
+            }
+
+            refreshSituationalSummary();
+
+            if (situationalPanel instanceof HTMLDetailsElement) {
+                situationalPanel.open = false;
+            }
+        };
+
         const readableKind = function (kind) {
             const labels = {
                 'ability-check': 'Ability Check',
@@ -687,6 +808,14 @@
                 total: Number(details.total) || 0,
                 natural: Number(details.natural) || 0,
                 reaction: details.reaction || 'none',
+                situational: details.situational
+                    && typeof details.situational === 'object'
+                        ? details.situational
+                        : {
+                            flat: 0,
+                            dieSides: 0,
+                            dieValue: 0
+                        },
                 time: new Date().toLocaleTimeString([], {
                     hour: '2-digit',
                     minute: '2-digit'
@@ -821,6 +950,25 @@
             stage.classList.add('is-rolling');
         };
 
+        const paintSituationalDie = function (adjustment) {
+            if (
+                !(stage instanceof HTMLElement)
+                || adjustment.dieSides <= 0
+            ) {
+                return;
+            }
+
+            const die = makeDie(
+                adjustment.dieValue,
+                adjustment.dieSides,
+                false
+            );
+
+            die.classList.add('is-situational');
+            die.dataset.situationalDie = 'true';
+            stage.appendChild(die);
+        };
+
         const showResult = function () {
             if (result instanceof HTMLElement) {
                 result.hidden = false;
@@ -943,7 +1091,13 @@
 
             paintDice(rolled.dice, rolled.sides, null);
 
-            const total = rolled.total + selection.modifier;
+            const adjustment = situationalAdjustment();
+            paintSituationalDie(adjustment);
+
+            const total = rolled.total
+                + selection.modifier
+                + adjustment.total;
+            const adjustmentText = situationalText(adjustment);
             const isHealing = selection.kind === 'healing';
             const resultLabel = isHealing
                 ? 'healing'
@@ -964,7 +1118,12 @@
                     + ' ('
                     + rolled.dice.join(' + ')
                     + ') '
-                    + signed(selection.modifier);
+                    + signed(selection.modifier)
+                    + (
+                        adjustmentText
+                            ? ' + ' + adjustmentText
+                            : ''
+                    );
             }
 
             if (totalNode instanceof HTMLElement) {
@@ -982,6 +1141,11 @@
                 + rolled.dice.join(' + ')
                 + ' '
                 + signed(selection.modifier)
+                + (
+                    adjustmentText
+                        ? ' + ' + adjustmentText
+                        : ''
+                )
                 + ' = '
                 + total
                 + ' '
@@ -991,14 +1155,21 @@
                     formula: selection.formula,
                     dice: rolled.dice,
                     modifier: selection.modifier,
-                    total: total
+                    total: total,
+                    situational: adjustment
                 }
             );
+
+            resetSituational();
         };
 
         const performD20 = function (selection, mode) {
             const rolled = rollMode(mode);
-            const total = rolled.natural + selection.modifier;
+            const adjustment = situationalAdjustment();
+            const total = rolled.natural
+                + selection.modifier
+                + adjustment.total;
+            const adjustmentText = situationalText(adjustment);
             const modeLabel = mode === 'advantage'
                 ? 'Advantage'
                 : mode === 'disadvantage'
@@ -1006,6 +1177,7 @@
                     : 'Normal Roll';
 
             paintDice(rolled.dice, 20, rolled.keptIndex);
+            paintSituationalDie(adjustment);
 
             if (modeNode instanceof HTMLElement) {
                 modeNode.textContent = modeLabel;
@@ -1016,7 +1188,14 @@
                     ? rolled.dice.join(' / ') + ' → ' + rolled.natural
                     : String(rolled.natural);
 
-                mathNode.textContent = diceText + ' ' + signed(selection.modifier);
+                mathNode.textContent = diceText
+                    + ' '
+                    + signed(selection.modifier)
+                    + (
+                        adjustmentText
+                            ? ' + ' + adjustmentText
+                            : ''
+                    );
             }
 
             if (totalNode instanceof HTMLElement) {
@@ -1058,6 +1237,11 @@
                 + rolled.natural
                 + ' '
                 + signed(selection.modifier)
+                + (
+                    adjustmentText
+                        ? ' + ' + adjustmentText
+                        : ''
+                )
                 + ' = '
                 + total
                 + ' ('
@@ -1075,9 +1259,12 @@
                     modifier: selection.modifier,
                     total: total,
                     natural: rolled.natural,
-                    reaction: naturalReaction(rolled.natural)
+                    reaction: naturalReaction(rolled.natural),
+                    situational: adjustment
                 }
             );
+
+            resetSituational();
         };
 
         const perform = function (mode) {
@@ -1134,11 +1321,16 @@
             const subtotal = values.reduce(function (sum, value) {
                 return sum + value;
             }, 0);
-            const total = subtotal + modifier;
+            const adjustment = situationalAdjustment();
+            const total = subtotal
+                + modifier
+                + adjustment.total;
+            const adjustmentText = situationalText(adjustment);
             const formula = quantity + 'd' + sides;
 
             clearReaction();
             paintDice(values, sides, null);
+            paintSituationalDie(adjustment);
 
             const freeReaction = sides === 20 && quantity === 1
                 ? paintReaction(values[0], 'free-roll')
@@ -1166,7 +1358,12 @@
             if (mathNode instanceof HTMLElement) {
                 mathNode.textContent = values.join(' + ')
                     + ' '
-                    + signed(modifier);
+                    + signed(modifier)
+                    + (
+                        adjustmentText
+                            ? ' + ' + adjustmentText
+                            : ''
+                    );
             }
 
             if (totalNode instanceof HTMLElement) {
@@ -1198,6 +1395,11 @@
                 + values.join(' + ')
                 + ') '
                 + signed(modifier)
+                + (
+                    adjustmentText
+                        ? ' + ' + adjustmentText
+                        : ''
+                )
                 + ' = '
                 + total
                 + (freeReaction ? ' — ' + freeReaction : ''),
@@ -1212,10 +1414,51 @@
                         : 0,
                     reaction: sides === 20 && quantity === 1
                         ? naturalReaction(values[0])
-                        : 'none'
+                        : 'none',
+                    situational: adjustment
                 }
             );
+
+            resetSituational();
         };
+
+        if (situationalFlat instanceof HTMLInputElement) {
+            situationalFlat.addEventListener('input', function () {
+                const value = Math.min(
+                    20,
+                    Math.max(
+                        -20,
+                        Math.floor(Number(situationalFlat.value) || 0)
+                    )
+                );
+
+                situationalFlat.value = String(value);
+                refreshSituationalSummary();
+            });
+        }
+
+        if (situationalDie instanceof HTMLSelectElement) {
+            situationalDie.addEventListener(
+                'change',
+                refreshSituationalSummary
+            );
+        }
+
+        situationalShortcuts.forEach(function (button) {
+            button.addEventListener('click', function () {
+                if (!(situationalFlat instanceof HTMLInputElement)) {
+                    return;
+                }
+
+                situationalFlat.value = String(
+                    Number(button.dataset.guildSituationalShortcut) || 0
+                );
+                refreshSituationalSummary();
+                situationalFlat.focus();
+            });
+        });
+
+        refreshSituationalSummary();
 
         if (historyClear instanceof HTMLButtonElement) {
             historyClear.addEventListener('click', clearHistory);

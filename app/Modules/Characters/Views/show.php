@@ -2373,6 +2373,58 @@ $callingPathLabel = $callingPath !== ''
             <span data-guild-favourite-label>Add to Quick Rolls</span>
         </button>
 
+        <details
+            class="gmrc-guild-situational"
+            data-guild-situational-panel
+        >
+            <summary>
+                <span>Situational Adjustment</span>
+                <small data-guild-situational-summary>Next roll only</small>
+            </summary>
+
+            <div class="gmrc-guild-situational__controls">
+                <label>
+                    <span>Flat adjustment</span>
+                    <input
+                        type="number"
+                        min="-20"
+                        max="20"
+                        step="1"
+                        value="0"
+                        inputmode="numeric"
+                        data-guild-situational-flat
+                    >
+                </label>
+
+                <label>
+                    <span>Bonus die</span>
+                    <select data-guild-situational-die>
+                        <option value="0" selected>None</option>
+                        <option value="4">d4</option>
+                        <option value="6">d6</option>
+                        <option value="8">d8</option>
+                        <option value="10">d10</option>
+                        <option value="12">d12</option>
+                    </select>
+                </label>
+
+                <div
+                    class="gmrc-guild-situational__shortcuts"
+                    aria-label="Common situational adjustments"
+                >
+                    <button type="button" data-guild-situational-shortcut="-2">−2</button>
+                    <button type="button" data-guild-situational-shortcut="-1">−1</button>
+                    <button type="button" data-guild-situational-shortcut="1">+1</button>
+                    <button type="button" data-guild-situational-shortcut="2">+2</button>
+                </div>
+
+                <p>
+                    Applied to the next roll only, then cleared automatically.
+                    This never changes the adventurer’s certified modifier.
+                </p>
+            </div>
+        </details>
+
         <section
             class="gmrc-guild-quick-rolls"
             data-guild-quick-rolls
