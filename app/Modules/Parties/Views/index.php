@@ -136,6 +136,7 @@ ob_start();
                                     'Portrait of '
                                     . $party->name()->value(),
                                 'limit' => 5,
+                                'variant' => 'compact',
                             ]
                         ); ?>
                     </div>

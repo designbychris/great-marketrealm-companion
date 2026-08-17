@@ -20,6 +20,14 @@ $limit = isset($limit)
     ? max(1, min(6, (int) $limit))
     : 5;
 
+$variant = isset($variant) && is_scalar($variant)
+    ? sanitize_key((string) $variant)
+    : 'compact';
+
+if (! in_array($variant, ['compact', 'company'], true)) {
+    $variant = 'compact';
+}
+
 $visibleMembers = array_slice(
     $members,
     0,
@@ -37,6 +45,7 @@ $overflow = max(
     role="img"
     aria-label="<?php echo esc_attr($label); ?>"
     data-fellowship-portrait
+    data-fellowship-variant="<?php echo esc_attr($variant); ?>"
     data-fellowship-size="<?php echo esc_attr(
         (string) count($visibleMembers)
     ); ?>"

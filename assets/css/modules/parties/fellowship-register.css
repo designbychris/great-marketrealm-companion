@@ -881,3 +881,354 @@
     animation: none !important;
     transition: none !important;
 }
+
+
+/* ===============================================================
+ * Phase III.11.2A — The Company Portrait
+ *
+ * Compact Register previews and the open-Fellowship company illustration
+ * now have independent presentation contracts.
+ * =============================================================== */
+
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="compact"
+] {
+    min-height: 13rem;
+}
+
+/*
+ * The Fellowship Hall hero is intentionally a landscape company painting.
+ * Its height scales with the viewport but remains tall enough for full
+ * adventurer silhouettes after individual portrait frames are removed.
+ */
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+] {
+    min-height:
+        clamp(
+            32rem,
+            39vw,
+            43rem
+        );
+    aspect-ratio: 16 / 10;
+}
+
+.gmrc-fellowship-hero__portrait {
+    min-height:
+        clamp(
+            32rem,
+            39vw,
+            43rem
+        );
+}
+
+.gmrc-fellowship-hero__portrait
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+] {
+    min-height:
+        clamp(
+            32rem,
+            39vw,
+            43rem
+        );
+}
+
+/*
+ * Give the company artwork breathing room around the edge of the shared
+ * Fellowship canvas instead of packing figures into the old preview inset.
+ */
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+]
+.gmrc-fellowship-portrait__company {
+    inset:
+        clamp(1.25rem, 3vw, 2.2rem)
+        clamp(1.25rem, 3vw, 2.5rem)
+        clamp(0.75rem, 2vw, 1.35rem);
+}
+
+/*
+ * Company figures are narrower than Register-preview figures. Because the
+ * individual 3:4 portrait canvas is now borderless, this gives tall races
+ * enough vertical room without cropping their head, leaves, horns, stems,
+ * signs, equipment or other silhouette details.
+ */
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+]
+.gmrc-fellowship-portrait__member {
+    bottom: 0;
+    width: 36%;
+    max-width: 22rem;
+}
+
+/* One adventurer: a centred full-company hero rather than a giant crop. */
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="1"]
+.gmrc-fellowship-portrait__member--1 {
+    width: 38%;
+    max-width: 23rem;
+    transform:
+        translateX(-50%)
+        scale(1);
+}
+
+/* Two adventurers: balanced pair with clear individual silhouettes. */
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="2"]
+.gmrc-fellowship-portrait__member--1 {
+    z-index: 6;
+    transform:
+        translateX(-82%)
+        scale(0.94);
+}
+
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="2"]
+.gmrc-fellowship-portrait__member--2 {
+    z-index: 6;
+    transform:
+        translateX(-18%)
+        scale(0.94);
+}
+
+/* Three adventurers: classic leader-forward company triangle. */
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="3"]
+.gmrc-fellowship-portrait__member--1 {
+    z-index: 7;
+    transform:
+        translateX(-50%)
+        scale(1);
+}
+
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="3"]
+.gmrc-fellowship-portrait__member--2 {
+    z-index: 5;
+    transform:
+        translateX(-106%)
+        scale(0.84);
+}
+
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="3"]
+.gmrc-fellowship-portrait__member--3 {
+    z-index: 5;
+    transform:
+        translateX(6%)
+        scale(0.84);
+}
+
+/* Four to six: widened ensemble while retaining the central hero figure. */
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="4"]
+.gmrc-fellowship-portrait__member,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="5"]
+.gmrc-fellowship-portrait__member,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="6"]
+.gmrc-fellowship-portrait__member {
+    width: 32%;
+}
+
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="4"]
+.gmrc-fellowship-portrait__member--1,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="5"]
+.gmrc-fellowship-portrait__member--1,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="6"]
+.gmrc-fellowship-portrait__member--1 {
+    z-index: 8;
+    transform:
+        translateX(-50%)
+        scale(0.96);
+}
+
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="4"]
+.gmrc-fellowship-portrait__member--2,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="5"]
+.gmrc-fellowship-portrait__member--2,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="6"]
+.gmrc-fellowship-portrait__member--2 {
+    z-index: 6;
+    transform:
+        translateX(-116%)
+        scale(0.84);
+}
+
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="4"]
+.gmrc-fellowship-portrait__member--3,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="5"]
+.gmrc-fellowship-portrait__member--3,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="6"]
+.gmrc-fellowship-portrait__member--3 {
+    z-index: 6;
+    transform:
+        translateX(16%)
+        scale(0.84);
+}
+
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="4"]
+.gmrc-fellowship-portrait__member--4,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="5"]
+.gmrc-fellowship-portrait__member--4,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="6"]
+.gmrc-fellowship-portrait__member--4 {
+    z-index: 4;
+    transform:
+        translateX(-158%)
+        scale(0.7);
+}
+
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="5"]
+.gmrc-fellowship-portrait__member--5,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="6"]
+.gmrc-fellowship-portrait__member--5 {
+    z-index: 4;
+    transform:
+        translateX(58%)
+        scale(0.7);
+}
+
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+][data-fellowship-size="6"]
+.gmrc-fellowship-portrait__member--6 {
+    z-index: 3;
+    transform:
+        translateX(-50%)
+        translateY(-28%)
+        scale(0.64);
+}
+
+/*
+ * The Leader seal belongs to the company composition, but it should not
+ * enlarge or re-frame the portrait itself.
+ */
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="company"
+]
+.gmrc-fellowship-portrait__member--leader
+.gmrc-fellowship-portrait__canvas {
+    border: 0;
+    box-shadow: none;
+}
+
+/* Fellowship Hall responsive company canvas. */
+@media (max-width: 1080px) {
+    .gmrc-fellowship-portrait[
+        data-fellowship-variant="company"
+    ],
+    .gmrc-fellowship-hero__portrait,
+    .gmrc-fellowship-hero__portrait
+    .gmrc-fellowship-portrait[
+        data-fellowship-variant="company"
+    ] {
+        min-height:
+            clamp(
+                30rem,
+                58vw,
+                38rem
+            );
+    }
+}
+
+@media (max-width: 780px) {
+    .gmrc-fellowship-portrait[
+        data-fellowship-variant="company"
+    ],
+    .gmrc-fellowship-hero__portrait,
+    .gmrc-fellowship-hero__portrait
+    .gmrc-fellowship-portrait[
+        data-fellowship-variant="company"
+    ] {
+        min-height:
+            clamp(
+                29rem,
+                92vw,
+                36rem
+            );
+        aspect-ratio: auto;
+    }
+
+    .gmrc-fellowship-portrait[
+        data-fellowship-variant="company"
+    ]
+    .gmrc-fellowship-portrait__member {
+        width: 38%;
+    }
+}
+
+@media (max-width: 520px) {
+    .gmrc-fellowship-portrait[
+        data-fellowship-variant="company"
+    ],
+    .gmrc-fellowship-hero__portrait,
+    .gmrc-fellowship-hero__portrait
+    .gmrc-fellowship-portrait[
+        data-fellowship-variant="company"
+    ] {
+        min-height: 29rem;
+    }
+
+    .gmrc-fellowship-portrait[
+        data-fellowship-variant="company"
+    ]
+    .gmrc-fellowship-portrait__member {
+        width: 46%;
+    }
+
+    .gmrc-fellowship-portrait[
+        data-fellowship-variant="company"
+    ][data-fellowship-size="4"]
+    .gmrc-fellowship-portrait__member,
+    .gmrc-fellowship-portrait[
+        data-fellowship-variant="company"
+    ][data-fellowship-size="5"]
+    .gmrc-fellowship-portrait__member,
+    .gmrc-fellowship-portrait[
+        data-fellowship-variant="company"
+    ][data-fellowship-size="6"]
+    .gmrc-fellowship-portrait__member {
+        width: 39%;
+    }
+}

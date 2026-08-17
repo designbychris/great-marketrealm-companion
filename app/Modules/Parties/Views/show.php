@@ -68,6 +68,7 @@ $editUrl = add_query_arg(
                         'Company portrait of '
                         . $party->name()->value(),
                     'limit' => 6,
+                    'variant' => 'company',
                 ]
             ); ?>
         </div>
