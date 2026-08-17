@@ -893,19 +893,7 @@
         };
 
         const resetSituational = function () {
-            if (targetKind instanceof HTMLSelectElement) {
-            targetKind.addEventListener('change', function () {
-                refreshTargeting(current());
-            });
-        }
-
-        if (targetName instanceof HTMLInputElement) {
-            targetName.addEventListener('input', function () {
-                refreshTargeting(current());
-            });
-        }
-
-        if (situationalFlat instanceof HTMLInputElement) {
+            if (situationalFlat instanceof HTMLInputElement) {
                 situationalFlat.value = '0';
             }
 
@@ -1824,6 +1812,18 @@
 
             resetSituational();
         };
+
+        if (targetKind instanceof HTMLSelectElement) {
+            targetKind.addEventListener('change', function () {
+                refreshTargeting(current());
+            });
+        }
+
+        if (targetName instanceof HTMLInputElement) {
+            targetName.addEventListener('input', function () {
+                refreshTargeting(current());
+            });
+        }
 
         if (situationalFlat instanceof HTMLInputElement) {
             situationalFlat.addEventListener('input', function () {

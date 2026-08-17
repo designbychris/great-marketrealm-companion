@@ -73,7 +73,7 @@ final class GuildDiceCriticalDamageRegressionTest extends TestCase
             $view
         );
         self::assertStringContainsString(
-            'const prepareCriticalFollowUp = function (selection)',
+            'const prepareCriticalFollowUp = function (selection, target)',
             $script
         );
         self::assertStringContainsString(
@@ -85,7 +85,15 @@ final class GuildDiceCriticalDamageRegressionTest extends TestCase
             $script
         );
         self::assertStringContainsString(
-            'prepareCriticalFollowUp(selection);',
+            'prepareCriticalFollowUp(',
+            $script
+        );
+        self::assertStringContainsString(
+            'selection,',
+            $script
+        );
+        self::assertStringContainsString(
+            'target',
             $script
         );
         self::assertStringContainsString(
