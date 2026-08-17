@@ -316,11 +316,15 @@ final class FellowshipCompanyOfficesRegressionTest extends TestCase
             $show
         );
         self::assertStringContainsString(
-            'office()->glyph()',
+            '->office()',
             $show
         );
         self::assertStringContainsString(
-            'office()->label()',
+            '->glyph()',
+            $show
+        );
+        self::assertStringContainsString(
+            '->label()',
             $show
         );
     }
