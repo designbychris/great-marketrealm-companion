@@ -52,6 +52,8 @@ final class AttackPresenter
                 ),
                 'damage_modifier' => $abilityModifier,
                 'damage_type' => $item->damageType() ?? 'damage',
+                'target_mode' => 'creature',
+                'default_target_kind' => '',
                 'properties' => $properties,
                 'range' => 'Melee · 5 ft',
             ];

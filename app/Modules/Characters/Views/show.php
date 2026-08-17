@@ -281,6 +281,7 @@ $callingPathLabel = $callingPath !== ''
     class="gmrc-open-ledger"
     data-living-ledger
     data-character-id="<?php echo esc_attr($characterId); ?>"
+    data-character-name="<?php echo esc_attr($name); ?>"
     aria-labelledby="gmrc-open-ledger-title"
 >
     <header class="gmrc-open-ledger__toolbar">
@@ -1543,10 +1544,10 @@ $callingPathLabel = $callingPath !== ''
                                     </ul>
                                 <?php endif; ?>
                                 <div class="gmrc-attack-card__rolls">
-                                    <button type="button" class="gmrc-guild-roll-trigger" data-guild-roll="d20" data-roll-kind="attack" data-roll-source="<?php echo esc_attr($attack['label']); ?>" data-roll-ability="<?php echo esc_attr((string) $attack['ability']); ?>" data-roll-proficiency="proficient" data-roll-label="<?php echo esc_attr($attack['label'] . ' — Attack'); ?>" data-roll-modifier="<?php echo esc_attr((string) $attack['attack_bonus']); ?>" data-roll-result-suffix="to hit" data-roll-critical-formula="<?php echo esc_attr((string) $attack['critical_damage_die']); ?>" data-roll-critical-modifier="<?php echo esc_attr((string) $attack['damage_modifier']); ?>" data-roll-critical-damage-type="<?php echo esc_attr((string) $attack['damage_type']); ?>">
+                                    <button type="button" class="gmrc-guild-roll-trigger" data-guild-roll="d20" data-roll-kind="attack" data-roll-target-mode="<?php echo esc_attr((string) ($attack['target_mode'] ?? 'none')); ?>" data-roll-default-target-kind="<?php echo esc_attr((string) ($attack['default_target_kind'] ?? '')); ?>" data-roll-source="<?php echo esc_attr($attack['label']); ?>" data-roll-ability="<?php echo esc_attr((string) $attack['ability']); ?>" data-roll-proficiency="proficient" data-roll-label="<?php echo esc_attr($attack['label'] . ' — Attack'); ?>" data-roll-modifier="<?php echo esc_attr((string) $attack['attack_bonus']); ?>" data-roll-result-suffix="to hit" data-roll-critical-formula="<?php echo esc_attr((string) $attack['critical_damage_die']); ?>" data-roll-critical-modifier="<?php echo esc_attr((string) $attack['damage_modifier']); ?>" data-roll-critical-damage-type="<?php echo esc_attr((string) $attack['damage_type']); ?>">
                                         <span aria-hidden="true">⚔</span> Roll Attack
                                     </button>
-                                    <button type="button" class="gmrc-guild-roll-trigger gmrc-guild-roll-trigger--damage" data-guild-roll="damage" data-roll-kind="damage" data-roll-source="<?php echo esc_attr($attack['label']); ?>" data-roll-ability="<?php echo esc_attr((string) $attack['ability']); ?>" data-roll-proficiency="proficient" data-roll-label="<?php echo esc_attr($attack['label'] . ' — Damage'); ?>" data-roll-formula="<?php echo esc_attr($attack['damage_die']); ?>" data-roll-modifier="<?php echo esc_attr((string) $attack['damage_modifier']); ?>" data-roll-damage-type="<?php echo esc_attr($attack['damage_type']); ?>">
+                                    <button type="button" class="gmrc-guild-roll-trigger gmrc-guild-roll-trigger--damage" data-guild-roll="damage" data-roll-kind="damage" data-roll-target-mode="<?php echo esc_attr((string) ($attack['target_mode'] ?? 'none')); ?>" data-roll-default-target-kind="<?php echo esc_attr((string) ($attack['default_target_kind'] ?? '')); ?>" data-roll-source="<?php echo esc_attr($attack['label']); ?>" data-roll-ability="<?php echo esc_attr((string) $attack['ability']); ?>" data-roll-proficiency="proficient" data-roll-label="<?php echo esc_attr($attack['label'] . ' — Damage'); ?>" data-roll-formula="<?php echo esc_attr($attack['damage_die']); ?>" data-roll-modifier="<?php echo esc_attr((string) $attack['damage_modifier']); ?>" data-roll-damage-type="<?php echo esc_attr($attack['damage_type']); ?>">
                                         <span aria-hidden="true">✹</span> Roll Damage
                                     </button>
                                 </div>
@@ -1799,6 +1800,8 @@ $callingPathLabel = $callingPath !== ''
                                                         class="gmrc-guild-roll-trigger"
                                                         data-guild-roll="d20"
                                                         data-roll-kind="spell-attack"
+                                                        data-roll-target-mode="<?php echo esc_attr((string) ($ability['target_mode'] ?? 'none')); ?>"
+                                                        data-roll-default-target-kind="<?php echo esc_attr((string) ($ability['default_target_kind'] ?? '')); ?>"
                                                         data-roll-source="<?php echo esc_attr((string) $ability['label']); ?>"
                                                         data-roll-ability="<?php echo esc_attr((string) ($arcana['casting_ability'] ?? '')); ?>"
                                                         data-roll-proficiency="proficient"
@@ -1820,6 +1823,8 @@ $callingPathLabel = $callingPath !== ''
                                                         class="gmrc-guild-roll-trigger gmrc-guild-roll-trigger--formula"
                                                         data-guild-roll="<?php echo esc_attr($ability['roll_kind']); ?>"
                                                         data-roll-kind="<?php echo esc_attr($ability['roll_kind']); ?>"
+                                                        data-roll-target-mode="<?php echo esc_attr((string) ($ability['target_mode'] ?? 'none')); ?>"
+                                                        data-roll-default-target-kind="<?php echo esc_attr((string) ($ability['default_target_kind'] ?? '')); ?>"
                                                         data-roll-source="<?php echo esc_attr((string) $ability['label']); ?>"
                                                         data-roll-ability="<?php echo esc_attr((string) ($arcana['casting_ability'] ?? '')); ?>"
                                                         data-roll-proficiency="none"
@@ -2393,6 +2398,53 @@ $callingPathLabel = $callingPath !== ''
             <div><dt>Training</dt><dd data-guild-context-proficiency></dd></div>
         </dl>
 
+        <section
+            class="gmrc-guild-targeting"
+            data-guild-targeting
+            aria-labelledby="gmrc-guild-targeting-title"
+            hidden
+        >
+            <header>
+                <div>
+                    <p class="gmrc-eyebrow">Roll Recipient</p>
+                    <h3 id="gmrc-guild-targeting-title">Target</h3>
+                </div>
+                <span data-guild-target-status>No target selected</span>
+            </header>
+
+            <label>
+                <span>Target kind</span>
+                <select data-guild-target-kind>
+                    <option value="">No target selected</option>
+                    <?php foreach (($rollTargets ?? []) as $target) : ?>
+                        <option
+                            value="<?php echo esc_attr((string) $target['kind']); ?>"
+                            data-target-id="<?php echo esc_attr((string) ($target['id'] ?? '')); ?>"
+                            data-target-label="<?php echo esc_attr((string) $target['target_label']); ?>"
+                            data-target-resolved="<?php echo ! empty($target['resolved']) ? 'true' : 'false'; ?>"
+                        >
+                            <?php echo esc_html((string) $target['label']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+
+            <label data-guild-target-name-row hidden>
+                <span>Target name / label</span>
+                <input
+                    type="text"
+                    maxlength="80"
+                    autocomplete="off"
+                    placeholder="e.g. Gravy Golem"
+                    data-guild-target-name
+                >
+            </label>
+
+            <p data-guild-target-note>
+                Targeting is recorded with the roll only. No HP changes in this phase.
+            </p>
+        </section>
+
         <button
             type="button"
             class="gmrc-guild-favourite-toggle"
@@ -2571,6 +2623,11 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-guild-dice-result__mode" data-guild-dice-mode></p>
                 <p class="gmrc-guild-dice-result__math" data-guild-dice-math></p>
                 <strong class="gmrc-guild-dice-result__total" data-guild-dice-total></strong>
+                <p
+                    class="gmrc-guild-dice-result__target"
+                    data-guild-dice-target-result
+                    hidden
+                ></p>
                 <p class="gmrc-guild-dice-result__auby" data-guild-dice-auby hidden></p>
 
                 <div

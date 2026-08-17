@@ -31,6 +31,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Inventory\Models\ItemCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Repositories\CharacterInventoryRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Services\InventoryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Combat\Services\AttackPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Combat\Targets\Services\RollTargetCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\ArcanePantryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\RisingRegisterPresenter;
@@ -672,6 +673,9 @@ final class CharacterController
                             $inventory
                         ),
                     'attacks' => $attacks,
+                    'rollTargets' => (
+                        new RollTargetCatalogue()
+                    )->forCharacter($character),
                     'arcana' => $arcana,
                     'progression' => $progression,
                     'pathGifts' => $pathGifts,

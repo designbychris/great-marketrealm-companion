@@ -140,6 +140,14 @@ final class ArcanePantryPresenterTest extends TestCase
             '3d4',
             $byId['market-missile']['formula']
         );
+        self::assertSame(
+            'creature',
+            $byId['produce-spark']['target_mode']
+        );
+        self::assertSame(
+            '',
+            $byId['produce-spark']['default_target_kind']
+        );
     }
 
     public function testGrocerReceivesClassFeaturesWithoutSpellSlots(): void

@@ -172,6 +172,20 @@ final class ArcanePantryPresenter
                 ? $spellAttack
                 : null,
             'roll_modifier' => $modifier,
+            'target_mode' => (
+                $ability->isSpellAttack()
+                || in_array(
+                    $ability->rollKind(),
+                    ['damage', 'healing'],
+                    true
+                )
+            )
+                ? 'creature'
+                : 'none',
+            'default_target_kind' =>
+                strtolower($ability->range()) === 'self'
+                    ? 'self'
+                    : '',
             'learned' => $learned,
             'spell_level' => $ability->spellLevel(),
         ];

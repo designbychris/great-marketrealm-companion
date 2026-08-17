@@ -202,10 +202,24 @@
         const situationalShortcuts = Array.from(
             tray.querySelectorAll('[data-guild-situational-shortcut]')
         );
+        const targeting = tray.querySelector('[data-guild-targeting]');
+        const targetKind = tray.querySelector('[data-guild-target-kind]');
+        const targetNameRow = tray.querySelector(
+            '[data-guild-target-name-row]'
+        );
+        const targetName = tray.querySelector('[data-guild-target-name]');
+        const targetStatus = tray.querySelector(
+            '[data-guild-target-status]'
+        );
+        const targetNote = tray.querySelector('[data-guild-target-note]');
+        const targetResult = tray.querySelector(
+            '[data-guild-dice-target-result]'
+        );
 
         let activeTrigger = null;
         let pendingCriticalDamage = null;
         const characterId = ledger.dataset.characterId || 'unknown';
+        const characterName = ledger.dataset.characterName || 'Adventurer';
         const historyKey = 'gmrc:guild-dice:history:' + characterId;
         const favouritesKey = 'gmrc:guild-dice:favourites:' + characterId;
         const recent = [];
@@ -345,6 +359,10 @@
                 source: activeTrigger.dataset.rollSource || '',
                 ability: activeTrigger.dataset.rollAbility || '',
                 proficiency: activeTrigger.dataset.rollProficiency || 'none',
+                targetMode:
+                    activeTrigger.dataset.rollTargetMode || 'none',
+                defaultTargetKind:
+                    activeTrigger.dataset.rollDefaultTargetKind || '',
                 formula: activeTrigger.dataset.rollFormula || '',
                 baseFormula: activeTrigger.dataset.rollBaseFormula || '',
                 scalingSource:
@@ -361,6 +379,172 @@
                 criticalDamageType:
                     activeTrigger.dataset.rollCriticalDamageType || ''
             };
+        };
+
+        const selectedTarget = function (selection) {
+            if (
+                !selection
+                || selection.targetMode !== 'creature'
+                || !(targetKind instanceof HTMLSelectElement)
+                || targetKind.value === ''
+            ) {
+                return null;
+            }
+
+            const option = targetKind.selectedOptions[0];
+
+            if (!(option instanceof HTMLOptionElement)) {
+                return null;
+            }
+
+            const kind = targetKind.value;
+            const selfTarget = kind === 'self';
+            const customLabel = targetName instanceof HTMLInputElement
+                ? targetName.value.trim()
+                : '';
+            const fallbackLabel =
+                option.dataset.targetLabel
+                || option.textContent
+                || 'Target';
+
+            return {
+                kind: kind,
+                id: selfTarget
+                    ? (
+                        option.dataset.targetId
+                        || characterId
+                    )
+                    : (
+                        option.dataset.targetId
+                        || ''
+                    ),
+                label: selfTarget
+                    ? characterName
+                    : (
+                        customLabel
+                        || fallbackLabel.trim()
+                    ),
+                resolved:
+                    option.dataset.targetResolved === 'true'
+                    && (
+                        selfTarget
+                        || (option.dataset.targetId || '') !== ''
+                    )
+            };
+        };
+
+        const targetKindLabel = function (kind) {
+            const labels = {
+                self: 'Self',
+                ally: 'Ally',
+                'player-character': 'Player Character',
+                npc: 'NPC',
+                'hostile-creature': 'Hostile Creature'
+            };
+
+            return labels[kind] || 'Target';
+        };
+
+        const targetText = function (target) {
+            if (!target) {
+                return '';
+            }
+
+            const kindLabel = targetKindLabel(target.kind);
+
+            return target.label === kindLabel
+                ? kindLabel
+                : kindLabel + ' · ' + target.label;
+        };
+
+        const targetSuffix = function (target) {
+            const text = targetText(target);
+
+            return text ? ' — Target: ' + text : '';
+        };
+
+        const paintTargetResult = function (target) {
+            if (!(targetResult instanceof HTMLElement)) {
+                return;
+            }
+
+            if (!target) {
+                targetResult.textContent = '';
+                targetResult.hidden = true;
+                return;
+            }
+
+            targetResult.textContent = 'Target: '
+                + targetText(target)
+                + (
+                    target.resolved
+                        ? ' · linked'
+                        : ' · reference only'
+                );
+            targetResult.hidden = false;
+        };
+
+        const refreshTargeting = function (selection) {
+            if (!(targeting instanceof HTMLElement)) {
+                return;
+            }
+
+            const enabled = Boolean(
+                selection
+                && selection.targetMode === 'creature'
+            );
+
+            targeting.hidden = !enabled;
+
+            if (!enabled) {
+                paintTargetResult(null);
+                return;
+            }
+
+            if (
+                targetKind instanceof HTMLSelectElement
+                && targetKind.value === ''
+                && selection.defaultTargetKind
+            ) {
+                targetKind.value = selection.defaultTargetKind;
+            }
+
+            const kind = targetKind instanceof HTMLSelectElement
+                ? targetKind.value
+                : '';
+            const needsName = kind !== '' && kind !== 'self';
+
+            if (targetNameRow instanceof HTMLElement) {
+                targetNameRow.hidden = !needsName;
+            }
+
+            if (
+                targetName instanceof HTMLInputElement
+                && !needsName
+            ) {
+                targetName.value = '';
+            }
+
+            const target = selectedTarget(selection);
+
+            if (targetStatus instanceof HTMLElement) {
+                targetStatus.textContent = target
+                    ? targetKindLabel(target.kind)
+                    : 'No target selected';
+            }
+
+            if (targetNote instanceof HTMLElement) {
+                if (!target) {
+                    targetNote.textContent =
+                        'No target has been attached to this roll yet.';
+                } else if (target.resolved) {
+                    targetNote.textContent =
+                        'This target is linked to a known Ledger record. No HP changes occur in this phase.';
+                } else {
+                    targetNote.textContent =
+                        'This is a descriptive target reference only. A later target registry must resolve it before HP can change.';
+                }
+            }
         };
 
         const favouriteIndex = function (key) {
@@ -709,7 +893,19 @@
         };
 
         const resetSituational = function () {
-            if (situationalFlat instanceof HTMLInputElement) {
+            if (targetKind instanceof HTMLSelectElement) {
+            targetKind.addEventListener('change', function () {
+                refreshTargeting(current());
+            });
+        }
+
+        if (targetName instanceof HTMLInputElement) {
+            targetName.addEventListener('input', function () {
+                refreshTargeting(current());
+            });
+        }
+
+        if (situationalFlat instanceof HTMLInputElement) {
                 situationalFlat.value = '0';
             }
 
@@ -850,6 +1046,10 @@
                             dieSides: 0,
                             dieValue: 0
                         },
+                target: details.target
+                    && typeof details.target === 'object'
+                        ? details.target
+                        : null,
                 time: new Date().toLocaleTimeString([], {
                     hour: '2-digit',
                     minute: '2-digit'
@@ -889,7 +1089,7 @@
             }
         };
 
-        const prepareCriticalFollowUp = function (selection) {
+        const prepareCriticalFollowUp = function (selection, target) {
             clearCriticalFollowUp();
 
             if (
@@ -905,7 +1105,8 @@
                 label: selection.source || selection.label,
                 formula: selection.criticalFormula,
                 modifier: selection.criticalModifier,
-                damageType: selection.criticalDamageType || 'damage'
+                damageType: selection.criticalDamageType || 'damage',
+                target: target
             };
 
             criticalDamage.textContent = 'Roll Critical Damage — '
@@ -1076,6 +1277,8 @@
             }
 
             paintContext(selection);
+            refreshTargeting(selection);
+            paintTargetResult(null);
 
             if (result instanceof HTMLElement) {
                 result.hidden = true;
@@ -1115,6 +1318,12 @@
             if (context instanceof HTMLElement) {
                 context.hidden = true;
             }
+
+            if (targeting instanceof HTMLElement) {
+                targeting.hidden = true;
+            }
+
+            paintTargetResult(null);
 
             if (result instanceof HTMLElement) {
                 result.hidden = true;
@@ -1158,6 +1367,7 @@
         const performFormula = function (selection) {
             clearReaction();
 
+            const target = selectedTarget(selection);
             const rolled = rollFormula(selection.formula, false);
 
             if (!rolled) {
@@ -1206,6 +1416,8 @@
             }
 
             hideAuby();
+            paintTargetResult(target);
+            paintTargetResult(target);
             showResult();
 
             remember(
@@ -1224,14 +1436,16 @@
                 + ' = '
                 + total
                 + ' '
-                + resultLabel,
+                + resultLabel
+                + targetSuffix(target),
                 {
                     kind: selection.kind,
                     formula: selection.formula,
                     dice: rolled.dice,
                     modifier: selection.modifier,
                     total: total,
-                    situational: adjustment
+                    situational: adjustment,
+                    target: target
                 }
             );
 
@@ -1241,6 +1455,7 @@
         const performD20 = function (selection, mode) {
             clearCriticalFollowUp();
 
+            const target = selectedTarget(selection);
             const rolled = rollMode(mode);
             const adjustment = situationalAdjustment();
             const total = rolled.natural
@@ -1298,7 +1513,10 @@
                     aubyNode.hidden = false;
 
                     if (selection.kind === 'attack') {
-                        prepareCriticalFollowUp(selection);
+                        prepareCriticalFollowUp(
+                            selection,
+                            target
+                        );
                     }
                 } else if (rolled.natural === 1) {
                     aubyNode.textContent = '“The Guild has elected not to record that one.” — Auby';
@@ -1332,7 +1550,8 @@
                     reactionAnnouncement
                         ? ' — ' + reactionAnnouncement
                         : ''
-                ),
+                )
+                + targetSuffix(target),
                 {
                     kind: selection.kind,
                     formula: '1d20',
@@ -1341,7 +1560,8 @@
                     total: total,
                     natural: rolled.natural,
                     reaction: naturalReaction(rolled.natural),
-                    situational: adjustment
+                    situational: adjustment,
+                    target: target
                 }
             );
 
@@ -1405,6 +1625,7 @@
             }
 
             hideAuby();
+            paintTargetResult(critical.target || null);
             showResult();
 
             remember(
@@ -1424,7 +1645,8 @@
                 + ' = '
                 + total
                 + ' '
-                + resultLabel,
+                + resultLabel
+                + targetSuffix(critical.target || null),
                 {
                     kind: 'critical-damage',
                     formula: critical.formula,
@@ -1432,7 +1654,8 @@
                     modifier: critical.modifier,
                     total: total,
                     reaction: 'critical-damage',
-                    situational: adjustment
+                    situational: adjustment,
+                    target: critical.target || null
                 }
             );
 
@@ -1461,6 +1684,12 @@
         const performFreeRoll = function () {
             activeTrigger = null;
             clearCriticalFollowUp();
+            paintTargetResult(null);
+
+            if (targeting instanceof HTMLElement) {
+                targeting.hidden = true;
+            }
+
             updateFavouriteToggle();
 
             const requestedQuantity = Number(
