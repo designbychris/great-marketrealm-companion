@@ -1405,7 +1405,6 @@
 
             hideAuby();
             paintTargetResult(target);
-            paintTargetResult(target);
             showResult();
 
             remember(
@@ -1514,6 +1513,7 @@
                 }
             }
 
+            paintTargetResult(target);
             showResult();
 
             remember(
