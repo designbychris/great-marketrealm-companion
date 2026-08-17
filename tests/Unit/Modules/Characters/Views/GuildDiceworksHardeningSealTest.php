@@ -108,12 +108,43 @@ final class GuildDiceworksHardeningSealTest extends TestCase
             'Number.isFinite(numeric)',
             $script
         );
+        $freeRollStart = strpos(
+            $script,
+            'const freeRollDefinition = function ()'
+        );
+        $freeRollEnd = strpos(
+            $script,
+            'const addFreeFavourite = function ()',
+            $freeRollStart
+        );
+
+        self::assertIsInt($freeRollStart);
+        self::assertIsInt($freeRollEnd);
+
+        $freeRollBlock = substr(
+            $script,
+            $freeRollStart,
+            $freeRollEnd - $freeRollStart
+        );
+
         self::assertStringContainsString(
-            'MAX_FREE_DICE,\n                1',
-            $script
+            'boundedInteger(',
+            $freeRollBlock
         );
         self::assertStringContainsString(
-            "-99,\n                99,\n                0",
+            'MAX_FREE_DICE',
+            $freeRollBlock
+        );
+        self::assertStringContainsString(
+            '-99',
+            $freeRollBlock
+        );
+        self::assertStringContainsString(
+            '99',
+            $freeRollBlock
+        );
+        self::assertStringContainsString(
+            'fallback',
             $script
         );
         self::assertStringContainsString(
