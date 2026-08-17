@@ -360,3 +360,36 @@
         scroll-behavior: auto;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.10.11 — Spell & Ability Roll Scaling
+ * =============================================================== */
+.gmrc-arcane-scaling {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: .28rem .42rem;
+    margin: .5rem 0 0;
+    padding: .4rem .5rem;
+    border-left: 3px solid rgba(96, 55, 115, .54);
+    background: rgba(96, 55, 115, .055);
+    color: rgba(66, 42, 29, .68);
+    font-size: .58rem;
+}
+
+.gmrc-arcane-scaling span {
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .045em;
+}
+
+.gmrc-arcane-scaling strong {
+    color: #603773;
+    font-size: .72rem;
+}
+
+.gmrc-arcane-scaling small {
+    color: rgba(66, 42, 29, .6);
+    font-size: .56rem;
+}

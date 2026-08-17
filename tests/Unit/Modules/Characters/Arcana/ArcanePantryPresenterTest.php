@@ -83,6 +83,61 @@ final class ArcanePantryPresenterTest extends TestCase
         );
     }
 
+    public function testWizardCantripFormulaScalesAtCharacterLevelFive(): void
+    {
+        $average = AbilityScore::fromInt(10);
+        $intelligence = AbilityScore::fromInt(16);
+
+        $character = Character::reconstitute(
+            CharacterId::fromString('01KZM4W72K1G12FY75R0BTQREW'),
+            CharacterName::fromString('Magic'),
+            Race::fromString('frostreem'),
+            CharacterClass::fromString('wizard'),
+            Level::fromInt(5),
+            Experience::fromInt(6500),
+            HitPoints::fromValues(26, 26),
+            AbilityScores::fromScores(
+                $average,
+                $average,
+                $average,
+                $intelligence,
+                $average,
+                $average
+            )
+        );
+
+        $arcana = (new ArcanePantryPresenter(
+            new ArcaneAbilityCatalogue()
+        ))->present($character);
+
+        $byId = [];
+
+        foreach ($arcana['entries'] as $entry) {
+            $byId[$entry['id']] = $entry;
+        }
+
+        self::assertSame('2d10', $byId['produce-spark']['formula']);
+        self::assertSame('1d10', $byId['produce-spark']['base_formula']);
+        self::assertSame(
+            'character-level',
+            $byId['produce-spark']['roll_scaling']['source']
+        );
+        self::assertSame(
+            5,
+            $byId['produce-spark']['roll_scaling']['resolved_at']
+        );
+        self::assertSame(
+            [1 => '3d4', 2 => '4d4', 3 => '5d4', 4 => '6d4',
+             5 => '7d4', 6 => '8d4', 7 => '9d4', 8 => '10d4',
+             9 => '11d4'],
+            $byId['market-missile']['roll_scaling']['slot_options']
+        );
+        self::assertSame(
+            '3d4',
+            $byId['market-missile']['formula']
+        );
+    }
+
     public function testGrocerReceivesClassFeaturesWithoutSpellSlots(): void
     {
         $arcana = $this->present('grocer', 10);

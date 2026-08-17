@@ -1765,6 +1765,33 @@ $callingPathLabel = $callingPath !== ''
                                                 </p>
                                             <?php endif; ?>
 
+                                            <?php if (
+                                                ! empty(
+                                                    $ability['roll_scaling']['scalable']
+                                                )
+                                                && $ability['formula'] !== null
+                                            ) : ?>
+                                                <p class="gmrc-arcane-scaling">
+                                                    <span>Current roll</span>
+                                                    <strong><?php echo esc_html(
+                                                        (string) $ability['formula']
+                                                    ); ?></strong>
+                                                    <small>
+                                                        <?php echo esc_html(
+                                                            ($ability['roll_scaling']['source'] ?? 'base')
+                                                                === 'character-level'
+                                                                ? 'Scaled by adventurer level'
+                                                                : (
+                                                                    ($ability['roll_scaling']['slot_options'] ?? [])
+                                                                    !== []
+                                                                        ? 'Prepared for higher-slot scaling'
+                                                                        : 'PHP-resolved scaling'
+                                                                )
+                                                        ); ?>
+                                                    </small>
+                                                </p>
+                                            <?php endif; ?>
+
                                             <div class="gmrc-arcane-card__rolls">
                                                 <?php if ($ability['spell_attack'] !== null) : ?>
                                                     <button
@@ -1802,6 +1829,9 @@ $callingPathLabel = $callingPath !== ''
                                                             . ucfirst((string) $ability['roll_kind'])
                                                         ); ?>"
                                                         data-roll-formula="<?php echo esc_attr($ability['formula']); ?>"
+                                                        data-roll-base-formula="<?php echo esc_attr((string) ($ability['base_formula'] ?? '')); ?>"
+                                                        data-roll-scaling-source="<?php echo esc_attr((string) ($ability['roll_scaling']['source'] ?? 'base')); ?>"
+                                                        data-roll-scaling-at="<?php echo esc_attr((string) ($ability['roll_scaling']['resolved_at'] ?? '')); ?>"
                                                         data-roll-modifier="<?php echo esc_attr((string) $ability['roll_modifier']); ?>"
                                                         data-roll-damage-type="<?php echo esc_attr((string) ($ability['damage_type'] ?? '')); ?>"
                                                     >

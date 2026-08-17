@@ -32,7 +32,13 @@ final class ArcaneAbilityCatalogue
                 'radiant',
                 null,
                 false,
-                true
+                true,
+                characterLevelScaling: [
+                    1 => '1d10',
+                    5 => '2d10',
+                    11 => '3d10',
+                    17 => '4d10',
+                ]
             ),
             new ArcaneAbilityDefinition(
                 'vine-lash',
@@ -49,7 +55,13 @@ final class ArcaneAbilityCatalogue
                 'piercing',
                 null,
                 false,
-                true
+                true,
+                characterLevelScaling: [
+                    1 => '1d6',
+                    5 => '2d6',
+                    11 => '3d6',
+                    17 => '4d6',
+                ]
             ),
             new ArcaneAbilityDefinition(
                 'bureaucratic-hex',
@@ -66,7 +78,13 @@ final class ArcaneAbilityCatalogue
                 'force',
                 null,
                 false,
-                true
+                true,
+                characterLevelScaling: [
+                    1 => '1d10',
+                    5 => '2d10',
+                    11 => '3d10',
+                    17 => '4d10',
+                ]
             ),
             new ArcaneAbilityDefinition(
                 'cutting-remark',
@@ -81,7 +99,13 @@ final class ArcaneAbilityCatalogue
                 'damage',
                 '1d6',
                 'psychic',
-                'wisdom'
+                'wisdom',
+                characterLevelScaling: [
+                    1 => '1d6',
+                    5 => '2d6',
+                    11 => '3d6',
+                    17 => '4d6',
+                ]
             ),
             new ArcaneAbilityDefinition(
                 'sacred-brine',
@@ -96,7 +120,13 @@ final class ArcaneAbilityCatalogue
                 'damage',
                 '1d8',
                 'radiant',
-                'dexterity'
+                'dexterity',
+                characterLevelScaling: [
+                    1 => '1d8',
+                    5 => '2d8',
+                    11 => '3d8',
+                    17 => '4d8',
+                ]
             ),
             new ArcaneAbilityDefinition(
                 'restorative-preserve',
@@ -113,7 +143,18 @@ final class ArcaneAbilityCatalogue
                 null,
                 null,
                 true,
-                spellLevel: 1
+                spellLevel: 1,
+                slotLevelScaling: [
+                    1 => '1d8',
+                    2 => '2d8',
+                    3 => '3d8',
+                    4 => '4d8',
+                    5 => '5d8',
+                    6 => '6d8',
+                    7 => '7d8',
+                    8 => '8d8',
+                    9 => '9d8',
+                ]
             ),
             new ArcaneAbilityDefinition(
                 'pantry-ward',
@@ -140,7 +181,18 @@ final class ArcaneAbilityCatalogue
                 'damage',
                 '3d4',
                 'force',
-                spellLevel: 1
+                spellLevel: 1,
+                slotLevelScaling: [
+                    1 => '3d4',
+                    2 => '4d4',
+                    3 => '5d4',
+                    4 => '6d4',
+                    5 => '7d4',
+                    6 => '8d4',
+                    7 => '9d4',
+                    8 => '10d4',
+                    9 => '11d4',
+                ]
             ),
             new ArcaneAbilityDefinition(
                 'aisle-step',
@@ -273,7 +325,19 @@ final class ArcaneAbilityCatalogue
                 'Once per turn',
                 'damage',
                 '1d6',
-                'weapon'
+                'weapon',
+                characterLevelScaling: [
+                    1 => '1d6',
+                    3 => '2d6',
+                    5 => '3d6',
+                    7 => '4d6',
+                    9 => '5d6',
+                    11 => '6d6',
+                    13 => '7d6',
+                    15 => '8d6',
+                    17 => '9d6',
+                    19 => '10d6',
+                ]
             ),
             new ArcaneAbilityDefinition(
                 'martial-arts',
@@ -287,7 +351,13 @@ final class ArcaneAbilityCatalogue
                 'At will',
                 'damage',
                 '1d4',
-                'bludgeoning'
+                'bludgeoning',
+                characterLevelScaling: [
+                    1 => '1d4',
+                    5 => '1d6',
+                    11 => '1d8',
+                    17 => '1d10',
+                ]
             ),
             new ArcaneAbilityDefinition(
                 'divine-sense',

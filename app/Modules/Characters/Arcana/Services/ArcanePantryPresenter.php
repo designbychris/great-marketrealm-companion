@@ -15,6 +15,8 @@ defined('ABSPATH') || exit;
  */
 final class ArcanePantryPresenter
 {
+    private ArcaneRollScalingResolver $rollScaling;
+
     /** @var array<int,array<int,int>> */
     private const FULL_CASTER_SLOTS = [
         1=>[2,0,0,0,0,0,0,0,0], 2=>[3,0,0,0,0,0,0,0,0],
@@ -29,8 +31,11 @@ final class ArcanePantryPresenter
         19=>[4,3,3,3,3,2,1,1,1], 20=>[4,3,3,3,3,2,2,1,1],
     ];
     public function __construct(
-        private ArcaneAbilityCatalogue $catalogue
+        private ArcaneAbilityCatalogue $catalogue,
+        ?ArcaneRollScalingResolver $rollScaling = null
     ) {
+        $this->rollScaling =
+            $rollScaling ?? new ArcaneRollScalingResolver();
     }
 
     /** @return array<string, mixed> */
@@ -124,6 +129,14 @@ final class ArcanePantryPresenter
             $modifier = $level;
         }
 
+        $scaling = $this->rollScaling->resolve(
+            $ability,
+            $level,
+            $ability->spellLevel() > 0
+                ? $ability->spellLevel()
+                : null
+        );
+
         return [
             'id' => $ability->id(),
             'label' => $ability->label(),
@@ -134,7 +147,9 @@ final class ArcanePantryPresenter
             'duration' => $ability->duration(),
             'uses' => $ability->uses(),
             'roll_kind' => $ability->rollKind(),
-            'formula' => $ability->formula(),
+            'formula' => $scaling['formula'],
+            'base_formula' => $scaling['base_formula'],
+            'roll_scaling' => $scaling,
             'damage_type' => $ability->damageType(),
             'save_ability' => $ability->saveAbility(),
             'save_dc' => $ability->saveAbility() !== null

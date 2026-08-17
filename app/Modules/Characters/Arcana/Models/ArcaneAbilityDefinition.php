@@ -31,7 +31,10 @@ final class ArcaneAbilityDefinition
         private bool $addCastingModifier = false,
         private bool $spellAttack = false,
         private int $minimumLevel = 1,
-        private int $spellLevel = 0
+        private int $spellLevel = 0,
+        private array $characterLevelScaling = [],
+        private array $slotLevelScaling = [],
+        private array $featureRankScaling = []
     ) {
     }
 
@@ -52,6 +55,24 @@ final class ArcaneAbilityDefinition
     public function isSpellAttack(): bool { return $this->spellAttack; }
     public function minimumLevel(): int { return $this->minimumLevel; }
     public function spellLevel(): int { return $this->spellLevel; }
+
+    /** @return array<int,string> */
+    public function characterLevelScaling(): array
+    {
+        return $this->characterLevelScaling;
+    }
+
+    /** @return array<int,string> */
+    public function slotLevelScaling(): array
+    {
+        return $this->slotLevelScaling;
+    }
+
+    /** @return array<int,string> */
+    public function featureRankScaling(): array
+    {
+        return $this->featureRankScaling;
+    }
 
     public function supportsClass(string $class): bool
     {

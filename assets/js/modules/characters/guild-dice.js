@@ -264,7 +264,6 @@
                 trigger.dataset.rollKind || 'check',
                 trigger.dataset.rollSource || '',
                 trigger.dataset.rollLabel || '',
-                trigger.dataset.rollFormula || '',
                 trigger.dataset.rollDamageType || ''
             ].join('|');
         };
@@ -272,6 +271,22 @@
         const findTriggerByReference = function (reference) {
             return triggers.find(function (trigger) {
                 return triggerReference(trigger) === reference;
+            }) || null;
+        };
+
+        const findTriggerForFavourite = function (entry) {
+            const exact = findTriggerByReference(entry.key);
+
+            if (exact instanceof HTMLButtonElement) {
+                return exact;
+            }
+
+            return triggers.find(function (trigger) {
+                return (
+                    entry.type === 'character'
+                    && typeof entry.label === 'string'
+                    && trigger.dataset.rollLabel === entry.label
+                );
             }) || null;
         };
 
@@ -331,6 +346,11 @@
                 ability: activeTrigger.dataset.rollAbility || '',
                 proficiency: activeTrigger.dataset.rollProficiency || 'none',
                 formula: activeTrigger.dataset.rollFormula || '',
+                baseFormula: activeTrigger.dataset.rollBaseFormula || '',
+                scalingSource:
+                    activeTrigger.dataset.rollScalingSource || 'base',
+                scalingAt:
+                    Number(activeTrigger.dataset.rollScalingAt) || 0,
                 damageType: activeTrigger.dataset.rollDamageType || '',
                 resultSuffix: activeTrigger.dataset.rollResultSuffix || '',
                 criticalFormula:
@@ -505,7 +525,7 @@
 
         const runFavourite = function (entry) {
             if (entry.type === 'character') {
-                const trigger = findTriggerByReference(entry.key);
+                const trigger = findTriggerForFavourite(entry);
 
                 if (!(trigger instanceof HTMLButtonElement)) {
                     return;
@@ -546,7 +566,7 @@
                 const roll = document.createElement('button');
                 const remove = document.createElement('button');
                 const trigger = entry.type === 'character'
-                    ? findTriggerByReference(entry.key)
+                    ? findTriggerForFavourite(entry)
                     : null;
 
                 wrapper.className = 'gmrc-guild-quick-roll';
