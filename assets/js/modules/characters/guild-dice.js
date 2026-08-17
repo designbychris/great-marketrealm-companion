@@ -6,6 +6,27 @@
     const MAX_FREE_DICE = 20;
     const SUPPORTED_DICE = [4, 6, 8, 10, 12, 20, 100];
 
+    const boundedInteger = function (
+        value,
+        minimum,
+        maximum,
+        fallback
+    ) {
+        const numeric = Number(value);
+
+        if (!Number.isFinite(numeric)) {
+            return fallback;
+        }
+
+        return Math.min(
+            maximum,
+            Math.max(
+                minimum,
+                Math.floor(numeric)
+            )
+        );
+    };
+
     const secureDie = function (sides) {
         const safeSides = Math.max(2, Number(sides) || 20);
 
@@ -42,8 +63,18 @@
             return null;
         }
 
+        const count = Number(match[1]);
+
+        if (
+            !Number.isInteger(count)
+            || count < 1
+            || count > MAX_FREE_DICE
+        ) {
+            return null;
+        }
+
         return {
-            count: Math.min(MAX_FREE_DICE, Math.max(1, Number(match[1]))),
+            count: count,
             sides: Number(match[2])
         };
     };
@@ -93,9 +124,12 @@
     };
 
     const rollMode = function (mode) {
+        const safeMode = ['normal', 'advantage', 'disadvantage'].includes(mode)
+            ? mode
+            : 'normal';
         const first = secureD20();
 
-        if (mode === 'normal') {
+        if (safeMode === 'normal') {
             return {
                 natural: first,
                 dice: [first],
@@ -104,7 +138,7 @@
         }
 
         const second = secureD20();
-        const keepHigher = mode === 'advantage';
+        const keepHigher = safeMode === 'advantage';
         const natural = keepHigher
             ? Math.max(first, second)
             : Math.min(first, second);
@@ -834,29 +868,27 @@
         };
 
         const freeRollDefinition = function () {
-            const quantity = Math.min(
+            const quantity = boundedInteger(
+                freeQuantity instanceof HTMLInputElement
+                    ? freeQuantity.value
+                    : 1,
+                1,
                 MAX_FREE_DICE,
-                Math.max(
-                    1,
-                    Math.floor(
-                        Number(
-                            freeQuantity instanceof HTMLInputElement
-                                ? freeQuantity.value
-                                : 1
-                        ) || 1
-                    )
-                )
+                1
             );
             const sides = Number(
                 freeDie instanceof HTMLSelectElement
                     ? freeDie.value
                     : 6
             );
-            const modifier = Number(
+            const modifier = boundedInteger(
                 freeModifier instanceof HTMLInputElement
                     ? freeModifier.value
-                    : 0
-            ) || 0;
+                    : 0,
+                -99,
+                99,
+                0
+            );
             const safeSides = SUPPORTED_DICE.includes(sides)
                 ? sides
                 : 6;
@@ -1977,15 +2009,20 @@
                     ? freeDie.value
                     : 6
             );
-            const modifier = Number(
+            const modifier = boundedInteger(
                 freeModifier instanceof HTMLInputElement
                     ? freeModifier.value
-                    : 0
-            ) || 0;
+                    : 0,
+                -99,
+                99,
+                0
+            );
 
-            const quantity = Math.min(
+            const quantity = boundedInteger(
+                requestedQuantity,
+                1,
                 MAX_FREE_DICE,
-                Math.max(1, Math.floor(requestedQuantity || 1))
+                1
             );
             const sides = SUPPORTED_DICE.includes(requestedSides)
                 ? requestedSides
@@ -2224,9 +2261,11 @@
         if (freeQuantity instanceof HTMLInputElement) {
             freeQuantity.addEventListener('change', function () {
                 freeQuantity.value = String(
-                    Math.min(
+                    boundedInteger(
+                        freeQuantity.value,
+                        1,
                         MAX_FREE_DICE,
-                        Math.max(1, Math.floor(Number(freeQuantity.value) || 1))
+                        1
                     )
                 );
             });
