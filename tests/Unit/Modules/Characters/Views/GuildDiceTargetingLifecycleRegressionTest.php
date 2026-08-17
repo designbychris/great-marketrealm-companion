@@ -69,8 +69,8 @@ final class GuildDiceTargetingLifecycleRegressionTest extends TestCase
         );
 
         self::assertIsString($script);
-        self::assertGreaterThanOrEqual(
-            3,
+        self::assertSame(
+            2,
             substr_count(
                 $script,
                 'paintTargetResult(target);'
@@ -82,6 +82,10 @@ final class GuildDiceTargetingLifecycleRegressionTest extends TestCase
                 $script,
                 "paintTargetResult(target);\n            paintTargetResult(target);"
             )
+        );
+        self::assertStringContainsString(
+            'paintTargetResult(critical.target || null);',
+            $script
         );
     }
 }
