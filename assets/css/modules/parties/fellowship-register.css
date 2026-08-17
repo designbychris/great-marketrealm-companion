@@ -746,3 +746,138 @@
         outline-color: Highlight;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.11.1E.2 — Exorcising the Fellowship Portraits
+ *
+ * Fellowship portraits are static display surfaces. They must never inherit
+ * the live Portrait Studio sketch/reveal state.
+ * =============================================================== */
+
+/*
+ * Static completed-paint state.
+ *
+ * Mirrors the successful Character Register treatment without using the
+ * .gmrc-illuminated-portrait JavaScript boot selector.
+ */
+.gmrc-fellowship-portrait
+.gmrc-portrait-layer--race,
+.gmrc-fellowship-portrait
+.gmrc-portrait-layer--class,
+.gmrc-fellowship-member__portrait
+.gmrc-portrait-layer--race,
+.gmrc-fellowship-member__portrait
+.gmrc-portrait-layer--class {
+    opacity: 1 !important;
+    filter: blur(0) saturate(1) !important;
+    transform:
+        translateY(
+            var(
+                --gmrc-portrait-figure-shift,
+                0
+            )
+        )
+        scale(1) !important;
+    animation: none !important;
+    transition: none !important;
+}
+
+.gmrc-fellowship-portrait
+.gmrc-portrait-layer--effects,
+.gmrc-fellowship-member__portrait
+.gmrc-portrait-layer--effects {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: translateY(0) scale(1) !important;
+    animation: none !important;
+    transition: none !important;
+}
+
+.gmrc-fellowship-portrait
+.gmrc-portrait-layers__equipment,
+.gmrc-fellowship-member__portrait
+.gmrc-portrait-layers__equipment,
+.gmrc-fellowship-portrait
+.gmrc-g2-breathing-group,
+.gmrc-fellowship-member__portrait
+.gmrc-g2-breathing-group,
+.gmrc-fellowship-portrait
+.gmrc-g2-character,
+.gmrc-fellowship-member__portrait
+.gmrc-g2-character,
+.gmrc-fellowship-portrait
+.gmrc-g2-pollen,
+.gmrc-fellowship-member__portrait
+.gmrc-g2-pollen {
+    animation: none !important;
+    transition: none !important;
+}
+
+.gmrc-fellowship-portrait
+.gmrc-portrait-layers__spark,
+.gmrc-fellowship-member__portrait
+.gmrc-portrait-layers__spark {
+    opacity: 0.72 !important;
+    animation: none !important;
+}
+
+/*
+ * A Fellowship company portrait is an assembled illustration, not a stack
+ * of individual framed Character portraits.
+ *
+ * Standard and Gen 2 generated background/frame artwork is hidden only in
+ * the company composition. Individual roster portraits retain their normal
+ * static portrait presentation.
+ */
+.gmrc-fellowship-portrait__canvas
+.gmrc-portrait-layer--background,
+.gmrc-fellowship-portrait__canvas
+.gmrc-portrait-layer--frame,
+.gmrc-fellowship-portrait__canvas
+.gmrc-g2-background,
+.gmrc-fellowship-portrait__canvas
+.gmrc-g2-frame {
+    display: none !important;
+}
+
+/*
+ * Remove the Fellowship component's own per-adventurer picture frame too.
+ * The outer Fellowship portrait supplies the shared company backdrop.
+ */
+.gmrc-fellowship-portrait__canvas {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.gmrc-fellowship-portrait__canvas svg {
+    overflow: visible;
+    background: transparent !important;
+}
+
+/*
+ * Custom uploaded images are raster media and cannot have an embedded
+ * background/frame safely removed here. They still receive the borderless
+ * company treatment but retain their authored pixels.
+ */
+.gmrc-fellowship-portrait__canvas > img {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+/*
+ * Individual roster records remain static and fully painted, but do not
+ * acquire live blinking/breathing/reveal behaviour.
+ */
+.gmrc-fellowship-member__portrait
+.gmrc-portrait-layer--background {
+    opacity: 1 !important;
+    filter: none !important;
+    animation: none !important;
+    transition: none !important;
+}
