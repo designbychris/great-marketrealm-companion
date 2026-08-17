@@ -58,6 +58,16 @@ return static function (Router $router): void {
         [PartyController::class, 'updateCharter']
     );
 
+    $router->post(
+        '/parties/{id}/treasury/deposit',
+        [PartyController::class, 'depositTreasury']
+    );
+
+    $router->post(
+        '/parties/{id}/treasury/withdraw',
+        [PartyController::class, 'withdrawTreasury']
+    );
+
     $router->get(
         '/parties/{id}',
         [PartyController::class, 'show']

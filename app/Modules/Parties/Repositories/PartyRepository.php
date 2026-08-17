@@ -15,6 +15,9 @@ use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyName;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyStandard;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyCharter;
+use GreatMarketrealmCompanion\Modules\Parties\Models\PartyTreasury;
+use GreatMarketrealmCompanion\Modules\Parties\Models\PartyTreasuryTransaction;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyTreasuryMoney;
 use RuntimeException;
 use Throwable;
 use WP_Post;
@@ -28,6 +31,7 @@ final class PartyRepository implements PartyRepositoryInterface
     private const META_MEMBERSHIPS = '_gmrc_party_memberships';
     private const META_STANDARD = '_gmrc_party_standard';
     private const META_CHARTER = '_gmrc_party_charter';
+    private const META_TREASURY = '_gmrc_party_treasury';
 
     public function allForOwner(PartyOwnerId $ownerId): array
     {
@@ -98,6 +102,21 @@ final class PartyRepository implements PartyRepositoryInterface
             $postId,
             self::META_CHARTER,
             $party->charter()->toArray()
+        );
+
+        update_post_meta(
+            $postId,
+            self::META_TREASURY,
+            [
+                'balance_copper' =>
+                    $party->treasury()->balance()->copper(),
+                'transactions' => array_map(
+                    static fn (
+                        PartyTreasuryTransaction $transaction
+                    ): array => $transaction->toArray(),
+                    $party->treasury()->transactions()
+                ),
+            ]
         );
     }
 
@@ -208,10 +227,55 @@ final class PartyRepository implements PartyRepositoryInterface
                 $ownerId,
                 $this->memberships($post->ID),
                 $this->standard($post->ID),
-                $this->charter($post->ID)
+                $this->charter($post->ID),
+                $this->treasury($post->ID)
             );
         } catch (Throwable) {
             return null;
+        }
+    }
+
+    private function treasury(int $postId): PartyTreasury
+    {
+        $stored = get_post_meta(
+            $postId,
+            self::META_TREASURY,
+            true
+        );
+
+        if (is_string($stored) && $stored !== '') {
+            $decoded = json_decode($stored, true);
+            $stored = is_array($decoded) ? $decoded : [];
+        }
+
+        if (! is_array($stored)) {
+            return PartyTreasury::empty();
+        }
+
+        $transactions = [];
+
+        foreach (($stored['transactions'] ?? []) as $entry) {
+            if (! is_array($entry)) {
+                continue;
+            }
+
+            try {
+                $transactions[] =
+                    PartyTreasuryTransaction::fromArray($entry);
+            } catch (Throwable) {
+                continue;
+            }
+        }
+
+        try {
+            return PartyTreasury::reconstitute(
+                PartyTreasuryMoney::fromCopper(
+                    (int) ($stored['balance_copper'] ?? 0)
+                ),
+                $transactions
+            );
+        } catch (Throwable) {
+            return PartyTreasury::empty();
         }
     }
 

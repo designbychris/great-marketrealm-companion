@@ -12,6 +12,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyName;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyStandard;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyCharter;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyTreasuryMoney;
 use InvalidArgumentException;
 
 defined('ABSPATH') || exit;
@@ -33,7 +34,8 @@ final class Party
         private PartyOwnerId $ownerId,
         private array $memberships,
         private PartyStandard $standard,
-        private PartyCharter $charter
+        private PartyCharter $charter,
+        private PartyTreasury $treasury
     ) {
     }
 
@@ -48,7 +50,8 @@ final class Party
             $ownerId,
             [],
             PartyStandard::default(),
-            PartyCharter::blank()
+            PartyCharter::blank(),
+            PartyTreasury::empty()
         );
     }
 
@@ -61,7 +64,8 @@ final class Party
         PartyOwnerId $ownerId,
         array $memberships,
         ?PartyStandard $standard = null,
-        ?PartyCharter $charter = null
+        ?PartyCharter $charter = null,
+        ?PartyTreasury $treasury = null
     ): self {
         $party = self::create(
             $id,
@@ -75,6 +79,10 @@ final class Party
 
         $party->changeCharter(
             $charter ?? PartyCharter::blank()
+        );
+
+        $party->replaceTreasury(
+            $treasury ?? PartyTreasury::empty()
         );
 
         foreach ($memberships as $membership) {
@@ -131,6 +139,37 @@ final class Party
         PartyCharter $charter
     ): void {
         $this->charter = $charter;
+    }
+
+    public function treasury(): PartyTreasury
+    {
+        return $this->treasury;
+    }
+
+    public function replaceTreasury(
+        PartyTreasury $treasury
+    ): void {
+        $this->treasury = $treasury;
+    }
+
+    public function depositTreasury(
+        PartyTreasuryMoney $amount,
+        string $note = ''
+    ): PartyTreasuryTransaction {
+        return $this->treasury->deposit(
+            $amount,
+            $note
+        );
+    }
+
+    public function withdrawTreasury(
+        PartyTreasuryMoney $amount,
+        string $note = ''
+    ): PartyTreasuryTransaction {
+        return $this->treasury->withdraw(
+            $amount,
+            $note
+        );
     }
 
     public function addMember(

@@ -44,6 +44,22 @@ $officeHolders = array_values(
             && $member['membership']->office()->isAssigned()
     )
 );
+
+$quartermasterName = null;
+
+foreach ($officeHolders as $holder) {
+    $membership = $holder['membership'] ?? null;
+    $character = $holder['character'] ?? null;
+
+    if (
+        $membership !== null
+        && $membership->office()->value() === 'quartermaster'
+        && $character instanceof Character
+    ) {
+        $quartermasterName = $character->name()->value();
+        break;
+    }
+}
 ?>
 
 <section class="gmrc-fellowship-ledger-page">
@@ -200,6 +216,187 @@ $officeHolders = array_values(
             <?php endif; ?>
         </section>
     <?php endif; ?>
+
+    <section
+        class="gmrc-fellowship-treasury"
+        aria-labelledby="gmrc-fellowship-treasury-title"
+    >
+        <header class="gmrc-fellowship-section-heading">
+            <div>
+                <p class="gmrc-eyebrow">Shared company funds</p>
+                <h2 id="gmrc-fellowship-treasury-title">
+                    Fellowship Treasury
+                </h2>
+            </div>
+            <?php if ($quartermasterName !== null) : ?>
+                <span class="gmrc-fellowship-count">
+                    Quartermaster:
+                    <?php echo esc_html($quartermasterName); ?>
+                </span>
+            <?php endif; ?>
+        </header>
+
+        <aside class="gmrc-fellowship-auby-note">
+            <span
+                class="gmrc-fellowship-auby-note__seal"
+                aria-hidden="true"
+            >
+                🍆
+            </span>
+            <div>
+                <strong>Auby’s Treasury Note</strong>
+                <p>
+                    “A shared purse requires trust, accurate records,
+                    and at least one adventurer who can count past twelve.”
+                </p>
+            </div>
+        </aside>
+
+        <div class="gmrc-fellowship-treasury__balance">
+            <span>Current company purse</span>
+            <strong>
+                <?php echo esc_html(
+                    $party->treasury()->balance()->formatted()
+                ); ?>
+            </strong>
+        </div>
+
+        <div class="gmrc-fellowship-treasury__forms">
+            <?php foreach ([
+                'deposit' => 'Deposit Funds',
+                'withdraw' => 'Withdraw Funds',
+            ] as $treasuryAction => $treasuryLabel) : ?>
+                <form
+                    class="gmrc-fellowship-treasury__form"
+                    action="<?php echo esc_url(
+                        admin_url('admin-post.php')
+                    ); ?>"
+                    method="post"
+                >
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="gmrc_app_request"
+                    >
+                    <input
+                        type="hidden"
+                        name="gmrc_route"
+                        value="<?php echo esc_attr(
+                            'parties/' . $id
+                            . '/treasury/' . $treasuryAction
+                        ); ?>"
+                    >
+
+                    <?php wp_nonce_field(
+                        'gmrc_party_treasury_' . $id,
+                        'gmrc_nonce'
+                    ); ?>
+
+                    <h3><?php echo esc_html($treasuryLabel); ?></h3>
+
+                    <div class="gmrc-fellowship-treasury__coins">
+                        <?php foreach ([
+                            'gold' => 'GP',
+                            'silver' => 'SP',
+                            'copper' => 'CP',
+                        ] as $coin => $coinLabel) : ?>
+                            <label>
+                                <span><?php echo esc_html($coinLabel); ?></span>
+                                <input
+                                    type="number"
+                                    name="<?php echo esc_attr($coin); ?>"
+                                    value="0"
+                                    min="0"
+                                    <?php echo $coin === 'gold'
+                                        ? 'max="999999"'
+                                        : 'max="9"'; ?>
+                                    required
+                                >
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <label class="gmrc-fellowship-field">
+                        <span>Ledger note</span>
+                        <input
+                            type="text"
+                            name="note"
+                            maxlength="160"
+                            placeholder="<?php echo esc_attr(
+                                $treasuryAction === 'deposit'
+                                    ? 'e.g. Reward from the Rootlands contract'
+                                    : 'e.g. Supplies for the Savory Sea voyage'
+                            ); ?>"
+                        >
+                    </label>
+
+                    <button
+                        class="
+                            gmrc-fellowship-button
+                            <?php echo $treasuryAction === 'deposit'
+                                ? 'gmrc-fellowship-button--primary'
+                                : 'gmrc-fellowship-button--quiet'; ?>
+                        "
+                        type="submit"
+                    >
+                        <?php echo esc_html($treasuryLabel); ?>
+                    </button>
+                </form>
+            <?php endforeach; ?>
+        </div>
+
+        <div class="gmrc-fellowship-treasury__ledger">
+            <h3>Recent Treasury Ledger</h3>
+
+            <?php if ($party->treasury()->transactions() === []) : ?>
+                <p class="gmrc-fellowship-offices__empty">
+                    No Treasury transactions have been recorded yet.
+                </p>
+            <?php else : ?>
+                <ol>
+                    <?php foreach (
+                        $party->treasury()->recent(6)
+                        as $transaction
+                    ) : ?>
+                        <li>
+                            <span
+                                class="<?php echo esc_attr(
+                                    $transaction->isDeposit()
+                                        ? 'is-deposit'
+                                        : 'is-withdrawal'
+                                ); ?>"
+                            >
+                                <?php echo $transaction->isDeposit()
+                                    ? '+'
+                                    : '−'; ?>
+                                <?php echo esc_html(
+                                    $transaction
+                                        ->amount()
+                                        ->formatted()
+                                ); ?>
+                            </span>
+                            <div>
+                                <?php if ($transaction->note() !== '') : ?>
+                                    <strong>
+                                        <?php echo esc_html(
+                                            $transaction->note()
+                                        ); ?>
+                                    </strong>
+                                <?php endif; ?>
+                                <small>
+                                    <?php echo esc_html(
+                                        $transaction
+                                            ->occurredAt()
+                                            ->format('j M Y · H:i')
+                                    ); ?>
+                                </small>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                </ol>
+            <?php endif; ?>
+        </div>
+    </section>
 
     <section
         class="gmrc-fellowship-offices"

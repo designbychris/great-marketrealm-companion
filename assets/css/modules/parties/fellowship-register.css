@@ -1574,3 +1574,155 @@
         color: CanvasText;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.11.2E — The Fellowship Treasury
+ * =============================================================== */
+
+.gmrc-fellowship-treasury {
+    margin-top: 1.25rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid rgba(89, 68, 46, 0.2);
+}
+
+.gmrc-fellowship-treasury__balance {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 0.9rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--gmrc-standard-secondary, rgba(164, 123, 55, 0.45));
+    border-left: 0.38rem solid var(--gmrc-standard-primary, #5f3673);
+    border-radius: 0.45rem;
+    background: var(--gmrc-standard-soft, rgba(95, 54, 115, 0.08));
+}
+
+.gmrc-fellowship-treasury__balance span {
+    color: var(--gmrc-fellowship-muted);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.gmrc-fellowship-treasury__balance strong {
+    color: var(--gmrc-fellowship-ink);
+    font-size: 1.15rem;
+}
+
+.gmrc-fellowship-treasury__forms {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+}
+
+.gmrc-fellowship-treasury__form {
+    display: grid;
+    gap: 0.75rem;
+    padding: 0.85rem;
+    border: 1px solid rgba(80, 59, 39, 0.22);
+    border-radius: 0.45rem;
+    background: rgba(255, 250, 226, 0.58);
+}
+
+.gmrc-fellowship-treasury__form h3 {
+    margin: 0;
+    color: var(--gmrc-fellowship-ink);
+}
+
+.gmrc-fellowship-treasury__coins {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+}
+
+.gmrc-fellowship-treasury__coins label {
+    display: grid;
+    gap: 0.25rem;
+    color: var(--gmrc-fellowship-muted);
+    font-size: 0.7rem;
+    font-weight: 900;
+}
+
+.gmrc-fellowship-treasury__coins input {
+    width: 100%;
+    min-height: 2.35rem;
+    padding: 0.4rem;
+    border: 1px solid rgba(80, 59, 39, 0.35);
+    border-radius: 0.28rem;
+    background: rgba(255, 252, 235, 0.92);
+    font: inherit;
+}
+
+.gmrc-fellowship-treasury__ledger {
+    margin-top: 0.9rem;
+}
+
+.gmrc-fellowship-treasury__ledger h3 {
+    margin-bottom: 0.55rem;
+}
+
+.gmrc-fellowship-treasury__ledger ol {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.gmrc-fellowship-treasury__ledger li {
+    display: grid;
+    grid-template-columns: minmax(9rem, auto) minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.55rem 0.65rem;
+    border-bottom: 1px solid rgba(80, 59, 39, 0.14);
+}
+
+.gmrc-fellowship-treasury__ledger .is-deposit {
+    color: #44683f;
+    font-weight: 900;
+}
+
+.gmrc-fellowship-treasury__ledger .is-withdrawal {
+    color: #8a4b43;
+    font-weight: 900;
+}
+
+.gmrc-fellowship-treasury__ledger strong,
+.gmrc-fellowship-treasury__ledger small {
+    display: block;
+}
+
+.gmrc-fellowship-treasury__ledger small {
+    margin-top: 0.1rem;
+    color: var(--gmrc-fellowship-muted);
+}
+
+@media (max-width: 780px) {
+    .gmrc-fellowship-treasury__forms {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .gmrc-fellowship-treasury__balance {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .gmrc-fellowship-treasury__ledger li {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-fellowship-treasury__balance,
+    .gmrc-fellowship-treasury__form {
+        border: 1px solid CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}
