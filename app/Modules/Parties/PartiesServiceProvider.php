@@ -5,6 +5,14 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Parties;
 
 use GreatMarketrealmCompanion\Core\Container;
+use GreatMarketrealmCompanion\Modules\Parties\Actions\AddPartyMemberAction;
+use GreatMarketrealmCompanion\Modules\Parties\Actions\ChangePartyMemberRoleAction;
+use GreatMarketrealmCompanion\Modules\Parties\Actions\CreatePartyAction;
+use GreatMarketrealmCompanion\Modules\Parties\Actions\DeletePartyAction;
+use GreatMarketrealmCompanion\Modules\Parties\Actions\RemovePartyMemberAction;
+use GreatMarketrealmCompanion\Modules\Parties\Actions\RenamePartyAction;
+use GreatMarketrealmCompanion\Modules\Parties\Services\PartyFinder;
+use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Parties\Contracts\PartyRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Parties\Repositories\PartyRepository;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
@@ -27,6 +35,58 @@ final class PartiesServiceProvider extends ServiceProvider
             PartyRepositoryInterface::class,
             static fn (Container $container): PartyRepositoryInterface =>
                 $container->make(PartyRepository::class)
+        );
+
+        $container->singleton(
+            PartyFinder::class,
+            static fn (Container $container): PartyFinder =>
+                new PartyFinder(
+                    $container->make(
+                        PartyRepositoryInterface::class
+                    )
+                )
+        );
+
+        $container->bind(
+            CreatePartyAction::class,
+            static fn (Container $container): CreatePartyAction =>
+                new CreatePartyAction(
+                    $container->make(
+                        PartyRepositoryInterface::class
+                    )
+                )
+        );
+
+        $container->bind(
+            AddPartyMemberAction::class,
+            static fn (Container $container): AddPartyMemberAction =>
+                new AddPartyMemberAction(
+                    $container->make(
+                        PartyRepositoryInterface::class
+                    ),
+                    $container->make(
+                        CharacterRepositoryInterface::class
+                    ),
+                    $container->make(
+                        PartyFinder::class
+                    )
+                )
+        );
+
+        $container->bind(
+            RemovePartyMemberAction::class
+        );
+
+        $container->bind(
+            ChangePartyMemberRoleAction::class
+        );
+
+        $container->bind(
+            RenamePartyAction::class
+        );
+
+        $container->bind(
+            DeletePartyAction::class
         );
     }
 
