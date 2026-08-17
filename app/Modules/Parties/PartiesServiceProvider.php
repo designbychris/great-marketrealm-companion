@@ -12,6 +12,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Actions\DeletePartyAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\RemovePartyMemberAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\RenamePartyAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\UpdatePartyStandardAction;
+use GreatMarketrealmCompanion\Modules\Parties\Actions\UpdatePartyCharterAction;
 use GreatMarketrealmCompanion\Modules\Parties\Services\PartyFinder;
 use GreatMarketrealmCompanion\Modules\Parties\Controllers\PartyController;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\FellowshipPresenter;
@@ -104,6 +105,10 @@ final class PartiesServiceProvider extends ServiceProvider
 
         $container->bind(
             UpdatePartyStandardAction::class
+        );
+
+        $container->bind(
+            UpdatePartyCharterAction::class
         );
 
         $container->bind(

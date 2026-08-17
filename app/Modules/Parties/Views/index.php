@@ -162,6 +162,22 @@ ob_start();
                             ); ?>
                         </h2>
 
+                        <?php if ($party->charter()->motto() !== '') : ?>
+                            <p class="gmrc-fellowship-entry__motto">
+                                “<?php echo esc_html(
+                                    $party->charter()->motto()
+                                ); ?>”
+                            </p>
+                        <?php elseif (
+                            $party->charter()->description() !== ''
+                        ) : ?>
+                            <p class="gmrc-fellowship-entry__description">
+                                <?php echo esc_html(
+                                    $party->charter()->description()
+                                ); ?>
+                            </p>
+                        <?php endif; ?>
+
                         <dl class="gmrc-fellowship-entry__facts">
                             <div>
                                 <dt>Adventurers</dt>

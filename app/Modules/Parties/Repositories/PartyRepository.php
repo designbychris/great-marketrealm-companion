@@ -13,6 +13,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyMembershi
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyName;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyStandard;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyCharter;
 use RuntimeException;
 use Throwable;
 use WP_Post;
@@ -25,6 +26,7 @@ final class PartyRepository implements PartyRepositoryInterface
     private const META_PARTY_ID = '_gmrc_party_id';
     private const META_MEMBERSHIPS = '_gmrc_party_memberships';
     private const META_STANDARD = '_gmrc_party_standard';
+    private const META_CHARTER = '_gmrc_party_charter';
 
     public function allForOwner(PartyOwnerId $ownerId): array
     {
@@ -88,6 +90,12 @@ final class PartyRepository implements PartyRepositoryInterface
             $postId,
             self::META_STANDARD,
             $party->standard()->toArray()
+        );
+
+        update_post_meta(
+            $postId,
+            self::META_CHARTER,
+            $party->charter()->toArray()
         );
     }
 
@@ -197,10 +205,35 @@ final class PartyRepository implements PartyRepositoryInterface
                 $name,
                 $ownerId,
                 $this->memberships($post->ID),
-                $this->standard($post->ID)
+                $this->standard($post->ID),
+                $this->charter($post->ID)
             );
         } catch (Throwable) {
             return null;
+        }
+    }
+
+    private function charter(int $postId): PartyCharter
+    {
+        $stored = get_post_meta(
+            $postId,
+            self::META_CHARTER,
+            true
+        );
+
+        if (is_string($stored) && $stored !== '') {
+            $decoded = json_decode($stored, true);
+            $stored = is_array($decoded) ? $decoded : [];
+        }
+
+        if (! is_array($stored)) {
+            return PartyCharter::blank();
+        }
+
+        try {
+            return PartyCharter::fromArray($stored);
+        } catch (Throwable) {
+            return PartyCharter::blank();
         }
     }
 

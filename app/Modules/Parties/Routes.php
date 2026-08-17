@@ -48,6 +48,11 @@ return static function (Router $router): void {
         [PartyController::class, 'updateStandard']
     );
 
+    $router->put(
+        '/parties/{id}/charter',
+        [PartyController::class, 'updateCharter']
+    );
+
     $router->get(
         '/parties/{id}',
         [PartyController::class, 'show']

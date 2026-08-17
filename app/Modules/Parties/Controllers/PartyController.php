@@ -18,16 +18,19 @@ use GreatMarketrealmCompanion\Modules\Parties\Actions\DeletePartyAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\RemovePartyMemberAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\RenamePartyAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\UpdatePartyStandardAction;
+use GreatMarketrealmCompanion\Modules\Parties\Actions\UpdatePartyCharterAction;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyMembershipRole;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyName;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyStandard;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyCharter;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\AddPartyMemberRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\StorePartyRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyMemberRoleRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyStandardRequest;
+use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyCharterRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Services\PartyFinder;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\FellowshipPresenter;
 use RuntimeException;
@@ -46,6 +49,7 @@ final class PartyController
         private ChangePartyMemberRoleAction $changeRole,
         private RenamePartyAction $renameParty,
         private UpdatePartyStandardAction $updateStandard,
+        private UpdatePartyCharterAction $updateCharter,
         private DeletePartyAction $deleteParty,
         private ViewFactory $views,
         private ResponseFactory $responses,
@@ -162,6 +166,29 @@ final class PartyController
 
         $this->flash->success(
             'The Fellowship Standard has been updated.'
+        );
+
+        return $this->responses->redirect(
+            $this->partyUrl($party->id())
+        );
+    }
+
+    public function updateCharter(
+        string $id,
+        UpdatePartyCharterRequest $request
+    ): RedirectResponse {
+        $party = $this->updateCharter->handle(
+            PartyId::fromString($id),
+            $this->ownerId(),
+            PartyCharter::make(
+                $request->motto(),
+                $request->description(),
+                $request->statement()
+            )
+        );
+
+        $this->flash->success(
+            'The Company Charter has been updated.'
         );
 
         return $this->responses->redirect(

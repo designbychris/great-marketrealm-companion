@@ -94,6 +94,14 @@ $editUrl = add_query_arg(
                 ); ?>
             </h1>
 
+            <?php if ($party->charter()->motto() !== '') : ?>
+                <p class="gmrc-fellowship-hero__motto">
+                    “<?php echo esc_html(
+                        $party->charter()->motto()
+                    ); ?>”
+                </p>
+            <?php endif; ?>
+
             <p class="gmrc-fellowship-hero__lede">
                 A Guild-recognised company of
                 <?php echo esc_html(
@@ -139,6 +147,50 @@ $editUrl = add_query_arg(
             </p>
         </div>
     </aside>
+
+    <?php if (! $party->charter()->isBlank()) : ?>
+        <section
+            class="gmrc-fellowship-charter"
+            aria-labelledby="gmrc-fellowship-charter-title"
+        >
+            <header class="gmrc-fellowship-section-heading">
+                <div>
+                    <p class="gmrc-eyebrow">The company’s own words</p>
+                    <h2 id="gmrc-fellowship-charter-title">
+                        Company Charter
+                    </h2>
+                </div>
+                <span
+                    class="gmrc-fellowship-charter__emblem"
+                    aria-hidden="true"
+                >
+                    <?php echo esc_html(
+                        $party->standard()->emblemGlyph()
+                    ); ?>
+                </span>
+            </header>
+
+            <?php if ($party->charter()->description() !== '') : ?>
+                <p class="gmrc-fellowship-charter__description">
+                    <?php echo esc_html(
+                        $party->charter()->description()
+                    ); ?>
+                </p>
+            <?php endif; ?>
+
+            <?php if ($party->charter()->statement() !== '') : ?>
+                <div class="gmrc-fellowship-charter__statement">
+                    <?php echo wp_kses_post(
+                        wpautop(
+                            esc_html(
+                                $party->charter()->statement()
+                            )
+                        )
+                    ); ?>
+                </div>
+            <?php endif; ?>
+        </section>
+    <?php endif; ?>
 
     <section
         class="gmrc-fellowship-roster"

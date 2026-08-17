@@ -201,6 +201,84 @@ $partyUrl = add_query_arg(
         </form>
     </section>
 
+    <section class="gmrc-fellowship-charter-editor">
+        <p class="gmrc-eyebrow">The Company Charter</p>
+        <h2>Words carried by the Fellowship</h2>
+        <p>
+            Record the motto, short company description and fuller charter
+            statement that belong to this Fellowship rather than to any one
+            adventurer.
+        </p>
+
+        <form
+            class="gmrc-fellowship-form"
+            action="<?php echo esc_url(admin_url('admin-post.php')); ?>"
+            method="post"
+        >
+            <input type="hidden" name="action" value="gmrc_app_request">
+            <input
+                type="hidden"
+                name="gmrc_route"
+                value="<?php echo esc_attr(
+                    'parties/' . $id . '/charter'
+                ); ?>"
+            >
+            <input type="hidden" name="_method" value="PUT">
+
+            <?php wp_nonce_field(
+                'gmrc_party_' . $id,
+                'gmrc_nonce'
+            ); ?>
+
+            <label class="gmrc-fellowship-field">
+                <span>Fellowship motto</span>
+                <input
+                    type="text"
+                    name="motto"
+                    value="<?php echo esc_attr(
+                        $party->charter()->motto()
+                    ); ?>"
+                    maxlength="90"
+                    placeholder="e.g. Leave no pantry unexplored."
+                >
+                <small>Up to 90 characters.</small>
+            </label>
+
+            <label class="gmrc-fellowship-field">
+                <span>Company description</span>
+                <textarea
+                    name="description"
+                    rows="3"
+                    maxlength="240"
+                    placeholder="A short description of the company."
+                ><?php echo esc_textarea(
+                    $party->charter()->description()
+                ); ?></textarea>
+                <small>Up to 240 characters.</small>
+            </label>
+
+            <label class="gmrc-fellowship-field">
+                <span>Charter statement</span>
+                <textarea
+                    name="statement"
+                    rows="8"
+                    maxlength="1200"
+                    placeholder="The company’s purpose, promises or founding words."
+                ><?php echo esc_textarea(
+                    $party->charter()->statement()
+                ); ?></textarea>
+                <small>Up to 1,200 characters.</small>
+            </label>
+
+            <button
+                class="gmrc-fellowship-button gmrc-fellowship-button--primary"
+                type="submit"
+            >
+                Save Company Charter
+            </button>
+        </form>
+    </section>
+
     <section class="gmrc-fellowship-danger">
         <p class="gmrc-eyebrow">Registrar’s red ink</p>
         <h2>Disband this Fellowship</h2>

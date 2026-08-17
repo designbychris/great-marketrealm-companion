@@ -10,6 +10,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyMembershi
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyName;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyStandard;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyCharter;
 use InvalidArgumentException;
 
 defined('ABSPATH') || exit;
@@ -30,7 +31,8 @@ final class Party
         private PartyName $name,
         private PartyOwnerId $ownerId,
         private array $memberships,
-        private PartyStandard $standard
+        private PartyStandard $standard,
+        private PartyCharter $charter
     ) {
     }
 
@@ -44,7 +46,8 @@ final class Party
             $name,
             $ownerId,
             [],
-            PartyStandard::default()
+            PartyStandard::default(),
+            PartyCharter::blank()
         );
     }
 
@@ -56,7 +59,8 @@ final class Party
         PartyName $name,
         PartyOwnerId $ownerId,
         array $memberships,
-        ?PartyStandard $standard = null
+        ?PartyStandard $standard = null,
+        ?PartyCharter $charter = null
     ): self {
         $party = self::create(
             $id,
@@ -66,6 +70,10 @@ final class Party
 
         $party->changeStandard(
             $standard ?? PartyStandard::default()
+        );
+
+        $party->changeCharter(
+            $charter ?? PartyCharter::blank()
         );
 
         foreach ($memberships as $membership) {
@@ -111,6 +119,17 @@ final class Party
         PartyStandard $standard
     ): void {
         $this->standard = $standard;
+    }
+
+    public function charter(): PartyCharter
+    {
+        return $this->charter;
+    }
+
+    public function changeCharter(
+        PartyCharter $charter
+    ): void {
+        $this->charter = $charter;
     }
 
     public function addMember(
