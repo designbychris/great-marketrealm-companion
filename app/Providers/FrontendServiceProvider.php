@@ -266,6 +266,45 @@ class FrontendServiceProvider extends ServiceProvider
                 );
         }
     
+        if (
+            $method === 'POST'
+            && $route === 'parties'
+        ) {
+            return 'gmrc_create_party';
+        }
+
+        if (
+            in_array($method, ['PUT', 'DELETE'], true)
+            && preg_match(
+                '#^parties/([^/]+)$#',
+                $route,
+                $matches
+            )
+        ) {
+            return 'gmrc_party_'
+                . sanitize_text_field(
+                    $matches[1]
+                );
+        }
+
+        if (
+            in_array(
+                $method,
+                ['POST', 'PUT', 'DELETE'],
+                true
+            )
+            && preg_match(
+                '#^parties/([^/]+)/members(?:/[^/]+(?:/role)?)?$#',
+                $route,
+                $matches
+            )
+        ) {
+            return 'gmrc_party_members_'
+                . sanitize_text_field(
+                    $matches[1]
+                );
+        }
+
         return null;
     }
     

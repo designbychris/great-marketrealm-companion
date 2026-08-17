@@ -19,4 +19,11 @@ final class PartiesKingdom extends Kingdom
     {
         return PartiesServiceProvider::class;
     }
+
+    public function routes(): array
+    {
+        return [
+            GMRC_PATH . 'app/Modules/Parties/Routes.php',
+        ];
+    }
 }

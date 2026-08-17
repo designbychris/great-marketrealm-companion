@@ -12,6 +12,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Actions\DeletePartyAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\RemovePartyMemberAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\RenamePartyAction;
 use GreatMarketrealmCompanion\Modules\Parties\Services\PartyFinder;
+use GreatMarketrealmCompanion\Modules\Parties\Controllers\PartyController;
 use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Parties\Contracts\PartyRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Parties\Repositories\PartyRepository;
@@ -87,6 +88,10 @@ final class PartiesServiceProvider extends ServiceProvider
 
         $container->bind(
             DeletePartyAction::class
+        );
+
+        $container->bind(
+            PartyController::class
         );
     }
 
