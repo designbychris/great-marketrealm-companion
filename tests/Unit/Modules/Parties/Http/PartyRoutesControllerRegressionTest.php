@@ -51,7 +51,7 @@ final class PartyRoutesControllerRegressionTest extends TestCase
         }
     }
 
-    public function testPartiesKingdomContributesRouteFileWithoutNavigationYet(): void
+    public function testPartiesKingdomContributesRouteFileAndFellowshipNavigation(): void
     {
         $root = dirname(__DIR__, 5);
         $kingdom = file_get_contents(
@@ -63,8 +63,12 @@ final class PartyRoutesControllerRegressionTest extends TestCase
             "app/Modules/Parties/Routes.php",
             $kingdom
         );
-        self::assertStringNotContainsString(
+        self::assertStringContainsString(
             'registerNavigation',
+            $kingdom
+        );
+        self::assertStringContainsString(
+            'Icons::PARTY',
             $kingdom
         );
     }

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class PartyPersistenceRegistrationTest extends TestCase
 {
-    public function testPartyKingdomRegistersPersistenceProviderWithoutNavigationYet(): void
+    public function testPartyKingdomRegistersPersistenceProviderAndFellowshipNavigation(): void
     {
         $root = dirname(__DIR__, 4);
 
@@ -46,8 +46,12 @@ final class PartyPersistenceRegistrationTest extends TestCase
             "register_post_type(\n            'gmrc_party'",
             $provider
         );
-        self::assertStringNotContainsString(
+        self::assertStringContainsString(
             'registerNavigation',
+            $kingdom
+        );
+        self::assertStringContainsString(
+            "'Fellowships'",
             $kingdom
         );
     }

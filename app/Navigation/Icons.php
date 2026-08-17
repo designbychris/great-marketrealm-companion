@@ -32,6 +32,15 @@ final class Icons
         </svg>
     ';
 
+    public const PARTY = '
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+                fill="currentColor"
+                d="M12 3 9.7 5.3a4.5 4.5 0 0 0-5.2 7.2A5.5 5.5 0 0 0 2 17v2h8v-2a5.5 5.5 0 0 0-1.1-3.3A4.5 4.5 0 0 0 12 12a4.5 4.5 0 0 0 3.1 1.7A5.5 5.5 0 0 0 14 17v2h8v-2a5.5 5.5 0 0 0-2.5-4.5 4.5 4.5 0 0 0-5.2-7.2L12 3Zm-4 4a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Zm8 0a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z"
+            />
+        </svg>
+    ';
+
     public const MAP = '
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path

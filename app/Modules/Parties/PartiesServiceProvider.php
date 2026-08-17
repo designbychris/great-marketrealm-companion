@@ -13,6 +13,8 @@ use GreatMarketrealmCompanion\Modules\Parties\Actions\RemovePartyMemberAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\RenamePartyAction;
 use GreatMarketrealmCompanion\Modules\Parties\Services\PartyFinder;
 use GreatMarketrealmCompanion\Modules\Parties\Controllers\PartyController;
+use GreatMarketrealmCompanion\Modules\Parties\Presenters\FellowshipPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Parties\Contracts\PartyRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Parties\Repositories\PartyRepository;
@@ -44,6 +46,19 @@ final class PartiesServiceProvider extends ServiceProvider
                 new PartyFinder(
                     $container->make(
                         PartyRepositoryInterface::class
+                    )
+                )
+        );
+
+        $container->singleton(
+            FellowshipPresenter::class,
+            static fn (Container $container): FellowshipPresenter =>
+                new FellowshipPresenter(
+                    $container->make(
+                        CharacterRepositoryInterface::class
+                    ),
+                    $container->make(
+                        PortraitRenderer::class
                     )
                 )
         );

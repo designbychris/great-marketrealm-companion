@@ -412,6 +412,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/characters/guild-dice.css',
             ],
             [
+                'handle' => 'gmrc-fellowship-register',
+                'path' => 'modules/parties/fellowship-register.css',
+            ],
+            [
                 'handle' => 'gmrc-adventurers-pack',
                 'path' => 'modules/characters/adventurers-pack.css',
             ],

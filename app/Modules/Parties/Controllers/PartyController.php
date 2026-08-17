@@ -26,6 +26,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Requests\StorePartyRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyMemberRoleRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Services\PartyFinder;
+use GreatMarketrealmCompanion\Modules\Parties\Presenters\FellowshipPresenter;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -35,6 +36,7 @@ final class PartyController
     public function __construct(
         private PartyFinder $parties,
         private CharacterRepositoryInterface $characters,
+        private FellowshipPresenter $fellowships,
         private CreatePartyAction $createParty,
         private AddPartyMemberAction $addMember,
         private RemovePartyMemberAction $removeMember,
@@ -53,8 +55,10 @@ final class PartyController
             View::make(
                 'parties.index',
                 [
-                    'parties' => $this->parties->all(
-                        $this->ownerId()
+                    'fellowships' => $this->fellowships->presentMany(
+                        $this->parties->all(
+                            $this->ownerId()
+                        )
                     ),
                 ]
             )
@@ -96,12 +100,9 @@ final class PartyController
         return $this->views->render(
             View::make(
                 'parties.show',
-                [
-                    'party' => $party,
-                    'characters' => $this
-                        ->characters
-                        ->all(),
-                ]
+                $this->fellowships->present(
+                    $party
+                )
             )
         );
     }
