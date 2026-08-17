@@ -29,7 +29,7 @@ final class GuildDiceTargetingContractRegressionTest extends TestCase
             $view
         );
         self::assertStringContainsString(
-            'No HP changes in this phase.',
+            'Resolved targets may support Vital Application',
             $view
         );
         self::assertStringContainsString(

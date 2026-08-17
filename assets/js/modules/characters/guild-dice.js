@@ -215,9 +215,31 @@
         const targetResult = tray.querySelector(
             '[data-guild-dice-target-result]'
         );
+        const vitalApplication = tray.querySelector(
+            '[data-guild-vital-application]'
+        );
+        const vitalApplicationNote = tray.querySelector(
+            '[data-guild-vital-application-note]'
+        );
+        const vitalApply = tray.querySelector(
+            '[data-guild-vital-apply]'
+        );
+        const vitalMeasures = ledger.querySelector(
+            '[data-vital-measures]'
+        );
+        const vitalForm = ledger.querySelector(
+            '[data-vital-measures-form]'
+        );
+        const vitalCurrent = ledger.querySelector(
+            '[data-vital-current]'
+        );
+        const vitalTemporary = ledger.querySelector(
+            '[data-vital-temporary]'
+        );
 
         let activeTrigger = null;
         let pendingCriticalDamage = null;
+        let pendingVitalApplication = null;
         const characterId = ledger.dataset.characterId || 'unknown';
         const characterName = ledger.dataset.characterName || 'Adventurer';
         const historyKey = 'gmrc:guild-dice:history:' + characterId;
@@ -539,12 +561,180 @@
                         'No target has been attached to this roll yet.';
                 } else if (target.resolved) {
                     targetNote.textContent =
-                        'This target is linked to a known Ledger record. No HP changes occur in this phase.';
+                        'This target is linked to a known Ledger record and may support Vital Application.';
                 } else {
                     targetNote.textContent =
-                        'This is a descriptive target reference only. A later target registry must resolve it before HP can change.';
+                        'This is a descriptive target reference only. The party or encounter registry must resolve it before Vital Application.';
                 }
             }
+        };
+
+        const clearVitalApplication = function () {
+            pendingVitalApplication = null;
+
+            if (vitalApplication instanceof HTMLElement) {
+                vitalApplication.hidden = true;
+            }
+
+            if (vitalApplicationNote instanceof HTMLElement) {
+                vitalApplicationNote.textContent = '';
+            }
+
+            if (vitalApply instanceof HTMLButtonElement) {
+                vitalApply.hidden = true;
+                vitalApply.textContent = '';
+                vitalApply.disabled = false;
+            }
+        };
+
+        const selfTargetCanMutate = function (target) {
+            return Boolean(
+                target
+                && target.resolved === true
+                && target.kind === 'self'
+                && target.id === characterId
+                && vitalMeasures instanceof HTMLElement
+                && vitalForm instanceof HTMLFormElement
+                && vitalCurrent instanceof HTMLInputElement
+                && vitalTemporary instanceof HTMLInputElement
+            );
+        };
+
+        const prepareVitalApplication = function (
+            kind,
+            total,
+            target
+        ) {
+            clearVitalApplication();
+
+            if (!['damage', 'healing'].includes(kind)) {
+                return;
+            }
+
+            if (!(vitalApplication instanceof HTMLElement)) {
+                return;
+            }
+
+            const amount = Math.max(
+                0,
+                Math.floor(Number(total) || 0)
+            );
+            const action = kind === 'healing'
+                ? 'heal'
+                : 'damage';
+            const noun = kind === 'healing'
+                ? 'Healing'
+                : 'Damage';
+
+            vitalApplication.hidden = false;
+
+            if (amount <= 0) {
+                if (vitalApplicationNote instanceof HTMLElement) {
+                    vitalApplicationNote.textContent =
+                        'The roll produced no vitality change to apply.';
+                }
+
+                return;
+            }
+
+            if (!target) {
+                if (vitalApplicationNote instanceof HTMLElement) {
+                    vitalApplicationNote.textContent =
+                        noun
+                        + ' rolled, but no target was attached. '
+                        + 'Roll again with a resolved target to apply it.';
+                }
+
+                return;
+            }
+
+            if (!selfTargetCanMutate(target)) {
+                if (vitalApplicationNote instanceof HTMLElement) {
+                    vitalApplicationNote.textContent =
+                        noun
+                        + ' recorded for '
+                        + targetText(target)
+                        + '. This target is reference-only until '
+                        + 'the party or encounter registry can resolve it.';
+                }
+
+                return;
+            }
+
+            pendingVitalApplication = {
+                action: action,
+                kind: kind,
+                amount: amount,
+                target: target
+            };
+
+            if (vitalApplicationNote instanceof HTMLElement) {
+                vitalApplicationNote.textContent =
+                    noun
+                    + ' can be entered into '
+                    + target.label
+                    + '’s live Adventuring Measures.';
+            }
+
+            if (vitalApply instanceof HTMLButtonElement) {
+                vitalApply.hidden = false;
+                vitalApply.textContent =
+                    'Apply '
+                    + amount
+                    + ' '
+                    + noun
+                    + ' to '
+                    + target.label;
+            }
+        };
+
+        const applyPendingVitalResult = function () {
+            if (
+                !pendingVitalApplication
+                || !selfTargetCanMutate(
+                    pendingVitalApplication.target
+                )
+                || !(vitalForm instanceof HTMLFormElement)
+            ) {
+                clearVitalApplication();
+                return;
+            }
+
+            const amountInput = vitalMeasures.querySelector(
+                '[data-vital-amount]'
+            );
+            const actionButton = vitalMeasures.querySelector(
+                '[data-vital-action="'
+                + pendingVitalApplication.action
+                + '"]'
+            );
+
+            if (
+                !(amountInput instanceof HTMLInputElement)
+                || !(actionButton instanceof HTMLButtonElement)
+            ) {
+                clearVitalApplication();
+                return;
+            }
+
+            amountInput.value = String(
+                pendingVitalApplication.amount
+            );
+
+            actionButton.click();
+
+            if (live instanceof HTMLElement) {
+                live.textContent =
+                    'Applying '
+                    + pendingVitalApplication.amount
+                    + ' '
+                    + pendingVitalApplication.kind
+                    + ' to '
+                    + pendingVitalApplication.target.label
+                    + '.';
+            }
+
+            vitalForm.requestSubmit();
         };
 
         const favouriteIndex = function (key) {
@@ -1278,6 +1468,7 @@
 
             clearReaction();
             clearCriticalFollowUp();
+            clearVitalApplication();
             hideAuby();
             updateFavouriteToggle();
 
@@ -1322,6 +1513,7 @@
             }
 
             clearReaction();
+            clearVitalApplication();
             hideAuby();
             updateFavouriteToggle();
             paintQuickRolls();
@@ -1405,6 +1597,11 @@
 
             hideAuby();
             paintTargetResult(target);
+            prepareVitalApplication(
+                selection.kind,
+                total,
+                target
+            );
             showResult();
 
             remember(
@@ -1441,6 +1638,7 @@
 
         const performD20 = function (selection, mode) {
             clearCriticalFollowUp();
+            clearVitalApplication();
 
             const target = selectedTarget(selection);
             const rolled = rollMode(mode);
@@ -1614,6 +1812,11 @@
 
             hideAuby();
             paintTargetResult(critical.target || null);
+            prepareVitalApplication(
+                'damage',
+                total,
+                critical.target || null
+            );
             showResult();
 
             remember(
@@ -1672,6 +1875,7 @@
         const performFreeRoll = function () {
             activeTrigger = null;
             clearCriticalFollowUp();
+            clearVitalApplication();
             paintTargetResult(null);
 
             if (targeting instanceof HTMLElement) {
@@ -1867,6 +2071,13 @@
             criticalDamage.addEventListener(
                 'click',
                 performCriticalDamage
+            );
+        }
+
+        if (vitalApply instanceof HTMLButtonElement) {
+            vitalApply.addEventListener(
+                'click',
+                applyPendingVitalResult
             );
         }
 

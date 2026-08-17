@@ -2441,7 +2441,7 @@ $callingPathLabel = $callingPath !== ''
             </label>
 
             <p data-guild-target-note>
-                Targeting is recorded with the roll only. No HP changes in this phase.
+                Resolved targets may support Vital Application after the roll; reference-only targets remain non-mutating.
             </p>
         </section>
 
@@ -2628,6 +2628,20 @@ $callingPathLabel = $callingPath !== ''
                     data-guild-dice-target-result
                     hidden
                 ></p>
+
+                <div
+                    class="gmrc-guild-vital-application"
+                    data-guild-vital-application
+                    hidden
+                >
+                    <p data-guild-vital-application-note></p>
+                    <button
+                        type="button"
+                        data-guild-vital-apply
+                        hidden
+                    ></button>
+                </div>
+
                 <p class="gmrc-guild-dice-result__auby" data-guild-dice-auby hidden></p>
 
                 <div
