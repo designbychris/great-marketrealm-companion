@@ -81,6 +81,10 @@ final class ArcanePantryPresenterTest extends TestCase
             'Pantry Recovery',
             array_column($arcana['shelves'][3]['entries'], 'label')
         );
+        self::assertNotContains(
+            'level-3',
+            array_column($arcana['shelves'], 'key')
+        );
     }
 
     public function testWizardCantripFormulaScalesAtCharacterLevelFive(): void

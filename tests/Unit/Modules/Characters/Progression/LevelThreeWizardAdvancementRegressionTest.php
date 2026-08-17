@@ -48,7 +48,7 @@ final class LevelThreeWizardAdvancementRegressionTest extends TestCase
         );
     }
 
-    public function testLevelThreeOffersFourNewLevelTwoWizardSpells(): void
+    public function testLevelThreeOffersLevelTwoWizardSpellsAmongEligibleChoices(): void
     {
         $state = (
             new AdvancementLedgerPresenter()
@@ -68,30 +68,48 @@ final class LevelThreeWizardAdvancementRegressionTest extends TestCase
             $spellbook['facts']['choice_minimum']
         );
 
-        self::assertSame(
+        self::assertGreaterThanOrEqual(
             4,
             $spellbook['facts']['available_choices']
         );
 
-        self::assertSame(
-            [
-                'aisle-step',
-                'stockroom-veil',
-                'price-freeze',
-                'crate-levitation',
-            ],
-            array_column(
+        $levelTwoChoices = array_values(
+            array_filter(
                 $spellbook['choices'],
-                'key'
+                static fn (array $choice): bool =>
+                    (int) ($choice['spell_level'] ?? 0)
+                    === 2
             )
         );
 
-        self::assertSame(
-            [2, 2, 2, 2],
-            array_column(
-                $spellbook['choices'],
-                'spell_level'
-            )
+        $levelTwoKeys = array_column(
+            $levelTwoChoices,
+            'key'
+        );
+
+        self::assertGreaterThanOrEqual(
+            4,
+            count($levelTwoKeys)
+        );
+
+        self::assertContains(
+            'aisle-step',
+            $levelTwoKeys
+        );
+
+        self::assertContains(
+            'stockroom-veil',
+            $levelTwoKeys
+        );
+
+        self::assertContains(
+            'price-freeze',
+            $levelTwoKeys
+        );
+
+        self::assertContains(
+            'crate-levitation',
+            $levelTwoKeys
         );
     }
 

@@ -59,11 +59,24 @@ final class ArcanePantryPresenter
             : 8 + $castingModifier + $proficiency;
 
         $level = $character->level()->value();
+        $maximumSpellLevel = $this->maximumSpellLevel(
+            $class,
+            $level
+        );
+
         $available = array_values(
             array_filter(
                 $this->catalogue->forClass($class),
                 static fn (ArcaneAbilityDefinition $ability): bool =>
                     $ability->minimumLevel() <= $level
+                    && (
+                        $ability->kind() !== 'spell'
+                        || (
+                            $maximumSpellLevel > 0
+                            && $ability->spellLevel()
+                                <= $maximumSpellLevel
+                        )
+                    )
             )
         );
 
@@ -252,6 +265,30 @@ final class ArcanePantryPresenter
             'bard', 'paladin', 'sorcerer', 'warlock' => 'charisma',
             default => null,
         };
+    }
+
+    /**
+     * Highest spell circle currently available to this adventurer.
+     */
+    private function maximumSpellLevel(
+        string $class,
+        int $level
+    ): int {
+        $slots = $this->slots(
+            $class,
+            $level
+        );
+
+        if ($slots === []) {
+            return 0;
+        }
+
+        return max(
+            array_column(
+                $slots,
+                'level'
+            )
+        );
     }
 
     /** @return array<int, array{level:int,total:int}> */
