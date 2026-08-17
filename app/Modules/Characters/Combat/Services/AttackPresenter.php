@@ -47,6 +47,9 @@ final class AttackPresenter
                 'proficiency_bonus' => $proficiency,
                 'attack_bonus' => $abilityModifier + $proficiency,
                 'damage_die' => $item->damageDie(),
+                'critical_damage_die' => $this->criticalDamageFormula(
+                    $item->damageDie()
+                ),
                 'damage_modifier' => $abilityModifier,
                 'damage_type' => $item->damageType() ?? 'damage',
                 'properties' => $properties,
@@ -55,5 +58,26 @@ final class AttackPresenter
         }
 
         return $attacks;
+    }
+
+    /**
+     * Double only the weapon dice for a critical hit.
+     *
+     * Flat ability modifiers are deliberately not part of this formula and
+     * therefore remain single when Diceworks performs the follow-up roll.
+     */
+    private function criticalDamageFormula(string $formula): string
+    {
+        if (! preg_match(
+            '/^(\d+)d(4|6|8|10|12|20|100)$/i',
+            trim($formula),
+            $matches
+        )) {
+            return $formula;
+        }
+
+        return ((int) $matches[1] * 2)
+            . 'd'
+            . (int) $matches[2];
     }
 }

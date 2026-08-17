@@ -28,6 +28,7 @@ final class AttackPresenterTest extends TestCase
         self::assertSame('Market Cleaver', $attacks[0]['label']);
         self::assertSame(5, $attacks[0]['attack_bonus']);
         self::assertSame('1d6', $attacks[0]['damage_die']);
+        self::assertSame('2d6', $attacks[0]['critical_damage_die']);
         self::assertSame(3, $attacks[0]['damage_modifier']);
     }
 

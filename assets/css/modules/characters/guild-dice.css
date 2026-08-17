@@ -1831,3 +1831,74 @@
         grid-column: 1;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.10.10 — Critical Damage Workflow
+ * =============================================================== */
+.gmrc-guild-critical-follow-up {
+    display: grid;
+    gap: .48rem;
+    margin-top: .7rem;
+    padding: .68rem;
+    border:
+        1px solid
+        rgba(184, 138, 55, .52);
+    border-radius: .36rem;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 241, 185, .82),
+            rgba(245, 222, 149, .52)
+        );
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 251, 222, .5);
+}
+
+.gmrc-guild-critical-follow-up[hidden] {
+    display: none !important;
+}
+
+.gmrc-guild-critical-follow-up p {
+    margin: 0;
+    color: #4a2a18;
+    font-size: .62rem;
+    line-height: 1.45;
+}
+
+.gmrc-guild-critical-follow-up button {
+    min-height: 2.45rem;
+    padding: .48rem .68rem;
+    border:
+        1px solid
+        rgba(74, 42, 24, .54);
+    border-radius: .3rem;
+    color: #fff1c9;
+    background:
+        linear-gradient(
+            180deg,
+            #74478a,
+            #5a326c
+        );
+    box-shadow:
+        0 .25rem .5rem
+        rgba(55, 30, 18, .16);
+    font: inherit;
+    font-size: .68rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.gmrc-guild-critical-follow-up button:hover {
+    background:
+        linear-gradient(
+            180deg,
+            #86559e,
+            #603773
+        );
+}
+
+.gmrc-guild-critical-follow-up button:focus-visible {
+    outline: 3px solid #b88a37;
+    outline-offset: 2px;
+}

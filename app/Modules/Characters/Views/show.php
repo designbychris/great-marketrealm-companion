@@ -1543,10 +1543,10 @@ $callingPathLabel = $callingPath !== ''
                                     </ul>
                                 <?php endif; ?>
                                 <div class="gmrc-attack-card__rolls">
-                                    <button type="button" class="gmrc-guild-roll-trigger" data-guild-roll="d20" data-roll-kind="attack" data-roll-label="<?php echo esc_attr($attack['label'] . ' — Attack'); ?>" data-roll-modifier="<?php echo esc_attr((string) $attack['attack_bonus']); ?>" data-roll-result-suffix="to hit">
+                                    <button type="button" class="gmrc-guild-roll-trigger" data-guild-roll="d20" data-roll-kind="attack" data-roll-source="<?php echo esc_attr($attack['label']); ?>" data-roll-ability="<?php echo esc_attr((string) $attack['ability']); ?>" data-roll-proficiency="proficient" data-roll-label="<?php echo esc_attr($attack['label'] . ' — Attack'); ?>" data-roll-modifier="<?php echo esc_attr((string) $attack['attack_bonus']); ?>" data-roll-result-suffix="to hit" data-roll-critical-formula="<?php echo esc_attr((string) $attack['critical_damage_die']); ?>" data-roll-critical-modifier="<?php echo esc_attr((string) $attack['damage_modifier']); ?>" data-roll-critical-damage-type="<?php echo esc_attr((string) $attack['damage_type']); ?>">
                                         <span aria-hidden="true">⚔</span> Roll Attack
                                     </button>
-                                    <button type="button" class="gmrc-guild-roll-trigger gmrc-guild-roll-trigger--damage" data-guild-roll="damage" data-roll-kind="damage" data-roll-label="<?php echo esc_attr($attack['label'] . ' — Damage'); ?>" data-roll-formula="<?php echo esc_attr($attack['damage_die']); ?>" data-roll-modifier="<?php echo esc_attr((string) $attack['damage_modifier']); ?>" data-roll-damage-type="<?php echo esc_attr($attack['damage_type']); ?>">
+                                    <button type="button" class="gmrc-guild-roll-trigger gmrc-guild-roll-trigger--damage" data-guild-roll="damage" data-roll-kind="damage" data-roll-source="<?php echo esc_attr($attack['label']); ?>" data-roll-ability="<?php echo esc_attr((string) $attack['ability']); ?>" data-roll-proficiency="proficient" data-roll-label="<?php echo esc_attr($attack['label'] . ' — Damage'); ?>" data-roll-formula="<?php echo esc_attr($attack['damage_die']); ?>" data-roll-modifier="<?php echo esc_attr((string) $attack['damage_modifier']); ?>" data-roll-damage-type="<?php echo esc_attr($attack['damage_type']); ?>">
                                         <span aria-hidden="true">✹</span> Roll Damage
                                     </button>
                                 </div>
@@ -2542,6 +2542,21 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-guild-dice-result__math" data-guild-dice-math></p>
                 <strong class="gmrc-guild-dice-result__total" data-guild-dice-total></strong>
                 <p class="gmrc-guild-dice-result__auby" data-guild-dice-auby hidden></p>
+
+                <div
+                    class="gmrc-guild-critical-follow-up"
+                    data-guild-critical-follow-up
+                    hidden
+                >
+                    <p>
+                        <strong>Critical damage is ready.</strong>
+                        Double the weapon dice; keep the flat modifier once.
+                    </p>
+                    <button
+                        type="button"
+                        data-guild-critical-damage
+                    ></button>
+                </div>
 
             </div>
         </div>

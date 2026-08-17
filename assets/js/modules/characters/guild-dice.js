@@ -144,6 +144,12 @@
         const mathNode = tray.querySelector('[data-guild-dice-math]');
         const totalNode = tray.querySelector('[data-guild-dice-total]');
         const aubyNode = tray.querySelector('[data-guild-dice-auby]');
+        const criticalFollowUp = tray.querySelector(
+            '[data-guild-critical-follow-up]'
+        );
+        const criticalDamage = tray.querySelector(
+            '[data-guild-critical-damage]'
+        );
         const reaction = tray.querySelector('[data-guild-dice-reaction]');
         const reactionBanner = tray.querySelector(
             '[data-guild-dice-reaction-banner]'
@@ -198,6 +204,7 @@
         );
 
         let activeTrigger = null;
+        let pendingCriticalDamage = null;
         const characterId = ledger.dataset.characterId || 'unknown';
         const historyKey = 'gmrc:guild-dice:history:' + characterId;
         const favouritesKey = 'gmrc:guild-dice:favourites:' + characterId;
@@ -325,7 +332,14 @@
                 proficiency: activeTrigger.dataset.rollProficiency || 'none',
                 formula: activeTrigger.dataset.rollFormula || '',
                 damageType: activeTrigger.dataset.rollDamageType || '',
-                resultSuffix: activeTrigger.dataset.rollResultSuffix || ''
+                resultSuffix: activeTrigger.dataset.rollResultSuffix || '',
+                criticalFormula:
+                    activeTrigger.dataset.rollCriticalFormula || '',
+                criticalModifier: Number(
+                    activeTrigger.dataset.rollCriticalModifier
+                ) || 0,
+                criticalDamageType:
+                    activeTrigger.dataset.rollCriticalDamageType || ''
             };
         };
 
@@ -842,6 +856,46 @@
             }
         };
 
+        const clearCriticalFollowUp = function () {
+            pendingCriticalDamage = null;
+
+            if (criticalFollowUp instanceof HTMLElement) {
+                criticalFollowUp.hidden = true;
+            }
+
+            if (criticalDamage instanceof HTMLButtonElement) {
+                criticalDamage.textContent = '';
+                criticalDamage.disabled = false;
+            }
+        };
+
+        const prepareCriticalFollowUp = function (selection) {
+            clearCriticalFollowUp();
+
+            if (
+                selection.kind !== 'attack'
+                || !selection.criticalFormula
+                || !(criticalFollowUp instanceof HTMLElement)
+                || !(criticalDamage instanceof HTMLButtonElement)
+            ) {
+                return;
+            }
+
+            pendingCriticalDamage = {
+                label: selection.source || selection.label,
+                formula: selection.criticalFormula,
+                modifier: selection.criticalModifier,
+                damageType: selection.criticalDamageType || 'damage'
+            };
+
+            criticalDamage.textContent = 'Roll Critical Damage — '
+                + selection.criticalFormula
+                + ' '
+                + signed(selection.criticalModifier);
+
+            criticalFollowUp.hidden = false;
+        };
+
         const clearReaction = function () {
             if (reaction instanceof HTMLElement) {
                 reaction.dataset.reaction = 'none';
@@ -1012,6 +1066,7 @@
             }
 
             clearReaction();
+            clearCriticalFollowUp();
             hideAuby();
             updateFavouriteToggle();
 
@@ -1164,6 +1219,8 @@
         };
 
         const performD20 = function (selection, mode) {
+            clearCriticalFollowUp();
+
             const rolled = rollMode(mode);
             const adjustment = situationalAdjustment();
             const total = rolled.natural
@@ -1219,6 +1276,10 @@
                         ? '“Critical hit! Double the weapon dice!” — Auby'
                         : '“I definitely witnessed that.” — Auby';
                     aubyNode.hidden = false;
+
+                    if (selection.kind === 'attack') {
+                        prepareCriticalFollowUp(selection);
+                    }
                 } else if (rolled.natural === 1) {
                     aubyNode.textContent = '“The Guild has elected not to record that one.” — Auby';
                     aubyNode.hidden = false;
@@ -1267,6 +1328,98 @@
             resetSituational();
         };
 
+        const performCriticalDamage = function () {
+            if (!pendingCriticalDamage) {
+                return;
+            }
+
+            const critical = pendingCriticalDamage;
+            const rolled = rollFormula(critical.formula, false);
+
+            if (!rolled) {
+                clearCriticalFollowUp();
+                return;
+            }
+
+            const adjustment = situationalAdjustment();
+
+            paintDice(rolled.dice, rolled.sides, null);
+            paintSituationalDie(adjustment);
+
+            const total = rolled.total
+                + critical.modifier
+                + adjustment.total;
+            const adjustmentText = situationalText(adjustment);
+            const resultLabel = critical.damageType + ' critical damage';
+
+            if (label instanceof HTMLElement) {
+                label.textContent = critical.label + ' — Critical Damage';
+            }
+
+            if (modifierNode instanceof HTMLElement) {
+                modifierNode.textContent = signed(critical.modifier);
+            }
+
+            if (modeNode instanceof HTMLElement) {
+                modeNode.textContent = 'Critical Damage';
+            }
+
+            if (mathNode instanceof HTMLElement) {
+                mathNode.textContent = critical.formula
+                    + ' ('
+                    + rolled.dice.join(' + ')
+                    + ') '
+                    + signed(critical.modifier)
+                    + (
+                        adjustmentText
+                            ? ' + ' + adjustmentText
+                            : ''
+                    );
+            }
+
+            if (totalNode instanceof HTMLElement) {
+                totalNode.textContent = '= '
+                    + total
+                    + ' '
+                    + resultLabel;
+            }
+
+            hideAuby();
+            showResult();
+
+            remember(
+                'Critical Damage · '
+                + critical.label
+                + ': '
+                + critical.formula
+                + ' ('
+                + rolled.dice.join(' + ')
+                + ') '
+                + signed(critical.modifier)
+                + (
+                    adjustmentText
+                        ? ' + ' + adjustmentText
+                        : ''
+                )
+                + ' = '
+                + total
+                + ' '
+                + resultLabel,
+                {
+                    kind: 'critical-damage',
+                    formula: critical.formula,
+                    dice: rolled.dice,
+                    modifier: critical.modifier,
+                    total: total,
+                    reaction: 'critical-damage',
+                    situational: adjustment
+                }
+            );
+
+            clearCriticalFollowUp();
+            resetSituational();
+        };
+
         const perform = function (mode) {
             const selection = current();
 
@@ -1287,6 +1440,7 @@
 
         const performFreeRoll = function () {
             activeTrigger = null;
+            clearCriticalFollowUp();
             updateFavouriteToggle();
 
             const requestedQuantity = Number(
@@ -1459,6 +1613,13 @@
         });
 
         refreshSituationalSummary();
+
+        if (criticalDamage instanceof HTMLButtonElement) {
+            criticalDamage.addEventListener(
+                'click',
+                performCriticalDamage
+            );
+        }
 
         if (historyClear instanceof HTMLButtonElement) {
             historyClear.addEventListener('click', clearHistory);
