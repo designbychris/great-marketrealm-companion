@@ -7,6 +7,7 @@ namespace GreatMarketrealmCompanion\Modules\Parties\Models;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyMembershipRole;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOffice;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyName;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyStandard;
@@ -152,6 +153,59 @@ final class Party
                 $characterId->value()
             ]
         );
+    }
+
+    public function changeMemberOffice(
+        CharacterId $characterId,
+        PartyOffice $office
+    ): void {
+        $membership = $this->membership(
+            $characterId
+        );
+
+        if (! $membership instanceof PartyMembership) {
+            throw new InvalidArgumentException(
+                'The Character is not a member of this Party.'
+            );
+        }
+
+        if ($office->isAssigned()) {
+            foreach ($this->memberships as $candidate) {
+                if (
+                    ! $candidate
+                        ->characterId()
+                        ->equals($characterId)
+                    && $candidate
+                        ->office()
+                        ->equals($office)
+                ) {
+                    throw new InvalidArgumentException(
+                        sprintf(
+                            'The Company Office "%s" is already assigned.',
+                            $office->label()
+                        )
+                    );
+                }
+            }
+        }
+
+        $membership->changeOffice($office);
+    }
+
+    public function officeHolder(
+        PartyOffice $office
+    ): ?PartyMembership {
+        if (! $office->isAssigned()) {
+            return null;
+        }
+
+        foreach ($this->memberships as $membership) {
+            if ($membership->office()->equals($office)) {
+                return $membership;
+            }
+        }
+
+        return null;
     }
 
     public function changeMemberRole(

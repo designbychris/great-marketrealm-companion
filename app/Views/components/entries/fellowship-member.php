@@ -120,6 +120,19 @@ $characterUrl = $character instanceof Character
 
         <h3><?php echo esc_html($name); ?></h3>
 
+        <?php if ($membership->office()->isAssigned()) : ?>
+            <p class="gmrc-fellowship-member__office">
+                <span aria-hidden="true">
+                    <?php echo esc_html(
+                        $membership->office()->glyph()
+                    ); ?>
+                </span>
+                <?php echo esc_html(
+                    $membership->office()->label()
+                ); ?>
+            </p>
+        <?php endif; ?>
+
         <p class="gmrc-fellowship-member__identity">
             <?php echo esc_html($race); ?>
             <span aria-hidden="true">·</span>
@@ -204,6 +217,77 @@ $characterUrl = $character instanceof Character
                     type="submit"
                 >
                     Save role
+                </button>
+            </form>
+
+            <form
+                action="<?php echo esc_url(
+                    admin_url('admin-post.php')
+                ); ?>"
+                method="post"
+                class="gmrc-fellowship-inline-form"
+            >
+                <input
+                    type="hidden"
+                    name="action"
+                    value="gmrc_app_request"
+                >
+                <input
+                    type="hidden"
+                    name="gmrc_route"
+                    value="<?php echo esc_attr(
+                        'parties/' . $partyId
+                        . '/members/' . $characterId
+                        . '/office'
+                    ); ?>"
+                >
+                <input type="hidden" name="_method" value="PUT">
+
+                <?php wp_nonce_field(
+                    'gmrc_party_members_' . $partyId,
+                    'gmrc_nonce'
+                ); ?>
+
+                <label>
+                    <span class="screen-reader-text">
+                        Company Office for <?php echo esc_html($name); ?>
+                    </span>
+                    <select
+                        name="office"
+                        aria-label="<?php echo esc_attr(
+                            'Company Office for ' . $name
+                        ); ?>"
+                    >
+                        <?php foreach ([
+                            'none' => 'No office',
+                            'quartermaster' => 'Quartermaster',
+                            'chronicler' => 'Chronicler',
+                            'pathfinder' => 'Pathfinder',
+                            'standard-bearer' => 'Standard Bearer',
+                        ] as $officeValue => $officeLabel) : ?>
+                            <option
+                                value="<?php echo esc_attr(
+                                    $officeValue
+                                ); ?>"
+                                <?php selected(
+                                    $membership->office()->value(),
+                                    $officeValue
+                                ); ?>
+                            >
+                                <?php echo esc_html($officeLabel); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+
+                <button
+                    class="
+                        gmrc-fellowship-button
+                        gmrc-fellowship-button--small
+                    "
+                    type="submit"
+                >
+                    Save office
                 </button>
             </form>
 

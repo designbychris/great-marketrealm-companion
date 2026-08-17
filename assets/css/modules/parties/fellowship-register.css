@@ -1472,3 +1472,105 @@
         color: CanvasText;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.11.2D — Fellowship Roles & Company Offices
+ * =============================================================== */
+
+.gmrc-fellowship-member__office {
+    display: inline-flex;
+    gap: 0.35rem;
+    align-items: center;
+    margin: 0.1rem 0 0.4rem;
+    padding: 0.22rem 0.42rem;
+    border: 1px solid var(--gmrc-standard-secondary, rgba(164, 123, 55, 0.45));
+    border-radius: 999px;
+    color: var(--gmrc-standard-primary, var(--gmrc-fellowship-green));
+    background: var(--gmrc-standard-soft, rgba(229, 238, 211, 0.54));
+    font-size: 0.7rem;
+    font-weight: 900;
+}
+
+.gmrc-fellowship-offices {
+    margin-top: 1.25rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid rgba(89, 68, 46, 0.2);
+}
+
+.gmrc-fellowship-offices__grid {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(min(100%, 13rem), 1fr)
+        );
+    gap: 0.7rem;
+}
+
+.gmrc-fellowship-office-card {
+    display: flex;
+    gap: 0.65rem;
+    align-items: center;
+    min-width: 0;
+    padding: 0.7rem 0.75rem;
+    border: 1px solid rgba(80, 59, 39, 0.22);
+    border-left: 0.28rem solid var(--gmrc-standard-primary, #5f3673);
+    border-radius: 0.4rem;
+    background:
+        linear-gradient(
+            135deg,
+            var(--gmrc-standard-soft, rgba(95, 54, 115, 0.09)),
+            rgba(255, 250, 226, 0.65)
+        );
+}
+
+.gmrc-fellowship-office-card__glyph {
+    display: grid;
+    place-items: center;
+    flex: 0 0 2.25rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--gmrc-standard-secondary, #b68a3c);
+    border-radius: 50%;
+    color: #fff9e4;
+    background: var(--gmrc-standard-primary, #5f3673);
+    font-size: 1rem;
+}
+
+.gmrc-fellowship-office-card strong,
+.gmrc-fellowship-office-card span {
+    display: block;
+}
+
+.gmrc-fellowship-office-card strong {
+    color: var(--gmrc-fellowship-ink);
+    font-size: 0.78rem;
+}
+
+.gmrc-fellowship-office-card div > span {
+    margin-top: 0.08rem;
+    color: var(--gmrc-fellowship-muted);
+    font-size: 0.72rem;
+}
+
+.gmrc-fellowship-offices__empty {
+    margin: 0;
+    padding: 0.75rem 0.85rem;
+    border: 1px dashed rgba(80, 59, 39, 0.24);
+    border-radius: 0.4rem;
+    color: var(--gmrc-fellowship-muted);
+    background: rgba(255, 250, 226, 0.42);
+    font-size: 0.84rem;
+    line-height: 1.5;
+}
+
+@media (forced-colors: active) {
+    .gmrc-fellowship-office-card,
+    .gmrc-fellowship-member__office,
+    .gmrc-fellowship-offices__empty {
+        border: 1px solid CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

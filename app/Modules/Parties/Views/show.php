@@ -35,6 +35,15 @@ $editUrl = add_query_arg(
     'parties/' . rawurlencode($id) . '/edit',
     $companionUrl
 );
+
+$officeHolders = array_values(
+    array_filter(
+        $members,
+        static fn (array $member): bool =>
+            isset($member['membership'])
+            && $member['membership']->office()->isAssigned()
+    )
+);
 ?>
 
 <section class="gmrc-fellowship-ledger-page">
@@ -191,6 +200,64 @@ $editUrl = add_query_arg(
             <?php endif; ?>
         </section>
     <?php endif; ?>
+
+    <section
+        class="gmrc-fellowship-offices"
+        aria-labelledby="gmrc-fellowship-offices-title"
+    >
+        <header class="gmrc-fellowship-section-heading">
+            <div>
+                <p class="gmrc-eyebrow">Duties beyond the adventuring class</p>
+                <h2 id="gmrc-fellowship-offices-title">
+                    Company Offices
+                </h2>
+            </div>
+        </header>
+
+        <?php if ($officeHolders === []) : ?>
+            <p class="gmrc-fellowship-offices__empty">
+                No Company Offices have been appointed yet. The Guild
+                suspects everybody is currently hoping somebody else carries
+                the inventory ledger.
+            </p>
+        <?php else : ?>
+            <div class="gmrc-fellowship-offices__grid">
+                <?php foreach ($officeHolders as $holder) : ?>
+                    <?php
+                    $officeMembership = $holder['membership'];
+                    $officeCharacter = $holder['character'] ?? null;
+                    $officeName = $officeCharacter instanceof Character
+                        ? $officeCharacter->name()->value()
+                        : 'Unrecorded Adventurer';
+                    ?>
+                    <article class="gmrc-fellowship-office-card">
+                        <span
+                            class="gmrc-fellowship-office-card__glyph"
+                            aria-hidden="true"
+                        >
+                            <?php echo esc_html(
+                                $officeMembership
+                                    ->office()
+                                    ->glyph()
+                            ); ?>
+                        </span>
+                        <div>
+                            <strong>
+                                <?php echo esc_html(
+                                    $officeMembership
+                                        ->office()
+                                        ->label()
+                                ); ?>
+                            </strong>
+                            <span>
+                                <?php echo esc_html($officeName); ?>
+                            </span>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </section>
 
     <section
         class="gmrc-fellowship-roster"

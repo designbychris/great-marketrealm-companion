@@ -322,7 +322,7 @@ class FrontendServiceProvider extends ServiceProvider
                 true
             )
             && preg_match(
-                '#^parties/([^/]+)/members(?:/[^/]+(?:/role)?)?$#',
+                '#^parties/([^/]+)/members(?:/[^/]+(?:/(?:role|office))?)?$#',
                 $route,
                 $matches
             )

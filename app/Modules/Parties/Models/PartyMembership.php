@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Parties\Models;
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyMembershipRole;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOffice;
 
 defined('ABSPATH') || exit;
 
@@ -18,7 +19,8 @@ final class PartyMembership
 {
     private function __construct(
         private CharacterId $characterId,
-        private PartyMembershipRole $role
+        private PartyMembershipRole $role,
+        private PartyOffice $office
     ) {
     }
 
@@ -27,17 +29,20 @@ final class PartyMembership
     ): self {
         return new self(
             $characterId,
-            PartyMembershipRole::member()
+            PartyMembershipRole::member(),
+            PartyOffice::none()
         );
     }
 
     public static function withRole(
         CharacterId $characterId,
-        PartyMembershipRole $role
+        PartyMembershipRole $role,
+        ?PartyOffice $office = null
     ): self {
         return new self(
             $characterId,
-            $role
+            $role,
+            $office ?? PartyOffice::none()
         );
     }
 
@@ -51,9 +56,21 @@ final class PartyMembership
         return $this->role;
     }
 
+    public function office(): PartyOffice
+    {
+        return $this->office;
+    }
+
     public function changeRole(
         PartyMembershipRole $role
     ): void {
         $this->role = $role;
+    }
+
+
+    public function changeOffice(
+        PartyOffice $office
+    ): void {
+        $this->office = $office;
     }
 }

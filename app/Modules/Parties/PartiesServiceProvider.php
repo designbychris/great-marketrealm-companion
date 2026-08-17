@@ -7,6 +7,7 @@ namespace GreatMarketrealmCompanion\Modules\Parties;
 use GreatMarketrealmCompanion\Core\Container;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\AddPartyMemberAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\ChangePartyMemberRoleAction;
+use GreatMarketrealmCompanion\Modules\Parties\Actions\ChangePartyMemberOfficeAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\CreatePartyAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\DeletePartyAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\RemovePartyMemberAction;
@@ -97,6 +98,10 @@ final class PartiesServiceProvider extends ServiceProvider
 
         $container->bind(
             ChangePartyMemberRoleAction::class
+        );
+
+        $container->bind(
+            ChangePartyMemberOfficeAction::class
         );
 
         $container->bind(

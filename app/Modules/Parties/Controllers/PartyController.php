@@ -13,6 +13,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryIn
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\AddPartyMemberAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\ChangePartyMemberRoleAction;
+use GreatMarketrealmCompanion\Modules\Parties\Actions\ChangePartyMemberOfficeAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\CreatePartyAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\DeletePartyAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\RemovePartyMemberAction;
@@ -21,6 +22,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Actions\UpdatePartyStandardAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\UpdatePartyCharterAction;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyMembershipRole;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOffice;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyName;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyStandard;
@@ -28,6 +30,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyCharter;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\AddPartyMemberRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\StorePartyRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyMemberRoleRequest;
+use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyMemberOfficeRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyStandardRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyCharterRequest;
@@ -47,6 +50,7 @@ final class PartyController
         private AddPartyMemberAction $addMember,
         private RemovePartyMemberAction $removeMember,
         private ChangePartyMemberRoleAction $changeRole,
+        private ChangePartyMemberOfficeAction $changeOffice,
         private RenamePartyAction $renameParty,
         private UpdatePartyStandardAction $updateStandard,
         private UpdatePartyCharterAction $updateCharter,
@@ -282,6 +286,31 @@ final class PartyController
 
         $this->flash->success(
             'The Fellowship role has been updated.'
+        );
+
+        return $this->responses->redirect(
+            $this->partyUrl($party->id())
+        );
+    }
+
+    public function updateMemberOffice(
+        string $id,
+        string $character,
+        UpdatePartyMemberOfficeRequest $request
+    ): RedirectResponse {
+        $party = $this->changeOffice->handle(
+            PartyId::fromString($id),
+            $this->ownerId(),
+            CharacterId::fromString(
+                $character
+            ),
+            PartyOffice::fromString(
+                $request->office()
+            )
+        );
+
+        $this->flash->success(
+            'The Company Office has been updated.'
         );
 
         return $this->responses->redirect(

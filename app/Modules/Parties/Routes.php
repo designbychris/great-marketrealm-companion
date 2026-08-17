@@ -38,6 +38,11 @@ return static function (Router $router): void {
         [PartyController::class, 'updateMemberRole']
     );
 
+    $router->put(
+        '/parties/{id}/members/{character}/office',
+        [PartyController::class, 'updateMemberOffice']
+    );
+
     $router->delete(
         '/parties/{id}/members/{character}',
         [PartyController::class, 'removeMember']

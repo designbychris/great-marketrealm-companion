@@ -10,6 +10,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Models\Party;
 use GreatMarketrealmCompanion\Modules\Parties\Models\PartyMembership;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyMembershipRole;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOffice;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyName;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyStandard;
@@ -81,6 +82,7 @@ final class PartyRepository implements PartyRepositoryInterface
                     'character_id' =>
                         $membership->characterId()->value(),
                     'role' => $membership->role()->value(),
+                    'office' => $membership->office()->value(),
                 ],
                 $party->memberships()
             )
@@ -302,10 +304,18 @@ final class PartyRepository implements PartyRepositoryInterface
                     (string) ($entry['role'] ?? '')
                 );
 
+                $office = PartyOffice::fromString(
+                    (string) (
+                        $entry['office']
+                        ?? PartyOffice::NONE
+                    )
+                );
+
                 $seen[$characterId->value()] = true;
                 $memberships[] = PartyMembership::withRole(
                     $characterId,
-                    $role
+                    $role,
+                    $office
                 );
             } catch (Throwable) {
                 continue;
