@@ -9,6 +9,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyMembershipRole;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyName;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyStandard;
 use InvalidArgumentException;
 
 defined('ABSPATH') || exit;
@@ -28,7 +29,8 @@ final class Party
         private PartyId $id,
         private PartyName $name,
         private PartyOwnerId $ownerId,
-        private array $memberships
+        private array $memberships,
+        private PartyStandard $standard
     ) {
     }
 
@@ -41,7 +43,8 @@ final class Party
             $id,
             $name,
             $ownerId,
-            []
+            [],
+            PartyStandard::default()
         );
     }
 
@@ -52,12 +55,17 @@ final class Party
         PartyId $id,
         PartyName $name,
         PartyOwnerId $ownerId,
-        array $memberships
+        array $memberships,
+        ?PartyStandard $standard = null
     ): self {
         $party = self::create(
             $id,
             $name,
             $ownerId
+        );
+
+        $party->changeStandard(
+            $standard ?? PartyStandard::default()
         );
 
         foreach ($memberships as $membership) {
@@ -92,6 +100,17 @@ final class Party
         PartyName $name
     ): void {
         $this->name = $name;
+    }
+
+    public function standard(): PartyStandard
+    {
+        return $this->standard;
+    }
+
+    public function changeStandard(
+        PartyStandard $standard
+    ): void {
+        $this->standard = $standard;
     }
 
     public function addMember(

@@ -43,6 +43,11 @@ return static function (Router $router): void {
         [PartyController::class, 'removeMember']
     );
 
+    $router->put(
+        '/parties/{id}/standard',
+        [PartyController::class, 'updateStandard']
+    );
+
     $router->get(
         '/parties/{id}',
         [PartyController::class, 'show']

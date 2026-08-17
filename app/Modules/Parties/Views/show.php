@@ -59,7 +59,20 @@ $editUrl = add_query_arg(
     <?php endif; ?>
 
     <header class="gmrc-fellowship-hero">
-        <div class="gmrc-fellowship-hero__portrait">
+        <div
+            class="gmrc-fellowship-hero__portrait"
+            data-standard-palette="<?php echo esc_attr(
+                $party->standard()->palette()
+            ); ?>"
+        >
+            <span
+                class="gmrc-fellowship-standard-seal"
+                aria-hidden="true"
+            >
+                <?php echo esc_html(
+                    $party->standard()->emblemGlyph()
+                ); ?>
+            </span>
             <?php echo $this->component(
                 'components.media.fellowship-portrait',
                 [

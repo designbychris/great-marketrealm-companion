@@ -12,6 +12,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyMembershipRole;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyName;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyStandard;
 use RuntimeException;
 use Throwable;
 use WP_Post;
@@ -23,6 +24,7 @@ final class PartyRepository implements PartyRepositoryInterface
     private const POST_TYPE = 'gmrc_party';
     private const META_PARTY_ID = '_gmrc_party_id';
     private const META_MEMBERSHIPS = '_gmrc_party_memberships';
+    private const META_STANDARD = '_gmrc_party_standard';
 
     public function allForOwner(PartyOwnerId $ownerId): array
     {
@@ -80,6 +82,12 @@ final class PartyRepository implements PartyRepositoryInterface
                 ],
                 $party->memberships()
             )
+        );
+
+        update_post_meta(
+            $postId,
+            self::META_STANDARD,
+            $party->standard()->toArray()
         );
     }
 
@@ -188,10 +196,35 @@ final class PartyRepository implements PartyRepositoryInterface
                 $id,
                 $name,
                 $ownerId,
-                $this->memberships($post->ID)
+                $this->memberships($post->ID),
+                $this->standard($post->ID)
             );
         } catch (Throwable) {
             return null;
+        }
+    }
+
+    private function standard(int $postId): PartyStandard
+    {
+        $stored = get_post_meta(
+            $postId,
+            self::META_STANDARD,
+            true
+        );
+
+        if (is_string($stored) && $stored !== '') {
+            $decoded = json_decode($stored, true);
+            $stored = is_array($decoded) ? $decoded : [];
+        }
+
+        if (! is_array($stored)) {
+            return PartyStandard::default();
+        }
+
+        try {
+            return PartyStandard::fromArray($stored);
+        } catch (Throwable) {
+            return PartyStandard::default();
         }
     }
 

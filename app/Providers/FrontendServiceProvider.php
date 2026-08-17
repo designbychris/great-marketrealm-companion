@@ -288,6 +288,20 @@ class FrontendServiceProvider extends ServiceProvider
         }
 
         if (
+            $method === 'PUT'
+            && preg_match(
+                '#^parties/([^/]+)/standard$#',
+                $route,
+                $matches
+            )
+        ) {
+            return 'gmrc_party_'
+                . sanitize_text_field(
+                    $matches[1]
+                );
+        }
+
+        if (
             in_array(
                 $method,
                 ['POST', 'PUT', 'DELETE'],

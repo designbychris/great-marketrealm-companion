@@ -17,14 +17,17 @@ use GreatMarketrealmCompanion\Modules\Parties\Actions\CreatePartyAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\DeletePartyAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\RemovePartyMemberAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\RenamePartyAction;
+use GreatMarketrealmCompanion\Modules\Parties\Actions\UpdatePartyStandardAction;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyMembershipRole;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyName;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyStandard;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\AddPartyMemberRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\StorePartyRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyMemberRoleRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyRequest;
+use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyStandardRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Services\PartyFinder;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\FellowshipPresenter;
 use RuntimeException;
@@ -42,6 +45,7 @@ final class PartyController
         private RemovePartyMemberAction $removeMember,
         private ChangePartyMemberRoleAction $changeRole,
         private RenamePartyAction $renameParty,
+        private UpdatePartyStandardAction $updateStandard,
         private DeletePartyAction $deleteParty,
         private ViewFactory $views,
         private ResponseFactory $responses,
@@ -139,6 +143,29 @@ final class PartyController
             $this->partyUrl(
                 $party->id()
             )
+        );
+    }
+
+    public function updateStandard(
+        string $id,
+        UpdatePartyStandardRequest $request
+    ): RedirectResponse {
+        $party = $this->updateStandard->handle(
+            PartyId::fromString($id),
+            $this->ownerId(),
+            PartyStandard::make(
+                $request->palette(),
+                $request->emblem(),
+                $request->ornament()
+            )
+        );
+
+        $this->flash->success(
+            'The Fellowship Standard has been updated.'
+        );
+
+        return $this->responses->redirect(
+            $this->partyUrl($party->id())
         );
     }
 

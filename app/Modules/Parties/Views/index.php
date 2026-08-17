@@ -126,7 +126,20 @@ ob_start();
                     ? ($leader['character'] ?? null)
                     : null;
                 ?>
-                <article class="gmrc-fellowship-entry">
+                <article
+                    class="gmrc-fellowship-entry"
+                    data-standard-palette="<?php echo esc_attr(
+                        $party->standard()->palette()
+                    ); ?>"
+                >
+                    <span
+                        class="gmrc-fellowship-standard-seal"
+                        aria-hidden="true"
+                    >
+                        <?php echo esc_html(
+                            $party->standard()->emblemGlyph()
+                        ); ?>
+                    </span>
                     <div class="gmrc-fellowship-entry__portrait">
                         <?php echo $this->component(
                             'components.media.fellowship-portrait',
