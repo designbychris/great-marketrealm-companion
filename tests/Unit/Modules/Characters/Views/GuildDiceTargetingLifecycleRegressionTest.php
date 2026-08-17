@@ -76,13 +76,56 @@ final class GuildDiceTargetingLifecycleRegressionTest extends TestCase
                 'paintTargetResult(target);'
             )
         );
+        $formulaStart = strpos(
+            $script,
+            'const performFormula = function (selection)'
+        );
+        $formulaEnd = strpos(
+            $script,
+            'const performD20 = function (selection, mode)',
+            $formulaStart
+        );
+
+        self::assertIsInt($formulaStart);
+        self::assertIsInt($formulaEnd);
+
+        $formulaBlock = substr(
+            $script,
+            $formulaStart,
+            $formulaEnd - $formulaStart
+        );
+
         self::assertSame(
-            0,
+            1,
             substr_count(
-                $script,
-                "paintTargetResult(target);\n            paintTargetResult(target);"
+                $formulaBlock,
+                'paintTargetResult(target);'
             )
         );
+
+        $d20Start = $formulaEnd;
+        $d20End = strpos(
+            $script,
+            'const performCriticalDamage = function ()',
+            $d20Start
+        );
+
+        self::assertIsInt($d20End);
+
+        $d20Block = substr(
+            $script,
+            $d20Start,
+            $d20End - $d20Start
+        );
+
+        self::assertSame(
+            1,
+            substr_count(
+                $d20Block,
+                'paintTargetResult(target);'
+            )
+        );
+
         self::assertStringContainsString(
             'paintTargetResult(critical.target || null);',
             $script
