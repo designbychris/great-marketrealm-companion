@@ -145,11 +145,11 @@ final class FellowshipRegisterPresentationTest extends TestCase
             $view
         );
         self::assertStringContainsString(
-            'components.furniture.guild-page',
+            'components/furniture/guild-page.php',
             $view
         );
         self::assertStringContainsString(
-            'components.furniture.guild-ledger',
+            'components/furniture/guild-ledger.php',
             $view
         );
     }

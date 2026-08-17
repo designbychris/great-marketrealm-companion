@@ -234,10 +234,16 @@ final class PartyRoutesControllerRegressionTest extends TestCase
         $show = file_get_contents(
             $root . '/app/Modules/Parties/Views/show.php'
         );
+        $member = file_get_contents(
+            $root
+            . '/app/Views/components/entries/'
+            . 'fellowship-member.php'
+        );
 
         self::assertIsString($create);
         self::assertIsString($edit);
         self::assertIsString($show);
+        self::assertIsString($member);
 
         self::assertStringContainsString(
             "'gmrc_create_party'",
@@ -252,12 +258,16 @@ final class PartyRoutesControllerRegressionTest extends TestCase
             $show
         );
         self::assertStringContainsString(
+            "'gmrc_party_members_' . \$partyId",
+            $member
+        );
+        self::assertStringContainsString(
             'name="_method" value="PUT"',
-            $show
+            $member
         );
         self::assertStringContainsString(
             'name="_method" value="DELETE"',
-            $show
+            $member
         );
     }
 
