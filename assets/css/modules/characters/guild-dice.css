@@ -2072,3 +2072,162 @@
     outline: 3px solid #b88a37;
     outline-offset: 2px;
 }
+
+
+/* ===============================================================
+ * Phase III.10.14 — Diceworks Accessibility & Motion Polish
+ * =============================================================== */
+.gmrc-guild-dice-result__copy:focus {
+    outline: 3px solid #b88a37;
+    outline-offset: 0.28rem;
+    border-radius: 0.22rem;
+}
+
+.gmrc-guild-dice-stage.is-huge-pool {
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(2.1rem, 1fr)
+        );
+    width: 100%;
+    max-height: 17rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+}
+
+.gmrc-guild-dice-stage.is-huge-pool .gmrc-guild-die {
+    min-width: 2.1rem;
+}
+
+.gmrc-guild-dice-stage.is-huge-pool .gmrc-guild-die strong {
+    font-size: 0.78rem;
+}
+
+.gmrc-guild-dice-tray
+button:focus-visible,
+.gmrc-guild-dice-tray
+summary:focus-visible,
+.gmrc-guild-dice-tray
+select:focus-visible,
+.gmrc-guild-dice-tray
+input:focus-visible {
+    outline: 3px solid #b88a37 !important;
+    outline-offset: 3px !important;
+}
+
+@media (max-width: 620px) {
+    .gmrc-guild-dice-tray {
+        width: min(100%, 34rem);
+        max-height: calc(100dvh - 1rem);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable;
+    }
+
+    .gmrc-guild-dice-result {
+        min-width: 0;
+    }
+
+    .gmrc-guild-dice-result__copy {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .gmrc-guild-dice-stage.is-large-pool,
+    .gmrc-guild-dice-stage.is-huge-pool {
+        grid-template-columns:
+            repeat(
+                auto-fit,
+                minmax(2.35rem, 1fr)
+            );
+    }
+
+    .gmrc-guild-dice-history li,
+    .gmrc-guild-quick-roll__roll {
+        overflow-wrap: anywhere;
+        white-space: normal;
+    }
+}
+
+@media (max-width: 430px) {
+    .gmrc-guild-dice-tray {
+        max-height: calc(100dvh - 0.5rem);
+    }
+
+    .gmrc-guild-dice-modes,
+    .gmrc-guild-situational__shortcuts {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .gmrc-guild-quick-roll {
+        grid-template-columns: minmax(0, 1fr) 2.35rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-guild-dice-tray *,
+    .gmrc-guild-dice-tray *::before,
+    .gmrc-guild-dice-tray *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+
+    .gmrc-guild-dice-stage.is-rolling .gmrc-guild-die,
+    .gmrc-guild-dice-confetti-piece,
+    .gmrc-guild-dice-confetti-piece.is-lonely {
+        animation: none !important;
+    }
+
+    /*
+     * The joke remains textual when motion is disabled:
+     * reaction banner + Auby quote are still visible, only the decorative
+     * moving confetti disappears.
+     */
+    .gmrc-guild-dice-confetti-piece,
+    .gmrc-guild-dice-confetti-piece.is-lonely {
+        opacity: 0 !important;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-guild-dice-tray,
+    .gmrc-guild-dice-result,
+    .gmrc-guild-targeting,
+    .gmrc-guild-situational,
+    .gmrc-guild-quick-rolls,
+    .gmrc-guild-vital-application,
+    .gmrc-guild-critical-follow-up {
+        border: 1px solid CanvasText !important;
+        background: Canvas !important;
+        color: CanvasText !important;
+        box-shadow: none !important;
+    }
+
+    .gmrc-guild-die {
+        border: 2px solid CanvasText;
+        color: CanvasText;
+        background: Canvas;
+        filter: none;
+    }
+
+    .gmrc-guild-die.is-kept {
+        outline: 3px solid Highlight;
+        outline-offset: 2px;
+    }
+
+    .gmrc-guild-dice-tray
+    button:focus-visible,
+    .gmrc-guild-dice-tray
+    summary:focus-visible,
+    .gmrc-guild-dice-tray
+    select:focus-visible,
+    .gmrc-guild-dice-tray
+    input:focus-visible,
+    .gmrc-guild-dice-result__copy:focus {
+        outline: 3px solid Highlight !important;
+        outline-offset: 3px !important;
+    }
+}

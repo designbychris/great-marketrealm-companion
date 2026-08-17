@@ -2368,7 +2368,9 @@ $callingPathLabel = $callingPath !== ''
     <aside
         class="gmrc-guild-dice-tray"
         data-guild-dice-tray
+        role="region"
         aria-labelledby="gmrc-guild-dice-title"
+        aria-describedby="gmrc-guild-dice-accessibility-note"
         hidden
     >
         <div class="gmrc-guild-dice-tray__pin" aria-hidden="true"></div>
@@ -2390,6 +2392,14 @@ $callingPathLabel = $callingPath !== ''
         <p class="gmrc-guild-dice-tray__modifier">
             Modifier
             <strong data-guild-dice-modifier>+0</strong>
+        </p>
+        <p
+            id="gmrc-guild-dice-accessibility-note"
+            class="screen-reader-text"
+        >
+            Dice results are announced after each roll. Visual dice and confetti
+            are decorative; critical and failure results are also announced in
+            text.
         </p>
         <dl class="gmrc-guild-roll-context" data-guild-roll-context hidden>
             <div><dt>Roll</dt><dd data-guild-context-kind></dd></div>
@@ -2619,7 +2629,12 @@ $callingPathLabel = $callingPath !== ''
                 aria-hidden="true"
             ></div>
 
-            <div class="gmrc-guild-dice-result__copy">
+            <div
+                class="gmrc-guild-dice-result__copy"
+                data-guild-dice-result-focus
+                tabindex="-1"
+                aria-label="Guild Dice result"
+            >
                 <p class="gmrc-guild-dice-result__mode" data-guild-dice-mode></p>
                 <p class="gmrc-guild-dice-result__math" data-guild-dice-math></p>
                 <strong class="gmrc-guild-dice-result__total" data-guild-dice-total></strong>
@@ -2687,6 +2702,7 @@ $callingPathLabel = $callingPath !== ''
         <p
             class="screen-reader-text"
             data-guild-dice-live
+            role="status"
             aria-live="polite"
             aria-atomic="true"
         ></p>

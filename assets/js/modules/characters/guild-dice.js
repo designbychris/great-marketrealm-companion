@@ -139,6 +139,9 @@
         const contextAbility = tray.querySelector('[data-guild-context-ability]');
         const contextProficiency = tray.querySelector('[data-guild-context-proficiency]');
         const result = tray.querySelector('[data-guild-dice-result]');
+        const resultFocus = tray.querySelector(
+            '[data-guild-dice-result-focus]'
+        );
         const stage = tray.querySelector('[data-guild-dice-stage]');
         const modeNode = tray.querySelector('[data-guild-dice-mode]');
         const mathNode = tray.querySelector('[data-guild-dice-math]');
@@ -240,6 +243,10 @@
         let activeTrigger = null;
         let pendingCriticalDamage = null;
         let pendingVitalApplication = null;
+        let keyboardInteraction = false;
+        const reducedMotion = window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+        );
         const characterId = ledger.dataset.characterId || 'unknown';
         const characterName = ledger.dataset.characterName || 'Adventurer';
         const historyKey = 'gmrc:guild-dice:history:' + characterId;
@@ -1205,6 +1212,35 @@
             history.hidden = recent.length === 0;
         };
 
+        const accessibleAnnouncement = function (
+            entry,
+            recorded
+        ) {
+            const parts = [entry];
+
+            if (recorded.reaction === 'natural-20') {
+                parts.push(
+                    recorded.kind === 'attack'
+                        ? 'Natural 20. Critical hit. A critical damage action is available.'
+                        : 'Natural 20.'
+                );
+            } else if (recorded.reaction === 'natural-1') {
+                parts.push(
+                    'Natural 1. Oh dear. Auby says: The Guild has elected not to record that one.'
+                );
+            }
+
+            if (recorded.target) {
+                parts.push(
+                    recorded.target.resolved
+                        ? 'Target is linked.'
+                        : 'Target is reference only.'
+                );
+            }
+
+            return parts.join(' ');
+        };
+
         const remember = function (entry, metadata) {
             const details = metadata || {};
             const recorded = {
@@ -1240,7 +1276,10 @@
             paintHistory();
 
             if (live instanceof HTMLElement) {
-                live.textContent = entry;
+                live.textContent = accessibleAnnouncement(
+                    entry,
+                    recorded
+                );
             }
         };
 
@@ -1390,6 +1429,7 @@
             stage.replaceChildren();
             stage.classList.toggle('is-pool', values.length > 4);
             stage.classList.toggle('is-large-pool', values.length > 8);
+            stage.classList.toggle('is-huge-pool', values.length > 12);
 
             values.forEach(function (value, index) {
                 stage.appendChild(
@@ -1397,10 +1437,12 @@
                 );
             });
 
-            void stage.offsetWidth;
             stage.classList.remove('is-rolling');
-            void stage.offsetWidth;
-            stage.classList.add('is-rolling');
+
+            if (!reducedMotion.matches) {
+                void stage.offsetWidth;
+                stage.classList.add('is-rolling');
+            }
         };
 
         const paintSituationalDie = function (adjustment) {
@@ -1422,10 +1464,51 @@
             stage.appendChild(die);
         };
 
+        const focusResultAction = function () {
+            if (!keyboardInteraction) {
+                return;
+            }
+
+            const criticalAction = (
+                criticalDamage instanceof HTMLButtonElement
+                && criticalFollowUp instanceof HTMLElement
+                && !criticalFollowUp.hidden
+            )
+                ? criticalDamage
+                : null;
+
+            const vitalAction = (
+                vitalApply instanceof HTMLButtonElement
+                && vitalApplication instanceof HTMLElement
+                && !vitalApplication.hidden
+                && !vitalApply.hidden
+            )
+                ? vitalApply
+                : null;
+
+            const destination = criticalAction
+                || vitalAction
+                || (
+                    resultFocus instanceof HTMLElement
+                        ? resultFocus
+                        : null
+                );
+
+            if (destination instanceof HTMLElement) {
+                destination.focus({
+                    preventScroll: true
+                });
+            }
+        };
+
         const showResult = function () {
             if (result instanceof HTMLElement) {
                 result.hidden = false;
             }
+
+            window.requestAnimationFrame(
+                focusResultAction
+            );
         };
 
         const hideAuby = function () {
@@ -2016,6 +2099,14 @@
 
             resetSituational();
         };
+
+        tray.addEventListener('keydown', function () {
+            keyboardInteraction = true;
+        });
+
+        tray.addEventListener('pointerdown', function () {
+            keyboardInteraction = false;
+        });
 
         if (targetKind instanceof HTMLSelectElement) {
             targetKind.addEventListener('change', function () {
