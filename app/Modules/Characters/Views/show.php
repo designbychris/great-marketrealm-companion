@@ -2311,6 +2311,143 @@ $callingPathLabel = $callingPath !== ''
                     <?php endif; ?>
                 </section>
 
+                <section
+                    class="gmrc-ledger-section gmrc-character-fellowships"
+                    aria-labelledby="gmrc-character-fellowships-title"
+                >
+                    <header class="gmrc-ledger-section__heading">
+                        <h3 id="gmrc-character-fellowships-title">
+                            Fellowships
+                        </h3>
+                    </header>
+
+                    <?php
+                    $characterFellowships = is_array(
+                        $fellowships ?? null
+                    )
+                        ? $fellowships
+                        : [];
+                    ?>
+
+                    <?php if ($characterFellowships === []) : ?>
+                        <div class="gmrc-character-fellowships__empty">
+                            <span aria-hidden="true">⚑</span>
+                            <div>
+                                <strong>No Fellowship recorded yet</strong>
+                                <p>
+                                    This adventurer is not currently part of
+                                    one of your registered Fellowships.
+                                </p>
+                            </div>
+                        </div>
+                    <?php else : ?>
+                        <div class="gmrc-character-fellowships__grid">
+                            <?php foreach (
+                                $characterFellowships as $fellowship
+                            ) : ?>
+                                <?php
+                                $fellowshipParty =
+                                    $fellowship['party'] ?? null;
+                                $fellowshipMembership =
+                                    $fellowship['membership'] ?? null;
+
+                                if (
+                                    ! $fellowshipParty
+                                        instanceof \GreatMarketrealmCompanion\Modules\Parties\Models\Party
+                                    || ! $fellowshipMembership
+                                        instanceof \GreatMarketrealmCompanion\Modules\Parties\Models\PartyMembership
+                                ) {
+                                    continue;
+                                }
+
+                                $fellowshipUrl = add_query_arg(
+                                    'gmrc_route',
+                                    'parties/'
+                                        . rawurlencode(
+                                            $fellowshipParty
+                                                ->id()
+                                                ->value()
+                                        ),
+                                    home_url('/companion/')
+                                );
+                                ?>
+                                <article
+                                    class="gmrc-character-fellowship-card"
+                                    data-standard-palette="<?php echo esc_attr(
+                                        $fellowshipParty
+                                            ->standard()
+                                            ->palette()
+                                    ); ?>"
+                                >
+                                    <span
+                                        class="gmrc-character-fellowship-card__seal"
+                                        aria-hidden="true"
+                                    >
+                                        <?php echo esc_html(
+                                            $fellowshipParty
+                                                ->standard()
+                                                ->emblemGlyph()
+                                        ); ?>
+                                    </span>
+
+                                    <div>
+                                        <p class="gmrc-eyebrow">
+                                            <?php echo esc_html(
+                                                $fellowshipMembership
+                                                    ->role()
+                                                    ->label()
+                                            ); ?>
+                                            <?php if (
+                                                $fellowshipMembership
+                                                    ->office()
+                                                    ->isAssigned()
+                                            ) : ?>
+                                                ·
+                                                <?php echo esc_html(
+                                                    $fellowshipMembership
+                                                        ->office()
+                                                        ->label()
+                                                ); ?>
+                                            <?php endif; ?>
+                                        </p>
+
+                                        <h4>
+                                            <?php echo esc_html(
+                                                $fellowshipParty
+                                                    ->name()
+                                                    ->value()
+                                            ); ?>
+                                        </h4>
+
+                                        <p>
+                                            <?php echo esc_html(
+                                                sprintf(
+                                                    '%d registered adventurer%s',
+                                                    $fellowshipParty
+                                                        ->memberCount(),
+                                                    $fellowshipParty
+                                                        ->memberCount() === 1
+                                                        ? ''
+                                                        : 's'
+                                                )
+                                            ); ?>
+                                        </p>
+
+                                        <a
+                                            class="gmrc-character-fellowship-card__link"
+                                            href="<?php echo esc_url(
+                                                $fellowshipUrl
+                                            ); ?>"
+                                        >
+                                            Open Fellowship Hall
+                                        </a>
+                                    </div>
+                                </article>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </section>
+
                 <section class="gmrc-ledger-section gmrc-ledger-personal-notes">
                     <header class="gmrc-ledger-section__heading">
                         <h3>Adventuring Notes</h3>

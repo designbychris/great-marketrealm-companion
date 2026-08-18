@@ -3305,3 +3305,83 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.11.3A — Fellowship Bonds on the Character Ledger
+ * =============================================================== */
+
+.gmrc-character-fellowships__grid {
+    display: grid;
+    gap: 0.65rem;
+}
+
+.gmrc-character-fellowship-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.7rem minmax(0, 1fr);
+    gap: 0.7rem;
+    align-items: start;
+    padding: 0.75rem;
+    border: 1px solid rgba(82, 61, 41, 0.22);
+    border-left: 0.3rem solid var(--gmrc-standard-primary, #5f3673);
+    border-radius: 0.38rem;
+    background:
+        linear-gradient(
+            135deg,
+            var(--gmrc-standard-soft, rgba(95, 54, 115, 0.08)),
+            rgba(255, 251, 229, 0.68)
+        );
+}
+
+.gmrc-character-fellowship-card__seal {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--gmrc-standard-secondary, #b68a3c);
+    border-radius: 50%;
+    color: #fff9e4;
+    background: var(--gmrc-standard-primary, #5f3673);
+}
+
+.gmrc-character-fellowship-card h4 {
+    margin: 0.08rem 0 0.2rem;
+}
+
+.gmrc-character-fellowship-card p {
+    margin: 0;
+}
+
+.gmrc-character-fellowship-card__link {
+    display: inline-block;
+    margin-top: 0.55rem;
+    font-weight: 800;
+}
+
+.gmrc-character-fellowship-card__link:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+}
+
+.gmrc-character-fellowships__empty {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+    padding: 0.75rem;
+    border: 1px dashed rgba(82, 61, 41, 0.28);
+    border-radius: 0.38rem;
+}
+
+.gmrc-character-fellowships__empty p {
+    margin: 0.15rem 0 0;
+}
+
+@media (forced-colors: active) {
+    .gmrc-character-fellowship-card,
+    .gmrc-character-fellowships__empty {
+        border: 1px solid CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

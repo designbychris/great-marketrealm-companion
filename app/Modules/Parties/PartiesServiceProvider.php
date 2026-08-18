@@ -20,6 +20,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Actions\AddPartyChronicleNoteActio
 use GreatMarketrealmCompanion\Modules\Parties\Services\PartyFinder;
 use GreatMarketrealmCompanion\Modules\Parties\Controllers\PartyController;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\FellowshipPresenter;
+use GreatMarketrealmCompanion\Modules\Parties\Presenters\CharacterFellowshipPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Parties\Contracts\PartyRepositoryInterface;
@@ -50,6 +51,16 @@ final class PartiesServiceProvider extends ServiceProvider
             PartyFinder::class,
             static fn (Container $container): PartyFinder =>
                 new PartyFinder(
+                    $container->make(
+                        PartyRepositoryInterface::class
+                    )
+                )
+        );
+
+        $container->singleton(
+            CharacterFellowshipPresenter::class,
+            static fn (Container $container): CharacterFellowshipPresenter =>
+                new CharacterFellowshipPresenter(
                     $container->make(
                         PartyRepositoryInterface::class
                     )

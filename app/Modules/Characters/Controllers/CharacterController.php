@@ -58,6 +58,8 @@ use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
 use GreatMarketrealmCompanion\Services\Characters\ClassRegistry;
 use GreatMarketrealmCompanion\Services\Characters\RaceRegistry;
 use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
+use GreatMarketrealmCompanion\Modules\Parties\Presenters\CharacterFellowshipPresenter;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -92,7 +94,8 @@ final class CharacterController
         private PortraitRenderer $portraitRenderer,
         private SubmittedPortraitRecipeFactory $submittedPortraits,
         private CharacterCatalogueRepository $catalogue,
-        private CharacterBuildProfileRepository $buildProfiles
+        private CharacterBuildProfileRepository $buildProfiles,
+        private ?CharacterFellowshipPresenter $fellowships = null
     ) {
     }
 
@@ -659,6 +662,19 @@ final class CharacterController
                 $progression
             );
 
+        $fellowships = [];
+        $ownerUserId = get_current_user_id();
+
+        if (
+            $this->fellowships instanceof CharacterFellowshipPresenter
+            && $ownerUserId > 0
+        ) {
+            $fellowships = $this->fellowships->present(
+                $character->id(),
+                PartyOwnerId::fromInt($ownerUserId)
+            );
+        }
+
         return $this->views->render(
             View::make(
                 'characters.show',
@@ -683,6 +699,7 @@ final class CharacterController
                         $advancementHistory,
                     'livingRegister' => $livingRegister,
                     'completeAdventurer' => $completeAdventurer,
+                    'fellowships' => $fellowships,
                 ]
             )
         );
