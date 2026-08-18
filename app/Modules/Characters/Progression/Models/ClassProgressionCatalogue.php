@@ -8,6 +8,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterCl
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Contracts\ClassProgressionDefinitionInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\RegisteredCallingProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\FighterProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\BarbarianProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\WizardProgression;
 use InvalidArgumentException;
 
@@ -30,6 +31,7 @@ final class ClassProgressionCatalogue
             ?? [
                 new WizardProgression(),
                 new FighterProgression(),
+                new BarbarianProgression(),
                 new RegisteredCallingProgression(),
             ];
     }

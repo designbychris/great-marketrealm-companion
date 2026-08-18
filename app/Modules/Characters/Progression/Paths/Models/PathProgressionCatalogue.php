@@ -8,6 +8,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterCl
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Contracts\PathProgressionDefinitionInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\WizardPathProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\FighterPathProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\BarbarianPathProgression;
 
 defined('ABSPATH') || exit;
 
@@ -26,6 +27,7 @@ final class PathProgressionCatalogue
             ?? [
                 new WizardPathProgression(),
                 new FighterPathProgression(),
+                new BarbarianPathProgression(),
             ];
     }
 
