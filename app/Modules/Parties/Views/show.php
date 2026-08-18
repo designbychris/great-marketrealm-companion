@@ -83,6 +83,67 @@ foreach ($officeHolders as $holder) {
         </div>
     <?php endif; ?>
 
+    <div
+        class="gmrc-fellowship-tabs"
+        data-fellowship-tabs
+        data-fellowship-id="<?php echo esc_attr($id); ?>"
+    >
+        <nav
+            class="gmrc-fellowship-tablist"
+            aria-label="Fellowship Hall sections"
+        >
+            <div
+                role="tablist"
+                aria-label="Fellowship Hall"
+                aria-orientation="horizontal"
+            >
+                <?php foreach ([
+                    'overview' => ['▣', 'Overview'],
+                    'chronicle' => ['✎', 'Chronicle'],
+                    'treasury' => ['◈', 'Treasury'],
+                    'company' => ['⚑', 'Company'],
+                ] as $hallTab => [$hallIcon, $hallLabel]) : ?>
+                    <button
+                        id="<?php echo esc_attr(
+                            'gmrc-fellowship-tab-' . $hallTab
+                        ); ?>"
+                        class="gmrc-fellowship-tab<?php echo $hallTab === 'overview'
+                            ? ' is-active'
+                            : ''; ?>"
+                        type="button"
+                        role="tab"
+                        aria-selected="<?php echo $hallTab === 'overview'
+                            ? 'true'
+                            : 'false'; ?>"
+                        aria-controls="<?php echo esc_attr(
+                            'gmrc-fellowship-panel-' . $hallTab
+                        ); ?>"
+                        tabindex="<?php echo $hallTab === 'overview'
+                            ? '0'
+                            : '-1'; ?>"
+                        data-fellowship-tab="<?php echo esc_attr($hallTab); ?>"
+                    >
+                        <span
+                            class="gmrc-fellowship-tab__icon"
+                            aria-hidden="true"
+                        >
+                            <?php echo esc_html($hallIcon); ?>
+                        </span>
+                        <span class="gmrc-fellowship-tab__label">
+                            <?php echo esc_html($hallLabel); ?>
+                        </span>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+        </nav>
+
+        <div
+            id="gmrc-fellowship-panel-overview"
+            class="gmrc-fellowship-tabpanel is-active"
+            role="tabpanel"
+            aria-labelledby="gmrc-fellowship-tab-overview"
+            data-fellowship-panel="overview"
+        >
     <header class="gmrc-fellowship-hero">
         <div
             class="gmrc-fellowship-hero__portrait"
@@ -217,6 +278,15 @@ foreach ($officeHolders as $holder) {
         </section>
     <?php endif; ?>
 
+        </div>
+
+        <div
+            id="gmrc-fellowship-panel-chronicle"
+            class="gmrc-fellowship-tabpanel"
+            role="tabpanel"
+            aria-labelledby="gmrc-fellowship-tab-chronicle"
+            data-fellowship-panel="chronicle"
+        >
     <section
         class="gmrc-fellowship-chronicle"
         aria-labelledby="gmrc-fellowship-chronicle-title"
@@ -415,6 +485,15 @@ foreach ($officeHolders as $holder) {
         </div>
     </section>
 
+        </div>
+
+        <div
+            id="gmrc-fellowship-panel-treasury"
+            class="gmrc-fellowship-tabpanel"
+            role="tabpanel"
+            aria-labelledby="gmrc-fellowship-tab-treasury"
+            data-fellowship-panel="treasury"
+        >
     <section
         class="gmrc-fellowship-treasury"
         aria-labelledby="gmrc-fellowship-treasury-title"
@@ -596,6 +675,15 @@ foreach ($officeHolders as $holder) {
         </div>
     </section>
 
+        </div>
+
+        <div
+            id="gmrc-fellowship-panel-company"
+            class="gmrc-fellowship-tabpanel"
+            role="tabpanel"
+            aria-labelledby="gmrc-fellowship-tab-company"
+            data-fellowship-panel="company"
+        >
     <section
         class="gmrc-fellowship-offices"
         aria-labelledby="gmrc-fellowship-offices-title"
@@ -794,4 +882,6 @@ foreach ($officeHolders as $holder) {
             </form>
         <?php endif; ?>
     </section>
+        </div>
+    </div>
 </section>

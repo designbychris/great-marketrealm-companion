@@ -614,6 +614,25 @@ class FrontendServiceProvider extends ServiceProvider
             true
         );
 
+        $fellowshipHallScriptPath =
+            GMRC_PATH
+            . 'assets/js/modules/parties/'
+            . 'fellowship-hall.js';
+
+        wp_enqueue_script(
+            'gmrc-fellowship-hall',
+            GMRC_URL
+                . 'assets/js/modules/parties/'
+                . 'fellowship-hall.js',
+            [],
+            file_exists($fellowshipHallScriptPath)
+                ? (string) filemtime(
+                    $fellowshipHallScriptPath
+                )
+                : GMRC_VERSION,
+            true
+        );
+
         $livingLedgerScriptPath =
             GMRC_PATH
             . 'assets/js/modules/characters/'

@@ -1890,3 +1890,151 @@
         color: CanvasText;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.11.2G — The Fellowship Hall Seal
+ * =============================================================== */
+
+/*
+ * Progressive enhancement:
+ * without JavaScript the tabs are hidden and every Hall section remains
+ * visible in its original document order.
+ */
+.gmrc-fellowship-tabs:not(.is-ready)
+.gmrc-fellowship-tablist {
+    display: none;
+}
+
+.gmrc-fellowship-tabs.is-ready
+.gmrc-fellowship-tabpanel[hidden] {
+    display: none !important;
+}
+
+.gmrc-fellowship-tablist {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    margin: 0 0 1rem;
+    padding: 0.35rem 0.45rem 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    border-bottom: 1px solid rgba(89, 68, 46, 0.25);
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(251, 246, 220, 0.98),
+            rgba(247, 239, 205, 0.96)
+        );
+    backdrop-filter: blur(4px);
+}
+
+.gmrc-fellowship-tablist > [role="tablist"] {
+    display: flex;
+    gap: 0.2rem;
+    min-width: max-content;
+}
+
+.gmrc-fellowship-tab {
+    position: relative;
+    display: inline-flex;
+    gap: 0.38rem;
+    align-items: center;
+    min-height: 2.7rem;
+    padding: 0.55rem 0.8rem 0.48rem;
+    border: 1px solid rgba(89, 68, 46, 0.22);
+    border-bottom: 0;
+    border-radius: 0.45rem 0.45rem 0 0;
+    color: var(--gmrc-fellowship-muted);
+    background: rgba(255, 250, 226, 0.62);
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.gmrc-fellowship-tab:hover {
+    color: var(--gmrc-fellowship-ink);
+    background: rgba(255, 252, 236, 0.9);
+}
+
+.gmrc-fellowship-tab.is-active {
+    color: var(--gmrc-standard-primary, var(--gmrc-fellowship-green));
+    background: #fffaf0;
+    box-shadow:
+        inset 0 0.2rem 0 var(--gmrc-standard-primary, #5f3673);
+}
+
+.gmrc-fellowship-tab:focus-visible {
+    z-index: 2;
+    outline: 3px solid var(--gmrc-fellowship-gold);
+    outline-offset: 2px;
+}
+
+.gmrc-fellowship-tab__icon {
+    font-size: 0.95rem;
+}
+
+.gmrc-fellowship-tabpanel {
+    min-width: 0;
+}
+
+.gmrc-fellowship-tabpanel.is-active {
+    animation: gmrc-fellowship-tab-reveal 180ms ease-out;
+}
+
+@keyframes gmrc-fellowship-tab-reveal {
+    from {
+        opacity: 0;
+        transform: translateY(0.2rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-fellowship-tabpanel.is-active {
+        animation: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .gmrc-fellowship-tablist {
+        margin-inline: -0.3rem;
+        padding-inline: 0.3rem;
+    }
+
+    .gmrc-fellowship-tab {
+        min-height: 2.85rem;
+        padding-inline: 0.68rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .gmrc-fellowship-tab__label {
+        font-size: 0.72rem;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-fellowship-tablist {
+        border-color: CanvasText;
+        background: Canvas;
+        backdrop-filter: none;
+    }
+
+    .gmrc-fellowship-tab {
+        border: 1px solid CanvasText;
+        color: ButtonText;
+        background: ButtonFace;
+    }
+
+    .gmrc-fellowship-tab.is-active {
+        color: HighlightText;
+        background: Highlight;
+        box-shadow: none;
+    }
+}
