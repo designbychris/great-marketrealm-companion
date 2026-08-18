@@ -39,8 +39,35 @@ final class CallingFolio
             ? $entry['delegated']
             : [];
 
-        $summary = $delegated !== []
-            ? sprintf(
+        if (
+            $automatic !== []
+            && $delegated !== []
+        ) {
+            $summary = sprintf(
+                '%s Level %d records %d automatic Calling %s and %d specialist folio %s.',
+                $character->characterClass()->label(),
+                $targetLevel,
+                count($automatic),
+                count($automatic) === 1
+                    ? 'gain'
+                    : 'gains',
+                count($delegated),
+                count($delegated) === 1
+                    ? 'requirement'
+                    : 'requirements'
+            );
+        } elseif ($automatic !== []) {
+            $summary = sprintf(
+                '%s Level %d records %d automatic Calling %s; no specialist choice is required here.',
+                $character->characterClass()->label(),
+                $targetLevel,
+                count($automatic),
+                count($automatic) === 1
+                    ? 'gain'
+                    : 'gains'
+            );
+        } elseif ($delegated !== []) {
+            $summary = sprintf(
                 '%s Level %d has %d specialist folio %s identified by the Calling catalogue.',
                 $character->characterClass()->label(),
                 $targetLevel,
@@ -48,12 +75,14 @@ final class CallingFolio
                 count($delegated) === 1
                     ? 'requirement'
                     : 'requirements'
-            )
-            : sprintf(
+            );
+        } else {
+            $summary = sprintf(
                 '%s Level %d is registered in the Calling catalogue; no specialist folio requirements are active in this pass.',
                 $character->characterClass()->label(),
                 $targetLevel
             );
+        }
 
         return new AdvancementFolio(
             'calling',

@@ -7,6 +7,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Models;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Contracts\PathProgressionDefinitionInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\WizardPathProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\FighterPathProgression;
 
 defined('ABSPATH') || exit;
 
@@ -24,6 +25,7 @@ final class PathProgressionCatalogue
         $this->definitions = $definitions
             ?? [
                 new WizardPathProgression(),
+                new FighterPathProgression(),
             ];
     }
 

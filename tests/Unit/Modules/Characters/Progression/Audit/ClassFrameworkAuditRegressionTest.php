@@ -53,7 +53,7 @@ final class ClassFrameworkAuditRegressionTest extends TestCase
         );
     }
 
-    public function testFighterIsCurrentlyFoundationCalling(): void
+    public function testFighterIsNowSpecialistCalling(): void
     {
         $profile = (new ClassCapabilityCatalogue())
             ->forClass(
@@ -61,12 +61,12 @@ final class ClassFrameworkAuditRegressionTest extends TestCase
             );
 
         self::assertSame(
-            ClassCapabilityProfile::FOUNDATION,
+            ClassCapabilityProfile::SPECIALIST,
             $profile->implementationState()
         );
 
         self::assertSame(
-            'registered',
+            'reference',
             $profile->advancementStatus()
         );
 
@@ -74,7 +74,7 @@ final class ClassFrameworkAuditRegressionTest extends TestCase
             $profile->hasSpellcastingProgression()
         );
 
-        self::assertFalse(
+        self::assertTrue(
             $profile->hasCallingPathProgression()
         );
     }
@@ -105,21 +105,31 @@ final class ClassFrameworkAuditRegressionTest extends TestCase
         }
     }
 
-    public function testAuditCurrentlyFindsOneSpecialistCalling(): void
+    public function testAuditCurrentlyFindsWizardAndFighterAsSpecialists(): void
     {
         $catalogue = new ClassCapabilityCatalogue();
 
         self::assertCount(
-            1,
+            2,
             $catalogue->specialist()
         );
 
         self::assertSame(
-            'wizard',
-            $catalogue
-                ->specialist()[0]
-                ->class()
-                ->value()
+            [
+                'fighter',
+                'wizard',
+            ],
+            array_values(
+                array_unique(
+                    array_map(
+                        static fn (
+                            ClassCapabilityProfile $profile
+                        ): string =>
+                            $profile->class()->value(),
+                        $catalogue->specialist()
+                    )
+                )
+            )
         );
     }
 
@@ -128,7 +138,7 @@ final class ClassFrameworkAuditRegressionTest extends TestCase
         $catalogue = new ClassCapabilityCatalogue();
 
         self::assertCount(
-            count(CharacterClass::identifiers()) - 1,
+            count(CharacterClass::identifiers()) - 2,
             $catalogue->foundation()
         );
     }

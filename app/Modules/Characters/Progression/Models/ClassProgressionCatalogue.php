@@ -7,6 +7,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Models;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Contracts\ClassProgressionDefinitionInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\RegisteredCallingProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\FighterProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\WizardProgression;
 use InvalidArgumentException;
 
@@ -28,6 +29,7 @@ final class ClassProgressionCatalogue
         $this->definitions = $definitions
             ?? [
                 new WizardProgression(),
+                new FighterProgression(),
                 new RegisteredCallingProgression(),
             ];
     }
