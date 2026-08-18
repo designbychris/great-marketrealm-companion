@@ -663,16 +663,22 @@ final class CharacterController
             );
 
         $fellowships = [];
-        $ownerUserId = get_current_user_id();
 
         if (
             $this->fellowships instanceof CharacterFellowshipPresenter
-            && $ownerUserId > 0
         ) {
-            $fellowships = $this->fellowships->present(
-                $character->id(),
-                PartyOwnerId::fromInt($ownerUserId)
-            );
+            $ownerUserId = function_exists(
+                'get_current_user_id'
+            )
+                ? (int) \get_current_user_id()
+                : 0;
+
+            if ($ownerUserId > 0) {
+                $fellowships = $this->fellowships->present(
+                    $character->id(),
+                    PartyOwnerId::fromInt($ownerUserId)
+                );
+            }
         }
 
         return $this->views->render(

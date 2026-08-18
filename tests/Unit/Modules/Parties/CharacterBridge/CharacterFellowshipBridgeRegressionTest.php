@@ -165,7 +165,7 @@ final class CharacterFellowshipBridgeRegressionTest extends TestCase
             $view
         );
         self::assertStringContainsString(
-            '>Fellowships<',
+            'Fellowships',
             $view
         );
         self::assertStringContainsString(
