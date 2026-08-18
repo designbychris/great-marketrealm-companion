@@ -4,6 +4,7 @@ namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Http\Controllers\AppController;
 use GreatMarketrealmCompanion\Core\Http\Response;
+use GreatMarketrealmCompanion\Core\Routing\Router;
 use WP_Post;
 
 defined('ABSPATH') || exit;
@@ -129,15 +130,27 @@ class FrontendServiceProvider extends ServiceProvider
         }
     
         $result = $this->app
-            ->make(AppController::class)
-            ->handle();
-    
+            ->make(Router::class)
+            ->dispatch(
+                $methodOverride,
+                '/' . trim($route, '/')
+            );
+
         if ($result instanceof Response) {
             $result->send();
             exit;
         }
-    
-        echo $result; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+        /*
+         * Application forms are command-style requests and must finish with
+         * an explicit Response (normally a RedirectResponse). Rendering a
+         * full Companion page from admin-post.php leaves the browser parked
+         * on the WordPress endpoint and breaks the expected PRG flow.
+         */
+        wp_safe_redirect(
+            home_url('/companion/')
+        );
+
         exit;
     }
 

@@ -2156,3 +2156,66 @@
         color: CanvasText;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.11.3D.1 — Fellowship Portrait & POST Field Repair
+ * =============================================================== */
+
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="compact"
+]
+[data-portrait-layer="background"],
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="compact"
+]
+[data-portrait-layer="frame"],
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="compact"
+]
+.gmrc-portrait-layer--background,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="compact"
+]
+.gmrc-portrait-layer--frame,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="compact"
+]
+.gmrc-g2-background,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="compact"
+]
+.gmrc-g2-frame {
+    display: none !important;
+}
+
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="compact"
+]
+.gmrc-fellowship-portrait__canvas,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="compact"
+]
+.gmrc-fellowship-portrait__member--leader
+.gmrc-fellowship-portrait__canvas {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="compact"
+]
+.gmrc-fellowship-portrait__canvas svg,
+.gmrc-fellowship-portrait[
+    data-fellowship-variant="compact"
+]
+.gmrc-fellowship-portrait__canvas img {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent !important;
+    box-shadow: none;
+}
