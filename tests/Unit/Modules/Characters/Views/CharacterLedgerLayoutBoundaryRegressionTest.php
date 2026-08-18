@@ -145,43 +145,51 @@ final class CharacterLedgerLayoutBoundaryRegressionTest extends TestCase
         }
     }
 
-    public function testPurseFormsRemainOutsideAnyOtherFormBoundary(): void
+    public function testPurseFormsRemainSelfContained(): void
     {
         $view = $this->view();
 
-        $purse = strpos(
+        $purseStart = strpos(
             $view,
             'class="gmrc-adventurer-purse"'
         );
-        $firstPurseForm = strpos(
+        $purseEnd = strpos(
             $view,
-            'class="gmrc-adventurer-purse__form"',
-            $purse
+            '</section>',
+            $purseStart
         );
 
-        self::assertIsInt($purse);
-        self::assertIsInt($firstPurseForm);
+        self::assertIsInt($purseStart);
+        self::assertIsInt($purseEnd);
 
-        $before = substr(
+        $purseMarkup = substr(
             $view,
-            0,
-            $firstPurseForm
+            $purseStart,
+            $purseEnd - $purseStart
         );
 
         preg_match_all(
             '/<form\b/i',
-            $before,
+            $purseMarkup,
             $opening
         );
         preg_match_all(
             '/<\/form>/i',
-            $before,
+            $purseMarkup,
             $closing
         );
 
         self::assertSame(
+            1,
+            count($opening[0])
+        );
+        self::assertSame(
             count($opening[0]),
             count($closing[0])
+        );
+        self::assertStringContainsString(
+            'gmrc-adventurer-purse__form',
+            $purseMarkup
         );
     }
 
