@@ -280,6 +280,7 @@ $callingPathLabel = $callingPath !== ''
 <section
     class="gmrc-open-ledger"
     data-living-ledger
+    data-character-ledger-boundary
     data-character-id="<?php echo esc_attr($characterId); ?>"
     data-character-name="<?php echo esc_attr($name); ?>"
     aria-labelledby="gmrc-open-ledger-title"
