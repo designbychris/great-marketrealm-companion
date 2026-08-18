@@ -76,17 +76,17 @@ final class TransferPartyCoinRequest extends FormRequest
 
     public function gold(): int
     {
-        return $this->validated()->int('gold');
+        return $this->validated()->integer('gold');
     }
 
     public function silver(): int
     {
-        return $this->validated()->int('silver');
+        return $this->validated()->integer('silver');
     }
 
     public function copper(): int
     {
-        return $this->validated()->int('copper');
+        return $this->validated()->integer('copper');
     }
 
     public function note(): string
