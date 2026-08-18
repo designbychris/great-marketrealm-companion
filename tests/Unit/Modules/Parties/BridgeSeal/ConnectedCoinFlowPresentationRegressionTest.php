@@ -25,7 +25,7 @@ final class ConnectedCoinFlowPresentationRegressionTest extends TestCase
             $view
         );
         self::assertStringContainsString(
-            "'/treasury/transfer'",
+            "'/parties/{id}/treasury/transfer'",
             $this->routes()
         );
     }

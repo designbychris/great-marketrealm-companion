@@ -256,8 +256,8 @@ final class FellowshipTreasuryRegressionTest extends TestCase
         self::assertIsString($show);
         self::assertStringContainsString('Fellowship Treasury', $show);
         self::assertStringContainsString('Current company purse', $show);
-        self::assertStringContainsString('Deposit Funds', $show);
-        self::assertStringContainsString('Withdraw Funds', $show);
+        self::assertStringContainsString('Record External Income', $show);
+        self::assertStringContainsString('Record Company Expense', $show);
         self::assertStringContainsString('Recent Treasury Ledger', $show);
         self::assertStringContainsString('$quartermasterName', $show);
         self::assertStringContainsString('Auby’s Treasury Note', $show);

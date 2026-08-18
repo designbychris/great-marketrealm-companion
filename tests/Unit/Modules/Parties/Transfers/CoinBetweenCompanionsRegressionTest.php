@@ -404,7 +404,7 @@ final class CoinBetweenCompanionsRegressionTest extends TestCase
             $show
         );
         self::assertStringContainsString(
-            'Transfer Coin',
+            'Move Coin Between Purses',
             $show
         );
     }
