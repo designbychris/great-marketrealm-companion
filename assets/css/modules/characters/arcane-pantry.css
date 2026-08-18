@@ -738,3 +738,72 @@
         color: CanvasText;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.12.2D — The Fighter's Martial Actions
+ * =============================================================== */
+
+.gmrc-martial-action-roll {
+    width: 100%;
+    margin-top: 0.6rem;
+}
+
+.gmrc-martial-action-note {
+    margin: 0.55rem 0 0;
+    padding: 0.45rem 0.55rem;
+    border-left: 0.2rem solid rgba(106, 72, 39, 0.45);
+    background: rgba(255, 249, 226, 0.46);
+    font-size: 0.78rem;
+}
+
+.gmrc-martial-save-rerolls {
+    display: grid;
+    gap: 0.4rem;
+    margin-top: 0.65rem;
+}
+
+.gmrc-martial-save-rerolls > span {
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.gmrc-martial-save-rerolls > div {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+    gap: 0.3rem;
+}
+
+.gmrc-martial-save-reroll {
+    min-width: 0;
+    padding: 0.4rem 0.35rem;
+    font-size: 0.72rem;
+}
+
+.gmrc-martial-action-roll:disabled,
+.gmrc-martial-save-reroll:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 560px) {
+    .gmrc-martial-save-rerolls > div {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-martial-action-note {
+        border-left-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

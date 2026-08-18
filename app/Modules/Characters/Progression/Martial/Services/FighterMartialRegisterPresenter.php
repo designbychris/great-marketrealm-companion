@@ -7,6 +7,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Martial\Servi
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Models\ActiveClassResourceState;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\FighterBattleReserveService;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Martial\Services\FighterMartialActionPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Models\PathGiftCatalogue;
 
@@ -111,6 +112,10 @@ final class FighterMartialRegisterPresenter
         $reserves =
             new FighterBattleReserveService();
 
+        $martialActions = (
+            new FighterMartialActionPresenter()
+        )->present($character);
+
         $path = $this->pathState($character);
         $path['gifts'] =
             $this->certifiedPathGifts(
@@ -134,7 +139,11 @@ final class FighterMartialRegisterPresenter
                         '1d10 + %d healing',
                         $level
                     ),
-                    'Bonus action'
+                    'Bonus action',
+                    $martialActions[
+                        'resources'
+                    ]['second-wind']
+                    ?? []
                 ),
                 $this->resource(
                     'action-surge',
@@ -147,7 +156,11 @@ final class FighterMartialRegisterPresenter
                     $active,
                     'Short rest',
                     'Take one additional action',
-                    'Free'
+                    'Free',
+                    $martialActions[
+                        'resources'
+                    ]['action-surge']
+                    ?? []
                 ),
                 $this->resource(
                     'indomitable',
@@ -160,7 +173,11 @@ final class FighterMartialRegisterPresenter
                     $active,
                     'Long rest',
                     'Reroll a failed saving throw',
-                    'On failed save'
+                    'On failed save',
+                    $martialActions[
+                        'resources'
+                    ]['indomitable']
+                    ?? []
                 ),
             ],
             'path' => $path,
@@ -182,7 +199,8 @@ final class FighterMartialRegisterPresenter
         ActiveClassResourceState $active,
         string $refresh,
         string $effect,
-        string $activation
+        string $activation,
+        array $action = []
     ): array {
         return [
             'key' => $key,
@@ -200,6 +218,7 @@ final class FighterMartialRegisterPresenter
             'refresh' => $refresh,
             'effect' => $effect,
             'activation' => $activation,
+            'action' => $action,
         ];
     }
 

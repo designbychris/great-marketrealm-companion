@@ -1899,6 +1899,203 @@ $callingPathLabel = $callingPath !== ''
                                         ); ?>
                                     </p>
 
+                                    <?php
+                                    $martialAction = is_array(
+                                        $resource['action']
+                                        ?? null
+                                    )
+                                        ? $resource['action']
+                                        : [];
+
+                                    $martialRoll = is_array(
+                                        $martialAction['roll']
+                                        ?? null
+                                    )
+                                        ? $martialAction['roll']
+                                        : null;
+
+                                    $martialRerolls = is_array(
+                                        $martialAction['save_rerolls']
+                                        ?? null
+                                    )
+                                        ? $martialAction['save_rerolls']
+                                        : [];
+                                    ?>
+
+                                    <?php if (
+                                        is_array($martialRoll)
+                                    ) : ?>
+                                        <button
+                                            type="button"
+                                            class="
+                                                gmrc-guild-roll-trigger
+                                                gmrc-martial-action-roll
+                                            "
+                                            data-guild-roll="<?php echo esc_attr(
+                                                (string) (
+                                                    $martialRoll['kind']
+                                                    ?? 'healing'
+                                                )
+                                            ); ?>"
+                                            data-roll-kind="<?php echo esc_attr(
+                                                (string) (
+                                                    $martialRoll['kind']
+                                                    ?? 'healing'
+                                                )
+                                            ); ?>"
+                                            data-roll-source="<?php echo esc_attr(
+                                                (string) (
+                                                    $resource['label']
+                                                    ?? 'Martial Action'
+                                                )
+                                            ); ?>"
+                                            data-roll-ability=""
+                                            data-roll-proficiency="none"
+                                            data-roll-label="<?php echo esc_attr(
+                                                (string) (
+                                                    $martialRoll['label']
+                                                    ?? 'Martial Action'
+                                                )
+                                            ); ?>"
+                                            data-roll-formula="<?php echo esc_attr(
+                                                (string) (
+                                                    $martialRoll['formula']
+                                                    ?? ''
+                                                )
+                                            ); ?>"
+                                            data-roll-modifier="<?php echo esc_attr(
+                                                (string) (
+                                                    $martialRoll['modifier']
+                                                    ?? 0
+                                                )
+                                            ); ?>"
+                                            data-roll-result-suffix="<?php echo esc_attr(
+                                                (string) (
+                                                    $martialRoll[
+                                                        'result_suffix'
+                                                    ]
+                                                    ?? ''
+                                                )
+                                            ); ?>"
+                                            <?php echo (
+                                                (int) (
+                                                    $resource['remaining']
+                                                    ?? 0
+                                                ) < 1
+                                            )
+                                                ? 'disabled'
+                                                : ''; ?>
+                                        >
+                                            <span aria-hidden="true">✚</span>
+                                            Roll <?php echo esc_html(
+                                                (string) (
+                                                    $resource['label']
+                                                    ?? 'Action'
+                                                )
+                                            ); ?>
+                                        </button>
+                                    <?php endif; ?>
+
+                                    <?php if (
+                                        $martialRerolls !== []
+                                    ) : ?>
+                                        <div
+                                            class="gmrc-martial-save-rerolls"
+                                            aria-label="Indomitable saving throw rerolls"
+                                        >
+                                            <span>Reroll failed save</span>
+
+                                            <div>
+                                                <?php foreach (
+                                                    $martialRerolls
+                                                    as $reroll
+                                                ) : ?>
+                                                    <button
+                                                        type="button"
+                                                        class="
+                                                            gmrc-guild-roll-trigger
+                                                            gmrc-martial-save-reroll
+                                                        "
+                                                        data-guild-roll="d20"
+                                                        data-roll-kind="saving-throw"
+                                                        data-roll-source="Indomitable"
+                                                        data-roll-ability="<?php echo esc_attr(
+                                                            (string) (
+                                                                $reroll[
+                                                                    'ability'
+                                                                ]
+                                                                ?? ''
+                                                            )
+                                                        ); ?>"
+                                                        data-roll-proficiency="<?php echo esc_attr(
+                                                            ! empty(
+                                                                $reroll[
+                                                                    'proficient'
+                                                                ]
+                                                            )
+                                                                ? 'proficient'
+                                                                : 'none'
+                                                        ); ?>"
+                                                        data-roll-label="<?php echo esc_attr(
+                                                            sprintf(
+                                                                'Indomitable — %s Saving Throw',
+                                                                (string) (
+                                                                    $reroll[
+                                                                        'label'
+                                                                    ]
+                                                                    ?? ''
+                                                                )
+                                                            )
+                                                        ); ?>"
+                                                        data-roll-modifier="<?php echo esc_attr(
+                                                            (string) (
+                                                                $reroll[
+                                                                    'modifier'
+                                                                ]
+                                                                ?? 0
+                                                            )
+                                                        ); ?>"
+                                                        data-roll-result-suffix="saving throw"
+                                                        <?php echo (
+                                                            (int) (
+                                                                $resource[
+                                                                    'remaining'
+                                                                ]
+                                                                ?? 0
+                                                            ) < 1
+                                                        )
+                                                            ? 'disabled'
+                                                            : ''; ?>
+                                                    >
+                                                        <?php echo esc_html(
+                                                            (string) (
+                                                                $reroll[
+                                                                    'label'
+                                                                ]
+                                                                ?? ''
+                                                            )
+                                                        ); ?>
+                                                    </button>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <?php if (
+                                        ! empty(
+                                            $martialAction['note']
+                                        )
+                                    ) : ?>
+                                        <p class="gmrc-martial-action-note">
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $martialAction['note']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </p>
+                                    <?php endif; ?>
+
                                     <form
                                         class="gmrc-martial-resource__spend"
                                         action="<?php echo esc_url(
@@ -1955,7 +2152,14 @@ $callingPathLabel = $callingPath !== ''
                                                     ?? 0
                                                 ) < 1
                                                     ? 'Reserve Spent'
-                                                    : 'Spend 1 Use'
+                                                    : (
+                                                        (string) (
+                                                            $martialAction[
+                                                                'button_label'
+                                                            ]
+                                                            ?? 'Spend 1 Use'
+                                                        )
+                                                    )
                                             ); ?>
                                         </button>
                                     </form>
