@@ -1335,6 +1335,144 @@ $callingPathLabel = $callingPath !== ''
                     <span style="width:<?php echo esc_attr((string) $inventory['load_percent']); ?>%"></span>
                 </div>
 
+                <section
+                    class="gmrc-adventurer-purse"
+                    aria-labelledby="gmrc-adventurer-purse-title"
+                >
+                    <header class="gmrc-adventurer-purse__header">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Personal Coin
+                            </p>
+                            <h3 id="gmrc-adventurer-purse-title">
+                                The Adventurer’s Purse
+                            </h3>
+                        </div>
+
+                        <strong
+                            class="gmrc-adventurer-purse__balance"
+                            aria-label="<?php echo esc_attr(
+                                'Current personal purse: '
+                                . $character->purse()->formatted()
+                            ); ?>"
+                        >
+                            <?php echo esc_html(
+                                $character
+                                    ->purse()
+                                    ->formatted()
+                            ); ?>
+                        </strong>
+                    </header>
+
+                    <p class="gmrc-ledger-copy">
+                        These coins belong to this adventurer personally.
+                        Fellowship funds remain separate in the shared
+                        Treasury.
+                    </p>
+
+                    <div class="gmrc-adventurer-purse__actions">
+                        <?php foreach ([
+                            'deposit' => [
+                                'label' => 'Add Coin',
+                                'button' => 'Add to Purse',
+                            ],
+                            'withdraw' => [
+                                'label' => 'Spend Coin',
+                                'button' => 'Spend from Purse',
+                            ],
+                        ] as $purseAction => $purseCopy) : ?>
+                            <form
+                                class="gmrc-adventurer-purse__form"
+                                method="post"
+                                action="<?php echo esc_url(
+                                    $appRequestUrl
+                                ); ?>"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="action"
+                                    value="gmrc_app_request"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="gmrc_route"
+                                    value="<?php echo esc_attr(
+                                        'characters/'
+                                        . rawurlencode(
+                                            $characterId
+                                        )
+                                        . '/purse/'
+                                        . $purseAction
+                                    ); ?>"
+                                >
+
+                                <?php wp_nonce_field(
+                                    'gmrc_character_purse_'
+                                    . $characterId,
+                                    'gmrc_nonce'
+                                ); ?>
+
+                                <h4>
+                                    <?php echo esc_html(
+                                        $purseCopy['label']
+                                    ); ?>
+                                </h4>
+
+                                <div class="gmrc-adventurer-purse__coins">
+                                    <?php foreach ([
+                                        'gold' => 'GP',
+                                        'silver' => 'SP',
+                                        'copper' => 'CP',
+                                    ] as $coin => $coinLabel) : ?>
+                                        <label>
+                                            <span>
+                                                <?php echo esc_html(
+                                                    $coinLabel
+                                                ); ?>
+                                            </span>
+                                            <input
+                                                type="number"
+                                                name="<?php echo esc_attr(
+                                                    $coin
+                                                ); ?>"
+                                                value="0"
+                                                min="0"
+                                                <?php echo $coin === 'gold'
+                                                    ? 'max="999999"'
+                                                    : 'max="9"'; ?>
+                                                inputmode="numeric"
+                                                required
+                                            >
+                                        </label>
+                                    <?php endforeach; ?>
+                                </div>
+
+                                <button
+                                    class="gmrc-button <?php echo esc_attr(
+                                        $purseAction === 'deposit'
+                                            ? 'gmrc-button--secondary'
+                                            : 'gmrc-button--quiet'
+                                    ); ?>"
+                                    type="submit"
+                                >
+                                    <?php echo esc_html(
+                                        $purseCopy['button']
+                                    ); ?>
+                                </button>
+                            </form>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <aside class="gmrc-adventurer-purse__auby">
+                        <span aria-hidden="true">🍆</span>
+                        <p>
+                            “Personal purse on the left, Fellowship coffers
+                            on the right. Mixing them without paperwork is
+                            how Quartermasters start twitching.”
+                        </p>
+                    </aside>
+                </section>
+
                 <?php if ($inventory['rows'] === []) : ?>
                     <div class="gmrc-pack-empty">
                         <span aria-hidden="true">🧺</span>

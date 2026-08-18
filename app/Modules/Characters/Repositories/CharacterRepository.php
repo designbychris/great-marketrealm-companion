@@ -21,6 +21,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProfici
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Spellbook;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CallingPath;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\PathGifts;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterPurse;
 use RuntimeException;
 use WP_Post;
 
@@ -56,6 +57,7 @@ final class CharacterRepository implements CharacterRepositoryInterface
     private const META_SPELLBOOK = '_gmrc_spellbook';
     private const META_CALLING_PATH = '_gmrc_subclass';
     private const META_PATH_GIFTS = '_gmrc_path_gifts';
+    private const META_PURSE = '_gmrc_character_purse_copper';
 
     private string $postType = 'gmrc_character';
 
@@ -323,6 +325,12 @@ final class CharacterRepository implements CharacterRepositoryInterface
 
         update_post_meta(
             $postId,
+            self::META_PURSE,
+            $character->purse()->copper()
+        );
+
+        update_post_meta(
+            $postId,
             self::META_HP_CURRENT,
             $hitPoints->current()
         );
@@ -543,6 +551,16 @@ final class CharacterRepository implements CharacterRepositoryInterface
             ),
             pathGifts: $this->mapPathGifts(
                 $post->ID
+            ),
+            purse: CharacterPurse::fromCopper(
+                max(
+                    0,
+                    (int) get_post_meta(
+                        $post->ID,
+                        self::META_PURSE,
+                        true
+                    )
+                )
             )
         );
     }

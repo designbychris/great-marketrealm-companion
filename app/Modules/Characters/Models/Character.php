@@ -27,6 +27,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProfici
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Spellbook;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CallingPath;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\PathGifts;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterPurse;
 
 defined('ABSPATH') || exit;
 
@@ -60,6 +61,7 @@ final class Character
         private Spellbook $spellbook,
         private CallingPath $callingPath,
         private PathGifts $pathGifts,
+        private CharacterPurse $purse,
     ) {
     }
 
@@ -79,6 +81,7 @@ final class Character
         ?Spellbook $spellbook = null,
         ?CallingPath $callingPath = null,
         ?PathGifts $pathGifts = null,
+        ?CharacterPurse $purse = null,
     ): self {
         return new self(
             id: $id,
@@ -106,6 +109,8 @@ final class Character
                 ?? CallingPath::none(),
             pathGifts: $pathGifts
                 ?? PathGifts::none(),
+            purse: $purse
+                ?? CharacterPurse::empty(),
         );
     }
 
@@ -131,6 +136,7 @@ final class Character
         ?Spellbook $spellbook = null,
         ?CallingPath $callingPath = null,
         ?PathGifts $pathGifts = null,
+        ?CharacterPurse $purse = null,
     ): self {
         return new self(
             id: $id,
@@ -159,6 +165,8 @@ final class Character
                 ?? CallingPath::none(),
             pathGifts: $pathGifts
                 ?? PathGifts::none(),
+            purse: $purse
+                ?? CharacterPurse::empty(),
         );
     }
 
@@ -224,6 +232,32 @@ final class Character
     public function hitPoints(): HitPoints
     {
         return $this->hitPoints;
+    }
+
+    /**
+     * Get the adventurer's personal coin purse.
+     */
+    public function purse(): CharacterPurse
+    {
+        return $this->purse;
+    }
+
+    /**
+     * Add personal coin to the adventurer's purse.
+     */
+    public function depositToPurse(
+        CharacterPurse $amount
+    ): void {
+        $this->purse = $this->purse->deposit($amount);
+    }
+
+    /**
+     * Remove personal coin from the adventurer's purse.
+     */
+    public function withdrawFromPurse(
+        CharacterPurse $amount
+    ): void {
+        $this->purse = $this->purse->withdraw($amount);
     }
 
     /**

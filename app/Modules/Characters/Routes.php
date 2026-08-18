@@ -52,6 +52,16 @@ return static function (
     );
 
     $router->post(
+        '/characters/{id}/purse/deposit',
+        [CharacterController::class, 'depositPurse']
+    );
+
+    $router->post(
+        '/characters/{id}/purse/withdraw',
+        [CharacterController::class, 'withdrawPurse']
+    );
+
+    $router->post(
         '/characters/{id}/progression/experience',
         [CharacterController::class, 'addExperience']
     );

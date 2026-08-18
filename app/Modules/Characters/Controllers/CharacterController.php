@@ -16,6 +16,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Actions\UpdateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterPurse;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Experience;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterName;
 use GreatMarketrealmCompanion\Modules\Characters\Requests\StoreCharacterRequest;
@@ -838,6 +839,102 @@ final class CharacterController
 
 
     /**
+     * Add coins to the adventurer's personal purse.
+     */
+    public function depositPurse(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $amount = $this->purseAmountFromRequest();
+
+        if (! $amount instanceof CharacterPurse) {
+            $this->flash->error(
+                'Enter at least one coin using valid GP, SP and CP amounts.'
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'equipment'
+                )
+            );
+        }
+
+        $character->depositToPurse($amount);
+        $this->characters->save($character);
+
+        $this->flash->success(
+            sprintf(
+                '%s has been added to the Adventurer’s Purse.',
+                $amount->formatted()
+            )
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'equipment'
+            )
+        );
+    }
+
+    /**
+     * Spend coins from the adventurer's personal purse.
+     */
+    public function withdrawPurse(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $amount = $this->purseAmountFromRequest();
+
+        if (! $amount instanceof CharacterPurse) {
+            $this->flash->error(
+                'Enter at least one coin using valid GP, SP and CP amounts.'
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'equipment'
+                )
+            );
+        }
+
+        if (
+            $amount->copper()
+            > $character->purse()->copper()
+        ) {
+            $this->flash->error(
+                'The adventurer does not have enough coin in their purse.'
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'equipment'
+                )
+            );
+        }
+
+        $character->withdrawFromPurse($amount);
+        $this->characters->save($character);
+
+        $this->flash->success(
+            sprintf(
+                '%s has been spent from the Adventurer’s Purse.',
+                $amount->formatted()
+            )
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'equipment'
+            )
+        );
+    }
+
+    /**
      * Update mutable current and temporary hit points during active play.
      */
     public function updateVitalMeasures(string $id): RedirectResponse
@@ -1187,6 +1284,49 @@ final class CharacterController
                 ]
             )
         );
+    }
+
+    /**
+     * Build a validated coin amount from the current application request.
+     */
+    private function purseAmountFromRequest(): ?CharacterPurse
+    {
+        $gold = filter_var(
+            $_POST['gold'] ?? null,
+            FILTER_VALIDATE_INT
+        );
+        $silver = filter_var(
+            $_POST['silver'] ?? null,
+            FILTER_VALIDATE_INT
+        );
+        $copper = filter_var(
+            $_POST['copper'] ?? null,
+            FILTER_VALIDATE_INT
+        );
+
+        if (
+            $gold === false
+            || $silver === false
+            || $copper === false
+            || $gold < 0
+            || $gold > 999999
+            || $silver < 0
+            || $silver > 9
+            || $copper < 0
+            || $copper > 9
+        ) {
+            return null;
+        }
+
+        $amount = CharacterPurse::fromCoins(
+            $gold,
+            $silver,
+            $copper
+        );
+
+        return $amount->isEmpty()
+            ? null
+            : $amount;
     }
 
     /**

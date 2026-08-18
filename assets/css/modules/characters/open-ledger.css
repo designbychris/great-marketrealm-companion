@@ -3385,3 +3385,132 @@
         color: CanvasText;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.11.3B — The Adventurer's Purse
+ * =============================================================== */
+
+.gmrc-adventurer-purse {
+    margin: 1rem 0;
+    padding: 0.9rem;
+    border: 1px solid rgba(82, 61, 41, 0.24);
+    border-left: 0.32rem solid #8a6a2d;
+    border-radius: 0.42rem;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(221, 191, 111, 0.13),
+            rgba(255, 250, 226, 0.7)
+        );
+}
+
+.gmrc-adventurer-purse__header {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.8rem;
+    align-items: flex-start;
+}
+
+.gmrc-adventurer-purse__header h3 {
+    margin: 0.08rem 0 0;
+}
+
+.gmrc-adventurer-purse__balance {
+    flex: 0 0 auto;
+    padding: 0.45rem 0.65rem;
+    border: 1px solid rgba(138, 106, 45, 0.42);
+    border-radius: 999px;
+    background: rgba(255, 246, 199, 0.82);
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
+
+.gmrc-adventurer-purse__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem;
+    margin-top: 0.75rem;
+}
+
+.gmrc-adventurer-purse__form {
+    display: grid;
+    gap: 0.55rem;
+    padding: 0.7rem;
+    border: 1px solid rgba(82, 61, 41, 0.18);
+    border-radius: 0.35rem;
+    background: rgba(255, 252, 236, 0.68);
+}
+
+.gmrc-adventurer-purse__form h4 {
+    margin: 0;
+}
+
+.gmrc-adventurer-purse__coins {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.35rem;
+}
+
+.gmrc-adventurer-purse__coins label {
+    display: grid;
+    gap: 0.2rem;
+    font-size: 0.68rem;
+    font-weight: 900;
+}
+
+.gmrc-adventurer-purse__coins input {
+    width: 100%;
+    min-width: 0;
+    padding: 0.38rem;
+    border: 1px solid rgba(82, 61, 41, 0.3);
+    border-radius: 0.28rem;
+    background: rgba(255, 253, 241, 0.94);
+    font: inherit;
+}
+
+.gmrc-adventurer-purse__coins input:focus-visible {
+    outline: 3px solid #8a6a2d;
+    outline-offset: 2px;
+}
+
+.gmrc-adventurer-purse__auby {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.7rem;
+    padding-top: 0.65rem;
+    border-top: 1px dashed rgba(82, 61, 41, 0.22);
+    color: var(--gmrc-ledger-muted, #645646);
+    font-size: 0.76rem;
+    line-height: 1.45;
+}
+
+.gmrc-adventurer-purse__auby p {
+    margin: 0;
+}
+
+@media (max-width: 720px) {
+    .gmrc-adventurer-purse__actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .gmrc-adventurer-purse__header {
+        flex-direction: column;
+    }
+
+    .gmrc-adventurer-purse__balance {
+        white-space: normal;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-adventurer-purse,
+    .gmrc-adventurer-purse__form,
+    .gmrc-adventurer-purse__balance {
+        border: 1px solid CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}
