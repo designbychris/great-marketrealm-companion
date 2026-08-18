@@ -393,3 +393,174 @@
     color: rgba(66, 42, 29, .6);
     font-size: .56rem;
 }
+
+
+/* ===============================================================
+ * Phase III.12.2A — The Fighter's Martial Register
+ * =============================================================== */
+
+.gmrc-martial-register {
+    margin: 0 0 1rem;
+    padding: 0.9rem;
+    border: 1px solid rgba(85, 61, 38, 0.24);
+    border-radius: 0.5rem;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(112, 78, 45, 0.08),
+            rgba(255, 249, 226, 0.72)
+        );
+}
+
+.gmrc-martial-register__heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 0.8rem;
+}
+
+.gmrc-martial-register__heading h3,
+.gmrc-martial-register__heading p {
+    margin-top: 0;
+}
+
+.gmrc-martial-register__heading > div > p:last-child {
+    margin-bottom: 0;
+}
+
+.gmrc-martial-register__attacks {
+    display: grid;
+    place-items: center;
+    min-width: 5.4rem;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid rgba(104, 70, 38, 0.3);
+    border-radius: 0.4rem;
+    background: rgba(255, 248, 218, 0.82);
+    text-align: center;
+}
+
+.gmrc-martial-register__attacks strong {
+    font-size: 1.45rem;
+    line-height: 1;
+}
+
+.gmrc-martial-register__attacks small {
+    margin-top: 0.2rem;
+}
+
+.gmrc-martial-register__resources {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+    gap: 0.65rem;
+}
+
+.gmrc-martial-resource {
+    padding: 0.7rem;
+    border: 1px solid rgba(92, 66, 43, 0.2);
+    border-radius: 0.38rem;
+    background: rgba(255, 252, 236, 0.72);
+}
+
+.gmrc-martial-resource.is-locked {
+    opacity: 0.64;
+    background: rgba(238, 232, 213, 0.62);
+}
+
+.gmrc-martial-resource header {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
+.gmrc-martial-resource header > span {
+    font-size: 1.05rem;
+}
+
+.gmrc-martial-resource h4 {
+    margin: 0.05rem 0 0;
+}
+
+.gmrc-martial-resource dl {
+    display: grid;
+    gap: 0.28rem;
+    margin: 0.65rem 0;
+}
+
+.gmrc-martial-resource dl div {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.65rem;
+}
+
+.gmrc-martial-resource dt {
+    font-weight: 700;
+}
+
+.gmrc-martial-resource dd {
+    margin: 0;
+    text-align: right;
+}
+
+.gmrc-martial-resource > p {
+    margin-bottom: 0;
+}
+
+.gmrc-martial-register__footer {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+    gap: 0.65rem;
+    margin-top: 0.7rem;
+}
+
+.gmrc-martial-register__footer > div {
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.6rem 0.7rem;
+    border-left: 0.22rem solid rgba(120, 79, 39, 0.55);
+    background: rgba(255, 249, 226, 0.56);
+}
+
+.gmrc-martial-register__footer span,
+.gmrc-martial-register__footer small {
+    font-size: 0.75rem;
+}
+
+@media (max-width: 840px) {
+    .gmrc-martial-register__resources {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-martial-register__footer {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .gmrc-martial-register__heading {
+        display: grid;
+    }
+
+    .gmrc-martial-register__attacks {
+        justify-self: start;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-martial-register,
+    .gmrc-martial-resource,
+    .gmrc-martial-register__attacks,
+    .gmrc-martial-register__footer > div {
+        border: 1px solid CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

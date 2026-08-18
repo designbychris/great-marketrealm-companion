@@ -36,6 +36,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Combat\Targets\Services\RollTar
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\ArcanePantryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\RisingRegisterPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Martial\Services\FighterMartialRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\LivingRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\AdvancementLedgerPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Services\PathGiftPresenter;
@@ -638,6 +639,12 @@ final class CharacterController
             $character
         );
 
+        $martialRegister = (
+            new FighterMartialRegisterPresenter()
+        )->present(
+            $character
+        );
+
         $progression = (new RisingRegisterPresenter())
             ->present($character);
 
@@ -700,6 +707,7 @@ final class CharacterController
                         new RollTargetCatalogue()
                     )->forCharacter($character),
                     'arcana' => $arcana,
+                    'martialRegister' => $martialRegister,
                     'progression' => $progression,
                     'pathGifts' => $pathGifts,
                     'advancementHistory' =>

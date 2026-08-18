@@ -208,6 +208,13 @@ $arcana = isset($arcana) && is_array($arcana)
         'has_spells' => false,
     ];
 
+$martialRegister = isset($martialRegister)
+    && is_array($martialRegister)
+        ? $martialRegister
+        : [
+            'supported' => false,
+        ];
+
 $progression = isset($progression) && is_array($progression)
     ? $progression
     : [
@@ -1735,6 +1742,226 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-eyebrow">Dangerously Magical</p>
                 <h2 id="gmrc-arcane-pantry-title">The Arcane Pantry</h2>
             </header>
+
+            <?php if (
+                ! empty($martialRegister['supported'])
+            ) : ?>
+                <section
+                    class="gmrc-martial-register"
+                    aria-labelledby="gmrc-martial-register-title"
+                    data-martial-register
+                >
+                    <header class="gmrc-martial-register__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Fighter Field Record
+                            </p>
+                            <h3 id="gmrc-martial-register-title">
+                                The Martial Register
+                            </h3>
+                            <p>
+                                Certified martial capability at Fighter
+                                Level <?php echo esc_html(
+                                    (string) (
+                                        $martialRegister['level']
+                                        ?? $level
+                                    )
+                                ); ?>.
+                            </p>
+                        </div>
+
+                        <span
+                            class="gmrc-martial-register__attacks"
+                            aria-label="<?php echo esc_attr(
+                                sprintf(
+                                    '%d attack%s per Attack action',
+                                    (int) (
+                                        $martialRegister[
+                                            'attacks_per_action'
+                                        ] ?? 1
+                                    ),
+                                    (int) (
+                                        $martialRegister[
+                                            'attacks_per_action'
+                                        ] ?? 1
+                                    ) === 1
+                                        ? ''
+                                        : 's'
+                                )
+                            ); ?>"
+                        >
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $martialRegister[
+                                            'attacks_per_action'
+                                        ] ?? 1
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>Attack action</small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-martial-register__resources">
+                        <?php foreach (
+                            ($martialRegister['resources'] ?? [])
+                            as $resource
+                        ) : ?>
+                            <article
+                                class="gmrc-martial-resource<?php echo
+                                    ! empty($resource['unlocked'])
+                                        ? ' is-unlocked'
+                                        : ' is-locked'; ?>"
+                            >
+                                <header>
+                                    <span aria-hidden="true">
+                                        <?php echo
+                                            ! empty($resource['unlocked'])
+                                                ? '⚔'
+                                                : '◇'; ?>
+                                    </span>
+                                    <div>
+                                        <small>
+                                            <?php echo esc_html(
+                                                ! empty(
+                                                    $resource['unlocked']
+                                                )
+                                                    ? 'Certified'
+                                                    : 'Not yet unlocked'
+                                            ); ?>
+                                        </small>
+                                        <h4>
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $resource['label']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </h4>
+                                    </div>
+                                </header>
+
+                                <?php if (
+                                    ! empty($resource['unlocked'])
+                                ) : ?>
+                                    <dl>
+                                        <div>
+                                            <dt>Uses</dt>
+                                            <dd>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $resource['uses']
+                                                        ?? 0
+                                                    )
+                                                ); ?>
+                                            </dd>
+                                        </div>
+                                        <div>
+                                            <dt>Refresh</dt>
+                                            <dd>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $resource['refresh']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                            </dd>
+                                        </div>
+                                        <div>
+                                            <dt>Use</dt>
+                                            <dd>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $resource['activation']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                            </dd>
+                                        </div>
+                                    </dl>
+
+                                    <p>
+                                        <?php echo esc_html(
+                                            (string) (
+                                                $resource['effect']
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                    </p>
+                                <?php else : ?>
+                                    <p>
+                                        This entry will illuminate when the
+                                        Fighter reaches its certified level.
+                                    </p>
+                                <?php endif; ?>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="gmrc-martial-register__footer">
+                        <div>
+                            <span>Martial Path</span>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $martialRegister[
+                                            'path'
+                                        ]['label']
+                                        ?? 'Awaiting Martial Path'
+                                    )
+                                ); ?>
+                            </strong>
+                        </div>
+
+                        <?php if (
+                            is_array(
+                                $martialRegister[
+                                    'next_milestone'
+                                ] ?? null
+                            )
+                        ) : ?>
+                            <div>
+                                <span>Next martial milestone</span>
+                                <strong>
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $martialRegister[
+                                                'next_milestone'
+                                            ]['level']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                    ·
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $martialRegister[
+                                                'next_milestone'
+                                            ]['label']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </strong>
+                                <small>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $martialRegister[
+                                                'next_milestone'
+                                            ]['detail']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </small>
+                            </div>
+                        <?php else : ?>
+                            <div>
+                                <span>Martial progression</span>
+                                <strong>Mastered to Level 20</strong>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </section>
+            <?php endif; ?>
 
             <?php if ($arcana['casting_ability'] !== null) : ?>
                 <dl class="gmrc-arcane-summary">
