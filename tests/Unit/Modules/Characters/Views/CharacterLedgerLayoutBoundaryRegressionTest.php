@@ -6,9 +6,15 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Views;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Phase III.11.3C.2
+ *
+ * Protects the repaired Character Ledger shell after the temporary C.1
+ * layout-boundary workaround was retired.
+ */
 final class CharacterLedgerLayoutBoundaryRegressionTest extends TestCase
 {
-    public function testOpenLedgerHasExplicitTerminalLayoutBoundary(): void
+    public function testTemporaryLedgerBoundaryAttributeIsRetired(): void
     {
         $view = $this->view();
 
@@ -16,97 +22,70 @@ final class CharacterLedgerLayoutBoundaryRegressionTest extends TestCase
             'class="gmrc-open-ledger"',
             $view
         );
-        self::assertStringContainsString(
+
+        self::assertStringNotContainsString(
             'data-character-ledger-boundary',
             $view
         );
     }
 
-    public function testLedgerBoundaryPreservesSpaceBeforeThemeFooter(): void
+    public function testTemporaryFooterSpacingWorkaroundIsRetired(): void
     {
         $css = $this->characterCss();
 
-        self::assertStringContainsString(
+        self::assertStringNotContainsString(
             '.gmrc-open-ledger[data-character-ledger-boundary]',
             $css
         );
-        self::assertStringContainsString(
-            'margin-bottom:',
-            $css
-        );
-        self::assertStringContainsString(
-            'clamp(',
-            $css
-        );
-        self::assertStringContainsString(
-            '6.5rem',
+
+        self::assertStringNotContainsString(
+            'Phase III.11.3C.1 — Ledger Layout Repair',
             $css
         );
     }
 
-    public function testLedgerBoundaryEstablishesIndependentLayoutContext(): void
+    public function testTemporaryFloatClearWorkaroundIsRetired(): void
     {
         $css = $this->characterCss();
 
-        self::assertStringContainsString(
-            'clear: both;',
-            $css
-        );
-        self::assertStringContainsString(
-            'isolation: isolate;',
-            $css
-        );
-        self::assertStringContainsString(
+        self::assertStringNotContainsString(
             'data-character-ledger-boundary]::after',
             $css
         );
     }
 
-    public function testCollapsedTabsDoNotRemoveLedgerBoundary(): void
+    public function testLivingLedgerRootRemainsIntact(): void
+    {
+        $view = $this->view();
+
+        self::assertStringContainsString(
+            'data-living-ledger',
+            $view
+        );
+
+        self::assertStringContainsString(
+            'data-character-id=',
+            $view
+        );
+
+        self::assertStringContainsString(
+            'aria-labelledby="gmrc-open-ledger-title"',
+            $view
+        );
+    }
+
+    public function testLedgerTabPanelsRetainTheirNativeHiddenContract(): void
     {
         $css = $this->characterCss();
 
         self::assertStringContainsString(
-            '.gmrc-ledger-tabpanel:not([hidden])',
+            '.gmrc-ledger-tabpanel[hidden]',
             $css
         );
-        self::assertStringContainsString(
-            'position: relative;',
-            $css
-        );
-    }
-
-    public function testLayoutRepairRemainsResponsive(): void
-    {
-        $css = $this->characterCss();
 
         self::assertStringContainsString(
-            '@media (max-width: 820px)',
+            'display: none !important;',
             $css
-        );
-        self::assertStringContainsString(
-            '4.5rem',
-            $css
-        );
-    }
-
-    public function testFellowshipStylesDoNotTargetOpenLedgerBoundary(): void
-    {
-        $root = $this->root();
-        $fellowshipCss = file_get_contents(
-            $root
-            . '/assets/css/modules/parties/'
-            . 'fellowship-register.css'
-        );
-
-        self::assertIsString($fellowshipCss);
-        self::assertStringNotContainsString(
-            '.gmrc-open-ledger',
-            $fellowshipCss
-        );
-        self::assertStringNotContainsString(
-            '[data-character-ledger-boundary]',
-            $fellowshipCss
         );
     }
 
@@ -128,6 +107,7 @@ final class CharacterLedgerLayoutBoundaryRegressionTest extends TestCase
                 $view,
                 $opening
             );
+
             preg_match_all(
                 '/<\/' . $tag . '>/i',
                 $view,
@@ -145,51 +125,48 @@ final class CharacterLedgerLayoutBoundaryRegressionTest extends TestCase
         }
     }
 
-    public function testPurseFormsRemainSelfContained(): void
+    public function testFellowshipStylesDoNotOwnCharacterLedgerShell(): void
     {
+        $source = file_get_contents(
+            $this->root()
+            . '/assets/css/modules/parties/'
+            . 'fellowship-register.css'
+        );
+
+        self::assertIsString($source);
+
+        self::assertStringNotContainsString(
+            'data-character-ledger-boundary',
+            $source
+        );
+
+        self::assertStringNotContainsString(
+            '.gmrc-open-ledger[data-character-ledger-boundary]',
+            $source
+        );
+    }
+
+    public function testLedgerRepairNowLivesAtRuntimeContractBoundary(): void
+    {
+        $role = file_get_contents(
+            $this->root()
+            . '/app/Modules/Parties/Models/ValueObjects/'
+            . 'PartyMembershipRole.php'
+        );
+
         $view = $this->view();
 
-        $purseStart = strpos(
-            $view,
-            'class="gmrc-adventurer-purse"'
-        );
-        $purseEnd = strpos(
-            $view,
-            '</section>',
-            $purseStart
-        );
+        self::assertIsString($role);
 
-        self::assertIsInt($purseStart);
-        self::assertIsInt($purseEnd);
-
-        $purseMarkup = substr(
-            $view,
-            $purseStart,
-            $purseEnd - $purseStart
-        );
-
-        preg_match_all(
-            '/<form\b/i',
-            $purseMarkup,
-            $opening
-        );
-        preg_match_all(
-            '/<\/form>/i',
-            $purseMarkup,
-            $closing
-        );
-
-        self::assertSame(
-            1,
-            count($opening[0])
-        );
-        self::assertSame(
-            count($opening[0]),
-            count($closing[0])
-        );
         self::assertStringContainsString(
-            'gmrc-adventurer-purse__form',
-            $purseMarkup
+            'public function label(): string',
+            $role
+        );
+
+        self::assertStringContainsString(
+            "->role()\n"
+            . "                                                    ->label()",
+            $view
         );
     }
 
