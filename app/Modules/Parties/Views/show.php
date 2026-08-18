@@ -619,8 +619,8 @@ foreach ($officeHolders as $holder) {
                         Personal purse funds belong to the selected adventurer.
                         Treasury funds belong to the whole Fellowship. A
                         successful transfer moves the same amount from one
-                        balance to the other and records it in the Treasury
-                        Ledger.
+                        balance to the other, updates both purses, and records
+                        the movement in the Treasury Ledger.
                     </p>
 
                     <label class="gmrc-fellowship-field">
@@ -725,95 +725,133 @@ foreach ($officeHolders as $holder) {
                         "
                         type="submit"
                     >
-                        Transfer Coin
+                        Move Coin Between Purses
                     </button>
                 </form>
             <?php endif; ?>
         </section>
 
-        <div class="gmrc-fellowship-treasury__forms">
-            <?php foreach ([
-                'deposit' => 'Deposit Funds',
-                'withdraw' => 'Withdraw Funds',
-            ] as $treasuryAction => $treasuryLabel) : ?>
-                <form
-                    class="gmrc-fellowship-treasury__form"
-                    action="<?php echo esc_url(
-                        admin_url('admin-post.php')
-                    ); ?>"
-                    method="post"
-                >
-                    <input
-                        type="hidden"
-                        name="action"
-                        value="gmrc_app_request"
-                    >
-                    <input
-                        type="hidden"
-                        name="gmrc_route"
-                        value="<?php echo esc_attr(
-                            'parties/' . $id
-                            . '/treasury/' . $treasuryAction
+        <details class="gmrc-fellowship-treasury-adjustments">
+            <summary>
+                <span>
+                    <strong>Company-only Treasury adjustments</strong>
+                    <small>
+                        Rewards, sales, supplies and other money that does
+                        not come from an adventurer’s personal purse.
+                    </small>
+                </span>
+                <span aria-hidden="true">▾</span>
+            </summary>
+
+            <div
+                class="gmrc-fellowship-treasury-adjustments__notice"
+                role="note"
+            >
+                <strong>These controls do not change a Character’s purse.</strong>
+                <p>
+                    To move personal money between an adventurer and the
+                    Fellowship, use <em>Coin Between Companions</em> above.
+                </p>
+            </div>
+
+            <div class="gmrc-fellowship-treasury__forms">
+                <?php foreach ([
+                    'deposit' => [
+                        'title' => 'Record External Income',
+                        'button' => 'Add Company Funds',
+                    ],
+                    'withdraw' => [
+                        'title' => 'Record Company Expense',
+                        'button' => 'Spend Company Funds',
+                    ],
+                ] as $treasuryAction => $treasuryCopy) : ?>
+                    <form
+                        class="gmrc-fellowship-treasury__form"
+                        action="<?php echo esc_url(
+                            admin_url('admin-post.php')
                         ); ?>"
+                        method="post"
                     >
-
-                    <?php wp_nonce_field(
-                        'gmrc_party_treasury_' . $id,
-                        'gmrc_nonce'
-                    ); ?>
-
-                    <h3><?php echo esc_html($treasuryLabel); ?></h3>
-
-                    <div class="gmrc-fellowship-treasury__coins">
-                        <?php foreach ([
-                            'gold' => 'GP',
-                            'silver' => 'SP',
-                            'copper' => 'CP',
-                        ] as $coin => $coinLabel) : ?>
-                            <label>
-                                <span><?php echo esc_html($coinLabel); ?></span>
-                                <input
-                                    type="number"
-                                    name="<?php echo esc_attr($coin); ?>"
-                                    value="0"
-                                    min="0"
-                                    <?php echo $coin === 'gold'
-                                        ? 'max="999999"'
-                                        : 'max="9"'; ?>
-                                    required
-                                >
-                            </label>
-                        <?php endforeach; ?>
-                    </div>
-
-                    <label class="gmrc-fellowship-field">
-                        <span>Ledger note</span>
                         <input
-                            type="text"
-                            name="note"
-                            maxlength="160"
-                            placeholder="<?php echo esc_attr(
-                                $treasuryAction === 'deposit'
-                                    ? 'e.g. Reward from the Rootlands contract'
-                                    : 'e.g. Supplies for the Savory Sea voyage'
+                            type="hidden"
+                            name="action"
+                            value="gmrc_app_request"
+                        >
+                        <input
+                            type="hidden"
+                            name="gmrc_route"
+                            value="<?php echo esc_attr(
+                                'parties/' . $id
+                                . '/treasury/' . $treasuryAction
                             ); ?>"
                         >
-                    </label>
 
-                    <button
-                        class="
-                            gmrc-fellowship-button
-                            <?php echo $treasuryAction === 'deposit'
-                                ? 'gmrc-fellowship-button--primary'
-                                : 'gmrc-fellowship-button--quiet'; ?>
-                        "
-                        type="submit"
-                    >
-                        <?php echo esc_html($treasuryLabel); ?>
-                    </button>
-                </form>
-            <?php endforeach; ?>
-        </div>
+                        <?php wp_nonce_field(
+                            'gmrc_party_treasury_' . $id,
+                            'gmrc_nonce'
+                        ); ?>
+
+                        <h3>
+                            <?php echo esc_html(
+                                $treasuryCopy['title']
+                            ); ?>
+                        </h3>
+
+                        <div class="gmrc-fellowship-treasury__coins">
+                            <?php foreach ([
+                                'gold' => 'GP',
+                                'silver' => 'SP',
+                                'copper' => 'CP',
+                            ] as $coin => $coinLabel) : ?>
+                                <label>
+                                    <span>
+                                        <?php echo esc_html($coinLabel); ?>
+                                    </span>
+                                    <input
+                                        type="number"
+                                        name="<?php echo esc_attr($coin); ?>"
+                                        value="0"
+                                        min="0"
+                                        <?php echo $coin === 'gold'
+                                            ? 'max="999999"'
+                                            : 'max="9"'; ?>
+                                        required
+                                    >
+                                </label>
+                            <?php endforeach; ?>
+                        </div>
+
+                        <label class="gmrc-fellowship-field">
+                            <span>Ledger note</span>
+                            <input
+                                type="text"
+                                name="note"
+                                maxlength="160"
+                                placeholder="<?php echo esc_attr(
+                                    $treasuryAction === 'deposit'
+                                        ? 'e.g. Rootlands contract reward'
+                                        : 'e.g. Supplies for the Savory Sea voyage'
+                                ); ?>"
+                            >
+                        </label>
+
+                        <button
+                            class="
+                                gmrc-fellowship-button
+                                <?php echo $treasuryAction === 'deposit'
+                                    ? 'gmrc-fellowship-button--primary'
+                                    : 'gmrc-fellowship-button--quiet'; ?>
+                            "
+                            type="submit"
+                        >
+                            <?php echo esc_html(
+                                $treasuryCopy['button']
+                            ); ?>
+                        </button>
+                    </form>
+                <?php endforeach; ?>
+            </div>
+        </details>
 
         <div class="gmrc-fellowship-treasury__ledger">
             <h3>Recent Treasury Ledger</h3>

@@ -2219,3 +2219,75 @@
     background: transparent !important;
     box-shadow: none;
 }
+
+
+/* ===============================================================
+ * Phase III.11.3D.3 — Connected Coin Flow
+ * =============================================================== */
+
+.gmrc-fellowship-treasury-adjustments {
+    margin: 0.9rem 0 0;
+    border: 1px solid rgba(80, 59, 39, 0.22);
+    border-radius: 0.42rem;
+    background: rgba(255, 250, 226, 0.46);
+}
+
+.gmrc-fellowship-treasury-adjustments > summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.8rem;
+    align-items: center;
+    padding: 0.72rem 0.8rem;
+    cursor: pointer;
+    list-style: none;
+}
+
+.gmrc-fellowship-treasury-adjustments > summary::-webkit-details-marker {
+    display: none;
+}
+
+.gmrc-fellowship-treasury-adjustments > summary span:first-child {
+    display: grid;
+    gap: 0.12rem;
+}
+
+.gmrc-fellowship-treasury-adjustments > summary small {
+    color: var(--gmrc-fellowship-muted);
+    font-weight: 400;
+}
+
+.gmrc-fellowship-treasury-adjustments[open] > summary {
+    border-bottom: 1px solid rgba(80, 59, 39, 0.16);
+}
+
+.gmrc-fellowship-treasury-adjustments__notice {
+    margin: 0.75rem;
+    padding: 0.65rem 0.75rem;
+    border-left: 0.25rem solid var(--gmrc-fellowship-gold);
+    background: rgba(255, 247, 205, 0.62);
+}
+
+.gmrc-fellowship-treasury-adjustments__notice p {
+    margin: 0.2rem 0 0;
+    color: var(--gmrc-fellowship-muted);
+}
+
+.gmrc-fellowship-treasury-adjustments
+.gmrc-fellowship-treasury__forms {
+    margin: 0.75rem;
+}
+
+.gmrc-fellowship-coin-transfer {
+    box-shadow:
+        0 0 0 0.15rem rgba(164, 123, 55, 0.08),
+        0 0.45rem 1rem rgba(55, 40, 28, 0.06);
+}
+
+@media (forced-colors: active) {
+    .gmrc-fellowship-treasury-adjustments,
+    .gmrc-fellowship-treasury-adjustments__notice {
+        border: 1px solid CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}
