@@ -52,6 +52,16 @@ return static function (
     );
 
     $router->post(
+        '/characters/{id}/resources/spend',
+        [CharacterController::class, 'spendClassResource']
+    );
+
+    $router->post(
+        '/characters/{id}/resources/refresh',
+        [CharacterController::class, 'refreshClassResources']
+    );
+
+    $router->post(
         '/characters/{id}/purse/deposit',
         [CharacterController::class, 'depositPurse']
     );

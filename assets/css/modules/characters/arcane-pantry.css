@@ -632,3 +632,109 @@
         color: CanvasText;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.12.2C — The Fighter's Battle Reserves
+ * =============================================================== */
+
+.gmrc-martial-resource__spend {
+    margin-top: 0.65rem;
+}
+
+.gmrc-martial-resource__button {
+    width: 100%;
+    padding: 0.5rem 0.65rem;
+    border: 1px solid rgba(84, 58, 35, 0.32);
+    border-radius: 0.32rem;
+    background: rgba(112, 78, 45, 0.1);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.gmrc-martial-resource__button:hover:not(:disabled),
+.gmrc-martial-resource__button:focus-visible:not(:disabled) {
+    background: rgba(112, 78, 45, 0.18);
+}
+
+.gmrc-martial-resource__button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.gmrc-martial-register__rests {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-end;
+    margin-top: 0.75rem;
+    padding: 0.7rem;
+    border: 1px dashed rgba(94, 65, 39, 0.26);
+    border-radius: 0.4rem;
+    background: rgba(255, 249, 226, 0.48);
+}
+
+.gmrc-martial-register__rests h4,
+.gmrc-martial-register__rests p {
+    margin-top: 0;
+}
+
+.gmrc-martial-register__rests p:last-child {
+    margin-bottom: 0;
+}
+
+.gmrc-martial-register__rest-actions {
+    display: flex;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+@media (max-width: 700px) {
+    .gmrc-martial-register__rests {
+        display: grid;
+        align-items: stretch;
+    }
+
+    .gmrc-martial-register__rest-actions {
+        justify-content: flex-start;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-martial-resource__button,
+    .gmrc-martial-register__rests {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}
+
+
+.gmrc-martial-rest-button {
+    padding: 0.48rem 0.68rem;
+    border: 1px solid rgba(84, 58, 35, 0.34);
+    border-radius: 0.32rem;
+    background: rgba(112, 78, 45, 0.14);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.gmrc-martial-rest-button--quiet {
+    background: rgba(255, 252, 236, 0.7);
+}
+
+.gmrc-martial-rest-button:hover,
+.gmrc-martial-rest-button:focus-visible {
+    background: rgba(112, 78, 45, 0.22);
+}
+
+@media (forced-colors: active) {
+    .gmrc-martial-rest-button {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

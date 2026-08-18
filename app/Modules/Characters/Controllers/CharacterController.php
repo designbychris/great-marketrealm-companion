@@ -37,6 +37,9 @@ use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCata
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\ArcanePantryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\RisingRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Martial\Services\FighterMartialRegisterPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassResourceRepository;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\FighterBattleReserveService;
+use InvalidArgumentException;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\LivingRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\AdvancementLedgerPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Services\PathGiftPresenter;
@@ -639,10 +642,17 @@ final class CharacterController
             $character
         );
 
+        $activeResources = (
+            new ActiveClassResourceRepository()
+        )->find(
+            $character->id()
+        );
+
         $martialRegister = (
             new FighterMartialRegisterPresenter()
         )->present(
-            $character
+            $character,
+            $activeResources
         );
 
         $progression = (new RisingRegisterPresenter())
@@ -938,6 +948,137 @@ final class CharacterController
             $this->characterUrl(
                 $character->id(),
                 'equipment'
+            )
+        );
+    }
+
+    /**
+     * Spend one use from a certified active class resource.
+     */
+    public function spendClassResource(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $resource = sanitize_key(
+            (string) (
+                $_POST['resource']
+                ?? ''
+            )
+        );
+
+        $repository =
+            new ActiveClassResourceRepository();
+
+        $state = $repository->find(
+            $character->id()
+        );
+
+        try {
+            $state = (
+                new FighterBattleReserveService()
+            )->spend(
+                $character,
+                $state,
+                $resource
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            'The Battle Reserve has been marked as spent.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Refresh Fighter Battle Reserves after a short or long rest.
+     */
+    public function refreshClassResources(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $rest = sanitize_key(
+            (string) (
+                $_POST['rest']
+                ?? ''
+            )
+        );
+
+        $repository =
+            new ActiveClassResourceRepository();
+
+        $state = $repository->find(
+            $character->id()
+        );
+
+        $reserves =
+            new FighterBattleReserveService();
+
+        try {
+            if ($rest === 'short') {
+                $state = $reserves->shortRest(
+                    $character,
+                    $state
+                );
+            } elseif ($rest === 'long') {
+                $state = $reserves->longRest(
+                    $character,
+                    $state
+                );
+            } else {
+                throw new InvalidArgumentException(
+                    'Choose a valid rest before refreshing Battle Reserves.'
+                );
+            }
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            $rest === 'short'
+                ? 'Short-rest Battle Reserves have been restored.'
+                : 'All Battle Reserves have been restored after the long rest.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
             )
         );
     }

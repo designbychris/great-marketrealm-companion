@@ -1847,12 +1847,21 @@ $callingPathLabel = $callingPath !== ''
                                 ) : ?>
                                     <dl>
                                         <div>
-                                            <dt>Uses</dt>
+                                            <dt>Remaining</dt>
                                             <dd>
                                                 <?php echo esc_html(
-                                                    (string) (
-                                                        $resource['uses']
-                                                        ?? 0
+                                                    sprintf(
+                                                        '%d / %d',
+                                                        (int) (
+                                                            $resource[
+                                                                'remaining'
+                                                            ] ?? 0
+                                                        ),
+                                                        (int) (
+                                                            $resource[
+                                                                'maximum'
+                                                            ] ?? 0
+                                                        )
                                                     )
                                                 ); ?>
                                             </dd>
@@ -1889,6 +1898,67 @@ $callingPathLabel = $callingPath !== ''
                                             )
                                         ); ?>
                                     </p>
+
+                                    <form
+                                        class="gmrc-martial-resource__spend"
+                                        action="<?php echo esc_url(
+                                            $appRequestUrl
+                                        ); ?>"
+                                        method="post"
+                                    >
+                                        <input
+                                            type="hidden"
+                                            name="action"
+                                            value="gmrc_app_request"
+                                        >
+                                        <input
+                                            type="hidden"
+                                            name="gmrc_route"
+                                            value="<?php echo esc_attr(
+                                                'characters/'
+                                                . $characterId
+                                                . '/resources/spend'
+                                            ); ?>"
+                                        >
+                                        <input
+                                            type="hidden"
+                                            name="resource"
+                                            value="<?php echo esc_attr(
+                                                (string) (
+                                                    $resource['key']
+                                                    ?? ''
+                                                )
+                                            ); ?>"
+                                        >
+
+                                        <?php wp_nonce_field(
+                                            'gmrc_character_resources_'
+                                            . $characterId,
+                                            'gmrc_nonce'
+                                        ); ?>
+
+                                        <button
+                                            type="submit"
+                                            class="gmrc-martial-resource__button"
+                                            <?php echo (
+                                                (int) (
+                                                    $resource['remaining']
+                                                    ?? 0
+                                                ) < 1
+                                            )
+                                                ? 'disabled'
+                                                : ''; ?>
+                                        >
+                                            <?php echo esc_html(
+                                                (int) (
+                                                    $resource['remaining']
+                                                    ?? 0
+                                                ) < 1
+                                                    ? 'Reserve Spent'
+                                                    : 'Spend 1 Use'
+                                            ); ?>
+                                        </button>
+                                    </form>
                                 <?php else : ?>
                                     <p>
                                         This entry will illuminate when the
@@ -1898,6 +1968,79 @@ $callingPathLabel = $callingPath !== ''
                             </article>
                         <?php endforeach; ?>
                     </div>
+
+                    <section
+                        class="gmrc-martial-register__rests"
+                        aria-labelledby="gmrc-battle-reserves-rest-title"
+                    >
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Active Play
+                            </p>
+                            <h4 id="gmrc-battle-reserves-rest-title">
+                                Battle Reserve Refresh
+                            </h4>
+                            <p>
+                                A short rest restores Second Wind and
+                                Action Surge. A long rest restores every
+                                Fighter Battle Reserve.
+                            </p>
+                        </div>
+
+                        <div class="gmrc-martial-register__rest-actions">
+                            <?php foreach ([
+                                'short' => 'Take Short Rest',
+                                'long' => 'Take Long Rest',
+                            ] as $restKey => $restLabel) : ?>
+                                <form
+                                    action="<?php echo esc_url(
+                                        $appRequestUrl
+                                    ); ?>"
+                                    method="post"
+                                >
+                                    <input
+                                        type="hidden"
+                                        name="action"
+                                        value="gmrc_app_request"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="gmrc_route"
+                                        value="<?php echo esc_attr(
+                                            'characters/'
+                                            . $characterId
+                                            . '/resources/refresh'
+                                        ); ?>"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="rest"
+                                        value="<?php echo esc_attr(
+                                            $restKey
+                                        ); ?>"
+                                    >
+
+                                    <?php wp_nonce_field(
+                                        'gmrc_character_resources_'
+                                        . $characterId,
+                                        'gmrc_nonce'
+                                    ); ?>
+
+                                    <button
+                                        type="submit"
+                                        class="gmrc-martial-rest-button <?php echo
+                                            $restKey === 'long'
+                                                ? 'gmrc-martial-rest-button--quiet'
+                                                : ''; ?>"
+                                    >
+                                        <?php echo esc_html(
+                                            $restLabel
+                                        ); ?>
+                                    </button>
+                                </form>
+                            <?php endforeach; ?>
+                        </div>
+                    </section>
 
                     <?php if (
                         ! empty(

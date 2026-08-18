@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Martial\Services;
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Models\ActiveClassResourceState;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\FighterBattleReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Models\PathGiftCatalogue;
 
@@ -88,7 +90,8 @@ final class FighterMartialRegisterPresenter
      * @return array<string,mixed>
      */
     public function present(
-        Character $character
+        Character $character,
+        ?ActiveClassResourceState $active = null
     ): array {
         if (
             $character
@@ -102,6 +105,12 @@ final class FighterMartialRegisterPresenter
         }
 
         $level = $character->level()->value();
+        $active ??=
+            ActiveClassResourceState::fresh();
+
+        $reserves =
+            new FighterBattleReserveService();
+
         $path = $this->pathState($character);
         $path['gifts'] =
             $this->certifiedPathGifts(
@@ -119,6 +128,7 @@ final class FighterMartialRegisterPresenter
                     'Second Wind',
                     true,
                     1,
+                    $active,
                     'Short rest',
                     sprintf(
                         '1d10 + %d healing',
@@ -130,9 +140,11 @@ final class FighterMartialRegisterPresenter
                     'action-surge',
                     'Action Surge',
                     $level >= 2,
-                    $level >= 17
-                        ? 2
-                        : ($level >= 2 ? 1 : 0),
+                    $reserves->maximum(
+                        $character,
+                        'action-surge'
+                    ),
+                    $active,
                     'Short rest',
                     'Take one additional action',
                     'Free'
@@ -141,7 +153,11 @@ final class FighterMartialRegisterPresenter
                     'indomitable',
                     'Indomitable',
                     $level >= 9,
-                    $this->indomitableUses($level),
+                    $reserves->maximum(
+                        $character,
+                        'indomitable'
+                    ),
+                    $active,
                     'Long rest',
                     'Reroll a failed saving throw',
                     'On failed save'
@@ -163,6 +179,7 @@ final class FighterMartialRegisterPresenter
         string $label,
         bool $unlocked,
         int $uses,
+        ActiveClassResourceState $active,
         string $refresh,
         string $effect,
         string $activation
@@ -172,6 +189,14 @@ final class FighterMartialRegisterPresenter
             'label' => $label,
             'unlocked' => $unlocked,
             'uses' => $uses,
+            'maximum' => $uses,
+            'expended' =>
+                $active->expended($key),
+            'remaining' =>
+                $active->remaining(
+                    $key,
+                    $uses
+                ),
             'refresh' => $refresh,
             'effect' => $effect,
             'activation' => $activation,
