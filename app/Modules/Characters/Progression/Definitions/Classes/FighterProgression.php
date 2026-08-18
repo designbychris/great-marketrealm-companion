@@ -110,6 +110,14 @@ final class FighterProgression implements ClassProgressionDefinitionInterface
                     'Choose the Fighter path that shapes this adventurer’s specialised martial training.',
                 'phase' => 'III.12.2',
             ],
+            [
+                'key' => 'martial-path-gifts',
+                'folio' => 'path-gifts',
+                'label' => 'Martial Path Gifts',
+                'detail' =>
+                    'The chosen Martial Path grants its first automatic gifts during the same Guild certification.',
+                'phase' => 'III.12.2B',
+            ],
         ],
         4 => [
             [

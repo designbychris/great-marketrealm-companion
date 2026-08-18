@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Martial\Servi
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Models\PathGiftCatalogue;
 
 defined('ABSPATH') || exit;
 
@@ -73,10 +74,14 @@ final class FighterMartialRegisterPresenter
     ];
 
     public function __construct(
-        private ?PathCandidateCatalogue $paths = null
+        private ?PathCandidateCatalogue $paths = null,
+        private ?PathGiftCatalogue $gifts = null
     ) {
         $this->paths ??=
             new PathCandidateCatalogue();
+
+        $this->gifts ??=
+            new PathGiftCatalogue();
     }
 
     /**
@@ -98,6 +103,10 @@ final class FighterMartialRegisterPresenter
 
         $level = $character->level()->value();
         $path = $this->pathState($character);
+        $path['gifts'] =
+            $this->certifiedPathGifts(
+                $character
+            );
 
         return [
             'supported' => true,
@@ -258,6 +267,40 @@ final class FighterMartialRegisterPresenter
             'key' => $key,
             'label' => $label,
         ];
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function certifiedPathGifts(
+        Character $character
+    ): array {
+        if (
+            ! $character
+                ->callingPath()
+                ->isChosen()
+        ) {
+            return [];
+        }
+
+        $path = $character
+            ->callingPath()
+            ->value();
+
+        return array_values(
+            array_filter(
+                $this->gifts->all($path),
+                fn (array $gift): bool =>
+                    $character
+                        ->pathGifts()
+                        ->has(
+                            (string) (
+                                $gift['key']
+                                ?? ''
+                            )
+                        )
+            )
+        );
     }
 
     /**

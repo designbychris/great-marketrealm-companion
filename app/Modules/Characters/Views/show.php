@@ -1899,6 +1899,79 @@ $callingPathLabel = $callingPath !== ''
                         <?php endforeach; ?>
                     </div>
 
+                    <?php if (
+                        ! empty(
+                            $martialRegister[
+                                'path'
+                            ]['gifts']
+                        )
+                        && is_array(
+                            $martialRegister[
+                                'path'
+                            ]['gifts']
+                        )
+                    ) : ?>
+                        <section
+                            class="gmrc-martial-register__path-gifts"
+                            aria-labelledby="gmrc-martial-path-gifts-title"
+                        >
+                            <header>
+                                <p class="gmrc-eyebrow">
+                                    Certified Martial Path Gifts
+                                </p>
+                                <h4 id="gmrc-martial-path-gifts-title">
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $martialRegister[
+                                                'path'
+                                            ]['label']
+                                            ?? 'Martial Path'
+                                        )
+                                    ); ?>
+                                </h4>
+                            </header>
+
+                            <div>
+                                <?php foreach (
+                                    $martialRegister[
+                                        'path'
+                                    ]['gifts']
+                                    as $gift
+                                ) : ?>
+                                    <article>
+                                        <span aria-hidden="true">✦</span>
+                                        <div>
+                                            <small>
+                                                Level <?php echo esc_html(
+                                                    (string) (
+                                                        $gift['level']
+                                                        ?? ''
+                                                    )
+                                                ); ?> Gift
+                                            </small>
+                                            <strong>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $gift['label']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                            </strong>
+                                            <p>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $gift['summary']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                            </p>
+                                        </div>
+                                    </article>
+                                <?php endforeach; ?>
+                            </div>
+                        </section>
+                    <?php endif; ?>
+
                     <div class="gmrc-martial-register__footer">
                         <div>
                             <span>Martial Path</span>

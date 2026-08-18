@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\M
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\PathGifts;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Contracts\PathGiftProgressionDefinitionInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\ShelfmancyGiftProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\FighterMartialPathGiftProgression;
 
 defined('ABSPATH') || exit;
 
@@ -17,7 +18,12 @@ final class PathGiftCatalogue
     /** @param array<int,PathGiftProgressionDefinitionInterface>|null $definitions */
     public function __construct(?array $definitions = null)
     {
-        $this->definitions = $definitions ?? [new ShelfmancyGiftProgression()];
+        $this->definitions = $definitions ?? array_merge(
+            [
+                new ShelfmancyGiftProgression(),
+            ],
+            FighterMartialPathGiftProgression::allDefinitions()
+        );
     }
 
     public function supports(string $pathKey): bool
