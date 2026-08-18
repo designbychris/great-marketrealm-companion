@@ -37,6 +37,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCata
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\ArcanePantryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\RisingRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Martial\Services\FighterMartialRegisterPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Primal\Services\BarbarianRageRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassResourceRepository;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\FighterBattleReserveService;
 use InvalidArgumentException;
@@ -655,6 +656,12 @@ final class CharacterController
             $activeResources
         );
 
+        $rageRegister = (
+            new BarbarianRageRegisterPresenter()
+        )->present(
+            $character
+        );
+
         $progression = (new RisingRegisterPresenter())
             ->present($character);
 
@@ -718,6 +725,7 @@ final class CharacterController
                     )->forCharacter($character),
                     'arcana' => $arcana,
                     'martialRegister' => $martialRegister,
+                    'rageRegister' => $rageRegister,
                     'progression' => $progression,
                     'pathGifts' => $pathGifts,
                     'advancementHistory' =>

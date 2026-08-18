@@ -807,3 +807,206 @@
         color: CanvasText;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.12.3A — The Barbarian's Rage Register
+ * =============================================================== */
+
+.gmrc-rage-register {
+    margin: 0 0 1rem;
+    padding: 0.9rem;
+    border: 1px solid rgba(111, 55, 35, 0.26);
+    border-radius: 0.5rem;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(156, 72, 40, 0.08),
+            rgba(255, 244, 220, 0.74)
+        );
+}
+
+.gmrc-rage-register__heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 0.8rem;
+}
+
+.gmrc-rage-register__heading h3,
+.gmrc-rage-register__heading p {
+    margin-top: 0;
+}
+
+.gmrc-rage-register__heading > div > p:last-child {
+    margin-bottom: 0;
+}
+
+.gmrc-rage-register__badge {
+    display: grid;
+    place-items: center;
+    min-width: 5.4rem;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid rgba(128, 67, 42, 0.32);
+    border-radius: 0.4rem;
+    background: rgba(255, 240, 209, 0.86);
+    text-align: center;
+}
+
+.gmrc-rage-register__badge strong {
+    font-size: 1.45rem;
+    line-height: 1;
+}
+
+.gmrc-rage-register__badge small {
+    margin-top: 0.2rem;
+}
+
+.gmrc-rage-register__rage {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.2fr)
+        minmax(0, 1fr);
+    gap: 0.7rem;
+    margin-bottom: 0.7rem;
+}
+
+.gmrc-rage-register__rage article,
+.gmrc-rage-register__rage dl {
+    margin: 0;
+    padding: 0.7rem;
+    border: 1px solid rgba(111, 55, 35, 0.2);
+    border-radius: 0.38rem;
+    background: rgba(255, 250, 232, 0.72);
+}
+
+.gmrc-rage-register__rage article {
+    display: flex;
+    gap: 0.55rem;
+    align-items: flex-start;
+}
+
+.gmrc-rage-register__rage article > span {
+    font-size: 1.15rem;
+}
+
+.gmrc-rage-register__rage h4 {
+    margin: 0.05rem 0 0.25rem;
+}
+
+.gmrc-rage-register__rage p {
+    margin: 0;
+}
+
+.gmrc-rage-register__rage dl {
+    display: grid;
+    gap: 0.3rem;
+}
+
+.gmrc-rage-register__rage dl div {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.65rem;
+}
+
+.gmrc-rage-register__rage dt {
+    font-weight: 700;
+}
+
+.gmrc-rage-register__rage dd {
+    margin: 0;
+    text-align: right;
+}
+
+.gmrc-rage-register__features {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+    gap: 0.55rem;
+}
+
+.gmrc-rage-register__features article {
+    display: flex;
+    gap: 0.55rem;
+    padding: 0.65rem;
+    border: 1px solid rgba(111, 55, 35, 0.18);
+    border-radius: 0.36rem;
+    background: rgba(255, 250, 232, 0.68);
+}
+
+.gmrc-rage-register__features article.is-locked {
+    opacity: 0.58;
+    background: rgba(237, 227, 208, 0.64);
+}
+
+.gmrc-rage-register__features article > span {
+    flex: 0 0 auto;
+}
+
+.gmrc-rage-register__features article div {
+    display: grid;
+    gap: 0.1rem;
+}
+
+.gmrc-rage-register__features article p {
+    margin: 0.18rem 0 0;
+}
+
+.gmrc-rage-register__footer {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+    gap: 0.65rem;
+    margin-top: 0.7rem;
+}
+
+.gmrc-rage-register__footer > div {
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.6rem 0.7rem;
+    border-left: 0.22rem solid rgba(148, 74, 42, 0.56);
+    background: rgba(255, 244, 220, 0.58);
+}
+
+.gmrc-rage-register__footer span,
+.gmrc-rage-register__footer small {
+    font-size: 0.75rem;
+}
+
+@media (max-width: 840px) {
+    .gmrc-rage-register__rage,
+    .gmrc-rage-register__features,
+    .gmrc-rage-register__footer {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .gmrc-rage-register__heading {
+        display: grid;
+    }
+
+    .gmrc-rage-register__badge {
+        justify-self: start;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-rage-register,
+    .gmrc-rage-register__badge,
+    .gmrc-rage-register__rage article,
+    .gmrc-rage-register__rage dl,
+    .gmrc-rage-register__features article,
+    .gmrc-rage-register__footer > div {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

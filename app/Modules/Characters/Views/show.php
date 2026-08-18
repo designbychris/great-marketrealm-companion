@@ -215,6 +215,13 @@ $martialRegister = isset($martialRegister)
             'supported' => false,
         ];
 
+$rageRegister = isset($rageRegister)
+    && is_array($rageRegister)
+        ? $rageRegister
+        : [
+            'supported' => false,
+        ];
+
 $progression = isset($progression) && is_array($progression)
     ? $progression
     : [
@@ -1742,6 +1749,297 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-eyebrow">Dangerously Magical</p>
                 <h2 id="gmrc-arcane-pantry-title">The Arcane Pantry</h2>
             </header>
+
+            <?php if (
+                ! empty($rageRegister['supported'])
+            ) : ?>
+                <section
+                    class="gmrc-rage-register"
+                    aria-labelledby="gmrc-rage-register-title"
+                    data-rage-register
+                >
+                    <header class="gmrc-rage-register__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Barbarian Field Record
+                            </p>
+                            <h3 id="gmrc-rage-register-title">
+                                The Rage Register
+                            </h3>
+                            <p>
+                                Certified primal capability at Barbarian
+                                Level <?php echo esc_html(
+                                    (string) (
+                                        $rageRegister['level']
+                                        ?? $level
+                                    )
+                                ); ?>.
+                            </p>
+                        </div>
+
+                        <span
+                            class="gmrc-rage-register__badge"
+                            aria-label="<?php echo esc_attr(
+                                ! empty(
+                                    $rageRegister[
+                                        'rage'
+                                    ]['unlimited']
+                                )
+                                    ? 'Unlimited Rages'
+                                    : sprintf(
+                                        '%d Rages per long rest',
+                                        (int) (
+                                            $rageRegister[
+                                                'rage'
+                                            ]['uses']
+                                            ?? 0
+                                        )
+                                    )
+                            ); ?>"
+                        >
+                            <strong>
+                                <?php echo esc_html(
+                                    ! empty(
+                                        $rageRegister[
+                                            'rage'
+                                        ]['unlimited']
+                                    )
+                                        ? '∞'
+                                        : (string) (
+                                            $rageRegister[
+                                                'rage'
+                                            ]['uses']
+                                            ?? 0
+                                        )
+                                ); ?>
+                            </strong>
+                            <small>Rages</small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-rage-register__rage">
+                        <article>
+                            <span aria-hidden="true">🔥</span>
+                            <div>
+                                <small>Primal State</small>
+                                <h4>Rage</h4>
+                                <p>
+                                    Bonus action ·
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $rageRegister[
+                                                'rage'
+                                            ]['duration']
+                                            ?? '1 minute'
+                                        )
+                                    ); ?>
+                                    · refreshes on a
+                                    <?php echo esc_html(
+                                        strtolower(
+                                            (string) (
+                                                $rageRegister[
+                                                    'rage'
+                                                ]['refresh']
+                                                ?? 'Long rest'
+                                            )
+                                        )
+                                    ); ?>.
+                                </p>
+                            </div>
+                        </article>
+
+                        <dl>
+                            <div>
+                                <dt>Rage Damage</dt>
+                                <dd>
+                                    +<?php echo esc_html(
+                                        (string) (
+                                            $rageRegister[
+                                                'rage'
+                                            ]['damage_bonus']
+                                            ?? 2
+                                        )
+                                    ); ?>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt>Attack action</dt>
+                                <dd>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $rageRegister[
+                                                'attacks_per_action'
+                                            ] ?? 1
+                                        )
+                                    ); ?>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt>Fast Movement</dt>
+                                <dd>
+                                    <?php echo esc_html(
+                                        (int) (
+                                            $rageRegister[
+                                                'speed_bonus'
+                                            ] ?? 0
+                                        ) > 0
+                                            ? '+'
+                                                . (string) (
+                                                    $rageRegister[
+                                                        'speed_bonus'
+                                                    ]
+                                                )
+                                                . ' ft'
+                                            : 'Not yet'
+                                    ); ?>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt>Brutal Critical</dt>
+                                <dd>
+                                    <?php echo esc_html(
+                                        (int) (
+                                            $rageRegister[
+                                                'brutal_critical_dice'
+                                            ] ?? 0
+                                        ) > 0
+                                            ? '+'
+                                                . (string) (
+                                                    $rageRegister[
+                                                        'brutal_critical_dice'
+                                                    ]
+                                                )
+                                                . ' die'
+                                            : 'Not yet'
+                                    ); ?>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+
+                    <div class="gmrc-rage-register__features">
+                        <?php foreach (
+                            ($rageRegister['features'] ?? [])
+                            as $feature
+                        ) : ?>
+                            <article
+                                class="<?php echo esc_attr(
+                                    ! empty(
+                                        $feature['unlocked']
+                                    )
+                                        ? 'is-unlocked'
+                                        : 'is-locked'
+                                ); ?>"
+                            >
+                                <span aria-hidden="true">
+                                    <?php echo
+                                        ! empty(
+                                            $feature['unlocked']
+                                        )
+                                            ? '◆'
+                                            : '◇'; ?>
+                                </span>
+                                <div>
+                                    <small>
+                                        Level <?php echo esc_html(
+                                            (string) (
+                                                $feature['level']
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                        ·
+                                        <?php echo esc_html(
+                                            ! empty(
+                                                $feature['unlocked']
+                                            )
+                                                ? 'Certified'
+                                                : 'Locked'
+                                        ); ?>
+                                    </small>
+                                    <strong>
+                                        <?php echo esc_html(
+                                            (string) (
+                                                $feature['label']
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                    </strong>
+                                    <p>
+                                        <?php echo esc_html(
+                                            (string) (
+                                                $feature['detail']
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                    </p>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="gmrc-rage-register__footer">
+                        <div>
+                            <span>Primal Path</span>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $rageRegister[
+                                            'path'
+                                        ]['label']
+                                        ?? 'Awaiting Primal Path'
+                                    )
+                                ); ?>
+                            </strong>
+                        </div>
+
+                        <?php if (
+                            is_array(
+                                $rageRegister[
+                                    'next_milestone'
+                                ] ?? null
+                            )
+                        ) : ?>
+                            <div>
+                                <span>Next primal milestone</span>
+                                <strong>
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $rageRegister[
+                                                'next_milestone'
+                                            ]['level']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                    ·
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $rageRegister[
+                                                'next_milestone'
+                                            ]['label']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </strong>
+                                <small>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $rageRegister[
+                                                'next_milestone'
+                                            ]['detail']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </small>
+                            </div>
+                        <?php else : ?>
+                            <div>
+                                <span>Primal progression</span>
+                                <strong>Mastered to Level 20</strong>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </section>
+            <?php endif; ?>
 
             <?php if (
                 ! empty($martialRegister['supported'])
