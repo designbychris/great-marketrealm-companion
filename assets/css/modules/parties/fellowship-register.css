@@ -2038,3 +2038,121 @@
         box-shadow: none;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.11.3C — Coin Between Companions
+ * =============================================================== */
+
+.gmrc-fellowship-coin-transfer {
+    margin: 0 0 0.9rem;
+    padding: 0.9rem;
+    border: 1px solid rgba(80, 59, 39, 0.22);
+    border-left: 0.35rem solid var(--gmrc-standard-primary, #5f3673);
+    border-radius: 0.45rem;
+    background:
+        linear-gradient(
+            135deg,
+            var(--gmrc-standard-soft, rgba(95, 54, 115, 0.08)),
+            rgba(255, 250, 226, 0.68)
+        );
+}
+
+.gmrc-fellowship-coin-transfer > header {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.8rem;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.gmrc-fellowship-coin-transfer > header h3 {
+    margin: 0.08rem 0 0;
+}
+
+.gmrc-fellowship-coin-transfer > header > span {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 1px solid var(--gmrc-standard-secondary, #b68a3c);
+    border-radius: 50%;
+    color: #fff9e4;
+    background: var(--gmrc-standard-primary, #5f3673);
+    font-size: 1.1rem;
+}
+
+.gmrc-fellowship-coin-transfer__form {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.3fr)
+        minmax(0, 1fr);
+    gap: 0.7rem;
+    align-items: end;
+}
+
+.gmrc-fellowship-coin-transfer__form
+.gmrc-fellowship-treasury__coins,
+.gmrc-fellowship-coin-transfer__form
+.gmrc-fellowship-field:nth-of-type(3),
+.gmrc-fellowship-coin-transfer__form
+.gmrc-fellowship-button {
+    grid-column: 1 / -1;
+}
+
+.gmrc-fellowship-treasury__transfer-meta {
+    font-weight: 800;
+}
+
+@media (max-width: 720px) {
+    .gmrc-fellowship-coin-transfer__form {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-fellowship-coin-transfer__form
+    .gmrc-fellowship-treasury__coins,
+    .gmrc-fellowship-coin-transfer__form
+    .gmrc-fellowship-field,
+    .gmrc-fellowship-coin-transfer__form
+    .gmrc-fellowship-button {
+        grid-column: auto;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-fellowship-coin-transfer {
+        border: 1px solid CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}
+
+
+/* ===============================================================
+ * Phase III.11.3D — Adventurer & Fellowship Bridge Seal
+ * =============================================================== */
+
+.gmrc-fellowship-coin-transfer__help {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 0.55rem 0.65rem;
+    border-left: 0.22rem solid var(--gmrc-standard-secondary, #b68a3c);
+    background: rgba(255, 252, 236, 0.72);
+    font-size: 0.76rem;
+    line-height: 1.45;
+}
+
+.gmrc-fellowship-coin-transfer__form fieldset {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+@media (forced-colors: active) {
+    .gmrc-fellowship-coin-transfer__help {
+        border-left: 0.22rem solid CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

@@ -179,6 +179,46 @@ final class Party
         );
     }
 
+    public function transferIntoTreasury(
+        PartyTreasuryMoney $amount,
+        string $note,
+        CharacterId $characterId,
+        string $transferId
+    ): PartyTreasuryTransaction {
+        if (! $this->hasMember($characterId)) {
+            throw new InvalidArgumentException(
+                'Only a Fellowship member may transfer coin with this Treasury.'
+            );
+        }
+
+        return $this->treasury->depositFromCharacter(
+            $amount,
+            $note,
+            $characterId->value(),
+            $transferId
+        );
+    }
+
+    public function transferOutOfTreasury(
+        PartyTreasuryMoney $amount,
+        string $note,
+        CharacterId $characterId,
+        string $transferId
+    ): PartyTreasuryTransaction {
+        if (! $this->hasMember($characterId)) {
+            throw new InvalidArgumentException(
+                'Only a Fellowship member may transfer coin with this Treasury.'
+            );
+        }
+
+        return $this->treasury->withdrawToCharacter(
+            $amount,
+            $note,
+            $characterId->value(),
+            $transferId
+        );
+    }
+
     public function chronicle(): PartyChronicle
     {
         return $this->chronicle;

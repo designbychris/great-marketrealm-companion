@@ -69,6 +69,11 @@ return static function (Router $router): void {
     );
 
     $router->post(
+        '/parties/{id}/treasury/transfer',
+        [PartyController::class, 'transferCoin']
+    );
+
+    $router->post(
         '/parties/{id}/chronicle/notes',
         [PartyController::class, 'addChronicleNote']
     );

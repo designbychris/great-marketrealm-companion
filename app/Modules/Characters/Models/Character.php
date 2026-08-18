@@ -243,6 +243,18 @@ final class Character
     }
 
     /**
+     * Replace the personal purse from a trusted application boundary.
+     *
+     * Used by persistence compensation when a cross-aggregate coin transfer
+     * cannot be committed on both sides.
+     */
+    public function replacePurse(
+        CharacterPurse $purse
+    ): void {
+        $this->purse = $purse;
+    }
+
+    /**
      * Add personal coin to the adventurer's purse.
      */
     public function depositToPurse(

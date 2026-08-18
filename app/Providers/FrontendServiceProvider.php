@@ -346,6 +346,20 @@ class FrontendServiceProvider extends ServiceProvider
         if (
             $method === 'POST'
             && preg_match(
+                '#^parties/([^/]+)/treasury/transfer$#',
+                $route,
+                $matches
+            )
+        ) {
+            return 'gmrc_party_coin_transfer_'
+                . sanitize_text_field(
+                    $matches[1]
+                );
+        }
+
+        if (
+            $method === 'POST'
+            && preg_match(
                 '#^parties/([^/]+)/chronicle/notes$#',
                 $route,
                 $matches

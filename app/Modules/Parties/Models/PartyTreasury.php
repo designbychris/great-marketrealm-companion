@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Parties\Models;
 
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyTreasuryMoney;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyCoinTransferDirection;
 use InvalidArgumentException;
 
 defined('ABSPATH') || exit;
@@ -54,6 +55,21 @@ final class PartyTreasury
         return $this->balance;
     }
 
+    public function hasTransferId(
+        string $transferId
+    ): bool {
+        foreach ($this->transactions as $transaction) {
+            if (
+                $transaction->transferId()
+                === $transferId
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @return PartyTreasuryTransaction[]
      */
@@ -96,6 +112,34 @@ final class PartyTreasury
         return $transaction;
     }
 
+    public function depositFromCharacter(
+        PartyTreasuryMoney $amount,
+        string $note,
+        string $characterId,
+        string $transferId
+    ): PartyTreasuryTransaction {
+        if ($amount->isZero()) {
+            throw new InvalidArgumentException(
+                'A Treasury transfer must contain at least one copper piece.'
+            );
+        }
+
+        $transaction = PartyTreasuryTransaction::record(
+            PartyTreasuryTransaction::DEPOSIT,
+            $amount,
+            $note,
+            null,
+            $characterId,
+            PartyCoinTransferDirection::TO_TREASURY,
+            $transferId
+        );
+
+        $this->balance = $this->balance->plus($amount);
+        $this->transactions[] = $transaction;
+
+        return $transaction;
+    }
+
     public function withdraw(
         PartyTreasuryMoney $amount,
         string $note = ''
@@ -119,4 +163,34 @@ final class PartyTreasury
 
         return $transaction;
     }
+    public function withdrawToCharacter(
+        PartyTreasuryMoney $amount,
+        string $note,
+        string $characterId,
+        string $transferId
+    ): PartyTreasuryTransaction {
+        if ($amount->isZero()) {
+            throw new InvalidArgumentException(
+                'A Treasury transfer must contain at least one copper piece.'
+            );
+        }
+
+        $nextBalance = $this->balance->minus($amount);
+
+        $transaction = PartyTreasuryTransaction::record(
+            PartyTreasuryTransaction::WITHDRAWAL,
+            $amount,
+            $note,
+            null,
+            $characterId,
+            PartyCoinTransferDirection::TO_CHARACTER,
+            $transferId
+        );
+
+        $this->balance = $nextBalance;
+        $this->transactions[] = $transaction;
+
+        return $transaction;
+    }
+
 }

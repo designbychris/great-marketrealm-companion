@@ -23,6 +23,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Actions\UpdatePartyCharterAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\DepositPartyTreasuryAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\WithdrawPartyTreasuryAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\AddPartyChronicleNoteAction;
+use GreatMarketrealmCompanion\Modules\Parties\Actions\TransferCoinBetweenCharacterAndPartyAction;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyMembershipRole;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOffice;
@@ -31,6 +32,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyStandard;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyCharter;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyTreasuryMoney;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyCoinTransferDirection;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\AddPartyMemberRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\StorePartyRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyMemberRoleRequest;
@@ -41,6 +43,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyCharterRequest
 use GreatMarketrealmCompanion\Modules\Parties\Requests\DepositPartyTreasuryRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\WithdrawPartyTreasuryRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\AddPartyChronicleNoteRequest;
+use GreatMarketrealmCompanion\Modules\Parties\Requests\TransferPartyCoinRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Services\PartyFinder;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\FellowshipPresenter;
 use RuntimeException;
@@ -64,6 +67,7 @@ final class PartyController
         private DepositPartyTreasuryAction $depositTreasury,
         private WithdrawPartyTreasuryAction $withdrawTreasury,
         private AddPartyChronicleNoteAction $addChronicleNote,
+        private TransferCoinBetweenCharacterAndPartyAction $transferCoin,
         private DeletePartyAction $deleteParty,
         private ViewFactory $views,
         private ResponseFactory $responses,
@@ -258,6 +262,72 @@ final class PartyController
         );
     }
 
+    public function transferCoin(
+        string $id,
+        TransferPartyCoinRequest $request
+    ): RedirectResponse {
+        $direction = PartyCoinTransferDirection::fromString(
+            $request->direction()
+        );
+
+        $amount = PartyTreasuryMoney::fromCoins(
+            $request->gold(),
+            $request->silver(),
+            $request->copper()
+        );
+
+        if ($amount->isZero()) {
+            $this->flash->error(
+                'A Fellowship transfer must contain at least one coin.'
+            );
+
+            return $this->responses->redirect(
+                $this->partyUrl(
+                    PartyId::fromString($id),
+                    'treasury'
+                )
+            );
+        }
+
+        try {
+            $party = $this->transferCoin->handle(
+                PartyId::fromString($id),
+                $this->ownerId(),
+                CharacterId::fromString(
+                    $request->characterId()
+                ),
+                $direction,
+                $amount,
+                $request->transferId(),
+                $request->note()
+            );
+        } catch (\Throwable $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->partyUrl(
+                    PartyId::fromString($id),
+                    'treasury'
+                )
+            );
+        }
+
+        $this->flash->success(
+            $direction->isToTreasury()
+                ? 'Coin has moved from the adventurer’s purse into the Fellowship Treasury.'
+                : 'Coin has moved from the Fellowship Treasury into the adventurer’s purse.'
+        );
+
+        return $this->responses->redirect(
+            $this->partyUrl(
+                $party->id(),
+                'treasury'
+            )
+        );
+    }
+
     public function addChronicleNote(
         string $id,
         AddPartyChronicleNoteRequest $request
@@ -419,15 +489,26 @@ final class PartyController
     }
 
     private function partyUrl(
-        PartyId $partyId
+        PartyId $partyId,
+        ?string $hallTab = null
     ): string {
-        return add_query_arg(
+        $url = add_query_arg(
             'gmrc_route',
             'parties/' . rawurlencode(
                 $partyId->value()
             ),
             home_url('/companion/')
         );
+
+        if ($hallTab !== null) {
+            $url = add_query_arg(
+                'gmrc_fellowship_tab',
+                sanitize_key($hallTab),
+                $url
+            );
+        }
+
+        return $url;
     }
 
     private function partiesUrl(): string

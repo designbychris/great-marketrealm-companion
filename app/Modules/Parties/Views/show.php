@@ -45,6 +45,18 @@ $officeHolders = array_values(
     )
 );
 
+$memberNamesById = [];
+
+foreach ($members as $memberRecord) {
+    $memberCharacter = $memberRecord['character'] ?? null;
+
+    if ($memberCharacter instanceof Character) {
+        $memberNamesById[
+            $memberCharacter->id()->value()
+        ] = $memberCharacter->name()->value();
+    }
+}
+
 $quartermasterName = null;
 
 foreach ($officeHolders as $holder) {
@@ -538,6 +550,187 @@ foreach ($officeHolders as $holder) {
             </strong>
         </div>
 
+        <section
+            class="gmrc-fellowship-coin-transfer"
+            aria-labelledby="gmrc-fellowship-coin-transfer-title"
+        >
+            <header>
+                <div>
+                    <p class="gmrc-eyebrow">
+                        Coin Between Companions
+                    </p>
+                    <h3 id="gmrc-fellowship-coin-transfer-title">
+                        Transfer with an Adventurer
+                    </h3>
+                </div>
+                <span aria-hidden="true">⇄</span>
+            </header>
+
+            <?php
+            $coinTransferId = wp_generate_uuid4();
+            ?>
+
+            <?php if ($members === []) : ?>
+                <p class="gmrc-fellowship-offices__empty">
+                    Add an adventurer to the Fellowship before transferring
+                    personal coin to or from the shared coffers.
+                </p>
+            <?php else : ?>
+                <form
+                    class="gmrc-fellowship-coin-transfer__form"
+                    action="<?php echo esc_url(
+                        admin_url('admin-post.php')
+                    ); ?>"
+                    method="post"
+                    data-coin-transfer-form
+                    aria-describedby="gmrc-fellowship-coin-transfer-help"
+                >
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="gmrc_app_request"
+                    >
+                    <input
+                        type="hidden"
+                        name="gmrc_route"
+                        value="<?php echo esc_attr(
+                            'parties/' . $id
+                            . '/treasury/transfer'
+                        ); ?>"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="transfer_id"
+                        value="<?php echo esc_attr(
+                            $coinTransferId
+                        ); ?>"
+                    >
+
+                    <?php wp_nonce_field(
+                        'gmrc_party_coin_transfer_' . $id,
+                        'gmrc_nonce'
+                    ); ?>
+
+                    <p
+                        id="gmrc-fellowship-coin-transfer-help"
+                        class="gmrc-fellowship-coin-transfer__help"
+                    >
+                        Personal purse funds belong to the selected adventurer.
+                        Treasury funds belong to the whole Fellowship. A
+                        successful transfer moves the same amount from one
+                        balance to the other and records it in the Treasury
+                        Ledger.
+                    </p>
+
+                    <label class="gmrc-fellowship-field">
+                        <span>Adventurer</span>
+                        <select
+                            name="character_id"
+                            required
+                        >
+                            <?php foreach ($members as $member) : ?>
+                                <?php
+                                $transferCharacter =
+                                    $member['character'] ?? null;
+
+                                if (
+                                    ! $transferCharacter
+                                        instanceof Character
+                                ) {
+                                    continue;
+                                }
+                                ?>
+                                <option
+                                    value="<?php echo esc_attr(
+                                        $transferCharacter
+                                            ->id()
+                                            ->value()
+                                    ); ?>"
+                                >
+                                    <?php echo esc_html(
+                                        sprintf(
+                                            '%s — purse %s',
+                                            $transferCharacter
+                                                ->name()
+                                                ->value(),
+                                            $transferCharacter
+                                                ->purse()
+                                                ->formatted()
+                                        )
+                                    ); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+
+                    <label class="gmrc-fellowship-field">
+                        <span>Transfer direction</span>
+                        <select
+                            name="direction"
+                            required
+                        >
+                            <option value="to-treasury">
+                                Adventurer → Fellowship Treasury
+                            </option>
+                            <option value="to-character">
+                                Fellowship Treasury → Adventurer
+                            </option>
+                        </select>
+                    </label>
+
+                    <fieldset
+                        class="gmrc-fellowship-treasury__coins"
+                    >
+                        <legend class="screen-reader-text">
+                            Transfer amount
+                        </legend>
+                        <?php foreach ([
+                            'gold' => 'GP',
+                            'silver' => 'SP',
+                            'copper' => 'CP',
+                        ] as $coin => $coinLabel) : ?>
+                            <label>
+                                <span>
+                                    <?php echo esc_html($coinLabel); ?>
+                                </span>
+                                <input
+                                    type="number"
+                                    name="<?php echo esc_attr($coin); ?>"
+                                    value="0"
+                                    min="0"
+                                    <?php echo $coin === 'gold'
+                                        ? 'max="999999"'
+                                        : 'max="9"'; ?>
+                                    required
+                                >
+                            </label>
+                        <?php endforeach; ?>
+                    </fieldset>
+
+                    <label class="gmrc-fellowship-field">
+                        <span>Transfer note</span>
+                        <input
+                            type="text"
+                            name="note"
+                            maxlength="120"
+                            placeholder="e.g. Shares from the Rootlands reward"
+                        >
+                    </label>
+
+                    <button
+                        class="
+                            gmrc-fellowship-button
+                            gmrc-fellowship-button--primary
+                        "
+                        type="submit"
+                    >
+                        Transfer Coin
+                    </button>
+                </form>
+            <?php endif; ?>
+        </section>
+
         <div class="gmrc-fellowship-treasury__forms">
             <?php foreach ([
                 'deposit' => 'Deposit Funds',
@@ -659,6 +852,34 @@ foreach ($officeHolders as $holder) {
                                             $transaction->note()
                                         ); ?>
                                     </strong>
+                                <?php endif; ?>
+                                <?php if (
+                                    $transaction
+                                        ->isCharacterTransfer()
+                                ) : ?>
+                                    <small
+                                        class="gmrc-fellowship-treasury__transfer-meta"
+                                    >
+                                        <?php
+                                        $transferCharacterName =
+                                            $memberNamesById[
+                                                $transaction
+                                                    ->characterId()
+                                            ]
+                                            ?? 'Former Fellowship member';
+                                        ?>
+                                        <?php echo esc_html(
+                                            $transaction
+                                                ->transferDirection()
+                                                === 'to-treasury'
+                                                ? 'Adventurer → Fellowship'
+                                                : 'Fellowship → Adventurer'
+                                        ); ?>
+                                        ·
+                                        <?php echo esc_html(
+                                            $transferCharacterName
+                                        ); ?>
+                                    </small>
                                 <?php endif; ?>
                                 <small>
                                     <?php echo esc_html(
