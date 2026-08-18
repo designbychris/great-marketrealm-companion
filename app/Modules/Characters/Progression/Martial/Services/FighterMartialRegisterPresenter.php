@@ -7,7 +7,6 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Martial\Servi
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Models\ActiveClassResourceState;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\FighterBattleReserveService;
-use GreatMarketrealmCompanion\Modules\Characters\Progression\Martial\Services\FighterMartialActionPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Models\PathGiftCatalogue;
 
@@ -238,22 +237,6 @@ final class FighterMartialRegisterPresenter
         }
 
         return 1;
-    }
-
-    private function indomitableUses(
-        int $level
-    ): int {
-        if ($level >= 17) {
-            return 3;
-        }
-
-        if ($level >= 13) {
-            return 2;
-        }
-
-        return $level >= 9
-            ? 1
-            : 0;
     }
 
     /**
