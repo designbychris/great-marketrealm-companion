@@ -17,6 +17,8 @@ use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyStandard;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyCharter;
 use GreatMarketrealmCompanion\Modules\Parties\Models\PartyTreasury;
 use GreatMarketrealmCompanion\Modules\Parties\Models\PartyTreasuryTransaction;
+use GreatMarketrealmCompanion\Modules\Parties\Models\PartyChronicle;
+use GreatMarketrealmCompanion\Modules\Parties\Models\PartyChronicleEntry;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyTreasuryMoney;
 use RuntimeException;
 use Throwable;
@@ -32,6 +34,7 @@ final class PartyRepository implements PartyRepositoryInterface
     private const META_STANDARD = '_gmrc_party_standard';
     private const META_CHARTER = '_gmrc_party_charter';
     private const META_TREASURY = '_gmrc_party_treasury';
+    private const META_CHRONICLE = '_gmrc_party_chronicle';
 
     public function allForOwner(PartyOwnerId $ownerId): array
     {
@@ -117,6 +120,17 @@ final class PartyRepository implements PartyRepositoryInterface
                     $party->treasury()->transactions()
                 ),
             ]
+        );
+
+        update_post_meta(
+            $postId,
+            self::META_CHRONICLE,
+            array_map(
+                static fn (
+                    PartyChronicleEntry $entry
+                ): array => $entry->toArray(),
+                $party->chronicle()->entries()
+            )
         );
     }
 
@@ -228,10 +242,49 @@ final class PartyRepository implements PartyRepositoryInterface
                 $this->memberships($post->ID),
                 $this->standard($post->ID),
                 $this->charter($post->ID),
-                $this->treasury($post->ID)
+                $this->treasury($post->ID),
+                $this->chronicle($post->ID)
             );
         } catch (Throwable) {
             return null;
+        }
+    }
+
+    private function chronicle(int $postId): PartyChronicle
+    {
+        $stored = get_post_meta(
+            $postId,
+            self::META_CHRONICLE,
+            true
+        );
+
+        if (is_string($stored) && $stored !== '') {
+            $decoded = json_decode($stored, true);
+            $stored = is_array($decoded) ? $decoded : [];
+        }
+
+        if (! is_array($stored)) {
+            return PartyChronicle::empty();
+        }
+
+        $entries = [];
+
+        foreach ($stored as $entry) {
+            if (! is_array($entry)) {
+                continue;
+            }
+
+            try {
+                $entries[] = PartyChronicleEntry::fromArray($entry);
+            } catch (Throwable) {
+                continue;
+            }
+        }
+
+        try {
+            return PartyChronicle::reconstitute($entries);
+        } catch (Throwable) {
+            return PartyChronicle::empty();
         }
     }
 

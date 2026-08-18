@@ -330,6 +330,20 @@ class FrontendServiceProvider extends ServiceProvider
         }
 
         if (
+            $method === 'POST'
+            && preg_match(
+                '#^parties/([^/]+)/chronicle/notes$#',
+                $route,
+                $matches
+            )
+        ) {
+            return 'gmrc_party_chronicle_'
+                . sanitize_text_field(
+                    $matches[1]
+                );
+        }
+
+        if (
             in_array(
                 $method,
                 ['POST', 'PUT', 'DELETE'],

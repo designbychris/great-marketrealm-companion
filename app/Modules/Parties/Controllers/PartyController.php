@@ -22,6 +22,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Actions\UpdatePartyStandardAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\UpdatePartyCharterAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\DepositPartyTreasuryAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\WithdrawPartyTreasuryAction;
+use GreatMarketrealmCompanion\Modules\Parties\Actions\AddPartyChronicleNoteAction;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyId;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyMembershipRole;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOffice;
@@ -39,6 +40,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyStandardReques
 use GreatMarketrealmCompanion\Modules\Parties\Requests\UpdatePartyCharterRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\DepositPartyTreasuryRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\WithdrawPartyTreasuryRequest;
+use GreatMarketrealmCompanion\Modules\Parties\Requests\AddPartyChronicleNoteRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Services\PartyFinder;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\FellowshipPresenter;
 use RuntimeException;
@@ -61,6 +63,7 @@ final class PartyController
         private UpdatePartyCharterAction $updateCharter,
         private DepositPartyTreasuryAction $depositTreasury,
         private WithdrawPartyTreasuryAction $withdrawTreasury,
+        private AddPartyChronicleNoteAction $addChronicleNote,
         private DeletePartyAction $deleteParty,
         private ViewFactory $views,
         private ResponseFactory $responses,
@@ -248,6 +251,27 @@ final class PartyController
 
         $this->flash->success(
             'Funds have been withdrawn from the Fellowship Treasury.'
+        );
+
+        return $this->responses->redirect(
+            $this->partyUrl($party->id())
+        );
+    }
+
+    public function addChronicleNote(
+        string $id,
+        AddPartyChronicleNoteRequest $request
+    ): RedirectResponse {
+        $party = $this->addChronicleNote->handle(
+            PartyId::fromString($id),
+            $this->ownerId(),
+            $request->title(),
+            $request->content(),
+            get_current_user_id()
+        );
+
+        $this->flash->success(
+            'The adventure note has been added to the Company Chronicle.'
         );
 
         return $this->responses->redirect(

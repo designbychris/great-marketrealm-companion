@@ -68,6 +68,11 @@ return static function (Router $router): void {
         [PartyController::class, 'withdrawTreasury']
     );
 
+    $router->post(
+        '/parties/{id}/chronicle/notes',
+        [PartyController::class, 'addChronicleNote']
+    );
+
     $router->get(
         '/parties/{id}',
         [PartyController::class, 'show']

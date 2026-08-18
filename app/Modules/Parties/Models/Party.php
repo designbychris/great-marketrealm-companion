@@ -35,7 +35,8 @@ final class Party
         private array $memberships,
         private PartyStandard $standard,
         private PartyCharter $charter,
-        private PartyTreasury $treasury
+        private PartyTreasury $treasury,
+        private PartyChronicle $chronicle
     ) {
     }
 
@@ -51,7 +52,8 @@ final class Party
             [],
             PartyStandard::default(),
             PartyCharter::blank(),
-            PartyTreasury::empty()
+            PartyTreasury::empty(),
+            PartyChronicle::empty()
         );
     }
 
@@ -65,7 +67,8 @@ final class Party
         array $memberships,
         ?PartyStandard $standard = null,
         ?PartyCharter $charter = null,
-        ?PartyTreasury $treasury = null
+        ?PartyTreasury $treasury = null,
+        ?PartyChronicle $chronicle = null
     ): self {
         $party = self::create(
             $id,
@@ -83,6 +86,10 @@ final class Party
 
         $party->replaceTreasury(
             $treasury ?? PartyTreasury::empty()
+        );
+
+        $party->replaceChronicle(
+            $chronicle ?? PartyChronicle::empty()
         );
 
         foreach ($memberships as $membership) {
@@ -169,6 +176,29 @@ final class Party
         return $this->treasury->withdraw(
             $amount,
             $note
+        );
+    }
+
+    public function chronicle(): PartyChronicle
+    {
+        return $this->chronicle;
+    }
+
+    public function replaceChronicle(
+        PartyChronicle $chronicle
+    ): void {
+        $this->chronicle = $chronicle;
+    }
+
+    public function addChronicleNote(
+        string $title,
+        string $content,
+        int $authorUserId
+    ): PartyChronicleEntry {
+        return $this->chronicle->addAdventureNote(
+            $title,
+            $content,
+            $authorUserId
         );
     }
 

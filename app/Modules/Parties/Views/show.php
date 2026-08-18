@@ -218,6 +218,204 @@ foreach ($officeHolders as $holder) {
     <?php endif; ?>
 
     <section
+        class="gmrc-fellowship-chronicle"
+        aria-labelledby="gmrc-fellowship-chronicle-title"
+    >
+        <header class="gmrc-fellowship-section-heading">
+            <div>
+                <p class="gmrc-eyebrow">The company remembers</p>
+                <h2 id="gmrc-fellowship-chronicle-title">
+                    Company Chronicle
+                </h2>
+            </div>
+            <span class="gmrc-fellowship-count">
+                <?php echo esc_html(
+                    (string) $party->chronicle()->count()
+                ); ?>
+                recorded
+            </span>
+        </header>
+
+        <aside class="gmrc-fellowship-auby-note">
+            <span
+                class="gmrc-fellowship-auby-note__seal"
+                aria-hidden="true"
+            >
+                🍆
+            </span>
+            <div>
+                <strong>Auby, Acting Guild Historian</strong>
+                <p>
+                    “If nobody writes down what happened, in six months
+                    everyone will insist they defeated the dragon.”
+                </p>
+            </div>
+        </aside>
+
+        <form
+            class="gmrc-fellowship-chronicle__form"
+            action="<?php echo esc_url(
+                admin_url('admin-post.php')
+            ); ?>"
+            method="post"
+        >
+            <input
+                type="hidden"
+                name="action"
+                value="gmrc_app_request"
+            >
+            <input
+                type="hidden"
+                name="gmrc_route"
+                value="<?php echo esc_attr(
+                    'parties/' . $id . '/chronicle/notes'
+                ); ?>"
+            >
+
+            <?php wp_nonce_field(
+                'gmrc_party_chronicle_' . $id,
+                'gmrc_nonce'
+            ); ?>
+
+            <div>
+                <p class="gmrc-eyebrow">Adventure Notes</p>
+                <h3>Record what happened</h3>
+                <p>
+                    Keep session notes, discoveries, clues, unfinished
+                    business and the moments nobody should be allowed to
+                    conveniently forget.
+                </p>
+            </div>
+
+            <label class="gmrc-fellowship-field">
+                <span>Entry title</span>
+                <input
+                    type="text"
+                    name="title"
+                    maxlength="120"
+                    placeholder="e.g. The Pantry Door Was Definitely Trapped"
+                    required
+                >
+            </label>
+
+            <label class="gmrc-fellowship-field">
+                <span>Adventure note</span>
+                <textarea
+                    name="content"
+                    rows="7"
+                    maxlength="3000"
+                    placeholder="Record the Fellowship’s notes from the adventure..."
+                    required
+                ></textarea>
+                <small>
+                    Player-written notes are Fellowship records, not
+                    Dungeon Master-certified Deeds or Honours.
+                </small>
+            </label>
+
+            <button
+                class="
+                    gmrc-fellowship-button
+                    gmrc-fellowship-button--primary
+                "
+                type="submit"
+            >
+                Add to Chronicle
+            </button>
+        </form>
+
+        <div class="gmrc-fellowship-chronicle__timeline">
+            <?php if ($party->chronicle()->entries() === []) : ?>
+                <div class="gmrc-fellowship-empty gmrc-fellowship-empty--compact">
+                    <span aria-hidden="true">✎</span>
+                    <h3>The first page is still blank</h3>
+                    <p>
+                        The Fellowship has not recorded an adventure note yet.
+                        The Guild Archivist has sharpened a pencil in
+                        anticipation.
+                    </p>
+                </div>
+            <?php else : ?>
+                <ol>
+                    <?php foreach (
+                        $party->chronicle()->newestFirst()
+                        as $entry
+                    ) : ?>
+                        <li
+                            class="
+                                gmrc-fellowship-chronicle-entry
+                                <?php echo $entry->isCertified()
+                                    ? 'gmrc-fellowship-chronicle-entry--certified'
+                                    : ''; ?>
+                            "
+                        >
+                            <div
+                                class="gmrc-fellowship-chronicle-entry__marker"
+                                aria-hidden="true"
+                            >
+                                <?php echo esc_html(
+                                    $entry->type()->glyph()
+                                ); ?>
+                            </div>
+
+                            <article>
+                                <header>
+                                    <div>
+                                        <p class="gmrc-eyebrow">
+                                            <?php echo esc_html(
+                                                $entry->type()->label()
+                                            ); ?>
+                                            <?php if ($entry->isCertified()) : ?>
+                                                · DM Certified
+                                            <?php endif; ?>
+                                        </p>
+                                        <h3>
+                                            <?php echo esc_html(
+                                                $entry->title()
+                                            ); ?>
+                                        </h3>
+                                    </div>
+                                    <time
+                                        datetime="<?php echo esc_attr(
+                                            $entry
+                                                ->recordedAt()
+                                                ->format(DATE_ATOM)
+                                        ); ?>"
+                                    >
+                                        <?php echo esc_html(
+                                            $entry
+                                                ->recordedAt()
+                                                ->format('j M Y')
+                                        ); ?>
+                                    </time>
+                                </header>
+
+                                <div class="gmrc-fellowship-chronicle-entry__content">
+                                    <?php echo wp_kses_post(
+                                        wpautop(
+                                            esc_html(
+                                                $entry->content()
+                                            )
+                                        )
+                                    ); ?>
+                                </div>
+
+                                <footer>
+                                    <?php echo esc_html(
+                                        $entry
+                                            ->provenance()
+                                            ->label()
+                                    ); ?>
+                                </footer>
+                            </article>
+                        </li>
+                    <?php endforeach; ?>
+                </ol>
+            <?php endif; ?>
+        </div>
+    </section>
+
+    <section
         class="gmrc-fellowship-treasury"
         aria-labelledby="gmrc-fellowship-treasury-title"
     >

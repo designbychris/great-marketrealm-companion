@@ -16,6 +16,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Actions\UpdatePartyStandardAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\UpdatePartyCharterAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\DepositPartyTreasuryAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\WithdrawPartyTreasuryAction;
+use GreatMarketrealmCompanion\Modules\Parties\Actions\AddPartyChronicleNoteAction;
 use GreatMarketrealmCompanion\Modules\Parties\Services\PartyFinder;
 use GreatMarketrealmCompanion\Modules\Parties\Controllers\PartyController;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\FellowshipPresenter;
@@ -124,6 +125,10 @@ final class PartiesServiceProvider extends ServiceProvider
 
         $container->bind(
             WithdrawPartyTreasuryAction::class
+        );
+
+        $container->bind(
+            AddPartyChronicleNoteAction::class
         );
 
         $container->bind(
