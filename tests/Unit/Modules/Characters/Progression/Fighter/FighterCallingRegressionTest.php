@@ -64,7 +64,10 @@ final class FighterCallingRegressionTest extends TestCase
             );
 
         self::assertSame(
-            ['path'],
+            [
+                'path',
+                'path-gifts',
+            ],
             array_column(
                 $entry['delegated'],
                 'folio'
@@ -74,6 +77,11 @@ final class FighterCallingRegressionTest extends TestCase
         self::assertSame(
             'martial-path',
             $entry['delegated'][0]['key']
+        );
+
+        self::assertSame(
+            'martial-path-gifts',
+            $entry['delegated'][1]['key']
         );
     }
 

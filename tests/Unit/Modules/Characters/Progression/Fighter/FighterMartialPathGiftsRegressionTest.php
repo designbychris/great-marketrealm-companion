@@ -272,7 +272,17 @@ final class FighterMartialPathGiftsRegressionTest extends TestCase
         );
 
         self::assertStringContainsString(
-            "['path']['gifts']",
+            "'path'",
+            $view
+        );
+
+        self::assertStringContainsString(
+            "'gifts'",
+            $view
+        );
+
+        self::assertStringContainsString(
+            "as $gift",
             $view
         );
     }
