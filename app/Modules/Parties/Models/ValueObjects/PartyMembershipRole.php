@@ -60,6 +60,13 @@ final class PartyMembershipRole implements Stringable
         return $this->value === self::LEADER;
     }
 
+    public function label(): string
+    {
+        return $this->isLeader()
+            ? 'Leader'
+            : 'Member';
+    }
+
     public function equals(
         self $other
     ): bool {
