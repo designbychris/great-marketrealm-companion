@@ -293,17 +293,22 @@ final class PaladinSacredReservesRegressionTest extends TestCase
         );
 
         self::assertStringContainsString(
-            'data-sacred-spend="lay-on-hands"',
+            'data-sacred-spend=',
             $view
         );
 
         self::assertStringContainsString(
-            'data-sacred-spend="divine-sense"',
+            "'key' => 'lay-on-hands'",
             $view
         );
 
         self::assertStringContainsString(
-            'data-sacred-spend="cleansing-touch"',
+            "'key' => 'divine-sense'",
+            $view
+        );
+
+        self::assertStringContainsString(
+            "'key' => 'cleansing-touch'",
             $view
         );
 
