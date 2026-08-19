@@ -1193,3 +1193,95 @@
         color: CanvasText;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.12.3D — The Barbarian's Primal Actions
+ * =============================================================== */
+
+.gmrc-primal-actions {
+    margin: .8rem 0;
+    padding-top: .75rem;
+    border-top: 1px solid rgba(111, 55, 35, .2);
+}
+
+.gmrc-primal-actions > header h4,
+.gmrc-primal-actions > header p {
+    margin-top: 0;
+}
+
+.gmrc-primal-actions__grid {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+    gap: .55rem;
+}
+
+.gmrc-primal-actions__grid article {
+    padding: .65rem;
+    border: 1px solid rgba(111, 55, 35, .18);
+    border-radius: .36rem;
+    background: rgba(255, 250, 232, .68);
+}
+
+.gmrc-primal-actions__grid article.is-locked {
+    opacity: .52;
+    background: rgba(237, 227, 208, .64);
+}
+
+.gmrc-primal-actions__grid article.is-unavailable {
+    background: rgba(242, 232, 211, .72);
+}
+
+.gmrc-primal-actions__title {
+    display: flex;
+    gap: .45rem;
+    align-items: flex-start;
+}
+
+.gmrc-primal-actions__title > div {
+    display: grid;
+    flex: 1 1 auto;
+}
+
+.gmrc-primal-actions__badge {
+    flex: 0 0 auto;
+    padding: .18rem .38rem;
+    border: 1px solid rgba(111, 55, 35, .2);
+    border-radius: 999px;
+    font-size: .68rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.gmrc-primal-actions__grid article > p {
+    margin: .45rem 0 0;
+}
+
+.gmrc-primal-action-roll {
+    width: 100%;
+    margin-top: .55rem;
+}
+
+.gmrc-primal-action-roll:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+    .gmrc-primal-actions__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-primal-actions__grid article,
+    .gmrc-primal-actions__badge {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

@@ -434,6 +434,12 @@
                     Number(activeTrigger.dataset.rollScalingAt) || 0,
                 damageType: activeTrigger.dataset.rollDamageType || '',
                 resultSuffix: activeTrigger.dataset.rollResultSuffix || '',
+                defaultMode:
+                    ['normal', 'advantage', 'disadvantage'].includes(
+                        activeTrigger.dataset.rollDefaultMode || ''
+                    )
+                        ? activeTrigger.dataset.rollDefaultMode
+                        : 'normal',
                 criticalFormula:
                     activeTrigger.dataset.rollCriticalFormula || '',
                 criticalModifier: Number(
@@ -1587,12 +1593,19 @@
             hideAuby();
             updateFavouriteToggle();
 
+            const preferredMode = modeButtons.find(function (button) {
+                return button.dataset.guildRollMode
+                    === selection.defaultMode;
+            });
+
             const normal = modeButtons.find(function (button) {
                 return button.dataset.guildRollMode === 'normal';
             });
 
-            if (normal instanceof HTMLButtonElement) {
-                normal.focus();
+            const focusMode = preferredMode || normal;
+
+            if (focusMode instanceof HTMLButtonElement) {
+                focusMode.focus();
             }
         };
 

@@ -145,6 +145,13 @@ final class BarbarianRageRegisterPresenter
                 $character
             );
 
+        $primalActions = (
+            new BarbarianPrimalActionPresenter()
+        )->present(
+            $character,
+            $conditions
+        );
+
         return [
             'supported' => true,
             'level' => $level,
@@ -249,6 +256,9 @@ final class BarbarianRageRegisterPresenter
                 $this->certifiedPathGifts(
                     $character
                 ),
+            'actions' =>
+                $primalActions['actions']
+                ?? [],
             'next_milestone' =>
                 $this->nextMilestone($level),
             'milestones' =>

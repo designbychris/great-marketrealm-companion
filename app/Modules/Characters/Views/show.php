@@ -2095,6 +2095,206 @@ $callingPathLabel = $callingPath !== ''
                         </div>
                     </section>
 
+                    <?php if (
+                        ! empty($rageRegister['actions'])
+                        && is_array($rageRegister['actions'])
+                    ) : ?>
+                        <section
+                            class="gmrc-primal-actions"
+                            aria-labelledby="gmrc-primal-actions-title"
+                        >
+                            <header>
+                                <p class="gmrc-eyebrow">
+                                    Primal Actions
+                                </p>
+                                <h4 id="gmrc-primal-actions-title">
+                                    Barbarian Battle Actions
+                                </h4>
+                                <p>
+                                    Use certified Barbarian abilities without
+                                    inventing rolls where none belong.
+                                </p>
+                            </header>
+
+                            <div class="gmrc-primal-actions__grid">
+                                <?php foreach (
+                                    $rageRegister['actions']
+                                    as $primalAction
+                                ) : ?>
+                                    <?php
+                                    $primalRoll = is_array(
+                                        $primalAction['roll']
+                                        ?? null
+                                    )
+                                        ? $primalAction['roll']
+                                        : null;
+
+                                    $primalUnlocked = ! empty(
+                                        $primalAction['unlocked']
+                                    );
+
+                                    $primalAvailable = ! empty(
+                                        $primalAction['available']
+                                    );
+                                    ?>
+                                    <article
+                                        class="<?php echo esc_attr(
+                                            $primalUnlocked
+                                                ? (
+                                                    $primalAvailable
+                                                        ? 'is-available'
+                                                        : 'is-unavailable'
+                                                )
+                                                : 'is-locked'
+                                        ); ?>"
+                                    >
+                                        <div class="gmrc-primal-actions__title">
+                                            <span aria-hidden="true">
+                                                <?php echo
+                                                    $primalUnlocked
+                                                        ? '◆'
+                                                        : '◇'; ?>
+                                            </span>
+                                            <div>
+                                                <small>
+                                                    Level <?php echo esc_html(
+                                                        (string) (
+                                                            $primalAction[
+                                                                'level'
+                                                            ]
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                    ·
+                                                    <?php echo esc_html(
+                                                        $primalUnlocked
+                                                            ? 'Certified'
+                                                            : 'Locked'
+                                                    ); ?>
+                                                </small>
+                                                <strong>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $primalAction[
+                                                                'label'
+                                                            ]
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </strong>
+                                            </div>
+
+                                            <?php if (
+                                                ! empty(
+                                                    $primalAction[
+                                                        'badge'
+                                                    ]
+                                                )
+                                            ) : ?>
+                                                <span class="gmrc-primal-actions__badge">
+                                                    <?php echo esc_html(
+                                                        (string) $primalAction[
+                                                            'badge'
+                                                        ]
+                                                    ); ?>
+                                                </span>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <p>
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $primalAction['detail']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </p>
+
+                                        <?php if (
+                                            is_array($primalRoll)
+                                            && $primalUnlocked
+                                        ) : ?>
+                                            <button
+                                                type="button"
+                                                class="
+                                                    gmrc-guild-roll-trigger
+                                                    gmrc-primal-action-roll
+                                                "
+                                                data-guild-roll="d20"
+                                                data-roll-kind="<?php echo esc_attr(
+                                                    (string) (
+                                                        $primalRoll['kind']
+                                                        ?? 'check'
+                                                    )
+                                                ); ?>"
+                                                data-roll-source="<?php echo esc_attr(
+                                                    (string) (
+                                                        $primalRoll['source']
+                                                        ?? 'Primal Action'
+                                                    )
+                                                ); ?>"
+                                                data-roll-ability="<?php echo esc_attr(
+                                                    (string) (
+                                                        $primalRoll['ability']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                                data-roll-proficiency="<?php echo esc_attr(
+                                                    (string) (
+                                                        $primalRoll[
+                                                            'proficiency'
+                                                        ]
+                                                        ?? 'none'
+                                                    )
+                                                ); ?>"
+                                                data-roll-label="<?php echo esc_attr(
+                                                    (string) (
+                                                        $primalRoll['label']
+                                                        ?? 'Primal Action'
+                                                    )
+                                                ); ?>"
+                                                data-roll-modifier="<?php echo esc_attr(
+                                                    (string) (
+                                                        $primalRoll['modifier']
+                                                        ?? 0
+                                                    )
+                                                ); ?>"
+                                                data-roll-result-suffix="<?php echo esc_attr(
+                                                    (string) (
+                                                        $primalRoll[
+                                                            'result_suffix'
+                                                        ]
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                                data-roll-default-mode="<?php echo esc_attr(
+                                                    (string) (
+                                                        $primalRoll[
+                                                            'default_mode'
+                                                        ]
+                                                        ?? 'normal'
+                                                    )
+                                                ); ?>"
+                                                <?php echo
+                                                    ! $primalAvailable
+                                                        ? 'disabled'
+                                                        : ''; ?>
+                                            >
+                                                <span aria-hidden="true">🎲</span>
+                                                Roll <?php echo esc_html(
+                                                    (string) (
+                                                        $primalAction['label']
+                                                        ?? 'Primal Action'
+                                                    )
+                                                ); ?>
+                                            </button>
+                                        <?php endif; ?>
+                                    </article>
+                                <?php endforeach; ?>
+                            </div>
+                        </section>
+                    <?php endif; ?>
+
                     <div class="gmrc-rage-register__features">
                         <?php foreach (
                             ($rageRegister['features'] ?? [])
