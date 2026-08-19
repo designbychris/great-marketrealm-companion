@@ -9,6 +9,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definit
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\FighterMartialPathGiftProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\BarbarianPrimalPathGiftProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\RogueArchetypeGiftProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\MonkWayGiftProgression;
 
 defined('ABSPATH') || exit;
 
@@ -26,7 +27,8 @@ final class PathGiftCatalogue
             ],
             FighterMartialPathGiftProgression::allDefinitions(),
             BarbarianPrimalPathGiftProgression::allDefinitions(),
-            RogueArchetypeGiftProgression::allDefinitions()
+            RogueArchetypeGiftProgression::allDefinitions(),
+            MonkWayGiftProgression::allDefinitions()
         );
     }
 

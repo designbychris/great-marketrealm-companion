@@ -151,6 +151,14 @@ final class MonkProgression implements ClassProgressionDefinitionInterface
                     'Choose the Way that shapes this Monk’s discipline, movement and martial identity.',
                 'phase' => 'III.12.5',
             ],
+            [
+                'key' => 'monastic-way-gift',
+                'folio' => 'path-gifts',
+                'label' => 'Monastic Way Gift',
+                'detail' =>
+                    'The chosen Monastic Way grants its first specialist gift.',
+                'phase' => 'III.12.5B',
+            ],
         ],
         4 => [
             [

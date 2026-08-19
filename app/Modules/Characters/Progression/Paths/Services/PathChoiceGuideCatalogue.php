@@ -134,6 +134,54 @@ final class PathChoiceGuideCatalogue
             'identity' =>
                 'A pulled-sugar scoundrel whose plans stretch, fold and twist until enemies cannot tell where the trick began.',
         ],
+        'way-of-the-spun-cloud' => [
+            'playstyle' =>
+                'Highly mobile skirmishing, evasive repositioning and graceful control of distance.',
+            'best_for' =>
+                'Players who want their Monk to feel light, elusive and difficult to contain.',
+            'identity' =>
+                'A confectionery martial tradition that moves like spun sugar caught on a market breeze.',
+        ],
+        'way-of-the-neon-crunch' => [
+            'playstyle' =>
+                'Explosive tempo, bright distractions and sudden bursts of aggressive pressure.',
+            'best_for' =>
+                'Players who want an energetic Monk who attacks encounters with speed and spectacle.',
+            'identity' =>
+                'A vivid snack-aisle discipline built around crackling momentum, confidence and impossible colour.',
+        ],
+        'way-of-the-vacuum-seal' => [
+            'playstyle' =>
+                'Patient defence, controlled positioning and denying enemies room to operate.',
+            'best_for' =>
+                'Players who enjoy a calm, resilient Monk who wins by containing danger.',
+            'identity' =>
+                'A precise preservation discipline that removes wasted motion and closes every opening.',
+        ],
+        'way-of-the-simmering-soul' => [
+            'playstyle' =>
+                'Measured buildup, inner resilience and turning sustained pressure into decisive releases.',
+            'best_for' =>
+                'Players who prefer patience, composure and power that grows rather than immediately explodes.',
+            'identity' =>
+                'A contemplative kitchen tradition that keeps inner heat controlled until exactly the right moment.',
+        ],
+        'way-of-the-whirling-utensil' => [
+            'playstyle' =>
+                'Weapon-like flourishes, rapid combinations and controlling nearby space through motion.',
+            'best_for' =>
+                'Players who want a theatrical martial artist with strong cutlery-and-crockery Marketrealm flavour.',
+            'identity' =>
+                'A kitchen-floor combat art that turns the rhythm of utensils into a disciplined storm of movement.',
+        ],
+        'way-of-the-spongecake-soul' => [
+            'playstyle' =>
+                'Flexible defence, recovery and absorbing pressure before springing back into action.',
+            'best_for' =>
+                'Players who want a forgiving, resilient Monk with whimsical Sweet Kingdoms flavour.',
+            'identity' =>
+                'A soft-looking but remarkably resilient discipline built around yielding without collapsing.',
+        ],
     ];
 
     /**
