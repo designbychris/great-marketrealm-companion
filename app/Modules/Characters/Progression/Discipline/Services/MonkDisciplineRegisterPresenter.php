@@ -99,6 +99,13 @@ final class MonkDisciplineRegisterPresenter
             ->level()
             ->value();
 
+        $martialTechniques = (
+            new MonkMartialTechniquePresenter()
+        )->present(
+            $character,
+            $resources
+        );
+
         return [
             'supported' => true,
             'level' => $level,
@@ -199,6 +206,8 @@ final class MonkDisciplineRegisterPresenter
                     'The Monk reaches the height of disciplined mastery.'
                 ),
             ],
+            'martial_techniques' =>
+                $martialTechniques,
             'way' =>
                 $this->wayState(
                     $character

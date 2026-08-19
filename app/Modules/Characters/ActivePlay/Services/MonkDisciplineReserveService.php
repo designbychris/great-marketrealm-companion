@@ -37,6 +37,45 @@ final class MonkDisciplineReserveService
         );
     }
 
+    public function spendTechnique(
+        Character $character,
+        ActiveClassResourceState $state,
+        string $technique
+    ): ActiveClassResourceState {
+        $this->assertMonk($character);
+
+        $technique = sanitize_key(
+            $technique
+        );
+
+        $requiredLevel = match ($technique) {
+            'flurry-of-blows',
+            'patient-defense',
+            'step-of-the-wind' => 2,
+            'return-deflected-missile' => 3,
+            'stunning-strike' => 5,
+            default => throw new InvalidArgumentException(
+                'Unknown Monk Discipline technique.'
+            ),
+        };
+
+        if (
+            $character
+                ->level()
+                ->value()
+            < $requiredLevel
+        ) {
+            throw new InvalidArgumentException(
+                'This Monk has not yet certified that Discipline technique.'
+            );
+        }
+
+        return $this->spend(
+            $character,
+            $state
+        );
+    }
+
     public function shortRest(
         Character $character,
         ActiveClassResourceState $state

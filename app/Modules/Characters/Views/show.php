@@ -1869,48 +1869,6 @@ $callingPathLabel = $callingPath !== ''
                                     value="<?php echo esc_attr(
                                         'characters/'
                                         . $characterId
-                                        . '/discipline/spend'
-                                    ); ?>"
-                                >
-                                <?php wp_nonce_field(
-                                    'gmrc_character_discipline_'
-                                    . $characterId,
-                                    'gmrc_nonce'
-                                ); ?>
-                                <button
-                                    type="submit"
-                                    class="gmrc-button"
-                                    data-discipline-spend
-                                    <?php disabled(
-                                        (int) (
-                                            $disciplineRegister[
-                                                'discipline'
-                                            ]['remaining']
-                                            ?? 0
-                                        ) < 1
-                                    ); ?>
-                                >
-                                    Spend 1 Discipline
-                                </button>
-                            </form>
-
-                            <form
-                                action="<?php echo esc_url(
-                                    $appRequestUrl
-                                ); ?>"
-                                method="post"
-                            >
-                                <input
-                                    type="hidden"
-                                    name="action"
-                                    value="gmrc_app_request"
-                                >
-                                <input
-                                    type="hidden"
-                                    name="gmrc_route"
-                                    value="<?php echo esc_attr(
-                                        'characters/'
-                                        . $characterId
                                         . '/discipline/rest'
                                     ); ?>"
                                 >
@@ -1972,6 +1930,316 @@ $callingPathLabel = $callingPath !== ''
                                 </button>
                             </form>
                         </div>
+                    <?php endif; ?>
+
+                    <?php
+                    $monkTechniques = is_array(
+                        $disciplineRegister[
+                            'martial_techniques'
+                        ]['techniques']
+                        ?? null
+                    )
+                        ? $disciplineRegister[
+                            'martial_techniques'
+                        ]['techniques']
+                        : [];
+                    ?>
+
+                    <?php if (! empty($monkTechniques)) : ?>
+                        <section
+                            class="gmrc-monk-techniques"
+                            aria-labelledby="gmrc-monk-techniques-title"
+                            data-monk-techniques
+                        >
+                            <header>
+                                <div>
+                                    <p class="gmrc-eyebrow">
+                                        Active Play
+                                    </p>
+                                    <h4 id="gmrc-monk-techniques-title">
+                                        Martial Techniques
+                                    </h4>
+                                </div>
+                                <span>
+                                    <?php echo esc_html(
+                                        sprintf(
+                                            '%d Discipline ready',
+                                            (int) (
+                                                $disciplineRegister[
+                                                    'discipline'
+                                                ]['remaining']
+                                                ?? 0
+                                            )
+                                        )
+                                    ); ?>
+                                </span>
+                            </header>
+
+                            <div class="gmrc-monk-techniques__grid">
+                                <?php foreach (
+                                    $monkTechniques
+                                    as $technique
+                                ) : ?>
+                                    <article class="<?php echo esc_attr(
+                                        ! empty(
+                                            $technique['unlocked']
+                                        )
+                                            ? 'is-unlocked'
+                                            : 'is-locked'
+                                    ); ?>">
+                                        <div class="gmrc-monk-techniques__title">
+                                            <small>
+                                                Level <?php echo esc_html(
+                                                    (string) (
+                                                        $technique['level']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                                ·
+                                                <?php echo esc_html(
+                                                    ! empty(
+                                                        $technique['unlocked']
+                                                    )
+                                                        ? 'Certified'
+                                                        : 'Locked'
+                                                ); ?>
+                                            </small>
+                                            <strong>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $technique['label']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                            </strong>
+                                            <span>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $technique['badge']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                            </span>
+                                        </div>
+
+                                        <p>
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $technique['summary']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </p>
+                                        <small>
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $technique['detail']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </small>
+
+                                        <?php if (
+                                            is_array(
+                                                $technique['roll']
+                                                ?? null
+                                            )
+                                        ) : ?>
+                                            <button
+                                                type="button"
+                                                class="
+                                                    gmrc-guild-roll-trigger
+                                                    gmrc-monk-technique__button
+                                                "
+                                                data-guild-roll="damage"
+                                                data-roll-kind="<?php echo esc_attr(
+                                                    (string) (
+                                                        $technique['roll']['kind']
+                                                        ?? 'damage'
+                                                    )
+                                                ); ?>"
+                                                data-roll-source="<?php echo esc_attr(
+                                                    (string) (
+                                                        $technique['roll']['source']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                                data-roll-label="<?php echo esc_attr(
+                                                    (string) (
+                                                        $technique['roll']['label']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                                data-roll-formula="<?php echo esc_attr(
+                                                    (string) (
+                                                        $technique['roll']['formula']
+                                                        ?? '1d10'
+                                                    )
+                                                ); ?>"
+                                                data-roll-modifier="<?php echo esc_attr(
+                                                    (string) (
+                                                        $technique['roll']['modifier']
+                                                        ?? 0
+                                                    )
+                                                ); ?>"
+                                                data-roll-result-suffix="<?php echo esc_attr(
+                                                    (string) (
+                                                        $technique['roll']['result_suffix']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                                <?php echo empty(
+                                                    $technique['unlocked']
+                                                )
+                                                    ? 'disabled'
+                                                    : ''; ?>
+                                            >
+                                                🎲 Roll Reduction
+                                            </button>
+                                        <?php endif; ?>
+
+                                        <?php if (
+                                            ($technique['kind'] ?? '')
+                                            === 'discipline-spend'
+                                        ) : ?>
+                                            <form
+                                                action="<?php echo esc_url(
+                                                    $appRequestUrl
+                                                ); ?>"
+                                                method="post"
+                                            >
+                                                <input
+                                                    type="hidden"
+                                                    name="action"
+                                                    value="gmrc_app_request"
+                                                >
+                                                <input
+                                                    type="hidden"
+                                                    name="gmrc_route"
+                                                    value="<?php echo esc_attr(
+                                                        'characters/'
+                                                        . $characterId
+                                                        . '/discipline/spend'
+                                                    ); ?>"
+                                                >
+                                                <input
+                                                    type="hidden"
+                                                    name="technique"
+                                                    value="<?php echo esc_attr(
+                                                        (string) (
+                                                            $technique['key']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>"
+                                                >
+                                                <?php wp_nonce_field(
+                                                    'gmrc_character_discipline_'
+                                                    . $characterId,
+                                                    'gmrc_nonce'
+                                                ); ?>
+                                                <button
+                                                    type="submit"
+                                                    class="gmrc-monk-technique__button"
+                                                    data-discipline-spend
+                                                    data-discipline-spend
+                                                    data-discipline-technique="<?php echo esc_attr(
+                                                        (string) (
+                                                            $technique['key']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>"
+                                                    <?php echo empty(
+                                                        $technique['available']
+                                                    )
+                                                        ? 'disabled'
+                                                        : ''; ?>
+                                                >
+                                                    Spend 1 Discipline
+                                                    ·
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $technique['label']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </button>
+                                            </form>
+                                        <?php endif; ?>
+
+                                        <?php if (
+                                            is_array(
+                                                $technique['follow_up']
+                                                ?? null
+                                            )
+                                        ) : ?>
+                                            <form
+                                                action="<?php echo esc_url(
+                                                    $appRequestUrl
+                                                ); ?>"
+                                                method="post"
+                                            >
+                                                <input
+                                                    type="hidden"
+                                                    name="action"
+                                                    value="gmrc_app_request"
+                                                >
+                                                <input
+                                                    type="hidden"
+                                                    name="gmrc_route"
+                                                    value="<?php echo esc_attr(
+                                                        'characters/'
+                                                        . $characterId
+                                                        . '/discipline/spend'
+                                                    ); ?>"
+                                                >
+                                                <input
+                                                    type="hidden"
+                                                    name="technique"
+                                                    value="<?php echo esc_attr(
+                                                        (string) (
+                                                            $technique[
+                                                                'follow_up'
+                                                            ]['key']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>"
+                                                >
+                                                <?php wp_nonce_field(
+                                                    'gmrc_character_discipline_'
+                                                    . $characterId,
+                                                    'gmrc_nonce'
+                                                ); ?>
+                                                <button
+                                                    type="submit"
+                                                    class="
+                                                        gmrc-monk-technique__button
+                                                        gmrc-monk-technique__button--quiet
+                                                    "
+                                                    data-discipline-technique="<?php echo esc_attr(
+                                                        (string) (
+                                                            $technique[
+                                                                'follow_up'
+                                                            ]['key']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>"
+                                                    <?php echo empty(
+                                                        $technique[
+                                                            'follow_up'
+                                                        ]['available']
+                                                    )
+                                                        ? 'disabled'
+                                                        : ''; ?>
+                                                >
+                                                    Spend 1 Discipline
+                                                    · Return Missile
+                                                </button>
+                                            </form>
+                                        <?php endif; ?>
+                                    </article>
+                                <?php endforeach; ?>
+                            </div>
+                        </section>
                     <?php endif; ?>
 
                     <div class="gmrc-discipline-register__features">

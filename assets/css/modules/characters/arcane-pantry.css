@@ -1827,3 +1827,130 @@
 .gmrc-discipline-register__controls form {
     margin: 0;
 }
+
+
+/* Phase III.12.5D — The Monk's Martial Techniques */
+.gmrc-monk-techniques {
+    margin: .75rem 0;
+    padding: .72rem;
+    border: 1px dashed rgba(69, 55, 111, .28);
+    border-radius: .42rem;
+    background: rgba(250, 247, 229, .62);
+}
+
+.gmrc-monk-techniques > header {
+    display: flex;
+    justify-content: space-between;
+    gap: .75rem;
+    align-items: flex-start;
+    margin-bottom: .6rem;
+}
+
+.gmrc-monk-techniques > header h4,
+.gmrc-monk-techniques > header p {
+    margin-top: 0;
+}
+
+.gmrc-monk-techniques > header > span {
+    flex: 0 0 auto;
+    padding: .22rem .42rem;
+    border: 1px solid rgba(69, 55, 111, .22);
+    border-radius: 999px;
+    font-size: .72rem;
+    font-weight: 800;
+}
+
+.gmrc-monk-techniques__grid {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.gmrc-monk-techniques__grid article {
+    display: grid;
+    align-content: start;
+    gap: .38rem;
+    padding: .65rem;
+    border: 1px solid rgba(69, 55, 111, .18);
+    border-radius: .36rem;
+    background: rgba(255, 252, 239, .78);
+}
+
+.gmrc-monk-techniques__grid article.is-locked {
+    opacity: .5;
+}
+
+.gmrc-monk-techniques__grid article > p {
+    margin: .1rem 0;
+}
+
+.gmrc-monk-techniques__title {
+    display: grid;
+    gap: .12rem;
+}
+
+.gmrc-monk-techniques__title > span {
+    justify-self: start;
+    padding: .1rem .32rem;
+    border-radius: 999px;
+    background: rgba(69, 55, 111, .1);
+    font-size: .68rem;
+    font-weight: 800;
+}
+
+.gmrc-monk-technique__button {
+    width: 100%;
+    min-height: 2.35rem;
+    margin-top: .2rem;
+    padding: .46rem .6rem;
+    border: 1px solid rgba(69, 55, 111, .36);
+    border-radius: .32rem;
+    background: rgba(69, 55, 111, .11);
+    color: inherit;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.gmrc-monk-technique__button--quiet {
+    background: rgba(69, 55, 111, .05);
+}
+
+.gmrc-monk-technique__button:hover:not(:disabled),
+.gmrc-monk-technique__button:focus-visible:not(:disabled) {
+    background: rgba(69, 55, 111, .2);
+}
+
+.gmrc-monk-technique__button:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 2px;
+}
+
+.gmrc-monk-technique__button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 840px) {
+    .gmrc-monk-techniques__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .gmrc-monk-techniques > header {
+        display: grid;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-monk-techniques,
+    .gmrc-monk-techniques > header > span,
+    .gmrc-monk-techniques__grid article,
+    .gmrc-monk-technique__button {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

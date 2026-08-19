@@ -1129,15 +1129,31 @@ final class CharacterController
         $repository =
             new ActiveClassResourceRepository();
 
+        $technique = sanitize_key(
+            (string) (
+                $_POST['technique']
+                ?? ''
+            )
+        );
+
         try {
-            $state = (
-                new MonkDisciplineReserveService()
-            )->spend(
-                $character,
-                $repository->find(
-                    $character->id()
-                )
+            $service =
+                new MonkDisciplineReserveService();
+
+            $state = $repository->find(
+                $character->id()
             );
+
+            $state = $technique !== ''
+                ? $service->spendTechnique(
+                    $character,
+                    $state,
+                    $technique
+                )
+                : $service->spend(
+                    $character,
+                    $state
+                );
         } catch (InvalidArgumentException $exception) {
             $this->flash->error(
                 $exception->getMessage()
@@ -1157,7 +1173,9 @@ final class CharacterController
         );
 
         $this->flash->success(
-            'One point of Discipline has been spent.'
+            $technique !== ''
+                ? 'The Monk’s Discipline technique has been entered into the field record.'
+                : 'One point of Discipline has been spent.'
         );
 
         return $this->responses->redirect(
