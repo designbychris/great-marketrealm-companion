@@ -293,7 +293,7 @@ final class PaladinSacredReservesRegressionTest extends TestCase
         );
 
         self::assertStringContainsString(
-            'data-sacred-spend=',
+            'data-sacred-spend',
             $view
         );
 

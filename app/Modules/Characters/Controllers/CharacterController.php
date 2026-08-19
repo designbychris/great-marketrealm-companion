@@ -46,6 +46,7 @@ use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveC
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\FighterBattleReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\MonkDisciplineReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\PaladinSacredReserveService;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\SharedSpellSlotReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\BarbarianRageReserveService;
 use InvalidArgumentException;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\LivingRegisterPresenter;
@@ -662,6 +663,13 @@ final class CharacterController
             $character->id()
         );
 
+        $arcana['slots'] = (
+            new SharedSpellSlotReserveService()
+        )->present(
+            $character,
+            $activeResources
+        );
+
         $martialRegister = (
             new FighterMartialRegisterPresenter()
         )->present(
@@ -1136,6 +1144,152 @@ final class CharacterController
     }
 
     /**
+     * Resolve a named Paladin Sacred Action.
+     */
+    public function useSacredAction(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+
+        $action = sanitize_key(
+            (string) (
+                $_POST['sacred_action']
+                ?? ''
+            )
+        );
+
+        $repository =
+            new ActiveClassResourceRepository();
+
+        $state = $repository->find(
+            $character->id()
+        );
+
+        try {
+            $sacred =
+                new PaladinSacredReserveService();
+
+            if ($action === 'lay-on-hands') {
+                $amount = max(
+                    1,
+                    min(
+                        100,
+                        (int) (
+                            $_POST['amount']
+                            ?? 1
+                        )
+                    )
+                );
+
+                $state = $sacred->spend(
+                    $character,
+                    $state,
+                    PaladinSacredReserveService::LAY_ON_HANDS,
+                    $amount
+                );
+
+                if (
+                    sanitize_key(
+                        (string) (
+                            $_POST['target']
+                            ?? ''
+                        )
+                    ) === 'self'
+                ) {
+                    $character->heal($amount);
+                    $this->characters->save(
+                        $character
+                    );
+                }
+            } elseif ($action === 'divine-sense') {
+                $state = $sacred->spend(
+                    $character,
+                    $state,
+                    PaladinSacredReserveService::DIVINE_SENSE
+                );
+            } elseif ($action === 'cleansing-touch') {
+                $state = $sacred->spend(
+                    $character,
+                    $state,
+                    PaladinSacredReserveService::CLEANSING_TOUCH
+                );
+            } elseif ($action === 'divine-smite') {
+                $slotLevel = max(
+                    1,
+                    min(
+                        9,
+                        (int) (
+                            $_POST['slot_level']
+                            ?? 0
+                        )
+                    )
+                );
+
+                if (
+                    $character
+                        ->level()
+                        ->value()
+                    < 2
+                ) {
+                    throw new InvalidArgumentException(
+                        'Divine Smite has not yet been certified for this Paladin.'
+                    );
+                }
+
+                $state = (
+                    new SharedSpellSlotReserveService()
+                )->spend(
+                    $character,
+                    $state,
+                    $slotLevel
+                );
+            } else {
+                throw new InvalidArgumentException(
+                    'Choose a certified Paladin Sacred Action.'
+                );
+            }
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            match ($action) {
+                'lay-on-hands' =>
+                    'Lay on Hands has been entered into the sacred field record.',
+                'divine-sense' =>
+                    'Divine Sense is active for this use.',
+                'cleansing-touch' =>
+                    'Cleansing Touch has been marked as used.',
+                'divine-smite' =>
+                    'The selected spell slot has been committed to Divine Smite.',
+                default =>
+                    'The Sacred Action has been recorded.',
+            }
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
      * Spend from one of the Paladin's persistent Sacred Reserves.
      */
     public function spendSacredReserve(
@@ -1224,6 +1378,13 @@ final class CharacterController
                 $repository->find(
                     $character->id()
                 )
+            );
+
+            $state = (
+                new SharedSpellSlotReserveService()
+            )->longRest(
+                $character,
+                $state
             );
         } catch (InvalidArgumentException $exception) {
             $this->flash->error(

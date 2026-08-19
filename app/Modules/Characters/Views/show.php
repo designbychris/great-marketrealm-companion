@@ -1940,114 +1940,419 @@ $callingPathLabel = $callingPath !== ''
                         </article>
                     </div>
 
-                    <div
-                        class="gmrc-sacred-register__controls"
-                        data-sacred-reserves
+                    <?php
+                    $sacredActions = is_array(
+                        $sacredRegister['actions']
+                        ?? null
+                    )
+                        ? $sacredRegister['actions']
+                        : [];
+                    ?>
+
+                    <section
+                        class="gmrc-sacred-actions"
+                        aria-labelledby="gmrc-sacred-actions-title"
+                        data-sacred-actions
                     >
-                        <?php foreach (
-                            [
-                                [
-                                    'key' => 'lay-on-hands',
-                                    'label' => 'Spend 1 Lay on Hands',
-                                    'available' =>
-                                        (int) (
-                                            $sacredRegister[
-                                                'lay_on_hands'
-                                            ]['remaining']
-                                            ?? 0
-                                        ) > 0,
-                                ],
-                                [
-                                    'key' => 'divine-sense',
-                                    'label' => 'Use Divine Sense',
-                                    'available' =>
-                                        (int) (
-                                            $sacredRegister[
-                                                'divine_sense'
-                                            ]['remaining']
-                                            ?? 0
-                                        ) > 0,
-                                ],
-                                [
-                                    'key' => 'cleansing-touch',
-                                    'label' => 'Use Cleansing Touch',
-                                    'available' =>
-                                        ! empty(
-                                            $sacredRegister[
-                                                'cleansing_touch'
-                                            ]['unlocked']
-                                        )
-                                        && (int) (
-                                            $sacredRegister[
-                                                'cleansing_touch'
-                                            ]['remaining']
-                                            ?? 0
-                                        ) > 0,
-                                ],
-                            ]
-                            as $reserveControl
-                        ) : ?>
-                            <form
-                                action="<?php echo esc_url(
-                                    $appRequestUrl
-                                ); ?>"
-                                method="post"
-                            >
-                                <input
-                                    type="hidden"
-                                    name="action"
-                                    value="gmrc_app_request"
-                                >
-                                <input
-                                    type="hidden"
-                                    name="gmrc_route"
-                                    value="<?php echo esc_attr(
-                                        'characters/'
-                                        . $characterId
-                                        . '/sacred/spend'
+                        <header>
+                            <div>
+                                <p class="gmrc-eyebrow">
+                                    Active Play
+                                </p>
+                                <h4 id="gmrc-sacred-actions-title">
+                                    Sacred Actions
+                                </h4>
+                            </div>
+                            <span>
+                                Paladin field tools
+                            </span>
+                        </header>
+
+                        <div class="gmrc-sacred-actions__grid">
+                            <article>
+                                <small>
+                                    Action · Lay on Hands
+                                </small>
+                                <strong>
+                                    Restore from the sacred pool
+                                </strong>
+                                <p>
+                                    Choose how many Lay on Hands points to spend.
+                                    Heal this Paladin directly, or record the spend
+                                    when healing another creature at the table.
+                                </p>
+
+                                <form
+                                    action="<?php echo esc_url(
+                                        $appRequestUrl
                                     ); ?>"
+                                    method="post"
+                                    class="gmrc-sacred-action-form"
                                 >
-                                <input
-                                    type="hidden"
-                                    name="resource"
-                                    value="<?php echo esc_attr(
-                                        (string) $reserveControl['key']
-                                    ); ?>"
-                                >
-                                <input
-                                    type="hidden"
-                                    name="amount"
-                                    value="1"
-                                >
-                                <?php wp_nonce_field(
-                                    'gmrc_character_sacred_'
-                                    . $characterId,
-                                    'gmrc_nonce'
-                                ); ?>
-                                <button
-                                    type="submit"
-                                    class="gmrc-button"
-                                    data-sacred-spend="<?php echo esc_attr(
-                                        (string) $reserveControl['key']
-                                    ); ?>"
-                                    <?php echo empty(
-                                        $reserveControl['available']
-                                    )
-                                        ? 'disabled'
-                                        : ''; ?>
-                                >
-                                    <?php echo esc_html(
-                                        (string) $reserveControl['label']
+                                    <input
+                                        type="hidden"
+                                        name="action"
+                                        value="gmrc_app_request"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="gmrc_route"
+                                        value="<?php echo esc_attr(
+                                            'characters/'
+                                            . $characterId
+                                            . '/sacred/action'
+                                        ); ?>"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="sacred_action"
+                                        value="lay-on-hands"
+                                    >
+
+                                    <label>
+                                        <span>Points</span>
+                                        <input
+                                            type="number"
+                                            name="amount"
+                                            value="1"
+                                            min="1"
+                                            max="<?php echo esc_attr(
+                                                (string) max(
+                                                    1,
+                                                    (int) (
+                                                        $sacredRegister[
+                                                            'lay_on_hands'
+                                                        ]['remaining']
+                                                        ?? 0
+                                                    )
+                                                )
+                                            ); ?>"
+                                        >
+                                    </label>
+
+                                    <label>
+                                        <span>Recipient</span>
+                                        <select name="target">
+                                            <option value="self">
+                                                Heal this Paladin
+                                            </option>
+                                            <option value="other">
+                                                Record spend for another creature
+                                            </option>
+                                        </select>
+                                    </label>
+
+                                    <?php wp_nonce_field(
+                                        'gmrc_character_sacred_'
+                                        . $characterId,
+                                        'gmrc_nonce'
                                     ); ?>
-                                </button>
-                            </form>
-                        <?php endforeach; ?>
+
+                                    <button
+                                        type="submit"
+                                        class="gmrc-button"
+                                        data-sacred-spend
+                                        data-sacred-action="lay-on-hands"
+                                        <?php echo empty(
+                                            $sacredActions[
+                                                'lay_on_hands'
+                                            ]['available']
+                                        )
+                                            ? 'disabled'
+                                            : ''; ?>
+                                    >
+                                        Use Lay on Hands
+                                    </button>
+                                </form>
+                            </article>
+
+                            <article>
+                                <small>
+                                    Action · Divine Sense
+                                </small>
+                                <strong>
+                                    Open sacred awareness
+                                </strong>
+                                <p>
+                                    Spend one Divine Sense use when the Paladin
+                                    opens their awareness to a qualifying presence.
+                                </p>
+
+                                <form
+                                    action="<?php echo esc_url(
+                                        $appRequestUrl
+                                    ); ?>"
+                                    method="post"
+                                >
+                                    <input
+                                        type="hidden"
+                                        name="action"
+                                        value="gmrc_app_request"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="gmrc_route"
+                                        value="<?php echo esc_attr(
+                                            'characters/'
+                                            . $characterId
+                                            . '/sacred/action'
+                                        ); ?>"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="sacred_action"
+                                        value="divine-sense"
+                                    >
+                                    <?php wp_nonce_field(
+                                        'gmrc_character_sacred_'
+                                        . $characterId,
+                                        'gmrc_nonce'
+                                    ); ?>
+                                    <button
+                                        type="submit"
+                                        class="gmrc-button"
+                                        data-sacred-spend
+                                        data-sacred-action="divine-sense"
+                                        <?php echo empty(
+                                            $sacredActions[
+                                                'divine_sense'
+                                            ]['available']
+                                        )
+                                            ? 'disabled'
+                                            : ''; ?>
+                                    >
+                                        Activate Divine Sense
+                                    </button>
+                                </form>
+                            </article>
+
+                            <article class="<?php echo esc_attr(
+                                ! empty(
+                                    $sacredActions[
+                                        'cleansing_touch'
+                                    ]['unlocked']
+                                )
+                                    ? 'is-unlocked'
+                                    : 'is-locked'
+                            ); ?>">
+                                <small>
+                                    Level 14 · Cleansing Touch
+                                </small>
+                                <strong>
+                                    Break a qualifying magical effect
+                                </strong>
+                                <p>
+                                    The Companion records one use; the table
+                                    confirms the effect being ended qualifies.
+                                </p>
+
+                                <form
+                                    action="<?php echo esc_url(
+                                        $appRequestUrl
+                                    ); ?>"
+                                    method="post"
+                                >
+                                    <input
+                                        type="hidden"
+                                        name="action"
+                                        value="gmrc_app_request"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="gmrc_route"
+                                        value="<?php echo esc_attr(
+                                            'characters/'
+                                            . $characterId
+                                            . '/sacred/action'
+                                        ); ?>"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="sacred_action"
+                                        value="cleansing-touch"
+                                    >
+                                    <?php wp_nonce_field(
+                                        'gmrc_character_sacred_'
+                                        . $characterId,
+                                        'gmrc_nonce'
+                                    ); ?>
+                                    <button
+                                        type="submit"
+                                        class="gmrc-button"
+                                        data-sacred-spend
+                                        data-sacred-action="cleansing-touch"
+                                        <?php echo empty(
+                                            $sacredActions[
+                                                'cleansing_touch'
+                                            ]['available']
+                                        )
+                                            ? 'disabled'
+                                            : ''; ?>
+                                    >
+                                        Use Cleansing Touch
+                                    </button>
+                                </form>
+                            </article>
+
+                            <article class="<?php echo esc_attr(
+                                ! empty(
+                                    $sacredActions[
+                                        'divine_smite'
+                                    ]['unlocked']
+                                )
+                                    ? 'is-unlocked'
+                                    : 'is-locked'
+                            ); ?>">
+                                <small>
+                                    Level 2 · Divine Smite
+                                </small>
+                                <strong>
+                                    Commit a real spell slot
+                                </strong>
+                                <p>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $sacredActions[
+                                                'divine_smite'
+                                            ]['qualification']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </p>
+
+                                <?php foreach (
+                                    (
+                                        $sacredActions[
+                                            'divine_smite'
+                                        ]['smite_options']
+                                        ?? []
+                                    )
+                                    as $smite
+                                ) : ?>
+                                    <div class="gmrc-sacred-smite-option">
+                                        <div>
+                                            <strong>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $smite['label']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                            </strong>
+                                            <small>
+                                                <?php echo esc_html(
+                                                    sprintf(
+                                                        '%d/%d slots ready',
+                                                        (int) (
+                                                            $smite['remaining']
+                                                            ?? 0
+                                                        ),
+                                                        (int) (
+                                                            $smite['total']
+                                                            ?? 0
+                                                        )
+                                                    )
+                                                ); ?>
+                                            </small>
+                                        </div>
+
+                                        <form
+                                            action="<?php echo esc_url(
+                                                $appRequestUrl
+                                            ); ?>"
+                                            method="post"
+                                        >
+                                            <input
+                                                type="hidden"
+                                                name="action"
+                                                value="gmrc_app_request"
+                                            >
+                                            <input
+                                                type="hidden"
+                                                name="gmrc_route"
+                                                value="<?php echo esc_attr(
+                                                    'characters/'
+                                                    . $characterId
+                                                    . '/sacred/action'
+                                                ); ?>"
+                                            >
+                                            <input
+                                                type="hidden"
+                                                name="sacred_action"
+                                                value="divine-smite"
+                                            >
+                                            <input
+                                                type="hidden"
+                                                name="slot_level"
+                                                value="<?php echo esc_attr(
+                                                    (string) (
+                                                        $smite['slot_level']
+                                                        ?? 1
+                                                    )
+                                                ); ?>"
+                                            >
+                                            <?php wp_nonce_field(
+                                                'gmrc_character_sacred_'
+                                                . $characterId,
+                                                'gmrc_nonce'
+                                            ); ?>
+                                            <button
+                                                type="submit"
+                                                class="gmrc-button"
+                                                data-sacred-action="divine-smite"
+                                                data-smite-slot="<?php echo esc_attr(
+                                                    (string) (
+                                                        $smite['slot_level']
+                                                        ?? 1
+                                                    )
+                                                ); ?>"
+                                                <?php echo empty(
+                                                    $smite['available']
+                                                )
+                                                    ? 'disabled'
+                                                    : ''; ?>
+                                            >
+                                                Commit Slot
+                                            </button>
+                                        </form>
+
+                                        <button
+                                            type="button"
+                                            class="
+                                                gmrc-guild-roll-trigger
+                                                gmrc-guild-roll-trigger--damage
+                                            "
+                                            data-guild-roll="damage"
+                                            data-roll-kind="damage"
+                                            data-roll-source="Divine Smite"
+                                            data-roll-label="Divine Smite — Radiant Damage"
+                                            data-roll-formula="<?php echo esc_attr(
+                                                (string) (
+                                                    $smite['formula']
+                                                    ?? '2d8'
+                                                )
+                                            ); ?>"
+                                            data-roll-modifier="0"
+                                            data-roll-damage-type="radiant"
+                                            <?php echo empty(
+                                                $smite['available']
+                                            )
+                                                ? 'disabled'
+                                                : ''; ?>
+                                        >
+                                            🎲 Roll Smite
+                                        </button>
+                                    </div>
+                                <?php endforeach; ?>
+                            </article>
+                        </div>
 
                         <form
                             action="<?php echo esc_url(
                                 $appRequestUrl
                             ); ?>"
                             method="post"
+                            class="gmrc-sacred-actions__rest"
                         >
                             <input
                                 type="hidden"
@@ -2076,7 +2381,7 @@ $callingPathLabel = $callingPath !== ''
                                 Take a Long Rest
                             </button>
                         </form>
-                    </div>
+                    </section>
 
                     <div class="gmrc-sacred-register__features">
                         <?php foreach (
@@ -4968,7 +5273,18 @@ $callingPathLabel = $callingPath !== ''
                         <?php foreach ($arcana['slots'] as $slot) : ?>
                             <span>
                                 <strong><?php echo esc_html(
-                                    (string) $slot['total']
+                                    sprintf(
+                                        '%d/%d',
+                                        (int) (
+                                            $slot['remaining']
+                                            ?? $slot['total']
+                                            ?? 0
+                                        ),
+                                        (int) (
+                                            $slot['total']
+                                            ?? 0
+                                        )
+                                    )
                                 ); ?></strong>
                                 Level <?php echo esc_html(
                                     (string) $slot['level']

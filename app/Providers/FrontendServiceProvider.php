@@ -254,7 +254,7 @@ class FrontendServiceProvider extends ServiceProvider
         if (
             $method === 'POST'
             && preg_match(
-                '#^characters/([^/]+)/sacred/(?:spend|rest)$#',
+                '#^characters/([^/]+)/sacred/(?:action|spend|rest)$#',
                 $route,
                 $matches
             )

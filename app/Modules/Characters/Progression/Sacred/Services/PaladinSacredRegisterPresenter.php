@@ -113,6 +113,12 @@ final class PaladinSacredRegisterPresenter
         return [
             'supported' => true,
             'level' => $level,
+            'actions' => (
+                new PaladinSacredActionPresenter()
+            )->present(
+                $character,
+                $resources
+            ),
             'lay_on_hands' => [
                 'maximum' =>
                     $reserves->maximum(

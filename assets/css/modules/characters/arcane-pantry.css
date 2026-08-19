@@ -2071,3 +2071,117 @@
 .gmrc-sacred-register__controls form {
     margin: 0;
 }
+
+
+/* Phase III.12.6D — Paladin Sacred Actions */
+.gmrc-sacred-actions {
+    margin: .8rem 0;
+    padding: .72rem;
+    border: 1px dashed rgba(117, 83, 33, .3);
+    border-radius: .42rem;
+    background: rgba(255, 251, 232, .66);
+}
+
+.gmrc-sacred-actions > header {
+    display: flex;
+    justify-content: space-between;
+    gap: .75rem;
+    align-items: flex-start;
+    margin-bottom: .6rem;
+}
+
+.gmrc-sacred-actions > header h4,
+.gmrc-sacred-actions > header p {
+    margin-top: 0;
+}
+
+.gmrc-sacred-actions > header > span {
+    padding: .2rem .42rem;
+    border: 1px solid rgba(117, 83, 33, .22);
+    border-radius: 999px;
+    font-size: .72rem;
+    font-weight: 800;
+}
+
+.gmrc-sacred-actions__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.gmrc-sacred-actions__grid > article {
+    display: grid;
+    align-content: start;
+    gap: .4rem;
+    padding: .65rem;
+    border: 1px solid rgba(117, 83, 33, .18);
+    border-radius: .36rem;
+    background: rgba(255, 253, 242, .8);
+}
+
+.gmrc-sacred-actions__grid > article.is-locked {
+    opacity: .52;
+}
+
+.gmrc-sacred-actions__grid p {
+    margin: .1rem 0;
+}
+
+.gmrc-sacred-action-form {
+    display: grid;
+    gap: .42rem;
+}
+
+.gmrc-sacred-action-form label {
+    display: grid;
+    gap: .18rem;
+}
+
+.gmrc-sacred-action-form input,
+.gmrc-sacred-action-form select {
+    width: 100%;
+}
+
+.gmrc-sacred-smite-option {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: .4rem;
+    align-items: center;
+    padding: .42rem 0;
+    border-top: 1px solid rgba(117, 83, 33, .14);
+}
+
+.gmrc-sacred-smite-option > div {
+    display: grid;
+}
+
+.gmrc-sacred-actions__rest {
+    margin-top: .65rem;
+}
+
+@media (max-width: 840px) {
+    .gmrc-sacred-actions__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .gmrc-sacred-smite-option {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-sacred-smite-option > form,
+    .gmrc-sacred-smite-option > button {
+        width: 100%;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-sacred-actions,
+    .gmrc-sacred-actions > header > span,
+    .gmrc-sacred-actions__grid > article {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}
