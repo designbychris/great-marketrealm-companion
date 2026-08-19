@@ -7,6 +7,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\PathGifts;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Contracts\PathGiftProgressionDefinitionInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\ShelfmancyGiftProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\FighterMartialPathGiftProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\BarbarianPrimalPathGiftProgression;
 
 defined('ABSPATH') || exit;
 
@@ -22,7 +23,8 @@ final class PathGiftCatalogue
             [
                 new ShelfmancyGiftProgression(),
             ],
-            FighterMartialPathGiftProgression::allDefinitions()
+            FighterMartialPathGiftProgression::allDefinitions(),
+            BarbarianPrimalPathGiftProgression::allDefinitions()
         );
     }
 

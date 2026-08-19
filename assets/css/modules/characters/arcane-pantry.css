@@ -1010,3 +1010,77 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.3B — richer specialist choices and Primal Path gifts */
+.gmrc-path-choice-guide__identity {
+    margin: .35rem 0 .2rem;
+    font-size: .68rem;
+    line-height: 1.45;
+}
+
+.gmrc-path-choice-guide__fact {
+    display: block;
+    margin-top: .25rem;
+    line-height: 1.4;
+}
+
+.gmrc-path-choice-guide__gifts {
+    margin-top: .4rem;
+    padding: .35rem .45rem;
+    border: 1px solid rgba(75,43,24,.16);
+    border-radius: .3rem;
+    background: rgba(255,249,228,.46);
+}
+
+.gmrc-path-choice-guide__gifts ul {
+    display: grid;
+    gap: .35rem;
+    margin: .4rem 0 0;
+    padding-left: 1rem;
+}
+
+.gmrc-path-choice-guide__gifts li span {
+    display: block;
+    margin-top: .1rem;
+}
+
+.gmrc-rage-register__path-gifts {
+    margin-top: .75rem;
+    padding-top: .7rem;
+    border-top: 1px solid rgba(111,55,35,.2);
+}
+
+.gmrc-rage-register__path-gifts > div {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: .55rem;
+}
+
+.gmrc-rage-register__path-gifts article {
+    display: flex;
+    gap: .5rem;
+    padding: .6rem;
+    border: 1px solid rgba(111,55,35,.18);
+    border-radius: .36rem;
+    background: rgba(255,250,232,.68);
+}
+
+.gmrc-rage-register__path-gifts article p {
+    margin: .18rem 0 0;
+}
+
+@media (max-width:700px) {
+    .gmrc-rage-register__path-gifts > div {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (forced-colors:active) {
+    .gmrc-path-choice-guide__gifts,
+    .gmrc-rage-register__path-gifts article {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

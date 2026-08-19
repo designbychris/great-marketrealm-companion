@@ -136,6 +136,14 @@ final class BarbarianProgression implements ClassProgressionDefinitionInterface
                     'Choose the Barbarian Path that shapes this adventurer’s Rage and primal identity.',
                 'phase' => 'III.12.3',
             ],
+            [
+                'key' => 'primal-path-gifts',
+                'folio' => 'path-gifts',
+                'label' => 'Primal Path Gifts',
+                'detail' =>
+                    'The chosen Primal Path grants its first automatic gift during the same Guild certification.',
+                'phase' => 'III.12.3B',
+            ],
         ],
         4 => [
             [

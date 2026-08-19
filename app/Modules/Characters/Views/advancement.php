@@ -631,6 +631,95 @@ $advancementSeal = isset($advancementSeal)
                                                 <?php endif; ?>
 
                                                 <?php if (
+                                                    $folio['key'] === 'path'
+                                                ) : ?>
+                                                    <?php if (
+                                                        ! empty(
+                                                            $choice['identity']
+                                                        )
+                                                    ) : ?>
+                                                        <p class="gmrc-path-choice-guide__identity">
+                                                            <?php echo esc_html(
+                                                                (string) $choice['identity']
+                                                            ); ?>
+                                                        </p>
+                                                    <?php endif; ?>
+
+                                                    <?php if (
+                                                        ! empty(
+                                                            $choice['playstyle']
+                                                        )
+                                                    ) : ?>
+                                                        <small class="gmrc-path-choice-guide__fact">
+                                                            <strong>Playstyle:</strong>
+                                                            <?php echo esc_html(
+                                                                (string) $choice['playstyle']
+                                                            ); ?>
+                                                        </small>
+                                                    <?php endif; ?>
+
+                                                    <?php if (
+                                                        ! empty(
+                                                            $choice['best_for']
+                                                        )
+                                                    ) : ?>
+                                                        <small class="gmrc-path-choice-guide__fact">
+                                                            <strong>Best for:</strong>
+                                                            <?php echo esc_html(
+                                                                (string) $choice['best_for']
+                                                            ); ?>
+                                                        </small>
+                                                    <?php endif; ?>
+
+                                                    <?php if (
+                                                        ! empty(
+                                                            $choice['gift_preview']
+                                                        )
+                                                        && is_array(
+                                                            $choice['gift_preview']
+                                                        )
+                                                    ) : ?>
+                                                        <details class="gmrc-path-choice-guide__gifts">
+                                                            <summary>
+                                                                Preview Path Gifts
+                                                            </summary>
+                                                            <ul>
+                                                                <?php foreach (
+                                                                    $choice['gift_preview']
+                                                                    as $previewGift
+                                                                ) : ?>
+                                                                    <li>
+                                                                        <strong>
+                                                                            Level <?php echo esc_html(
+                                                                                (string) (
+                                                                                    $previewGift['level']
+                                                                                    ?? ''
+                                                                                )
+                                                                            ); ?>
+                                                                            ·
+                                                                            <?php echo esc_html(
+                                                                                (string) (
+                                                                                    $previewGift['label']
+                                                                                    ?? ''
+                                                                                )
+                                                                            ); ?>
+                                                                        </strong>
+                                                                        <span>
+                                                                            <?php echo esc_html(
+                                                                                (string) (
+                                                                                    $previewGift['summary']
+                                                                                    ?? ''
+                                                                                )
+                                                                            ); ?>
+                                                                        </span>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        </details>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+
+                                                <?php if (
                                                     isset($choice['spell_level'])
                                                     && (int) $choice['spell_level'] > 0
                                                 ) : ?>

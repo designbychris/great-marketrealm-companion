@@ -64,7 +64,10 @@ final class BarbarianCallingRegressionTest extends TestCase
             );
 
         self::assertSame(
-            ['path'],
+            [
+                'path',
+                'path-gifts',
+            ],
             array_column(
                 $entry['delegated'],
                 'folio'
@@ -74,6 +77,11 @@ final class BarbarianCallingRegressionTest extends TestCase
         self::assertSame(
             'primal-path',
             $entry['delegated'][0]['key']
+        );
+
+        self::assertSame(
+            'primal-path-gifts',
+            $entry['delegated'][1]['key']
         );
     }
 

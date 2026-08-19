@@ -1977,6 +1977,54 @@ $callingPathLabel = $callingPath !== ''
                         <?php endforeach; ?>
                     </div>
 
+                    <?php if (
+                        ! empty($rageRegister['path_gifts'])
+                        && is_array($rageRegister['path_gifts'])
+                    ) : ?>
+                        <section class="gmrc-rage-register__path-gifts">
+                            <header>
+                                <p class="gmrc-eyebrow">
+                                    Certified Primal Path Gifts
+                                </p>
+                                <h4>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $rageRegister['path']['label']
+                                            ?? 'Primal Path'
+                                        )
+                                    ); ?>
+                                </h4>
+                            </header>
+                            <div>
+                                <?php foreach (
+                                    $rageRegister['path_gifts']
+                                    as $gift
+                                ) : ?>
+                                    <article>
+                                        <span aria-hidden="true">🔥</span>
+                                        <div>
+                                            <small>
+                                                Level <?php echo esc_html(
+                                                    (string) ($gift['level'] ?? '')
+                                                ); ?> Gift
+                                            </small>
+                                            <strong>
+                                                <?php echo esc_html(
+                                                    (string) ($gift['label'] ?? '')
+                                                ); ?>
+                                            </strong>
+                                            <p>
+                                                <?php echo esc_html(
+                                                    (string) ($gift['summary'] ?? '')
+                                                ); ?>
+                                            </p>
+                                        </div>
+                                    </article>
+                                <?php endforeach; ?>
+                            </div>
+                        </section>
+                    <?php endif; ?>
+
                     <div class="gmrc-rage-register__footer">
                         <div>
                             <span>Primal Path</span>

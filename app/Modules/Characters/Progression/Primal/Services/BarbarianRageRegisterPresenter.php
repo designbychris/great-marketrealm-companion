@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Primal\Servic
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Models\PathGiftCatalogue;
 
 defined('ABSPATH') || exit;
 
@@ -91,10 +92,14 @@ final class BarbarianRageRegisterPresenter
     ];
 
     public function __construct(
-        private ?PathCandidateCatalogue $paths = null
+        private ?PathCandidateCatalogue $paths = null,
+        private ?PathGiftCatalogue $gifts = null
     ) {
         $this->paths ??=
             new PathCandidateCatalogue();
+
+        $this->gifts ??=
+            new PathGiftCatalogue();
     }
 
     /**
@@ -199,6 +204,10 @@ final class BarbarianRageRegisterPresenter
             ],
             'path' =>
                 $this->pathState(
+                    $character
+                ),
+            'path_gifts' =>
+                $this->certifiedPathGifts(
                     $character
                 ),
             'next_milestone' =>
@@ -322,6 +331,29 @@ final class BarbarianRageRegisterPresenter
             'key' => $key,
             'label' => $label,
         ];
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function certifiedPathGifts(
+        Character $character
+    ): array {
+        if (! $character->callingPath()->isChosen()) {
+            return [];
+        }
+
+        return array_values(
+            array_filter(
+                $this->gifts->all(
+                    $character->callingPath()->value()
+                ),
+                fn (array $gift): bool =>
+                    $character->pathGifts()->has(
+                        (string) ($gift['key'] ?? '')
+                    )
+            )
+        );
     }
 
     /**
