@@ -2463,3 +2463,44 @@
         border-color: CanvasText;
     }
 }
+
+
+/* Phase III.12.7C — The Warlock's Pact Reserves */
+.gmrc-patron-register__pact-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    align-items: center;
+    margin: .7rem 0;
+    padding: .6rem;
+    border: 1px dashed rgba(81, 42, 95, .22);
+    border-radius: .36rem;
+    background: rgba(255, 251, 255, .52);
+}
+
+.gmrc-patron-register__pact-controls form {
+    margin: 0;
+}
+
+.gmrc-patron-register__pact-controls .gmrc-button {
+    min-height: 2.55rem;
+}
+
+@media (max-width: 560px) {
+    .gmrc-patron-register__pact-controls {
+        display: grid;
+    }
+
+    .gmrc-patron-register__pact-controls form,
+    .gmrc-patron-register__pact-controls .gmrc-button {
+        width: 100%;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-patron-register__pact-controls {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

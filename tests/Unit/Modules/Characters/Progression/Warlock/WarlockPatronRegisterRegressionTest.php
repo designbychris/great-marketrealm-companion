@@ -231,17 +231,25 @@ final class WarlockPatronRegisterRegressionTest extends TestCase
         );
     }
 
-    public function testPatronRegisterRemainsReadOnlyInThisSlice(): void
+    public function testPatronRegisterCanBeExtendedByPactReserveSlice(): void
     {
         $view = $this->source(
             'app/Modules/Characters/Views/show.php'
         );
 
-        self::assertStringNotContainsString(
+        self::assertStringContainsString(
+            'data-pact-reserves',
+            $view
+        );
+
+        self::assertStringContainsString(
             'data-pact-slot-spend',
             $view
         );
 
+        /*
+         * Invocation choices remain outside the Pact Reserve slice.
+         */
         self::assertStringNotContainsString(
             'data-invocation-spend',
             $view

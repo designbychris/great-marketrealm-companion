@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Patron\Services;
 
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Models\ActiveClassResourceState;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\WarlockPactReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Models\PathGiftCatalogue;
@@ -94,8 +96,11 @@ final class WarlockPatronRegisterPresenter
      * @return array<string,mixed>
      */
     public function present(
-        Character $character
+        Character $character,
+        ?ActiveClassResourceState $resources = null
     ): array {
+        $resources ??=
+            ActiveClassResourceState::fresh();
         if (
             $character
                 ->characterClass()
@@ -111,6 +116,11 @@ final class WarlockPatronRegisterPresenter
             ->level()
             ->value();
 
+        $pact =
+            new WarlockPactReserveService(
+                $this->policy
+            );
+
         return [
             'supported' => true,
             'level' => $level,
@@ -124,15 +134,22 @@ final class WarlockPatronRegisterPresenter
                 ),
             'pact_magic' => [
                 'slot_level' =>
-                    $this->policy
-                        ->pactSlotLevel(
-                            $character
-                        ),
+                    $pact->slotLevel(
+                        $character
+                    ),
                 'slots' =>
-                    $this->policy
-                        ->pactSlots(
-                            $character
-                        ),
+                    $pact->maximum(
+                        $character
+                    ),
+                'remaining' =>
+                    $pact->remaining(
+                        $character,
+                        $resources
+                    ),
+                'expended' =>
+                    $pact->expended(
+                        $resources
+                    ),
                 'refresh' =>
                     'Short or long rest',
             ],

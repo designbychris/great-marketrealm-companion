@@ -254,6 +254,20 @@ class FrontendServiceProvider extends ServiceProvider
         if (
             $method === 'POST'
             && preg_match(
+                '#^characters/([^/]+)/pact/(?:spend|rest)$#',
+                $route,
+                $matches
+            )
+        ) {
+            return 'gmrc_character_pact_'
+                . sanitize_text_field(
+                    $matches[1]
+                );
+        }
+
+        if (
+            $method === 'POST'
+            && preg_match(
                 '#^characters/([^/]+)/sacred/(?:action|spend|rest)$#',
                 $route,
                 $matches

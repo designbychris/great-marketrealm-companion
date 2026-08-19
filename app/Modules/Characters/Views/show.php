@@ -1808,16 +1808,25 @@ $callingPathLabel = $callingPath !== ''
                         <span class="gmrc-patron-register__seal">
                             <strong>
                                 <?php echo esc_html(
-                                    (string) (
-                                        $patronRegister[
-                                            'pact_magic'
-                                        ]['slots']
-                                        ?? 0
+                                    sprintf(
+                                        '%d/%d',
+                                        (int) (
+                                            $patronRegister[
+                                                'pact_magic'
+                                            ]['remaining']
+                                            ?? 0
+                                        ),
+                                        (int) (
+                                            $patronRegister[
+                                                'pact_magic'
+                                            ]['slots']
+                                            ?? 0
+                                        )
                                     )
                                 ); ?>
                             </strong>
                             <small>
-                                Pact slots · Level
+                                Pact slots ready · Level
                                 <?php echo esc_html(
                                     (string) (
                                         $patronRegister[
@@ -1953,6 +1962,109 @@ $callingPathLabel = $callingPath !== ''
                             </strong>
                             <span>Spell attack bonus</span>
                         </article>
+                    </div>
+
+                    <div
+                        class="gmrc-patron-register__pact-controls"
+                        data-pact-reserves
+                    >
+                        <form
+                            action="<?php echo esc_url(
+                                $appRequestUrl
+                            ); ?>"
+                            method="post"
+                        >
+                            <input
+                                type="hidden"
+                                name="action"
+                                value="gmrc_app_request"
+                            >
+                            <input
+                                type="hidden"
+                                name="gmrc_route"
+                                value="<?php echo esc_attr(
+                                    'characters/'
+                                    . $characterId
+                                    . '/pact/spend'
+                                ); ?>"
+                            >
+                            <?php wp_nonce_field(
+                                'gmrc_character_pact_'
+                                . $characterId,
+                                'gmrc_nonce'
+                            ); ?>
+                            <button
+                                type="submit"
+                                class="gmrc-button"
+                                data-pact-slot-spend
+                                <?php echo (
+                                    (int) (
+                                        $patronRegister[
+                                            'pact_magic'
+                                        ]['remaining']
+                                        ?? 0
+                                    )
+                                    < 1
+                                )
+                                    ? 'disabled'
+                                    : ''; ?>
+                            >
+                                Spend Pact Slot
+                            </button>
+                        </form>
+
+                        <?php foreach (
+                            [
+                                'short' => 'Take Short Rest',
+                                'long' => 'Take Long Rest',
+                            ]
+                            as $restKey => $restLabel
+                        ) : ?>
+                            <form
+                                action="<?php echo esc_url(
+                                    $appRequestUrl
+                                ); ?>"
+                                method="post"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="action"
+                                    value="gmrc_app_request"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="gmrc_route"
+                                    value="<?php echo esc_attr(
+                                        'characters/'
+                                        . $characterId
+                                        . '/pact/rest'
+                                    ); ?>"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="rest"
+                                    value="<?php echo esc_attr(
+                                        $restKey
+                                    ); ?>"
+                                >
+                                <?php wp_nonce_field(
+                                    'gmrc_character_pact_'
+                                    . $characterId,
+                                    'gmrc_nonce'
+                                ); ?>
+                                <button
+                                    type="submit"
+                                    class="gmrc-button gmrc-button--secondary"
+                                    data-pact-rest="<?php echo esc_attr(
+                                        $restKey
+                                    ); ?>"
+                                >
+                                    <?php echo esc_html(
+                                        $restLabel
+                                    ); ?>
+                                </button>
+                            </form>
+                        <?php endforeach; ?>
                     </div>
 
                     <?php if (

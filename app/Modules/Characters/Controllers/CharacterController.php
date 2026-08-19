@@ -48,6 +48,7 @@ use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\FighterBatt
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\MonkDisciplineReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\PaladinSacredReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\SharedSpellSlotReserveService;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\WarlockPactReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\BarbarianRageReserveService;
 use InvalidArgumentException;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\LivingRegisterPresenter;
@@ -664,12 +665,23 @@ final class CharacterController
             $character->id()
         );
 
-        $arcana['slots'] = (
-            new SharedSpellSlotReserveService()
-        )->present(
-            $character,
-            $activeResources
-        );
+        $arcana['slots'] =
+            $character
+                ->characterClass()
+                ->value()
+            === 'warlock'
+                ? (
+                    new WarlockPactReserveService()
+                )->presentSlots(
+                    $character,
+                    $activeResources
+                )
+                : (
+                    new SharedSpellSlotReserveService()
+                )->present(
+                    $character,
+                    $activeResources
+                );
 
         $martialRegister = (
             new FighterMartialRegisterPresenter()
@@ -715,7 +727,8 @@ final class CharacterController
         $patronRegister = (
             new WarlockPatronRegisterPresenter()
         )->present(
-            $character
+            $character,
+            $activeResources
         );
 
         $progression = (new RisingRegisterPresenter())
@@ -1141,6 +1154,125 @@ final class CharacterController
             $rest === 'short'
                 ? 'Short-rest Battle Reserves have been restored.'
                 : 'All Battle Reserves have been restored after the long rest.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Spend one Warlock Pact Magic slot.
+     */
+    public function spendPactSlot(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $repository =
+            new ActiveClassResourceRepository();
+
+        try {
+            $state = (
+                new WarlockPactReserveService()
+            )->spend(
+                $character,
+                $repository->find(
+                    $character->id()
+                )
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            'One Pact Magic slot has been spent.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Restore the Warlock's Pact Magic reserve after a short or long rest.
+     */
+    public function restPactSlots(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $rest = sanitize_key(
+            (string) (
+                $_POST['rest']
+                ?? ''
+            )
+        );
+
+        $repository =
+            new ActiveClassResourceRepository();
+
+        try {
+            $service =
+                new WarlockPactReserveService();
+
+            $state = $repository->find(
+                $character->id()
+            );
+
+            if ($rest === 'short') {
+                $state = $service->shortRest(
+                    $character,
+                    $state
+                );
+            } elseif ($rest === 'long') {
+                $state = $service->longRest(
+                    $character,
+                    $state
+                );
+            } else {
+                throw new InvalidArgumentException(
+                    'Choose a short or long rest before restoring Pact Magic.'
+                );
+            }
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            'The Warlock’s Pact Magic reserve has been restored.'
         );
 
         return $this->responses->redirect(
