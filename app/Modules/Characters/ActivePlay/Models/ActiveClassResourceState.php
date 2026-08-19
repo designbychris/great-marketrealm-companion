@@ -108,6 +108,43 @@ final class ActiveClassResourceState
         return new self($next);
     }
 
+    public function recover(
+        string $resource,
+        int $amount = 1
+    ): self {
+        $resource = sanitize_key($resource);
+
+        if (
+            $resource === ''
+            || $amount < 1
+        ) {
+            throw new InvalidArgumentException(
+                'The active class resource cannot be recovered.'
+            );
+        }
+
+        $expended = $this->expended(
+            $resource
+        );
+
+        if ($expended < $amount) {
+            throw new InvalidArgumentException(
+                'That active class resource cannot recover beyond its maximum.'
+            );
+        }
+
+        $next = $this->expended;
+        $remaining = $expended - $amount;
+
+        if ($remaining === 0) {
+            unset($next[$resource]);
+        } else {
+            $next[$resource] = $remaining;
+        }
+
+        return new self($next);
+    }
+
     /**
      * @param array<int,string> $resources
      */

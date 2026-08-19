@@ -62,6 +62,21 @@ return static function (
     );
 
     $router->post(
+        '/characters/{id}/sorcery/spend',
+        [CharacterController::class, 'spendSorceryPoints']
+    );
+
+    $router->post(
+        '/characters/{id}/sorcery/convert',
+        [CharacterController::class, 'convertSorceryReserve']
+    );
+
+    $router->post(
+        '/characters/{id}/sorcery/rest',
+        [CharacterController::class, 'restSorceryReserves']
+    );
+
+    $router->post(
         '/characters/{id}/pact/spend',
         [CharacterController::class, 'spendPactSlot']
     );

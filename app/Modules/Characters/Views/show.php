@@ -1968,6 +1968,324 @@ $callingPathLabel = $callingPath !== ''
                         </article>
                     </div>
 
+                    <?php if (
+                        ! empty(
+                            $originRegister[
+                                'sorcery_points'
+                            ]['unlocked']
+                        )
+                    ) : ?>
+                        <section
+                            class="gmrc-sorcery-reserves"
+                            aria-labelledby="gmrc-sorcery-reserves-title"
+                            data-sorcery-reserves
+                        >
+                            <header>
+                                <div>
+                                    <p class="gmrc-eyebrow">
+                                        Font of Magic
+                                    </p>
+                                    <h4 id="gmrc-sorcery-reserves-title">
+                                        Sorcery Reserves
+                                    </h4>
+                                </div>
+                                <span class="gmrc-sorcery-reserves__counter">
+                                    <strong>
+                                        <?php echo esc_html(
+                                            sprintf(
+                                                '%d/%d',
+                                                (int) (
+                                                    $originRegister[
+                                                        'sorcery_points'
+                                                    ]['remaining']
+                                                    ?? 0
+                                                ),
+                                                (int) (
+                                                    $originRegister[
+                                                        'sorcery_points'
+                                                    ]['maximum']
+                                                    ?? 0
+                                                )
+                                            )
+                                        ); ?>
+                                    </strong>
+                                    <small>Sorcery Points ready</small>
+                                </span>
+                            </header>
+
+                            <div class="gmrc-sorcery-reserves__actions">
+                                <form
+                                    action="<?php echo esc_url(
+                                        $appRequestUrl
+                                    ); ?>"
+                                    method="post"
+                                >
+                                    <input
+                                        type="hidden"
+                                        name="action"
+                                        value="gmrc_app_request"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="gmrc_route"
+                                        value="<?php echo esc_attr(
+                                            'characters/'
+                                            . $characterId
+                                            . '/sorcery/spend'
+                                        ); ?>"
+                                    >
+                                    <?php wp_nonce_field(
+                                        'gmrc_character_sorcery_'
+                                        . $characterId,
+                                        'gmrc_nonce'
+                                    ); ?>
+                                    <label>
+                                        <span>Spend points</span>
+                                        <input
+                                            type="number"
+                                            name="amount"
+                                            min="1"
+                                            max="<?php echo esc_attr(
+                                                (string) (
+                                                    $originRegister[
+                                                        'sorcery_points'
+                                                    ]['remaining']
+                                                    ?? 0
+                                                )
+                                            ); ?>"
+                                            value="1"
+                                            inputmode="numeric"
+                                            required
+                                        >
+                                    </label>
+                                    <button
+                                        type="submit"
+                                        class="gmrc-button gmrc-button--secondary"
+                                        data-sorcery-spend
+                                        <?php echo (
+                                            (int) (
+                                                $originRegister[
+                                                    'sorcery_points'
+                                                ]['remaining']
+                                                ?? 0
+                                            ) < 1
+                                        ) ? 'disabled' : ''; ?>
+                                    >
+                                        Spend Sorcery Points
+                                    </button>
+                                </form>
+
+                                <form
+                                    action="<?php echo esc_url(
+                                        $appRequestUrl
+                                    ); ?>"
+                                    method="post"
+                                >
+                                    <input
+                                        type="hidden"
+                                        name="action"
+                                        value="gmrc_app_request"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="gmrc_route"
+                                        value="<?php echo esc_attr(
+                                            'characters/'
+                                            . $characterId
+                                            . '/sorcery/convert'
+                                        ); ?>"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="direction"
+                                        value="points-to-slot"
+                                    >
+                                    <?php wp_nonce_field(
+                                        'gmrc_character_sorcery_'
+                                        . $characterId,
+                                        'gmrc_nonce'
+                                    ); ?>
+                                    <label>
+                                        <span>Create spell slot</span>
+                                        <select
+                                            name="slot_level"
+                                            required
+                                        >
+                                            <?php foreach (
+                                                (
+                                                    $originRegister[
+                                                        'sorcery_points'
+                                                    ]['slot_creation_costs']
+                                                    ?? []
+                                                )
+                                                as $cost
+                                            ) : ?>
+                                                <option
+                                                    value="<?php echo esc_attr(
+                                                        (string) (
+                                                            $cost['level']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>"
+                                                >
+                                                    Level <?php echo esc_html(
+                                                        (string) (
+                                                            $cost['level']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                    —
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $cost['cost']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                    points
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </label>
+                                    <button
+                                        type="submit"
+                                        class="gmrc-button gmrc-button--secondary"
+                                        data-sorcery-convert="points-to-slot"
+                                    >
+                                        Shape Spell Slot
+                                    </button>
+                                </form>
+
+                                <form
+                                    action="<?php echo esc_url(
+                                        $appRequestUrl
+                                    ); ?>"
+                                    method="post"
+                                >
+                                    <input
+                                        type="hidden"
+                                        name="action"
+                                        value="gmrc_app_request"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="gmrc_route"
+                                        value="<?php echo esc_attr(
+                                            'characters/'
+                                            . $characterId
+                                            . '/sorcery/convert'
+                                        ); ?>"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="direction"
+                                        value="slot-to-points"
+                                    >
+                                    <?php wp_nonce_field(
+                                        'gmrc_character_sorcery_'
+                                        . $characterId,
+                                        'gmrc_nonce'
+                                    ); ?>
+                                    <label>
+                                        <span>Convert spell slot</span>
+                                        <select
+                                            name="slot_level"
+                                            required
+                                        >
+                                            <?php foreach (
+                                                (
+                                                    $originRegister[
+                                                        'spellcasting'
+                                                    ]['slots']
+                                                    ?? []
+                                                )
+                                                as $slot
+                                            ) : ?>
+                                                <option
+                                                    value="<?php echo esc_attr(
+                                                        (string) (
+                                                            $slot['level']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>"
+                                                    <?php echo (
+                                                        (int) (
+                                                            $slot['remaining']
+                                                            ?? 0
+                                                        ) < 1
+                                                    ) ? 'disabled' : ''; ?>
+                                                >
+                                                    Level <?php echo esc_html(
+                                                        (string) (
+                                                            $slot['level']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                    —
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $slot['remaining']
+                                                            ?? 0
+                                                        )
+                                                    ); ?>
+                                                    ready
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </label>
+                                    <button
+                                        type="submit"
+                                        class="gmrc-button gmrc-button--secondary"
+                                        data-sorcery-convert="slot-to-points"
+                                    >
+                                        Reclaim Sorcery Points
+                                    </button>
+                                </form>
+
+                                <form
+                                    action="<?php echo esc_url(
+                                        $appRequestUrl
+                                    ); ?>"
+                                    method="post"
+                                >
+                                    <input
+                                        type="hidden"
+                                        name="action"
+                                        value="gmrc_app_request"
+                                    >
+                                    <input
+                                        type="hidden"
+                                        name="gmrc_route"
+                                        value="<?php echo esc_attr(
+                                            'characters/'
+                                            . $characterId
+                                            . '/sorcery/rest'
+                                        ); ?>"
+                                    >
+                                    <?php wp_nonce_field(
+                                        'gmrc_character_sorcery_'
+                                        . $characterId,
+                                        'gmrc_nonce'
+                                    ); ?>
+                                    <button
+                                        type="submit"
+                                        class="gmrc-button gmrc-button--secondary"
+                                        data-sorcery-rest
+                                    >
+                                        Take a Long Rest
+                                    </button>
+                                </form>
+                            </div>
+
+                            <p class="gmrc-sorcery-reserves__note">
+                                Flexible Casting can shape Level 1–5 spell
+                                slots from Sorcery Points or convert an
+                                available spell slot back into Sorcery Points.
+                                Neither reserve can exceed its certified
+                                maximum.
+                            </p>
+                        </section>
+                    <?php endif; ?>
+
                     <div class="gmrc-origin-register__footer">
                         <div>
                             <span>Highest spell circle</span>

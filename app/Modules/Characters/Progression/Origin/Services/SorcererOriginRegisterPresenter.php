@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Origin\Servic
 
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Models\ActiveClassResourceState;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\SharedSpellSlotReserveService;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\SorcererSorceryReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Models\SpellcastingProgressionCatalogue;
@@ -117,6 +118,14 @@ final class SorcererOriginRegisterPresenter
                 )
             : null;
 
+        $sorcery =
+            new SorcererSorceryReserveService();
+
+        $sorceryMaximum =
+            $sorcery->maximum(
+                $character
+            );
+
         return [
             'supported' => true,
             'level' => $level,
@@ -126,12 +135,23 @@ final class SorcererOriginRegisterPresenter
                 ),
             'sorcery_points' => [
                 'maximum' =>
-                    $this->policy
-                        ->sorceryPointMaximum(
-                            $character
-                        ),
+                    $sorceryMaximum,
+                'remaining' =>
+                    $level >= 2
+                        ? $sorcery->remaining(
+                            $character,
+                            $resources
+                        )
+                        : 0,
+                'expended' =>
+                    $sorcery->expended(
+                        $resources
+                    ),
                 'unlocked' =>
                     $level >= 2,
+                'slot_creation_costs' =>
+                    $sorcery
+                        ->slotCreationCosts(),
             ],
             'metamagic' => [
                 'known' =>

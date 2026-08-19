@@ -51,6 +51,7 @@ use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\MonkDiscipl
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\PaladinSacredReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\SharedSpellSlotReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\WarlockPactReserveService;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\SorcererSorceryReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\BarbarianRageReserveService;
 use InvalidArgumentException;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\LivingRegisterPresenter;
@@ -1171,6 +1172,212 @@ final class CharacterController
             $rest === 'short'
                 ? 'Short-rest Battle Reserves have been restored.'
                 : 'All Battle Reserves have been restored after the long rest.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Spend Sorcery Points directly from the Font of Magic reserve.
+     */
+    public function spendSorceryPoints(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $amount = max(
+            1,
+            min(
+                20,
+                (int) (
+                    $_POST['amount']
+                    ?? 1
+                )
+            )
+        );
+
+        $repository =
+            new ActiveClassResourceRepository();
+
+        try {
+            $state = (
+                new SorcererSorceryReserveService()
+            )->spend(
+                $character,
+                $repository->find(
+                    $character->id()
+                ),
+                $amount
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            $amount === 1
+                ? 'One Sorcery Point has been spent.'
+                : $amount . ' Sorcery Points have been spent.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Resolve one Flexible Casting conversion.
+     */
+    public function convertSorceryReserve(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $direction = sanitize_key(
+            (string) (
+                $_POST['direction']
+                ?? ''
+            )
+        );
+
+        $slotLevel = max(
+            1,
+            min(
+                9,
+                (int) (
+                    $_POST['slot_level']
+                    ?? 0
+                )
+            )
+        );
+
+        $repository =
+            new ActiveClassResourceRepository();
+
+        try {
+            $service =
+                new SorcererSorceryReserveService();
+
+            $state = $repository->find(
+                $character->id()
+            );
+
+            if ($direction === 'points-to-slot') {
+                $state = $service->createSpellSlot(
+                    $character,
+                    $state,
+                    $slotLevel
+                );
+            } elseif ($direction === 'slot-to-points') {
+                $state = $service->convertSpellSlot(
+                    $character,
+                    $state,
+                    $slotLevel
+                );
+            } else {
+                throw new InvalidArgumentException(
+                    'Choose a valid Font of Magic conversion.'
+                );
+            }
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            $direction === 'points-to-slot'
+                ? 'Sorcery Points have been shaped into a spell slot.'
+                : 'A spell slot has been converted into Sorcery Points.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Restore Sorcery Points and standard spell slots after a long rest.
+     */
+    public function restSorceryReserves(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $repository =
+            new ActiveClassResourceRepository();
+
+        try {
+            $state = $repository->find(
+                $character->id()
+            );
+
+            $state = (
+                new SorcererSorceryReserveService()
+            )->longRest(
+                $character,
+                $state
+            );
+
+            $state = (
+                new SharedSpellSlotReserveService()
+            )->longRest(
+                $character,
+                $state
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            'A long rest has restored the Sorcerer’s Sorcery Points and spell slots.'
         );
 
         return $this->responses->redirect(
