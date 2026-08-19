@@ -2650,3 +2650,96 @@
         min-height: 2.7rem;
     }
 }
+
+
+/* Phase III.12.8A — The Sorcerer's Origin Spark Register */
+.gmrc-origin-register {
+    margin: 0 0 1rem;
+    padding: .9rem;
+    border: 1px solid rgba(112, 48, 120, .26);
+    border-radius: .5rem;
+    background: linear-gradient(
+        135deg,
+        rgba(112, 48, 120, .07),
+        rgba(255, 246, 252, .76)
+    );
+}
+
+.gmrc-origin-register__heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: .75rem;
+}
+
+.gmrc-origin-register__seal {
+    display: grid;
+    place-items: center;
+    min-width: 8rem;
+    padding: .55rem;
+    border: 1px solid rgba(112, 48, 120, .2);
+    border-radius: .4rem;
+    background: rgba(255, 250, 255, .82);
+    text-align: center;
+}
+
+.gmrc-origin-register__seal strong {
+    font-size: 1.4rem;
+}
+
+.gmrc-origin-register__summary,
+.gmrc-origin-register__footer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.gmrc-origin-register__summary article,
+.gmrc-origin-register__footer > div {
+    display: grid;
+    gap: .18rem;
+    min-width: 0;
+    padding: .62rem;
+    border: 1px solid rgba(112, 48, 120, .14);
+    border-radius: .35rem;
+    background: rgba(255, 252, 255, .72);
+}
+
+.gmrc-origin-register__summary article span,
+.gmrc-origin-register__footer span {
+    font-size: .72rem;
+    opacity: .74;
+}
+
+.gmrc-origin-register__footer {
+    margin-top: .7rem;
+}
+
+@media (max-width: 840px) {
+    .gmrc-origin-register__summary,
+    .gmrc-origin-register__footer {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .gmrc-origin-register__heading {
+        display: grid;
+    }
+
+    .gmrc-origin-register__seal {
+        width: 100%;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-origin-register,
+    .gmrc-origin-register__seal,
+    .gmrc-origin-register__summary article,
+    .gmrc-origin-register__footer > div {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

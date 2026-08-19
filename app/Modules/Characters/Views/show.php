@@ -258,6 +258,13 @@ $eldritchArts = isset($eldritchArts)
             'beams' => [],
         ];
 
+$originRegister = isset($originRegister)
+    && is_array($originRegister)
+        ? $originRegister
+        : [
+            'supported' => false,
+        ];
+
 $progression = isset($progression) && is_array($progression)
     ? $progression
     : [
@@ -1785,6 +1792,236 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-eyebrow">Dangerously Magical</p>
                 <h2 id="gmrc-arcane-pantry-title">The Arcane Pantry</h2>
             </header>
+
+            <?php if (
+                ! empty($originRegister['supported'])
+            ) : ?>
+                <section
+                    class="gmrc-origin-register"
+                    aria-labelledby="gmrc-origin-register-title"
+                    data-origin-register
+                >
+                    <header class="gmrc-origin-register__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Sorcerer Source Record
+                            </p>
+                            <h3 id="gmrc-origin-register-title">
+                                The Origin Spark Register
+                            </h3>
+                            <p>
+                                Certified innate magic at Sorcerer Level
+                                <?php echo esc_html(
+                                    (string) (
+                                        $originRegister['level']
+                                        ?? $level
+                                    )
+                                ); ?>.
+                            </p>
+                        </div>
+
+                        <span class="gmrc-origin-register__seal">
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $originRegister[
+                                            'sorcery_points'
+                                        ]['maximum']
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>
+                                Sorcery Point maximum
+                            </small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-origin-register__summary">
+                        <article>
+                            <small>Sorcerous Origin</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $originRegister[
+                                            'origin'
+                                        ]['label']
+                                        ?? 'Awaiting Origin Spark'
+                                    )
+                                ); ?>
+                            </strong>
+                            <?php if (
+                                ! empty(
+                                    $originRegister[
+                                        'origin'
+                                    ]['detail']
+                                )
+                            ) : ?>
+                                <span>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $originRegister[
+                                                'origin'
+                                            ]['detail']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </span>
+                            <?php else : ?>
+                                <span>Origin begins at Level 1</span>
+                            <?php endif; ?>
+                        </article>
+
+                        <article>
+                            <small>Metamagic</small>
+                            <strong>
+                                <?php if (
+                                    ! empty(
+                                        $originRegister[
+                                            'metamagic'
+                                        ]['unlocked']
+                                    )
+                                ) : ?>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $originRegister[
+                                                'metamagic'
+                                            ]['known']
+                                            ?? 0
+                                        )
+                                    ); ?>
+                                    known
+                                <?php else : ?>
+                                    Opens at Level 3
+                                <?php endif; ?>
+                            </strong>
+                            <span>
+                                Reshapes known spells
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Spells Known</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $originRegister[
+                                            'spellcasting'
+                                        ]['spells_known']
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>
+                                Known-spells casting model
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Cantrips Known</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $originRegister[
+                                            'spellcasting'
+                                        ]['cantrips_known']
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>
+                                Innate minor magic
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Spell Save DC</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $originRegister[
+                                            'spell_save_dc'
+                                        ]
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>Charisma based</span>
+                        </article>
+
+                        <article>
+                            <small>Spell Attack</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    sprintf(
+                                        '%+d',
+                                        (int) (
+                                            $originRegister[
+                                                'spell_attack'
+                                            ]
+                                            ?? 0
+                                        )
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>Charisma based</span>
+                        </article>
+                    </div>
+
+                    <div class="gmrc-origin-register__footer">
+                        <div>
+                            <span>Highest spell circle</span>
+                            <strong>
+                                Level <?php echo esc_html(
+                                    (string) (
+                                        $originRegister[
+                                            'spellcasting'
+                                        ]['maximum_spell_level']
+                                        ?? 1
+                                    )
+                                ); ?>
+                            </strong>
+                        </div>
+
+                        <?php if (
+                            is_array(
+                                $originRegister[
+                                    'next_milestone'
+                                ]
+                                ?? null
+                            )
+                        ) : ?>
+                            <div>
+                                <span>Next Origin milestone</span>
+                                <strong>
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $originRegister[
+                                                'next_milestone'
+                                            ]['level']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                    ·
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $originRegister[
+                                                'next_milestone'
+                                            ]['label']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </strong>
+                            </div>
+                        <?php else : ?>
+                            <div>
+                                <span>Sorcerer progression</span>
+                                <strong>Origin fully matured</strong>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </section>
+            <?php endif; ?>
 
             <?php if (
                 ! empty($patronRegister['supported'])
