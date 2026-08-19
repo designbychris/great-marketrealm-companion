@@ -61,7 +61,10 @@ final class RogueCallingRegressionTest extends TestCase
             );
 
         self::assertSame(
-            ['path'],
+            [
+                'path',
+                'path-gifts',
+            ],
             array_column(
                 $entry['delegated'],
                 'folio'
@@ -71,6 +74,11 @@ final class RogueCallingRegressionTest extends TestCase
         self::assertSame(
             'rogue-archetype',
             $entry['delegated'][0]['key']
+        );
+
+        self::assertSame(
+            'rogue-archetype-feature',
+            $entry['delegated'][1]['key']
         );
     }
 
