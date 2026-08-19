@@ -333,8 +333,22 @@ final class ArcanePantryPresenter
 
         if (in_array($class, ['paladin','ranger'], true)) {
             if ($level < 2) { return []; }
-            $casterLevel = max(1, intdiv($level, 2));
-            return $this->slotRow(self::FULL_CASTER_SLOTS[$casterLevel]);
+
+            /*
+             * Single-class half-caster slot progression advances on odd
+             * class levels after spellcasting begins. Using floor(level / 2)
+             * incorrectly withholds Level 2 slots at class Level 5 and Level
+             * 5 slots at class Level 17. Ceil(level / 2) maps the certified
+             * Paladin/Ranger table onto the shared full-caster slot rows.
+             */
+            $casterLevel = max(
+                1,
+                (int) ceil($level / 2)
+            );
+
+            return $this->slotRow(
+                self::FULL_CASTER_SLOTS[$casterLevel]
+            );
         }
 
         return [];
