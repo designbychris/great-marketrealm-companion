@@ -265,6 +265,13 @@ $originRegister = isset($originRegister)
             'supported' => false,
         ];
 
+$fieldRegister = isset($fieldRegister)
+    && is_array($fieldRegister)
+        ? $fieldRegister
+        : [
+            'supported' => false,
+        ];
+
 $progression = isset($progression) && is_array($progression)
     ? $progression
     : [
@@ -1792,6 +1799,315 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-eyebrow">Dangerously Magical</p>
                 <h2 id="gmrc-arcane-pantry-title">The Arcane Pantry</h2>
             </header>
+
+            <?php if (
+                ! empty($fieldRegister['supported'])
+            ) : ?>
+                <section
+                    class="gmrc-field-register"
+                    aria-labelledby="gmrc-field-register-title"
+                    data-field-register
+                >
+                    <header class="gmrc-field-register__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Ranger Field Record
+                            </p>
+                            <h3 id="gmrc-field-register-title">
+                                The Ranger’s Field Register
+                            </h3>
+                            <p>
+                                Certified fieldcraft at Ranger Level
+                                <?php echo esc_html(
+                                    (string) (
+                                        $fieldRegister['level']
+                                        ?? $level
+                                    )
+                                ); ?>.
+                            </p>
+                        </div>
+
+                        <span class="gmrc-field-register__seal">
+                            <strong>
+                                Stage <?php echo esc_html(
+                                    (string) (
+                                        $fieldRegister[
+                                            'favoured_mark'
+                                        ]['stage']
+                                        ?? 1
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>Favoured Mark</small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-field-register__summary">
+                        <article>
+                            <small>Favoured Mark</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $fieldRegister[
+                                            'favoured_mark'
+                                        ]['label']
+                                        ?? 'Favoured Mark'
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $fieldRegister[
+                                            'favoured_mark'
+                                        ]['detail']
+                                        ?? ''
+                                    )
+                                ); ?>
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Fieldcraft</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $fieldRegister[
+                                            'natural_explorer'
+                                        ]['label']
+                                        ?? 'Natural Explorer'
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $fieldRegister[
+                                            'natural_explorer'
+                                        ]['detail']
+                                        ?? ''
+                                    )
+                                ); ?>
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Attack Routine</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $fieldRegister[
+                                            'extra_attack'
+                                        ]['attacks']
+                                        ?? 1
+                                    )
+                                ); ?>
+                                attack<?php echo (
+                                    (int) (
+                                        $fieldRegister[
+                                            'extra_attack'
+                                        ]['attacks']
+                                        ?? 1
+                                    ) === 1
+                                ) ? '' : 's'; ?>
+                            </strong>
+                            <span>
+                                <?php echo ! empty(
+                                    $fieldRegister[
+                                        'extra_attack'
+                                    ]['unlocked']
+                                )
+                                    ? 'Extra Attack certified'
+                                    : 'Extra Attack opens at Level 5'; ?>
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Spellcasting</small>
+                            <?php if (
+                                ! empty(
+                                    $fieldRegister[
+                                        'spellcasting'
+                                    ]['unlocked']
+                                )
+                            ) : ?>
+                                <strong>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $fieldRegister[
+                                                'spellcasting'
+                                            ]['spells_known']
+                                            ?? 0
+                                        )
+                                    ); ?>
+                                    spells known
+                                </strong>
+                                <span>
+                                    Wisdom ·
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $fieldRegister[
+                                                'spellcasting'
+                                            ]['maximum_spell_level']
+                                            ?? 0
+                                        )
+                                    ); ?>
+                                    maximum
+                                </span>
+                            <?php else : ?>
+                                <strong>Opens at Level 2</strong>
+                                <span>
+                                    Wisdom-based half-caster
+                                </span>
+                            <?php endif; ?>
+                        </article>
+
+                        <article>
+                            <small>Spell Save DC</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $fieldRegister[
+                                            'spellcasting'
+                                        ]['save_dc']
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>Wisdom based</span>
+                        </article>
+
+                        <article>
+                            <small>Spell Attack</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    sprintf(
+                                        '%+d',
+                                        (int) (
+                                            $fieldRegister[
+                                                'spellcasting'
+                                            ]['spell_attack']
+                                            ?? 0
+                                        )
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>Wisdom based</span>
+                        </article>
+                    </div>
+
+                    <?php if (
+                        ! empty(
+                            $fieldRegister[
+                                'spellcasting'
+                            ]['slots']
+                        )
+                    ) : ?>
+                        <div class="gmrc-field-register__slots">
+                            <?php foreach (
+                                $fieldRegister[
+                                    'spellcasting'
+                                ]['slots']
+                                as $slot
+                            ) : ?>
+                                <span>
+                                    <strong>
+                                        <?php echo esc_html(
+                                            sprintf(
+                                                '%d/%d',
+                                                (int) (
+                                                    $slot['remaining']
+                                                    ?? 0
+                                                ),
+                                                (int) (
+                                                    $slot['total']
+                                                    ?? 0
+                                                )
+                                            )
+                                        ); ?>
+                                    </strong>
+                                    <small>
+                                        Level <?php echo esc_html(
+                                            (string) (
+                                                $slot['level']
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                        slots
+                                    </small>
+                                </span>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="gmrc-field-register__footer">
+                        <div>
+                            <span>Ranger path status</span>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $fieldRegister[
+                                            'path'
+                                        ]['status']
+                                        ?? 'Awaiting Ranger path catalogue'
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>
+                                No path selector is shown until legal Ranger
+                                candidates exist in the bundled catalogue.
+                            </small>
+                        </div>
+
+                        <?php if (
+                            is_array(
+                                $fieldRegister[
+                                    'next_milestone'
+                                ]
+                                ?? null
+                            )
+                        ) : ?>
+                            <div>
+                                <span>Next field milestone</span>
+                                <strong>
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $fieldRegister[
+                                                'next_milestone'
+                                            ]['level']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                    ·
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $fieldRegister[
+                                                'next_milestone'
+                                            ]['label']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </strong>
+                                <small>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $fieldRegister[
+                                                'next_milestone'
+                                            ]['detail']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </small>
+                            </div>
+                        <?php else : ?>
+                            <div>
+                                <span>Ranger progression</span>
+                                <strong>Fieldcraft fully matured</strong>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </section>
+            <?php endif; ?>
 
             <?php if (
                 ! empty($originRegister['supported'])

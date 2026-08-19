@@ -2995,3 +2995,115 @@
         outline-color: Highlight;
     }
 }
+
+
+/* Phase III.12.9A — The Ranger's Field Register */
+.gmrc-field-register {
+    margin: 0 0 1rem;
+    padding: .9rem;
+    border: 1px solid rgba(63, 92, 55, .25);
+    border-radius: .5rem;
+    background: rgba(247, 251, 244, .76);
+}
+
+.gmrc-field-register__heading {
+    display: flex;
+    justify-content: space-between;
+    gap: .9rem;
+    align-items: flex-start;
+    margin-bottom: .75rem;
+}
+
+.gmrc-field-register__seal {
+    display: grid;
+    place-items: center;
+    min-width: 7.25rem;
+    padding: .52rem;
+    border: 1px solid rgba(63, 92, 55, .2);
+    border-radius: .38rem;
+    background: rgba(253, 255, 251, .78);
+    text-align: center;
+}
+
+.gmrc-field-register__summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.gmrc-field-register__summary article,
+.gmrc-field-register__footer > div,
+.gmrc-field-register__slots > span {
+    display: grid;
+    gap: .16rem;
+    min-width: 0;
+    padding: .58rem;
+    border: 1px solid rgba(63, 92, 55, .14);
+    border-radius: .34rem;
+    background: rgba(253, 255, 251, .7);
+}
+
+.gmrc-field-register__summary span,
+.gmrc-field-register__footer span,
+.gmrc-field-register__footer small,
+.gmrc-field-register__slots small {
+    font-size: .74rem;
+    opacity: .78;
+}
+
+.gmrc-field-register__slots {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: .45rem;
+    margin-top: .65rem;
+}
+
+.gmrc-field-register__slots > span {
+    text-align: center;
+}
+
+.gmrc-field-register__footer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+    margin-top: .7rem;
+}
+
+@media (max-width: 840px) {
+    .gmrc-field-register__slots {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    .gmrc-field-register__summary,
+    .gmrc-field-register__footer {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-field-register__slots {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .gmrc-field-register__heading {
+        display: grid;
+    }
+
+    .gmrc-field-register__seal {
+        width: 100%;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-field-register,
+    .gmrc-field-register__seal,
+    .gmrc-field-register__summary article,
+    .gmrc-field-register__footer > div,
+    .gmrc-field-register__slots > span {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}
