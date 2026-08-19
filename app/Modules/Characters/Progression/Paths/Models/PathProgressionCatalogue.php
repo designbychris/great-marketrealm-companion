@@ -10,6 +10,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\W
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\FighterPathProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\BarbarianPathProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\RogueArchetypeProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\MonkWayProgression;
 
 defined('ABSPATH') || exit;
 
@@ -30,6 +31,7 @@ final class PathProgressionCatalogue
                 new FighterPathProgression(),
                 new BarbarianPathProgression(),
                 new RogueArchetypeProgression(),
+                new MonkWayProgression(),
             ];
     }
 
