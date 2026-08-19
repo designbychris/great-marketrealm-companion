@@ -362,19 +362,30 @@ final class SorcererOriginRegisterRegressionTest extends TestCase
         );
     }
 
-    public function testOriginRegisterRemainsReadOnlyInThisSlice(): void
+    public function testOriginRegisterCanBeExtendedByLaterSorcererSlices(): void
     {
         $view = $this->source(
             'app/Modules/Characters/Views/show.php'
         );
 
-        self::assertStringNotContainsString(
-            'data-sorcery-point-spend',
+        /*
+         * III.12.8C adds Font of Magic / Sorcery Reserve controls and
+         * III.12.8D adds Metamagic Arts. The original III.12.8A Register
+         * remains the read-only presentation foundation, but later certified
+         * slices are allowed to extend that surface.
+         */
+        self::assertStringContainsString(
+            'data-sorcery-reserves',
             $view
         );
 
-        self::assertStringNotContainsString(
+        self::assertStringContainsString(
             'data-metamagic-use',
+            $view
+        );
+
+        self::assertStringContainsString(
+            'data-metamagic-choices',
             $view
         );
     }
