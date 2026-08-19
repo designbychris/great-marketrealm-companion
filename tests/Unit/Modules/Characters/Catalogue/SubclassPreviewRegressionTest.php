@@ -42,6 +42,11 @@ final class SubclassPreviewRegressionTest extends TestCase
                 'oath-of-inventory',
                 'oath-of-the-colonel',
                 'oath-of-the-creamfather',
+                'oath-of-aroma',
+                'oath-of-clearance',
+                'oath-of-seasoning',
+                'oath-of-carbonation',
+                'oath-of-the-cleaver-saint',
             ]
             as $oath
         ) {
@@ -91,15 +96,23 @@ final class SubclassPreviewRegressionTest extends TestCase
         );
     }
 
-    public function testUncertifiedPaladinOathDoesNotInventGiftPreview(): void
+    public function testCertifiedPaladinOathNowShowsGiftPreview(): void
     {
         $preview = (
             new SubclassPreviewCatalogue()
         )->all()['oath-of-inventory'];
 
         self::assertSame(
-            [],
-            $preview['gift_preview']
+            [3, 7, 15, 20],
+            array_column(
+                $preview['gift_preview'],
+                'level'
+            )
+        );
+
+        self::assertSame(
+            'Sacred Stocktake',
+            $preview['gift_preview'][0]['label']
         );
     }
 
