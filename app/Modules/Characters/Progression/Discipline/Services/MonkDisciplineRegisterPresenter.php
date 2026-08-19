@@ -12,7 +12,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\Path
 defined('ABSPATH') || exit;
 
 /**
- * Read-only Monk progression state for the Character Ledger.
+ * Level-aware Monk progression and active-play state for the Character Ledger.
  */
 final class MonkDisciplineRegisterPresenter
 {
