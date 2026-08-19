@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Sacred\Services;
 
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Models\ActiveClassResourceState;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\PaladinSacredReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
 
@@ -83,8 +85,11 @@ final class PaladinSacredRegisterPresenter
      * @return array<string,mixed>
      */
     public function present(
-        Character $character
+        Character $character,
+        ?ActiveClassResourceState $resources = null
     ): array {
+        $resources ??=
+            ActiveClassResourceState::fresh();
         if (
             $character
                 ->characterClass()
@@ -100,24 +105,51 @@ final class PaladinSacredRegisterPresenter
             ->level()
             ->value();
 
+        $reserves =
+            new PaladinSacredReserveService(
+                $this->policy
+            );
+
         return [
             'supported' => true,
             'level' => $level,
             'lay_on_hands' => [
                 'maximum' =>
-                    $this->policy
-                        ->layOnHandsMaximum(
-                            $character
-                        ),
+                    $reserves->maximum(
+                        $character,
+                        PaladinSacredReserveService::LAY_ON_HANDS
+                    ),
+                'remaining' =>
+                    $reserves->remaining(
+                        $character,
+                        $resources,
+                        PaladinSacredReserveService::LAY_ON_HANDS
+                    ),
+                'expended' =>
+                    $reserves->expended(
+                        $resources,
+                        PaladinSacredReserveService::LAY_ON_HANDS
+                    ),
                 'refresh' =>
                     'Long rest',
             ],
             'divine_sense' => [
                 'maximum' =>
-                    $this->policy
-                        ->divineSenseMaximum(
-                            $character
-                        ),
+                    $reserves->maximum(
+                        $character,
+                        PaladinSacredReserveService::DIVINE_SENSE
+                    ),
+                'remaining' =>
+                    $reserves->remaining(
+                        $character,
+                        $resources,
+                        PaladinSacredReserveService::DIVINE_SENSE
+                    ),
+                'expended' =>
+                    $reserves->expended(
+                        $resources,
+                        PaladinSacredReserveService::DIVINE_SENSE
+                    ),
                 'refresh' =>
                     'Long rest',
             ],
@@ -139,10 +171,21 @@ final class PaladinSacredRegisterPresenter
                 'unlocked' =>
                     $level >= 14,
                 'maximum' =>
-                    $this->policy
-                        ->cleansingTouchMaximum(
-                            $character
-                        ),
+                    $reserves->maximum(
+                        $character,
+                        PaladinSacredReserveService::CLEANSING_TOUCH
+                    ),
+                'remaining' =>
+                    $reserves->remaining(
+                        $character,
+                        $resources,
+                        PaladinSacredReserveService::CLEANSING_TOUCH
+                    ),
+                'expended' =>
+                    $reserves->expended(
+                        $resources,
+                        PaladinSacredReserveService::CLEANSING_TOUCH
+                    ),
                 'refresh' =>
                     'Long rest',
             ],

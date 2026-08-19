@@ -329,19 +329,24 @@ final class PaladinSacredRegisterRegressionTest extends TestCase
         );
     }
 
-    public function testSacredRegisterRemainsReadOnlyInThisSlice(): void
+    public function testSacredRegisterCanBeExtendedByReserveSlice(): void
     {
         $view = $this->source(
             'app/Modules/Characters/Views/show.php'
         );
 
-        self::assertStringNotContainsString(
-            'data-lay-on-hands-spend',
+        self::assertStringContainsString(
+            'data-sacred-reserves',
             $view
         );
 
-        self::assertStringNotContainsString(
-            'data-divine-sense-spend',
+        self::assertStringContainsString(
+            'data-sacred-spend=',
+            $view
+        );
+
+        self::assertStringContainsString(
+            'data-sacred-rest',
             $view
         );
     }

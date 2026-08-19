@@ -1801,16 +1801,25 @@ $callingPathLabel = $callingPath !== ''
                         <span class="gmrc-sacred-register__pool">
                             <strong>
                                 <?php echo esc_html(
-                                    (string) (
-                                        $sacredRegister[
-                                            'lay_on_hands'
-                                        ]['maximum']
-                                        ?? 0
+                                    sprintf(
+                                        '%d/%d',
+                                        (int) (
+                                            $sacredRegister[
+                                                'lay_on_hands'
+                                            ]['remaining']
+                                            ?? 0
+                                        ),
+                                        (int) (
+                                            $sacredRegister[
+                                                'lay_on_hands'
+                                            ]['maximum']
+                                            ?? 0
+                                        )
                                     )
                                 ); ?>
                             </strong>
                             <small>
-                                Lay on Hands pool
+                                Lay on Hands remaining
                             </small>
                         </span>
                     </header>
@@ -1822,11 +1831,20 @@ $callingPathLabel = $callingPath !== ''
                             </small>
                             <strong>
                                 <?php echo esc_html(
-                                    (string) (
-                                        $sacredRegister[
-                                            'divine_sense'
-                                        ]['maximum']
-                                        ?? 0
+                                    sprintf(
+                                        '%d/%d',
+                                        (int) (
+                                            $sacredRegister[
+                                                'divine_sense'
+                                            ]['remaining']
+                                            ?? 0
+                                        ),
+                                        (int) (
+                                            $sacredRegister[
+                                                'divine_sense'
+                                            ]['maximum']
+                                            ?? 0
+                                        )
                                     )
                                 ); ?>
                                 uses
@@ -1895,11 +1913,20 @@ $callingPathLabel = $callingPath !== ''
                                     )
                                 ) : ?>
                                     <?php echo esc_html(
-                                        (string) (
-                                            $sacredRegister[
-                                                'cleansing_touch'
-                                            ]['maximum']
-                                            ?? 0
+                                        sprintf(
+                                            '%d/%d',
+                                            (int) (
+                                                $sacredRegister[
+                                                    'cleansing_touch'
+                                                ]['remaining']
+                                                ?? 0
+                                            ),
+                                            (int) (
+                                                $sacredRegister[
+                                                    'cleansing_touch'
+                                                ]['maximum']
+                                                ?? 0
+                                            )
                                         )
                                     ); ?>
                                     uses
@@ -1911,6 +1938,144 @@ $callingPathLabel = $callingPath !== ''
                                 Opens at Level 14
                             </span>
                         </article>
+                    </div>
+
+                    <div
+                        class="gmrc-sacred-register__controls"
+                        data-sacred-reserves
+                    >
+                        <?php foreach (
+                            [
+                                [
+                                    'key' => 'lay-on-hands',
+                                    'label' => 'Spend 1 Lay on Hands',
+                                    'available' =>
+                                        (int) (
+                                            $sacredRegister[
+                                                'lay_on_hands'
+                                            ]['remaining']
+                                            ?? 0
+                                        ) > 0,
+                                ],
+                                [
+                                    'key' => 'divine-sense',
+                                    'label' => 'Use Divine Sense',
+                                    'available' =>
+                                        (int) (
+                                            $sacredRegister[
+                                                'divine_sense'
+                                            ]['remaining']
+                                            ?? 0
+                                        ) > 0,
+                                ],
+                                [
+                                    'key' => 'cleansing-touch',
+                                    'label' => 'Use Cleansing Touch',
+                                    'available' =>
+                                        ! empty(
+                                            $sacredRegister[
+                                                'cleansing_touch'
+                                            ]['unlocked']
+                                        )
+                                        && (int) (
+                                            $sacredRegister[
+                                                'cleansing_touch'
+                                            ]['remaining']
+                                            ?? 0
+                                        ) > 0,
+                                ],
+                            ]
+                            as $reserveControl
+                        ) : ?>
+                            <form
+                                action="<?php echo esc_url(
+                                    $appRequestUrl
+                                ); ?>"
+                                method="post"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="action"
+                                    value="gmrc_app_request"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="gmrc_route"
+                                    value="<?php echo esc_attr(
+                                        'characters/'
+                                        . $characterId
+                                        . '/sacred/spend'
+                                    ); ?>"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="resource"
+                                    value="<?php echo esc_attr(
+                                        (string) $reserveControl['key']
+                                    ); ?>"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="amount"
+                                    value="1"
+                                >
+                                <?php wp_nonce_field(
+                                    'gmrc_character_sacred_'
+                                    . $characterId,
+                                    'gmrc_nonce'
+                                ); ?>
+                                <button
+                                    type="submit"
+                                    class="gmrc-button"
+                                    data-sacred-spend="<?php echo esc_attr(
+                                        (string) $reserveControl['key']
+                                    ); ?>"
+                                    <?php echo empty(
+                                        $reserveControl['available']
+                                    )
+                                        ? 'disabled'
+                                        : ''; ?>
+                                >
+                                    <?php echo esc_html(
+                                        (string) $reserveControl['label']
+                                    ); ?>
+                                </button>
+                            </form>
+                        <?php endforeach; ?>
+
+                        <form
+                            action="<?php echo esc_url(
+                                $appRequestUrl
+                            ); ?>"
+                            method="post"
+                        >
+                            <input
+                                type="hidden"
+                                name="action"
+                                value="gmrc_app_request"
+                            >
+                            <input
+                                type="hidden"
+                                name="gmrc_route"
+                                value="<?php echo esc_attr(
+                                    'characters/'
+                                    . $characterId
+                                    . '/sacred/rest'
+                                ); ?>"
+                            >
+                            <?php wp_nonce_field(
+                                'gmrc_character_sacred_'
+                                . $characterId,
+                                'gmrc_nonce'
+                            ); ?>
+                            <button
+                                type="submit"
+                                class="gmrc-button gmrc-button--secondary"
+                                data-sacred-rest
+                            >
+                                Take a Long Rest
+                            </button>
+                        </form>
                     </div>
 
                     <div class="gmrc-sacred-register__features">

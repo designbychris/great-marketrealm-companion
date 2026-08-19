@@ -2057,3 +2057,17 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.6C — Paladin Sacred Reserves */
+.gmrc-sacred-register__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    align-items: center;
+    margin: .7rem 0;
+}
+
+.gmrc-sacred-register__controls form {
+    margin: 0;
+}

@@ -45,6 +45,7 @@ use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveC
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassConditionRepository;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\FighterBattleReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\MonkDisciplineReserveService;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\PaladinSacredReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\BarbarianRageReserveService;
 use InvalidArgumentException;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\LivingRegisterPresenter;
@@ -698,7 +699,8 @@ final class CharacterController
         $sacredRegister = (
             new PaladinSacredRegisterPresenter()
         )->present(
-            $character
+            $character,
+            $activeResources
         );
 
         $progression = (new RisingRegisterPresenter())
@@ -1123,6 +1125,126 @@ final class CharacterController
             $rest === 'short'
                 ? 'Short-rest Battle Reserves have been restored.'
                 : 'All Battle Reserves have been restored after the long rest.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Spend from one of the Paladin's persistent Sacred Reserves.
+     */
+    public function spendSacredReserve(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+
+        $resource = sanitize_key(
+            (string) (
+                $_POST['resource']
+                ?? ''
+            )
+        );
+
+        $amount = max(
+            1,
+            min(
+                100,
+                (int) (
+                    $_POST['amount']
+                    ?? 1
+                )
+            )
+        );
+
+        $repository =
+            new ActiveClassResourceRepository();
+
+        try {
+            $service =
+                new PaladinSacredReserveService();
+
+            $state = $service->spend(
+                $character,
+                $repository->find(
+                    $character->id()
+                ),
+                $resource,
+                $amount
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            'The Sacred Reserve has been marked as spent.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Restore Paladin Sacred Reserves after a long rest.
+     */
+    public function restSacredReserves(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $repository =
+            new ActiveClassResourceRepository();
+
+        try {
+            $state = (
+                new PaladinSacredReserveService()
+            )->longRest(
+                $character,
+                $repository->find(
+                    $character->id()
+                )
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            'A long rest has restored the Paladin’s Sacred Reserves.'
         );
 
         return $this->responses->redirect(
