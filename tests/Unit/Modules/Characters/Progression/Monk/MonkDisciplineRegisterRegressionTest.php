@@ -132,13 +132,18 @@ final class MonkDisciplineRegisterRegressionTest extends TestCase
         );
     }
 
-    public function testDisciplineRegisterRemainsReadOnlyInThisSlice(): void
+    public function testDisciplineRegisterCanBeExtendedByLaterReserveSlice(): void
     {
         $view = $this->source(
             'app/Modules/Characters/Views/show.php'
         );
 
-        self::assertStringNotContainsString(
+        self::assertStringContainsString(
+            'data-discipline-register',
+            $view
+        );
+
+        self::assertStringContainsString(
             'data-discipline-spend',
             $view
         );

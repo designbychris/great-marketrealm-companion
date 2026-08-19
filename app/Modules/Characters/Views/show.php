@@ -1853,15 +1853,30 @@ $callingPathLabel = $callingPath !== ''
                             data-discipline-reserves
                         >
                             <form
-                                method="post"
                                 action="<?php echo esc_url(
-                                    home_url(
-                                        '/characters/'
-                                        . $character->id()->value()
-                                        . '/discipline/spend'
-                                    )
+                                    $appRequestUrl
                                 ); ?>"
+                                method="post"
                             >
+                                <input
+                                    type="hidden"
+                                    name="action"
+                                    value="gmrc_app_request"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="gmrc_route"
+                                    value="<?php echo esc_attr(
+                                        'characters/'
+                                        . $characterId
+                                        . '/discipline/spend'
+                                    ); ?>"
+                                >
+                                <?php wp_nonce_field(
+                                    'gmrc_character_discipline_'
+                                    . $characterId,
+                                    'gmrc_nonce'
+                                ); ?>
                                 <button
                                     type="submit"
                                     class="gmrc-button"
@@ -1880,20 +1895,35 @@ $callingPathLabel = $callingPath !== ''
                             </form>
 
                             <form
-                                method="post"
                                 action="<?php echo esc_url(
-                                    home_url(
-                                        '/characters/'
-                                        . $character->id()->value()
-                                        . '/discipline/rest'
-                                    )
+                                    $appRequestUrl
                                 ); ?>"
+                                method="post"
                             >
+                                <input
+                                    type="hidden"
+                                    name="action"
+                                    value="gmrc_app_request"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="gmrc_route"
+                                    value="<?php echo esc_attr(
+                                        'characters/'
+                                        . $characterId
+                                        . '/discipline/rest'
+                                    ); ?>"
+                                >
                                 <input
                                     type="hidden"
                                     name="rest"
                                     value="short"
                                 >
+                                <?php wp_nonce_field(
+                                    'gmrc_character_discipline_'
+                                    . $characterId,
+                                    'gmrc_nonce'
+                                ); ?>
                                 <button
                                     type="submit"
                                     class="gmrc-button gmrc-button--secondary"
@@ -1904,20 +1934,35 @@ $callingPathLabel = $callingPath !== ''
                             </form>
 
                             <form
-                                method="post"
                                 action="<?php echo esc_url(
-                                    home_url(
-                                        '/characters/'
-                                        . $character->id()->value()
-                                        . '/discipline/rest'
-                                    )
+                                    $appRequestUrl
                                 ); ?>"
+                                method="post"
                             >
+                                <input
+                                    type="hidden"
+                                    name="action"
+                                    value="gmrc_app_request"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="gmrc_route"
+                                    value="<?php echo esc_attr(
+                                        'characters/'
+                                        . $characterId
+                                        . '/discipline/rest'
+                                    ); ?>"
+                                >
                                 <input
                                     type="hidden"
                                     name="rest"
                                     value="long"
                                 >
+                                <?php wp_nonce_field(
+                                    'gmrc_character_discipline_'
+                                    . $characterId,
+                                    'gmrc_nonce'
+                                ); ?>
                                 <button
                                     type="submit"
                                     class="gmrc-button gmrc-button--secondary"

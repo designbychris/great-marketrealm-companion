@@ -164,6 +164,52 @@ final class MonkDisciplineReservesRegressionTest extends MonkTestCase
         );
     }
 
+    public function testDisciplineFormsUseApplicationPostBridgeAndNonce(): void
+    {
+        $view = $this->source(
+            'app/Modules/Characters/Views/show.php'
+        );
+
+        self::assertStringContainsString(
+            '$appRequestUrl',
+            $view
+        );
+
+        self::assertStringContainsString(
+            'value="gmrc_app_request"',
+            $view
+        );
+
+        self::assertStringContainsString(
+            "/discipline/spend'",
+            $view
+        );
+
+        self::assertStringContainsString(
+            "/discipline/rest'",
+            $view
+        );
+
+        self::assertStringContainsString(
+            "'gmrc_character_discipline_'",
+            $view
+        );
+
+        $provider = $this->source(
+            'app/Providers/FrontendServiceProvider.php'
+        );
+
+        self::assertStringContainsString(
+            'discipline/(?:spend|rest)',
+            $provider
+        );
+
+        self::assertStringContainsString(
+            "'gmrc_character_discipline_'",
+            $provider
+        );
+    }
+
     public function testControllerPersistsDisciplineMutations(): void
     {
         $controller = $this->source(
