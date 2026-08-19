@@ -229,6 +229,13 @@ $cunningRegister = isset($cunningRegister)
             'supported' => false,
         ];
 
+$disciplineRegister = isset($disciplineRegister)
+    && is_array($disciplineRegister)
+        ? $disciplineRegister
+        : [
+            'supported' => false,
+        ];
+
 $progression = isset($progression) && is_array($progression)
     ? $progression
     : [
@@ -1756,6 +1763,159 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-eyebrow">Dangerously Magical</p>
                 <h2 id="gmrc-arcane-pantry-title">The Arcane Pantry</h2>
             </header>
+
+            <?php if (
+                ! empty($disciplineRegister['supported'])
+            ) : ?>
+                <section
+                    class="gmrc-discipline-register"
+                    aria-labelledby="gmrc-discipline-register-title"
+                    data-discipline-register
+                >
+                    <header class="gmrc-discipline-register__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">Monk Field Record</p>
+                            <h3 id="gmrc-discipline-register-title">
+                                The Discipline Register
+                            </h3>
+                            <p>
+                                Certified Monk capability at Level
+                                <?php echo esc_html(
+                                    (string) (
+                                        $disciplineRegister['level']
+                                        ?? $level
+                                    )
+                                ); ?>.
+                            </p>
+                        </div>
+                        <span class="gmrc-discipline-register__pool">
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $disciplineRegister[
+                                            'discipline'
+                                        ]['maximum']
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>Discipline</small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-discipline-register__summary">
+                        <article>
+                            <small>Discipline Save DC</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $disciplineRegister[
+                                            'discipline'
+                                        ]['save_dc']
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                        </article>
+                        <article>
+                            <small>Unarmoured Movement</small>
+                            <strong>
+                                +<?php echo esc_html(
+                                    (string) (
+                                        $disciplineRegister[
+                                            'movement'
+                                        ]['bonus_feet']
+                                        ?? 0
+                                    )
+                                ); ?> ft
+                            </strong>
+                        </article>
+                    </div>
+
+                    <div class="gmrc-discipline-register__features">
+                        <?php foreach (
+                            ($disciplineRegister['features'] ?? [])
+                            as $feature
+                        ) : ?>
+                            <article class="<?php echo esc_attr(
+                                ! empty($feature['unlocked'])
+                                    ? 'is-unlocked'
+                                    : 'is-locked'
+                            ); ?>">
+                                <small>
+                                    Level <?php echo esc_html(
+                                        (string) ($feature['level'] ?? '')
+                                    ); ?>
+                                    ·
+                                    <?php echo esc_html(
+                                        ! empty($feature['unlocked'])
+                                            ? 'Certified'
+                                            : 'Locked'
+                                    ); ?>
+                                </small>
+                                <strong>
+                                    <?php echo esc_html(
+                                        (string) ($feature['label'] ?? '')
+                                    ); ?>
+                                </strong>
+                                <p>
+                                    <?php echo esc_html(
+                                        (string) ($feature['detail'] ?? '')
+                                    ); ?>
+                                </p>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="gmrc-discipline-register__footer">
+                        <div>
+                            <span>Monastic Way</span>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $disciplineRegister['way']['label']
+                                        ?? 'Awaiting Monastic Way'
+                                    )
+                                ); ?>
+                            </strong>
+                        </div>
+                        <?php if (
+                            is_array(
+                                $disciplineRegister['next_milestone']
+                                ?? null
+                            )
+                        ) : ?>
+                            <div>
+                                <span>Next discipline milestone</span>
+                                <strong>
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $disciplineRegister[
+                                                'next_milestone'
+                                            ]['level']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                    ·
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $disciplineRegister[
+                                                'next_milestone'
+                                            ]['label']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </strong>
+                            </div>
+                        <?php else : ?>
+                            <div>
+                                <span>Monk progression</span>
+                                <strong>Mastered to Level 20</strong>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </section>
+            <?php endif; ?>
 
             <?php if (
                 ! empty($cunningRegister['supported'])

@@ -1747,3 +1747,70 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.5A — The Monk's Discipline Register */
+.gmrc-discipline-register {
+    margin: 0 0 1rem;
+    padding: .9rem;
+    border: 1px solid rgba(92, 72, 42, .24);
+    border-radius: .5rem;
+    background: linear-gradient(135deg, rgba(173, 137, 67, .06), rgba(252, 248, 230, .76));
+}
+.gmrc-discipline-register__heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: .75rem;
+}
+.gmrc-discipline-register__pool {
+    display: grid;
+    place-items: center;
+    min-width: 6rem;
+    padding: .55rem;
+    border: 1px solid rgba(92,72,42,.25);
+    border-radius: .4rem;
+    background: rgba(255,252,237,.75);
+}
+.gmrc-discipline-register__pool strong { font-size: 1.4rem; }
+.gmrc-discipline-register__summary,
+.gmrc-discipline-register__features,
+.gmrc-discipline-register__footer {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: .55rem;
+}
+.gmrc-discipline-register__summary { margin-bottom: .6rem; }
+.gmrc-discipline-register__summary article,
+.gmrc-discipline-register__features article,
+.gmrc-discipline-register__footer > div {
+    display: grid;
+    gap: .18rem;
+    padding: .6rem;
+    border: 1px solid rgba(92,72,42,.16);
+    border-radius: .35rem;
+    background: rgba(255,252,237,.7);
+}
+.gmrc-discipline-register__features article.is-locked { opacity: .52; }
+.gmrc-discipline-register__features article p { margin: .15rem 0 0; }
+.gmrc-discipline-register__footer { margin-top: .7rem; }
+@media (max-width: 840px) {
+    .gmrc-discipline-register__summary,
+    .gmrc-discipline-register__features,
+    .gmrc-discipline-register__footer { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+    .gmrc-discipline-register__heading { display: grid; }
+}
+@media (forced-colors: active) {
+    .gmrc-discipline-register,
+    .gmrc-discipline-register__pool,
+    .gmrc-discipline-register__summary article,
+    .gmrc-discipline-register__features article,
+    .gmrc-discipline-register__footer > div {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}
