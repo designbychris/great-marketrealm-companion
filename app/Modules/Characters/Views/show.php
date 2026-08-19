@@ -236,6 +236,13 @@ $disciplineRegister = isset($disciplineRegister)
             'supported' => false,
         ];
 
+$sacredRegister = isset($sacredRegister)
+    && is_array($sacredRegister)
+        ? $sacredRegister
+        : [
+            'supported' => false,
+        ];
+
 $progression = isset($progression) && is_array($progression)
     ? $progression
     : [
@@ -1763,6 +1770,257 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-eyebrow">Dangerously Magical</p>
                 <h2 id="gmrc-arcane-pantry-title">The Arcane Pantry</h2>
             </header>
+
+            <?php if (
+                ! empty($sacredRegister['supported'])
+            ) : ?>
+                <section
+                    class="gmrc-sacred-register"
+                    aria-labelledby="gmrc-sacred-register-title"
+                    data-sacred-register
+                >
+                    <header class="gmrc-sacred-register__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Paladin Field Record
+                            </p>
+                            <h3 id="gmrc-sacred-register-title">
+                                The Sacred Register
+                            </h3>
+                            <p>
+                                Certified sacred capability at Paladin Level
+                                <?php echo esc_html(
+                                    (string) (
+                                        $sacredRegister['level']
+                                        ?? $level
+                                    )
+                                ); ?>.
+                            </p>
+                        </div>
+
+                        <span class="gmrc-sacred-register__pool">
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $sacredRegister[
+                                            'lay_on_hands'
+                                        ]['maximum']
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>
+                                Lay on Hands pool
+                            </small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-sacred-register__summary">
+                        <article>
+                            <small>
+                                Divine Sense
+                            </small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $sacredRegister[
+                                            'divine_sense'
+                                        ]['maximum']
+                                        ?? 0
+                                    )
+                                ); ?>
+                                uses
+                            </strong>
+                            <span>Long rest</span>
+                        </article>
+
+                        <article>
+                            <small>
+                                Sacred Save DC
+                            </small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $sacredRegister[
+                                            'sacred_save_dc'
+                                        ]
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>
+                                Charisma based
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>
+                                Sacred Aura
+                            </small>
+                            <strong>
+                                <?php if (
+                                    ! empty(
+                                        $sacredRegister[
+                                            'aura'
+                                        ]['unlocked']
+                                    )
+                                ) : ?>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $sacredRegister[
+                                                'aura'
+                                            ]['range_feet']
+                                            ?? 0
+                                        )
+                                    ); ?> ft
+                                <?php else : ?>
+                                    Not yet
+                                <?php endif; ?>
+                            </strong>
+                            <span>
+                                Opens at Level 6
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>
+                                Cleansing Touch
+                            </small>
+                            <strong>
+                                <?php if (
+                                    ! empty(
+                                        $sacredRegister[
+                                            'cleansing_touch'
+                                        ]['unlocked']
+                                    )
+                                ) : ?>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $sacredRegister[
+                                                'cleansing_touch'
+                                            ]['maximum']
+                                            ?? 0
+                                        )
+                                    ); ?>
+                                    uses
+                                <?php else : ?>
+                                    Not yet
+                                <?php endif; ?>
+                            </strong>
+                            <span>
+                                Opens at Level 14
+                            </span>
+                        </article>
+                    </div>
+
+                    <div class="gmrc-sacred-register__features">
+                        <?php foreach (
+                            ($sacredRegister['features'] ?? [])
+                            as $feature
+                        ) : ?>
+                            <article class="<?php echo esc_attr(
+                                ! empty($feature['unlocked'])
+                                    ? 'is-unlocked'
+                                    : 'is-locked'
+                            ); ?>">
+                                <small>
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $feature['level']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                    ·
+                                    <?php echo esc_html(
+                                        ! empty($feature['unlocked'])
+                                            ? 'Certified'
+                                            : 'Locked'
+                                    ); ?>
+                                </small>
+
+                                <strong>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $feature['label']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </strong>
+
+                                <p>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $feature['detail']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </p>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="gmrc-sacred-register__footer">
+                        <div>
+                            <span>
+                                Sacred Oath
+                            </span>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $sacredRegister[
+                                            'oath'
+                                        ]['label']
+                                        ?? 'Awaiting Sacred Oath'
+                                    )
+                                ); ?>
+                            </strong>
+                        </div>
+
+                        <?php if (
+                            is_array(
+                                $sacredRegister[
+                                    'next_milestone'
+                                ]
+                                ?? null
+                            )
+                        ) : ?>
+                            <div>
+                                <span>
+                                    Next sacred milestone
+                                </span>
+                                <strong>
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $sacredRegister[
+                                                'next_milestone'
+                                            ]['level']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                    ·
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $sacredRegister[
+                                                'next_milestone'
+                                            ]['label']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </strong>
+                            </div>
+                        <?php else : ?>
+                            <div>
+                                <span>
+                                    Paladin progression
+                                </span>
+                                <strong>
+                                    Sacred milestones certified
+                                </strong>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </section>
+            <?php endif; ?>
 
             <?php if (
                 ! empty($disciplineRegister['supported'])

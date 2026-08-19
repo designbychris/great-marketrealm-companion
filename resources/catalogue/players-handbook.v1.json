@@ -1,5 +1,5 @@
 {
-  "version": "3.7.2",
+  "version": "3.7.3",
   "source": {
     "title": "The Great Marketrealm Players Handbook",
     "kind": "curated-google-doc-snapshot"
@@ -990,21 +990,21 @@
     {
       "key": "oath-of-inventory",
       "name": "Oath of Inventory",
-      "description": "Oath of Inventory path for the Paladin.",
+      "description": "A sacred vow of stewardship, accountability and protecting everything entrusted to the Paladin’s care.",
       "traits": [],
       "parent": "paladin"
     },
     {
       "key": "oath-of-the-colonel",
       "name": "Oath of the Colonel",
-      "description": "Oath of the Colonel path for the Paladin.",
+      "description": "A commanding Paladin oath of disciplined leadership, bold frontline presence and rallying the Fellowship.",
       "traits": [],
       "parent": "paladin"
     },
     {
       "key": "oath-of-the-creamfather",
       "name": "Oath of the Creamfather",
-      "description": "Oath of the Creamfather path for the Paladin.",
+      "description": "A rich ceremonial oath of hospitality, protection and loyalty whose gentleness should never be mistaken for weakness.",
       "traits": [],
       "parent": "paladin"
     },
@@ -1112,6 +1112,41 @@
       "description": "The Sugar Fiend path for the Warlock.",
       "traits": [],
       "parent": "warlock"
+    },
+    {
+      "key": "oath-of-aroma",
+      "name": "Oath of Aroma",
+      "description": "A Paladin oath devoted to presence, perception and the invisible influence carried through the Marketrealm.",
+      "traits": [],
+      "parent": "paladin"
+    },
+    {
+      "key": "oath-of-clearance",
+      "name": "Oath of Clearance",
+      "description": "A Paladin oath that faces endings, hard choices and the duty to make room for what must come next.",
+      "traits": [],
+      "parent": "paladin"
+    },
+    {
+      "key": "oath-of-seasoning",
+      "name": "Oath of Seasoning",
+      "description": "A Paladin oath of balance, judgement and knowing exactly what a situation needs to become greater than its parts.",
+      "traits": [],
+      "parent": "paladin"
+    },
+    {
+      "key": "oath-of-carbonation",
+      "name": "Oath of Carbonation",
+      "description": "A sparkling Paladin oath of energy, uplift and explosive sacred momentum.",
+      "traits": [],
+      "parent": "paladin"
+    },
+    {
+      "key": "oath-of-the-cleaver-saint",
+      "name": "Oath of the Cleaver Saint",
+      "description": "A martial Paladin oath of discipline, sacred steel and standing between the Fellowship and brutal danger.",
+      "traits": [],
+      "parent": "paladin"
     }
   ]
 }

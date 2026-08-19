@@ -1954,3 +1954,106 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.6A — The Paladin's Sacred Register */
+.gmrc-sacred-register {
+    margin: 0 0 1rem;
+    padding: .9rem;
+    border: 1px solid rgba(117, 83, 33, .26);
+    border-radius: .5rem;
+    background: linear-gradient(
+        135deg,
+        rgba(202, 164, 85, .08),
+        rgba(255, 250, 232, .78)
+    );
+}
+
+.gmrc-sacred-register__heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: .75rem;
+}
+
+.gmrc-sacred-register__pool {
+    display: grid;
+    place-items: center;
+    min-width: 7rem;
+    padding: .55rem;
+    border: 1px solid rgba(117, 83, 33, .25);
+    border-radius: .4rem;
+    background: rgba(255, 252, 238, .82);
+}
+
+.gmrc-sacred-register__pool strong {
+    font-size: 1.4rem;
+}
+
+.gmrc-sacred-register__summary,
+.gmrc-sacred-register__features,
+.gmrc-sacred-register__footer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.gmrc-sacred-register__summary {
+    margin-bottom: .65rem;
+}
+
+.gmrc-sacred-register__summary article,
+.gmrc-sacred-register__features article,
+.gmrc-sacred-register__footer > div {
+    display: grid;
+    gap: .18rem;
+    padding: .6rem;
+    border: 1px solid rgba(117, 83, 33, .16);
+    border-radius: .35rem;
+    background: rgba(255, 252, 238, .72);
+}
+
+.gmrc-sacred-register__summary article span,
+.gmrc-sacred-register__footer span {
+    font-size: .72rem;
+    opacity: .74;
+}
+
+.gmrc-sacred-register__features article.is-locked {
+    opacity: .52;
+}
+
+.gmrc-sacred-register__features article p {
+    margin: .15rem 0 0;
+}
+
+.gmrc-sacred-register__footer {
+    margin-top: .7rem;
+}
+
+@media (max-width: 840px) {
+    .gmrc-sacred-register__summary,
+    .gmrc-sacred-register__features,
+    .gmrc-sacred-register__footer {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .gmrc-sacred-register__heading {
+        display: grid;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-sacred-register,
+    .gmrc-sacred-register__pool,
+    .gmrc-sacred-register__summary article,
+    .gmrc-sacred-register__features article,
+    .gmrc-sacred-register__footer > div {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

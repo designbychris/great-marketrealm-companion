@@ -40,6 +40,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Martial\Services\Fi
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Primal\Services\BarbarianRageRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Cunning\Services\RogueCunningRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Discipline\Services\MonkDisciplineRegisterPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Sacred\Services\PaladinSacredRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassResourceRepository;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassConditionRepository;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\FighterBattleReserveService;
@@ -694,6 +695,12 @@ final class CharacterController
             $activeResources
         );
 
+        $sacredRegister = (
+            new PaladinSacredRegisterPresenter()
+        )->present(
+            $character
+        );
+
         $progression = (new RisingRegisterPresenter())
             ->present($character);
 
@@ -760,6 +767,7 @@ final class CharacterController
                     'rageRegister' => $rageRegister,
                     'cunningRegister' => $cunningRegister,
                     'disciplineRegister' => $disciplineRegister,
+                    'sacredRegister' => $sacredRegister,
                     'progression' => $progression,
                     'pathGifts' => $pathGifts,
                     'advancementHistory' =>

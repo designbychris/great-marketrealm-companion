@@ -206,6 +206,46 @@ final class PathChoiceGuideCatalogue
             'identity' =>
                 'A rich and ceremonial oath of hospitality, protection and loyalty whose gentleness should never be mistaken for weakness.',
         ],
+        'oath-of-aroma' => [
+            'playstyle' =>
+                'Perceptive support, subtle control and influencing encounters through presence rather than brute force.',
+            'best_for' =>
+                'Players who like awareness, social pressure and a Paladin whose power feels atmospheric and difficult to ignore.',
+            'identity' =>
+                'A sacred tradition that treats scent, presence and memory as invisible banners capable of changing a room before steel is drawn.',
+        ],
+        'oath-of-clearance' => [
+            'playstyle' =>
+                'Decisive frontline play focused on endings, breaking stalemates and creating space for allies to move forward.',
+            'best_for' =>
+                'Players who enjoy making hard calls, finishing dangerous encounters and turning closure into momentum.',
+            'identity' =>
+                'A solemn oath that accepts every shelf, season and struggle eventually reaches its final mark-down.',
+        ],
+        'oath-of-seasoning' => [
+            'playstyle' =>
+                'Adaptive support and judgement, strengthening the Fellowship by applying the right pressure at the right moment.',
+            'best_for' =>
+                'Players who enjoy flexibility, tactical balance and improving the whole party rather than relying on one signature trick.',
+            'identity' =>
+                'A measured sacred philosophy built on the belief that greatness comes from balance, restraint and exactly the right finishing touch.',
+        ],
+        'oath-of-carbonation' => [
+            'playstyle' =>
+                'High-energy support, sudden bursts of momentum and an uplifting presence that keeps the Fellowship moving.',
+            'best_for' =>
+                'Players who want a lively Paladin with fast tempo, celebratory energy and explosive moments.',
+            'identity' =>
+                'A sparkling vow of pressure, uplift and sacred fizz that refuses to let courage go flat.',
+        ],
+        'oath-of-the-cleaver-saint' => [
+            'playstyle' =>
+                'Heavy frontline defence, disciplined weapon work and protecting allies by confronting the greatest threat directly.',
+            'best_for' =>
+                'Players who want a martial Paladin with strong Butcher Isles flavour and a clear protector role.',
+            'identity' =>
+                'A severe but honourable oath of sacred steel, precise force and standing where danger is thickest.',
+        ],
     ];
 
     /**
