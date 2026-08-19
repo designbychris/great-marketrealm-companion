@@ -9,7 +9,7 @@ defined('ABSPATH') || exit;
 final class CharacterCatalogueRepository
 {
     private const OPTION = 'gmrc_character_catalogue';
-    private const VERSION = '3.7.1';
+    private const VERSION = '3.7.2';
 
     /** @return array<string,mixed> */
     public function snapshot(): array
@@ -45,7 +45,20 @@ final class CharacterCatalogueRepository
     /** @return array<string,string> */
     public function classOptions(): array
     {
-        return $this->options($this->snapshot()['classes'] ?? []);
+        $options = $this->options(
+            $this->snapshot()['classes'] ?? []
+        );
+
+        /*
+         * Legacy specialties remain valid identities for
+         * existing Characters, but are not top-level Callings.
+         */
+        unset(
+            $options['grocer'],
+            $options['cleaver-saint']
+        );
+
+        return $options;
     }
 
     /** @return array<int,array<string,mixed>> */
