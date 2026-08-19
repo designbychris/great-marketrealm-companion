@@ -134,6 +134,28 @@ final class BarbarianRageReserveService
         return 2;
     }
 
+    public function damageBonus(
+        Character $character
+    ): int {
+        $this->assertBarbarian(
+            $character
+        );
+
+        $level = $character
+            ->level()
+            ->value();
+
+        if ($level >= 16) {
+            return 4;
+        }
+
+        if ($level >= 9) {
+            return 3;
+        }
+
+        return 2;
+    }
+
     public function unlimited(
         Character $character
     ): bool {

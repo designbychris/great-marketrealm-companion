@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Primal\Servic
 
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Models\ActiveClassConditionState;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\BarbarianRageReserveService;
 
 defined('ABSPATH') || exit;
 
@@ -59,6 +60,9 @@ final class BarbarianPrimalActionPresenter
             ->abilityScores()
             ->strength();
 
+        $rageReserves =
+            new BarbarianRageReserveService();
+
         return [
             'supported' => true,
             'rage_active' => $rageActive,
@@ -71,7 +75,10 @@ final class BarbarianPrimalActionPresenter
                     'available' => $rageActive,
                     'kind' => 'state',
                     'badge' => $rageActive
-                        ? '+' . $this->rageDamageBonus($level)
+                        ? '+'
+                            . $rageReserves->damageBonus(
+                                $character
+                            )
                         : 'Dormant',
                     'detail' =>
                         $rageActive
@@ -196,17 +203,4 @@ final class BarbarianPrimalActionPresenter
         ];
     }
 
-    private function rageDamageBonus(
-        int $level
-    ): int {
-        if ($level >= 16) {
-            return 4;
-        }
-
-        if ($level >= 9) {
-            return 3;
-        }
-
-        return 2;
-    }
 }

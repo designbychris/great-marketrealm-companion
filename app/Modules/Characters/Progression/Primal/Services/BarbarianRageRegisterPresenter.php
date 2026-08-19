@@ -175,8 +175,8 @@ final class BarbarianRageRegisterPresenter
                         'rage'
                     ),
                 'damage_bonus' =>
-                    $this->rageDamageBonus(
-                        $level
+                    $rageReserves->damageBonus(
+                        $character
                     ),
                 'duration' => '1 minute',
                 'activation' => 'Bonus action',
@@ -264,20 +264,6 @@ final class BarbarianRageRegisterPresenter
             'milestones' =>
                 array_values(self::MILESTONES),
         ];
-    }
-
-    private function rageDamageBonus(
-        int $level
-    ): int {
-        if ($level >= 16) {
-            return 4;
-        }
-
-        if ($level >= 9) {
-            return 3;
-        }
-
-        return 2;
     }
 
     private function brutalCriticalDice(
