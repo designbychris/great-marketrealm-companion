@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Patron\Servic
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Models\PathGiftCatalogue;
 
 defined('ABSPATH') || exit;
 
@@ -76,13 +77,17 @@ final class WarlockPatronRegisterPresenter
 
     public function __construct(
         private ?WarlockPatronPolicy $policy = null,
-        private ?PathCandidateCatalogue $paths = null
+        private ?PathCandidateCatalogue $paths = null,
+        private ?PathGiftCatalogue $gifts = null
     ) {
         $this->policy ??=
             new WarlockPatronPolicy();
 
         $this->paths ??=
             new PathCandidateCatalogue();
+
+        $this->gifts ??=
+            new PathGiftCatalogue();
     }
 
     /**
@@ -111,6 +116,10 @@ final class WarlockPatronRegisterPresenter
             'level' => $level,
             'patron' =>
                 $this->patronState(
+                    $character
+                ),
+            'patron_gifts' =>
+                $this->certifiedGifts(
                     $character
                 ),
             'pact_magic' => [
@@ -227,6 +236,46 @@ final class WarlockPatronRegisterPresenter
             'key' => $key,
             'label' => $label,
         ];
+    }
+
+    /**
+     * Return only gifts already certified into this Character's Guild Record.
+     *
+     * @return array<int,array<string,mixed>>
+     */
+    private function certifiedGifts(
+        Character $character
+    ): array {
+        $pathKey = $character
+            ->callingPath()
+            ->value();
+
+        if ($pathKey === '') {
+            return [];
+        }
+
+        $known = $character
+            ->pathGifts()
+            ->values();
+
+        return array_values(
+            array_filter(
+                $this->gifts->all(
+                    $pathKey
+                ),
+                static fn (
+                    array $gift
+                ): bool =>
+                    in_array(
+                        (string) (
+                            $gift['key']
+                            ?? ''
+                        ),
+                        $known,
+                        true
+                    )
+            )
+        );
     }
 
     /**

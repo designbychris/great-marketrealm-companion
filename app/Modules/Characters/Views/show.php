@@ -1955,6 +1955,61 @@ $callingPathLabel = $callingPath !== ''
                         </article>
                     </div>
 
+                    <?php if (
+                        ! empty(
+                            $patronRegister[
+                                'patron_gifts'
+                            ]
+                        )
+                    ) : ?>
+                        <div class="gmrc-patron-register__gifts">
+                            <div class="gmrc-patron-register__gifts-heading">
+                                <small>
+                                    Certified Patron Gifts
+                                </small>
+                                <strong>
+                                    Contract clauses currently in force
+                                </strong>
+                            </div>
+
+                            <div class="gmrc-patron-register__gift-grid">
+                                <?php foreach (
+                                    $patronRegister[
+                                        'patron_gifts'
+                                    ]
+                                    as $patronGift
+                                ) : ?>
+                                    <article>
+                                        <small>
+                                            Level <?php echo esc_html(
+                                                (string) (
+                                                    $patronGift['level']
+                                                    ?? 1
+                                                )
+                                            ); ?>
+                                        </small>
+                                        <strong>
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $patronGift['label']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </strong>
+                                        <p>
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $patronGift['summary']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </p>
+                                    </article>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
                     <div class="gmrc-patron-register__footer">
                         <div>
                             <span>Pact Magic refresh</span>

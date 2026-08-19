@@ -2416,3 +2416,50 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.7B — Warlock Patron Gifts */
+.gmrc-patron-register__gifts {
+    margin-top: .7rem;
+    padding-top: .7rem;
+    border-top: 1px dashed rgba(81, 42, 95, .22);
+}
+
+.gmrc-patron-register__gifts-heading {
+    display: grid;
+    gap: .12rem;
+    margin-bottom: .5rem;
+}
+
+.gmrc-patron-register__gift-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .5rem;
+}
+
+.gmrc-patron-register__gift-grid article {
+    display: grid;
+    gap: .18rem;
+    min-width: 0;
+    padding: .58rem;
+    border: 1px solid rgba(81, 42, 95, .16);
+    border-radius: .35rem;
+    background: rgba(255, 251, 255, .66);
+}
+
+.gmrc-patron-register__gift-grid p {
+    margin: .1rem 0 0;
+}
+
+@media (max-width: 840px) {
+    .gmrc-patron-register__gift-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-patron-register__gifts,
+    .gmrc-patron-register__gift-grid article {
+        border-color: CanvasText;
+    }
+}
