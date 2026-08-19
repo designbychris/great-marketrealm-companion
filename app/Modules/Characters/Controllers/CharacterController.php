@@ -42,6 +42,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Cunning\Services\Ro
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Discipline\Services\MonkDisciplineRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Sacred\Services\PaladinSacredRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Patron\Services\WarlockPatronRegisterPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Patron\Services\WarlockEldritchArtsPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassResourceRepository;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassConditionRepository;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\FighterBattleReserveService;
@@ -731,6 +732,12 @@ final class CharacterController
             $activeResources
         );
 
+        $eldritchArts = (
+            new WarlockEldritchArtsPresenter()
+        )->present(
+            $character
+        );
+
         $progression = (new RisingRegisterPresenter())
             ->present($character);
 
@@ -799,6 +806,7 @@ final class CharacterController
                     'disciplineRegister' => $disciplineRegister,
                     'sacredRegister' => $sacredRegister,
                     'patronRegister' => $patronRegister,
+                    'eldritchArts' => $eldritchArts,
                     'progression' => $progression,
                     'pathGifts' => $pathGifts,
                     'advancementHistory' =>

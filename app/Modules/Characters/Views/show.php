@@ -250,6 +250,14 @@ $patronRegister = isset($patronRegister)
             'supported' => false,
         ];
 
+$eldritchArts = isset($eldritchArts)
+    && is_array($eldritchArts)
+        ? $eldritchArts
+        : [
+            'supported' => false,
+            'beams' => [],
+        ];
+
 $progression = isset($progression) && is_array($progression)
     ? $progression
     : [
@@ -5656,6 +5664,189 @@ $callingPathLabel = $callingPath !== ''
                 </section>
             <?php endif; ?>
 
+            <?php if (
+                ! empty($eldritchArts['supported'])
+            ) : ?>
+                <section
+                    class="gmrc-eldritch-arts"
+                    aria-labelledby="gmrc-eldritch-arts-title"
+                    data-eldritch-arts
+                >
+                    <header class="gmrc-eldritch-arts__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Signature Warlock Art
+                            </p>
+                            <h3 id="gmrc-eldritch-arts-title">
+                                Bureaucratic Hex
+                            </h3>
+                            <p>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $eldritchArts['summary']
+                                        ?? ''
+                                    )
+                                ); ?>
+                            </p>
+                        </div>
+
+                        <span class="gmrc-eldritch-arts__seal">
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $eldritchArts['beam_count']
+                                        ?? 1
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>
+                                independent
+                                <?php echo (
+                                    (int) (
+                                        $eldritchArts['beam_count']
+                                        ?? 1
+                                    ) === 1
+                                )
+                                    ? 'beam'
+                                    : 'beams'; ?>
+                            </small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-eldritch-arts__facts">
+                        <span>
+                            <strong>
+                                <?php echo esc_html(
+                                    sprintf(
+                                        '%+d',
+                                        (int) (
+                                            $eldritchArts[
+                                                'attack_bonus'
+                                            ]
+                                            ?? 0
+                                        )
+                                    )
+                                ); ?>
+                            </strong>
+                            spell attack
+                        </span>
+                        <span>
+                            <strong>1d10</strong>
+                            force per beam
+                        </span>
+                        <span>
+                            <strong>120 ft</strong>
+                            range
+                        </span>
+                        <span>
+                            <strong>At will</strong>
+                            no Pact slot
+                        </span>
+                    </div>
+
+                    <div class="gmrc-eldritch-arts__beams">
+                        <?php foreach (
+                            $eldritchArts['beams']
+                            as $beam
+                        ) : ?>
+                            <article
+                                class="gmrc-eldritch-beam"
+                                data-eldritch-beam="<?php echo esc_attr(
+                                    (string) (
+                                        $beam['number']
+                                        ?? 1
+                                    )
+                                ); ?>"
+                            >
+                                <header>
+                                    <small>
+                                        Independent spell attack
+                                    </small>
+                                    <strong>
+                                        Beam <?php echo esc_html(
+                                            (string) (
+                                                $beam['number']
+                                                ?? 1
+                                            )
+                                        ); ?>
+                                    </strong>
+                                </header>
+
+                                <div class="gmrc-eldritch-beam__actions">
+                                    <button
+                                        type="button"
+                                        class="gmrc-guild-roll-trigger"
+                                        data-guild-roll="d20"
+                                        data-roll-kind="spell-attack"
+                                        data-roll-target-mode="creature"
+                                        data-roll-source="<?php echo esc_attr(
+                                            (string) (
+                                                $beam['label']
+                                                ?? 'Bureaucratic Hex'
+                                            )
+                                        ); ?>"
+                                        data-roll-ability="Charisma"
+                                        data-roll-proficiency="proficient"
+                                        data-roll-label="<?php echo esc_attr(
+                                            (string) (
+                                                $beam['label']
+                                                ?? 'Bureaucratic Hex'
+                                            )
+                                            . ' — Spell Attack'
+                                        ); ?>"
+                                        data-roll-modifier="<?php echo esc_attr(
+                                            (string) (
+                                                $beam['attack_bonus']
+                                                ?? 0
+                                            )
+                                        ); ?>"
+                                        data-roll-result-suffix="to hit"
+                                    >
+                                        <span aria-hidden="true">20</span>
+                                        Roll Beam Attack
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="gmrc-guild-roll-trigger gmrc-guild-roll-trigger--damage"
+                                        data-guild-roll="damage"
+                                        data-roll-kind="damage"
+                                        data-roll-target-mode="creature"
+                                        data-roll-source="<?php echo esc_attr(
+                                            (string) (
+                                                $beam['label']
+                                                ?? 'Bureaucratic Hex'
+                                            )
+                                        ); ?>"
+                                        data-roll-ability="Charisma"
+                                        data-roll-proficiency="none"
+                                        data-roll-label="<?php echo esc_attr(
+                                            (string) (
+                                                $beam['label']
+                                                ?? 'Bureaucratic Hex'
+                                            )
+                                            . ' — Force Damage'
+                                        ); ?>"
+                                        data-roll-formula="1d10"
+                                        data-roll-modifier="0"
+                                        data-roll-damage-type="force"
+                                    >
+                                        <span aria-hidden="true">✦</span>
+                                        Roll Beam Damage
+                                    </button>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <p class="gmrc-eldritch-arts__note">
+                        Each beam resolves separately and may target a
+                        different creature. The Guild therefore never combines
+                        these attacks into one 2d10, 3d10 or 4d10 damage roll.
+                    </p>
+                </section>
+            <?php endif; ?>
+
             <?php if ($arcana['casting_ability'] !== null) : ?>
                 <dl class="gmrc-arcane-summary">
                     <div>
@@ -5795,6 +5986,18 @@ $callingPathLabel = $callingPath !== ''
 
                                 <div class="gmrc-arcane-card-list">
                                     <?php foreach ($shelf['entries'] as $ability) : ?>
+                                        <?php
+                                        $isWarlockSignature =
+                                            ! empty(
+                                                $eldritchArts[
+                                                    'supported'
+                                                ]
+                                            )
+                                            && (
+                                                $ability['id']
+                                                ?? ''
+                                            ) === 'bureaucratic-hex';
+                                        ?>
                                         <article class="gmrc-arcane-card">
                                             <header>
                                                 <span class="gmrc-arcane-card__kind">
@@ -5836,7 +6039,8 @@ $callingPathLabel = $callingPath !== ''
                                             <?php endif; ?>
 
                                             <?php if (
-                                                ! empty(
+                                                ! $isWarlockSignature
+                                                && ! empty(
                                                     $ability['roll_scaling']['scalable']
                                                 )
                                                 && $ability['formula'] !== null
@@ -5862,6 +6066,17 @@ $callingPathLabel = $callingPath !== ''
                                                 </p>
                                             <?php endif; ?>
 
+                                            <?php if ($isWarlockSignature) : ?>
+                                                <p class="gmrc-arcane-scaling">
+                                                    <span>Active play</span>
+                                                    <strong>
+                                                        Use Eldritch Arts above
+                                                    </strong>
+                                                    <small>
+                                                        Independent beam attacks are resolved separately.
+                                                    </small>
+                                                </p>
+                                            <?php else : ?>
                                             <div class="gmrc-arcane-card__rolls">
                                                 <?php if ($ability['spell_attack'] !== null) : ?>
                                                     <button
@@ -5914,6 +6129,7 @@ $callingPathLabel = $callingPath !== ''
                                                     </button>
                                                 <?php endif; ?>
                                             </div>
+                                            <?php endif; ?>
                                         </article>
                                     <?php endforeach; ?>
                                 </div>

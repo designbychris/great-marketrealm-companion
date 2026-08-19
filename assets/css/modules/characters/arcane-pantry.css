@@ -2504,3 +2504,128 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.7D — The Warlock's Eldritch Arts */
+.gmrc-eldritch-arts {
+    margin: 0 0 1rem;
+    padding: .85rem;
+    border: 1px solid rgba(58, 31, 73, .28);
+    border-radius: .48rem;
+    background: rgba(247, 239, 251, .7);
+}
+
+.gmrc-eldritch-arts__heading {
+    display: flex;
+    justify-content: space-between;
+    gap: .8rem;
+    align-items: flex-start;
+    margin-bottom: .65rem;
+}
+
+.gmrc-eldritch-arts__seal {
+    display: grid;
+    place-items: center;
+    min-width: 6.5rem;
+    padding: .5rem;
+    border: 1px solid rgba(58, 31, 73, .2);
+    border-radius: .38rem;
+    background: rgba(255, 251, 255, .76);
+    text-align: center;
+}
+
+.gmrc-eldritch-arts__seal strong {
+    font-size: 1.35rem;
+}
+
+.gmrc-eldritch-arts__facts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: .45rem;
+    margin-bottom: .65rem;
+}
+
+.gmrc-eldritch-arts__facts span {
+    display: grid;
+    gap: .1rem;
+    min-width: 0;
+    padding: .5rem;
+    border: 1px solid rgba(58, 31, 73, .14);
+    border-radius: .32rem;
+    background: rgba(255, 252, 255, .62);
+}
+
+.gmrc-eldritch-arts__beams {
+    display: grid;
+    gap: .5rem;
+}
+
+.gmrc-eldritch-beam {
+    display: grid;
+    grid-template-columns: minmax(7rem, .8fr) minmax(0, 2fr);
+    gap: .55rem;
+    align-items: center;
+    padding: .58rem;
+    border: 1px solid rgba(58, 31, 73, .16);
+    border-radius: .34rem;
+    background: rgba(255, 252, 255, .7);
+}
+
+.gmrc-eldritch-beam header {
+    display: grid;
+    gap: .1rem;
+}
+
+.gmrc-eldritch-beam__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .45rem;
+}
+
+.gmrc-eldritch-beam__actions .gmrc-guild-roll-trigger {
+    width: 100%;
+    min-width: 0;
+    white-space: normal;
+}
+
+.gmrc-eldritch-arts__note {
+    margin: .65rem 0 0;
+    font-size: .82rem;
+    opacity: .8;
+}
+
+@media (max-width: 840px) {
+    .gmrc-eldritch-arts__facts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gmrc-eldritch-beam {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .gmrc-eldritch-arts__heading {
+        display: grid;
+    }
+
+    .gmrc-eldritch-arts__seal {
+        width: 100%;
+    }
+
+    .gmrc-eldritch-arts__facts,
+    .gmrc-eldritch-beam__actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-eldritch-arts,
+    .gmrc-eldritch-arts__seal,
+    .gmrc-eldritch-arts__facts span,
+    .gmrc-eldritch-beam {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}
