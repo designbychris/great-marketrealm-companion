@@ -37,19 +37,21 @@ final class RoguePrecisionReactionPresenter
             ->level()
             ->value();
 
-        $sneakDice = (int) ceil(
-            max(1, $level) / 2
+        $sneakDice = (
+            new RoguePrecisionPolicy()
+        )->sneakAttackDice(
+            $character
         );
 
         return [
             'supported' => true,
             'sneak_attack' => [
                 'unlocked' => true,
-                'dice' => $sneakDice . 'd6',
+                'dice' => $sneakDice,
                 'frequency' => 'Once per turn',
                 'damage_roll' => [
                     'kind' => 'damage',
-                    'formula' => $sneakDice . 'd6',
+                    'formula' => $sneakDice,
                     'modifier' => 0,
                     'label' => 'Sneak Attack — Precision Damage',
                     'source' => 'Sneak Attack',

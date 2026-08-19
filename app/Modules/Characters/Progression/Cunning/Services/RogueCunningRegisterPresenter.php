@@ -129,8 +129,10 @@ final class RogueCunningRegisterPresenter
                 array_merge(
                     [
                         'dice' =>
-                            $this->sneakAttackDice(
-                                $level
+                            (
+                                new RoguePrecisionPolicy()
+                            )->sneakAttackDice(
+                                $character
                             ),
                         'frequency' => 'Once per turn',
                         'status' => 'Certified',
@@ -246,16 +248,6 @@ final class RogueCunningRegisterPresenter
             'milestones' =>
                 array_values(self::MILESTONES),
         ];
-    }
-
-    private function sneakAttackDice(
-        int $level
-    ): string {
-        $dice = (int) ceil(
-            max(1, $level) / 2
-        );
-
-        return $dice . 'd6';
     }
 
     /**
