@@ -2949,3 +2949,49 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.8E — The Sorcerer's Final Seal */
+.gmrc-origin-register,
+.gmrc-sorcery-reserves,
+.gmrc-metamagic-arts,
+.gmrc-metamagic-choice-grid > label,
+.gmrc-metamagic-active-grid article {
+    min-width: 0;
+}
+
+.gmrc-metamagic-choice-grid strong,
+.gmrc-metamagic-active-grid strong,
+.gmrc-metamagic-active-grid p,
+.gmrc-metamagic-active-grid small,
+.gmrc-sorcery-reserves__note {
+    overflow-wrap: anywhere;
+}
+
+.gmrc-metamagic-active-grid article > header > span {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.gmrc-metamagic-active-grid .gmrc-button,
+.gmrc-sorcery-reserves__actions .gmrc-button {
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
+}
+
+@media (max-width: 420px) {
+    .gmrc-metamagic-active-grid article > header {
+        display: grid;
+    }
+
+    .gmrc-metamagic-active-grid article > header > span {
+        white-space: normal;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-metamagic-choice-grid > label.is-selected {
+        outline-color: Highlight;
+    }
+}
