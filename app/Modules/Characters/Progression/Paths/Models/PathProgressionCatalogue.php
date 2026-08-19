@@ -13,6 +13,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\R
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\MonkWayProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\PaladinOathProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\WarlockPatronProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\SorcererOriginProgression;
 
 defined('ABSPATH') || exit;
 
@@ -36,6 +37,7 @@ final class PathProgressionCatalogue
                 new MonkWayProgression(),
                 new PaladinOathProgression(),
                 new WarlockPatronProgression(),
+                new SorcererOriginProgression(),
             ];
     }
 
