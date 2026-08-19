@@ -2185,3 +2185,98 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.6D Browser Hardening — Sacred Action polish */
+.gmrc-sacred-actions__grid > article {
+    min-width: 0;
+}
+
+.gmrc-sacred-smite-option {
+    display: grid;
+    grid-template-columns: minmax(9rem, 1fr);
+    gap: .55rem;
+    padding: .7rem;
+    margin-top: .45rem;
+    border: 1px solid rgba(117, 83, 33, .16);
+    border-radius: .34rem;
+    background: rgba(248, 239, 211, .48);
+}
+
+.gmrc-sacred-smite-option > div {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: .18rem .5rem;
+    align-items: baseline;
+}
+
+.gmrc-sacred-smite-option > div strong {
+    font-size: .95rem;
+}
+
+.gmrc-sacred-smite-option > div small {
+    justify-self: end;
+    text-align: right;
+}
+
+.gmrc-sacred-smite-option > form,
+.gmrc-sacred-smite-option > button {
+    width: 100%;
+    margin: 0;
+}
+
+.gmrc-sacred-smite-option .gmrc-button,
+.gmrc-sacred-smite-option .gmrc-guild-roll-trigger {
+    min-height: 2.65rem;
+    white-space: normal;
+}
+
+.gmrc-sacred-smite-option .gmrc-guild-roll-trigger {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: .35rem;
+}
+
+.gmrc-sacred-action-form input[type="number"],
+.gmrc-sacred-action-form select {
+    min-height: 2.35rem;
+    padding: .4rem .5rem;
+}
+
+@media (min-width: 680px) {
+    .gmrc-sacred-smite-option {
+        grid-template-columns:
+            minmax(9rem, 1fr)
+            minmax(7.5rem, auto)
+            minmax(7.5rem, auto);
+        align-items: center;
+    }
+
+    .gmrc-sacred-smite-option > div {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-sacred-smite-option > div small {
+        justify-self: start;
+        text-align: left;
+    }
+}
+
+@media (max-width: 679px) {
+    .gmrc-sacred-actions > header {
+        display: grid;
+    }
+
+    .gmrc-sacred-actions > header > span {
+        justify-self: start;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-sacred-smite-option {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

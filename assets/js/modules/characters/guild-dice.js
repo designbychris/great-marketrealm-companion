@@ -2255,10 +2255,34 @@
             launcher.addEventListener('click', openQuickRollsTray);
         }
 
-        triggers.forEach(function (trigger) {
-            trigger.addEventListener('click', function () {
-                openTray(trigger);
-            });
+        /*
+         * Use ledger-level delegation for Guild Roll triggers.
+         *
+         * The Ledger contains roll controls across multiple tab panels and
+         * class-specific active-play surfaces. Delegation keeps every
+         * server-rendered or subsequently introduced trigger on the same
+         * Diceworks contract without requiring a second binding pass.
+         */
+        ledger.addEventListener('click', function (event) {
+            const target = event.target;
+
+            if (!(target instanceof Element)) {
+                return;
+            }
+
+            const trigger = target.closest(
+                '[data-guild-roll]'
+            );
+
+            if (
+                !(trigger instanceof HTMLButtonElement)
+                || !ledger.contains(trigger)
+                || trigger.disabled
+            ) {
+                return;
+            }
+
+            openTray(trigger);
         });
 
         modeButtons.forEach(function (button) {
