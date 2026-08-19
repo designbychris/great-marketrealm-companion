@@ -110,6 +110,12 @@ final class RogueCunningRegisterPresenter
             ->level()
             ->value();
 
+        $cunningActions = (
+            new RogueCunningActionPresenter()
+        )->present(
+            $character
+        );
+
         return [
             'supported' => true,
             'level' => $level,
@@ -128,6 +134,15 @@ final class RogueCunningRegisterPresenter
                     'Disengage',
                     'Hide',
                 ],
+                'cost' =>
+                    $cunningActions['cost']
+                    ?? 'Bonus action',
+                'refresh' =>
+                    $cunningActions['refresh']
+                    ?? 'Every turn',
+                'actions' =>
+                    $cunningActions['actions']
+                    ?? [],
             ],
             'features' => [
                 [

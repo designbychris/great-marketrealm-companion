@@ -1502,3 +1502,137 @@
         border-color: CanvasText;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.12.4C — The Rogue's Cunning Actions
+ * =============================================================== */
+
+.gmrc-cunning-actions {
+    margin: .75rem 0;
+    padding: .7rem;
+    border: 1px dashed rgba(55, 72, 82, .28);
+    border-radius: .4rem;
+    background: rgba(248, 244, 226, .52);
+}
+
+.gmrc-cunning-actions > header {
+    display: flex;
+    justify-content: space-between;
+    gap: .75rem;
+    align-items: flex-start;
+    margin-bottom: .6rem;
+}
+
+.gmrc-cunning-actions > header h4,
+.gmrc-cunning-actions > header p {
+    margin-top: 0;
+}
+
+.gmrc-cunning-actions > header > span {
+    flex: 0 0 auto;
+    padding: .2rem .4rem;
+    border: 1px solid rgba(55, 72, 82, .2);
+    border-radius: 999px;
+    font-size: .72rem;
+    font-weight: 800;
+}
+
+.gmrc-cunning-actions__grid {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+    gap: .55rem;
+}
+
+.gmrc-cunning-actions__grid article {
+    display: grid;
+    align-content: start;
+    gap: .35rem;
+    padding: .65rem;
+    border: 1px solid rgba(55, 72, 82, .17);
+    border-radius: .36rem;
+    background: rgba(255, 252, 237, .76);
+}
+
+.gmrc-cunning-actions__grid article.is-locked {
+    opacity: .52;
+    background: rgba(235, 231, 216, .66);
+}
+
+.gmrc-cunning-actions__title {
+    display: flex;
+    gap: .45rem;
+    align-items: flex-start;
+}
+
+.gmrc-cunning-actions__title > div {
+    display: grid;
+}
+
+.gmrc-cunning-actions__grid article > p {
+    margin: .15rem 0 0;
+}
+
+.gmrc-cunning-action-button {
+    align-self: end;
+    min-height: 2.35rem;
+    margin-top: .25rem;
+    padding: .48rem .62rem;
+    border: 1px solid rgba(55, 72, 82, .38);
+    border-radius: .32rem;
+    background: rgba(78, 98, 108, .12);
+    color: inherit;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.gmrc-cunning-action-button:hover:not(:disabled),
+.gmrc-cunning-action-button:focus-visible:not(:disabled),
+.gmrc-cunning-action-button.is-selected {
+    background: rgba(78, 98, 108, .22);
+}
+
+.gmrc-cunning-action-button:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 2px;
+}
+
+.gmrc-cunning-action-button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.gmrc-cunning-actions__status {
+    margin: .6rem 0 0;
+    padding-top: .55rem;
+    border-top: 1px solid rgba(55, 72, 82, .16);
+    font-size: .78rem;
+}
+
+@media (max-width: 840px) {
+    .gmrc-cunning-actions__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .gmrc-cunning-actions > header {
+        display: grid;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-cunning-actions,
+    .gmrc-cunning-actions > header > span,
+    .gmrc-cunning-actions__grid article,
+    .gmrc-cunning-action-button {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

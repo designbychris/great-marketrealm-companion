@@ -770,6 +770,25 @@ class FrontendServiceProvider extends ServiceProvider
             true
         );
 
+        $rogueCunningActionsScriptPath =
+            GMRC_PATH
+            . 'assets/js/modules/characters/'
+            . 'rogue-cunning-actions.js';
+
+        wp_enqueue_script(
+            'gmrc-rogue-cunning-actions',
+            GMRC_URL
+                . 'assets/js/modules/characters/'
+                . 'rogue-cunning-actions.js',
+            ['gmrc-guild-dice'],
+            file_exists($rogueCunningActionsScriptPath)
+                ? (string) filemtime(
+                    $rogueCunningActionsScriptPath
+                )
+                : GMRC_VERSION,
+            true
+        );
+
         $completeRegistrationScriptPath =
             GMRC_PATH
             . 'assets/js/modules/characters/'

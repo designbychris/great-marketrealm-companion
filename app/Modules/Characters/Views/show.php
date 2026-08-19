@@ -1875,6 +1875,230 @@ $callingPathLabel = $callingPath !== ''
                         </article>
                     </div>
 
+                    <?php if (
+                        ! empty(
+                            $cunningRegister[
+                                'cunning_action'
+                            ]['actions']
+                        )
+                    ) : ?>
+                        <section
+                            class="gmrc-cunning-actions"
+                            aria-labelledby="gmrc-cunning-actions-title"
+                            data-cunning-actions
+                        >
+                            <header>
+                                <div>
+                                    <p class="gmrc-eyebrow">
+                                        Active Play
+                                    </p>
+                                    <h4 id="gmrc-cunning-actions-title">
+                                        Cunning Actions
+                                    </h4>
+                                </div>
+                                <span>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $cunningRegister[
+                                                'cunning_action'
+                                            ]['cost']
+                                            ?? 'Bonus action'
+                                        )
+                                    ); ?>
+                                    ·
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $cunningRegister[
+                                                'cunning_action'
+                                            ]['refresh']
+                                            ?? 'Every turn'
+                                        )
+                                    ); ?>
+                                </span>
+                            </header>
+
+                            <div class="gmrc-cunning-actions__grid">
+                                <?php foreach (
+                                    $cunningRegister[
+                                        'cunning_action'
+                                    ]['actions']
+                                    as $cunningAction
+                                ) : ?>
+                                    <?php
+                                    $cunningRoll = is_array(
+                                        $cunningAction['roll']
+                                        ?? null
+                                    )
+                                        ? $cunningAction['roll']
+                                        : null;
+
+                                    $cunningUnlocked = ! empty(
+                                        $cunningAction['unlocked']
+                                    );
+                                    ?>
+                                    <article
+                                        class="<?php echo esc_attr(
+                                            $cunningUnlocked
+                                                ? 'is-unlocked'
+                                                : 'is-locked'
+                                        ); ?>"
+                                    >
+                                        <div class="gmrc-cunning-actions__title">
+                                            <span aria-hidden="true">
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $cunningAction['icon']
+                                                        ?? '◇'
+                                                    )
+                                                ); ?>
+                                            </span>
+                                            <div>
+                                                <small>
+                                                    <?php echo esc_html(
+                                                        $cunningUnlocked
+                                                            ? 'Ready every turn'
+                                                            : 'Unlocks at Level 2'
+                                                    ); ?>
+                                                </small>
+                                                <strong>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $cunningAction['label']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </strong>
+                                            </div>
+                                        </div>
+
+                                        <p>
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $cunningAction['summary']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </p>
+
+                                        <small>
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $cunningAction['detail']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </small>
+
+                                        <?php if (
+                                            is_array($cunningRoll)
+                                        ) : ?>
+                                            <button
+                                                type="button"
+                                                class="
+                                                    gmrc-guild-roll-trigger
+                                                    gmrc-cunning-action-button
+                                                "
+                                                data-guild-roll="d20"
+                                                data-roll-kind="<?php echo esc_attr(
+                                                    (string) (
+                                                        $cunningRoll['kind']
+                                                        ?? 'ability-check'
+                                                    )
+                                                ); ?>"
+                                                data-roll-source="<?php echo esc_attr(
+                                                    (string) (
+                                                        $cunningRoll['source']
+                                                        ?? 'Cunning Action'
+                                                    )
+                                                ); ?>"
+                                                data-roll-ability="<?php echo esc_attr(
+                                                    (string) (
+                                                        $cunningRoll['ability']
+                                                        ?? 'dexterity'
+                                                    )
+                                                ); ?>"
+                                                data-roll-proficiency="<?php echo esc_attr(
+                                                    (string) (
+                                                        $cunningRoll['proficiency']
+                                                        ?? 'none'
+                                                    )
+                                                ); ?>"
+                                                data-roll-label="<?php echo esc_attr(
+                                                    (string) (
+                                                        $cunningRoll['label']
+                                                        ?? 'Cunning Action'
+                                                    )
+                                                ); ?>"
+                                                data-roll-modifier="<?php echo esc_attr(
+                                                    (string) (
+                                                        $cunningRoll['modifier']
+                                                        ?? 0
+                                                    )
+                                                ); ?>"
+                                                data-roll-result-suffix="<?php echo esc_attr(
+                                                    (string) (
+                                                        $cunningRoll['result_suffix']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                                data-roll-default-mode="<?php echo esc_attr(
+                                                    (string) (
+                                                        $cunningRoll['default_mode']
+                                                        ?? 'normal'
+                                                    )
+                                                ); ?>"
+                                                <?php echo
+                                                    ! $cunningUnlocked
+                                                        ? 'disabled'
+                                                        : ''; ?>
+                                            >
+                                                <span aria-hidden="true">🎲</span>
+                                                Roll Hide
+                                            </button>
+                                        <?php else : ?>
+                                            <button
+                                                type="button"
+                                                class="gmrc-cunning-action-button"
+                                                data-cunning-declare="<?php echo esc_attr(
+                                                    (string) (
+                                                        $cunningAction['key']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                                data-cunning-label="<?php echo esc_attr(
+                                                    (string) (
+                                                        $cunningAction['label']
+                                                        ?? 'Cunning Action'
+                                                    )
+                                                ); ?>"
+                                                <?php echo
+                                                    ! $cunningUnlocked
+                                                        ? 'disabled'
+                                                        : ''; ?>
+                                            >
+                                                Use <?php echo esc_html(
+                                                    (string) (
+                                                        $cunningAction['label']
+                                                        ?? 'Action'
+                                                    )
+                                                ); ?>
+                                            </button>
+                                        <?php endif; ?>
+                                    </article>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <p
+                                class="gmrc-cunning-actions__status"
+                                data-cunning-status
+                                role="status"
+                                aria-live="polite"
+                            >
+                                Choose a Cunning Action when it is this Rogue’s turn.
+                            </p>
+                        </section>
+                    <?php endif; ?>
+
                     <div class="gmrc-cunning-register__features">
                         <?php foreach (
                             ($cunningRegister['features'] ?? [])
