@@ -9,6 +9,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Contracts\Pat
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\WizardPathProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\FighterPathProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\BarbarianPathProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\RogueArchetypeProgression;
 
 defined('ABSPATH') || exit;
 
@@ -28,6 +29,7 @@ final class PathProgressionCatalogue
                 new WizardPathProgression(),
                 new FighterPathProgression(),
                 new BarbarianPathProgression(),
+                new RogueArchetypeProgression(),
             ];
     }
 

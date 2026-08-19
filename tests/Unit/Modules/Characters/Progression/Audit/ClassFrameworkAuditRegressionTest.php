@@ -105,6 +105,32 @@ final class ClassFrameworkAuditRegressionTest extends TestCase
         );
     }
 
+    public function testRogueIsNowSpecialistCalling(): void
+    {
+        $profile = (new ClassCapabilityCatalogue())
+            ->forClass(
+                CharacterClass::fromString('rogue')
+            );
+
+        self::assertSame(
+            ClassCapabilityProfile::SPECIALIST,
+            $profile->implementationState()
+        );
+
+        self::assertSame(
+            'reference',
+            $profile->advancementStatus()
+        );
+
+        self::assertFalse(
+            $profile->hasSpellcastingProgression()
+        );
+
+        self::assertTrue(
+            $profile->hasCallingPathProgression()
+        );
+    }
+
     public function testGreatMarketrealmCallingsAreAuditedWithoutInventingProgression(): void
     {
         $catalogue = new ClassCapabilityCatalogue();
@@ -131,12 +157,12 @@ final class ClassFrameworkAuditRegressionTest extends TestCase
         }
     }
 
-    public function testAuditCurrentlyFindsWizardFighterAndBarbarianAsSpecialists(): void
+    public function testAuditCurrentlyFindsWizardFighterBarbarianAndRogueAsSpecialists(): void
     {
         $catalogue = new ClassCapabilityCatalogue();
 
         self::assertCount(
-            3,
+            4,
             $catalogue->specialist()
         );
 
@@ -144,6 +170,7 @@ final class ClassFrameworkAuditRegressionTest extends TestCase
             [
                 'barbarian',
                 'fighter',
+                'rogue',
                 'wizard',
             ],
             array_values(
@@ -165,7 +192,7 @@ final class ClassFrameworkAuditRegressionTest extends TestCase
         $catalogue = new ClassCapabilityCatalogue();
 
         self::assertCount(
-            count(CharacterClass::identifiers()) - 3,
+            count(CharacterClass::identifiers()) - 4,
             $catalogue->foundation()
         );
     }
