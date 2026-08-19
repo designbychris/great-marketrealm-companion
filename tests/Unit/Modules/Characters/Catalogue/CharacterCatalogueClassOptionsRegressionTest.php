@@ -43,7 +43,7 @@ final class CharacterCatalogueClassOptionsRegressionTest extends TestCase
         );
 
         self::assertIsArray($catalogue);
-        self::assertSame('3.7.2', $catalogue['version']);
+        self::assertSame('3.7.3', $catalogue['version']);
     }
 
     private function root(): string
