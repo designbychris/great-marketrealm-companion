@@ -58,6 +58,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\GuildCerti
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\AdvancementChoiceRequirementResolver;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\AdvancementHistoryRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterCatalogueRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Services\SubclassPreviewCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterBuildProfileRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Repositories\CharacterPortraitRepository;
@@ -194,6 +195,11 @@ final class CharacterController
                     'catalogueClasses' => $this->catalogue->classOptions(),
                     'catalogueHeritages' => $this->catalogue->heritages(),
                     'catalogueSubclasses' => $this->catalogue->subclasses(),
+                    'subclassPreviews' => (
+                        new SubclassPreviewCatalogue(
+                            $this->catalogue
+                        )
+                    )->all(),
     
                     /*
                      * The provisional portrait uses the same rendering

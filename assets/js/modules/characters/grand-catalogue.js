@@ -69,6 +69,34 @@
                 )?.value || '';
         };
 
+        const refreshSubclassPreview = function () {
+            const selected =
+                subclass instanceof HTMLSelectElement
+                    ? subclass.value
+                    : '';
+
+            document
+                .querySelectorAll(
+                    '[data-subclass-preview]'
+                )
+                .forEach(
+                    function (preview) {
+                        if (!(preview instanceof HTMLElement)) {
+                            return;
+                        }
+
+                        const visible =
+                            selected !== ''
+                            && preview.dataset.subclassPreview
+                                === selected
+                            && preview.dataset.parent
+                                === characterClass();
+
+                        preview.hidden = !visible;
+                    }
+                );
+        };
+
         const refresh = function () {
             filter(
                 heritage,
@@ -79,6 +107,8 @@
                 subclass,
                 characterClass()
             );
+
+            refreshSubclassPreview();
         };
 
         document.addEventListener(
@@ -105,6 +135,13 @@
                  * key into portrait_heritage, which stores the rendered asset
                  * identifier for persistence.
                  */
+                if (
+                    target === subclass
+                    && subclass instanceof HTMLSelectElement
+                ) {
+                    refreshSubclassPreview();
+                }
+
                 if (
                     target === heritage
                     && heritage instanceof HTMLSelectElement

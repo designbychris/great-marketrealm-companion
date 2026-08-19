@@ -182,6 +182,30 @@ final class PathChoiceGuideCatalogue
             'identity' =>
                 'A soft-looking but remarkably resilient discipline built around yielding without collapsing.',
         ],
+        'oath-of-inventory' => [
+            'playstyle' =>
+                'Protective, methodical support with a strong focus on safeguarding allies, resources and battlefield order.',
+            'best_for' =>
+                'Players who enjoy being the dependable centre of the Fellowship and solving problems through preparation and protection.',
+            'identity' =>
+                'A sacred vow of stewardship, accountability and ensuring that nothing entrusted to the Paladin is carelessly lost, spoiled or abandoned.',
+        ],
+        'oath-of-the-colonel' => [
+            'playstyle' =>
+                'Commanding frontline pressure, disciplined aggression and rallying allies through bold martial leadership.',
+            'best_for' =>
+                'Players who want a charismatic battle leader with theatrical confidence and unmistakable fast-feast flavour.',
+            'identity' =>
+                'A legendary fried-feast oath built around discipline, command presence and the sacred responsibility of leading from the front.',
+        ],
+        'oath-of-the-creamfather' => [
+            'playstyle' =>
+                'Protective support, restorative presence and calm control wrapped in an unexpectedly formidable sacred persona.',
+            'best_for' =>
+                'Players who enjoy supporting allies, controlling the emotional tone of encounters and mixing kindness with intimidating authority.',
+            'identity' =>
+                'A rich and ceremonial oath of hospitality, protection and loyalty whose gentleness should never be mistaken for weakness.',
+        ],
     ];
 
     /**

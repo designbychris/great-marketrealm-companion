@@ -120,6 +120,7 @@ $catalogueRaces = is_array($catalogueRaces ?? null) ? $catalogueRaces : Race::la
 $catalogueClasses = is_array($catalogueClasses ?? null) ? $catalogueClasses : CharacterClass::labels();
 $catalogueHeritages = is_array($catalogueHeritages ?? null) ? $catalogueHeritages : [];
 $catalogueSubclasses = is_array($catalogueSubclasses ?? null) ? $catalogueSubclasses : [];
+$subclassPreviews = is_array($subclassPreviews ?? null) ? $subclassPreviews : [];
 
 $classValue = isset($old['class'])
     && is_scalar($old['class'])
@@ -898,7 +899,179 @@ $charactersUrl = add_query_arg(
                         </option>
                     <?php endforeach; ?>
                 </select>
-                <p>This records the intended path without forcing a Level 1 subclass choice.</p>
+                <p>
+                    This records the intended path without forcing a Level 1 subclass choice.
+                    Select a path to preview how it feels before committing.
+                </p>
+
+                <div
+                    class="gmrc-subclass-preview"
+                    data-subclass-preview-region
+                    aria-live="polite"
+                    aria-atomic="true"
+                >
+                    <?php foreach (
+                        $subclassPreviews
+                        as $previewKey => $preview
+                    ) : ?>
+                        <?php
+                        $previewSelected =
+                            $subclassValue
+                            === (string) $previewKey;
+
+                        $giftPreview = is_array(
+                            $preview['gift_preview']
+                            ?? null
+                        )
+                            ? $preview['gift_preview']
+                            : [];
+                        ?>
+                        <article
+                            class="gmrc-subclass-preview__card"
+                            data-subclass-preview="<?php echo esc_attr(
+                                (string) $previewKey
+                            ); ?>"
+                            data-parent="<?php echo esc_attr(
+                                (string) (
+                                    $preview['parent']
+                                    ?? ''
+                                )
+                            ); ?>"
+                            <?php echo $previewSelected
+                                ? ''
+                                : 'hidden'; ?>
+                        >
+                            <header>
+                                <p class="gmrc-eyebrow">
+                                    Future Calling Path
+                                </p>
+                                <h3>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $preview['label']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </h3>
+                            </header>
+
+                            <?php if (
+                                trim(
+                                    (string) (
+                                        $preview['identity']
+                                        ?? ''
+                                    )
+                                ) !== ''
+                            ) : ?>
+                                <p class="gmrc-subclass-preview__identity">
+                                    <?php echo esc_html(
+                                        (string) $preview['identity']
+                                    ); ?>
+                                </p>
+                            <?php elseif (
+                                trim(
+                                    (string) (
+                                        $preview['detail']
+                                        ?? ''
+                                    )
+                                ) !== ''
+                            ) : ?>
+                                <p class="gmrc-subclass-preview__identity">
+                                    <?php echo esc_html(
+                                        (string) $preview['detail']
+                                    ); ?>
+                                </p>
+                            <?php endif; ?>
+
+                            <div class="gmrc-subclass-preview__guidance">
+                                <?php if (
+                                    trim(
+                                        (string) (
+                                            $preview['playstyle']
+                                            ?? ''
+                                        )
+                                    ) !== ''
+                                ) : ?>
+                                    <div>
+                                        <strong>How it plays</strong>
+                                        <p>
+                                            <?php echo esc_html(
+                                                (string) $preview['playstyle']
+                                            ); ?>
+                                        </p>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if (
+                                    trim(
+                                        (string) (
+                                            $preview['best_for']
+                                            ?? ''
+                                        )
+                                    ) !== ''
+                                ) : ?>
+                                    <div>
+                                        <strong>Best for</strong>
+                                        <p>
+                                            <?php echo esc_html(
+                                                (string) $preview['best_for']
+                                            ); ?>
+                                        </p>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+
+                            <?php if ($giftPreview !== []) : ?>
+                                <div class="gmrc-subclass-preview__gifts">
+                                    <strong>Future gifts</strong>
+                                    <ul>
+                                        <?php foreach (
+                                            $giftPreview
+                                            as $gift
+                                        ) : ?>
+                                            <li>
+                                                <span>
+                                                    Level <?php echo esc_html(
+                                                        (string) (
+                                                            $gift['level']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </span>
+                                                <strong>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $gift['label']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </strong>
+                                                <?php if (
+                                                    trim(
+                                                        (string) (
+                                                            $gift['summary']
+                                                            ?? ''
+                                                        )
+                                                    ) !== ''
+                                                ) : ?>
+                                                    <small>
+                                                        <?php echo esc_html(
+                                                            (string) $gift['summary']
+                                                        ); ?>
+                                                    </small>
+                                                <?php endif; ?>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            <?php else : ?>
+                                <p class="gmrc-subclass-preview__coming-soon">
+                                    Future specialist gifts will appear here as this Calling’s progression is Guild Certified.
+                                </p>
+                            <?php endif; ?>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </section>
 
