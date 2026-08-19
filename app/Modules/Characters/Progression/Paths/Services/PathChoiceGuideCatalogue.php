@@ -246,6 +246,38 @@ final class PathChoiceGuideCatalogue
             'identity' =>
                 'A severe but honourable oath of sacred steel, precise force and standing where danger is thickest.',
         ],
+        'pact-of-the-mascot' => [
+            'playstyle' =>
+                'Charm, spectacle, uncanny brand-loyalty magic and manipulating attention through a larger-than-life Patron presence.',
+            'best_for' =>
+                'Players who want a social, theatrical Warlock whose bargain feels weirdly cheerful until it becomes unsettling.',
+            'identity' =>
+                'A contract with an impossible Marketrealm mascot whose smiling presence may be far older, stranger and more demanding than the costume suggests.',
+        ],
+        'the-forgotten-freezer' => [
+            'playstyle' =>
+                'Cold control, eerie endurance and battlefield pressure inspired by abandoned aisles and things left too long in the dark.',
+            'best_for' =>
+                'Players who enjoy unsettling atmosphere, cold-themed magic and a Patron that feels distant, ancient and half-buried in frost.',
+            'identity' =>
+                'A pact sworn to something sleeping beyond the humming doors of a freezer aisle nobody remembers stocking.',
+        ],
+        'the-spoilfather' => [
+            'playstyle' =>
+                'Attrition, decay, curses and making enemies feel as though every passing round is turning against them.',
+            'best_for' =>
+                'Players who want a grim Warlock centred on corruption, inevitability and the dangerous power of rot.',
+            'identity' =>
+                'An agreement with a patient sovereign of spoilage who understands that all fresh things eventually change.',
+        ],
+        'the-sugar-fiend' => [
+            'playstyle' =>
+                'Temptation, bursts of magical energy, emotional manipulation and rewards that may carry a hidden cost.',
+            'best_for' =>
+                'Players who want a colourful, volatile Warlock whose magic is enticing, excessive and just slightly too sweet.',
+            'identity' =>
+                'A dazzling confectionery Patron offering impossible sweetness in exchange for promises that become harder to read the longer you stare at them.',
+        ],
     ];
 
     /**

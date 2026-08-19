@@ -243,6 +243,13 @@ $sacredRegister = isset($sacredRegister)
             'supported' => false,
         ];
 
+$patronRegister = isset($patronRegister)
+    && is_array($patronRegister)
+        ? $patronRegister
+        : [
+            'supported' => false,
+        ];
+
 $progression = isset($progression) && is_array($progression)
     ? $progression
     : [
@@ -1770,6 +1777,240 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-eyebrow">Dangerously Magical</p>
                 <h2 id="gmrc-arcane-pantry-title">The Arcane Pantry</h2>
             </header>
+
+            <?php if (
+                ! empty($patronRegister['supported'])
+            ) : ?>
+                <section
+                    class="gmrc-patron-register"
+                    aria-labelledby="gmrc-patron-register-title"
+                    data-patron-register
+                >
+                    <header class="gmrc-patron-register__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Warlock Contract Record
+                            </p>
+                            <h3 id="gmrc-patron-register-title">
+                                The Patron Contract Register
+                            </h3>
+                            <p>
+                                Certified bargain terms at Warlock Level
+                                <?php echo esc_html(
+                                    (string) (
+                                        $patronRegister['level']
+                                        ?? $level
+                                    )
+                                ); ?>.
+                            </p>
+                        </div>
+
+                        <span class="gmrc-patron-register__seal">
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $patronRegister[
+                                            'pact_magic'
+                                        ]['slots']
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>
+                                Pact slots · Level
+                                <?php echo esc_html(
+                                    (string) (
+                                        $patronRegister[
+                                            'pact_magic'
+                                        ]['slot_level']
+                                        ?? 1
+                                    )
+                                ); ?>
+                            </small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-patron-register__summary">
+                        <article>
+                            <small>Patron</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $patronRegister[
+                                            'patron'
+                                        ]['label']
+                                        ?? 'Awaiting Patron Contract'
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>Contract begins at Level 1</span>
+                        </article>
+
+                        <article>
+                            <small>Eldritch Invocations</small>
+                            <strong>
+                                <?php if (
+                                    ! empty(
+                                        $patronRegister[
+                                            'invocations'
+                                        ]['unlocked']
+                                    )
+                                ) : ?>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $patronRegister[
+                                                'invocations'
+                                            ]['known']
+                                            ?? 0
+                                        )
+                                    ); ?>
+                                    known
+                                <?php else : ?>
+                                    Not yet
+                                <?php endif; ?>
+                            </strong>
+                            <span>Open from Level 2</span>
+                        </article>
+
+                        <article>
+                            <small>Pact Boon</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $patronRegister[
+                                            'pact_boon'
+                                        ]['label']
+                                        ?? 'Opens at Level 3'
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>Deeper contract expression</span>
+                        </article>
+
+                        <article>
+                            <small>Mystic Arcanum</small>
+                            <strong>
+                                <?php
+                                $arcanumLevels = is_array(
+                                    $patronRegister[
+                                        'mystic_arcanum'
+                                    ]['levels']
+                                    ?? null
+                                )
+                                    ? $patronRegister[
+                                        'mystic_arcanum'
+                                    ]['levels']
+                                    : [];
+
+                                echo esc_html(
+                                    $arcanumLevels !== []
+                                        ? implode(
+                                            ', ',
+                                            array_map(
+                                                static fn (
+                                                    int $circle
+                                                ): string =>
+                                                    $circle . 'th',
+                                                $arcanumLevels
+                                            )
+                                        )
+                                        : 'Not yet'
+                                );
+                                ?>
+                            </strong>
+                            <span>Begins at Level 11</span>
+                        </article>
+
+                        <article>
+                            <small>Pact Save DC</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $patronRegister[
+                                            'spell_save_dc'
+                                        ]
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>Charisma based</span>
+                        </article>
+
+                        <article>
+                            <small>Pact Attack</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    sprintf(
+                                        '%+d',
+                                        (int) (
+                                            $patronRegister[
+                                                'spell_attack'
+                                            ]
+                                            ?? 0
+                                        )
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>Spell attack bonus</span>
+                        </article>
+                    </div>
+
+                    <div class="gmrc-patron-register__footer">
+                        <div>
+                            <span>Pact Magic refresh</span>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $patronRegister[
+                                            'pact_magic'
+                                        ]['refresh']
+                                        ?? 'Short or long rest'
+                                    )
+                                ); ?>
+                            </strong>
+                        </div>
+
+                        <?php if (
+                            is_array(
+                                $patronRegister[
+                                    'next_milestone'
+                                ]
+                                ?? null
+                            )
+                        ) : ?>
+                            <div>
+                                <span>Next contract milestone</span>
+                                <strong>
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $patronRegister[
+                                                'next_milestone'
+                                            ]['level']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                    ·
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $patronRegister[
+                                                'next_milestone'
+                                            ]['label']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </strong>
+                            </div>
+                        <?php else : ?>
+                            <div>
+                                <span>Warlock progression</span>
+                                <strong>
+                                    Contract fully matured
+                                </strong>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </section>
+            <?php endif; ?>
 
             <?php if (
                 ! empty($sacredRegister['supported'])

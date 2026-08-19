@@ -2323,3 +2323,96 @@
         border-color: ButtonText;
     }
 }
+
+
+/* Phase III.12.7A — The Warlock's Patron Contract Register */
+.gmrc-patron-register {
+    margin: 0 0 1rem;
+    padding: .9rem;
+    border: 1px solid rgba(81, 42, 95, .28);
+    border-radius: .5rem;
+    background: linear-gradient(
+        135deg,
+        rgba(81, 42, 95, .08),
+        rgba(250, 242, 255, .74)
+    );
+}
+
+.gmrc-patron-register__heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: .75rem;
+}
+
+.gmrc-patron-register__seal {
+    display: grid;
+    place-items: center;
+    min-width: 7.5rem;
+    padding: .55rem;
+    border: 1px solid rgba(81, 42, 95, .24);
+    border-radius: .4rem;
+    background: rgba(255, 250, 255, .8);
+    text-align: center;
+}
+
+.gmrc-patron-register__seal strong {
+    font-size: 1.4rem;
+}
+
+.gmrc-patron-register__summary,
+.gmrc-patron-register__footer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.gmrc-patron-register__summary article,
+.gmrc-patron-register__footer > div {
+    display: grid;
+    gap: .18rem;
+    min-width: 0;
+    padding: .62rem;
+    border: 1px solid rgba(81, 42, 95, .16);
+    border-radius: .35rem;
+    background: rgba(255, 251, 255, .72);
+}
+
+.gmrc-patron-register__summary article span,
+.gmrc-patron-register__footer span {
+    font-size: .72rem;
+    opacity: .74;
+}
+
+.gmrc-patron-register__footer {
+    margin-top: .7rem;
+}
+
+@media (max-width: 840px) {
+    .gmrc-patron-register__summary,
+    .gmrc-patron-register__footer {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .gmrc-patron-register__heading {
+        display: grid;
+    }
+
+    .gmrc-patron-register__seal {
+        width: 100%;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-patron-register,
+    .gmrc-patron-register__seal,
+    .gmrc-patron-register__summary article,
+    .gmrc-patron-register__footer > div {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}
