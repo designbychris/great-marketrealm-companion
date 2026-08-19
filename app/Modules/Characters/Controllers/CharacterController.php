@@ -39,7 +39,9 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\RisingRegi
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Martial\Services\FighterMartialRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Primal\Services\BarbarianRageRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassResourceRepository;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassConditionRepository;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\FighterBattleReserveService;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\BarbarianRageReserveService;
 use InvalidArgumentException;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\LivingRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\AdvancementLedgerPresenter;
@@ -656,10 +658,18 @@ final class CharacterController
             $activeResources
         );
 
+        $activeConditions = (
+            new ActiveClassConditionRepository()
+        )->find(
+            $character->id()
+        );
+
         $rageRegister = (
             new BarbarianRageRegisterPresenter()
         )->present(
-            $character
+            $character,
+            $activeResources,
+            $activeConditions
         );
 
         $progression = (new RisingRegisterPresenter())
@@ -1081,6 +1091,168 @@ final class CharacterController
             $rest === 'short'
                 ? 'Short-rest Battle Reserves have been restored.'
                 : 'All Battle Reserves have been restored after the long rest.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Enter Barbarian Rage and persist both reserve expenditure and state.
+     */
+    public function enterRage(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $resources = new ActiveClassResourceRepository();
+        $conditions = new ActiveClassConditionRepository();
+
+        try {
+            $next = (
+                new BarbarianRageReserveService()
+            )->enter(
+                $character,
+                $resources->find(
+                    $character->id()
+                ),
+                $conditions->find(
+                    $character->id()
+                )
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $resources->save(
+            $character->id(),
+            $next['resources']
+        );
+
+        $conditions->save(
+            $character->id(),
+            $next['conditions']
+        );
+
+        $this->flash->success(
+            'Rage is active. The Barbarian’s fury has been entered into the field record.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * End the currently active Barbarian Rage.
+     */
+    public function endRage(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $conditions = new ActiveClassConditionRepository();
+
+        try {
+            $state = (
+                new BarbarianRageReserveService()
+            )->end(
+                $character,
+                $conditions->find(
+                    $character->id()
+                )
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $conditions->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            'Rage has ended.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Restore Barbarian Rage reserves after a long rest.
+     */
+    public function restRage(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $resources = new ActiveClassResourceRepository();
+        $conditions = new ActiveClassConditionRepository();
+
+        try {
+            $next = (
+                new BarbarianRageReserveService()
+            )->longRest(
+                $character,
+                $resources->find(
+                    $character->id()
+                ),
+                $conditions->find(
+                    $character->id()
+                )
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $resources->save(
+            $character->id(),
+            $next['resources']
+        );
+
+        $conditions->save(
+            $character->id(),
+            $next['conditions']
+        );
+
+        $this->flash->success(
+            'A long rest has restored the Barbarian’s Rage Reserves.'
         );
 
         return $this->responses->redirect(

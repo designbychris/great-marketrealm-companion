@@ -1787,11 +1787,17 @@ $callingPathLabel = $callingPath !== ''
                                 )
                                     ? 'Unlimited Rages'
                                     : sprintf(
-                                        '%d Rages per long rest',
+                                        '%d of %d Rages remaining',
                                         (int) (
                                             $rageRegister[
                                                 'rage'
-                                            ]['uses']
+                                            ]['remaining']
+                                            ?? 0
+                                        ),
+                                        (int) (
+                                            $rageRegister[
+                                                'rage'
+                                            ]['maximum']
                                             ?? 0
                                         )
                                     )
@@ -1805,15 +1811,24 @@ $callingPathLabel = $callingPath !== ''
                                         ]['unlimited']
                                     )
                                         ? '∞'
-                                        : (string) (
-                                            $rageRegister[
-                                                'rage'
-                                            ]['uses']
-                                            ?? 0
+                                        : sprintf(
+                                            '%d/%d',
+                                            (int) (
+                                                $rageRegister[
+                                                    'rage'
+                                                ]['remaining']
+                                                ?? 0
+                                            ),
+                                            (int) (
+                                                $rageRegister[
+                                                    'rage'
+                                                ]['maximum']
+                                                ?? 0
+                                            )
                                         )
                                 ); ?>
                             </strong>
-                            <small>Rages</small>
+                            <small>Rages remaining</small>
                         </span>
                     </header>
 
@@ -1916,6 +1931,169 @@ $callingPathLabel = $callingPath !== ''
                             </div>
                         </dl>
                     </div>
+
+                    <section
+                        class="gmrc-rage-register__controls <?php echo
+                            ! empty(
+                                $rageRegister[
+                                    'rage'
+                                ]['active']
+                            )
+                                ? 'is-raging'
+                                : ''; ?>"
+                        aria-labelledby="gmrc-rage-reserves-title"
+                        data-rage-active="<?php echo
+                            ! empty(
+                                $rageRegister[
+                                    'rage'
+                                ]['active']
+                            )
+                                ? 'true'
+                                : 'false'; ?>"
+                    >
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Active Play
+                            </p>
+                            <h4 id="gmrc-rage-reserves-title">
+                                Rage Reserves
+                            </h4>
+                            <p>
+                                <?php if (
+                                    ! empty(
+                                        $rageRegister[
+                                            'rage'
+                                        ]['active']
+                                    )
+                                ) : ?>
+                                    🔥 <strong>RAGING</strong> —
+                                    Rage damage is currently
+                                    +<?php echo esc_html(
+                                        (string) (
+                                            $rageRegister[
+                                                'rage'
+                                            ]['damage_bonus']
+                                            ?? 2
+                                        )
+                                    ); ?>.
+                                <?php else : ?>
+                                    Rage is currently dormant.
+                                <?php endif; ?>
+                            </p>
+                        </div>
+
+                        <div class="gmrc-rage-register__actions">
+                            <?php if (
+                                ! empty(
+                                    $rageRegister[
+                                        'rage'
+                                    ]['active']
+                                )
+                            ) : ?>
+                                <form
+                                    action="<?php echo esc_url(
+                                        $appRequestUrl
+                                    ); ?>"
+                                    method="post"
+                                >
+                                    <input type="hidden" name="action" value="gmrc_app_request">
+                                    <input
+                                        type="hidden"
+                                        name="gmrc_route"
+                                        value="<?php echo esc_attr(
+                                            'characters/'
+                                            . $characterId
+                                            . '/rage/end'
+                                        ); ?>"
+                                    >
+                                    <?php wp_nonce_field(
+                                        'gmrc_character_rage_'
+                                        . $characterId,
+                                        'gmrc_nonce'
+                                    ); ?>
+                                    <button
+                                        type="submit"
+                                        class="gmrc-rage-action-button gmrc-rage-action-button--quiet"
+                                    >
+                                        End Rage
+                                    </button>
+                                </form>
+                            <?php else : ?>
+                                <form
+                                    action="<?php echo esc_url(
+                                        $appRequestUrl
+                                    ); ?>"
+                                    method="post"
+                                >
+                                    <input type="hidden" name="action" value="gmrc_app_request">
+                                    <input
+                                        type="hidden"
+                                        name="gmrc_route"
+                                        value="<?php echo esc_attr(
+                                            'characters/'
+                                            . $characterId
+                                            . '/rage/enter'
+                                        ); ?>"
+                                    >
+                                    <?php wp_nonce_field(
+                                        'gmrc_character_rage_'
+                                        . $characterId,
+                                        'gmrc_nonce'
+                                    ); ?>
+                                    <button
+                                        type="submit"
+                                        class="gmrc-rage-action-button"
+                                        <?php echo (
+                                            empty(
+                                                $rageRegister[
+                                                    'rage'
+                                                ]['unlimited']
+                                            )
+                                            && (int) (
+                                                $rageRegister[
+                                                    'rage'
+                                                ]['remaining']
+                                                ?? 0
+                                            ) < 1
+                                        )
+                                            ? 'disabled'
+                                            : ''; ?>
+                                    >
+                                        🔥 Enter Rage
+                                    </button>
+                                </form>
+                            <?php endif; ?>
+
+                            <form
+                                action="<?php echo esc_url(
+                                    $appRequestUrl
+                                ); ?>"
+                                method="post"
+                            >
+                                <input type="hidden" name="action" value="gmrc_app_request">
+                                <input
+                                    type="hidden"
+                                    name="gmrc_route"
+                                    value="<?php echo esc_attr(
+                                        'characters/'
+                                        . $characterId
+                                        . '/rage/rest'
+                                    ); ?>"
+                                >
+                                <?php wp_nonce_field(
+                                    'gmrc_character_rage_'
+                                    . $characterId,
+                                    'gmrc_nonce'
+                                ); ?>
+                                <button
+                                    type="submit"
+                                    class="gmrc-rage-action-button gmrc-rage-action-button--rest"
+                                >
+                                    Take Long Rest
+                                </button>
+                            </form>
+                        </div>
+                    </section>
 
                     <div class="gmrc-rage-register__features">
                         <?php foreach (

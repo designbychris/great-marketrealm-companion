@@ -1084,3 +1084,112 @@
         color: CanvasText;
     }
 }
+
+
+/* ===============================================================
+ * Phase III.12.3C — The Barbarian's Rage Reserves
+ * =============================================================== */
+
+.gmrc-rage-register__controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-end;
+    margin: .75rem 0;
+    padding: .7rem;
+    border: 1px dashed rgba(132, 61, 37, .3);
+    border-radius: .4rem;
+    background: rgba(255, 245, 220, .52);
+}
+
+.gmrc-rage-register__controls h4,
+.gmrc-rage-register__controls p {
+    margin-top: 0;
+}
+
+.gmrc-rage-register__controls p:last-child {
+    margin-bottom: 0;
+}
+
+.gmrc-rage-register__controls.is-raging {
+    border-style: solid;
+    box-shadow:
+        0 0 0 .12rem rgba(156, 72, 40, .08),
+        0 .35rem .8rem rgba(98, 42, 25, .1);
+    animation: gmrc-rage-pulse 2.8s ease-in-out infinite;
+}
+
+.gmrc-rage-register__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    justify-content: flex-end;
+}
+
+.gmrc-rage-action-button {
+    min-height: 2.35rem;
+    padding: .48rem .7rem;
+    border: 1px solid rgba(111, 55, 35, .38);
+    border-radius: .32rem;
+    background: rgba(156, 72, 40, .14);
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.gmrc-rage-action-button--quiet,
+.gmrc-rage-action-button--rest {
+    background: rgba(255, 250, 232, .76);
+}
+
+.gmrc-rage-action-button:hover:not(:disabled),
+.gmrc-rage-action-button:focus-visible:not(:disabled) {
+    background: rgba(156, 72, 40, .24);
+}
+
+.gmrc-rage-action-button:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 2px;
+}
+
+.gmrc-rage-action-button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+@keyframes gmrc-rage-pulse {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-.06rem);
+    }
+}
+
+@media (max-width: 700px) {
+    .gmrc-rage-register__controls {
+        display: grid;
+        align-items: stretch;
+    }
+
+    .gmrc-rage-register__actions {
+        justify-content: flex-start;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-rage-register__controls.is-raging {
+        animation: none;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-rage-register__controls,
+    .gmrc-rage-action-button {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

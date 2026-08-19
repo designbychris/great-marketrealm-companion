@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Primal\Services;
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Models\ActiveClassConditionState;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Models\ActiveClassResourceState;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\BarbarianRageReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Models\PathGiftCatalogue;
 
@@ -106,7 +109,9 @@ final class BarbarianRageRegisterPresenter
      * @return array<string,mixed>
      */
     public function present(
-        Character $character
+        Character $character,
+        ?ActiveClassResourceState $resources = null,
+        ?ActiveClassConditionState $conditions = null
     ): array {
         if (
             $character
@@ -121,13 +126,47 @@ final class BarbarianRageRegisterPresenter
 
         $level = $character->level()->value();
 
+        $resources ??=
+            ActiveClassResourceState::fresh();
+
+        $conditions ??=
+            ActiveClassConditionState::fresh();
+
+        $rageReserves =
+            new BarbarianRageReserveService();
+
+        $unlimited =
+            $rageReserves->unlimited(
+                $character
+            );
+
+        $maximum =
+            $rageReserves->maximum(
+                $character
+            );
+
         return [
             'supported' => true,
             'level' => $level,
             'rage' => [
-                'uses' =>
-                    $this->rageUses($level),
-                'unlimited' => $level >= 20,
+                'uses' => $maximum,
+                'maximum' => $maximum,
+                'unlimited' => $unlimited,
+                'expended' =>
+                    $resources->expended(
+                        'rage'
+                    ),
+                'remaining' =>
+                    $unlimited
+                        ? null
+                        : $resources->remaining(
+                            'rage',
+                            $maximum
+                        ),
+                'active' =>
+                    $conditions->active(
+                        'rage'
+                    ),
                 'damage_bonus' =>
                     $this->rageDamageBonus(
                         $level
@@ -215,32 +254,6 @@ final class BarbarianRageRegisterPresenter
             'milestones' =>
                 array_values(self::MILESTONES),
         ];
-    }
-
-    private function rageUses(
-        int $level
-    ): int {
-        if ($level >= 20) {
-            return 0;
-        }
-
-        if ($level >= 17) {
-            return 6;
-        }
-
-        if ($level >= 12) {
-            return 5;
-        }
-
-        if ($level >= 6) {
-            return 4;
-        }
-
-        if ($level >= 3) {
-            return 3;
-        }
-
-        return 2;
     }
 
     private function rageDamageBonus(
