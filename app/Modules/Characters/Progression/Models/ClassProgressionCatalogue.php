@@ -11,6 +11,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\BarbarianProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\RogueProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\MonkProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\PaladinProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\WizardProgression;
 use InvalidArgumentException;
 
@@ -36,6 +37,7 @@ final class ClassProgressionCatalogue
                 new BarbarianProgression(),
                 new RogueProgression(),
                 new MonkProgression(),
+                new PaladinProgression(),
                 new RegisteredCallingProgression(),
             ];
     }
