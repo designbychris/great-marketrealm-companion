@@ -12,6 +12,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\B
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\RogueArchetypeProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\MonkWayProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\PaladinOathProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\WarlockPatronProgression;
 
 defined('ABSPATH') || exit;
 
@@ -34,6 +35,7 @@ final class PathProgressionCatalogue
                 new RogueArchetypeProgression(),
                 new MonkWayProgression(),
                 new PaladinOathProgression(),
+                new WarlockPatronProgression(),
             ];
     }
 
