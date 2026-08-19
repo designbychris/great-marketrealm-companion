@@ -38,6 +38,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\ArcanePantryPre
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\RisingRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Martial\Services\FighterMartialRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Primal\Services\BarbarianRageRegisterPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Cunning\Services\RogueCunningRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassResourceRepository;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassConditionRepository;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\FighterBattleReserveService;
@@ -672,6 +673,12 @@ final class CharacterController
             $activeConditions
         );
 
+        $cunningRegister = (
+            new RogueCunningRegisterPresenter()
+        )->present(
+            $character
+        );
+
         $progression = (new RisingRegisterPresenter())
             ->present($character);
 
@@ -736,6 +743,7 @@ final class CharacterController
                     'arcana' => $arcana,
                     'martialRegister' => $martialRegister,
                     'rageRegister' => $rageRegister,
+                    'cunningRegister' => $cunningRegister,
                     'progression' => $progression,
                     'pathGifts' => $pathGifts,
                     'advancementHistory' =>

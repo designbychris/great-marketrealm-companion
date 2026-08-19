@@ -222,6 +222,13 @@ $rageRegister = isset($rageRegister)
             'supported' => false,
         ];
 
+$cunningRegister = isset($cunningRegister)
+    && is_array($cunningRegister)
+        ? $cunningRegister
+        : [
+            'supported' => false,
+        ];
+
 $progression = isset($progression) && is_array($progression)
     ? $progression
     : [
@@ -1749,6 +1756,248 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-eyebrow">Dangerously Magical</p>
                 <h2 id="gmrc-arcane-pantry-title">The Arcane Pantry</h2>
             </header>
+
+            <?php if (
+                ! empty($cunningRegister['supported'])
+            ) : ?>
+                <section
+                    class="gmrc-cunning-register"
+                    aria-labelledby="gmrc-cunning-register-title"
+                    data-cunning-register
+                >
+                    <header class="gmrc-cunning-register__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Rogue Field Record
+                            </p>
+                            <h3 id="gmrc-cunning-register-title">
+                                The Cunning Register
+                            </h3>
+                            <p>
+                                Certified Rogue capability at Level
+                                <?php echo esc_html(
+                                    (string) (
+                                        $cunningRegister['level']
+                                        ?? $level
+                                    )
+                                ); ?>.
+                            </p>
+                        </div>
+
+                        <span
+                            class="gmrc-cunning-register__sneak"
+                            aria-label="<?php echo esc_attr(
+                                sprintf(
+                                    'Sneak Attack %s, once per turn',
+                                    (string) (
+                                        $cunningRegister[
+                                            'sneak_attack'
+                                        ]['dice']
+                                        ?? '1d6'
+                                    )
+                                )
+                            ); ?>"
+                        >
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $cunningRegister[
+                                            'sneak_attack'
+                                        ]['dice']
+                                        ?? '1d6'
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>Sneak Attack</small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-cunning-register__summary">
+                        <article>
+                            <span aria-hidden="true">🗡️</span>
+                            <div>
+                                <small>Precision Damage</small>
+                                <h4>Sneak Attack</h4>
+                                <p>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $cunningRegister[
+                                                'sneak_attack'
+                                            ]['frequency']
+                                            ?? 'Once per turn'
+                                        )
+                                    ); ?>.
+                                    Contextual attack handling arrives in
+                                    Phase III.12.4D.
+                                </p>
+                            </div>
+                        </article>
+
+                        <article
+                            class="<?php echo esc_attr(
+                                ! empty(
+                                    $cunningRegister[
+                                        'cunning_action'
+                                    ]['unlocked']
+                                )
+                                    ? 'is-unlocked'
+                                    : 'is-locked'
+                            ); ?>"
+                        >
+                            <span aria-hidden="true">◇</span>
+                            <div>
+                                <small>
+                                    <?php echo esc_html(
+                                        ! empty(
+                                            $cunningRegister[
+                                                'cunning_action'
+                                            ]['unlocked']
+                                        )
+                                            ? 'Certified at Level 2'
+                                            : 'Unlocks at Level 2'
+                                    ); ?>
+                                </small>
+                                <h4>Cunning Action</h4>
+                                <p>
+                                    <?php echo esc_html(
+                                        implode(
+                                            ' · ',
+                                            (array) (
+                                                $cunningRegister[
+                                                    'cunning_action'
+                                                ]['options']
+                                                ?? []
+                                            )
+                                        )
+                                    ); ?>
+                                </p>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="gmrc-cunning-register__features">
+                        <?php foreach (
+                            ($cunningRegister['features'] ?? [])
+                            as $feature
+                        ) : ?>
+                            <article
+                                class="<?php echo esc_attr(
+                                    ! empty(
+                                        $feature['unlocked']
+                                    )
+                                        ? 'is-unlocked'
+                                        : 'is-locked'
+                                ); ?>"
+                            >
+                                <span aria-hidden="true">
+                                    <?php echo
+                                        ! empty(
+                                            $feature['unlocked']
+                                        )
+                                            ? '◆'
+                                            : '◇'; ?>
+                                </span>
+                                <div>
+                                    <small>
+                                        Level <?php echo esc_html(
+                                            (string) (
+                                                $feature['level']
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                        ·
+                                        <?php echo esc_html(
+                                            ! empty(
+                                                $feature['unlocked']
+                                            )
+                                                ? 'Certified'
+                                                : 'Locked'
+                                        ); ?>
+                                    </small>
+                                    <strong>
+                                        <?php echo esc_html(
+                                            (string) (
+                                                $feature['label']
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                    </strong>
+                                    <p>
+                                        <?php echo esc_html(
+                                            (string) (
+                                                $feature['detail']
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                    </p>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="gmrc-cunning-register__footer">
+                        <div>
+                            <span>Rogue Archetype</span>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $cunningRegister[
+                                            'archetype'
+                                        ]['label']
+                                        ?? 'Awaiting Rogue Archetype'
+                                    )
+                                ); ?>
+                            </strong>
+                        </div>
+
+                        <?php if (
+                            is_array(
+                                $cunningRegister[
+                                    'next_milestone'
+                                ] ?? null
+                            )
+                        ) : ?>
+                            <div>
+                                <span>Next cunning milestone</span>
+                                <strong>
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $cunningRegister[
+                                                'next_milestone'
+                                            ]['level']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                    ·
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $cunningRegister[
+                                                'next_milestone'
+                                            ]['label']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </strong>
+                                <small>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $cunningRegister[
+                                                'next_milestone'
+                                            ]['detail']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </small>
+                            </div>
+                        <?php else : ?>
+                            <div>
+                                <span>Rogue progression</span>
+                                <strong>Mastered to Level 20</strong>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </section>
+            <?php endif; ?>
 
             <?php if (
                 ! empty($rageRegister['supported'])
