@@ -60,7 +60,10 @@ final class MonkCallingRegressionTest extends TestCase
             );
 
         self::assertSame(
-            ['path'],
+            [
+                'path',
+                'path-gifts',
+            ],
             array_column(
                 $entry['delegated'],
                 'folio'
@@ -70,6 +73,11 @@ final class MonkCallingRegressionTest extends TestCase
         self::assertSame(
             'monastic-way',
             $entry['delegated'][0]['key']
+        );
+
+        self::assertSame(
+            'monastic-way-gift',
+            $entry['delegated'][1]['key']
         );
     }
 
