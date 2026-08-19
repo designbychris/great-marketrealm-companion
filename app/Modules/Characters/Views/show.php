@@ -2286,6 +2286,384 @@ $callingPathLabel = $callingPath !== ''
                         </section>
                     <?php endif; ?>
 
+                    <?php if (
+                        ! empty(
+                            $originRegister[
+                                'metamagic'
+                            ]['unlocked']
+                        )
+                    ) : ?>
+                        <section
+                            class="gmrc-metamagic-arts"
+                            aria-labelledby="gmrc-metamagic-arts-title"
+                            data-metamagic-arts
+                        >
+                            <header class="gmrc-metamagic-arts__heading">
+                                <div>
+                                    <p class="gmrc-eyebrow">
+                                        Sorcerous Technique
+                                    </p>
+                                    <h4 id="gmrc-metamagic-arts-title">
+                                        Metamagic Arts
+                                    </h4>
+                                    <p>
+                                        Choose exactly
+                                        <?php echo esc_html(
+                                            (string) (
+                                                $originRegister[
+                                                    'metamagic'
+                                                ]['known']
+                                                ?? 0
+                                            )
+                                        ); ?>
+                                        certified techniques for this
+                                        Sorcerer level.
+                                    </p>
+                                </div>
+
+                                <span class="gmrc-metamagic-arts__seal">
+                                    <strong>
+                                        <?php echo esc_html(
+                                            sprintf(
+                                                '%d/%d',
+                                                count(
+                                                    $originRegister[
+                                                        'metamagic'
+                                                    ]['selected']
+                                                    ?? []
+                                                ),
+                                                (int) (
+                                                    $originRegister[
+                                                        'metamagic'
+                                                    ]['known']
+                                                    ?? 0
+                                                )
+                                            )
+                                        ); ?>
+                                    </strong>
+                                    <small>Arts selected</small>
+                                </span>
+                            </header>
+
+                            <form
+                                class="gmrc-metamagic-choice-form"
+                                action="<?php echo esc_url(
+                                    $appRequestUrl
+                                ); ?>"
+                                method="post"
+                                data-metamagic-choices
+                            >
+                                <input
+                                    type="hidden"
+                                    name="action"
+                                    value="gmrc_app_request"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="gmrc_route"
+                                    value="<?php echo esc_attr(
+                                        'characters/'
+                                        . $characterId
+                                        . '/metamagic/choices'
+                                    ); ?>"
+                                >
+                                <?php wp_nonce_field(
+                                    'gmrc_character_metamagic_'
+                                    . $characterId,
+                                    'gmrc_nonce'
+                                ); ?>
+
+                                <div class="gmrc-metamagic-choice-grid">
+                                    <?php foreach (
+                                        (
+                                            $originRegister[
+                                                'metamagic'
+                                            ]['options']
+                                            ?? []
+                                        )
+                                        as $option
+                                    ) : ?>
+                                        <?php
+                                        $optionKey =
+                                            (string) (
+                                                $option['key']
+                                                ?? ''
+                                            );
+
+                                        $isSelected =
+                                            in_array(
+                                                $optionKey,
+                                                $originRegister[
+                                                    'metamagic'
+                                                ]['selected_keys']
+                                                ?? [],
+                                                true
+                                            );
+                                        ?>
+                                        <label
+                                            class="<?php echo esc_attr(
+                                                $isSelected
+                                                    ? 'is-selected'
+                                                    : ''
+                                            ); ?>"
+                                        >
+                                            <span class="gmrc-metamagic-choice-grid__check">
+                                                <input
+                                                    type="checkbox"
+                                                    name="metamagic[]"
+                                                    value="<?php echo esc_attr(
+                                                        $optionKey
+                                                    ); ?>"
+                                                    <?php checked(
+                                                        $isSelected
+                                                    ); ?>
+                                                >
+                                                <strong>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $option['label']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </strong>
+                                            </span>
+                                            <span>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $option['summary']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                            </span>
+                                            <small>
+                                                Cost:
+                                                <?php echo esc_html(
+                                                    (
+                                                        $option['cost']
+                                                        ?? 1
+                                                    ) === 'spell-level'
+                                                        ? 'spell level (minimum 1)'
+                                                        : (
+                                                            (string) (
+                                                                $option['cost']
+                                                                ?? 1
+                                                            )
+                                                            . ' Sorcery Point'
+                                                            . (
+                                                                (int) (
+                                                                    $option['cost']
+                                                                    ?? 1
+                                                                ) === 1
+                                                                    ? ''
+                                                                    : 's'
+                                                            )
+                                                        )
+                                                ); ?>
+                                            </small>
+                                        </label>
+                                    <?php endforeach; ?>
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    class="gmrc-button gmrc-button--secondary"
+                                >
+                                    Save Metamagic Arts
+                                </button>
+                            </form>
+
+                            <?php if (
+                                ! empty(
+                                    $originRegister[
+                                        'metamagic'
+                                    ]['selected']
+                                )
+                            ) : ?>
+                                <div
+                                    class="gmrc-metamagic-active-grid"
+                                    data-metamagic-active
+                                >
+                                    <?php foreach (
+                                        $originRegister[
+                                            'metamagic'
+                                        ]['selected']
+                                        as $option
+                                    ) : ?>
+                                        <?php
+                                        $optionKey =
+                                            (string) (
+                                                $option['key']
+                                                ?? ''
+                                            );
+
+                                        $variableCost =
+                                            (
+                                                $option['cost']
+                                                ?? 1
+                                            ) === 'spell-level';
+                                        ?>
+                                        <article>
+                                            <header>
+                                                <div>
+                                                    <small>
+                                                        Certified Metamagic
+                                                    </small>
+                                                    <strong>
+                                                        <?php echo esc_html(
+                                                            (string) (
+                                                                $option['label']
+                                                                ?? ''
+                                                            )
+                                                        ); ?>
+                                                    </strong>
+                                                </div>
+                                                <span>
+                                                    <?php echo esc_html(
+                                                        $variableCost
+                                                            ? 'Variable cost'
+                                                            : (
+                                                                (string) (
+                                                                    $option['cost']
+                                                                    ?? 1
+                                                                )
+                                                                . ' SP'
+                                                            )
+                                                    ); ?>
+                                                </span>
+                                            </header>
+
+                                            <p>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $option['summary']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                            </p>
+                                            <small>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $option['timing']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                            </small>
+
+                                            <form
+                                                action="<?php echo esc_url(
+                                                    $appRequestUrl
+                                                ); ?>"
+                                                method="post"
+                                            >
+                                                <input
+                                                    type="hidden"
+                                                    name="action"
+                                                    value="gmrc_app_request"
+                                                >
+                                                <input
+                                                    type="hidden"
+                                                    name="gmrc_route"
+                                                    value="<?php echo esc_attr(
+                                                        'characters/'
+                                                        . $characterId
+                                                        . '/metamagic/use'
+                                                    ); ?>"
+                                                >
+                                                <input
+                                                    type="hidden"
+                                                    name="metamagic"
+                                                    value="<?php echo esc_attr(
+                                                        $optionKey
+                                                    ); ?>"
+                                                >
+                                                <?php wp_nonce_field(
+                                                    'gmrc_character_metamagic_'
+                                                    . $characterId,
+                                                    'gmrc_nonce'
+                                                ); ?>
+
+                                                <?php if (
+                                                    $variableCost
+                                                ) : ?>
+                                                    <label>
+                                                        <span>
+                                                            Spell level
+                                                        </span>
+                                                        <select
+                                                            name="spell_level"
+                                                            required
+                                                        >
+                                                            <option value="0">
+                                                                Cantrip — 1 point
+                                                            </option>
+                                                            <?php for (
+                                                                $spellLevel = 1;
+                                                                $spellLevel <= 9;
+                                                                $spellLevel++
+                                                            ) : ?>
+                                                                <option
+                                                                    value="<?php echo esc_attr(
+                                                                        (string) $spellLevel
+                                                                    ); ?>"
+                                                                >
+                                                                    Level <?php echo esc_html(
+                                                                        (string) $spellLevel
+                                                                    ); ?>
+                                                                    —
+                                                                    <?php echo esc_html(
+                                                                        (string) $spellLevel
+                                                                    ); ?>
+                                                                    point<?php echo $spellLevel === 1
+                                                                        ? ''
+                                                                        : 's'; ?>
+                                                                </option>
+                                                            <?php endfor; ?>
+                                                        </select>
+                                                    </label>
+                                                <?php endif; ?>
+
+                                                <button
+                                                    type="submit"
+                                                    class="gmrc-button gmrc-button--secondary"
+                                                    data-metamagic-use="<?php echo esc_attr(
+                                                        $optionKey
+                                                    ); ?>"
+                                                    <?php echo (
+                                                        (int) (
+                                                            $originRegister[
+                                                                'sorcery_points'
+                                                            ]['remaining']
+                                                            ?? 0
+                                                        ) < (
+                                                            $variableCost
+                                                                ? 1
+                                                                : (int) (
+                                                                    $option['cost']
+                                                                    ?? 1
+                                                                )
+                                                        )
+                                                    ) ? 'disabled' : ''; ?>
+                                                >
+                                                    Use <?php echo esc_html(
+                                                        (string) (
+                                                            $option['label']
+                                                            ?? 'Metamagic'
+                                                        )
+                                                    ); ?>
+                                                </button>
+                                            </form>
+                                        </article>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else : ?>
+                                <p class="gmrc-metamagic-arts__empty">
+                                    Choose and save the Sorcerer’s Metamagic
+                                    Arts before using them in active play.
+                                </p>
+                            <?php endif; ?>
+                        </section>
+                    <?php endif; ?>
+
                     <div class="gmrc-origin-register__footer">
                         <div>
                             <span>Highest spell circle</span>

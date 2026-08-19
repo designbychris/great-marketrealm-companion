@@ -43,8 +43,10 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Discipline\Services
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Sacred\Services\PaladinSacredRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Patron\Services\WarlockPatronRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Origin\Services\SorcererOriginRegisterPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Origin\Services\SorcererMetamagicService;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Patron\Services\WarlockEldritchArtsPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassResourceRepository;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\SorcererMetamagicRepository;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassConditionRepository;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\FighterBattleReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\MonkDisciplineReserveService;
@@ -740,11 +742,18 @@ final class CharacterController
             $character
         );
 
+        $metamagicChoices = (
+            new SorcererMetamagicRepository()
+        )->find(
+            $character->id()
+        );
+
         $originRegister = (
             new SorcererOriginRegisterPresenter()
         )->present(
             $character,
-            $activeResources
+            $activeResources,
+            $metamagicChoices
         );
 
         $progression = (new RisingRegisterPresenter())
@@ -1172,6 +1181,139 @@ final class CharacterController
             $rest === 'short'
                 ? 'Short-rest Battle Reserves have been restored.'
                 : 'All Battle Reserves have been restored after the long rest.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Save the Sorcerer's certified Metamagic selections.
+     */
+    public function saveMetamagicChoices(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+
+        $choices = is_array(
+            $_POST['metamagic']
+            ?? null
+        )
+            ? array_values(
+                $_POST['metamagic']
+            )
+            : [];
+
+        try {
+            $choices = (
+                new SorcererMetamagicService()
+            )->validateChoices(
+                $character,
+                $choices
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        (
+            new SorcererMetamagicRepository()
+        )->save(
+            $character->id(),
+            $choices
+        );
+
+        $this->flash->success(
+            'The Sorcerer’s Metamagic Arts have been entered into the Origin Spark Register.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Spend Sorcery Points to use one certified Metamagic Art.
+     */
+    public function useMetamagic(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+
+        $metamagic = sanitize_key(
+            (string) (
+                $_POST['metamagic']
+                ?? ''
+            )
+        );
+
+        $spellLevel = max(
+            0,
+            min(
+                9,
+                (int) (
+                    $_POST['spell_level']
+                    ?? 0
+                )
+            )
+        );
+
+        $choices = (
+            new SorcererMetamagicRepository()
+        )->find(
+            $character->id()
+        );
+
+        $resources =
+            new ActiveClassResourceRepository();
+
+        try {
+            $state = (
+                new SorcererMetamagicService()
+            )->use(
+                $character,
+                $resources->find(
+                    $character->id()
+                ),
+                $choices,
+                $metamagic,
+                $spellLevel
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $resources->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            'The Metamagic Art has been recorded and its Sorcery Point cost has been spent.'
         );
 
         return $this->responses->redirect(

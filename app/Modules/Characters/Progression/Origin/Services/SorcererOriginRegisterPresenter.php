@@ -88,9 +88,13 @@ final class SorcererOriginRegisterPresenter
     }
 
     /** @return array<string,mixed> */
+    /**
+     * @param array<int,string> $metamagicChoices
+     */
     public function present(
         Character $character,
-        ?ActiveClassResourceState $resources = null
+        ?ActiveClassResourceState $resources = null,
+        array $metamagicChoices = []
     ): array {
         if (
             $character
@@ -124,6 +128,30 @@ final class SorcererOriginRegisterPresenter
         $sorceryMaximum =
             $sorcery->maximum(
                 $character
+            );
+
+        $metamagicCatalogue =
+            new SorcererMetamagicCatalogue();
+
+        $metamagicOptions =
+            $metamagicCatalogue->all();
+
+        $selectedMetamagic =
+            array_values(
+                array_filter(
+                    $metamagicOptions,
+                    static fn (
+                        array $option
+                    ): bool =>
+                        in_array(
+                            (string) (
+                                $option['key']
+                                ?? ''
+                            ),
+                            $metamagicChoices,
+                            true
+                        )
+                )
             );
 
         return [
@@ -161,6 +189,23 @@ final class SorcererOriginRegisterPresenter
                         ),
                 'unlocked' =>
                     $level >= 3,
+                'options' =>
+                    $metamagicOptions,
+                'selected' =>
+                    $selectedMetamagic,
+                'selected_keys' =>
+                    array_values(
+                        array_map(
+                            static fn (
+                                array $option
+                            ): string =>
+                                (string) (
+                                    $option['key']
+                                    ?? ''
+                                ),
+                            $selectedMetamagic
+                        )
+                    ),
             ],
             'spellcasting' => [
                 'model' =>

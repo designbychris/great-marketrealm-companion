@@ -254,6 +254,20 @@ class FrontendServiceProvider extends ServiceProvider
         if (
             $method === 'POST'
             && preg_match(
+                '#^characters/([^/]+)/metamagic/(?:choices|use)$#',
+                $route,
+                $matches
+            )
+        ) {
+            return 'gmrc_character_metamagic_'
+                . sanitize_text_field(
+                    $matches[1]
+                );
+        }
+
+        if (
+            $method === 'POST'
+            && preg_match(
                 '#^characters/([^/]+)/pact/(?:spend|rest)$#',
                 $route,
                 $matches

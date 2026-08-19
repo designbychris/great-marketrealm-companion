@@ -62,6 +62,16 @@ return static function (
     );
 
     $router->post(
+        '/characters/{id}/metamagic/choices',
+        [CharacterController::class, 'saveMetamagicChoices']
+    );
+
+    $router->post(
+        '/characters/{id}/metamagic/use',
+        [CharacterController::class, 'useMetamagic']
+    );
+
+    $router->post(
         '/characters/{id}/sorcery/spend',
         [CharacterController::class, 'spendSorceryPoints']
     );

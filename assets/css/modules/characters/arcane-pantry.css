@@ -2822,3 +2822,130 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.8D — The Sorcerer's Metamagic Arts */
+.gmrc-metamagic-arts {
+    margin-top: .8rem;
+    padding: .72rem;
+    border: 1px solid rgba(112, 48, 120, .18);
+    border-radius: .4rem;
+    background: rgba(255, 251, 255, .68);
+}
+
+.gmrc-metamagic-arts__heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: .8rem;
+    margin-bottom: .65rem;
+}
+
+.gmrc-metamagic-arts__seal {
+    display: grid;
+    min-width: 7rem;
+    text-align: right;
+}
+
+.gmrc-metamagic-choice-form {
+    display: grid;
+    gap: .65rem;
+}
+
+.gmrc-metamagic-choice-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .5rem;
+}
+
+.gmrc-metamagic-choice-grid > label {
+    display: grid;
+    align-content: start;
+    gap: .3rem;
+    padding: .58rem;
+    border: 1px solid rgba(112, 48, 120, .14);
+    border-radius: .35rem;
+    cursor: pointer;
+}
+
+.gmrc-metamagic-choice-grid > label.is-selected {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+}
+
+.gmrc-metamagic-choice-grid__check {
+    display: flex;
+    gap: .4rem;
+    align-items: center;
+}
+
+.gmrc-metamagic-active-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+    margin-top: .75rem;
+    padding-top: .75rem;
+    border-top: 1px dashed rgba(112, 48, 120, .2);
+}
+
+.gmrc-metamagic-active-grid article {
+    display: grid;
+    gap: .45rem;
+    padding: .6rem;
+    border: 1px solid rgba(112, 48, 120, .14);
+    border-radius: .35rem;
+    background: rgba(255, 253, 255, .72);
+}
+
+.gmrc-metamagic-active-grid article > header {
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.gmrc-metamagic-active-grid article > header > div {
+    display: grid;
+}
+
+.gmrc-metamagic-active-grid form,
+.gmrc-metamagic-active-grid label {
+    display: grid;
+    gap: .35rem;
+}
+
+.gmrc-metamagic-active-grid select {
+    width: 100%;
+}
+
+.gmrc-metamagic-arts__empty {
+    margin: .65rem 0 0;
+    font-size: .82rem;
+    opacity: .78;
+}
+
+@media (max-width: 720px) {
+    .gmrc-metamagic-choice-grid,
+    .gmrc-metamagic-active-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .gmrc-metamagic-arts__heading {
+        display: grid;
+    }
+
+    .gmrc-metamagic-arts__seal {
+        text-align: left;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-metamagic-arts,
+    .gmrc-metamagic-choice-grid > label,
+    .gmrc-metamagic-active-grid article {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}
