@@ -2629,3 +2629,24 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.7E — The Warlock's Final Seal */
+.gmrc-eldritch-beam__actions .gmrc-guild-roll-trigger > span[aria-hidden="true"] {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.15em;
+    line-height: 1;
+    font-size: .95em;
+}
+
+.gmrc-eldritch-beam__actions .gmrc-guild-roll-trigger {
+    justify-content: center;
+    gap: .35rem;
+}
+
+@media (max-width: 560px) {
+    .gmrc-eldritch-beam__actions .gmrc-guild-roll-trigger {
+        min-height: 2.7rem;
+    }
+}

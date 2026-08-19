@@ -5802,7 +5802,7 @@ $callingPathLabel = $callingPath !== ''
                                         ); ?>"
                                         data-roll-result-suffix="to hit"
                                     >
-                                        <span aria-hidden="true">20</span>
+                                        <span aria-hidden="true">✥</span>
                                         Roll Beam Attack
                                     </button>
 
