@@ -14,6 +14,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\PaladinProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\WarlockProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\SorcererProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\RangerProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Definitions\Classes\WizardProgression;
 use InvalidArgumentException;
 
@@ -42,6 +43,7 @@ final class ClassProgressionCatalogue
                 new PaladinProgression(),
                 new WarlockProgression(),
                 new SorcererProgression(),
+                new RangerProgression(),
                 new RegisteredCallingProgression(),
             ];
     }
