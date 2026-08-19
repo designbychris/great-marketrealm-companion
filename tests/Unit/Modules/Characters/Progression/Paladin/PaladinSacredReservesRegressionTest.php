@@ -286,29 +286,29 @@ final class PaladinSacredReservesRegressionTest extends TestCase
         );
     }
 
-    public function testLedgerExposesSacredSpendAndLongRestControls(): void
+    public function testLedgerExposesNamedSacredActionsAndLongRest(): void
     {
         $view = $this->source(
             'app/Modules/Characters/Views/show.php'
         );
 
         self::assertStringContainsString(
-            'data-sacred-spend',
+            'data-sacred-actions',
             $view
         );
 
         self::assertStringContainsString(
-            "'key' => 'lay-on-hands'",
+            'data-sacred-action="lay-on-hands"',
             $view
         );
 
         self::assertStringContainsString(
-            "'key' => 'divine-sense'",
+            'data-sacred-action="divine-sense"',
             $view
         );
 
         self::assertStringContainsString(
-            "'key' => 'cleansing-touch'",
+            'data-sacred-action="cleansing-touch"',
             $view
         );
 
@@ -335,7 +335,7 @@ final class PaladinSacredReservesRegressionTest extends TestCase
         );
 
         self::assertStringContainsString(
-            "/sacred/spend'",
+            "/sacred/action'",
             $view
         );
 
@@ -354,7 +354,7 @@ final class PaladinSacredReservesRegressionTest extends TestCase
         );
 
         self::assertStringContainsString(
-            'sacred/(?:spend|rest)',
+            'sacred/(?:action|spend|rest)',
             $provider
         );
 

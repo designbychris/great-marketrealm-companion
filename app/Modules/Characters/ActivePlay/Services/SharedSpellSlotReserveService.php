@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services;
 
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Models\ActiveClassResourceState;
+use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\ArcanePantryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use InvalidArgumentException;
@@ -138,7 +139,9 @@ final class SharedSpellSlotReserveService
         Character $character
     ): array {
         return (
-            new ArcanePantryPresenter()
+            new ArcanePantryPresenter(
+                new ArcaneAbilityCatalogue()
+            )
         )->present(
             $character
         )['slots'] ?? [];

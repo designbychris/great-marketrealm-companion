@@ -329,19 +329,19 @@ final class PaladinSacredRegisterRegressionTest extends TestCase
         );
     }
 
-    public function testSacredRegisterCanBeExtendedByReserveSlice(): void
+    public function testSacredRegisterCanBeExtendedByActivePlaySlices(): void
     {
         $view = $this->source(
             'app/Modules/Characters/Views/show.php'
         );
 
         self::assertStringContainsString(
-            'data-sacred-reserves',
+            'data-sacred-actions',
             $view
         );
 
         self::assertStringContainsString(
-            'data-sacred-spend',
+            'data-sacred-action=',
             $view
         );
 
