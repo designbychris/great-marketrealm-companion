@@ -484,18 +484,24 @@ final class MonkFinalSealRegressionTest extends MonkTestCase
         );
 
         self::assertStringContainsString(
-            'Flurry of Blows',
+            'Roll Reduction',
             $view
+        );
+
+        $presenter = $this->source(
+            'app/Modules/Characters/Progression/'
+            . 'Discipline/Services/'
+            . 'MonkMartialTechniquePresenter.php'
+        );
+
+        self::assertStringContainsString(
+            'Flurry of Blows',
+            $presenter
         );
 
         self::assertStringContainsString(
             'Stunning Strike',
-            $view
-        );
-
-        self::assertStringContainsString(
-            'Roll Reduction',
-            $view
+            $presenter
         );
     }
 
