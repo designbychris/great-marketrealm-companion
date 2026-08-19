@@ -2280,3 +2280,46 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.6E — The Paladin's Final Seal */
+.gmrc-sacred-actions__grid > article {
+    container-type: inline-size;
+}
+
+.gmrc-sacred-smite-option {
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    overflow-wrap: anywhere;
+}
+
+.gmrc-sacred-smite-option > div {
+    grid-column: 1 / -1;
+    min-width: 0;
+}
+
+.gmrc-sacred-smite-option > form,
+.gmrc-sacred-smite-option > button {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.gmrc-sacred-smite-option .gmrc-button,
+.gmrc-sacred-smite-option .gmrc-guild-roll-trigger {
+    width: 100%;
+    max-width: 100%;
+    padding-inline: .55rem;
+}
+
+@container (max-width: 17rem) {
+    .gmrc-sacred-smite-option {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-sacred-smite-option .gmrc-button,
+    .gmrc-sacred-smite-option .gmrc-guild-roll-trigger {
+        border-color: ButtonText;
+    }
+}
