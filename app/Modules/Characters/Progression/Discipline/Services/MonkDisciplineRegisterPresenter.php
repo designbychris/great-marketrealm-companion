@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Discipline\Services;
 
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Models\ActiveClassResourceState;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\MonkDisciplineReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
 
@@ -77,8 +79,11 @@ final class MonkDisciplineRegisterPresenter
      * @return array<string,mixed>
      */
     public function present(
-        Character $character
+        Character $character,
+        ?ActiveClassResourceState $resources = null
     ): array {
+        $resources ??=
+            ActiveClassResourceState::fresh();
         if (
             $character
                 ->characterClass()
@@ -103,12 +108,23 @@ final class MonkDisciplineRegisterPresenter
                     $this->policy->maximum(
                         $character
                     ),
+                'remaining' =>
+                    (new MonkDisciplineReserveService(
+                        $this->policy
+                    ))->remaining(
+                        $character,
+                        $resources
+                    ),
+                'expended' =>
+                    $resources->expended(
+                        MonkDisciplineReserveService::RESOURCE
+                    ),
                 'save_dc' =>
                     $this->policy->saveDc(
                         $character
                     ),
                 'refresh' =>
-                    'Reserved for Phase III.12.5C',
+                    'Short or long rest',
             ],
             'movement' => [
                 'bonus_feet' =>

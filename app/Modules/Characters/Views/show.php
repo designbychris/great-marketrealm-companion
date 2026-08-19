@@ -1791,15 +1791,24 @@ $callingPathLabel = $callingPath !== ''
                         <span class="gmrc-discipline-register__pool">
                             <strong>
                                 <?php echo esc_html(
-                                    (string) (
-                                        $disciplineRegister[
-                                            'discipline'
-                                        ]['maximum']
-                                        ?? 0
+                                    sprintf(
+                                        '%d/%d',
+                                        (int) (
+                                            $disciplineRegister[
+                                                'discipline'
+                                            ]['remaining']
+                                            ?? 0
+                                        ),
+                                        (int) (
+                                            $disciplineRegister[
+                                                'discipline'
+                                            ]['maximum']
+                                            ?? 0
+                                        )
                                     )
                                 ); ?>
                             </strong>
-                            <small>Discipline</small>
+                            <small>Remaining Discipline</small>
                         </span>
                     </header>
 
@@ -1831,6 +1840,94 @@ $callingPathLabel = $callingPath !== ''
                             </strong>
                         </article>
                     </div>
+
+                    <?php if (
+                        ! empty(
+                            $disciplineRegister[
+                                'discipline'
+                            ]['unlocked']
+                        )
+                    ) : ?>
+                        <div
+                            class="gmrc-discipline-register__controls"
+                            data-discipline-reserves
+                        >
+                            <form
+                                method="post"
+                                action="<?php echo esc_url(
+                                    home_url(
+                                        '/characters/'
+                                        . $character->id()->value()
+                                        . '/discipline/spend'
+                                    )
+                                ); ?>"
+                            >
+                                <button
+                                    type="submit"
+                                    class="gmrc-button"
+                                    data-discipline-spend
+                                    <?php disabled(
+                                        (int) (
+                                            $disciplineRegister[
+                                                'discipline'
+                                            ]['remaining']
+                                            ?? 0
+                                        ) < 1
+                                    ); ?>
+                                >
+                                    Spend 1 Discipline
+                                </button>
+                            </form>
+
+                            <form
+                                method="post"
+                                action="<?php echo esc_url(
+                                    home_url(
+                                        '/characters/'
+                                        . $character->id()->value()
+                                        . '/discipline/rest'
+                                    )
+                                ); ?>"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="rest"
+                                    value="short"
+                                >
+                                <button
+                                    type="submit"
+                                    class="gmrc-button gmrc-button--secondary"
+                                    data-discipline-rest="short"
+                                >
+                                    Take a Short Rest
+                                </button>
+                            </form>
+
+                            <form
+                                method="post"
+                                action="<?php echo esc_url(
+                                    home_url(
+                                        '/characters/'
+                                        . $character->id()->value()
+                                        . '/discipline/rest'
+                                    )
+                                ); ?>"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="rest"
+                                    value="long"
+                                >
+                                <button
+                                    type="submit"
+                                    class="gmrc-button gmrc-button--secondary"
+                                    data-discipline-rest="long"
+                                >
+                                    Take a Long Rest
+                                </button>
+                            </form>
+                        </div>
+                    <?php endif; ?>
 
                     <div class="gmrc-discipline-register__features">
                         <?php foreach (

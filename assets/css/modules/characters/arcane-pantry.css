@@ -1814,3 +1814,16 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.5C — Monk Discipline Reserves */
+.gmrc-discipline-register__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    align-items: center;
+    margin: 0 0 .7rem;
+}
+.gmrc-discipline-register__controls form {
+    margin: 0;
+}

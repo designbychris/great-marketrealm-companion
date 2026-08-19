@@ -43,6 +43,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Discipline\Services
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassResourceRepository;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassConditionRepository;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\FighterBattleReserveService;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\MonkDisciplineReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\BarbarianRageReserveService;
 use InvalidArgumentException;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\LivingRegisterPresenter;
@@ -683,7 +684,8 @@ final class CharacterController
         $disciplineRegister = (
             new MonkDisciplineRegisterPresenter()
         )->present(
-            $character
+            $character,
+            $activeResources
         );
 
         $progression = (new RisingRegisterPresenter())
@@ -1107,6 +1109,120 @@ final class CharacterController
             $rest === 'short'
                 ? 'Short-rest Battle Reserves have been restored.'
                 : 'All Battle Reserves have been restored after the long rest.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Spend one point from the Monk's Discipline Reserve.
+     */
+    public function spendDiscipline(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $repository =
+            new ActiveClassResourceRepository();
+
+        try {
+            $state = (
+                new MonkDisciplineReserveService()
+            )->spend(
+                $character,
+                $repository->find(
+                    $character->id()
+                )
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            'One point of Discipline has been spent.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Restore the Monk's Discipline Reserve after a short or long rest.
+     */
+    public function restDiscipline(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $rest = sanitize_key(
+            (string) ($_POST['rest'] ?? '')
+        );
+        $repository =
+            new ActiveClassResourceRepository();
+        $service =
+            new MonkDisciplineReserveService();
+
+        try {
+            $state = $repository->find(
+                $character->id()
+            );
+
+            if ($rest === 'short') {
+                $state = $service->shortRest(
+                    $character,
+                    $state
+                );
+            } elseif ($rest === 'long') {
+                $state = $service->longRest(
+                    $character,
+                    $state
+                );
+            } else {
+                throw new InvalidArgumentException(
+                    'Choose a short or long rest before restoring Discipline.'
+                );
+            }
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            'The Monk’s Discipline Reserve has been restored.'
         );
 
         return $this->responses->redirect(

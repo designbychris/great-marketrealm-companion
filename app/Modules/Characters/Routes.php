@@ -62,6 +62,16 @@ return static function (
     );
 
     $router->post(
+        '/characters/{id}/discipline/spend',
+        [CharacterController::class, 'spendDiscipline']
+    );
+
+    $router->post(
+        '/characters/{id}/discipline/rest',
+        [CharacterController::class, 'restDiscipline']
+    );
+
+    $router->post(
         '/characters/{id}/rage/enter',
         [CharacterController::class, 'enterRage']
     );
