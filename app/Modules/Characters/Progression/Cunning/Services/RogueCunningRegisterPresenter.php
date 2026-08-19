@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Cunning\Servi
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Models\PathGiftCatalogue;
 
 defined('ABSPATH') || exit;
 
@@ -78,10 +79,14 @@ final class RogueCunningRegisterPresenter
     ];
 
     public function __construct(
-        private ?PathCandidateCatalogue $paths = null
+        private ?PathCandidateCatalogue $paths = null,
+        private ?PathGiftCatalogue $gifts = null
     ) {
         $this->paths ??=
             new PathCandidateCatalogue();
+
+        $this->gifts ??=
+            new PathGiftCatalogue();
     }
 
     /**
@@ -191,8 +196,16 @@ final class RogueCunningRegisterPresenter
                 ],
             ],
             'archetype' =>
-                $this->archetypeState(
-                    $character
+                array_merge(
+                    $this->archetypeState(
+                        $character
+                    ),
+                    [
+                        'gifts' =>
+                            $this->certifiedArchetypeGifts(
+                                $character
+                            ),
+                    ]
                 ),
             'next_milestone' =>
                 $this->nextMilestone(
@@ -273,6 +286,40 @@ final class RogueCunningRegisterPresenter
             'key' => $key,
             'label' => $label,
         ];
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function certifiedArchetypeGifts(
+        Character $character
+    ): array {
+        if (
+            ! $character
+                ->callingPath()
+                ->isChosen()
+        ) {
+            return [];
+        }
+
+        $path = $character
+            ->callingPath()
+            ->value();
+
+        return array_values(
+            array_filter(
+                $this->gifts->all($path),
+                fn (array $gift): bool =>
+                    $character
+                        ->pathGifts()
+                        ->has(
+                            (string) (
+                                $gift['key']
+                                ?? ''
+                            )
+                        )
+            )
+        );
     }
 
     /**

@@ -183,6 +183,14 @@ final class RogueProgression implements ClassProgressionDefinitionInterface
                     'Choose the Archetype that shapes this Rogue’s specialised methods and identity.',
                 'phase' => 'III.12.4',
             ],
+            [
+                'key' => 'rogue-archetype-feature',
+                'folio' => 'path-gifts',
+                'label' => 'Rogue Archetype Feature',
+                'detail' =>
+                    'The chosen Rogue Archetype grants its first specialist gift.',
+                'phase' => 'III.12.4B',
+            ],
         ],
         4 => [
             [

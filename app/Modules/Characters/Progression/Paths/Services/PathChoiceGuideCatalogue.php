@@ -86,6 +86,54 @@ final class PathChoiceGuideCatalogue
             'identity' =>
                 'A surprisingly graceful primal style built around smooth movement and unstoppable spread.',
         ],
+        'the-cheetoblade' => [
+            'playstyle' =>
+                'Flashy misdirection, sudden angle changes and opportunistic precision.',
+            'best_for' =>
+                'Players who want a playful, audacious Rogue who turns distraction into openings.',
+            'identity' =>
+                'A snack-aisle duellist whose bright seasoning, swagger and theatrical feints hide a genuinely dangerous blade.',
+        ],
+        'spiceblade' => [
+            'playstyle' =>
+                'Mobile precision, sensory distraction and carefully balanced pressure.',
+            'best_for' =>
+                'Players who like tactical movement and a Rogue whose tricks feel sharp rather than silly.',
+            'identity' =>
+                'A disciplined Rogue tradition that treats spice, scent and heat as extensions of stealth and steel.',
+        ],
+        'the-breadknife' => [
+            'playstyle' =>
+                'Patient infiltration, persistent pressure and exploiting stubborn defensive seams.',
+            'best_for' =>
+                'Players who enjoy methodical Rogues, misleading trails and winning through persistence.',
+            'identity' =>
+                'An underestimated specialist who turns an awkward serrated tool into a philosophy of patient, inevitable opportunity.',
+        ],
+        'mastermind-of-the-aisles' => [
+            'playstyle' =>
+                'Planning, ally support, battlefield information and manipulating attention.',
+            'best_for' =>
+                'Players who want to outthink encounters and make the whole Fellowship more dangerous.',
+            'identity' =>
+                'A market-floor schemer who reads routes, crowds and intentions several moves ahead.',
+        ],
+        'aisle-stalker' => [
+            'playstyle' =>
+                'Ambush, pursuit, stealth and isolating vulnerable targets.',
+            'best_for' =>
+                'Players who want a hunter-style Rogue built around patience and controlling sightlines.',
+            'identity' =>
+                'A quiet predator of shelves, corners and closing-time lanes who makes familiar aisles feel like hunting ground.',
+        ],
+        'taffy-trickster' => [
+            'playstyle' =>
+                'Sleight of hand, escape artistry, elastic movement and elaborate deception.',
+            'best_for' =>
+                'Players who want the strangest and most mischievous Rogue, with tricks that feel almost impossible.',
+            'identity' =>
+                'A pulled-sugar scoundrel whose plans stretch, fold and twist until enemies cannot tell where the trick began.',
+        ],
     ];
 
     /**

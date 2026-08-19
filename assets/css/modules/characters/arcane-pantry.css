@@ -1454,3 +1454,51 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.4B — Rogue Archetype Gifts */
+.gmrc-cunning-register__path-gifts {
+    margin-top: .75rem;
+    padding-top: .75rem;
+    border-top: 1px solid rgba(55, 72, 82, .2);
+}
+
+.gmrc-cunning-register__path-gifts h4 {
+    margin: .1rem 0 .55rem;
+}
+
+.gmrc-cunning-register__gift-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+    gap: .55rem;
+}
+
+.gmrc-cunning-register__gift-grid article {
+    display: grid;
+    gap: .18rem;
+    padding: .65rem;
+    border: 1px solid rgba(55, 72, 82, .17);
+    border-radius: .36rem;
+    background: rgba(255, 252, 237, .72);
+}
+
+.gmrc-cunning-register__gift-grid p {
+    margin: .15rem 0;
+}
+
+@media (max-width: 700px) {
+    .gmrc-cunning-register__gift-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-cunning-register__path-gifts,
+    .gmrc-cunning-register__gift-grid article {
+        border-color: CanvasText;
+    }
+}

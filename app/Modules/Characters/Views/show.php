@@ -1935,6 +1935,71 @@ $callingPathLabel = $callingPath !== ''
                         <?php endforeach; ?>
                     </div>
 
+                    <?php if (
+                        ! empty(
+                            $cunningRegister[
+                                'archetype'
+                            ]['gifts']
+                        )
+                    ) : ?>
+                        <div class="gmrc-cunning-register__path-gifts">
+                            <div>
+                                <small>Specialist Folio</small>
+                                <h4>Certified Rogue Archetype Gifts</h4>
+                            </div>
+
+                            <div class="gmrc-cunning-register__gift-grid">
+                                <?php foreach (
+                                    $cunningRegister[
+                                        'archetype'
+                                    ]['gifts']
+                                    as $gift
+                                ) : ?>
+                                    <article>
+                                        <small>
+                                            Level <?php echo esc_html(
+                                                (string) (
+                                                    $gift['level']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                            · Certified
+                                        </small>
+                                        <strong>
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $gift['label']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </strong>
+                                        <p>
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $gift['summary']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </p>
+                                        <?php if (
+                                            ! empty(
+                                                $gift['detail']
+                                            )
+                                        ) : ?>
+                                            <small>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $gift['detail']
+                                                    )
+                                                ); ?>
+                                            </small>
+                                        <?php endif; ?>
+                                    </article>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
                     <div class="gmrc-cunning-register__footer">
                         <div>
                             <span>Rogue Archetype</span>
