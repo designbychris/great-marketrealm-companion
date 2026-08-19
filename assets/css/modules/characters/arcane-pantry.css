@@ -1636,3 +1636,114 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.4D — Rogue Precision & Reactions */
+.gmrc-rogue-precision {
+    margin: .8rem 0;
+    padding: .72rem;
+    border: 1px dashed rgba(74, 54, 86, .28);
+    border-radius: .4rem;
+    background: rgba(251, 247, 231, .6);
+}
+
+.gmrc-rogue-precision > header {
+    display: flex;
+    justify-content: space-between;
+    gap: .7rem;
+    align-items: flex-start;
+    margin-bottom: .6rem;
+}
+
+.gmrc-rogue-precision > header h4,
+.gmrc-rogue-precision > header p {
+    margin-top: 0;
+}
+
+.gmrc-rogue-precision__grid {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.gmrc-rogue-precision__grid article {
+    display: grid;
+    align-content: start;
+    gap: .38rem;
+    padding: .65rem;
+    border: 1px solid rgba(74, 54, 86, .18);
+    border-radius: .36rem;
+    background: rgba(255, 252, 239, .78);
+}
+
+.gmrc-rogue-precision__grid article.is-locked {
+    opacity: .52;
+}
+
+.gmrc-rogue-precision__grid h5,
+.gmrc-rogue-precision__grid p {
+    margin: 0;
+}
+
+.gmrc-rogue-precision__grid details {
+    font-size: .78rem;
+}
+
+.gmrc-rogue-precision__grid ul {
+    padding-left: 1.15rem;
+}
+
+.gmrc-rogue-mark-button,
+.gmrc-rogue-turn-reset {
+    min-height: 2.3rem;
+    padding: .45rem .62rem;
+    border: 1px solid rgba(74, 54, 86, .38);
+    border-radius: .32rem;
+    background: rgba(83, 61, 96, .1);
+    color: inherit;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.gmrc-rogue-mark-button:focus-visible,
+.gmrc-rogue-turn-reset:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 2px;
+}
+
+.gmrc-rogue-mark-button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.gmrc-rogue-precision__status {
+    margin: .6rem 0 0;
+    padding-top: .55rem;
+    border-top: 1px solid rgba(74, 54, 86, .16);
+    font-size: .78rem;
+}
+
+@media (max-width: 840px) {
+    .gmrc-rogue-precision__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .gmrc-rogue-precision > header {
+        display: grid;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-rogue-precision,
+    .gmrc-rogue-precision__grid article,
+    .gmrc-rogue-mark-button,
+    .gmrc-rogue-turn-reset {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

@@ -116,17 +116,34 @@ final class RogueCunningRegisterPresenter
             $character
         );
 
+        $precisionReactions = (
+            new RoguePrecisionReactionPresenter()
+        )->present(
+            $character
+        );
+
         return [
             'supported' => true,
             'level' => $level,
-            'sneak_attack' => [
-                'dice' =>
-                    $this->sneakAttackDice(
-                        $level
-                    ),
-                'frequency' => 'Once per turn',
-                'status' => 'Certified',
-            ],
+            'sneak_attack' =>
+                array_merge(
+                    [
+                        'dice' =>
+                            $this->sneakAttackDice(
+                                $level
+                            ),
+                        'frequency' => 'Once per turn',
+                        'status' => 'Certified',
+                    ],
+                    (array) (
+                        $precisionReactions[
+                            'sneak_attack'
+                        ]
+                        ?? []
+                    )
+                ),
+            'precision_reactions' =>
+                $precisionReactions,
             'cunning_action' => [
                 'unlocked' => $level >= 2,
                 'options' => [

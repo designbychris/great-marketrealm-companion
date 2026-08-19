@@ -2099,6 +2099,311 @@ $callingPathLabel = $callingPath !== ''
                         </section>
                     <?php endif; ?>
 
+                    <?php
+                    $precisionReactions = is_array(
+                        $cunningRegister[
+                            'precision_reactions'
+                        ]
+                        ?? null
+                    )
+                        ? $cunningRegister[
+                            'precision_reactions'
+                        ]
+                        : [];
+
+                    $sneakAttack = is_array(
+                        $precisionReactions[
+                            'sneak_attack'
+                        ]
+                        ?? null
+                    )
+                        ? $precisionReactions[
+                            'sneak_attack'
+                        ]
+                        : [];
+
+                    $uncannyDodge = is_array(
+                        $precisionReactions[
+                            'uncanny_dodge'
+                        ]
+                        ?? null
+                    )
+                        ? $precisionReactions[
+                            'uncanny_dodge'
+                        ]
+                        : [];
+
+                    $evasion = is_array(
+                        $precisionReactions[
+                            'evasion'
+                        ]
+                        ?? null
+                    )
+                        ? $precisionReactions[
+                            'evasion'
+                        ]
+                        : [];
+                    ?>
+
+                    <?php if (
+                        ! empty(
+                            $precisionReactions[
+                                'supported'
+                            ]
+                        )
+                    ) : ?>
+                        <section
+                            class="gmrc-rogue-precision"
+                            aria-labelledby="gmrc-rogue-precision-title"
+                            data-rogue-precision
+                        >
+                            <header>
+                                <div>
+                                    <p class="gmrc-eyebrow">
+                                        Precision & Reactions
+                                    </p>
+                                    <h4 id="gmrc-rogue-precision-title">
+                                        Rogue Turn Record
+                                    </h4>
+                                </div>
+                                <button
+                                    type="button"
+                                    class="gmrc-rogue-turn-reset"
+                                    data-rogue-new-turn
+                                >
+                                    Start New Turn
+                                </button>
+                            </header>
+
+                            <div class="gmrc-rogue-precision__grid">
+                                <article class="gmrc-rogue-precision__sneak">
+                                    <div>
+                                        <small>
+                                            Once per turn · Certified
+                                        </small>
+                                        <h5>
+                                            Sneak Attack
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $sneakAttack[
+                                                        'dice'
+                                                    ]
+                                                    ?? '1d6'
+                                                )
+                                            ); ?>
+                                        </h5>
+                                    </div>
+
+                                    <p>
+                                        Apply this precision damage only
+                                        after a qualifying attack hits.
+                                    </p>
+
+                                    <?php if (
+                                        ! empty(
+                                            $sneakAttack[
+                                                'qualification'
+                                            ]
+                                        )
+                                    ) : ?>
+                                        <details>
+                                            <summary>
+                                                Check qualification guidance
+                                            </summary>
+                                            <ul>
+                                                <?php foreach (
+                                                    $sneakAttack[
+                                                        'qualification'
+                                                    ]
+                                                    as $guidance
+                                                ) : ?>
+                                                    <li>
+                                                        <?php echo esc_html(
+                                                            (string) $guidance
+                                                        ); ?>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        </details>
+                                    <?php endif; ?>
+
+                                    <button
+                                        type="button"
+                                        class="
+                                            gmrc-guild-roll-trigger
+                                            gmrc-rogue-sneak-roll
+                                        "
+                                        data-guild-roll="damage"
+                                        data-roll-kind="damage"
+                                        data-roll-source="Sneak Attack"
+                                        data-roll-ability=""
+                                        data-roll-proficiency="none"
+                                        data-roll-label="<?php echo esc_attr(
+                                            (string) (
+                                                $sneakAttack[
+                                                    'damage_roll'
+                                                ]['label']
+                                                ?? 'Sneak Attack — Precision Damage'
+                                            )
+                                        ); ?>"
+                                        data-roll-formula="<?php echo esc_attr(
+                                            (string) (
+                                                $sneakAttack[
+                                                    'damage_roll'
+                                                ]['formula']
+                                                ?? '1d6'
+                                            )
+                                        ); ?>"
+                                        data-roll-modifier="0"
+                                        data-roll-result-suffix="<?php echo esc_attr(
+                                            (string) (
+                                                $sneakAttack[
+                                                    'damage_roll'
+                                                ]['result_suffix']
+                                                ?? 'Sneak Attack damage'
+                                            )
+                                        ); ?>"
+                                        data-sneak-attack-roll
+                                    >
+                                        <span aria-hidden="true">🎲</span>
+                                        Roll Sneak Attack
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="gmrc-rogue-mark-button"
+                                        data-sneak-attack-used
+                                    >
+                                        Mark Sneak Attack Used
+                                    </button>
+                                </article>
+
+                                <article
+                                    class="<?php echo esc_attr(
+                                        ! empty(
+                                            $uncannyDodge[
+                                                'unlocked'
+                                            ]
+                                        )
+                                            ? 'is-unlocked'
+                                            : 'is-locked'
+                                    ); ?>"
+                                >
+                                    <div>
+                                        <small>
+                                            <?php echo esc_html(
+                                                ! empty(
+                                                    $uncannyDodge[
+                                                        'unlocked'
+                                                    ]
+                                                )
+                                                    ? 'Level 5 · Reaction'
+                                                    : 'Unlocks at Level 5'
+                                            ); ?>
+                                        </small>
+                                        <h5>Uncanny Dodge</h5>
+                                    </div>
+
+                                    <p>
+                                        <?php echo esc_html(
+                                            (string) (
+                                                $uncannyDodge[
+                                                    'summary'
+                                                ]
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                    </p>
+
+                                    <small>
+                                        <?php echo esc_html(
+                                            (string) (
+                                                $uncannyDodge[
+                                                    'guidance'
+                                                ]
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                    </small>
+
+                                    <button
+                                        type="button"
+                                        class="gmrc-rogue-mark-button"
+                                        data-uncanny-dodge-used
+                                        <?php echo
+                                            empty(
+                                                $uncannyDodge[
+                                                    'unlocked'
+                                                ]
+                                            )
+                                                ? 'disabled'
+                                                : ''; ?>
+                                    >
+                                        Declare Uncanny Dodge
+                                    </button>
+                                </article>
+
+                                <article
+                                    class="<?php echo esc_attr(
+                                        ! empty(
+                                            $evasion[
+                                                'unlocked'
+                                            ]
+                                        )
+                                            ? 'is-unlocked'
+                                            : 'is-locked'
+                                    ); ?>"
+                                >
+                                    <div>
+                                        <small>
+                                            <?php echo esc_html(
+                                                ! empty(
+                                                    $evasion[
+                                                        'unlocked'
+                                                    ]
+                                                )
+                                                    ? 'Level 7 · Passive'
+                                                    : 'Unlocks at Level 7'
+                                            ); ?>
+                                        </small>
+                                        <h5>Evasion</h5>
+                                    </div>
+
+                                    <p>
+                                        <?php echo esc_html(
+                                            (string) (
+                                                $evasion[
+                                                    'summary'
+                                                ]
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                    </p>
+
+                                    <small>
+                                        <?php echo esc_html(
+                                            (string) (
+                                                $evasion[
+                                                    'guidance'
+                                                ]
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                    </small>
+                                </article>
+                            </div>
+
+                            <p
+                                class="gmrc-rogue-precision__status"
+                                data-rogue-precision-status
+                                role="status"
+                                aria-live="polite"
+                            >
+                                Sneak Attack is ready for this turn.
+                            </p>
+                        </section>
+                    <?php endif; ?>
+
                     <div class="gmrc-cunning-register__features">
                         <?php foreach (
                             ($cunningRegister['features'] ?? [])

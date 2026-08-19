@@ -789,6 +789,25 @@ class FrontendServiceProvider extends ServiceProvider
             true
         );
 
+        $roguePrecisionReactionsScriptPath =
+            GMRC_PATH
+            . 'assets/js/modules/characters/'
+            . 'rogue-precision-reactions.js';
+
+        wp_enqueue_script(
+            'gmrc-rogue-precision-reactions',
+            GMRC_URL
+                . 'assets/js/modules/characters/'
+                . 'rogue-precision-reactions.js',
+            ['gmrc-guild-dice'],
+            file_exists($roguePrecisionReactionsScriptPath)
+                ? (string) filemtime(
+                    $roguePrecisionReactionsScriptPath
+                )
+                : GMRC_VERSION,
+            true
+        );
+
         $completeRegistrationScriptPath =
             GMRC_PATH
             . 'assets/js/modules/characters/'
