@@ -451,7 +451,7 @@ final class ClericCallingRegressionTest extends TestCase
         );
     }
 
-    public function testDomainGiftsRemainUnimplementedUntilDomainSlice(): void
+    public function testDomainGiftsAreCertifiedBySacredDomainsSlice(): void
     {
         $catalogue =
             new PathGiftCatalogue();
@@ -464,13 +464,16 @@ final class ClericCallingRegressionTest extends TestCase
             'domain-of-cultivation',
             'domain-of-fermentation',
         ] as $domain) {
-            self::assertFalse(
+            self::assertTrue(
                 $catalogue->supports($domain)
             );
 
             self::assertSame(
-                [],
-                $catalogue->all($domain)
+                [1, 2, 6, 8, 17],
+                array_column(
+                    $catalogue->all($domain),
+                    'level'
+                )
             );
         }
     }

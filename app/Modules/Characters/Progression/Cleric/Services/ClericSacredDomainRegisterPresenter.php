@@ -159,7 +159,16 @@ final class ClericSacredDomainRegisterPresenter
                 'gift_status' =>
                     $giftCount > 0
                         ? 'Domain Gifts certified'
-                        : 'Domain Gifts await their dedicated phase',
+                        : 'Domain Gifts unavailable',
+                'spells' => (
+                    new ClericDomainSpellCatalogue()
+                )->forDomain($domain),
+                'unlocked_spells' => (
+                    new ClericDomainSpellCatalogue()
+                )->unlocked(
+                    $domain,
+                    $level
+                ),
             ],
             'channel_divinity' => [
                 'unlocked' => $level >= 2,

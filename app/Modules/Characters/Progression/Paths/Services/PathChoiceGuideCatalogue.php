@@ -278,6 +278,54 @@ final class PathChoiceGuideCatalogue
             'identity' =>
                 'A dazzling confectionery Patron offering impossible sweetness in exchange for promises that become harder to read the longer you stare at them.',
         ],
+        'domain-of-sweetness' => [
+            'playstyle' =>
+                'Healing, temporary hit points, radiant control and sticky battlefield protection.',
+            'best_for' =>
+                'Players who want a cheerful support Cleric whose sweetness can become surprisingly oppressive.',
+            'identity' =>
+                'A celebrant of joy, childhood and confectionery abundance who turns divine sugar into comfort and sticky justice.',
+        ],
+        'domain-of-the-golden-arches' => [
+            'playstyle' =>
+                'Fast-response healing, ally repositioning and dependable sacred service under pressure.',
+            'best_for' =>
+                'Players who want a mobile support Cleric with playful fast-feast flavour and simple, reliable combat tools.',
+            'identity' =>
+                'A devotee of divine service, sacred hospitality and the mysterious promise that aid should arrive hot and on time.',
+        ],
+        'domain-of-dairy' => [
+            'playstyle' =>
+                'Protective auras, poison and disease resilience, radiant or cold weapon pressure and dramatic area punishment.',
+            'best_for' =>
+                'Players who want a sturdy support Cleric with Dairyfolk flavour and a mix of defence and explosive capstone magic.',
+            'identity' =>
+                'A keeper of creamy wisdom who draws sacred protection from curd, butter and the great cheese-wheel of divinity.',
+        ],
+        'domain-of-seasoning' => [
+            'playstyle' =>
+                'Elemental punishment, anti-healing control and weapon enhancement built around fire, poison and acid.',
+            'best_for' =>
+                'Players who enjoy adaptable damage, tactical debuffs and the philosophy that every encounter needs the right finishing touch.',
+            'identity' =>
+                'A priest of sacred balance who treats salt, spice and zest as proportions through which divine order becomes tangible.',
+        ],
+        'domain-of-cultivation' => [
+            'playstyle' =>
+                'Patient restorative support, poison and disease protection and measured spellcasting improvements.',
+            'best_for' =>
+                'Players who prefer calm, dependable support and the idea that good miracles, like good cultures, improve with time.',
+            'identity' =>
+                'A saint of aging, patience and living culture who tends faith as carefully as a brewer tends a sacred batch.',
+        ],
+        'domain-of-fermentation' => [
+            'playstyle' =>
+                'Healing, acid and poison pressure, aura control and microbial transformation with strong reactive support.',
+            'best_for' =>
+                'Players who want the deepest fermentation fantasy: healing allies, souring enemies and turning controlled decay into divine power.',
+            'identity' =>
+                'A brew-priest and microbial philosopher who venerates controlled decay as the sacred moment where rot becomes renewal.',
+        ],
         'circle-of-eating-fresh' => [
             'playstyle' => 'Restore, cleanse and reward allies who remain close to natural terrain.',
             'best_for' => 'Players who want a bright support Druid centred on freshness, healing and purification.',

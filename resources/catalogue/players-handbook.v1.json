@@ -864,42 +864,42 @@
     {
       "key": "domain-of-sweetness",
       "name": "Domain of Sweetness",
-      "description": "Domain of Sweetness path for the Cleric.",
+      "description": "A joyful sacred tradition of divine sugar, healing, comfort, radiant control and sticky justice.",
       "traits": [],
       "parent": "cleric"
     },
     {
       "key": "domain-of-the-golden-arches",
       "name": "Domain of the Golden Arches",
-      "description": "Domain of the Golden Arches path for the Cleric.",
+      "description": "A fast-response support Domain devoted to sacred service, healing, mobility and fast-feast enlightenment.",
       "traits": [],
       "parent": "cleric"
     },
     {
       "key": "domain-of-dairy",
       "name": "Domain of Dairy",
-      "description": "Domain of Dairy path for the Cleric.",
+      "description": "A protective Dairyfolk-flavoured Domain of curdled auras, resilience, creamy wisdom and burning holy butter.",
       "traits": [],
       "parent": "cleric"
     },
     {
       "key": "domain-of-seasoning",
       "name": "Domain of Seasoning",
-      "description": "Domain of Seasoning path for the Cleric.",
+      "description": "A Domain of sacred flavour, elemental balance, anti-healing control and precisely applied fire, poison and acid.",
       "traits": [],
       "parent": "cleric"
     },
     {
       "key": "domain-of-cultivation",
       "name": "Domain of Cultivation",
-      "description": "Domain of Cultivation path for the Cleric.",
+      "description": "A patient faith of living culture, aging, restoration, brewing knowledge and carefully matured miracles.",
       "traits": [],
       "parent": "cleric"
     },
     {
       "key": "domain-of-fermentation",
       "name": "Domain of Fermentation",
-      "description": "Domain of Fermentation path for the Cleric.",
+      "description": "A microbial faith of controlled decay, healing, souring curses, radiant or poison auras and sacred renewal.",
       "traits": [],
       "parent": "cleric"
     },

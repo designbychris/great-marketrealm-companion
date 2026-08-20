@@ -180,7 +180,7 @@ final class ClericSacredDomainRegisterRegressionTest extends TestCase
         );
     }
 
-    public function testDomainGiftBoundaryRemainsVisibleUntilDedicatedPhase(): void
+    public function testSacredRegisterReportsCertifiedDomainGifts(): void
     {
         $domain = (
             new ClericSacredDomainRegisterPresenter()
@@ -192,12 +192,12 @@ final class ClericSacredDomainRegisterRegressionTest extends TestCase
         )['domain'];
 
         self::assertSame(
-            0,
+            5,
             $domain['gift_count']
         );
 
         self::assertSame(
-            'Domain Gifts await their dedicated phase',
+            'Domain Gifts certified',
             $domain['gift_status']
         );
     }
