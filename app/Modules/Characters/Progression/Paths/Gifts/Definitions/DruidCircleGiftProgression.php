@@ -101,6 +101,11 @@ final class DruidCircleGiftProgression implements PathGiftProgressionDefinitionI
         return sanitize_key($pathKey) === $this->circleKey;
     }
 
+    public function pathKey(): string
+    {
+        return $this->circleKey;
+    }
+
     public function pathLabel(): string
     {
         return self::CIRCLES[$this->circleKey]['label'];
