@@ -2054,8 +2054,8 @@ $callingPathLabel = $callingPath !== ''
                                 ); ?>
                             </strong>
                             <small>
-                                No path selector is shown until legal Ranger
-                                candidates exist in the bundled catalogue.
+                                Eight certified Ranger Paths are now available
+                                through the shared Path selection folio.
                             </small>
                         </div>
 

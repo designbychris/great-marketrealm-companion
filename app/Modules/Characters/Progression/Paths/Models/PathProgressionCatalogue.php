@@ -14,6 +14,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\M
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\PaladinOathProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\WarlockPatronProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\SorcererOriginProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\RangerPathProgression;
 
 defined('ABSPATH') || exit;
 
@@ -38,6 +39,7 @@ final class PathProgressionCatalogue
                 new PaladinOathProgression(),
                 new WarlockPatronProgression(),
                 new SorcererOriginProgression(),
+                new RangerPathProgression(),
             ];
     }
 

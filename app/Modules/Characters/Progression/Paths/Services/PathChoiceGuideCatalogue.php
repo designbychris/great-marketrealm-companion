@@ -278,6 +278,70 @@ final class PathChoiceGuideCatalogue
             'identity' =>
                 'A dazzling confectionery Patron offering impossible sweetness in exchange for promises that become harder to read the longer you stare at them.',
         ],
+        'aislewarden-conclave' => [
+            'playstyle' =>
+                'Track a chosen quarry, ambush efficiently and keep moving through terrain and enemy pressure.',
+            'best_for' =>
+                'Players who want the classic mobile Marketrealm tracker and monster-hunter Ranger.',
+            'identity' =>
+                'A watcher of forgotten service passages, abandoned aisles and wild roads who always knows where the trail continues.',
+        ],
+        'deep-root-warden' => [
+            'playstyle' =>
+                'Control movement with roots, hold ground and become increasingly difficult to dislodge.',
+            'best_for' =>
+                'Players who want a durable battlefield controller with strong Rootlands flavour.',
+            'identity' =>
+                'A protector who fights beside the living earth and turns the ground itself into an ally.',
+        ],
+        'cold-vault-stalker' => [
+            'playstyle' =>
+                'Deal cold damage, slow enemy movement and thrive in frozen or icy environments.',
+            'best_for' =>
+                'Players who want a frost-themed hunter built around survival, pursuit and speed control.',
+            'identity' =>
+                'A hunter of the Cold Vaults who follows movement through frost long after safer travellers have turned back.',
+        ],
+        'conclave-of-the-forager' => [
+            'playstyle' =>
+                'Prepare herbal remedies, support allies, heal conditions and switch between restorative and harmful concoctions.',
+            'best_for' =>
+                'Players who want a non-spell-focused support Ranger with an apothecary toolkit.',
+            'identity' =>
+                'A travelling herbalist, healer, poisoner and survival expert carrying an entire field apothecary.',
+        ],
+        'spice-trail-hunter' => [
+            'playstyle' =>
+                'Infuse attacks with changing elemental seasonings and reposition after elemental strikes.',
+            'best_for' =>
+                'Players who enjoy adaptable damage types, mobile ranged combat and Sizzlarian flavour.',
+            'identity' =>
+                'A tracker who follows the smoke and treats enchanted seasoning as perfectly sensible ammunition technology.',
+        ],
+        'rindrunner' => [
+            'playstyle' =>
+                'Fight defensively at range, hunt underground threats and survive heavy retaliation.',
+            'best_for' =>
+                'Players who want a sturdy cave hunter with strong Dairy Dominion and Cheddar Cliffs flavour.',
+            'identity' =>
+                'A border and cave patrol specialist who makes sure the things beneath the Cheddar Cliffs stay there.',
+        ],
+        'seedshot-conclave' => [
+            'playstyle' =>
+                'Fire magical seed ammunition for restraint, area damage, forced movement, light and healing.',
+            'best_for' =>
+                'Players who want the most visually distinctive trick-shot Ranger and a broad tactical toolkit.',
+            'identity' =>
+                'A Melonian sharpshooter who grows ammunition and turns every impact point into the beginning of a plant problem.',
+        ],
+        'expiry-hunter' => [
+            'playstyle' =>
+                'Detect corruption, punish undead and decaying creatures, deny their healing and stop their return.',
+            'best_for' =>
+                'Players who want a darker specialist monster hunter focused on undead, aberrations and spoilage.',
+            'identity' =>
+                'A Recalled hunter who knows some things were discarded for a reason—and makes sure they stay gone.',
+        ],
     ];
 
     /**

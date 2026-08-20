@@ -1,5 +1,5 @@
 {
-  "version": "3.7.3",
+  "version": "3.7.4",
   "source": {
     "title": "The Great Marketrealm Players Handbook",
     "kind": "curated-google-doc-snapshot"
@@ -1147,6 +1147,62 @@
       "description": "A martial Paladin oath of discipline, sacred steel and standing between the Fellowship and brutal danger.",
       "traits": [],
       "parent": "paladin"
+    },
+    {
+      "key": "aislewarden-conclave",
+      "name": "Aislewarden Conclave",
+      "description": "Classic Marketrealm scouts, trackers, monster hunters and protectors of the roads between kingdoms. Core identity: tracking, ambushing and mobility.",
+      "traits": [],
+      "parent": "ranger"
+    },
+    {
+      "key": "deep-root-warden",
+      "name": "Deep-Root Warden",
+      "description": "Protectors of the Rootlands who fight alongside the living earth. Core identity: battlefield control and durability.",
+      "traits": [],
+      "parent": "ranger"
+    },
+    {
+      "key": "cold-vault-stalker",
+      "name": "Cold Vault Stalker",
+      "description": "Rangers who patrol the Cold Vaults and frozen wilderness where even other Frostreem fear to travel. Core identity: cold damage, survival and slowing enemies.",
+      "traits": [],
+      "parent": "ranger"
+    },
+    {
+      "key": "conclave-of-the-forager",
+      "name": "Conclave of the Forager",
+      "description": "Herbfolk Foragers are healers, poisoners, trackers and survival experts who carry entire apothecaries in their packs. Core identity: herbal concoctions and party support.",
+      "traits": [],
+      "parent": "ranger"
+    },
+    {
+      "key": "spice-trail-hunter",
+      "name": "Spice Trail Hunter",
+      "description": "Sizzlarian trackers carrying enchanted spice mixtures that modify ammunition and weapons. Core identity: elemental ammunition.",
+      "traits": [],
+      "parent": "ranger"
+    },
+    {
+      "key": "rindrunner",
+      "name": "Rindrunner",
+      "description": "Rangers who patrol cheese caves, Dairy Dominion borders and the labyrinth beneath the Cheddar Cliffs. Core identity: defensive ranged combat and monster hunting.",
+      "traits": [],
+      "parent": "ranger"
+    },
+    {
+      "key": "seedshot-conclave",
+      "name": "Seedshot Conclave",
+      "description": "Melonian sharpshooters who grow enchanted seed ammunition that erupts into magical plants on impact. Core identity: trick arrows—but they are seeds.",
+      "traits": [],
+      "parent": "ranger"
+    },
+    {
+      "key": "expiry-hunter",
+      "name": "Expiry Hunter",
+      "description": "Recalled hunters of Rotlings, Spoiled Shamblers, Molders, Necrobeef and other creatures of decay. Core identity: anti-undead and anti-corruption monster hunting.",
+      "traits": [],
+      "parent": "ranger"
     }
   ]
 }

@@ -227,7 +227,7 @@ final class RangerFieldRegisterPresenter
                 'status' =>
                     $pathCandidates === []
                         ? 'Awaiting Ranger path catalogue'
-                        : 'Ranger paths available',
+                        : 'Eight Ranger Paths available',
             ],
             'next_milestone' =>
                 $this->nextMilestone(

@@ -212,7 +212,7 @@ final class RangerFieldRegisterRegressionTest extends TestCase
         );
     }
 
-    public function testRegisterDoesNotInventRangerPathCandidates(): void
+    public function testRegisterExposesEightCertifiedRangerPathCandidates(): void
     {
         $register = (
             new RangerFieldRegisterPresenter()
@@ -220,22 +220,22 @@ final class RangerFieldRegisterRegressionTest extends TestCase
             $this->ranger(5)
         );
 
-        self::assertFalse(
+        self::assertTrue(
             $register['path']['registered']
         );
 
         self::assertSame(
-            0,
+            8,
             $register['path']['candidate_count']
         );
 
-        self::assertSame(
-            [],
+        self::assertCount(
+            8,
             $register['path']['candidates']
         );
 
         self::assertSame(
-            'Awaiting Ranger path catalogue',
+            'Eight Ranger Paths available',
             $register['path']['status']
         );
     }
@@ -319,7 +319,7 @@ final class RangerFieldRegisterRegressionTest extends TestCase
         );
 
         self::assertStringContainsString(
-            'No path selector is shown until legal Ranger',
+            'Eight certified Ranger Paths are now available',
             $view
         );
     }

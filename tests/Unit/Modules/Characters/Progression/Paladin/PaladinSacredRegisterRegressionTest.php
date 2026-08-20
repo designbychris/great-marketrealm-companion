@@ -272,7 +272,7 @@ final class PaladinSacredRegisterRegressionTest extends TestCase
         );
 
         self::assertStringContainsString(
-            "private const VERSION = '3.7.3';",
+            "private const VERSION = '3.7.4';",
             $repository
         );
 
@@ -287,7 +287,7 @@ final class PaladinSacredRegisterRegressionTest extends TestCase
         self::assertIsArray($catalogue);
 
         self::assertSame(
-            '3.7.3',
+            '3.7.4',
             $catalogue['version']
         );
     }
