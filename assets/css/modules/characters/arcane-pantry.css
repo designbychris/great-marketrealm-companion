@@ -4306,3 +4306,143 @@
         border: 1px solid ButtonText;
     }
 }
+
+
+/* Phase III.12.12A — The Bard's College Register */
+.gmrc-college-register {
+    margin: 0 0 1rem;
+    padding: .9rem;
+    min-width: 0;
+    border: 1px solid rgba(111, 82, 120, .22);
+    border-radius: .5rem;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 251, 247, .92),
+            rgba(248, 241, 248, .8)
+        );
+}
+
+.gmrc-college-register__heading {
+    display: flex;
+    justify-content: space-between;
+    gap: .9rem;
+    align-items: flex-start;
+    margin-bottom: .75rem;
+}
+
+.gmrc-college-register__seal {
+    display: grid;
+    place-items: center;
+    min-width: 7.5rem;
+    padding: .5rem;
+    border: 1px solid rgba(111, 82, 120, .18);
+    border-radius: .36rem;
+    background: rgba(255, 253, 250, .78);
+    text-align: center;
+}
+
+.gmrc-college-register__summary,
+.gmrc-college-register__footer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.gmrc-college-register__summary article,
+.gmrc-college-register__footer > div,
+.gmrc-college-register__slots > span {
+    display: grid;
+    gap: .16rem;
+    min-width: 0;
+    padding: .58rem;
+    border: 1px solid rgba(111, 82, 120, .14);
+    border-radius: .34rem;
+    background: rgba(255, 253, 250, .76);
+}
+
+.gmrc-college-register__slots {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: .45rem;
+    margin-top: .65rem;
+}
+
+.gmrc-college-register__slots > span {
+    text-align: center;
+}
+
+.gmrc-college-register__footer {
+    margin-top: .7rem;
+}
+
+.gmrc-college-register strong,
+.gmrc-college-register span,
+.gmrc-college-register small,
+.gmrc-college-register__early-note {
+    overflow-wrap: anywhere;
+}
+
+.gmrc-college-register__summary span,
+.gmrc-college-register__footer span,
+.gmrc-college-register__footer small,
+.gmrc-college-register__slots small,
+.gmrc-college-register__early-note {
+    font-size: .76rem;
+    opacity: .8;
+}
+
+.gmrc-college-register__early-note {
+    margin: .7rem 0 0;
+    padding: .55rem .65rem;
+    border-left: .2rem solid currentColor;
+}
+
+@media (max-width: 840px) {
+    .gmrc-college-register__slots {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    .gmrc-college-register__summary,
+    .gmrc-college-register__footer {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-college-register__slots {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 460px) {
+    .gmrc-college-register__heading {
+        display: grid;
+    }
+
+    .gmrc-college-register__seal {
+        width: 100%;
+    }
+
+    .gmrc-college-register__slots {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-college-register {
+        scroll-behavior: auto;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-college-register,
+    .gmrc-college-register__seal,
+    .gmrc-college-register__summary article,
+    .gmrc-college-register__footer > div,
+    .gmrc-college-register__slots > span {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

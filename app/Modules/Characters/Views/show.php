@@ -281,6 +281,13 @@ $fieldArts = isset($fieldArts)
             'field_reserves' => [],
         ];
 
+$collegeRegister = isset($collegeRegister)
+    && is_array($collegeRegister)
+        ? $collegeRegister
+        : [
+            'supported' => false,
+        ];
+
 $domainRegister = isset($domainRegister)
     && is_array($domainRegister)
         ? $domainRegister
@@ -1840,6 +1847,363 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-eyebrow">Dangerously Magical</p>
                 <h2 id="gmrc-arcane-pantry-title">The Arcane Pantry</h2>
             </header>
+
+            <?php if (
+                ! empty($collegeRegister['supported'])
+            ) : ?>
+                <section
+                    class="gmrc-college-register"
+                    aria-labelledby="gmrc-college-register-title"
+                    data-college-register
+                >
+                    <header class="gmrc-college-register__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Bard Performance Record
+                            </p>
+                            <h3 id="gmrc-college-register-title">
+                                The Bard’s College Register
+                            </h3>
+                            <p>
+                                Inspiration, repertoire and performance
+                                milestones at Bard Level <?php echo esc_html(
+                                    (string) (
+                                        $collegeRegister['level']
+                                        ?? $level
+                                    )
+                                ); ?>.
+                            </p>
+                        </div>
+
+                        <span class="gmrc-college-register__seal">
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $collegeRegister[
+                                            'inspiration'
+                                        ]['die']
+                                        ?? 'd6'
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>Bardic Inspiration</small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-college-register__summary">
+                        <article>
+                            <small>Bard College</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $collegeRegister[
+                                            'college'
+                                        ]['label']
+                                        ?? 'College not yet chosen'
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>
+                                <?php if (
+                                    ! empty(
+                                        $collegeRegister[
+                                            'college'
+                                        ]['chosen']
+                                    )
+                                ) : ?>
+                                    Certified College
+                                <?php elseif (
+                                    ! empty(
+                                        $collegeRegister[
+                                            'college'
+                                        ]['available']
+                                    )
+                                ) : ?>
+                                    College selection is available
+                                <?php else : ?>
+                                    Opens at Level 3
+                                <?php endif; ?>
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Bardic Inspiration</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    sprintf(
+                                        '%s · %d uses',
+                                        (string) (
+                                            $collegeRegister[
+                                                'inspiration'
+                                            ]['die']
+                                            ?? 'd6'
+                                        ),
+                                        (int) (
+                                            $collegeRegister[
+                                                'inspiration'
+                                            ]['maximum']
+                                            ?? 1
+                                        )
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>
+                                <?php echo (
+                                    $collegeRegister[
+                                        'inspiration'
+                                    ]['refresh']
+                                    ?? ''
+                                ) === 'short-or-long-rest'
+                                    ? 'Refreshes on short or long rest'
+                                    : 'Refreshes on long rest'; ?>
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Song of Rest</small>
+                            <strong>
+                                <?php echo ! empty(
+                                    $collegeRegister[
+                                        'song_of_rest'
+                                    ]['unlocked']
+                                )
+                                    ? esc_html(
+                                        (string) (
+                                            $collegeRegister[
+                                                'song_of_rest'
+                                            ]['die']
+                                            ?? 'd6'
+                                        )
+                                    )
+                                    : 'Opens at Level 2'; ?>
+                            </strong>
+                            <span>Restorative performance die</span>
+                        </article>
+
+                        <article>
+                            <small>Spells Known</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $collegeRegister[
+                                            'spellcasting'
+                                        ]['spells_known']
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>
+                                Charisma-based known-spell casting
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Cantrips</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $collegeRegister[
+                                            'spellcasting'
+                                        ]['cantrips_known']
+                                        ?? 2
+                                    )
+                                ); ?>
+                                known
+                            </strong>
+                            <span>Bard repertoire</span>
+                        </article>
+
+                        <article>
+                            <small>Spell Save DC</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $collegeRegister[
+                                            'spellcasting'
+                                        ]['save_dc']
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>Charisma based</span>
+                        </article>
+
+                        <article>
+                            <small>Spell Attack</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    sprintf(
+                                        '%+d',
+                                        (int) (
+                                            $collegeRegister[
+                                                'spellcasting'
+                                            ]['spell_attack']
+                                            ?? 0
+                                        )
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>Charisma based</span>
+                        </article>
+
+                        <article>
+                            <small>Magical Secrets</small>
+                            <strong>
+                                <?php echo ! empty(
+                                    $collegeRegister[
+                                        'magical_secrets'
+                                    ]['unlocked']
+                                )
+                                    ? esc_html(
+                                        sprintf(
+                                            '%d pairs learned',
+                                            (int) (
+                                                $collegeRegister[
+                                                    'magical_secrets'
+                                                ]['pairs']
+                                                ?? 0
+                                            )
+                                        )
+                                    )
+                                    : 'Opens at Level 10'; ?>
+                            </strong>
+                            <span>Cross-Calling repertoire</span>
+                        </article>
+                    </div>
+
+                    <?php if (
+                        ! empty(
+                            $collegeRegister[
+                                'spellcasting'
+                            ]['slots']
+                        )
+                    ) : ?>
+                        <div class="gmrc-college-register__slots">
+                            <?php foreach (
+                                $collegeRegister[
+                                    'spellcasting'
+                                ]['slots']
+                                as $slot
+                            ) : ?>
+                                <span>
+                                    <strong>
+                                        <?php echo esc_html(
+                                            sprintf(
+                                                '%d/%d',
+                                                (int) (
+                                                    $slot['remaining']
+                                                    ?? 0
+                                                ),
+                                                (int) (
+                                                    $slot['total']
+                                                    ?? 0
+                                                )
+                                            )
+                                        ); ?>
+                                    </strong>
+                                    <small>
+                                        Level <?php echo esc_html(
+                                            (string) (
+                                                $slot['level']
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                        slots
+                                    </small>
+                                </span>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="gmrc-college-register__footer">
+                        <div>
+                            <span>College catalogue</span>
+                            <strong>
+                                <?php echo esc_html(
+                                    sprintf(
+                                        '%d Colleges registered',
+                                        (int) (
+                                            $collegeRegister[
+                                                'college'
+                                            ]['candidate_count']
+                                            ?? 0
+                                        )
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $collegeRegister[
+                                            'college'
+                                        ]['gift_status']
+                                        ?? 'College Gifts await their dedicated phase'
+                                    )
+                                ); ?>.
+                            </small>
+                        </div>
+
+                        <?php if (
+                            is_array(
+                                $collegeRegister[
+                                    'next_milestone'
+                                ]
+                                ?? null
+                            )
+                        ) : ?>
+                            <div>
+                                <span>Next performance milestone</span>
+                                <strong>
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $collegeRegister[
+                                                'next_milestone'
+                                            ]['level']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                    ·
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $collegeRegister[
+                                                'next_milestone'
+                                            ]['label']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </strong>
+                                <small>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $collegeRegister[
+                                                'next_milestone'
+                                            ]['detail']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </small>
+                            </div>
+                        <?php else : ?>
+                            <div>
+                                <span>Bard progression</span>
+                                <strong>Final performance threshold reached</strong>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <?php if (
+                        (int) (
+                            $collegeRegister['level']
+                            ?? 1
+                        ) < 3
+                    ) : ?>
+                        <p class="gmrc-college-register__early-note">
+                            Your Bardic repertoire is already active.
+                            College selection opens at Level 3.
+                        </p>
+                    <?php endif; ?>
+                </section>
+            <?php endif; ?>
 
             <?php if (
                 ! empty($domainRegister['supported'])
