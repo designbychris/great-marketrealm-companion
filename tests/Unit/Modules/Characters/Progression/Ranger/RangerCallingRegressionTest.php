@@ -283,27 +283,58 @@ final class RangerCallingRegressionTest extends TestCase
             $profile->hasSpellcastingProgression()
         );
 
-        self::assertFalse(
+        self::assertTrue(
             $profile->hasCallingPathProgression()
         );
     }
 
-    public function testRangerPathCatalogueRemainsUnregisteredWithoutSubclassCandidates(): void
+    public function testRangerPathCatalogueNowProvidesEightCertifiedCandidates(): void
     {
         $ranger =
             CharacterClass::fromString(
                 'ranger'
             );
 
-        self::assertSame(
-            [],
-            (new PathCandidateCatalogue())
-                ->forClass($ranger)
+        $candidates = (
+            new PathCandidateCatalogue()
+        )->forClass($ranger);
+
+        self::assertCount(
+            8,
+            $candidates
         );
 
-        self::assertNull(
-            (new PathProgressionCatalogue())
-                ->forClass($ranger)
+        self::assertSame(
+            [
+                'aislewarden-conclave',
+                'deep-root-warden',
+                'cold-vault-stalker',
+                'conclave-of-the-forager',
+                'spice-trail-hunter',
+                'rindrunner',
+                'seedshot-conclave',
+                'expiry-hunter',
+            ],
+            array_column(
+                $candidates,
+                'key'
+            )
+        );
+
+        $definition = (
+            new PathProgressionCatalogue()
+        )->forClass($ranger);
+
+        self::assertIsArray($definition);
+
+        self::assertSame(
+            'Ranger Path',
+            $definition['label']
+        );
+
+        self::assertSame(
+            3,
+            $definition['selection_level']
         );
     }
 
