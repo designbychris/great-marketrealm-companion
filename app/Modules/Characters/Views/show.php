@@ -281,6 +281,13 @@ $fieldArts = isset($fieldArts)
             'field_reserves' => [],
         ];
 
+$groveRegister = isset($groveRegister)
+    && is_array($groveRegister)
+        ? $groveRegister
+        : [
+            'supported' => false,
+        ];
+
 $progression = isset($progression) && is_array($progression)
     ? $progression
     : [
@@ -1808,6 +1815,322 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-eyebrow">Dangerously Magical</p>
                 <h2 id="gmrc-arcane-pantry-title">The Arcane Pantry</h2>
             </header>
+
+            <?php if (
+                ! empty($groveRegister['supported'])
+            ) : ?>
+                <section
+                    class="gmrc-grove-register"
+                    aria-labelledby="gmrc-grove-register-title"
+                    data-grove-register
+                >
+                    <header class="gmrc-grove-register__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Druid Grove Record
+                            </p>
+                            <h3 id="gmrc-grove-register-title">
+                                The Druid’s Circle Grove Register
+                            </h3>
+                            <p>
+                                Living magic and transformation at Druid Level
+                                <?php echo esc_html(
+                                    (string) (
+                                        $groveRegister['level']
+                                        ?? $level
+                                    )
+                                ); ?>.
+                            </p>
+                        </div>
+
+                        <span class="gmrc-grove-register__seal">
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $groveRegister[
+                                            'wild_shape'
+                                        ]['stage']
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>Wild Shape stage</small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-grove-register__summary">
+                        <article>
+                            <small>Druid Circle</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $groveRegister[
+                                            'circle'
+                                        ]['label']
+                                        ?? 'Circle not yet chosen'
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>
+                                <?php if (
+                                    ! empty(
+                                        $groveRegister[
+                                            'circle'
+                                        ]['chosen']
+                                    )
+                                ) : ?>
+                                    Certified Circle
+                                <?php elseif (
+                                    (int) (
+                                        $groveRegister['level']
+                                        ?? 1
+                                    ) < 2
+                                ) : ?>
+                                    Circle choice opens at Level 2
+                                <?php else : ?>
+                                    Circle choice ready for certification
+                                <?php endif; ?>
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Wild Shape</small>
+                            <strong>
+                                <?php echo ! empty(
+                                    $groveRegister[
+                                        'wild_shape'
+                                    ]['unlocked']
+                                )
+                                    ? 'Unlocked'
+                                    : 'Opens at Level 2'; ?>
+                            </strong>
+                            <span>
+                                <?php if (
+                                    ! empty(
+                                        $groveRegister[
+                                            'wild_shape'
+                                        ]['next_improvement_level']
+                                    )
+                                ) : ?>
+                                    Next transformation threshold:
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $groveRegister[
+                                                'wild_shape'
+                                            ]['next_improvement_level']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                <?php else : ?>
+                                    Core Wild Shape thresholds reached
+                                <?php endif; ?>
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Prepared Spells</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $groveRegister[
+                                            'spellcasting'
+                                        ]['prepared_maximum']
+                                        ?? 1
+                                    )
+                                ); ?>
+                                prepared
+                            </strong>
+                            <span>
+                                Druid level + Wisdom modifier · minimum 1
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Cantrips</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $groveRegister[
+                                            'spellcasting'
+                                        ]['cantrips_known']
+                                        ?? 2
+                                    )
+                                ); ?>
+                                known
+                            </strong>
+                            <span>
+                                Wisdom-based nature magic
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Spell Save DC</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $groveRegister[
+                                            'spellcasting'
+                                        ]['save_dc']
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>Wisdom based</span>
+                        </article>
+
+                        <article>
+                            <small>Spell Attack</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    sprintf(
+                                        '%+d',
+                                        (int) (
+                                            $groveRegister[
+                                                'spellcasting'
+                                            ]['spell_attack']
+                                            ?? 0
+                                        )
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>Wisdom based</span>
+                        </article>
+                    </div>
+
+                    <?php if (
+                        ! empty(
+                            $groveRegister[
+                                'spellcasting'
+                            ]['slots']
+                        )
+                    ) : ?>
+                        <div class="gmrc-grove-register__slots">
+                            <?php foreach (
+                                $groveRegister[
+                                    'spellcasting'
+                                ]['slots']
+                                as $slot
+                            ) : ?>
+                                <span>
+                                    <strong>
+                                        <?php echo esc_html(
+                                            sprintf(
+                                                '%d/%d',
+                                                (int) (
+                                                    $slot['remaining']
+                                                    ?? 0
+                                                ),
+                                                (int) (
+                                                    $slot['total']
+                                                    ?? 0
+                                                )
+                                            )
+                                        ); ?>
+                                    </strong>
+                                    <small>
+                                        Level <?php echo esc_html(
+                                            (string) (
+                                                $slot['level']
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                        slots
+                                    </small>
+                                </span>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="gmrc-grove-register__footer">
+                        <div>
+                            <span>Circle Grove status</span>
+                            <strong>
+                                <?php echo esc_html(
+                                    sprintf(
+                                        '%d Circles registered',
+                                        (int) (
+                                            $groveRegister[
+                                                'circle'
+                                            ]['candidate_count']
+                                            ?? 0
+                                        )
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $groveRegister[
+                                            'circle'
+                                        ]['gift_status']
+                                        ?? 'Circle Gifts await their dedicated phase'
+                                    )
+                                ); ?>.
+                            </small>
+                        </div>
+
+                        <?php if (
+                            is_array(
+                                $groveRegister[
+                                    'next_milestone'
+                                ]
+                                ?? null
+                            )
+                        ) : ?>
+                            <div>
+                                <span>Next grove milestone</span>
+                                <strong>
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $groveRegister[
+                                                'next_milestone'
+                                            ]['level']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                    ·
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $groveRegister[
+                                                'next_milestone'
+                                            ]['label']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </strong>
+                                <small>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $groveRegister[
+                                                'next_milestone'
+                                            ]['detail']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </small>
+                            </div>
+                        <?php else : ?>
+                            <div>
+                                <span>Druid progression</span>
+                                <strong>Archdruid threshold reached</strong>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <?php if (
+                        (int) (
+                            $groveRegister['level']
+                            ?? 1
+                        ) === 1
+                    ) : ?>
+                        <p class="gmrc-grove-register__level-one-note">
+                            At Level 1, spellcasting is already alive in the
+                            Grove. Wild Shape and Circle certification awaken
+                            at Level 2.
+                        </p>
+                    <?php endif; ?>
+                </section>
+            <?php endif; ?>
 
             <?php if (
                 ! empty($fieldRegister['supported'])
