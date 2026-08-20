@@ -2482,13 +2482,14 @@ $callingPathLabel = $callingPath !== ''
                                                     <button
                                                         type="button"
                                                         class="gmrc-guild-roll-trigger"
-                                                        data-guild-roll="<?php echo esc_attr(
+                                                        data-guild-roll="damage"
+                                                        data-roll-kind="damage"
+                                                        data-roll-formula="<?php echo esc_attr(
                                                             (string) (
                                                                 $choice['formula']
                                                                 ?? ''
                                                             )
                                                         ); ?>"
-                                                        data-roll-kind="damage"
                                                         data-roll-label="<?php echo esc_attr(
                                                             (
                                                                 $choice['label']
@@ -2526,13 +2527,14 @@ $callingPathLabel = $callingPath !== ''
                                             <button
                                                 type="button"
                                                 class="gmrc-guild-roll-trigger"
-                                                data-guild-roll="<?php echo esc_attr(
+                                                data-guild-roll="damage"
+                                                data-roll-kind="damage"
+                                                data-roll-formula="<?php echo esc_attr(
                                                     (string) (
                                                         $roll['formula']
                                                         ?? ''
                                                     )
                                                 ); ?>"
-                                                data-roll-kind="damage"
                                                 data-roll-label="<?php echo esc_attr(
                                                     (string) (
                                                         $roll['label']
