@@ -288,6 +288,15 @@ $groveRegister = isset($groveRegister)
             'supported' => false,
         ];
 
+$groveArts = isset($groveArts)
+    && is_array($groveArts)
+        ? $groveArts
+        : [
+            'supported' => false,
+            'arts' => [],
+            'primal_reserves' => [],
+        ];
+
 $progression = isset($progression) && is_array($progression)
     ? $progression
     : [
@@ -2825,6 +2834,513 @@ $callingPathLabel = $callingPath !== ''
                             </div>
                         <?php endif; ?>
                     </div>
+                </section>
+            <?php endif; ?>
+
+            <?php if (
+                ! empty($groveArts['supported'])
+                && ! empty($groveArts['arts'])
+            ) : ?>
+                <section
+                    class="gmrc-druid-grove-arts"
+                    aria-labelledby="gmrc-druid-grove-arts-title"
+                    data-druid-grove-arts
+                >
+                    <header class="gmrc-druid-grove-arts__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Circle Techniques
+                            </p>
+                            <h3 id="gmrc-druid-grove-arts-title">
+                                The Druid’s Grove Arts
+                            </h3>
+                            <p>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $groveArts['circle_label']
+                                        ?? 'Druid Circle'
+                                    )
+                                ); ?>
+                                techniques currently awakened by your level.
+                            </p>
+                        </div>
+                        <span class="gmrc-druid-grove-arts__seal">
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) count(
+                                        $groveArts['arts']
+                                        ?? []
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>Arts awakened</small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-druid-grove-arts__grid">
+                        <?php foreach (
+                            $groveArts['arts']
+                            as $art
+                        ) : ?>
+                            <?php
+                            $primaryResource = is_string(
+                                $art['resource']
+                                ?? null
+                            )
+                                ? (string) $art['resource']
+                                : '';
+
+                            $primaryState = null;
+
+                            if ($primaryResource !== '') {
+                                foreach (
+                                    $groveArts[
+                                        'primal_reserves'
+                                    ] ?? []
+                                    as $reserve
+                                ) {
+                                    if (
+                                        ($reserve['resource'] ?? '')
+                                        === $primaryResource
+                                    ) {
+                                        $primaryState = $reserve;
+                                        break;
+                                    }
+                                }
+                            }
+                            ?>
+                            <article
+                                class="gmrc-druid-grove-art"
+                                data-druid-grove-art="<?php echo esc_attr(
+                                    (string) (
+                                        $art['key']
+                                        ?? ''
+                                    )
+                                ); ?>"
+                            >
+                                <header>
+                                    <div>
+                                        <small>
+                                            Level <?php echo esc_html(
+                                                (string) (
+                                                    $art['level']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </small>
+                                        <strong>
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $art['label']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </strong>
+                                    </div>
+
+                                    <?php if (
+                                        is_array($primaryState)
+                                    ) : ?>
+                                        <span>
+                                            <?php echo ! empty(
+                                                $primaryState['unlimited']
+                                            )
+                                                ? 'Unlimited'
+                                                : esc_html(
+                                                    sprintf(
+                                                        '%d/%d ready',
+                                                        (int) (
+                                                            $primaryState[
+                                                                'remaining'
+                                                            ]
+                                                            ?? 0
+                                                        ),
+                                                        (int) (
+                                                            $primaryState[
+                                                                'maximum'
+                                                            ]
+                                                            ?? 0
+                                                        )
+                                                    )
+                                                ); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </header>
+
+                                <p>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $art['summary']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </p>
+
+                                <?php if (
+                                    ! empty($art['static'])
+                                ) : ?>
+                                    <dl class="gmrc-druid-grove-art__facts">
+                                        <?php foreach (
+                                            $art['static']
+                                            as $factLabel => $factValue
+                                        ) : ?>
+                                            <div>
+                                                <dt>
+                                                    <?php echo esc_html(
+                                                        (string) $factLabel
+                                                    ); ?>
+                                                </dt>
+                                                <dd>
+                                                    <?php echo esc_html(
+                                                        (string) $factValue
+                                                    ); ?>
+                                                </dd>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </dl>
+                                <?php endif; ?>
+
+                                <?php if (
+                                    ! empty($art['rolls'])
+                                ) : ?>
+                                    <div class="gmrc-druid-grove-art__rolls">
+                                        <?php foreach (
+                                            $art['rolls']
+                                            as $roll
+                                        ) : ?>
+                                            <button
+                                                type="button"
+                                                class="gmrc-guild-roll-trigger"
+                                                data-guild-roll="<?php echo esc_attr(
+                                                    (string) (
+                                                        $roll['kind']
+                                                        ?? 'damage'
+                                                    )
+                                                ); ?>"
+                                                data-roll-kind="<?php echo esc_attr(
+                                                    (string) (
+                                                        $roll['kind']
+                                                        ?? 'damage'
+                                                    )
+                                                ); ?>"
+                                                data-roll-formula="<?php echo esc_attr(
+                                                    (string) (
+                                                        $roll['formula']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                                data-roll-modifier="<?php echo esc_attr(
+                                                    (string) (
+                                                        $roll['modifier']
+                                                        ?? 0
+                                                    )
+                                                ); ?>"
+                                                <?php if (
+                                                    ! empty(
+                                                        $roll['damage_type']
+                                                    )
+                                                ) : ?>
+                                                    data-roll-damage-type="<?php echo esc_attr(
+                                                        (string) $roll['damage_type']
+                                                    ); ?>"
+                                                <?php endif; ?>
+                                                data-roll-label="<?php echo esc_attr(
+                                                    (string) (
+                                                        $roll['label']
+                                                        ?? 'Druid Grove Art'
+                                                    )
+                                                ); ?>"
+                                            >
+                                                <span aria-hidden="true">❧</span>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $roll['label']
+                                                        ?? 'Roll Grove Art'
+                                                    )
+                                                ); ?>
+                                                ·
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $roll['formula']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                                <?php if (
+                                                    (int) (
+                                                        $roll['modifier']
+                                                        ?? 0
+                                                    ) !== 0
+                                                ) : ?>
+                                                    <?php echo esc_html(
+                                                        sprintf(
+                                                            '%+d',
+                                                            (int) $roll['modifier']
+                                                        )
+                                                    ); ?>
+                                                <?php endif; ?>
+                                            </button>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if (
+                                    ! empty($art['choices'])
+                                ) : ?>
+                                    <div class="gmrc-druid-grove-art__choices">
+                                        <?php foreach (
+                                            $art['choices']
+                                            as $choice
+                                        ) : ?>
+                                            <div
+                                                class="gmrc-druid-grove-art__choice"
+                                                data-druid-grove-choice="<?php echo esc_attr(
+                                                    (string) (
+                                                        $choice['key']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                            >
+                                                <strong>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $choice['label']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </strong>
+                                                <span>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $choice['effect']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </span>
+
+                                                <?php if (
+                                                    ! empty(
+                                                        $choice['formula']
+                                                    )
+                                                ) : ?>
+                                                    <button
+                                                        type="button"
+                                                        class="gmrc-guild-roll-trigger"
+                                                        data-guild-roll="<?php echo esc_attr(
+                                                            (string) (
+                                                                $choice['kind']
+                                                                ?? 'damage'
+                                                            )
+                                                        ); ?>"
+                                                        data-roll-kind="<?php echo esc_attr(
+                                                            (string) (
+                                                                $choice['kind']
+                                                                ?? 'damage'
+                                                            )
+                                                        ); ?>"
+                                                        data-roll-formula="<?php echo esc_attr(
+                                                            (string) $choice['formula']
+                                                        ); ?>"
+                                                        data-roll-modifier="<?php echo esc_attr(
+                                                            (string) (
+                                                                $choice['modifier']
+                                                                ?? 0
+                                                            )
+                                                        ); ?>"
+                                                        data-roll-label="<?php echo esc_attr(
+                                                            (string) $choice['label']
+                                                        ); ?>"
+                                                    >
+                                                        <span aria-hidden="true">❧</span>
+                                                        Roll <?php echo esc_html(
+                                                            (string) $choice['formula']
+                                                        ); ?>
+                                                        <?php if (
+                                                            (int) (
+                                                                $choice['modifier']
+                                                                ?? 0
+                                                            ) !== 0
+                                                        ) : ?>
+                                                            <?php echo esc_html(
+                                                                sprintf(
+                                                                    '%+d',
+                                                                    (int) $choice['modifier']
+                                                                )
+                                                            ); ?>
+                                                        <?php endif; ?>
+                                                    </button>
+                                                <?php endif; ?>
+
+                                                <?php if (
+                                                    isset(
+                                                        $choice['static_value']
+                                                    )
+                                                ) : ?>
+                                                    <strong class="gmrc-druid-grove-art__static-result">
+                                                        <?php echo esc_html(
+                                                            (string) $choice['static_value']
+                                                            . (string) (
+                                                                $choice['static_suffix']
+                                                                ?? ''
+                                                            )
+                                                        ); ?>
+                                                    </strong>
+                                                <?php endif; ?>
+
+                                                <?php if (
+                                                    ! empty(
+                                                        $choice['resource']
+                                                    )
+                                                ) : ?>
+                                                    <?php
+                                                    $choiceState = null;
+                                                    foreach (
+                                                        $groveArts[
+                                                            'primal_reserves'
+                                                        ] ?? []
+                                                        as $reserve
+                                                    ) {
+                                                        if (
+                                                            ($reserve['resource'] ?? '')
+                                                            === $choice['resource']
+                                                        ) {
+                                                            $choiceState = $reserve;
+                                                            break;
+                                                        }
+                                                    }
+                                                    ?>
+                                                    <?php if (
+                                                        is_array($choiceState)
+                                                    ) : ?>
+                                                        <form
+                                                            action="<?php echo esc_url(
+                                                                $appRequestUrl
+                                                            ); ?>"
+                                                            method="post"
+                                                        >
+                                                            <input type="hidden" name="action" value="gmrc_app_request">
+                                                            <input
+                                                                type="hidden"
+                                                                name="gmrc_route"
+                                                                value="<?php echo esc_attr(
+                                                                    'characters/'
+                                                                    . $characterId
+                                                                    . '/primal/spend'
+                                                                ); ?>"
+                                                            >
+                                                            <input
+                                                                type="hidden"
+                                                                name="resource"
+                                                                value="<?php echo esc_attr(
+                                                                    (string) $choice['resource']
+                                                                ); ?>"
+                                                            >
+                                                            <?php wp_nonce_field(
+                                                                'gmrc_character_primal_'
+                                                                . $characterId,
+                                                                'gmrc_nonce'
+                                                            ); ?>
+                                                            <button
+                                                                type="submit"
+                                                                class="gmrc-button gmrc-button--secondary"
+                                                                data-druid-grove-use="<?php echo esc_attr(
+                                                                    (string) $choice['resource']
+                                                                ); ?>"
+                                                                <?php echo (
+                                                                    empty(
+                                                                        $choiceState['unlimited']
+                                                                    )
+                                                                    && (int) (
+                                                                        $choiceState['remaining']
+                                                                        ?? 0
+                                                                    ) < 1
+                                                                ) ? 'disabled' : ''; ?>
+                                                            >
+                                                                Use <?php echo esc_html(
+                                                                    (string) $choice['label']
+                                                                ); ?>
+                                                            </button>
+                                                        </form>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if (
+                                    is_array($primaryState)
+                                ) : ?>
+                                    <form
+                                        action="<?php echo esc_url(
+                                            $appRequestUrl
+                                        ); ?>"
+                                        method="post"
+                                    >
+                                        <input type="hidden" name="action" value="gmrc_app_request">
+                                        <input
+                                            type="hidden"
+                                            name="gmrc_route"
+                                            value="<?php echo esc_attr(
+                                                'characters/'
+                                                . $characterId
+                                                . '/primal/spend'
+                                            ); ?>"
+                                        >
+                                        <input
+                                            type="hidden"
+                                            name="resource"
+                                            value="<?php echo esc_attr(
+                                                $primaryResource
+                                            ); ?>"
+                                        >
+                                        <?php wp_nonce_field(
+                                            'gmrc_character_primal_'
+                                            . $characterId,
+                                            'gmrc_nonce'
+                                        ); ?>
+                                        <button
+                                            type="submit"
+                                            class="gmrc-button gmrc-button--secondary"
+                                            data-druid-grove-use="<?php echo esc_attr(
+                                                (string) (
+                                                    $art['key']
+                                                    ?? ''
+                                                )
+                                            ); ?>"
+                                            <?php echo (
+                                                empty(
+                                                    $primaryState['unlimited']
+                                                )
+                                                && (int) (
+                                                    $primaryState['remaining']
+                                                    ?? 0
+                                                ) < 1
+                                            ) ? 'disabled' : ''; ?>
+                                        >
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $art['resource_action']
+                                                    ?? (
+                                                        'Use '
+                                                        . (
+                                                            $art['label']
+                                                            ?? 'Grove Art'
+                                                        )
+                                                    )
+                                                )
+                                            ); ?>
+                                        </button>
+                                    </form>
+                                <?php endif; ?>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <p class="gmrc-druid-grove-arts__note">
+                        Grove Arts reuse the shared Guild Diceworks and the
+                        Primal Reserve ledger. Static values remain static
+                        where the Circle source supplied no dice formula.
+                    </p>
                 </section>
             <?php endif; ?>
 

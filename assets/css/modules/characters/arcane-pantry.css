@@ -3605,3 +3605,158 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.10D — The Druid's Grove Arts */
+.gmrc-druid-grove-arts {
+    margin: 0 0 1rem;
+    padding: .9rem;
+    border: 1px solid rgba(70, 101, 58, .24);
+    border-radius: .5rem;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(247, 251, 242, .88),
+            rgba(241, 247, 235, .76)
+        );
+}
+
+.gmrc-druid-grove-arts__heading {
+    display: flex;
+    justify-content: space-between;
+    gap: .9rem;
+    align-items: flex-start;
+    margin-bottom: .75rem;
+}
+
+.gmrc-druid-grove-arts__seal {
+    display: grid;
+    place-items: center;
+    min-width: 7rem;
+    padding: .5rem;
+    border: 1px solid rgba(70, 101, 58, .18);
+    border-radius: .36rem;
+    background: rgba(253, 255, 249, .75);
+    text-align: center;
+}
+
+.gmrc-druid-grove-arts__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.gmrc-druid-grove-art {
+    display: grid;
+    align-content: start;
+    gap: .52rem;
+    min-width: 0;
+    padding: .62rem;
+    border: 1px solid rgba(70, 101, 58, .14);
+    border-radius: .36rem;
+    background: rgba(253, 255, 250, .74);
+}
+
+.gmrc-druid-grove-art > header {
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.gmrc-druid-grove-art > header > div {
+    display: grid;
+    min-width: 0;
+}
+
+.gmrc-druid-grove-art > header > span {
+    flex: 0 0 auto;
+    font-weight: 700;
+}
+
+.gmrc-druid-grove-art__facts,
+.gmrc-druid-grove-art__choices,
+.gmrc-druid-grove-art__rolls {
+    display: grid;
+    gap: .4rem;
+}
+
+.gmrc-druid-grove-art__facts > div,
+.gmrc-druid-grove-art__choice {
+    display: grid;
+    gap: .2rem;
+    min-width: 0;
+    padding: .45rem;
+    border: 1px dashed rgba(70, 101, 58, .17);
+    border-radius: .3rem;
+}
+
+.gmrc-druid-grove-art__facts dt {
+    font-size: .72rem;
+    opacity: .75;
+}
+
+.gmrc-druid-grove-art__facts dd {
+    margin: 0;
+    font-weight: 700;
+}
+
+.gmrc-druid-grove-art__choice span,
+.gmrc-druid-grove-arts__note {
+    font-size: .76rem;
+    opacity: .8;
+}
+
+.gmrc-druid-grove-art .gmrc-guild-roll-trigger,
+.gmrc-druid-grove-art .gmrc-button {
+    width: 100%;
+    min-height: 2.75rem;
+    max-width: 100%;
+    white-space: normal;
+}
+
+.gmrc-druid-grove-art__static-result {
+    display: block;
+    padding: .42rem .5rem;
+    border-radius: .28rem;
+    background: rgba(70, 101, 58, .08);
+}
+
+.gmrc-druid-grove-arts__note {
+    margin: .7rem 0 0;
+}
+
+@media (max-width: 720px) {
+    .gmrc-druid-grove-arts__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .gmrc-druid-grove-arts__heading,
+    .gmrc-druid-grove-art > header {
+        display: grid;
+    }
+
+    .gmrc-druid-grove-arts__seal {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-druid-grove-art,
+    .gmrc-druid-grove-art__choice {
+        scroll-behavior: auto;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-druid-grove-arts,
+    .gmrc-druid-grove-art,
+    .gmrc-druid-grove-art__choice,
+    .gmrc-druid-grove-art__facts > div,
+    .gmrc-druid-grove-arts__seal {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}
