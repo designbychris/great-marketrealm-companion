@@ -127,15 +127,18 @@ final class ClericDivineArtsRegressionTest extends TestCase
 
     public function testSweetSanctuaryCalculatesTempHpFromLevelAndWisdom(): void
     {
-        $art = (
-            new ClericDivineArtsPresenter()
-        )->present(
-            $this->cleric(
-                5,
-                'domain-of-sweetness',
-                16
-            )
-        )['arts'][0];
+        $art = $this->art(
+            (
+                new ClericDivineArtsPresenter()
+            )->present(
+                $this->cleric(
+                    5,
+                    'domain-of-sweetness',
+                    16
+                )
+            )['arts'],
+            'sweet-sanctuary'
+        );
 
         self::assertSame(
             '8',
