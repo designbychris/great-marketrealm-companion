@@ -195,8 +195,11 @@ final class ArtificerCallingRegressionTest extends TestCase
     {
         $artificer = CharacterClass::fromString('artificer');
 
-        self::assertSame('d8', $artificer->hitDie());
-        self::assertSame(['Constitution', 'Intelligence'], $artificer->savingThrows());
+        self::assertSame(8, $artificer->hitDie());
+        self::assertSame(
+            ['constitution', 'intelligence'],
+            $artificer->savingThrowProficiencies()
+        );
     }
 
     public function testArtificerProgressionRejectsForeignCalling(): void
