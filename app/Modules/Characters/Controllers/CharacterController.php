@@ -44,6 +44,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Sacred\Services\Pal
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Patron\Services\WarlockPatronRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Origin\Services\SorcererOriginRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Ranger\Services\RangerFieldRegisterPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Ranger\Services\RangerFieldArtsPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Origin\Services\SorcererMetamagicService;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Patron\Services\WarlockEldritchArtsPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassResourceRepository;
@@ -765,6 +766,13 @@ final class CharacterController
             $activeResources
         );
 
+        $fieldArts = (
+            new RangerFieldArtsPresenter()
+        )->present(
+            $character,
+            $activeResources
+        );
+
         $progression = (new RisingRegisterPresenter())
             ->present($character);
 
@@ -836,6 +844,7 @@ final class CharacterController
                     'eldritchArts' => $eldritchArts,
                     'originRegister' => $originRegister,
                     'fieldRegister' => $fieldRegister,
+                    'fieldArts' => $fieldArts,
                     'progression' => $progression,
                     'pathGifts' => $pathGifts,
                     'advancementHistory' =>

@@ -272,6 +272,15 @@ $fieldRegister = isset($fieldRegister)
             'supported' => false,
         ];
 
+$fieldArts = isset($fieldArts)
+    && is_array($fieldArts)
+        ? $fieldArts
+        : [
+            'supported' => false,
+            'arts' => [],
+            'field_reserves' => [],
+        ];
+
 $progression = isset($progression) && is_array($progression)
     ? $progression
     : [
@@ -2287,6 +2296,342 @@ $callingPathLabel = $callingPath !== ''
                             </div>
                         <?php endif; ?>
                     </div>
+                </section>
+            <?php endif; ?>
+
+            <?php if (
+                ! empty($fieldArts['supported'])
+                && ! empty($fieldArts['arts'])
+            ) : ?>
+                <section
+                    class="gmrc-ranger-field-arts"
+                    aria-labelledby="gmrc-ranger-field-arts-title"
+                    data-ranger-field-arts
+                >
+                    <header class="gmrc-ranger-field-arts__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Ranger Path Techniques
+                            </p>
+                            <h3 id="gmrc-ranger-field-arts-title">
+                                The Ranger’s Field Arts
+                            </h3>
+                            <p>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $fieldArts['path_label']
+                                        ?? 'Ranger Path'
+                                    )
+                                ); ?>
+                                techniques currently certified for active play.
+                            </p>
+                        </div>
+                        <span class="gmrc-ranger-field-arts__seal">
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) count(
+                                        $fieldArts['arts']
+                                        ?? []
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>Arts available</small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-ranger-field-arts__grid">
+                        <?php foreach (
+                            $fieldArts['arts']
+                            as $art
+                        ) : ?>
+                            <?php
+                            $resourceKey = is_string(
+                                $art['resource']
+                                ?? null
+                            )
+                                ? (string) $art['resource']
+                                : '';
+
+                            $resourceState = null;
+
+                            if ($resourceKey !== '') {
+                                foreach (
+                                    $fieldArts[
+                                        'field_reserves'
+                                    ] ?? []
+                                    as $reserve
+                                ) {
+                                    if (
+                                        (
+                                            $reserve['resource']
+                                            ?? ''
+                                        ) === $resourceKey
+                                    ) {
+                                        $resourceState =
+                                            $reserve;
+                                        break;
+                                    }
+                                }
+                            }
+                            ?>
+                            <article
+                                class="gmrc-ranger-field-art"
+                                data-ranger-field-art="<?php echo esc_attr(
+                                    (string) (
+                                        $art['key']
+                                        ?? ''
+                                    )
+                                ); ?>"
+                            >
+                                <header>
+                                    <div>
+                                        <small>
+                                            Level <?php echo esc_html(
+                                                (string) (
+                                                    $art['level']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </small>
+                                        <strong>
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $art['label']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </strong>
+                                    </div>
+
+                                    <?php if (
+                                        is_array(
+                                            $resourceState
+                                        )
+                                    ) : ?>
+                                        <span>
+                                            <?php echo esc_html(
+                                                sprintf(
+                                                    '%d/%d',
+                                                    (int) (
+                                                        $resourceState[
+                                                            'remaining'
+                                                        ]
+                                                        ?? 0
+                                                    ),
+                                                    (int) (
+                                                        $resourceState[
+                                                            'maximum'
+                                                        ]
+                                                        ?? 0
+                                                    )
+                                                )
+                                            ); ?>
+                                            ready
+                                        </span>
+                                    <?php endif; ?>
+                                </header>
+
+                                <p>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $art['summary']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </p>
+
+                                <?php if (
+                                    ! empty($art['choices'])
+                                ) : ?>
+                                    <div class="gmrc-ranger-field-art__choices">
+                                        <?php foreach (
+                                            $art['choices']
+                                            as $choice
+                                        ) : ?>
+                                            <div
+                                                class="gmrc-ranger-field-art__choice"
+                                                data-ranger-field-choice="<?php echo esc_attr(
+                                                    (string) (
+                                                        $choice['key']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                            >
+                                                <strong>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $choice['label']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </strong>
+                                                <span>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $choice['effect']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </span>
+
+                                                <?php if (
+                                                    ! empty(
+                                                        $choice['formula']
+                                                    )
+                                                ) : ?>
+                                                    <button
+                                                        type="button"
+                                                        class="gmrc-guild-roll-trigger"
+                                                        data-guild-roll="<?php echo esc_attr(
+                                                            (string) (
+                                                                $choice['formula']
+                                                                ?? ''
+                                                            )
+                                                        ); ?>"
+                                                        data-roll-kind="damage"
+                                                        data-roll-label="<?php echo esc_attr(
+                                                            (
+                                                                $choice['label']
+                                                                ?? 'Field Art'
+                                                            )
+                                                            . ' — '
+                                                            . (
+                                                                $choice['effect']
+                                                                ?? ''
+                                                            )
+                                                        ); ?>"
+                                                    >
+                                                        <span aria-hidden="true">✥</span>
+                                                        Roll <?php echo esc_html(
+                                                            (string) (
+                                                                $choice['formula']
+                                                                ?? ''
+                                                            )
+                                                        ); ?>
+                                                    </button>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if (
+                                    ! empty($art['rolls'])
+                                ) : ?>
+                                    <div class="gmrc-ranger-field-art__rolls">
+                                        <?php foreach (
+                                            $art['rolls']
+                                            as $roll
+                                        ) : ?>
+                                            <button
+                                                type="button"
+                                                class="gmrc-guild-roll-trigger"
+                                                data-guild-roll="<?php echo esc_attr(
+                                                    (string) (
+                                                        $roll['formula']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                                data-roll-kind="damage"
+                                                data-roll-label="<?php echo esc_attr(
+                                                    (string) (
+                                                        $roll['label']
+                                                        ?? 'Ranger Field Art'
+                                                    )
+                                                ); ?>"
+                                            >
+                                                <span aria-hidden="true">✥</span>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $roll['label']
+                                                        ?? 'Roll Field Art'
+                                                    )
+                                                ); ?>
+                                                ·
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $roll['formula']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                            </button>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if (
+                                    is_array($resourceState)
+                                ) : ?>
+                                    <form
+                                        action="<?php echo esc_url(
+                                            $appRequestUrl
+                                        ); ?>"
+                                        method="post"
+                                    >
+                                        <input
+                                            type="hidden"
+                                            name="action"
+                                            value="gmrc_app_request"
+                                        >
+                                        <input
+                                            type="hidden"
+                                            name="gmrc_route"
+                                            value="<?php echo esc_attr(
+                                                'characters/'
+                                                . $characterId
+                                                . '/field/spend'
+                                            ); ?>"
+                                        >
+                                        <input
+                                            type="hidden"
+                                            name="resource"
+                                            value="<?php echo esc_attr(
+                                                $resourceKey
+                                            ); ?>"
+                                        >
+                                        <?php wp_nonce_field(
+                                            'gmrc_character_field_'
+                                            . $characterId,
+                                            'gmrc_nonce'
+                                        ); ?>
+
+                                        <button
+                                            type="submit"
+                                            class="gmrc-button gmrc-button--secondary"
+                                            data-ranger-field-art-use="<?php echo esc_attr(
+                                                (string) (
+                                                    $art['key']
+                                                    ?? ''
+                                                )
+                                            ); ?>"
+                                            <?php echo (
+                                                (int) (
+                                                    $resourceState[
+                                                        'remaining'
+                                                    ]
+                                                    ?? 0
+                                                ) < 1
+                                            ) ? 'disabled' : ''; ?>
+                                        >
+                                            Use <?php echo esc_html(
+                                                (string) (
+                                                    $art['label']
+                                                    ?? 'Field Art'
+                                                )
+                                            ); ?>
+                                        </button>
+                                    </form>
+                                <?php endif; ?>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <p class="gmrc-ranger-field-arts__note">
+                        Dice buttons appear only where your Ranger source
+                        supplied a formula. Choices without defined damage,
+                        ammunition or preparation counts remain descriptive
+                        rather than fabricated.
+                    </p>
                 </section>
             <?php endif; ?>
 

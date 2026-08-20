@@ -3191,3 +3191,128 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.9D — The Ranger's Field Arts */
+.gmrc-ranger-field-arts {
+    margin: 0 0 1rem;
+    padding: .9rem;
+    border: 1px solid rgba(63, 92, 55, .25);
+    border-radius: .5rem;
+    background: rgba(247, 251, 244, .74);
+}
+
+.gmrc-ranger-field-arts__heading {
+    display: flex;
+    justify-content: space-between;
+    gap: .9rem;
+    align-items: flex-start;
+    margin-bottom: .75rem;
+}
+
+.gmrc-ranger-field-arts__seal {
+    display: grid;
+    place-items: center;
+    min-width: 7rem;
+    padding: .5rem;
+    border: 1px solid rgba(63, 92, 55, .18);
+    border-radius: .36rem;
+    text-align: center;
+}
+
+.gmrc-ranger-field-arts__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.gmrc-ranger-field-art {
+    display: grid;
+    align-content: start;
+    gap: .52rem;
+    min-width: 0;
+    padding: .62rem;
+    border: 1px solid rgba(63, 92, 55, .14);
+    border-radius: .36rem;
+    background: rgba(253, 255, 251, .74);
+}
+
+.gmrc-ranger-field-art > header {
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.gmrc-ranger-field-art > header > div {
+    display: grid;
+    min-width: 0;
+}
+
+.gmrc-ranger-field-art > header > span {
+    flex: 0 0 auto;
+    font-weight: 700;
+}
+
+.gmrc-ranger-field-art__choices {
+    display: grid;
+    gap: .4rem;
+}
+
+.gmrc-ranger-field-art__choice {
+    display: grid;
+    gap: .22rem;
+    min-width: 0;
+    padding: .46rem;
+    border: 1px dashed rgba(63, 92, 55, .17);
+    border-radius: .3rem;
+}
+
+.gmrc-ranger-field-art__choice span,
+.gmrc-ranger-field-arts__note {
+    font-size: .76rem;
+    opacity: .8;
+}
+
+.gmrc-ranger-field-art__rolls {
+    display: grid;
+    gap: .38rem;
+}
+
+.gmrc-ranger-field-art .gmrc-guild-roll-trigger,
+.gmrc-ranger-field-art .gmrc-button {
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
+}
+
+.gmrc-ranger-field-arts__note {
+    margin: .7rem 0 0;
+}
+
+@media (max-width: 720px) {
+    .gmrc-ranger-field-arts__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .gmrc-ranger-field-arts__heading,
+    .gmrc-ranger-field-art > header {
+        display: grid;
+    }
+
+    .gmrc-ranger-field-arts__seal {
+        width: 100%;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-ranger-field-arts,
+    .gmrc-ranger-field-art,
+    .gmrc-ranger-field-art__choice,
+    .gmrc-ranger-field-arts__seal {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}
