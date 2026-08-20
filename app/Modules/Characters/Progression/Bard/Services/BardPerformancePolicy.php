@@ -10,7 +10,7 @@ use InvalidArgumentException;
 defined('ABSPATH') || exit;
 
 /**
- * Read-only Bard performance calculations for III.12.12A.
+ * Certified read-only Bard performance calculations for III.12.12D.
  */
 final class BardPerformancePolicy
 {

@@ -255,7 +255,8 @@ final class BardCollegeRegisterPresenter
             ],
             'next_milestone' =>
                 $this->nextMilestone(
-                    $level
+                    $level,
+                    $college
                 ),
         ];
     }
@@ -294,17 +295,56 @@ final class BardCollegeRegisterPresenter
 
     /** @return array<string,mixed>|null */
     private function nextMilestone(
-        int $level
+        int $level,
+        string $college
     ): ?array {
         foreach (self::MILESTONES as $milestone) {
             if (
                 $milestone['level']
-                > $level
+                <= $level
             ) {
-                return $milestone;
+                continue;
             }
+
+            if (
+                $milestone['level'] === 14
+                && $college !== ''
+                && $this->gifts->supports($college)
+                && ! $this->hasGiftAtLevel(
+                    $college,
+                    14
+                )
+            ) {
+                return [
+                    'level' => 14,
+                    'label' => 'Magical Secrets',
+                    'detail' =>
+                        'Magical Secrets expands again; this College has no additional supplied Level 14 Gift.',
+                ];
+            }
+
+            return $milestone;
         }
 
         return null;
+    }
+
+    private function hasGiftAtLevel(
+        string $college,
+        int $level
+    ): bool {
+        foreach (
+            $this->gifts->all($college)
+            as $gift
+        ) {
+            if (
+                (int) ($gift['level'] ?? 0)
+                === $level
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

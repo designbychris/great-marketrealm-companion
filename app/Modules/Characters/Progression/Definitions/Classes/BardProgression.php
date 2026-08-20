@@ -13,8 +13,9 @@ defined('ABSPATH') || exit;
 /**
  * Specialist advancement reference for the Bard Calling.
  *
- * III.12.12 establishes the permanent Bard spine. College Gifts, Bardic
- * Inspiration expenditure and player-facing Bard Arts remain later slices.
+ * III.12.12 establishes the permanent Bard spine. The College Register,
+ * certified College Gifts and Living Ledger projection are completed through
+ * III.12.12D; finite Inspiration expenditure remains outside this Final Seal.
  */
 final class BardProgression implements ClassProgressionDefinitionInterface
 {

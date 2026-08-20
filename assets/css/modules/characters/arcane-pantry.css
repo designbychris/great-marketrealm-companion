@@ -4430,7 +4430,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .gmrc-college-register {
+    .gmrc-college-register,
+    .gmrc-college-gifts {
         scroll-behavior: auto;
     }
 }
