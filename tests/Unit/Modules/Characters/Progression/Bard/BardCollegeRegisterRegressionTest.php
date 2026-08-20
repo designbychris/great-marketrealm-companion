@@ -90,7 +90,7 @@ final class BardCollegeRegisterRegressionTest extends TestCase
         self::assertSame('College of Confection', $college['label']);
     }
 
-    public function testCollegeGiftBoundaryRemainsVisibleUntilDedicatedPhase(): void
+    public function testChosenCollegeNowExposesCertifiedCollegeGifts(): void
     {
         $college = (
             new BardCollegeRegisterPresenter()
@@ -101,9 +101,9 @@ final class BardCollegeRegisterRegressionTest extends TestCase
             )
         )['college'];
 
-        self::assertSame(0, $college['gift_count']);
+        self::assertSame(3, $college['gift_count']);
         self::assertSame(
-            'College Gifts await their dedicated phase',
+            'College Gifts certified',
             $college['gift_status']
         );
     }
