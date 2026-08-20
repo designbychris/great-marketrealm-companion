@@ -1858,6 +1858,282 @@ $callingPathLabel = $callingPath !== ''
             </header>
 
             <?php if (
+                ! empty($artificerRegister['supported'])
+            ) : ?>
+                <section
+                    class="gmrc-artificer-register"
+                    aria-labelledby="gmrc-artificer-register-title"
+                    data-artificer-register
+                >
+                    <header class="gmrc-artificer-register__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Artificer Workshop Record
+                            </p>
+                            <h3 id="gmrc-artificer-register-title">
+                                The Artificer’s Specialisation Register
+                            </h3>
+                            <p>
+                                Workshop craft, prepared magic and specialist
+                                milestones at Artificer Level <?php echo esc_html(
+                                    (string) (
+                                        $artificerRegister['level']
+                                        ?? $level
+                                    )
+                                ); ?>.
+                            </p>
+                        </div>
+
+                        <span class="gmrc-artificer-register__seal">
+                            <strong>INT</strong>
+                            <small>Workshop casting</small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-artificer-register__summary">
+                        <article>
+                            <small>Specialisation</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $artificerRegister[
+                                            'specialisation'
+                                        ]['label']
+                                        ?? 'Specialisation not yet chosen'
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>
+                                <?php if (
+                                    ! empty(
+                                        $artificerRegister[
+                                            'specialisation'
+                                        ]['chosen']
+                                    )
+                                ) : ?>
+                                    Certified workshop tradition
+                                <?php elseif (
+                                    ! empty(
+                                        $artificerRegister[
+                                            'specialisation'
+                                        ]['available']
+                                    )
+                                ) : ?>
+                                    Specialisation selection is available
+                                <?php else : ?>
+                                    Opens at Level 3
+                                <?php endif; ?>
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Infuse Item</small>
+                            <strong>
+                                <?php echo ! empty(
+                                    $artificerRegister[
+                                        'workshop'
+                                    ]['infusions_unlocked']
+                                )
+                                    ? 'Unlocked'
+                                    : 'Opens at Level 2'; ?>
+                            </strong>
+                            <span>Repeatable magical craft</span>
+                        </article>
+
+                        <article>
+                            <small>Prepared Magic</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $artificerRegister[
+                                            'spellcasting'
+                                        ]['cantrips_known']
+                                        ?? 2
+                                    )
+                                ); ?>
+                                cantrips
+                            </strong>
+                            <span>Intelligence-based preparation</span>
+                        </article>
+
+                        <article>
+                            <small>Highest Spell Circle</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $artificerRegister[
+                                            'spellcasting'
+                                        ]['maximum_spell_level']
+                                        ?? 1
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>Current Artificer access</span>
+                        </article>
+
+                        <article>
+                            <small>Right Tool for the Job</small>
+                            <strong>
+                                <?php echo ! empty(
+                                    $artificerRegister[
+                                        'workshop'
+                                    ]['right_tool_unlocked']
+                                )
+                                    ? 'Unlocked'
+                                    : 'Opens at Level 3'; ?>
+                            </strong>
+                            <span>Practical workshop preparation</span>
+                        </article>
+
+                        <article>
+                            <small>Tool Expertise</small>
+                            <strong>
+                                <?php echo ! empty(
+                                    $artificerRegister[
+                                        'workshop'
+                                    ]['tool_expertise_unlocked']
+                                )
+                                    ? 'Unlocked'
+                                    : 'Opens at Level 6'; ?>
+                            </strong>
+                            <span>Mastered proficient toolwork</span>
+                        </article>
+                    </div>
+
+                    <?php if (
+                        ! empty(
+                            $artificerRegister[
+                                'spellcasting'
+                            ]['slots']
+                        )
+                    ) : ?>
+                        <div class="gmrc-artificer-register__slots">
+                            <?php foreach (
+                                $artificerRegister[
+                                    'spellcasting'
+                                ]['slots']
+                                as $slot
+                            ) : ?>
+                                <span>
+                                    <small>
+                                        Level <?php echo esc_html(
+                                            (string) (
+                                                $slot['level']
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                    </small>
+                                    <strong>
+                                        <?php echo esc_html(
+                                            sprintf(
+                                                '%d / %d',
+                                                (int) (
+                                                    $slot['remaining']
+                                                    ?? 0
+                                                ),
+                                                (int) (
+                                                    $slot['total']
+                                                    ?? 0
+                                                )
+                                            )
+                                        ); ?>
+                                    </strong>
+                                </span>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="gmrc-artificer-register__footer">
+                        <div>
+                            <span>Specialisation catalogue</span>
+                            <strong>
+                                <?php echo esc_html(
+                                    sprintf(
+                                        '%d Specialisations registered',
+                                        (int) (
+                                            $artificerRegister[
+                                                'specialisation'
+                                            ]['candidate_count']
+                                            ?? 0
+                                        )
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $artificerRegister[
+                                            'specialisation'
+                                        ]['gift_status']
+                                        ?? 'Specialisation Gifts await their dedicated phase'
+                                    )
+                                ); ?>.
+                            </small>
+                        </div>
+
+                        <?php if (
+                            is_array(
+                                $artificerRegister[
+                                    'next_milestone'
+                                ]
+                                ?? null
+                            )
+                        ) : ?>
+                            <div>
+                                <span>Next workshop milestone</span>
+                                <strong>
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $artificerRegister[
+                                                'next_milestone'
+                                            ]['level']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                    ·
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $artificerRegister[
+                                                'next_milestone'
+                                            ]['label']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </strong>
+                                <small>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $artificerRegister[
+                                                'next_milestone'
+                                            ]['detail']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </small>
+                            </div>
+                        <?php else : ?>
+                            <div>
+                                <span>Artificer progression</span>
+                                <strong>Final workshop threshold reached</strong>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <?php if (
+                        (int) (
+                            $artificerRegister['level']
+                            ?? 1
+                        ) < 3
+                    ) : ?>
+                        <p class="gmrc-artificer-register__early-note">
+                            Your workshop craft is already active.
+                            Specialisation selection opens at Level 3.
+                        </p>
+                    <?php endif; ?>
+                </section>
+            <?php endif; ?>
+
+            <?php if (
                 ! empty($collegeRegister['supported'])
             ) : ?>
                 <section

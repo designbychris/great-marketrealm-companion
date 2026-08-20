@@ -18,6 +18,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\R
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\DruidCircleProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\ClericDomainProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\BardCollegeProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\ArtificerSpecialisationProgression;
 
 defined('ABSPATH') || exit;
 
@@ -46,6 +47,7 @@ final class PathProgressionCatalogue
                 new DruidCircleProgression(),
                 new ClericDomainProgression(),
                 new BardCollegeProgression(),
+                new ArtificerSpecialisationProgression(),
             ];
     }
 

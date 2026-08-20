@@ -163,7 +163,7 @@ final class ArtificerCallingRegressionTest extends TestCase
         );
     }
 
-    public function testCapabilityAuditSeesArtificerAsSpellcastingSpecialistBeforePathSlice(): void
+    public function testCapabilityAuditSeesArtificerAsSpellcastingPathSpecialist(): void
     {
         $profile = (new ClassCapabilityCatalogue())->forClass(
             CharacterClass::fromString('artificer')
@@ -175,7 +175,7 @@ final class ArtificerCallingRegressionTest extends TestCase
         );
         self::assertTrue($profile->hasSpecialistAdvancement());
         self::assertTrue($profile->hasSpellcastingProgression());
-        self::assertFalse($profile->hasCallingPathProgression());
+        self::assertTrue($profile->hasCallingPathProgression());
     }
 
     public function testArtificerSpecialistDefinitionPrecedesRegisteredFallback(): void

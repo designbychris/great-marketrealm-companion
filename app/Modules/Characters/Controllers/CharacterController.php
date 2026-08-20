@@ -51,6 +51,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Cleric\Services\Cle
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Cleric\Services\ClericDivineArtsPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Bard\Services\BardCollegeRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Bard\Services\BardCollegeGiftLedgerPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Artificer\Services\ArtificerSpecialisationRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Origin\Services\SorcererMetamagicService;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Patron\Services\WarlockEldritchArtsPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassResourceRepository;
@@ -809,6 +810,13 @@ final class CharacterController
             $activeResources
         );
 
+        $artificerRegister = (
+            new ArtificerSpecialisationRegisterPresenter()
+        )->present(
+            $character,
+            $activeResources
+        );
+
         $collegeRegister = (
             new BardCollegeRegisterPresenter()
         )->present(
@@ -898,6 +906,7 @@ final class CharacterController
                     'groveArts' => $groveArts,
                     'domainRegister' => $domainRegister,
                     'divineArts' => $divineArts,
+                    'artificerRegister' => $artificerRegister,
                     'collegeRegister' => $collegeRegister,
                     'collegeGifts' => $collegeGifts,
                     'progression' => $progression,
