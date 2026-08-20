@@ -288,6 +288,15 @@ $domainRegister = isset($domainRegister)
             'supported' => false,
         ];
 
+$divineArts = isset($divineArts)
+    && is_array($divineArts)
+        ? $divineArts
+        : [
+            'supported' => false,
+            'arts' => [],
+            'sacred_reserves' => [],
+        ];
+
 $groveRegister = isset($groveRegister)
     && is_array($groveRegister)
         ? $groveRegister
@@ -3397,6 +3406,435 @@ $callingPathLabel = $callingPath !== ''
                             </div>
                         <?php endif; ?>
                     </div>
+                </section>
+            <?php endif; ?>
+
+            <?php if (
+                ! empty($divineArts['supported'])
+                && ! empty($divineArts['arts'])
+            ) : ?>
+                <section
+                    class="gmrc-cleric-divine-arts"
+                    aria-labelledby="gmrc-cleric-divine-arts-title"
+                    data-cleric-divine-arts
+                >
+                    <header class="gmrc-cleric-divine-arts__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Sacred Techniques
+                            </p>
+                            <h3 id="gmrc-cleric-divine-arts-title">
+                                The Cleric’s Divine Arts
+                            </h3>
+                            <p>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $divineArts['domain_label']
+                                        ?? 'Cleric'
+                                    )
+                                ); ?>
+                                techniques currently awakened by your level.
+                            </p>
+                        </div>
+
+                        <span class="gmrc-cleric-divine-arts__seal">
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) count(
+                                        $divineArts['arts']
+                                        ?? []
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>Arts awakened</small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-cleric-divine-arts__grid">
+                        <?php foreach (
+                            $divineArts['arts']
+                            as $art
+                        ) : ?>
+                            <?php
+                            $resourceKey = is_string(
+                                $art['resource']
+                                ?? null
+                            )
+                                ? (string) $art['resource']
+                                : '';
+
+                            $resourceState = null;
+
+                            if ($resourceKey !== '') {
+                                foreach (
+                                    $divineArts[
+                                        'sacred_reserves'
+                                    ] ?? []
+                                    as $reserve
+                                ) {
+                                    if (
+                                        ($reserve['resource'] ?? '')
+                                        === $resourceKey
+                                    ) {
+                                        $resourceState = $reserve;
+                                        break;
+                                    }
+                                }
+                            }
+                            ?>
+                            <article
+                                class="gmrc-cleric-divine-art<?php echo ! empty(
+                                    $art['celebratory']
+                                ) ? ' gmrc-cleric-divine-art--celebratory' : ''; ?>"
+                                data-cleric-divine-art="<?php echo esc_attr(
+                                    (string) (
+                                        $art['key']
+                                        ?? ''
+                                    )
+                                ); ?>"
+                            >
+                                <header>
+                                    <div>
+                                        <small>
+                                            Level <?php echo esc_html(
+                                                (string) (
+                                                    $art['level']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </small>
+                                        <strong>
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $art['label']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </strong>
+                                    </div>
+
+                                    <?php if (
+                                        is_array($resourceState)
+                                    ) : ?>
+                                        <span>
+                                            <?php echo esc_html(
+                                                sprintf(
+                                                    '%d/%d ready',
+                                                    (int) (
+                                                        $resourceState[
+                                                            'remaining'
+                                                        ]
+                                                        ?? 0
+                                                    ),
+                                                    (int) (
+                                                        $resourceState[
+                                                            'maximum'
+                                                        ]
+                                                        ?? 0
+                                                    )
+                                                )
+                                            ); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </header>
+
+                                <p>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $art['summary']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </p>
+
+                                <?php if (
+                                    ! empty($art['static'])
+                                ) : ?>
+                                    <dl class="gmrc-cleric-divine-art__facts">
+                                        <?php foreach (
+                                            $art['static']
+                                            as $factLabel => $factValue
+                                        ) : ?>
+                                            <div>
+                                                <dt>
+                                                    <?php echo esc_html(
+                                                        (string) $factLabel
+                                                    ); ?>
+                                                </dt>
+                                                <dd>
+                                                    <?php echo esc_html(
+                                                        (string) $factValue
+                                                    ); ?>
+                                                </dd>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </dl>
+                                <?php endif; ?>
+
+                                <?php if (
+                                    ! empty($art['rolls'])
+                                ) : ?>
+                                    <div class="gmrc-cleric-divine-art__rolls">
+                                        <?php foreach (
+                                            $art['rolls']
+                                            as $roll
+                                        ) : ?>
+                                            <button
+                                                type="button"
+                                                class="gmrc-guild-roll-trigger"
+                                                data-guild-roll="<?php echo esc_attr(
+                                                    (string) (
+                                                        $roll['kind']
+                                                        ?? 'damage'
+                                                    )
+                                                ); ?>"
+                                                data-roll-kind="<?php echo esc_attr(
+                                                    (string) (
+                                                        $roll['kind']
+                                                        ?? 'damage'
+                                                    )
+                                                ); ?>"
+                                                data-roll-formula="<?php echo esc_attr(
+                                                    (string) (
+                                                        $roll['formula']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                                data-roll-modifier="<?php echo esc_attr(
+                                                    (string) (
+                                                        $roll['modifier']
+                                                        ?? 0
+                                                    )
+                                                ); ?>"
+                                                <?php if (
+                                                    ! empty(
+                                                        $roll['damage_type']
+                                                    )
+                                                ) : ?>
+                                                    data-roll-damage-type="<?php echo esc_attr(
+                                                        (string) $roll['damage_type']
+                                                    ); ?>"
+                                                <?php endif; ?>
+                                                data-roll-label="<?php echo esc_attr(
+                                                    (string) (
+                                                        $roll['label']
+                                                        ?? 'Cleric Divine Art'
+                                                    )
+                                                ); ?>"
+                                            >
+                                                <span aria-hidden="true">✦</span>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $roll['label']
+                                                        ?? 'Roll Divine Art'
+                                                    )
+                                                ); ?>
+                                                ·
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $roll['formula']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                                <?php if (
+                                                    (int) (
+                                                        $roll['modifier']
+                                                        ?? 0
+                                                    ) !== 0
+                                                ) : ?>
+                                                    <?php echo esc_html(
+                                                        sprintf(
+                                                            '%+d',
+                                                            (int) $roll['modifier']
+                                                        )
+                                                    ); ?>
+                                                <?php endif; ?>
+                                            </button>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if (
+                                    ! empty($art['choices'])
+                                ) : ?>
+                                    <div class="gmrc-cleric-divine-art__choices">
+                                        <?php foreach (
+                                            $art['choices']
+                                            as $choice
+                                        ) : ?>
+                                            <div
+                                                class="gmrc-cleric-divine-art__choice"
+                                                data-cleric-divine-choice="<?php echo esc_attr(
+                                                    (string) (
+                                                        $choice['key']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                            >
+                                                <strong>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $choice['label']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </strong>
+
+                                                <span>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $choice['effect']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </span>
+
+                                                <?php if (
+                                                    ! empty(
+                                                        $choice['formula']
+                                                    )
+                                                ) : ?>
+                                                    <button
+                                                        type="button"
+                                                        class="gmrc-guild-roll-trigger"
+                                                        data-guild-roll="<?php echo esc_attr(
+                                                            (string) (
+                                                                $choice['kind']
+                                                                ?? 'damage'
+                                                            )
+                                                        ); ?>"
+                                                        data-roll-kind="<?php echo esc_attr(
+                                                            (string) (
+                                                                $choice['kind']
+                                                                ?? 'damage'
+                                                            )
+                                                        ); ?>"
+                                                        data-roll-formula="<?php echo esc_attr(
+                                                            (string) $choice['formula']
+                                                        ); ?>"
+                                                        data-roll-modifier="<?php echo esc_attr(
+                                                            (string) (
+                                                                $choice['modifier']
+                                                                ?? 0
+                                                            )
+                                                        ); ?>"
+                                                        <?php if (
+                                                            ! empty(
+                                                                $choice['damage_type']
+                                                            )
+                                                        ) : ?>
+                                                            data-roll-damage-type="<?php echo esc_attr(
+                                                                (string) $choice['damage_type']
+                                                            ); ?>"
+                                                        <?php endif; ?>
+                                                        data-roll-label="<?php echo esc_attr(
+                                                            (string) $choice['label']
+                                                        ); ?>"
+                                                    >
+                                                        <span aria-hidden="true">✦</span>
+                                                        Roll <?php echo esc_html(
+                                                            (string) $choice['formula']
+                                                        ); ?>
+                                                        <?php if (
+                                                            (int) (
+                                                                $choice['modifier']
+                                                                ?? 0
+                                                            ) !== 0
+                                                        ) : ?>
+                                                            <?php echo esc_html(
+                                                                sprintf(
+                                                                    '%+d',
+                                                                    (int) $choice['modifier']
+                                                                )
+                                                            ); ?>
+                                                        <?php endif; ?>
+                                                    </button>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if (
+                                    is_array($resourceState)
+                                ) : ?>
+                                    <form
+                                        action="<?php echo esc_url(
+                                            $appRequestUrl
+                                        ); ?>"
+                                        method="post"
+                                    >
+                                        <input
+                                            type="hidden"
+                                            name="action"
+                                            value="gmrc_app_request"
+                                        >
+                                        <input
+                                            type="hidden"
+                                            name="gmrc_route"
+                                            value="<?php echo esc_attr(
+                                                'characters/'
+                                                . $characterId
+                                                . '/devotion/spend'
+                                            ); ?>"
+                                        >
+                                        <input
+                                            type="hidden"
+                                            name="resource"
+                                            value="<?php echo esc_attr(
+                                                $resourceKey
+                                            ); ?>"
+                                        >
+                                        <?php wp_nonce_field(
+                                            'gmrc_character_devotion_'
+                                            . $characterId,
+                                            'gmrc_nonce'
+                                        ); ?>
+
+                                        <button
+                                            type="submit"
+                                            class="gmrc-button gmrc-button--secondary<?php echo ! empty(
+                                                $art['celebratory']
+                                            ) ? ' gmrc-button--holy-butterstorm' : ''; ?>"
+                                            data-cleric-divine-use="<?php echo esc_attr(
+                                                (string) (
+                                                    $art['key']
+                                                    ?? ''
+                                                )
+                                            ); ?>"
+                                            <?php echo (
+                                                (int) (
+                                                    $resourceState[
+                                                        'remaining'
+                                                    ]
+                                                    ?? 0
+                                                ) < 1
+                                            ) ? 'disabled' : ''; ?>
+                                        >
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $art['resource_action']
+                                                    ?? (
+                                                        'Use '
+                                                        . (
+                                                            $art['label']
+                                                            ?? 'Divine Art'
+                                                        )
+                                                    )
+                                                )
+                                            ); ?>
+                                        </button>
+                                    </form>
+                                <?php endif; ?>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <p class="gmrc-cleric-divine-arts__note">
+                        Divine Arts reuse the shared Guild Diceworks and the
+                        Sacred Reserve ledger. Channel Divinity techniques
+                        all spend the same Cleric Channel Divinity pool.
+                    </p>
                 </section>
             <?php endif; ?>
 

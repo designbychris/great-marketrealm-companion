@@ -4057,3 +4057,176 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.11D — The Cleric's Divine Arts */
+.gmrc-cleric-divine-arts {
+    margin: 0 0 1rem;
+    padding: .9rem;
+    min-width: 0;
+    border: 1px solid rgba(123, 98, 42, .24);
+    border-radius: .5rem;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 252, 243, .9),
+            rgba(249, 245, 230, .78)
+        );
+}
+
+.gmrc-cleric-divine-arts__heading {
+    display: flex;
+    justify-content: space-between;
+    gap: .9rem;
+    align-items: flex-start;
+    margin-bottom: .75rem;
+}
+
+.gmrc-cleric-divine-arts__seal {
+    display: grid;
+    place-items: center;
+    min-width: 7rem;
+    padding: .5rem;
+    border: 1px solid rgba(123, 98, 42, .18);
+    border-radius: .36rem;
+    background: rgba(255, 253, 247, .78);
+    text-align: center;
+}
+
+.gmrc-cleric-divine-arts__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.gmrc-cleric-divine-art {
+    display: grid;
+    align-content: start;
+    gap: .52rem;
+    min-width: 0;
+    padding: .62rem;
+    border: 1px solid rgba(123, 98, 42, .14);
+    border-radius: .36rem;
+    background: rgba(255, 254, 249, .76);
+}
+
+.gmrc-cleric-divine-art--celebratory {
+    border-width: 2px;
+    box-shadow: 0 .2rem .8rem rgba(123, 98, 42, .08);
+}
+
+.gmrc-cleric-divine-art > header {
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.gmrc-cleric-divine-art > header > div {
+    display: grid;
+    min-width: 0;
+}
+
+.gmrc-cleric-divine-art > header > span {
+    flex: 0 0 auto;
+    font-weight: 700;
+}
+
+.gmrc-cleric-divine-art p,
+.gmrc-cleric-divine-art strong,
+.gmrc-cleric-divine-art span,
+.gmrc-cleric-divine-art dd,
+.gmrc-cleric-divine-arts__note {
+    overflow-wrap: anywhere;
+}
+
+.gmrc-cleric-divine-art__facts,
+.gmrc-cleric-divine-art__rolls,
+.gmrc-cleric-divine-art__choices {
+    display: grid;
+    gap: .4rem;
+}
+
+.gmrc-cleric-divine-art__facts > div,
+.gmrc-cleric-divine-art__choice {
+    display: grid;
+    gap: .2rem;
+    min-width: 0;
+    padding: .45rem;
+    border: 1px dashed rgba(123, 98, 42, .18);
+    border-radius: .3rem;
+}
+
+.gmrc-cleric-divine-art__facts dt {
+    font-size: .72rem;
+    opacity: .75;
+}
+
+.gmrc-cleric-divine-art__facts dd {
+    margin: 0;
+    font-weight: 700;
+}
+
+.gmrc-cleric-divine-art__choice span,
+.gmrc-cleric-divine-arts__note {
+    font-size: .76rem;
+    opacity: .8;
+}
+
+.gmrc-cleric-divine-art .gmrc-guild-roll-trigger,
+.gmrc-cleric-divine-art .gmrc-button {
+    width: 100%;
+    min-height: 2.75rem;
+    max-width: 100%;
+    white-space: normal;
+}
+
+.gmrc-cleric-divine-art .gmrc-button--holy-butterstorm {
+    min-height: 3.15rem;
+    font-weight: 800;
+    letter-spacing: .02em;
+}
+
+.gmrc-cleric-divine-arts__note {
+    margin: .7rem 0 0;
+}
+
+@media (max-width: 720px) {
+    .gmrc-cleric-divine-arts__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .gmrc-cleric-divine-arts__heading,
+    .gmrc-cleric-divine-art > header {
+        display: grid;
+    }
+
+    .gmrc-cleric-divine-arts__seal {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-cleric-divine-art,
+    .gmrc-cleric-divine-art__choice {
+        scroll-behavior: auto;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-cleric-divine-arts,
+    .gmrc-cleric-divine-art,
+    .gmrc-cleric-divine-art__choice,
+    .gmrc-cleric-divine-art__facts > div,
+    .gmrc-cleric-divine-arts__seal {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+
+    .gmrc-cleric-divine-art .gmrc-guild-roll-trigger,
+    .gmrc-cleric-divine-art .gmrc-button {
+        border: 1px solid ButtonText;
+    }
+}
