@@ -61,6 +61,7 @@ use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\WarlockPact
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\SorcererSorceryReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\RangerFieldReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\DruidPrimalReserveService;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\ClericSacredReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\BarbarianRageReserveService;
 use InvalidArgumentException;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\LivingRegisterPresenter;
@@ -1431,6 +1432,128 @@ final class CharacterController
 
         return $this->responses->redirect(
             $this->characterUrl($character->id(), 'arcana')
+        );
+    }
+
+    public function spendClericSacredReserve(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $resource = sanitize_key(
+            (string) ($_POST['resource'] ?? '')
+        );
+        $repository =
+            new ActiveClassResourceRepository();
+
+        try {
+            $state = (
+                new ClericSacredReserveService()
+            )->spend(
+                $character,
+                $repository->find(
+                    $character->id()
+                ),
+                $resource
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            'The Cleric’s Sacred Reserve has been marked as spent.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    public function restClericSacredReserves(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $rest = sanitize_key(
+            (string) ($_POST['rest'] ?? '')
+        );
+        $repository =
+            new ActiveClassResourceRepository();
+
+        try {
+            $state = $repository->find(
+                $character->id()
+            );
+
+            $service =
+                new ClericSacredReserveService();
+
+            if ($rest === 'short') {
+                $state = $service->shortRest(
+                    $character,
+                    $state
+                );
+            } elseif ($rest === 'long') {
+                $state = $service->longRest(
+                    $character,
+                    $state
+                );
+
+                $state = (
+                    new SharedSpellSlotReserveService()
+                )->longRest(
+                    $character,
+                    $state
+                );
+            } else {
+                throw new InvalidArgumentException(
+                    'Choose a short or long rest before restoring Cleric Sacred Reserves.'
+                );
+            }
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            $rest === 'short'
+                ? 'Channel Divinity has been restored after the short rest.'
+                : 'A long rest has restored Cleric Sacred Reserves and spell slots.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
         );
     }
 

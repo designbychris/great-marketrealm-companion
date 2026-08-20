@@ -2103,6 +2103,200 @@ $callingPathLabel = $callingPath !== ''
                         </div>
                     <?php endif; ?>
 
+                    <?php if (
+                        ! empty(
+                            $domainRegister[
+                                'sacred_reserves'
+                            ]
+                        )
+                    ) : ?>
+                        <section
+                            class="gmrc-cleric-sacred-reserves"
+                            aria-labelledby="gmrc-cleric-sacred-reserves-title"
+                            data-cleric-sacred-reserves
+                        >
+                            <header>
+                                <div>
+                                    <p class="gmrc-eyebrow">
+                                        Channel Divinity & Domain Uses
+                                    </p>
+                                    <h4 id="gmrc-cleric-sacred-reserves-title">
+                                        Sacred Reserves
+                                    </h4>
+                                </div>
+                            </header>
+
+                            <div class="gmrc-cleric-sacred-reserves__grid">
+                                <?php foreach (
+                                    $domainRegister[
+                                        'sacred_reserves'
+                                    ]
+                                    as $reserve
+                                ) : ?>
+                                    <article>
+                                        <header>
+                                            <div>
+                                                <small>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $reserve['basis']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </small>
+                                                <strong>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $reserve['label']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </strong>
+                                            </div>
+                                            <span>
+                                                <?php echo esc_html(
+                                                    sprintf(
+                                                        '%d/%d ready',
+                                                        (int) (
+                                                            $reserve['remaining']
+                                                            ?? 0
+                                                        ),
+                                                        (int) (
+                                                            $reserve['maximum']
+                                                            ?? 0
+                                                        )
+                                                    )
+                                                ); ?>
+                                            </span>
+                                        </header>
+
+                                        <form
+                                            action="<?php echo esc_url(
+                                                $appRequestUrl
+                                            ); ?>"
+                                            method="post"
+                                        >
+                                            <input
+                                                type="hidden"
+                                                name="action"
+                                                value="gmrc_app_request"
+                                            >
+                                            <input
+                                                type="hidden"
+                                                name="gmrc_route"
+                                                value="<?php echo esc_attr(
+                                                    'characters/'
+                                                    . $characterId
+                                                    . '/devotion/spend'
+                                                ); ?>"
+                                            >
+                                            <input
+                                                type="hidden"
+                                                name="resource"
+                                                value="<?php echo esc_attr(
+                                                    (string) (
+                                                        $reserve['resource']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                            >
+                                            <?php wp_nonce_field(
+                                                'gmrc_character_devotion_'
+                                                . $characterId,
+                                                'gmrc_nonce'
+                                            ); ?>
+                                            <button
+                                                type="submit"
+                                                class="gmrc-button gmrc-button--secondary"
+                                                data-cleric-sacred-spend="<?php echo esc_attr(
+                                                    (string) (
+                                                        $reserve['resource']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                                <?php echo (
+                                                    (int) (
+                                                        $reserve['remaining']
+                                                        ?? 0
+                                                    ) < 1
+                                                ) ? 'disabled' : ''; ?>
+                                            >
+                                                Spend
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $reserve['label']
+                                                        ?? 'Sacred Reserve'
+                                                    )
+                                                ); ?>
+                                            </button>
+                                        </form>
+                                    </article>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <div class="gmrc-cleric-sacred-reserves__rests">
+                                <?php foreach (
+                                    [
+                                        'short' => 'Take a Sacred Short Rest',
+                                        'long' => 'Take a Sacred Long Rest',
+                                    ]
+                                    as $restKey => $restLabel
+                                ) : ?>
+                                    <form
+                                        action="<?php echo esc_url(
+                                            $appRequestUrl
+                                        ); ?>"
+                                        method="post"
+                                    >
+                                        <input
+                                            type="hidden"
+                                            name="action"
+                                            value="gmrc_app_request"
+                                        >
+                                        <input
+                                            type="hidden"
+                                            name="gmrc_route"
+                                            value="<?php echo esc_attr(
+                                                'characters/'
+                                                . $characterId
+                                                . '/devotion/rest'
+                                            ); ?>"
+                                        >
+                                        <input
+                                            type="hidden"
+                                            name="rest"
+                                            value="<?php echo esc_attr(
+                                                $restKey
+                                            ); ?>"
+                                        >
+                                        <?php wp_nonce_field(
+                                            'gmrc_character_devotion_'
+                                            . $characterId,
+                                            'gmrc_nonce'
+                                        ); ?>
+                                        <button
+                                            type="submit"
+                                            class="gmrc-button gmrc-button--secondary"
+                                            data-cleric-sacred-rest="<?php echo esc_attr(
+                                                $restKey
+                                            ); ?>"
+                                        >
+                                            <?php echo esc_html(
+                                                $restLabel
+                                            ); ?>
+                                        </button>
+                                    </form>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <p class="gmrc-cleric-sacred-reserves__note">
+                                A short rest restores Channel Divinity only.
+                                A long rest restores all Cleric Sacred
+                                Reserves and shared Cleric spell slots.
+                            </p>
+                        </section>
+                    <?php endif; ?>
+
                     <div class="gmrc-domain-register__footer">
                         <div>
                             <span>Sacred Domain status</span>

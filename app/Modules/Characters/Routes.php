@@ -72,6 +72,16 @@ return static function (
     );
 
     $router->post(
+        '/characters/{id}/devotion/spend',
+        [CharacterController::class, 'spendClericSacredReserve']
+    );
+
+    $router->post(
+        '/characters/{id}/devotion/rest',
+        [CharacterController::class, 'restClericSacredReserves']
+    );
+
+    $router->post(
         '/characters/{id}/primal/spend',
         [CharacterController::class, 'spendDruidPrimalReserve']
     );

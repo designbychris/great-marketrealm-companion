@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Cleric\Servic
 
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Models\ActiveClassResourceState;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\SharedSpellSlotReserveService;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\ClericSacredReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Models\PathGiftCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
@@ -138,9 +139,18 @@ final class ClericSacredDomainRegisterPresenter
                 )
                 : 0;
 
+        $sacredReserves = (
+            new ClericSacredReserveService()
+        )->reserves(
+            $character,
+            $resources
+        );
+
         return [
             'supported' => true,
             'level' => $level,
+            'sacred_reserves' =>
+                $sacredReserves,
             'domain' => [
                 'selection_level' => 1,
                 'chosen' => $domain !== '',
@@ -185,7 +195,12 @@ final class ClericSacredDomainRegisterPresenter
                         default => null,
                     },
                 'resource_tracking' =>
-                    false,
+                    $level >= 2,
+                'remaining' =>
+                    $this->remaining(
+                        $sacredReserves,
+                        ClericSacredReserveService::CHANNEL_DIVINITY
+                    ),
             ],
             'destroy_undead' => [
                 'unlocked' => $level >= 5,
@@ -244,6 +259,28 @@ final class ClericSacredDomainRegisterPresenter
                     $level
                 ),
         ];
+    }
+
+    /**
+     * @param array<int,array<string,mixed>> $reserves
+     */
+    private function remaining(
+        array $reserves,
+        string $resource
+    ): int {
+        foreach ($reserves as $reserve) {
+            if (
+                ($reserve['resource'] ?? '')
+                === $resource
+            ) {
+                return (int) (
+                    $reserve['remaining']
+                    ?? 0
+                );
+            }
+        }
+
+        return 0;
     }
 
     /**
