@@ -4570,7 +4570,79 @@
 
 @media (prefers-reduced-motion: reduce) {
     .gmrc-college-register,
-    .gmrc-college-gifts {
+    
+.gmrc-artificer-gifts {
+    margin-top: .75rem;
+    padding: .75rem;
+    border: 1px solid rgba(95, 88, 58, .16);
+    border-radius: .38rem;
+    background: rgba(255, 253, 245, .72);
+}
+
+.gmrc-artificer-gifts__heading {
+    display: flex;
+    justify-content: space-between;
+    gap: .75rem;
+    align-items: flex-start;
+    margin-bottom: .6rem;
+}
+
+.gmrc-artificer-gifts__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.gmrc-artificer-gifts__grid article,
+.gmrc-artificer-gifts__next,
+.gmrc-artificer-gifts__complete,
+.gmrc-artificer-gifts__empty {
+    min-width: 0;
+    padding: .6rem;
+    border: 1px solid rgba(95, 88, 58, .14);
+    border-radius: .34rem;
+    background: rgba(255, 255, 255, .64);
+}
+
+.gmrc-artificer-gifts__grid h5 {
+    margin: .12rem 0 .3rem;
+}
+
+.gmrc-artificer-gifts__grid p,
+.gmrc-artificer-gifts__next,
+.gmrc-artificer-gifts__complete,
+.gmrc-artificer-gifts__empty {
+    overflow-wrap: anywhere;
+}
+
+.gmrc-artificer-gifts__next,
+.gmrc-artificer-gifts__complete {
+    margin-top: .6rem;
+}
+
+@media (max-width: 620px) {
+    .gmrc-artificer-gifts__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-artificer-gifts__heading {
+        display: grid;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-artificer-gifts,
+    .gmrc-artificer-gifts__grid article,
+    .gmrc-artificer-gifts__next,
+    .gmrc-artificer-gifts__complete,
+    .gmrc-artificer-gifts__empty {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}
+
+.gmrc-college-gifts {
         scroll-behavior: auto;
     }
 }

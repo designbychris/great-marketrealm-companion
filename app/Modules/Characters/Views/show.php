@@ -2043,6 +2043,137 @@ $callingPathLabel = $callingPath !== ''
                         </div>
                     <?php endif; ?>
 
+
+                    <?php if (
+                        ! empty($artificerGifts['supported'])
+                        && (
+                            ! empty($artificerGifts['specialisation'])
+                            || ! empty($artificerGifts['gifts'])
+                        )
+                    ) : ?>
+                        <section
+                            class="gmrc-artificer-gifts"
+                            aria-labelledby="gmrc-artificer-gifts-title"
+                            data-artificer-specialisation-gifts
+                        >
+                            <header class="gmrc-artificer-gifts__heading">
+                                <div>
+                                    <p class="gmrc-eyebrow">
+                                        Living Specialisation Gifts
+                                    </p>
+                                    <h4 id="gmrc-artificer-gifts-title">
+                                        <?php echo esc_html(
+                                            (string) (
+                                                $artificerGifts[
+                                                    'specialisation_label'
+                                                ]
+                                                ?? 'Artificer Specialisation'
+                                            )
+                                        ); ?>
+                                    </h4>
+                                </div>
+                                <strong>
+                                    <?php echo esc_html(
+                                        sprintf(
+                                            '%d available',
+                                            (int) (
+                                                $artificerGifts['count']
+                                                ?? 0
+                                            )
+                                        )
+                                    ); ?>
+                                </strong>
+                            </header>
+
+                            <?php if (
+                                ! empty($artificerGifts['gifts'])
+                                && is_array($artificerGifts['gifts'])
+                            ) : ?>
+                                <div class="gmrc-artificer-gifts__grid">
+                                    <?php foreach (
+                                        $artificerGifts['gifts']
+                                        as $gift
+                                    ) : ?>
+                                        <article>
+                                            <small>
+                                                Level <?php echo esc_html(
+                                                    (string) (
+                                                        $gift['level']
+                                                        ?? ''
+                                                    )
+                                                ); ?> Specialisation Gift
+                                            </small>
+                                            <h5><?php echo esc_html(
+                                                (string) (
+                                                    $gift['label']
+                                                    ?? ''
+                                                )
+                                            ); ?></h5>
+                                            <p><?php echo esc_html(
+                                                (string) (
+                                                    $gift['detail']
+                                                    ?? $gift['summary']
+                                                    ?? ''
+                                                )
+                                            ); ?></p>
+                                        </article>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else : ?>
+                                <p class="gmrc-artificer-gifts__empty">
+                                    This Specialisation has no Gifts available
+                                    at the current Artificer level.
+                                </p>
+                            <?php endif; ?>
+
+                            <?php if (
+                                is_int(
+                                    $artificerGifts['next_level']
+                                    ?? null
+                                )
+                                && ! empty(
+                                    $artificerGifts['next_gifts']
+                                )
+                            ) : ?>
+                                <aside class="gmrc-artificer-gifts__next">
+                                    <small>Next Specialisation milestone</small>
+                                    <strong>
+                                        Level <?php echo esc_html(
+                                            (string) $artificerGifts[
+                                                'next_level'
+                                            ]
+                                        ); ?>
+                                        ·
+                                        <?php echo esc_html(
+                                            implode(
+                                                ' & ',
+                                                array_map(
+                                                    static fn (
+                                                        array $gift
+                                                    ): string =>
+                                                        (string) (
+                                                            $gift['label']
+                                                            ?? ''
+                                                        ),
+                                                    $artificerGifts[
+                                                        'next_gifts'
+                                                    ]
+                                                )
+                                            )
+                                        ); ?>
+                                    </strong>
+                                </aside>
+                            <?php elseif (
+                                ! empty($artificerGifts['complete'])
+                            ) : ?>
+                                <p class="gmrc-artificer-gifts__complete">
+                                    All Specialisation Gifts supplied for this
+                                    Specialisation are now available.
+                                </p>
+                            <?php endif; ?>
+                        </section>
+                    <?php endif; ?>
+
                     <div class="gmrc-artificer-register__footer">
                         <div>
                             <span>Specialisation catalogue</span>
