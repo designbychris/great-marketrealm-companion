@@ -217,7 +217,8 @@ final class ArtificerSpecialisationRegisterPresenter
             ],
             'next_milestone' =>
                 $this->nextMilestone(
-                    $level
+                    $level,
+                    $specialisation
                 ),
         ];
     }
@@ -256,17 +257,61 @@ final class ArtificerSpecialisationRegisterPresenter
 
     /** @return array<string,mixed>|null */
     private function nextMilestone(
-        int $level
+        int $level,
+        string $specialisation
     ): ?array {
         foreach (self::MILESTONES as $milestone) {
-            if (
+            $milestoneLevel = (int) (
                 $milestone['level']
-                > $level
-            ) {
-                return $milestone;
+                ?? 0
+            );
+
+            if ($milestoneLevel <= $level) {
+                continue;
             }
+
+            if (
+                $specialisation !== ''
+                && in_array(
+                    $milestoneLevel,
+                    [5, 9, 15],
+                    true
+                )
+                && ! $this->hasGiftAtLevel(
+                    $specialisation,
+                    $milestoneLevel
+                )
+            ) {
+                continue;
+            }
+
+            return $milestone;
         }
 
         return null;
+    }
+
+    private function hasGiftAtLevel(
+        string $specialisation,
+        int $level
+    ): bool {
+        foreach (
+            $this->gifts->all(
+                $specialisation
+            )
+            as $gift
+        ) {
+            if (
+                (int) (
+                    $gift['level']
+                    ?? 0
+                )
+                === $level
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

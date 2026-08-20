@@ -75,7 +75,7 @@ final class ArtificerSpecialisationRegisterRegressionTest extends TestCase
         );
     }
 
-    public function testSpecialisationGiftsRemainReservedForPhaseThirteenB(): void
+    public function testSpecialisationGiftsAreCertifiedByPhaseThirteenB(): void
     {
         $catalogue =
             new PathGiftCatalogue();
@@ -86,13 +86,13 @@ final class ArtificerSpecialisationRegisterRegressionTest extends TestCase
             'the-sous-sorcerer',
             'the-culinary-engineer',
         ] as $specialisation) {
-            self::assertFalse(
+            self::assertTrue(
                 $catalogue->supports(
                     $specialisation
                 )
             );
 
-            self::assertSame(
+            self::assertNotSame(
                 [],
                 $catalogue->all(
                     $specialisation
@@ -187,7 +187,7 @@ final class ArtificerSpecialisationRegisterRegressionTest extends TestCase
         );
     }
 
-    public function testRegisterMakesThirteenBGiftBoundaryExplicit(): void
+    public function testRegisterReflectsCertifiedThirteenBGifts(): void
     {
         $specialisation = (
             new ArtificerSpecialisationRegisterPresenter()
@@ -199,12 +199,12 @@ final class ArtificerSpecialisationRegisterRegressionTest extends TestCase
         )['specialisation'];
 
         self::assertSame(
-            0,
+            5,
             $specialisation['gift_count']
         );
 
         self::assertSame(
-            'Specialisation Gifts await their dedicated phase',
+            'Specialisation Gifts certified',
             $specialisation['gift_status']
         );
     }

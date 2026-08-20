@@ -16,6 +16,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definit
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\DruidCircleGiftProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\ClericDomainGiftProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\BardCollegeGiftProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\ArtificerSpecialisationGiftProgression;
 
 defined('ABSPATH') || exit;
 
@@ -40,7 +41,8 @@ final class PathGiftCatalogue
             RangerPathGiftProgression::allDefinitions(),
             DruidCircleGiftProgression::allDefinitions(),
             ClericDomainGiftProgression::allDefinitions(),
-            BardCollegeGiftProgression::allDefinitions()
+            BardCollegeGiftProgression::allDefinitions(),
+            ArtificerSpecialisationGiftProgression::allDefinitions()
         );
     }
 
