@@ -399,7 +399,7 @@ final class DruidCallingRegressionTest extends TestCase
         );
     }
 
-    public function testCircleGiftsRemainExplicitlyUnimplementedInCallingSlice(): void
+    public function testCircleGiftsAreCertifiedByDruidCirclesSlice(): void
     {
         $catalogue =
             new PathGiftCatalogue();
@@ -412,13 +412,25 @@ final class DruidCallingRegressionTest extends TestCase
             'circle-of-curdle',
             'circle-of-the-churn',
         ] as $circle) {
-            self::assertFalse(
+            self::assertTrue(
                 $catalogue->supports($circle)
             );
 
+            $gifts = $catalogue->all(
+                $circle
+            );
+
+            self::assertCount(
+                4,
+                $gifts
+            );
+
             self::assertSame(
-                [],
-                $catalogue->all($circle)
+                [2, 6, 10, 14],
+                array_column(
+                    $gifts,
+                    'level'
+                )
             );
         }
     }

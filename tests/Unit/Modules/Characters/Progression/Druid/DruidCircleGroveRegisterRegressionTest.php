@@ -218,7 +218,7 @@ final class DruidCircleGroveRegisterRegressionTest extends TestCase
         );
     }
 
-    public function testCircleGiftBoundaryRemainsVisibleUntilDedicatedPhase(): void
+    public function testCircleGroveRegisterReportsCertifiedCircleGifts(): void
     {
         $circle = (
             new DruidCircleGroveRegisterPresenter()
@@ -230,12 +230,12 @@ final class DruidCircleGroveRegisterRegressionTest extends TestCase
         )['circle'];
 
         self::assertSame(
-            0,
+            4,
             $circle['gift_count']
         );
 
         self::assertSame(
-            'Circle Gifts await their dedicated phase',
+            'Circle Gifts certified',
             $circle['gift_status']
         );
     }
