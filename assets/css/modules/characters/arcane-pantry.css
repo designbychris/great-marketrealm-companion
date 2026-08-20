@@ -3316,3 +3316,57 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.9E — The Ranger's Final Seal */
+.gmrc-field-register,
+.gmrc-ranger-field-reserves,
+.gmrc-ranger-field-arts,
+.gmrc-ranger-field-art,
+.gmrc-ranger-field-art__choice {
+    min-width: 0;
+}
+
+.gmrc-field-register strong,
+.gmrc-field-register span,
+.gmrc-ranger-field-art strong,
+.gmrc-ranger-field-art p,
+.gmrc-ranger-field-art span,
+.gmrc-ranger-field-art__choice span,
+.gmrc-ranger-field-arts__note,
+.gmrc-ranger-field-reserves__note {
+    overflow-wrap: anywhere;
+}
+
+.gmrc-ranger-field-art__rolls .gmrc-guild-roll-trigger,
+.gmrc-ranger-field-art__choice .gmrc-guild-roll-trigger,
+.gmrc-ranger-field-art form .gmrc-button,
+.gmrc-ranger-field-reserves__grid .gmrc-button {
+    min-height: 2.75rem;
+}
+
+@media (max-width: 380px) {
+    .gmrc-field-register__slots {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-ranger-field-art__rolls .gmrc-guild-roll-trigger {
+        text-align: left;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-ranger-field-art,
+    .gmrc-ranger-field-art__choice,
+    .gmrc-ranger-field-reserves__grid article {
+        scroll-behavior: auto;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-ranger-field-art .gmrc-guild-roll-trigger,
+    .gmrc-ranger-field-art .gmrc-button,
+    .gmrc-ranger-field-reserves .gmrc-button {
+        border: 1px solid ButtonText;
+    }
+}
