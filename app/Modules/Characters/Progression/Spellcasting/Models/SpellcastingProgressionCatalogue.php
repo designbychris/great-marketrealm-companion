@@ -11,6 +11,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Defini
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Definitions\DruidSpellcastingProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Definitions\ClericSpellcastingProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Definitions\BardSpellcastingProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Definitions\ArtificerSpellcastingProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Definitions\WizardSpellcastingProgression;
 
 final class SpellcastingProgressionCatalogue
@@ -33,6 +34,7 @@ final class SpellcastingProgressionCatalogue
                 new DruidSpellcastingProgression(),
                 new ClericSpellcastingProgression(),
                 new BardSpellcastingProgression(),
+                new ArtificerSpellcastingProgression(),
             ];
     }
 
