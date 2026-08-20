@@ -3815,3 +3815,160 @@
         border: 1px solid ButtonText;
     }
 }
+
+
+/* Phase III.12.11A — The Cleric's Sacred Domain Register */
+.gmrc-domain-register {
+    position: relative;
+    margin: 0 0 1rem;
+    padding: .9rem;
+    min-width: 0;
+    border: 1px solid rgba(123, 98, 42, .25);
+    border-radius: .5rem;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 252, 243, .92),
+            rgba(250, 246, 232, .78)
+        );
+}
+
+.gmrc-domain-register::after {
+    content: "✦";
+    position: absolute;
+    right: .72rem;
+    bottom: .44rem;
+    font-size: 1rem;
+    opacity: .18;
+    pointer-events: none;
+}
+
+.gmrc-domain-register__heading {
+    display: flex;
+    justify-content: space-between;
+    gap: .9rem;
+    align-items: flex-start;
+    margin-bottom: .75rem;
+}
+
+.gmrc-domain-register__seal {
+    display: grid;
+    place-items: center;
+    min-width: 8rem;
+    padding: .52rem;
+    border: 1px solid rgba(123, 98, 42, .2);
+    border-radius: .38rem;
+    background: rgba(255, 253, 247, .82);
+    text-align: center;
+}
+
+.gmrc-domain-register__summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.gmrc-domain-register__summary article,
+.gmrc-domain-register__footer > div,
+.gmrc-domain-register__slots > span {
+    display: grid;
+    gap: .16rem;
+    min-width: 0;
+    padding: .58rem;
+    border: 1px solid rgba(123, 98, 42, .14);
+    border-radius: .34rem;
+    background: rgba(255, 253, 247, .76);
+}
+
+.gmrc-domain-register__summary strong,
+.gmrc-domain-register__summary span,
+.gmrc-domain-register__footer strong,
+.gmrc-domain-register__footer small {
+    overflow-wrap: anywhere;
+}
+
+.gmrc-domain-register__summary span,
+.gmrc-domain-register__footer span,
+.gmrc-domain-register__footer small,
+.gmrc-domain-register__slots small,
+.gmrc-domain-register__level-one-note {
+    font-size: .76rem;
+    opacity: .8;
+}
+
+.gmrc-domain-register__slots {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: .45rem;
+    margin-top: .65rem;
+}
+
+.gmrc-domain-register__slots > span {
+    text-align: center;
+}
+
+.gmrc-domain-register__footer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+    margin-top: .7rem;
+}
+
+.gmrc-domain-register__level-one-note {
+    margin: .7rem 0 0;
+    padding: .55rem .65rem;
+    border-left: .2rem solid currentColor;
+}
+
+@media (max-width: 840px) {
+    .gmrc-domain-register__slots {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    .gmrc-domain-register__summary,
+    .gmrc-domain-register__footer {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-domain-register__slots {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 460px) {
+    .gmrc-domain-register__heading {
+        display: grid;
+    }
+
+    .gmrc-domain-register__seal {
+        width: 100%;
+    }
+
+    .gmrc-domain-register__slots {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-domain-register {
+        scroll-behavior: auto;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-domain-register,
+    .gmrc-domain-register__seal,
+    .gmrc-domain-register__summary article,
+    .gmrc-domain-register__footer > div,
+    .gmrc-domain-register__slots > span {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+
+    .gmrc-domain-register::after {
+        display: none;
+    }
+}

@@ -281,6 +281,13 @@ $fieldArts = isset($fieldArts)
             'field_reserves' => [],
         ];
 
+$domainRegister = isset($domainRegister)
+    && is_array($domainRegister)
+        ? $domainRegister
+        : [
+            'supported' => false,
+        ];
+
 $groveRegister = isset($groveRegister)
     && is_array($groveRegister)
         ? $groveRegister
@@ -1824,6 +1831,368 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-eyebrow">Dangerously Magical</p>
                 <h2 id="gmrc-arcane-pantry-title">The Arcane Pantry</h2>
             </header>
+
+            <?php if (
+                ! empty($domainRegister['supported'])
+            ) : ?>
+                <section
+                    class="gmrc-domain-register"
+                    aria-labelledby="gmrc-domain-register-title"
+                    data-domain-register
+                >
+                    <header class="gmrc-domain-register__heading">
+                        <div>
+                            <p class="gmrc-eyebrow">
+                                Cleric Sacred Record
+                            </p>
+                            <h3 id="gmrc-domain-register-title">
+                                The Cleric’s Sacred Domain Register
+                            </h3>
+                            <p>
+                                Sacred duties and prepared miracles at Cleric
+                                Level <?php echo esc_html(
+                                    (string) (
+                                        $domainRegister['level']
+                                        ?? $level
+                                    )
+                                ); ?>.
+                            </p>
+                        </div>
+
+                        <span class="gmrc-domain-register__seal">
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $domainRegister[
+                                            'channel_divinity'
+                                        ]['maximum']
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>Channel Divinity uses</small>
+                        </span>
+                    </header>
+
+                    <div class="gmrc-domain-register__summary">
+                        <article>
+                            <small>Divine Domain</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $domainRegister[
+                                            'domain'
+                                        ]['label']
+                                        ?? 'Domain not yet chosen'
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>
+                                <?php echo ! empty(
+                                    $domainRegister[
+                                        'domain'
+                                    ]['chosen']
+                                )
+                                    ? 'Certified Domain'
+                                    : 'Domain selection belongs at Level 1'; ?>
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Channel Divinity</small>
+                            <strong>
+                                <?php echo ! empty(
+                                    $domainRegister[
+                                        'channel_divinity'
+                                    ]['unlocked']
+                                )
+                                    ? esc_html(
+                                        sprintf(
+                                            '%d uses',
+                                            (int) (
+                                                $domainRegister[
+                                                    'channel_divinity'
+                                                ]['maximum']
+                                                ?? 0
+                                            )
+                                        )
+                                    )
+                                    : 'Opens at Level 2'; ?>
+                            </strong>
+                            <span>
+                                <?php if (
+                                    ! empty(
+                                        $domainRegister[
+                                            'channel_divinity'
+                                        ]['next_improvement_level']
+                                    )
+                                ) : ?>
+                                    Next sacred threshold:
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $domainRegister[
+                                                'channel_divinity'
+                                            ]['next_improvement_level']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                <?php else : ?>
+                                    Core Channel Divinity thresholds reached
+                                <?php endif; ?>
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Prepared Spells</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $domainRegister[
+                                            'spellcasting'
+                                        ]['prepared_maximum']
+                                        ?? 1
+                                    )
+                                ); ?>
+                                prepared
+                            </strong>
+                            <span>
+                                Cleric level + Wisdom modifier · minimum 1
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Cantrips</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $domainRegister[
+                                            'spellcasting'
+                                        ]['cantrips_known']
+                                        ?? 3
+                                    )
+                                ); ?>
+                                known
+                            </strong>
+                            <span>
+                                Wisdom-based sacred magic
+                            </span>
+                        </article>
+
+                        <article>
+                            <small>Spell Save DC</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $domainRegister[
+                                            'spellcasting'
+                                        ]['save_dc']
+                                        ?? 0
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>Wisdom based</span>
+                        </article>
+
+                        <article>
+                            <small>Spell Attack</small>
+                            <strong>
+                                <?php echo esc_html(
+                                    sprintf(
+                                        '%+d',
+                                        (int) (
+                                            $domainRegister[
+                                                'spellcasting'
+                                            ]['spell_attack']
+                                            ?? 0
+                                        )
+                                    )
+                                ); ?>
+                            </strong>
+                            <span>Wisdom based</span>
+                        </article>
+
+                        <article>
+                            <small>Destroy Undead</small>
+                            <strong>
+                                <?php echo ! empty(
+                                    $domainRegister[
+                                        'destroy_undead'
+                                    ]['unlocked']
+                                )
+                                    ? esc_html(
+                                        (string) (
+                                            $domainRegister[
+                                                'destroy_undead'
+                                            ]['threshold']
+                                            ?? ''
+                                        )
+                                    )
+                                    : 'Opens at Level 5'; ?>
+                            </strong>
+                            <span>Turn Undead threshold</span>
+                        </article>
+
+                        <article>
+                            <small>Divine Intervention</small>
+                            <strong>
+                                <?php if (
+                                    ! empty(
+                                        $domainRegister[
+                                            'divine_intervention'
+                                        ]['improved']
+                                    )
+                                ) : ?>
+                                    Improved
+                                <?php elseif (
+                                    ! empty(
+                                        $domainRegister[
+                                            'divine_intervention'
+                                        ]['unlocked']
+                                    )
+                                ) : ?>
+                                    Unlocked
+                                <?php else : ?>
+                                    Opens at Level 10
+                                <?php endif; ?>
+                            </strong>
+                            <span>Sacred Calling milestone</span>
+                        </article>
+                    </div>
+
+                    <?php if (
+                        ! empty(
+                            $domainRegister[
+                                'spellcasting'
+                            ]['slots']
+                        )
+                    ) : ?>
+                        <div class="gmrc-domain-register__slots">
+                            <?php foreach (
+                                $domainRegister[
+                                    'spellcasting'
+                                ]['slots']
+                                as $slot
+                            ) : ?>
+                                <span>
+                                    <strong>
+                                        <?php echo esc_html(
+                                            sprintf(
+                                                '%d/%d',
+                                                (int) (
+                                                    $slot['remaining']
+                                                    ?? 0
+                                                ),
+                                                (int) (
+                                                    $slot['total']
+                                                    ?? 0
+                                                )
+                                            )
+                                        ); ?>
+                                    </strong>
+                                    <small>
+                                        Level <?php echo esc_html(
+                                            (string) (
+                                                $slot['level']
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                        slots
+                                    </small>
+                                </span>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="gmrc-domain-register__footer">
+                        <div>
+                            <span>Sacred Domain status</span>
+                            <strong>
+                                <?php echo esc_html(
+                                    sprintf(
+                                        '%d Domains registered',
+                                        (int) (
+                                            $domainRegister[
+                                                'domain'
+                                            ]['candidate_count']
+                                            ?? 0
+                                        )
+                                    )
+                                ); ?>
+                            </strong>
+                            <small>
+                                <?php echo esc_html(
+                                    (string) (
+                                        $domainRegister[
+                                            'domain'
+                                        ]['gift_status']
+                                        ?? 'Domain Gifts await their dedicated phase'
+                                    )
+                                ); ?>.
+                            </small>
+                        </div>
+
+                        <?php if (
+                            is_array(
+                                $domainRegister[
+                                    'next_milestone'
+                                ]
+                                ?? null
+                            )
+                        ) : ?>
+                            <div>
+                                <span>Next sacred milestone</span>
+                                <strong>
+                                    Level <?php echo esc_html(
+                                        (string) (
+                                            $domainRegister[
+                                                'next_milestone'
+                                            ]['level']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                    ·
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $domainRegister[
+                                                'next_milestone'
+                                            ]['label']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </strong>
+                                <small>
+                                    <?php echo esc_html(
+                                        (string) (
+                                            $domainRegister[
+                                                'next_milestone'
+                                            ]['detail']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </small>
+                            </div>
+                        <?php else : ?>
+                            <div>
+                                <span>Cleric progression</span>
+                                <strong>Final sacred threshold reached</strong>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <?php if (
+                        (int) (
+                            $domainRegister['level']
+                            ?? 1
+                        ) === 1
+                    ) : ?>
+                        <p class="gmrc-domain-register__level-one-note">
+                            At Level 1, the Domain and prepared spellcasting
+                            are already sacredly certified. Channel Divinity
+                            awakens at Level 2.
+                        </p>
+                    <?php endif; ?>
+                </section>
+            <?php endif; ?>
 
             <?php if (
                 ! empty($groveRegister['supported'])
