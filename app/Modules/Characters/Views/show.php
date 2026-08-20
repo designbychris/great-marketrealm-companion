@@ -288,6 +288,15 @@ $collegeRegister = isset($collegeRegister)
             'supported' => false,
         ];
 
+$collegeGifts = isset($collegeGifts)
+    && is_array($collegeGifts)
+        ? $collegeGifts
+        : [
+            'supported' => false,
+            'gifts' => [],
+            'next_gifts' => [],
+        ];
+
 $domainRegister = isset($domainRegister)
     && is_array($domainRegister)
         ? $domainRegister
@@ -2113,6 +2122,146 @@ $callingPathLabel = $callingPath !== ''
                                 </span>
                             <?php endforeach; ?>
                         </div>
+                    <?php endif; ?>
+
+                    <?php if (
+                        ! empty($collegeGifts['supported'])
+                        && (
+                            ! empty($collegeGifts['college'])
+                            || ! empty($collegeGifts['gifts'])
+                        )
+                    ) : ?>
+                        <section
+                            class="gmrc-college-gifts"
+                            aria-labelledby="gmrc-college-gifts-title"
+                            data-bard-college-gifts
+                        >
+                            <header class="gmrc-college-gifts__heading">
+                                <div>
+                                    <p class="gmrc-eyebrow">
+                                        Living College Gifts
+                                    </p>
+                                    <h4 id="gmrc-college-gifts-title">
+                                        <?php echo esc_html(
+                                            (string) (
+                                                $collegeGifts[
+                                                    'college_label'
+                                                ]
+                                                ?? 'Bard College'
+                                            )
+                                        ); ?>
+                                    </h4>
+                                </div>
+                                <strong>
+                                    <?php echo esc_html(
+                                        sprintf(
+                                            '%d available',
+                                            (int) (
+                                                $collegeGifts[
+                                                    'count'
+                                                ]
+                                                ?? 0
+                                            )
+                                        )
+                                    ); ?>
+                                </strong>
+                            </header>
+
+                            <?php if (
+                                ! empty($collegeGifts['gifts'])
+                                && is_array($collegeGifts['gifts'])
+                            ) : ?>
+                                <div class="gmrc-college-gifts__grid">
+                                    <?php foreach (
+                                        $collegeGifts['gifts']
+                                        as $gift
+                                    ) : ?>
+                                        <article>
+                                            <small>
+                                                Level <?php echo esc_html(
+                                                    (string) (
+                                                        $gift['level']
+                                                        ?? ''
+                                                    )
+                                                ); ?> College Gift
+                                            </small>
+                                            <h5>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $gift['label']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                            </h5>
+                                            <p>
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $gift['detail']
+                                                        ?? $gift['summary']
+                                                        ?? ''
+                                                    )
+                                                ); ?>
+                                            </p>
+                                        </article>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else : ?>
+                                <p class="gmrc-college-gifts__empty">
+                                    This College has no Gifts available at
+                                    the current Bard level.
+                                </p>
+                            <?php endif; ?>
+
+                            <?php if (
+                                is_int(
+                                    $collegeGifts[
+                                        'next_level'
+                                    ]
+                                    ?? null
+                                )
+                                && ! empty(
+                                    $collegeGifts[
+                                        'next_gifts'
+                                    ]
+                                )
+                            ) : ?>
+                                <aside class="gmrc-college-gifts__next">
+                                    <small>Next College milestone</small>
+                                    <strong>
+                                        Level <?php echo esc_html(
+                                            (string) $collegeGifts[
+                                                'next_level'
+                                            ]
+                                        ); ?>
+                                        ·
+                                        <?php echo esc_html(
+                                            implode(
+                                                ' & ',
+                                                array_map(
+                                                    static fn (
+                                                        array $gift
+                                                    ): string =>
+                                                        (string) (
+                                                            $gift['label']
+                                                            ?? ''
+                                                        ),
+                                                    $collegeGifts[
+                                                        'next_gifts'
+                                                    ]
+                                                )
+                                            )
+                                        ); ?>
+                                    </strong>
+                                </aside>
+                            <?php elseif (
+                                ! empty($collegeGifts['complete'])
+                            ) : ?>
+                                <p class="gmrc-college-gifts__complete">
+                                    All College Gifts supplied for this
+                                    College are now available.
+                                </p>
+                            <?php endif; ?>
+                        </section>
                     <?php endif; ?>
 
                     <div class="gmrc-college-register__footer">

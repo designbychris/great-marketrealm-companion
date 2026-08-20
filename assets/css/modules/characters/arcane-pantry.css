@@ -4446,3 +4446,81 @@
         color: CanvasText;
     }
 }
+
+
+.gmrc-college-gifts {
+    margin-top: .75rem;
+    padding: .7rem;
+    border: 1px dashed rgba(111, 82, 120, .24);
+    border-radius: .4rem;
+    background: rgba(255, 253, 250, .58);
+}
+
+.gmrc-college-gifts__heading {
+    display: flex;
+    justify-content: space-between;
+    gap: .7rem;
+    align-items: flex-start;
+    margin-bottom: .6rem;
+}
+
+.gmrc-college-gifts__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.gmrc-college-gifts__grid article,
+.gmrc-college-gifts__next {
+    min-width: 0;
+    padding: .58rem;
+    border: 1px solid rgba(111, 82, 120, .14);
+    border-radius: .34rem;
+    background: rgba(255, 253, 250, .82);
+}
+
+.gmrc-college-gifts__grid h5 {
+    margin: .12rem 0 .24rem;
+}
+
+.gmrc-college-gifts__grid p,
+.gmrc-college-gifts__empty,
+.gmrc-college-gifts__complete {
+    margin: 0;
+}
+
+.gmrc-college-gifts__next {
+    display: grid;
+    gap: .16rem;
+    margin-top: .55rem;
+}
+
+.gmrc-college-gifts__complete,
+.gmrc-college-gifts__empty {
+    margin-top: .55rem;
+    padding: .55rem .65rem;
+    border-left: .2rem solid currentColor;
+    font-size: .78rem;
+}
+
+@media (max-width: 620px) {
+    .gmrc-college-gifts__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 460px) {
+    .gmrc-college-gifts__heading {
+        display: grid;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-college-gifts,
+    .gmrc-college-gifts__grid article,
+    .gmrc-college-gifts__next {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}
