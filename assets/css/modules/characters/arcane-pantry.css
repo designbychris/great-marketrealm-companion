@@ -3527,3 +3527,81 @@
         display: none;
     }
 }
+
+
+/* Phase III.12.10C — The Druid's Wild Shape & Primal Reserves */
+.gmrc-druid-primal-reserves {
+    margin-top: .7rem;
+    padding: .68rem;
+    border: 1px solid rgba(70, 101, 58, .18);
+    border-radius: .4rem;
+    background: rgba(251, 254, 248, .7);
+}
+
+.gmrc-druid-primal-reserves__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .5rem;
+}
+
+.gmrc-druid-primal-reserves__grid article {
+    display: grid;
+    gap: .46rem;
+    min-width: 0;
+    padding: .58rem;
+    border: 1px solid rgba(70, 101, 58, .14);
+    border-radius: .34rem;
+    background: rgba(253, 255, 250, .74);
+}
+
+.gmrc-druid-primal-reserves__grid article > header {
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.gmrc-druid-primal-reserves__grid article > header > div {
+    display: grid;
+    min-width: 0;
+}
+
+.gmrc-druid-primal-reserves__grid article > header > span {
+    flex: 0 0 auto;
+    font-weight: 700;
+}
+
+.gmrc-druid-primal-reserves__grid .gmrc-button,
+.gmrc-druid-primal-reserves__rests .gmrc-button {
+    width: 100%;
+    min-height: 2.75rem;
+    white-space: normal;
+}
+
+.gmrc-druid-primal-reserves__rests {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .5rem;
+    margin-top: .55rem;
+}
+
+.gmrc-druid-primal-reserves__note {
+    margin: .58rem 0 0;
+    font-size: .76rem;
+    opacity: .8;
+}
+
+@media (max-width: 620px) {
+    .gmrc-druid-primal-reserves__grid,
+    .gmrc-druid-primal-reserves__rests {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-druid-primal-reserves,
+    .gmrc-druid-primal-reserves__grid article {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

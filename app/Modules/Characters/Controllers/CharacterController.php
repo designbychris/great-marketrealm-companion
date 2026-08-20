@@ -58,6 +58,7 @@ use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\SharedSpell
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\WarlockPactReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\SorcererSorceryReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\RangerFieldReserveService;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\DruidPrimalReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\BarbarianRageReserveService;
 use InvalidArgumentException;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\LivingRegisterPresenter;
@@ -1333,6 +1334,85 @@ final class CharacterController
                 $character->id(),
                 'arcana'
             )
+        );
+    }
+
+    public function spendDruidPrimalReserve(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $resource = sanitize_key(
+            (string) ($_POST['resource'] ?? '')
+        );
+        $repository = new ActiveClassResourceRepository();
+
+        try {
+            $state = (
+                new DruidPrimalReserveService()
+            )->spend(
+                $character,
+                $repository->find($character->id()),
+                $resource
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error($exception->getMessage());
+            return $this->responses->redirect(
+                $this->characterUrl($character->id(), 'arcana')
+            );
+        }
+
+        $repository->save($character->id(), $state);
+        $this->flash->success(
+            'The Druid’s Primal Reserve has been spent.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl($character->id(), 'arcana')
+        );
+    }
+
+    public function restDruidPrimalReserves(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $rest = sanitize_key(
+            (string) ($_POST['rest'] ?? 'long')
+        );
+        $repository = new ActiveClassResourceRepository();
+
+        try {
+            $state = $repository->find($character->id());
+            $service = new DruidPrimalReserveService();
+
+            $state = $rest === 'short'
+                ? $service->shortRest($character, $state)
+                : $service->longRest($character, $state);
+
+            if ($rest !== 'short') {
+                $state = (
+                    new SharedSpellSlotReserveService()
+                )->longRest(
+                    $character,
+                    $state
+                );
+            }
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error($exception->getMessage());
+            return $this->responses->redirect(
+                $this->characterUrl($character->id(), 'arcana')
+            );
+        }
+
+        $repository->save($character->id(), $state);
+
+        $this->flash->success(
+            $rest === 'short'
+                ? 'Short-rest Primal Reserves have been restored.'
+                : 'A long rest has restored Primal Reserves and spell slots.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl($character->id(), 'arcana')
         );
     }
 

@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Druid\Service
 
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Models\ActiveClassResourceState;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\SharedSpellSlotReserveService;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\DruidPrimalReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Models\PathGiftCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
@@ -128,9 +129,17 @@ final class DruidCircleGroveRegisterPresenter
                 )
                 : 0;
 
+        $primalReserves = (
+            new DruidPrimalReserveService()
+        )->reserves(
+            $character,
+            $resources
+        );
+
         return [
             'supported' => true,
             'level' => $level,
+            'primal_reserves' => $primalReserves,
             'circle' => [
                 'selection_level' => 2,
                 'chosen' => $circle !== '',

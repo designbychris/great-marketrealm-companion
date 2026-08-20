@@ -72,6 +72,16 @@ return static function (
     );
 
     $router->post(
+        '/characters/{id}/primal/spend',
+        [CharacterController::class, 'spendDruidPrimalReserve']
+    );
+
+    $router->post(
+        '/characters/{id}/primal/rest',
+        [CharacterController::class, 'restDruidPrimalReserves']
+    );
+
+    $router->post(
         '/characters/{id}/metamagic/choices',
         [CharacterController::class, 'saveMetamagicChoices']
     );

@@ -2041,6 +2041,212 @@ $callingPathLabel = $callingPath !== ''
                         </div>
                     <?php endif; ?>
 
+                    <?php if (
+                        ! empty(
+                            $groveRegister[
+                                'primal_reserves'
+                            ]
+                        )
+                    ) : ?>
+                        <section
+                            class="gmrc-druid-primal-reserves"
+                            aria-labelledby="gmrc-druid-primal-reserves-title"
+                            data-druid-primal-reserves
+                        >
+                            <header>
+                                <div>
+                                    <p class="gmrc-eyebrow">
+                                        Wild Shape & Circle Uses
+                                    </p>
+                                    <h4 id="gmrc-druid-primal-reserves-title">
+                                        Primal Reserves
+                                    </h4>
+                                </div>
+                            </header>
+
+                            <div class="gmrc-druid-primal-reserves__grid">
+                                <?php foreach (
+                                    $groveRegister[
+                                        'primal_reserves'
+                                    ]
+                                    as $reserve
+                                ) : ?>
+                                    <article>
+                                        <header>
+                                            <div>
+                                                <small>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $reserve['basis']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </small>
+                                                <strong>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $reserve['label']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </strong>
+                                            </div>
+                                            <span>
+                                                <?php if (
+                                                    ! empty(
+                                                        $reserve['unlimited']
+                                                    )
+                                                ) : ?>
+                                                    Unlimited
+                                                <?php else : ?>
+                                                    <?php echo esc_html(
+                                                        sprintf(
+                                                            '%d/%d',
+                                                            (int) (
+                                                                $reserve['remaining']
+                                                                ?? 0
+                                                            ),
+                                                            (int) (
+                                                                $reserve['maximum']
+                                                                ?? 0
+                                                            )
+                                                        )
+                                                    ); ?>
+                                                <?php endif; ?>
+                                            </span>
+                                        </header>
+
+                                        <?php if (
+                                            empty(
+                                                $reserve['unlimited']
+                                            )
+                                        ) : ?>
+                                            <form
+                                                action="<?php echo esc_url(
+                                                    $appRequestUrl
+                                                ); ?>"
+                                                method="post"
+                                            >
+                                                <input
+                                                    type="hidden"
+                                                    name="action"
+                                                    value="gmrc_app_request"
+                                                >
+                                                <input
+                                                    type="hidden"
+                                                    name="gmrc_route"
+                                                    value="<?php echo esc_attr(
+                                                        'characters/'
+                                                        . $characterId
+                                                        . '/primal/spend'
+                                                    ); ?>"
+                                                >
+                                                <input
+                                                    type="hidden"
+                                                    name="resource"
+                                                    value="<?php echo esc_attr(
+                                                        (string) (
+                                                            $reserve['resource']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>"
+                                                >
+                                                <?php wp_nonce_field(
+                                                    'gmrc_character_primal_'
+                                                    . $characterId,
+                                                    'gmrc_nonce'
+                                                ); ?>
+
+                                                <button
+                                                    type="submit"
+                                                    class="gmrc-button gmrc-button--secondary"
+                                                    data-druid-primal-spend="<?php echo esc_attr(
+                                                        (string) (
+                                                            $reserve['resource']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>"
+                                                    <?php echo (
+                                                        (int) (
+                                                            $reserve['remaining']
+                                                            ?? 0
+                                                        ) < 1
+                                                    ) ? 'disabled' : ''; ?>
+                                                >
+                                                    Spend
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $reserve['label']
+                                                            ?? 'Reserve'
+                                                        )
+                                                    ); ?>
+                                                </button>
+                                            </form>
+                                        <?php endif; ?>
+                                    </article>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <div class="gmrc-druid-primal-reserves__rests">
+                                <?php foreach (
+                                    [
+                                        'short' => 'Take a Primal Short Rest',
+                                        'long' => 'Take a Primal Long Rest',
+                                    ]
+                                    as $restKey => $restLabel
+                                ) : ?>
+                                    <form
+                                        action="<?php echo esc_url(
+                                            $appRequestUrl
+                                        ); ?>"
+                                        method="post"
+                                    >
+                                        <input type="hidden" name="action" value="gmrc_app_request">
+                                        <input
+                                            type="hidden"
+                                            name="gmrc_route"
+                                            value="<?php echo esc_attr(
+                                                'characters/'
+                                                . $characterId
+                                                . '/primal/rest'
+                                            ); ?>"
+                                        >
+                                        <input
+                                            type="hidden"
+                                            name="rest"
+                                            value="<?php echo esc_attr(
+                                                $restKey
+                                            ); ?>"
+                                        >
+                                        <?php wp_nonce_field(
+                                            'gmrc_character_primal_'
+                                            . $characterId,
+                                            'gmrc_nonce'
+                                        ); ?>
+                                        <button
+                                            type="submit"
+                                            class="gmrc-button gmrc-button--secondary"
+                                            data-druid-primal-rest="<?php echo esc_attr(
+                                                $restKey
+                                            ); ?>"
+                                        >
+                                            <?php echo esc_html(
+                                                $restLabel
+                                            ); ?>
+                                        </button>
+                                    </form>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <p class="gmrc-druid-primal-reserves__note">
+                                Short rests restore Wild Shape and Circle
+                                abilities explicitly marked for short-rest
+                                recovery. Long rests restore all Primal
+                                Reserves and Druid spell slots.
+                            </p>
+                        </section>
+                    <?php endif; ?>
+
                     <div class="gmrc-grove-register__footer">
                         <div>
                             <span>Circle Grove status</span>
