@@ -3760,3 +3760,58 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.10E — The Druid's Final Seal */
+.gmrc-grove-register,
+.gmrc-druid-primal-reserves,
+.gmrc-druid-grove-arts,
+.gmrc-druid-grove-art,
+.gmrc-druid-grove-art__choice {
+    min-width: 0;
+}
+
+.gmrc-grove-register strong,
+.gmrc-grove-register span,
+.gmrc-druid-primal-reserves strong,
+.gmrc-druid-primal-reserves span,
+.gmrc-druid-grove-art strong,
+.gmrc-druid-grove-art p,
+.gmrc-druid-grove-art span,
+.gmrc-druid-grove-art__facts dd,
+.gmrc-druid-grove-arts__note {
+    overflow-wrap: anywhere;
+}
+
+.gmrc-druid-grove-art .gmrc-guild-roll-trigger,
+.gmrc-druid-grove-art .gmrc-button,
+.gmrc-druid-primal-reserves .gmrc-button {
+    min-height: 2.75rem;
+}
+
+@media (max-width: 380px) {
+    .gmrc-grove-register__slots {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-druid-grove-art .gmrc-guild-roll-trigger {
+        text-align: left;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-grove-register,
+    .gmrc-druid-primal-reserves,
+    .gmrc-druid-grove-art,
+    .gmrc-druid-grove-art__choice {
+        scroll-behavior: auto;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-druid-grove-art .gmrc-guild-roll-trigger,
+    .gmrc-druid-grove-art .gmrc-button,
+    .gmrc-druid-primal-reserves .gmrc-button {
+        border: 1px solid ButtonText;
+    }
+}
