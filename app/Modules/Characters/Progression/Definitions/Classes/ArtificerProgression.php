@@ -14,8 +14,9 @@ defined('ABSPATH') || exit;
  * Specialist advancement reference for the Artificer Calling.
  *
  * III.12.13 establishes the permanent Artificer spine. Specialisation
- * identities and their Gifts remain delegated to the dedicated follow-up
- * slices so the class definition never duplicates subclass mechanics.
+ * identities and Gifts remain delegated to the shared path catalogues, so
+ * the class definition never duplicates the mechanics certified by
+ * III.12.13A–D.
  */
 final class ArtificerProgression implements ClassProgressionDefinitionInterface
 {
