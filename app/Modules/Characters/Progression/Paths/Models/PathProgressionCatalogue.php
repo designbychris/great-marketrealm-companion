@@ -16,6 +16,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\W
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\SorcererOriginProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\RangerPathProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\DruidCircleProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\ClericDomainProgression;
 
 defined('ABSPATH') || exit;
 
@@ -42,6 +43,7 @@ final class PathProgressionCatalogue
                 new SorcererOriginProgression(),
                 new RangerPathProgression(),
                 new DruidCircleProgression(),
+                new ClericDomainProgression(),
             ];
     }
 
