@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Ranger\Servic
 
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Models\ActiveClassResourceState;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\SharedSpellSlotReserveService;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\RangerFieldReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Models\PathProgressionCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Services\PathCandidateCatalogue;
@@ -142,6 +143,13 @@ final class RangerFieldRegisterPresenter
                 $character->characterClass()
             );
 
+        $fieldReserves = (
+            new RangerFieldReserveService()
+        )->reserves(
+            $character,
+            $resources
+        );
+
         return [
             'supported' => true,
             'level' => $level,
@@ -214,6 +222,8 @@ final class RangerFieldRegisterPresenter
                 'ability' =>
                     'Wisdom',
             ],
+            'field_reserves' =>
+                $fieldReserves,
             'path' => [
                 'registered' =>
                     $this->pathProgression

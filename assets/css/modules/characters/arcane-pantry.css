@@ -3107,3 +3107,87 @@
         color: CanvasText;
     }
 }
+
+
+/* Phase III.12.9C — The Ranger's Field Reserves */
+.gmrc-ranger-field-reserves {
+    margin-top: .72rem;
+    padding: .68rem;
+    border: 1px solid rgba(63, 92, 55, .18);
+    border-radius: .38rem;
+    background: rgba(250, 253, 248, .72);
+}
+
+.gmrc-ranger-field-reserves > header {
+    margin-bottom: .6rem;
+}
+
+.gmrc-ranger-field-reserves__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .5rem;
+}
+
+.gmrc-ranger-field-reserves__grid article {
+    display: grid;
+    gap: .48rem;
+    min-width: 0;
+    padding: .58rem;
+    border: 1px solid rgba(63, 92, 55, .14);
+    border-radius: .34rem;
+    background: rgba(253, 255, 251, .72);
+}
+
+.gmrc-ranger-field-reserves__grid article > header {
+    display: flex;
+    justify-content: space-between;
+    gap: .55rem;
+}
+
+.gmrc-ranger-field-reserves__grid article > header > div {
+    display: grid;
+    min-width: 0;
+}
+
+.gmrc-ranger-field-reserves__grid article > header > span {
+    flex: 0 0 auto;
+    font-weight: 700;
+}
+
+.gmrc-ranger-field-reserves__grid .gmrc-button,
+.gmrc-ranger-field-reserves__rest .gmrc-button {
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
+}
+
+.gmrc-ranger-field-reserves__rest {
+    margin-top: .55rem;
+}
+
+.gmrc-ranger-field-reserves__note {
+    margin: .58rem 0 0;
+    font-size: .76rem;
+    opacity: .78;
+}
+
+@media (max-width: 620px) {
+    .gmrc-ranger-field-reserves__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 420px) {
+    .gmrc-ranger-field-reserves__grid article > header {
+        display: grid;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-ranger-field-reserves,
+    .gmrc-ranger-field-reserves__grid article {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

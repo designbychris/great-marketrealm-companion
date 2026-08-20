@@ -55,6 +55,7 @@ use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\PaladinSacr
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\SharedSpellSlotReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\WarlockPactReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\SorcererSorceryReserveService;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\RangerFieldReserveService;
 use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\BarbarianRageReserveService;
 use InvalidArgumentException;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\LivingRegisterPresenter;
@@ -1190,6 +1191,123 @@ final class CharacterController
             $rest === 'short'
                 ? 'Short-rest Battle Reserves have been restored.'
                 : 'All Battle Reserves have been restored after the long rest.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Spend one finite Ranger Path field resource.
+     */
+    public function spendRangerFieldReserve(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+
+        $resource = sanitize_key(
+            (string) (
+                $_POST['resource']
+                ?? ''
+            )
+        );
+
+        $repository =
+            new ActiveClassResourceRepository();
+
+        try {
+            $state = (
+                new RangerFieldReserveService()
+            )->spend(
+                $character,
+                $repository->find(
+                    $character->id()
+                ),
+                $resource
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            'The Ranger Field Reserve has been spent.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl(
+                $character->id(),
+                'arcana'
+            )
+        );
+    }
+
+    /**
+     * Restore Ranger Path field resources and shared spell slots.
+     */
+    public function restRangerFieldReserves(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+
+        $repository =
+            new ActiveClassResourceRepository();
+
+        try {
+            $state = $repository->find(
+                $character->id()
+            );
+
+            $state = (
+                new RangerFieldReserveService()
+            )->longRest(
+                $character,
+                $state
+            );
+
+            $state = (
+                new SharedSpellSlotReserveService()
+            )->longRest(
+                $character,
+                $state
+            );
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error(
+                $exception->getMessage()
+            );
+
+            return $this->responses->redirect(
+                $this->characterUrl(
+                    $character->id(),
+                    'arcana'
+                )
+            );
+        }
+
+        $repository->save(
+            $character->id(),
+            $state
+        );
+
+        $this->flash->success(
+            'A long rest has restored the Ranger’s certified Field Reserves and spell slots.'
         );
 
         return $this->responses->redirect(

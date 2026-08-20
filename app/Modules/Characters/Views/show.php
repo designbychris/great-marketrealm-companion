@@ -2040,6 +2040,187 @@ $callingPathLabel = $callingPath !== ''
                         </div>
                     <?php endif; ?>
 
+                    <?php if (
+                        ! empty(
+                            $fieldRegister[
+                                'field_reserves'
+                            ]
+                        )
+                    ) : ?>
+                        <section
+                            class="gmrc-ranger-field-reserves"
+                            aria-labelledby="gmrc-ranger-field-reserves-title"
+                            data-ranger-field-reserves
+                        >
+                            <header>
+                                <div>
+                                    <p class="gmrc-eyebrow">
+                                        Path Expenditure
+                                    </p>
+                                    <h4 id="gmrc-ranger-field-reserves-title">
+                                        Field Reserves
+                                    </h4>
+                                    <p>
+                                        Only abilities with an explicit finite
+                                        use count are tracked here.
+                                    </p>
+                                </div>
+                            </header>
+
+                            <div class="gmrc-ranger-field-reserves__grid">
+                                <?php foreach (
+                                    $fieldRegister[
+                                        'field_reserves'
+                                    ]
+                                    as $reserve
+                                ) : ?>
+                                    <article>
+                                        <header>
+                                            <div>
+                                                <small>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $reserve['basis']
+                                                            ?? ''
+                                                        )
+                                                    ); ?>
+                                                </small>
+                                                <strong>
+                                                    <?php echo esc_html(
+                                                        (string) (
+                                                            $reserve['label']
+                                                            ?? 'Field Reserve'
+                                                        )
+                                                    ); ?>
+                                                </strong>
+                                            </div>
+                                            <span>
+                                                <?php echo esc_html(
+                                                    sprintf(
+                                                        '%d/%d',
+                                                        (int) (
+                                                            $reserve['remaining']
+                                                            ?? 0
+                                                        ),
+                                                        (int) (
+                                                            $reserve['maximum']
+                                                            ?? 0
+                                                        )
+                                                    )
+                                                ); ?>
+                                            </span>
+                                        </header>
+
+                                        <form
+                                            action="<?php echo esc_url(
+                                                $appRequestUrl
+                                            ); ?>"
+                                            method="post"
+                                        >
+                                            <input
+                                                type="hidden"
+                                                name="action"
+                                                value="gmrc_app_request"
+                                            >
+                                            <input
+                                                type="hidden"
+                                                name="gmrc_route"
+                                                value="<?php echo esc_attr(
+                                                    'characters/'
+                                                    . $characterId
+                                                    . '/field/spend'
+                                                ); ?>"
+                                            >
+                                            <input
+                                                type="hidden"
+                                                name="resource"
+                                                value="<?php echo esc_attr(
+                                                    (string) (
+                                                        $reserve['resource']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                            >
+                                            <?php wp_nonce_field(
+                                                'gmrc_character_field_'
+                                                . $characterId,
+                                                'gmrc_nonce'
+                                            ); ?>
+
+                                            <button
+                                                type="submit"
+                                                class="gmrc-button gmrc-button--secondary"
+                                                data-ranger-field-spend="<?php echo esc_attr(
+                                                    (string) (
+                                                        $reserve['resource']
+                                                        ?? ''
+                                                    )
+                                                ); ?>"
+                                                <?php echo (
+                                                    (int) (
+                                                        $reserve['remaining']
+                                                        ?? 0
+                                                    ) < 1
+                                                ) ? 'disabled' : ''; ?>
+                                            >
+                                                Spend
+                                                <?php echo esc_html(
+                                                    (string) (
+                                                        $reserve['label']
+                                                        ?? 'Field Reserve'
+                                                    )
+                                                ); ?>
+                                            </button>
+                                        </form>
+                                    </article>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <form
+                                class="gmrc-ranger-field-reserves__rest"
+                                action="<?php echo esc_url(
+                                    $appRequestUrl
+                                ); ?>"
+                                method="post"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="action"
+                                    value="gmrc_app_request"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="gmrc_route"
+                                    value="<?php echo esc_attr(
+                                        'characters/'
+                                        . $characterId
+                                        . '/field/rest'
+                                    ); ?>"
+                                >
+                                <?php wp_nonce_field(
+                                    'gmrc_character_field_'
+                                    . $characterId,
+                                    'gmrc_nonce'
+                                ); ?>
+
+                                <button
+                                    type="submit"
+                                    class="gmrc-button gmrc-button--secondary"
+                                    data-ranger-field-rest
+                                >
+                                    Take a Field Long Rest
+                                </button>
+                            </form>
+
+                            <p class="gmrc-ranger-field-reserves__note">
+                                The Field Register stores expenditure only.
+                                Proficiency Bonus, Wisdom modifier and
+                                once-per-long-rest maximums remain owned by
+                                the Ranger’s permanent progression.
+                            </p>
+                        </section>
+                    <?php endif; ?>
+
                     <div class="gmrc-field-register__footer">
                         <div>
                             <span>Ranger path status</span>
