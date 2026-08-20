@@ -675,42 +675,42 @@
     {
       "key": "circle-of-eating-fresh",
       "name": "Circle of Eating Fresh",
-      "description": "Circle of Eating Fresh path for the Druid.",
+      "description": "A druidic order tied to freshness, organic purity, and vibrant greenery. Core theme: crisp air, revitalizing moisture, and leafy balance.",
       "traits": [],
       "parent": "druid"
     },
     {
       "key": "circle-of-the-groveflame",
       "name": "Circle of the Groveflame",
-      "description": "Circle of the Groveflame path for the Druid.",
+      "description": "Druids who honor the sacred fire of the earth, channeling the heat of capsicum and the vitality of spice.",
       "traits": [],
       "parent": "druid"
     },
     {
       "key": "circle-of-the-deep-soil",
       "name": "Circle of the Deep Soil",
-      "description": "Circle of the Deep Soil path for the Druid.",
+      "description": "Earth-bound Druids of earthy strength, slowness, root-based magic and buried memory.",
       "traits": [],
       "parent": "druid"
     },
     {
       "key": "circle-of-the-compost",
       "name": "Circle of the Compost",
-      "description": "Circle of the Compost path for the Druid.",
+      "description": "Guardians of the Cycle and Reclaimers of Rot who work with fermentation, recycling, biodegradation and renewal.",
       "traits": [],
       "parent": "druid"
     },
     {
       "key": "circle-of-curdle",
       "name": "Circle of Curdle",
-      "description": "Circle of Curdle path for the Druid.",
+      "description": "Druids who celebrate rot, transformation and the microbial miracles of cheese and fermentation.",
       "traits": [],
       "parent": "druid"
     },
     {
       "key": "circle-of-the-churn",
       "name": "Circle of the Churn",
-      "description": "Circle of the Churn path for the Druid.",
+      "description": "Frostreem-themed Druids who preserve sacred dairy through frost-laced defences, healing gifts and transformation.",
       "traits": [],
       "parent": "druid"
     },

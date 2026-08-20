@@ -149,7 +149,13 @@ final class DruidCircleGroveRegisterPresenter
                 'gift_status' =>
                     $giftCount > 0
                         ? 'Circle Gifts certified'
-                        : 'Circle Gifts await their dedicated phase',
+                        : 'Circle Gifts unavailable',
+                'spells' => (
+                    new DruidCircleSpellCatalogue()
+                )->forCircle($circle),
+                'unlocked_spells' => (
+                    new DruidCircleSpellCatalogue()
+                )->unlocked($circle, $level),
             ],
             'wild_shape' => [
                 'unlocked' => $level >= 2,

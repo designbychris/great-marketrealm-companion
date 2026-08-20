@@ -13,6 +13,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definit
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\PaladinSacredOathGiftProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\WarlockPatronGiftProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\RangerPathGiftProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Gifts\Definitions\DruidCircleGiftProgression;
 
 defined('ABSPATH') || exit;
 
@@ -34,7 +35,8 @@ final class PathGiftCatalogue
             MonkWayGiftProgression::allDefinitions(),
             PaladinSacredOathGiftProgression::allDefinitions(),
             WarlockPatronGiftProgression::allDefinitions(),
-            RangerPathGiftProgression::allDefinitions()
+            RangerPathGiftProgression::allDefinitions(),
+            DruidCircleGiftProgression::allDefinitions()
         );
     }
 

@@ -278,6 +278,36 @@ final class PathChoiceGuideCatalogue
             'identity' =>
                 'A dazzling confectionery Patron offering impossible sweetness in exchange for promises that become harder to read the longer you stare at them.',
         ],
+        'circle-of-eating-fresh' => [
+            'playstyle' => 'Restore, cleanse and reward allies who remain close to natural terrain.',
+            'best_for' => 'Players who want a bright support Druid centred on freshness, healing and purification.',
+            'identity' => 'An embodiment of crisp air, revitalizing moisture, organic purity and vibrant greenery.',
+        ],
+        'circle-of-the-groveflame' => [
+            'playstyle' => 'Empower fire magic with Wisdom, enhance Goodberry and develop fiery Wild Shape options.',
+            'best_for' => 'Players who want an aggressive spice-and-flame Druid with strong Capsicum flavour.',
+            'identity' => 'A keeper of sacred earth-fire who channels capsicum heat and the vitality of spice.',
+        ],
+        'circle-of-the-deep-soil' => [
+            'playstyle' => 'Read memories from roots, halt movement and grow into an immovable earth-bound survivor.',
+            'best_for' => 'Players who want slow, durable root magic and strong battlefield control.',
+            'identity' => 'An earthy Druid who listens to buried memory and draws patient strength from soil and roots.',
+        ],
+        'circle-of-the-compost' => [
+            'playstyle' => 'Turn death and decay into healing, poison, terrain control and eventually elemental transformation.',
+            'best_for' => 'Players who want a complex decay-and-rebirth Druid with reactive support and offensive rot.',
+            'identity' => 'A guardian of the cycle who knows that nothing is truly wasted and every ending feeds new growth.',
+        ],
+        'circle-of-curdle' => [
+            'playstyle' => 'Spread microbial debuffs, manipulate spoilage and animate rotten matter into an ally.',
+            'best_for' => 'Players who want a fermentation-and-decay controller with strong Dairyfolk and Fungifolk flavour.',
+            'identity' => 'A microbial-cycle guardian who treats spoilage as transformation rather than failure.',
+        ],
+        'circle-of-the-churn' => [
+            'playstyle' => 'Blend frost, healing and dairy transformation through Curd Form and cold battlefield control.',
+            'best_for' => 'Players who want a Frostreem-themed Druid balancing restorative magic with frost-laced defence.',
+            'identity' => 'A keeper of sacred dairy rituals who churns cream into power and milk into frost-bound magic.',
+        ],
         'aislewarden-conclave' => [
             'playstyle' =>
                 'Track a chosen quarry, ambush efficiently and keep moving through terrain and enemy pressure.',
