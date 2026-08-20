@@ -4230,3 +4230,79 @@
         border: 1px solid ButtonText;
     }
 }
+
+
+/* Phase III.12.11E — The Cleric's Final Seal */
+.gmrc-domain-register,
+.gmrc-cleric-sacred-reserves,
+.gmrc-cleric-divine-arts,
+.gmrc-cleric-divine-art,
+.gmrc-cleric-divine-art__choice {
+    min-width: 0;
+}
+
+.gmrc-domain-register strong,
+.gmrc-domain-register span,
+.gmrc-domain-register small,
+.gmrc-cleric-sacred-reserves strong,
+.gmrc-cleric-sacred-reserves span,
+.gmrc-cleric-divine-art strong,
+.gmrc-cleric-divine-art p,
+.gmrc-cleric-divine-art span,
+.gmrc-cleric-divine-art dd,
+.gmrc-cleric-divine-arts__note {
+    overflow-wrap: anywhere;
+}
+
+.gmrc-cleric-divine-art .gmrc-guild-roll-trigger,
+.gmrc-cleric-divine-art .gmrc-button,
+.gmrc-cleric-sacred-reserves .gmrc-button {
+    min-height: 2.75rem;
+}
+
+.gmrc-cleric-divine-art .gmrc-button--holy-butterstorm {
+    min-height: 3.15rem;
+}
+
+@media (max-width: 380px) {
+    .gmrc-domain-register__summary,
+    .gmrc-domain-register__slots,
+    .gmrc-domain-register__footer,
+    .gmrc-cleric-sacred-reserves__grid,
+    .gmrc-cleric-sacred-reserves__rests,
+    .gmrc-cleric-divine-arts__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-cleric-divine-art .gmrc-guild-roll-trigger,
+    .gmrc-cleric-divine-art .gmrc-button {
+        text-align: left;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-domain-register,
+    .gmrc-cleric-sacred-reserves,
+    .gmrc-cleric-divine-art,
+    .gmrc-cleric-divine-art__choice {
+        scroll-behavior: auto;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-domain-register,
+    .gmrc-cleric-sacred-reserves,
+    .gmrc-cleric-divine-arts,
+    .gmrc-cleric-divine-art,
+    .gmrc-cleric-divine-art__choice {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+
+    .gmrc-cleric-divine-art .gmrc-guild-roll-trigger,
+    .gmrc-cleric-divine-art .gmrc-button,
+    .gmrc-cleric-sacred-reserves .gmrc-button {
+        border: 1px solid ButtonText;
+    }
+}
