@@ -531,7 +531,7 @@ final class BardCallingRegressionTest extends TestCase
         );
     }
 
-    public function testCollegeGiftsRemainUnimplementedUntilCollegeSlice(): void
+    public function testCollegeGiftsAreCertifiedByCollegeSlice(): void
     {
         $catalogue =
             new PathGiftCatalogue();
@@ -545,11 +545,11 @@ final class BardCallingRegressionTest extends TestCase
             'college-of-confection',
             'college-of-churned-verse',
         ] as $college) {
-            self::assertFalse(
+            self::assertTrue(
                 $catalogue->supports($college)
             );
 
-            self::assertSame(
+            self::assertNotSame(
                 [],
                 $catalogue->all($college)
             );
