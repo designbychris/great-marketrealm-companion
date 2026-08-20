@@ -183,18 +183,19 @@ final class ClassFrameworkAuditRegressionTest extends TestCase
         }
     }
 
-    public function testAuditCurrentlyFindsNineCertifiedSpecialistCallings(): void
+    public function testAuditCurrentlyFindsTenCertifiedSpecialistCallings(): void
     {
         $catalogue = new ClassCapabilityCatalogue();
 
         self::assertCount(
-            9,
+            10,
             $catalogue->specialist()
         );
 
         self::assertSame(
             [
                 'barbarian',
+                'druid',
                 'fighter',
                 'monk',
                 'paladin',
@@ -223,7 +224,7 @@ final class ClassFrameworkAuditRegressionTest extends TestCase
         $catalogue = new ClassCapabilityCatalogue();
 
         self::assertCount(
-            count(CharacterClass::identifiers()) - 9,
+            count(CharacterClass::identifiers()) - 10,
             $catalogue->foundation()
         );
     }

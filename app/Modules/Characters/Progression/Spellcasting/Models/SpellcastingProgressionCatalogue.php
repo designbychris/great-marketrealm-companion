@@ -8,6 +8,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterCl
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Contracts\SpellcastingProgressionDefinitionInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Definitions\SorcererSpellcastingProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Definitions\RangerSpellcastingProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Definitions\DruidSpellcastingProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Definitions\WizardSpellcastingProgression;
 
 final class SpellcastingProgressionCatalogue
@@ -27,6 +28,7 @@ final class SpellcastingProgressionCatalogue
                 new WizardSpellcastingProgression(),
                 new SorcererSpellcastingProgression(),
                 new RangerSpellcastingProgression(),
+                new DruidSpellcastingProgression(),
             ];
     }
 

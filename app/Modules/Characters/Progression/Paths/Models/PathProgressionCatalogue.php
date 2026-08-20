@@ -15,6 +15,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\P
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\WarlockPatronProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\SorcererOriginProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\RangerPathProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\DruidCircleProgression;
 
 defined('ABSPATH') || exit;
 
@@ -40,6 +41,7 @@ final class PathProgressionCatalogue
                 new WarlockPatronProgression(),
                 new SorcererOriginProgression(),
                 new RangerPathProgression(),
+                new DruidCircleProgression(),
             ];
     }
 
