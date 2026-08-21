@@ -129,7 +129,16 @@ $libraryUrl = add_query_arg(
         <label>
             <span>Level</span>
             <select name="level">
-                <option value="">All stated levels</option>
+                <option value="">All levels</option>
+                <option
+                    value="unknown"
+                    <?php selected(
+                        (string) ($filters['level'] ?? ''),
+                        'unknown'
+                    ); ?>
+                >
+                    Level not stated
+                </option>
                 <?php foreach ($levels as $level) : ?>
                     <option
                         value="<?php echo esc_attr((string) $level); ?>"
@@ -151,7 +160,16 @@ $libraryUrl = add_query_arg(
         <label>
             <span>School</span>
             <select name="school">
-                <option value="">All stated schools</option>
+                <option value="">All schools</option>
+                <option
+                    value="unknown"
+                    <?php selected(
+                        (string) ($filters['school'] ?? ''),
+                        'unknown'
+                    ); ?>
+                >
+                    School not stated
+                </option>
                 <?php foreach ($schools as $school) : ?>
                     <option
                         value="<?php echo esc_attr((string) $school); ?>"
@@ -178,13 +196,24 @@ $libraryUrl = add_query_arg(
             <label>
                 <span>Calling access</span>
                 <select name="access">
-                    <option value="">All stated access</option>
+                    <option value="">All access</option>
+                    <option
+                        value="unknown"
+                        <?php selected(
+                            (string) ($filters['access'] ?? ''),
+                            'unknown'
+                        ); ?>
+                    >
+                        Calling access not stated
+                    </option>
                     <?php foreach ($accessLabels as $label) : ?>
                         <option
                             value="<?php echo esc_attr((string) $label); ?>"
                             <?php selected(
                                 (string) ($filters['access'] ?? ''),
-                                (string) $label
+                                strtolower(
+                                    (string) $label
+                                )
                             ); ?>
                         >
                             <?php echo esc_html((string) $label); ?>
@@ -293,12 +322,21 @@ $libraryUrl = add_query_arg(
                         >
                             <strong>Sage’s source note</strong>
                             <span>
-                                This entry contains
-                                <?php echo esc_html(
-                                    (string) count($spell['source_issues'])
-                                ); ?>
-                                handbook uncertainty marker(s).
+                                The canonical entry leaves some information
+                                unresolved:
                             </span>
+                            <ul>
+                                <?php foreach (
+                                    ($spell['source_issue_labels'] ?? [])
+                                    as $issueLabel
+                                ) : ?>
+                                    <li>
+                                        <?php echo esc_html(
+                                            (string) $issueLabel
+                                        ); ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
                         </aside>
                     <?php endif; ?>
 

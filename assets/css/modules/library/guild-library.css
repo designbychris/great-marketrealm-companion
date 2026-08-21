@@ -391,3 +391,37 @@
         color: CanvasText;
     }
 }
+
+
+.gmrc-guild-library-card__open:focus-visible,
+.gmrc-spellbook__breadcrumb a:focus-visible,
+.gmrc-spellbook-filters input:focus-visible,
+.gmrc-spellbook-filters select:focus-visible,
+.gmrc-spellbook-filters__actions button:focus-visible,
+.gmrc-spellbook-filters__actions a:focus-visible,
+.gmrc-spell-card__detail summary:focus-visible {
+    outline: .18rem solid currentColor;
+    outline-offset: .16rem;
+}
+
+.gmrc-spell-card__source-note ul {
+    margin: .25rem 0 0;
+    padding-left: 1.2rem;
+}
+
+.gmrc-spell-card__source-note li + li {
+    margin-top: .16rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-guild-library-card__open,
+    .gmrc-spellbook__breadcrumb a,
+    .gmrc-spellbook-filters input,
+    .gmrc-spellbook-filters select,
+    .gmrc-spellbook-filters__actions button,
+    .gmrc-spellbook-filters__actions a,
+    .gmrc-spell-card__detail summary {
+        scroll-behavior: auto;
+        transition: none;
+    }
+}

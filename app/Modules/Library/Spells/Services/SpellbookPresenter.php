@@ -29,16 +29,16 @@ final class SpellbookPresenter
         $query = $this->normalise(
             $filters['q'] ?? ''
         );
-        $kind = sanitize_key(
+        $kind = $this->normaliseKind(
             $filters['kind'] ?? ''
         );
         $level = $this->normaliseLevel(
             $filters['level'] ?? ''
         );
-        $school = sanitize_key(
+        $school = $this->normaliseSchool(
             $filters['school'] ?? ''
         );
-        $access = $this->normalise(
+        $access = $this->normaliseAccess(
             $filters['access'] ?? ''
         );
 
@@ -62,26 +62,38 @@ final class SpellbookPresenter
                     }
 
                     if (
-                        $level !== null
-                        && $spell->level() !== $level
+                        $level !== ''
+                        && (
+                            $level === 'unknown'
+                                ? $spell->level() !== null
+                                : $spell->level() !== (int) $level
+                        )
                     ) {
                         return false;
                     }
 
                     if (
                         $school !== ''
-                        && sanitize_key(
-                            (string) $spell->school()
-                        ) !== $school
+                        && (
+                            $school === 'unknown'
+                                ? $spell->school() !== null
+                                : sanitize_key(
+                                    (string) $spell->school()
+                                ) !== $school
+                        )
                     ) {
                         return false;
                     }
 
                     if (
                         $access !== ''
-                        && ! $this->matchesAccess(
-                            $spell,
-                            $access
+                        && (
+                            $access === 'unknown'
+                                ? $spell->accessLabels() !== []
+                                : ! $this->matchesAccess(
+                                    $spell,
+                                    $access
+                                )
                         )
                     ) {
                         return false;
@@ -109,11 +121,11 @@ final class SpellbookPresenter
 
         return [
             'filters' => [
-                'q' => $filters['q'] ?? '',
+                'q' => $query,
                 'kind' => $kind,
-                'level' => $filters['level'] ?? '',
+                'level' => $level,
                 'school' => $school,
-                'access' => $filters['access'] ?? '',
+                'access' => $access,
             ],
             'results' => array_map(
                 fn (SpellRecord $spell): array =>
@@ -180,6 +192,15 @@ final class SpellbookPresenter
             $spell->kind() === 'renamed'
                 ? 'Marketrealm Rename'
                 : 'Marketrealm Original';
+
+        $data['source_issue_labels'] =
+            array_map(
+                fn (string $issue): string =>
+                    $this->sourceIssueLabel(
+                        $issue
+                    ),
+                $spell->sourceIssues()
+            );
 
         return $data;
     }
@@ -317,11 +338,30 @@ final class SpellbookPresenter
         return $labels;
     }
 
+    private function normaliseKind(
+        string $kind
+    ): string {
+        $kind = sanitize_key($kind);
+
+        return in_array(
+            $kind,
+            [
+                'renamed',
+                'marketrealm-original',
+            ],
+            true
+        )
+            ? $kind
+            : '';
+    }
+
     private function normaliseLevel(
         string $level
-    ): ?int {
-        if ($level === '') {
-            return null;
+    ): string {
+        $level = $this->normalise($level);
+
+        if ($level === 'unknown') {
+            return $level;
         }
 
         if (
@@ -330,10 +370,81 @@ final class SpellbookPresenter
                 $level
             )
         ) {
-            return null;
+            return '';
         }
 
-        return (int) $level;
+        $numeric = (int) $level;
+
+        return in_array(
+            $numeric,
+            $this->levelOptions(),
+            true
+        )
+            ? (string) $numeric
+            : '';
+    }
+
+    private function normaliseSchool(
+        string $school
+    ): string {
+        $school = sanitize_key($school);
+
+        if ($school === 'unknown') {
+            return $school;
+        }
+
+        return in_array(
+            $school,
+            $this->schoolOptions(),
+            true
+        )
+            ? $school
+            : '';
+    }
+
+    private function normaliseAccess(
+        string $access
+    ): string {
+        $normalised =
+            $this->normalise($access);
+
+        if ($normalised === 'unknown') {
+            return $normalised;
+        }
+
+        foreach (
+            $this->accessOptions()
+            as $label
+        ) {
+            if (
+                $this->normalise($label)
+                === $normalised
+            ) {
+                return $normalised;
+            }
+        }
+
+        return '';
+    }
+
+    private function sourceIssueLabel(
+        string $issue
+    ): string {
+        return match ($issue) {
+            'level-not-stated-in-handbook' =>
+                'Level not stated in handbook',
+            'school-not-stated-in-handbook' =>
+                'School not stated in handbook',
+            'access-not-stated-in-handbook' =>
+                'Calling access not stated in handbook',
+            default => ucwords(
+                str_replace(
+                    '-',
+                    ' ',
+                    $issue
+                )
+            ),
+        };
     }
 
     private function normalise(
