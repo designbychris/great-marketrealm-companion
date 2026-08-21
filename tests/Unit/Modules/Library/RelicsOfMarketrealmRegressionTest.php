@@ -129,7 +129,7 @@ final class RelicsOfMarketrealmRegressionTest extends TestCase
         );
 
         self::assertStringContainsString(
-            '.gmrc-content:has(> .gmrc-guild-library)',
+            '.gmrc-app-main:has(.gmrc-guild-library)',
             $css
         );
         self::assertStringContainsString(
@@ -137,11 +137,11 @@ final class RelicsOfMarketrealmRegressionTest extends TestCase
             $css
         );
         self::assertStringNotContainsString(
-            '.gmrc-guild-library::before',
+            '.gmrc-content:has(> .gmrc-guild-library)',
             $css
         );
         self::assertStringNotContainsString(
-            'position: fixed',
+            '.gmrc-guild-library::before',
             $css
         );
     }
