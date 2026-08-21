@@ -495,3 +495,150 @@
         color: CanvasText;
     }
 }
+
+
+.gmrc-armoury {
+    display: grid;
+    gap: 1rem;
+    max-width: 82rem;
+    margin: 0 auto;
+}
+
+.gmrc-armoury__hero,
+.gmrc-armoury__provenance,
+.gmrc-armoury-card {
+    border: 1px solid rgba(92, 76, 45, .22);
+    border-radius: .55rem;
+    background: rgba(255, 252, 239, .9);
+}
+
+.gmrc-armoury__hero,
+.gmrc-armoury__provenance {
+    padding: 1.1rem;
+}
+
+.gmrc-armoury__hero h1,
+.gmrc-armoury__provenance h2 {
+    margin: .2rem 0 .45rem;
+}
+
+.gmrc-armoury__provenance {
+    display: grid;
+    gap: .45rem;
+}
+
+.gmrc-armoury__provenance p,
+.gmrc-armoury__count {
+    margin: 0;
+}
+
+.gmrc-armoury-group {
+    display: grid;
+    gap: .7rem;
+}
+
+.gmrc-armoury-group__heading {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: .55rem;
+    align-items: baseline;
+}
+
+.gmrc-armoury-group__heading h2 {
+    margin: 0;
+}
+
+.gmrc-armoury__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .8rem;
+}
+
+.gmrc-armoury-card {
+    display: grid;
+    align-content: start;
+    gap: .65rem;
+    min-width: 0;
+    padding: .9rem;
+}
+
+.gmrc-armoury-card__heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: .7rem;
+}
+
+.gmrc-armoury-card__heading h3 {
+    margin: .12rem 0 0;
+}
+
+.gmrc-armoury-card__source {
+    flex: 0 0 auto;
+    max-width: 10rem;
+    padding: .2rem .42rem;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-size: .68rem;
+    line-height: 1.25;
+    text-align: center;
+}
+
+.gmrc-armoury-card p,
+.gmrc-armoury-card dd {
+    overflow-wrap: anywhere;
+}
+
+.gmrc-armoury-card__properties {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.gmrc-armoury-card__properties li {
+    padding: .18rem .4rem;
+    border: 1px solid rgba(92, 76, 45, .25);
+    border-radius: .3rem;
+    font-size: .7rem;
+}
+
+.gmrc-armoury a:focus-visible {
+    outline: .18rem solid currentColor;
+    outline-offset: .16rem;
+}
+
+@media (max-width: 1050px) {
+    .gmrc-armoury__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 680px) {
+    .gmrc-armoury__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-armoury-card__heading {
+        display: grid;
+    }
+
+    .gmrc-armoury-card__source {
+        width: max-content;
+        max-width: 100%;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-armoury__hero,
+    .gmrc-armoury__provenance,
+    .gmrc-armoury-card,
+    .gmrc-armoury-card__properties li {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

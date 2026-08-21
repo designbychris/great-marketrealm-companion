@@ -53,29 +53,11 @@ final class PostCallingFoundationRegressionTest extends TestCase
             $this->registry()->summaries()
             as $domain
         ) {
-            if (
-                in_array(
-                    ($domain['key'] ?? ''),
-                    ['spells', 'backgrounds'],
-                    true
-                )
-            ) {
-                self::assertSame(
-                    'registered',
-                    $domain['status']
-                );
-                self::assertGreaterThan(
-                    0,
-                    $domain['entry_count']
-                );
-                continue;
-            }
-
             self::assertSame(
-                'foundation',
+                'registered',
                 $domain['status']
             );
-            self::assertSame(
+            self::assertGreaterThan(
                 0,
                 $domain['entry_count']
             );

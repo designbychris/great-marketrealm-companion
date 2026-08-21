@@ -20,4 +20,9 @@ return static function (Router $router): void {
         '/library/backgrounds',
         [LibraryController::class, 'backgrounds']
     );
+
+    $router->get(
+        '/library/armoury',
+        [LibraryController::class, 'armoury']
+    );
 };

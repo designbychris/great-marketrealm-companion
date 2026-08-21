@@ -33,7 +33,13 @@ final class AttackPresenter
             $ability = 'Strength';
             $abilityModifier = $strength;
 
-            if (in_array('finesse', $properties, true) && $dexterity > $strength) {
+            if (in_array('ranged', $properties, true)) {
+                $ability = 'Dexterity';
+                $abilityModifier = $dexterity;
+            } elseif (
+                in_array('finesse', $properties, true)
+                && $dexterity > $strength
+            ) {
                 $ability = 'Dexterity';
                 $abilityModifier = $dexterity;
             }
@@ -55,7 +61,8 @@ final class AttackPresenter
                 'target_mode' => 'creature',
                 'default_target_kind' => '',
                 'properties' => $properties,
-                'range' => 'Melee · 5 ft',
+                'range' => $item->range()
+                    ?? 'Melee · 5 ft',
             ];
         }
 

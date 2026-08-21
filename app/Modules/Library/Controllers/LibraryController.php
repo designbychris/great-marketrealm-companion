@@ -36,6 +36,40 @@ final class LibraryController
         );
     }
 
+    public function armoury(): string
+    {
+        $catalogue = $this->library->get('armoury');
+        $entries = $catalogue?->entries() ?? [];
+
+        $groups = [
+            'weapon' => [],
+            'armour' => [],
+            'shield' => [],
+            'gear' => [],
+        ];
+
+        foreach ($entries as $entry) {
+            $category = (string) (
+                $entry['category']
+                ?? ''
+            );
+
+            if (isset($groups[$category])) {
+                $groups[$category][] = $entry;
+            }
+        }
+
+        return $this->views->render(
+            View::make(
+                'library.armoury.index',
+                [
+                    'entries' => $entries,
+                    'groups' => $groups,
+                ]
+            )
+        );
+    }
+
     public function backgrounds(): string
     {
         $catalogue = $this->library->get('backgrounds');

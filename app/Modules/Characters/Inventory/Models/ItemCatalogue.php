@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Characters\Inventory\Models;
 
+use GreatMarketrealmCompanion\Modules\Library\Armoury\Repositories\MarketrealmArmouryRegister;
 use InvalidArgumentException;
 
 defined('ABSPATH') || exit;
@@ -16,9 +17,13 @@ final class ItemCatalogue
     /** @var array<string, ItemDefinition> */
     private array $items = [];
 
-    public function __construct()
-    {
+    public function __construct(
+        ?MarketrealmArmouryRegister $armoury = null
+    ) {
         $this->registerDefaults();
+        $this->registerArmoury(
+            $armoury ?? new MarketrealmArmouryRegister()
+        );
     }
 
     public function add(ItemDefinition $item): void { $this->items[$item->id()] = $item; }
@@ -32,6 +37,35 @@ final class ItemCatalogue
         $groups = [];
         foreach ($this->items as $item) { $groups[$item->category()][] = $item; }
         return $groups;
+    }
+
+
+    private function registerArmoury(
+        MarketrealmArmouryRegister $armoury
+    ): void {
+        foreach ($armoury->all() as $record) {
+            if ($this->find($record->id()) !== null) {
+                continue;
+            }
+
+            $this->add(
+                new ItemDefinition(
+                    $record->id(),
+                    $record->label(),
+                    $record->category(),
+                    $record->description(),
+                    $record->weight(),
+                    $record->equipSlot(),
+                    $record->damageDie(),
+                    $record->damageType(),
+                    $record->armourBase(),
+                    $record->dexterityCap(),
+                    $record->armourBonus(),
+                    $record->properties(),
+                    $record->range()
+                )
+            );
+        }
     }
 
     private function registerDefaults(): void

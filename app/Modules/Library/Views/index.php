@@ -15,6 +15,12 @@ $backgroundRegisterUrl = add_query_arg(
     'library/backgrounds',
     home_url('/companion/')
 );
+
+$armouryUrl = add_query_arg(
+    'gmrc_route',
+    'library/armoury',
+    home_url('/companion/')
+);
 ?>
 
 <section
@@ -116,22 +122,26 @@ $backgroundRegisterUrl = add_query_arg(
                     ($domain['status'] ?? '') === 'registered'
                     && in_array(
                         ($domain['key'] ?? ''),
-                        ['spells', 'backgrounds'],
+                        ['spells', 'backgrounds', 'armoury'],
                         true
                     )
                 ) : ?>
                     <a
                         class="gmrc-guild-library-card__open"
                         href="<?php echo esc_url(
-                            ($domain['key'] ?? '') === 'spells'
-                                ? $spellbookUrl
-                                : $backgroundRegisterUrl
+                            match ($domain['key'] ?? '') {
+                                'spells' => $spellbookUrl,
+                                'backgrounds' => $backgroundRegisterUrl,
+                                default => $armouryUrl,
+                            }
                         ); ?>"
                     >
                         <?php echo esc_html(
-                            ($domain['key'] ?? '') === 'spells'
-                                ? 'Open Sage’s Spellbook'
-                                : 'Open Background Register'
+                            match ($domain['key'] ?? '') {
+                                'spells' => 'Open Sage’s Spellbook',
+                                'backgrounds' => 'Open Background Register',
+                                default => 'Open Marketrealm Armoury',
+                            }
                         ); ?>
                     </a>
                 <?php else : ?>
