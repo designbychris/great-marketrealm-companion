@@ -1,0 +1,105 @@
+
+.gmrc-guild-library {
+    display: grid;
+    gap: 1rem;
+    max-width: 76rem;
+    margin: 0 auto;
+}
+
+.gmrc-guild-library__hero,
+.gmrc-guild-library__source,
+.gmrc-guild-library-card {
+    border: 1px solid rgba(92, 76, 45, .22);
+    border-radius: .55rem;
+    background: rgba(255, 252, 239, .9);
+}
+
+.gmrc-guild-library__hero {
+    padding: 1.1rem;
+}
+
+.gmrc-guild-library__hero h1 {
+    margin: .2rem 0 .45rem;
+}
+
+.gmrc-guild-library__source {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem .8rem;
+    align-items: baseline;
+    padding: .7rem .85rem;
+}
+
+.gmrc-guild-library__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .8rem;
+}
+
+.gmrc-guild-library-card {
+    display: grid;
+    align-content: start;
+    gap: .55rem;
+    min-width: 0;
+    padding: .9rem;
+}
+
+.gmrc-guild-library-card__phase {
+    width: max-content;
+    max-width: 100%;
+    padding: .2rem .45rem;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-size: .72rem;
+}
+
+.gmrc-guild-library-card h2,
+.gmrc-guild-library-card p,
+.gmrc-guild-library-card dd {
+    overflow-wrap: anywhere;
+}
+
+.gmrc-guild-library-card dl {
+    display: grid;
+    gap: .4rem;
+    margin: .1rem 0 0;
+}
+
+.gmrc-guild-library-card dl > div {
+    display: flex;
+    justify-content: space-between;
+    gap: .8rem;
+    border-top: 1px solid rgba(92, 76, 45, .14);
+    padding-top: .4rem;
+}
+
+.gmrc-guild-library-card dt {
+    font-weight: 700;
+}
+
+.gmrc-guild-library-card dd {
+    margin: 0;
+    text-align: right;
+}
+
+.gmrc-guild-library-card__note {
+    margin-top: auto;
+    font-size: .78rem;
+    opacity: .78;
+}
+
+@media (max-width: 900px) {
+    .gmrc-guild-library__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-guild-library__hero,
+    .gmrc-guild-library__source,
+    .gmrc-guild-library-card {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

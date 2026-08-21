@@ -5,6 +5,7 @@ namespace GreatMarketrealmCompanion\Providers;
 use GreatMarketrealmCompanion\Kingdoms\CharactersKingdom;
 use GreatMarketrealmCompanion\Kingdoms\DashboardKingdom;
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
+use GreatMarketrealmCompanion\Kingdoms\LibraryKingdom;
 use GreatMarketrealmCompanion\Kingdoms\PartiesKingdom;
 use GreatMarketrealmCompanion\Navigation\Navigation;
 
@@ -41,6 +42,10 @@ class KingdomServiceProvider extends ServiceProvider
 
                 $registry->add(
                     new PartiesKingdom($this->app)
+                );
+
+                $registry->add(
+                    new LibraryKingdom($this->app)
                 );
 
                 return $registry;

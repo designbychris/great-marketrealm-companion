@@ -741,6 +741,12 @@ class FrontendServiceProvider extends ServiceProvider
                     . 'guild-hall-dashboard.css',
             ],
             [
+                'handle' => 'gmrc-guild-library',
+                'path' =>
+                    'modules/library/'
+                    . 'guild-library.css',
+            ],
+            [
                 'handle' => 'gmrc-registrar',
                 'path' => 'components/furniture/registrar.css',
             ],
