@@ -30,12 +30,18 @@ final class ArcanePantryPresenter
         17=>[4,3,3,3,2,1,1,1,1], 18=>[4,3,3,3,3,1,1,1,1],
         19=>[4,3,3,3,3,2,1,1,1], 20=>[4,3,3,3,3,2,2,1,1],
     ];
+    private CanonicalSpellReferenceResolver $references;
+
     public function __construct(
         private ArcaneAbilityCatalogue $catalogue,
-        ?ArcaneRollScalingResolver $rollScaling = null
+        ?ArcaneRollScalingResolver $rollScaling = null,
+        ?CanonicalSpellReferenceResolver $references = null
     ) {
         $this->rollScaling =
             $rollScaling ?? new ArcaneRollScalingResolver();
+
+        $this->references =
+            $references ?? new CanonicalSpellReferenceResolver();
     }
 
     /** @return array<string, mixed> */
@@ -150,11 +156,18 @@ final class ArcanePantryPresenter
                 : null
         );
 
+        $reference = $this->references->resolve($ability);
+
         return [
             'id' => $ability->id(),
-            'label' => $ability->label(),
+            'label' => (string) $reference['label'],
+            'legacy_label' => (string) $reference['legacy_label'],
+            'canonical_status' => (string) $reference['status'],
+            'canonical_spell_key' => $reference['canonical_key'],
+            'original_spell' => $reference['original_spell'],
+            'source_issues' => $reference['source_issues'],
             'kind' => $ability->kind(),
-            'description' => $ability->description(),
+            'description' => (string) $reference['detail'],
             'activation' => $ability->activation(),
             'range' => $ability->range(),
             'duration' => $ability->duration(),

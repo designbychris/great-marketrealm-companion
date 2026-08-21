@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Characters\Progression\Folios;
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
+use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\CanonicalSpellReferenceResolver;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Services\AdvancementChoiceRequirementResolver;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Models\SpellcastingProgressionCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Spellcasting\Services\WizardSpellCandidateCatalogue;
@@ -16,11 +17,13 @@ final class SpellbookFolio
     public function __construct(
         private ?SpellcastingProgressionCatalogue $progression = null,
         private ?WizardSpellCandidateCatalogue $candidates = null,
-        private ?AdvancementChoiceRequirementResolver $requirements = null
+        private ?AdvancementChoiceRequirementResolver $requirements = null,
+        private ?CanonicalSpellReferenceResolver $references = null
     ) {
         $this->progression ??= new SpellcastingProgressionCatalogue();
         $this->candidates ??= new WizardSpellCandidateCatalogue();
         $this->requirements ??= new AdvancementChoiceRequirementResolver();
+        $this->references ??= new CanonicalSpellReferenceResolver();
     }
 
     /** @param array<int,string> $selections */
@@ -93,10 +96,16 @@ final class SpellbookFolio
                         $requested - count($available),
                 ],
                 array_map(
-                    static fn ($ability): array => [
+                    fn ($ability): array => [
                         'key' => $ability->id(),
-                        'label' => $ability->label(),
-                        'detail' => $ability->description(),
+                        'label' => (string) (
+                            $this->references
+                                ->resolve($ability)['label']
+                        ),
+                        'detail' => (string) (
+                            $this->references
+                                ->resolve($ability)['detail']
+                        ),
                         'spell_level' =>
                             $ability->spellLevel(),
                     ],
@@ -146,10 +155,16 @@ final class SpellbookFolio
                 'catalogue_shortfall' => 0,
             ],
             array_map(
-                static fn ($ability): array => [
+                fn ($ability): array => [
                     'key' => $ability->id(),
-                    'label' => $ability->label(),
-                    'detail' => $ability->description(),
+                    'label' => (string) (
+                        $this->references
+                            ->resolve($ability)['label']
+                    ),
+                    'detail' => (string) (
+                        $this->references
+                            ->resolve($ability)['detail']
+                    ),
                     'spell_level' => $ability->spellLevel(),
                 ],
                 $available
