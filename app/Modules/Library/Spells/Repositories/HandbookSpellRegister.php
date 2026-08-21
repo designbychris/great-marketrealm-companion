@@ -82,8 +82,8 @@ final class HandbookSpellRegister
             return $this->records;
         }
 
-        $definitions = require GMRC_PATH
-            . 'app/Modules/Library/Spells/Data/handbook-spells.php';
+        $definitions = require dirname(__DIR__)
+            . '/Data/handbook-spells.php';
 
         if (! is_array($definitions)) {
             throw new InvalidArgumentException(

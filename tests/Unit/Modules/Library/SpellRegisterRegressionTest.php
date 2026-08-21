@@ -98,6 +98,25 @@ final class SpellRegisterRegressionTest extends TestCase
         );
     }
 
+    public function testRegisterLoadsHandbookDataWithoutGlobalPluginPathConstant(): void
+    {
+        $source = file_get_contents(
+            $this->root()
+            . '/app/Modules/Library/Spells/Repositories/'
+            . 'HandbookSpellRegister.php'
+        );
+
+        self::assertIsString($source);
+        self::assertStringContainsString(
+            'dirname(__DIR__)',
+            $source
+        );
+        self::assertStringNotContainsString(
+            'GMRC_PATH',
+            $source
+        );
+    }
+
     public function testCatalogueMovesFromFoundationToRegisteredWithoutCharacterIntegration(): void
     {
         $catalogue = new SpellReferenceCatalogue();
