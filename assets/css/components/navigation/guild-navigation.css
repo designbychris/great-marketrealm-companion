@@ -24,6 +24,9 @@
 }
 
 .gmrc-topbar--guild-navigation {
+    position: relative;
+    z-index: 50;
+
     display: block;
 
     min-height: 0;

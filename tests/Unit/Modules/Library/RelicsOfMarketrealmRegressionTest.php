@@ -121,6 +121,55 @@ final class RelicsOfMarketrealmRegressionTest extends TestCase
         self::assertStringNotContainsString('RelicRecord', $source);
     }
 
+
+    public function testLibraryBackdropIsScopedBelowGlobalNavigation(): void
+    {
+        $css = $this->source(
+            'assets/css/modules/library/guild-library.css'
+        );
+
+        self::assertStringContainsString(
+            '.gmrc-content:has(> .gmrc-guild-library)',
+            $css
+        );
+        self::assertStringContainsString(
+            'guild-library-background.png',
+            $css
+        );
+        self::assertStringNotContainsString(
+            '.gmrc-guild-library::before',
+            $css
+        );
+        self::assertStringNotContainsString(
+            'position: fixed',
+            $css
+        );
+    }
+
+
+    public function testLibraryBackdropLivesBelowNavigationInsteadOfOnViewport(): void
+    {
+        $css = $this->source(
+            'assets/css/modules/library/guild-library.css'
+        );
+        $navigation = $this->source(
+            'assets/css/components/navigation/guild-navigation.css'
+        );
+
+        self::assertStringContainsString(
+            '.gmrc-app-main:has(.gmrc-relics)',
+            $css
+        );
+        self::assertStringNotContainsString(
+            '.gmrc-relics::before',
+            $css
+        );
+        self::assertStringContainsString(
+            'z-index: 50;',
+            $navigation
+        );
+    }
+
     private function source(string $relative): string
     {
         $source = file_get_contents($this->root() . '/' . $relative);
