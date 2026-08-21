@@ -10,4 +10,9 @@ return static function (Router $router): void {
         '/library',
         [LibraryController::class, 'index']
     );
+
+    $router->get(
+        '/library/spells',
+        [LibraryController::class, 'spells']
+    );
 };

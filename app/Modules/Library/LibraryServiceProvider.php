@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Library;
 
 use GreatMarketrealmCompanion\Core\Container;
+use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\Library\Catalogues\ArmouryReferenceCatalogue;
 use GreatMarketrealmCompanion\Modules\Library\Catalogues\BackgroundReferenceCatalogue;
@@ -53,6 +54,9 @@ final class LibraryServiceProvider extends ServiceProvider
                     ),
                     $container->make(
                         ViewFactory::class
+                    ),
+                    $container->make(
+                        Request::class
                     )
                 )
         );

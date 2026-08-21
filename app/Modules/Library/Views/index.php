@@ -3,6 +3,12 @@
 defined('ABSPATH') || exit;
 
 $domains = $domains ?? [];
+
+$spellbookUrl = add_query_arg(
+    'gmrc_route',
+    'library/spells',
+    home_url('/companion/')
+);
 ?>
 
 <section
@@ -78,7 +84,12 @@ $domains = $domains ?? [];
                     <div>
                         <dt>Status</dt>
                         <dd>
-                            Foundation registered
+                            <?php echo esc_html(
+                                ($domain['status'] ?? 'foundation')
+                                === 'registered'
+                                    ? 'Canonical register ready'
+                                    : 'Foundation registered'
+                            ); ?>
                         </dd>
                     </div>
                     <div>
@@ -95,10 +106,22 @@ $domains = $domains ?? [];
                     </div>
                 </dl>
 
-                <p class="gmrc-guild-library-card__note">
-                    Records remain intentionally untouched until this
-                    library receives its dedicated III.13.x phase.
-                </p>
+                <?php if (
+                    ($domain['key'] ?? '') === 'spells'
+                    && ($domain['status'] ?? '') === 'registered'
+                ) : ?>
+                    <a
+                        class="gmrc-guild-library-card__open"
+                        href="<?php echo esc_url($spellbookUrl); ?>"
+                    >
+                        Open Sage’s Spellbook
+                    </a>
+                <?php else : ?>
+                    <p class="gmrc-guild-library-card__note">
+                        Records remain intentionally untouched until this
+                        library receives its dedicated III.13.x phase.
+                    </p>
+                <?php endif; ?>
             </article>
         <?php endforeach; ?>
     </div>
