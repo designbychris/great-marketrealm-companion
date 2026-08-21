@@ -53,6 +53,18 @@ final class PostCallingFoundationRegressionTest extends TestCase
             $this->registry()->summaries()
             as $domain
         ) {
+            if (($domain['key'] ?? '') === 'spells') {
+                self::assertSame(
+                    'registered',
+                    $domain['status']
+                );
+                self::assertGreaterThan(
+                    0,
+                    $domain['entry_count']
+                );
+                continue;
+            }
+
             self::assertSame(
                 'foundation',
                 $domain['status']
@@ -68,7 +80,7 @@ final class PostCallingFoundationRegressionTest extends TestCase
     {
         self::assertSame(
             [
-                'III.13.1',
+                'III.13.1A',
                 'III.13.3',
                 'III.13.4',
             ],
