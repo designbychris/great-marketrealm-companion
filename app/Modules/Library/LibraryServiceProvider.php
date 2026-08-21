@@ -9,6 +9,7 @@ use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\Library\Catalogues\ArmouryReferenceCatalogue;
 use GreatMarketrealmCompanion\Modules\Library\Catalogues\BackgroundReferenceCatalogue;
+use GreatMarketrealmCompanion\Modules\Library\Catalogues\RelicReferenceCatalogue;
 use GreatMarketrealmCompanion\Modules\Library\Catalogues\SpellReferenceCatalogue;
 use GreatMarketrealmCompanion\Modules\Library\Controllers\LibraryController;
 use GreatMarketrealmCompanion\Modules\Library\Models\ReferenceLibraryRegistry;
@@ -37,6 +38,9 @@ final class LibraryServiceProvider extends ServiceProvider
                 );
                 $registry->add(
                     new ArmouryReferenceCatalogue()
+                );
+                $registry->add(
+                    new RelicReferenceCatalogue()
                 );
 
                 return $registry;

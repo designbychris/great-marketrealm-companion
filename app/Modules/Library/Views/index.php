@@ -21,6 +21,12 @@ $armouryUrl = add_query_arg(
     'library/armoury',
     home_url('/companion/')
 );
+
+$relicsUrl = add_query_arg(
+    'gmrc_route',
+    'library/relics',
+    home_url('/companion/')
+);
 ?>
 
 <section
@@ -122,7 +128,7 @@ $armouryUrl = add_query_arg(
                     ($domain['status'] ?? '') === 'registered'
                     && in_array(
                         ($domain['key'] ?? ''),
-                        ['spells', 'backgrounds', 'armoury'],
+                        ['spells', 'backgrounds', 'armoury', 'relics'],
                         true
                     )
                 ) : ?>
@@ -132,7 +138,8 @@ $armouryUrl = add_query_arg(
                             match ($domain['key'] ?? '') {
                                 'spells' => $spellbookUrl,
                                 'backgrounds' => $backgroundRegisterUrl,
-                                default => $armouryUrl,
+                                'armoury' => $armouryUrl,
+                                default => $relicsUrl,
                             }
                         ); ?>"
                     >
@@ -140,7 +147,8 @@ $armouryUrl = add_query_arg(
                             match ($domain['key'] ?? '') {
                                 'spells' => 'Open Sage’s Spellbook',
                                 'backgrounds' => 'Open Background Register',
-                                default => 'Open Marketrealm Armoury',
+                                'armoury' => 'Open Marketrealm Armoury',
+                                default => 'Open Relic Register',
                             }
                         ); ?>
                     </a>

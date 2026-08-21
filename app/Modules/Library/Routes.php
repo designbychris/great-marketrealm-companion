@@ -25,4 +25,9 @@ return static function (Router $router): void {
         '/library/armoury',
         [LibraryController::class, 'armoury']
     );
+
+    $router->get(
+        '/library/relics',
+        [LibraryController::class, 'relics']
+    );
 };

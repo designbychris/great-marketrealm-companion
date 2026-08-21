@@ -642,3 +642,205 @@
         color: CanvasText;
     }
 }
+
+
+.gmrc-guild-library,
+.gmrc-spellbook,
+.gmrc-background-register,
+.gmrc-armoury,
+.gmrc-relics {
+    position: relative;
+    isolation: isolate;
+}
+
+.gmrc-guild-library::before,
+.gmrc-spellbook::before,
+.gmrc-background-register::before,
+.gmrc-armoury::before,
+.gmrc-relics::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+        linear-gradient(rgba(250, 245, 226, .76), rgba(250, 245, 226, .86)),
+        url("../../../images/library/guild-library-background.png")
+        center / cover no-repeat;
+}
+
+.gmrc-relics {
+    display: grid;
+    gap: 1rem;
+    max-width: 84rem;
+    margin: 0 auto;
+}
+
+.gmrc-relics__hero {
+    min-height: 22rem;
+    display: flex;
+    align-items: end;
+    padding: 1.25rem;
+    border-radius: .8rem;
+    overflow: hidden;
+    background:
+        linear-gradient(180deg, rgba(20, 12, 24, .12), rgba(20, 12, 24, .78)),
+        url("../../../images/library/guild-library-auby.png")
+        center 58% / cover no-repeat;
+    color: #fff8e8;
+    box-shadow: 0 .75rem 2rem rgba(36, 19, 24, .24);
+}
+
+.gmrc-relics__hero-copy {
+    max-width: 44rem;
+    padding: 1rem;
+    border: 1px solid rgba(255,255,255,.34);
+    border-radius: .6rem;
+    background: rgba(37, 19, 43, .66);
+    backdrop-filter: blur(3px);
+}
+
+.gmrc-relic-filters,
+.gmrc-relics__summary,
+.gmrc-relics__empty,
+.gmrc-relic-card {
+    border: 1px solid rgba(87, 63, 38, .24);
+    border-radius: .65rem;
+    background: rgba(255, 251, 237, .94);
+}
+
+.gmrc-relic-filters {
+    display: grid;
+    grid-template-columns: minmax(16rem, 2fr) repeat(2, minmax(10rem, 1fr)) auto;
+    gap: .75rem;
+    align-items: end;
+    padding: 1rem;
+}
+
+.gmrc-relic-filters label {
+    display: grid;
+    gap: .3rem;
+}
+
+.gmrc-relic-filters input,
+.gmrc-relic-filters select {
+    width: 100%;
+}
+
+.gmrc-relic-filters__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    align-items: center;
+}
+
+.gmrc-relics__summary,
+.gmrc-relics__empty {
+    padding: .8rem 1rem;
+}
+
+.gmrc-relics__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .8rem;
+}
+
+.gmrc-relic-card {
+    display: grid;
+    align-content: start;
+    gap: .7rem;
+    padding: 1rem;
+    box-shadow: 0 .35rem 1rem rgba(66, 42, 24, .09);
+}
+
+.gmrc-relic-card__heading {
+    display: flex;
+    justify-content: space-between;
+    gap: .8rem;
+    align-items: flex-start;
+}
+
+.gmrc-relic-card__heading h2 {
+    margin: .1rem 0 0;
+}
+
+.gmrc-relic-card__rarity {
+    flex: 0 0 auto;
+    padding: .22rem .48rem;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-size: .72rem;
+    font-weight: 700;
+}
+
+.gmrc-relic-card__mechanics ul {
+    margin: .4rem 0 0;
+    padding-left: 1.15rem;
+}
+
+.gmrc-relic-card__flavour {
+    margin: 0;
+    padding: .65rem .75rem;
+    border-left: .22rem solid currentColor;
+    font-style: italic;
+}
+
+.gmrc-relics a:focus-visible,
+.gmrc-relics button:focus-visible,
+.gmrc-relics input:focus-visible,
+.gmrc-relics select:focus-visible {
+    outline: .18rem solid currentColor;
+    outline-offset: .14rem;
+}
+
+@media (max-width: 1100px) {
+    .gmrc-relic-filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gmrc-relics__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .gmrc-relics__hero {
+        min-height: 18rem;
+        background-position: 42% 58%;
+    }
+
+    .gmrc-relic-filters,
+    .gmrc-relics__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-relic-card__heading {
+        display: grid;
+    }
+
+    .gmrc-relic-card__rarity {
+        width: max-content;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-guild-library::before,
+    .gmrc-spellbook::before,
+    .gmrc-background-register::before,
+    .gmrc-armoury::before,
+    .gmrc-relics::before {
+        background-attachment: scroll;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-relics__hero,
+    .gmrc-relics__hero-copy,
+    .gmrc-relic-filters,
+    .gmrc-relics__summary,
+    .gmrc-relics__empty,
+    .gmrc-relic-card {
+        background: Canvas;
+        color: CanvasText;
+        border-color: CanvasText;
+    }
+}

@@ -8,6 +8,7 @@ use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\View\View;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\Library\Models\ReferenceLibraryRegistry;
+use GreatMarketrealmCompanion\Modules\Library\Relics\Services\RelicRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Library\Spells\Services\SpellbookPresenter;
 
 defined('ABSPATH') || exit;
@@ -18,9 +19,11 @@ final class LibraryController
         private ReferenceLibraryRegistry $library,
         private ViewFactory $views,
         private Request $request,
-        private ?SpellbookPresenter $spellbook = null
+        private ?SpellbookPresenter $spellbook = null,
+        private ?RelicRegisterPresenter $relics = null
     ) {
         $this->spellbook ??= new SpellbookPresenter();
+        $this->relics ??= new RelicRegisterPresenter();
     }
 
     public function index(): string
@@ -32,6 +35,22 @@ final class LibraryController
                     'domains' =>
                         $this->library->summaries(),
                 ]
+            )
+        );
+    }
+
+    public function relics(): string
+    {
+        return $this->views->render(
+            View::make(
+                'library.relics.index',
+                $this->relics->present(
+                    [
+                        'q' => $this->request->string('q'),
+                        'rarity' => $this->request->string('rarity'),
+                        'group' => $this->request->string('group'),
+                    ]
+                )
             )
         );
     }

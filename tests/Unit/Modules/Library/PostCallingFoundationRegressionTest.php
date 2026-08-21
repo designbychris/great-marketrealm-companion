@@ -10,22 +10,24 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Audit\ClassCapabili
 use GreatMarketrealmCompanion\Modules\Library\Catalogues\ArmouryReferenceCatalogue;
 use GreatMarketrealmCompanion\Modules\Library\Catalogues\BackgroundReferenceCatalogue;
 use GreatMarketrealmCompanion\Modules\Library\Catalogues\SpellReferenceCatalogue;
+use GreatMarketrealmCompanion\Modules\Library\Catalogues\RelicReferenceCatalogue;
 use GreatMarketrealmCompanion\Modules\Library\Models\ReferenceLibraryRegistry;
 use GreatMarketrealmCompanion\Navigation\Navigation;
 use PHPUnit\Framework\TestCase;
 
 final class PostCallingFoundationRegressionTest extends TestCase
 {
-    public function testFoundationRegistersThreeReferenceDomains(): void
+    public function testFoundationRegistersFourReferenceDomains(): void
     {
         $registry = $this->registry();
 
-        self::assertSame(3, $registry->count());
+        self::assertSame(4, $registry->count());
         self::assertSame(
             [
                 'spells',
                 'backgrounds',
                 'armoury',
+                'relics',
             ],
             array_column(
                 $registry->summaries(),
@@ -71,6 +73,7 @@ final class PostCallingFoundationRegressionTest extends TestCase
                 'III.13.1A',
                 'III.13.3',
                 'III.13.4',
+                'III.13.5',
             ],
             array_column(
                 $this->registry()->summaries(),
