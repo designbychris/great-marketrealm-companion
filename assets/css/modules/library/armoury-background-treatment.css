@@ -1,0 +1,97 @@
+/* ==========================================================================
+   Phase III.13.5 — Armoury visual treatment
+   Append to assets/css/modules/library/guild-library.css
+   ========================================================================== */
+
+/*
+ * Give the Marketrealm Armoury its own immersive chamber.
+ * This deliberately stays scoped to .gmrc-content so the Guild Navigation
+ * remains outside the artwork layer.
+ */
+.gmrc-content:has(> .gmrc-armoury) {
+    min-height: calc(100vh - 5rem);
+
+    background:
+        linear-gradient(
+            rgba(19, 11, 8, .18),
+            rgba(19, 11, 8, .38)
+        ),
+        url("../../../images/library/guild-library-armoury.png")
+        center 42% / cover no-repeat fixed;
+}
+
+/*
+ * Keep the Armoury heading readable without hiding the room artwork.
+ */
+.gmrc-armoury__hero {
+    border:
+        1px solid
+        rgba(
+            221,
+            177,
+            91,
+            .62
+        );
+
+    background:
+        rgba(
+            35,
+            17,
+            39,
+            .70
+        );
+
+    color:
+        #fff7e5;
+
+    box-shadow:
+        inset 0 0 0 1px
+        rgba(
+            126,
+            74,
+            150,
+            .38
+        ),
+        0 .8rem 2.2rem
+        rgba(
+            20,
+            11,
+            7,
+            .30
+        );
+
+    backdrop-filter:
+        blur(4px);
+}
+
+@media (max-width: 700px) {
+    .gmrc-content:has(> .gmrc-armoury) {
+        background-position:
+            50%
+            top;
+
+        background-attachment:
+            scroll;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-content:has(> .gmrc-armoury) {
+        background:
+            Canvas;
+    }
+
+    .gmrc-armoury__hero {
+        border-color:
+            CanvasText;
+
+        background:
+            Canvas;
+
+        color:
+            CanvasText;
+
+        box-shadow:
+            none;
+    }
+}
