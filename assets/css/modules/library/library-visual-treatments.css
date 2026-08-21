@@ -1,0 +1,192 @@
+/* ==========================================================================
+   Phase III.13.5 — Guild Library visual treatments
+   Append this block to assets/css/modules/library/guild-library.css
+   ========================================================================== */
+
+.gmrc-guild-library,
+.gmrc-spellbook,
+.gmrc-background-register,
+.gmrc-armoury,
+.gmrc-relics {
+    position: relative;
+}
+
+/*
+ * Each Library surface owns its artwork on the application workspace.
+ * This deliberately stays below the global/site navigation.
+ */
+.gmrc-content:has(> .gmrc-guild-library),
+.gmrc-content:has(> .gmrc-background-register),
+.gmrc-content:has(> .gmrc-armoury) {
+    min-height: calc(100vh - 5rem);
+    background:
+        linear-gradient(rgba(19, 11, 8, .22), rgba(19, 11, 8, .42)),
+        url("../../../images/library/guild-library-background.png")
+        center top / cover no-repeat fixed;
+}
+
+.gmrc-content:has(> .gmrc-relics) {
+    min-height: calc(100vh - 5rem);
+    background:
+        linear-gradient(rgba(19, 11, 8, .18), rgba(19, 11, 8, .38)),
+        url("../../../images/library/guild-library-auby.png")
+        center 42% / cover no-repeat fixed;
+}
+
+.gmrc-content:has(> .gmrc-spellbook) {
+    min-height: calc(100vh - 5rem);
+    background:
+        linear-gradient(rgba(19, 11, 8, .18), rgba(19, 11, 8, .38)),
+        url("../../../images/library/guild-library-sage.png")
+        center 42% / cover no-repeat fixed;
+}
+
+/* Main Library landing page: immersive archive entrance. */
+.gmrc-guild-library__hero {
+    padding: 1.25rem;
+    border: 1px solid rgba(221, 177, 91, .58);
+    border-radius: .8rem;
+    background: rgba(35, 17, 39, .76);
+    color: #fff7e5;
+    box-shadow: 0 .8rem 2.2rem rgba(20, 11, 7, .32);
+    backdrop-filter: blur(4px);
+}
+
+.gmrc-guild-library__source {
+    border-color: rgba(221, 177, 91, .42);
+    background: rgba(35, 17, 39, .72);
+    color: #fff7e5;
+    box-shadow: 0 .45rem 1.4rem rgba(20, 11, 7, .22);
+    backdrop-filter: blur(3px);
+}
+
+/* Shared transparent/bordered hero treatment. */
+.gmrc-spellbook__hero,
+.gmrc-background-register__hero,
+.gmrc-armoury__hero,
+.gmrc-relics__hero {
+    min-height: 18rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: flex-start;
+    padding: 1.25rem;
+    border: 1px solid rgba(221, 177, 91, .62);
+    border-radius: .8rem;
+    background: rgba(35, 17, 39, .70);
+    color: #fff7e5;
+    box-shadow:
+        inset 0 0 0 1px rgba(126, 74, 150, .38),
+        0 .8rem 2.2rem rgba(20, 11, 7, .30);
+    backdrop-filter: blur(4px);
+}
+
+/*
+ * Relics previously repeated the Auby artwork inside the hero.
+ * The artwork now lives only on the page workspace.
+ */
+.gmrc-relics__hero {
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow:
+        inset 0 0 0 1px rgba(126, 74, 150, .42),
+        0 .8rem 2.2rem rgba(20, 11, 7, .26);
+}
+
+.gmrc-relics__hero-copy {
+    max-width: 44rem;
+    padding: 1rem;
+    border: 1px solid rgba(221, 177, 91, .54);
+    border-radius: .6rem;
+    background: rgba(35, 17, 39, .72);
+    color: #fff7e5;
+    backdrop-filter: blur(4px);
+}
+
+/* Sage's Spellbook uses the Sage artwork as the page background. */
+.gmrc-spellbook__hero {
+    max-width: 48rem;
+}
+
+.gmrc-spellbook__keeper {
+    border-color: rgba(221, 177, 91, .72);
+}
+
+/* Cards remain highly readable over the artwork. */
+.gmrc-guild-library-card,
+.gmrc-spellbook__summary > span,
+.gmrc-spellbook-filters,
+.gmrc-spell-card,
+.gmrc-background-register-card,
+.gmrc-armoury__provenance,
+.gmrc-armoury-card,
+.gmrc-relic-filters,
+.gmrc-relics__summary,
+.gmrc-relics__empty,
+.gmrc-relic-card {
+    background: rgba(255, 251, 238, .94);
+    box-shadow: 0 .45rem 1.4rem rgba(20, 11, 7, .18);
+    backdrop-filter: blur(2px);
+}
+
+/* Breadcrumbs float cleanly above every themed background. */
+.gmrc-spellbook__breadcrumb,
+.gmrc-background-register .gmrc-spellbook__breadcrumb,
+.gmrc-armoury .gmrc-spellbook__breadcrumb,
+.gmrc-relics .gmrc-spellbook__breadcrumb {
+    width: max-content;
+    max-width: 100%;
+    padding: .4rem .62rem;
+    border-radius: .35rem;
+    background: rgba(26, 15, 22, .76);
+    color: #fff6e5;
+    box-shadow: 0 .3rem .9rem rgba(15, 8, 5, .22);
+}
+
+.gmrc-spellbook__breadcrumb a,
+.gmrc-background-register .gmrc-spellbook__breadcrumb a,
+.gmrc-armoury .gmrc-spellbook__breadcrumb a,
+.gmrc-relics .gmrc-spellbook__breadcrumb a {
+    color: #e0b9ff;
+}
+
+@media (max-width: 700px) {
+    .gmrc-content:has(> .gmrc-guild-library),
+    .gmrc-content:has(> .gmrc-background-register),
+    .gmrc-content:has(> .gmrc-armoury),
+    .gmrc-content:has(> .gmrc-relics),
+    .gmrc-content:has(> .gmrc-spellbook) {
+        background-position: 42% top;
+        background-attachment: scroll;
+    }
+
+    .gmrc-spellbook__hero,
+    .gmrc-background-register__hero,
+    .gmrc-armoury__hero,
+    .gmrc-relics__hero {
+        min-height: 15rem;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-content:has(> .gmrc-guild-library),
+    .gmrc-content:has(> .gmrc-background-register),
+    .gmrc-content:has(> .gmrc-armoury),
+    .gmrc-content:has(> .gmrc-relics),
+    .gmrc-content:has(> .gmrc-spellbook) {
+        background: Canvas;
+    }
+
+    .gmrc-guild-library__hero,
+    .gmrc-guild-library__source,
+    .gmrc-spellbook__hero,
+    .gmrc-background-register__hero,
+    .gmrc-armoury__hero,
+    .gmrc-relics__hero,
+    .gmrc-relics__hero-copy {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+        box-shadow: none;
+    }
+}
