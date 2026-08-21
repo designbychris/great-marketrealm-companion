@@ -251,6 +251,7 @@ final class PostCallingFoundationRegressionTest extends TestCase
             SpellReferenceCatalogue::class,
             BackgroundReferenceCatalogue::class,
             ArmouryReferenceCatalogue::class,
+            RelicReferenceCatalogue::class,
         ] as $catalogue) {
             $source = $this->source(
                 str_replace(
@@ -295,6 +296,9 @@ final class PostCallingFoundationRegressionTest extends TestCase
         );
         $registry->add(
             new ArmouryReferenceCatalogue()
+        );
+        $registry->add(
+            new RelicReferenceCatalogue()
         );
 
         return $registry;
