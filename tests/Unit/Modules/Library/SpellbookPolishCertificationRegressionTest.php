@@ -291,7 +291,11 @@ final class SpellbookPolishCertificationRegressionTest extends TestCase
             $view
         );
         self::assertStringContainsString(
-            'The canonical entry leaves some information unresolved',
+            'The canonical entry leaves some information',
+            $view
+        );
+        self::assertStringContainsString(
+            'unresolved:',
             $view
         );
     }
