@@ -170,6 +170,59 @@ final class RelicsOfMarketrealmRegressionTest extends TestCase
         );
     }
 
+
+    public function testEachLibraryRoomUsesItsApprovedArtworkWithoutRelicDuplication(): void
+    {
+        $css = $this->source(
+            'assets/css/modules/library/guild-library.css'
+        );
+
+        self::assertStringContainsString(
+            'guild-library-background.png',
+            $css
+        );
+        self::assertStringContainsString(
+            'guild-library-auby.png',
+            $css
+        );
+        self::assertStringContainsString(
+            'guild-library-sage.png',
+            $css
+        );
+        self::assertStringContainsString(
+            '.gmrc-app-main:has(.gmrc-relics)',
+            $css
+        );
+        self::assertStringContainsString(
+            '.gmrc-app-main:has(.gmrc-spellbook)',
+            $css
+        );
+
+        $relicHeroStart = strpos(
+            $css,
+            '.gmrc-relics__hero {'
+        );
+        self::assertIsInt($relicHeroStart);
+
+        $relicHeroEnd = strpos(
+            $css,
+            '}',
+            $relicHeroStart
+        );
+        self::assertIsInt($relicHeroEnd);
+
+        $relicHero = substr(
+            $css,
+            $relicHeroStart,
+            $relicHeroEnd - $relicHeroStart
+        );
+
+        self::assertStringNotContainsString(
+            'guild-library-auby.png',
+            $relicHero
+        );
+    }
+
     private function source(string $relative): string
     {
         $source = file_get_contents($this->root() . '/' . $relative);
