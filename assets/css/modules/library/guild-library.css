@@ -659,13 +659,13 @@
  */
 
 /*
- * Library room artwork belongs to .gmrc-app-main so it always remains
- * underneath the Guild navigation. Each Library room now gets its own
- * approved illustration.
+ * Library room artwork belongs to the direct .gmrc-content workspace.
+ * This keeps every illustration below the global application navigation
+ * while allowing each Library room to use its approved background.
  */
-.gmrc-app-main:has(.gmrc-guild-library),
-.gmrc-app-main:has(.gmrc-background-register),
-.gmrc-app-main:has(.gmrc-armoury) {
+.gmrc-content:has(> .gmrc-guild-library),
+.gmrc-content:has(> .gmrc-background-register),
+.gmrc-content:has(> .gmrc-armoury) {
     min-height: calc(100vh - 5rem);
     background:
         linear-gradient(
@@ -676,7 +676,7 @@
         center top / cover no-repeat fixed;
 }
 
-.gmrc-app-main:has(.gmrc-relics) {
+.gmrc-content:has(> .gmrc-relics) {
     min-height: calc(100vh - 5rem);
     background:
         linear-gradient(
@@ -687,7 +687,7 @@
         center 42% / cover no-repeat fixed;
 }
 
-.gmrc-app-main:has(.gmrc-spellbook) {
+.gmrc-content:has(> .gmrc-spellbook) {
     min-height: calc(100vh - 5rem);
     background:
         linear-gradient(
@@ -698,14 +698,6 @@
         center 42% / cover no-repeat fixed;
 }
 
-.gmrc-app-main:has(.gmrc-guild-library) .gmrc-content,
-.gmrc-app-main:has(.gmrc-spellbook) .gmrc-content,
-.gmrc-app-main:has(.gmrc-background-register) .gmrc-content,
-.gmrc-app-main:has(.gmrc-armoury) .gmrc-content,
-.gmrc-app-main:has(.gmrc-relics) .gmrc-content {
-    min-height: calc(100vh - 5rem);
-    background: transparent;
-}
 .gmrc-relics {
     display: grid;
     gap: 1rem;
@@ -915,22 +907,22 @@
 }
 
 @media (max-width: 700px) {
-    .gmrc-app-main:has(.gmrc-guild-library),
-    .gmrc-app-main:has(.gmrc-spellbook),
-    .gmrc-app-main:has(.gmrc-background-register),
-    .gmrc-app-main:has(.gmrc-armoury),
-    .gmrc-app-main:has(.gmrc-relics) {
+    .gmrc-content:has(> .gmrc-guild-library),
+    .gmrc-content:has(> .gmrc-spellbook),
+    .gmrc-content:has(> .gmrc-background-register),
+    .gmrc-content:has(> .gmrc-armoury),
+    .gmrc-content:has(> .gmrc-relics) {
         background-position: 42% top;
         background-attachment: scroll;
     }
 }
 
 @media (forced-colors: active) {
-    .gmrc-app-main:has(.gmrc-guild-library),
-    .gmrc-app-main:has(.gmrc-spellbook),
-    .gmrc-app-main:has(.gmrc-background-register),
-    .gmrc-app-main:has(.gmrc-armoury),
-    .gmrc-app-main:has(.gmrc-relics) {
+    .gmrc-content:has(> .gmrc-guild-library),
+    .gmrc-content:has(> .gmrc-spellbook),
+    .gmrc-content:has(> .gmrc-background-register),
+    .gmrc-content:has(> .gmrc-armoury),
+    .gmrc-content:has(> .gmrc-relics) {
         background: Canvas;
     }
 }
@@ -998,11 +990,11 @@
 }
 
 @media (max-width: 700px) {
-    .gmrc-app-main:has(.gmrc-guild-library),
-    .gmrc-app-main:has(.gmrc-background-register),
-    .gmrc-app-main:has(.gmrc-armoury),
-    .gmrc-app-main:has(.gmrc-relics),
-    .gmrc-app-main:has(.gmrc-spellbook) {
+    .gmrc-content:has(> .gmrc-guild-library),
+    .gmrc-content:has(> .gmrc-background-register),
+    .gmrc-content:has(> .gmrc-armoury),
+    .gmrc-content:has(> .gmrc-relics),
+    .gmrc-content:has(> .gmrc-spellbook) {
         background-position: 42% top;
         background-attachment: scroll;
     }
@@ -1016,11 +1008,11 @@
 }
 
 @media (forced-colors: active) {
-    .gmrc-app-main:has(.gmrc-guild-library),
-    .gmrc-app-main:has(.gmrc-background-register),
-    .gmrc-app-main:has(.gmrc-armoury),
-    .gmrc-app-main:has(.gmrc-relics),
-    .gmrc-app-main:has(.gmrc-spellbook) {
+    .gmrc-content:has(> .gmrc-guild-library),
+    .gmrc-content:has(> .gmrc-background-register),
+    .gmrc-content:has(> .gmrc-armoury),
+    .gmrc-content:has(> .gmrc-relics),
+    .gmrc-content:has(> .gmrc-spellbook) {
         background: Canvas;
     }
 

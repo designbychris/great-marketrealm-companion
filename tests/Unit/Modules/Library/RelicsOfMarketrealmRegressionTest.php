@@ -129,7 +129,7 @@ final class RelicsOfMarketrealmRegressionTest extends TestCase
         );
 
         self::assertStringContainsString(
-            '.gmrc-app-main:has(.gmrc-guild-library)',
+            '.gmrc-content:has(> .gmrc-guild-library)',
             $css
         );
         self::assertStringContainsString(
@@ -137,7 +137,7 @@ final class RelicsOfMarketrealmRegressionTest extends TestCase
             $css
         );
         self::assertStringNotContainsString(
-            '.gmrc-content:has(> .gmrc-guild-library)',
+            '.gmrc-app-main:has(.gmrc-guild-library)',
             $css
         );
         self::assertStringNotContainsString(
@@ -157,7 +157,7 @@ final class RelicsOfMarketrealmRegressionTest extends TestCase
         );
 
         self::assertStringContainsString(
-            '.gmrc-app-main:has(.gmrc-relics)',
+            '.gmrc-content:has(> .gmrc-relics)',
             $css
         );
         self::assertStringNotContainsString(
@@ -190,11 +190,11 @@ final class RelicsOfMarketrealmRegressionTest extends TestCase
             $css
         );
         self::assertStringContainsString(
-            '.gmrc-app-main:has(.gmrc-relics)',
+            '.gmrc-content:has(> .gmrc-relics)',
             $css
         );
         self::assertStringContainsString(
-            '.gmrc-app-main:has(.gmrc-spellbook)',
+            '.gmrc-content:has(> .gmrc-spellbook)',
             $css
         );
 
