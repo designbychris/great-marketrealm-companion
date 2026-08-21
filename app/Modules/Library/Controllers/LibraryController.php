@@ -36,6 +36,18 @@ final class LibraryController
         );
     }
 
+    public function backgrounds(): string
+    {
+        $catalogue = $this->library->get('backgrounds');
+
+        return $this->views->render(
+            View::make(
+                'library.backgrounds.index',
+                ['backgrounds' => $catalogue?->entries() ?? []]
+            )
+        );
+    }
+
     public function spells(): string
     {
         return $this->views->render(

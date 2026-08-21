@@ -454,7 +454,7 @@ final class ToolProficiencyTest extends TestCase
         $tools = ToolProficiency::all();
 
         self::assertCount(
-            24,
+            27,
             $tools
         );
 
@@ -475,7 +475,9 @@ final class ToolProficiencyTest extends TestCase
 
         self::assertSame(
             [
+                'alchemists-supplies',
                 'calligraphers-supplies',
+                'cartographers-tools',
                 'brewers-supplies',
                 'carpenters-tools',
                 'cobblers-tools',

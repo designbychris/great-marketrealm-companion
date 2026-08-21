@@ -77,6 +77,47 @@ final class Background implements Stringable
             ],
         ],
 
+
+        /*
+         * Canonical optional backgrounds from The Great Marketrealm -
+         * Players Handbook. The source states no language grants.
+         */
+        'crateborn-noble' => [
+            'label' => 'Crateborn Noble',
+            'skills' => ['persuasion', 'history'],
+            'language_choices' => 0,
+            'fixed_languages' => [],
+            'tools' => ['cartographers-tools'],
+        ],
+        'backshelf-forager' => [
+            'label' => 'Backshelf Forager',
+            'skills' => ['survival', 'investigation'],
+            'language_choices' => 0,
+            'fixed_languages' => [],
+            'tools' => ['herbalism-kit'],
+        ],
+        'discount-bin-survivor' => [
+            'label' => 'Discount Bin Survivor',
+            'skills' => ['intimidation', 'stealth'],
+            'language_choices' => 0,
+            'fixed_languages' => [],
+            'tools' => ['tinkers-tools'],
+        ],
+        'cleaners-acolyte' => [
+            'label' => 'Cleaner’s Acolyte',
+            'skills' => ['arcana', 'religion'],
+            'language_choices' => 0,
+            'fixed_languages' => [],
+            'tools' => ['alchemists-supplies'],
+        ],
+        'cart-ranger' => [
+            'label' => 'Cart Ranger',
+            'skills' => ['athletics', 'nature'],
+            'language_choices' => 0,
+            'fixed_languages' => [],
+            'tools' => ['navigators-tools'],
+        ],
+
         /*
          * Standard-compatible backgrounds retained for
          * existing characters and future expansion.

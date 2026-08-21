@@ -425,3 +425,73 @@
         transition: none;
     }
 }
+
+
+.gmrc-background-register {
+    display: grid;
+    gap: 1rem;
+    max-width: 76rem;
+    margin: 0 auto;
+}
+
+.gmrc-background-register__hero,
+.gmrc-background-register-card {
+    border: 1px solid rgba(92, 76, 45, .22);
+    border-radius: .55rem;
+    background: rgba(255, 252, 239, .9);
+}
+
+.gmrc-background-register__hero {
+    padding: 1.1rem;
+}
+
+.gmrc-background-register__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .8rem;
+}
+
+.gmrc-background-register-card {
+    display: grid;
+    align-content: start;
+    gap: .7rem;
+    min-width: 0;
+    padding: .9rem;
+}
+
+.gmrc-background-register-card h2,
+.gmrc-background-register-card h3 {
+    margin: .12rem 0 .3rem;
+}
+
+.gmrc-background-register-card__feature {
+    padding: .65rem;
+    border-left: .22rem solid currentColor;
+    background: rgba(255, 255, 255, .45);
+}
+
+.gmrc-background-register-card__source {
+    margin-top: auto;
+    font-size: .78rem;
+    opacity: .78;
+    overflow-wrap: anywhere;
+}
+
+.gmrc-background-option__detail--feature {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 760px) {
+    .gmrc-background-register__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-background-register__hero,
+    .gmrc-background-register-card {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

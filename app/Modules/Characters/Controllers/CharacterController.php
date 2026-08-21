@@ -95,6 +95,7 @@ use GreatMarketrealmCompanion\Services\Characters\RaceRegistry;
 use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\CharacterFellowshipPresenter;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
+use GreatMarketrealmCompanion\Modules\Library\Backgrounds\Repositories\HandbookBackgroundRegister;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -223,6 +224,8 @@ final class CharacterController
                             $this->catalogue
                         )
                     )->all(),
+                    'backgroundReferences' =>
+                        $this->backgroundReferences(),
     
                     /*
                      * The provisional portrait uses the same rendering
@@ -2972,9 +2975,27 @@ final class CharacterController
                     'classOptions' => $this
                         ->classRegistry
                         ->options(),
+                    'backgroundReferences' =>
+                        $this->backgroundReferences(),
                 ]
             )
         );
+    }
+
+    /**
+     * Canonical optional Marketrealm background references keyed by ID.
+     *
+     * @return array<string,array<string,mixed>>
+     */
+    private function backgroundReferences(): array
+    {
+        $references = [];
+
+        foreach ((new HandbookBackgroundRegister())->all() as $background) {
+            $references[$background->key()] = $background->toArray();
+        }
+
+        return $references;
     }
 
     /**

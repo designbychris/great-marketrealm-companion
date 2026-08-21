@@ -9,6 +9,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProfici
 
 defined('ABSPATH') || exit;
 
+$backgroundReferences = is_array($backgroundReferences ?? null) ? $backgroundReferences : [];
+
 if (
     ! isset($character)
     || ! $character instanceof Character
@@ -690,6 +692,13 @@ foreach ($selectedTools as $selectedTool) {
                 $isSelected =
                     $identifier === $backgroundValue;
 
+                $backgroundReference = is_array(
+                    $backgroundReferences[$identifier]
+                    ?? null
+                )
+                    ? $backgroundReferences[$identifier]
+                    : null;
+
                 $skills = array_map(
                     $identifierLabel,
                     $background
@@ -761,6 +770,27 @@ foreach ($selectedTools as $selectedTool) {
                                 ); ?>
                             </dd>
                         </div>
+                        <?php if ($backgroundReference !== null) : ?>
+                            <div>
+                                <dt>Handbook feature</dt>
+                                <dd>
+                                    <strong>
+                                        <?php echo esc_html(
+                                            (string) (
+                                                $backgroundReference['feature_name']
+                                                ?? ''
+                                            )
+                                        ); ?>
+                                    </strong>
+                                    — <?php echo esc_html(
+                                        (string) (
+                                            $backgroundReference['feature_detail']
+                                            ?? ''
+                                        )
+                                    ); ?>
+                                </dd>
+                            </div>
+                        <?php endif; ?>
                     </dl>
                 </div>
             <?php endforeach; ?>

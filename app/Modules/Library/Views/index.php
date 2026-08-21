@@ -9,6 +9,12 @@ $spellbookUrl = add_query_arg(
     'library/spells',
     home_url('/companion/')
 );
+
+$backgroundRegisterUrl = add_query_arg(
+    'gmrc_route',
+    'library/backgrounds',
+    home_url('/companion/')
+);
 ?>
 
 <section
@@ -107,14 +113,26 @@ $spellbookUrl = add_query_arg(
                 </dl>
 
                 <?php if (
-                    ($domain['key'] ?? '') === 'spells'
-                    && ($domain['status'] ?? '') === 'registered'
+                    ($domain['status'] ?? '') === 'registered'
+                    && in_array(
+                        ($domain['key'] ?? ''),
+                        ['spells', 'backgrounds'],
+                        true
+                    )
                 ) : ?>
                     <a
                         class="gmrc-guild-library-card__open"
-                        href="<?php echo esc_url($spellbookUrl); ?>"
+                        href="<?php echo esc_url(
+                            ($domain['key'] ?? '') === 'spells'
+                                ? $spellbookUrl
+                                : $backgroundRegisterUrl
+                        ); ?>"
                     >
-                        Open Sage’s Spellbook
+                        <?php echo esc_html(
+                            ($domain['key'] ?? '') === 'spells'
+                                ? 'Open Sage’s Spellbook'
+                                : 'Open Background Register'
+                        ); ?>
                     </a>
                 <?php else : ?>
                     <p class="gmrc-guild-library-card__note">

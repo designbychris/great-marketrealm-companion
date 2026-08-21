@@ -59,8 +59,20 @@ final class ToolProficiency implements Stringable
         /*
          * General tools and vehicles.
          */
+        'alchemists-supplies' => [
+            'label' => "Alchemist's Supplies",
+            'category' => self::CATEGORY_ARTISANS_TOOLS,
+            'choice' => false,
+        ],
+
         'calligraphers-supplies' => [
             'label' => "Calligrapher's Supplies",
+            'category' => self::CATEGORY_ARTISANS_TOOLS,
+            'choice' => false,
+        ],
+
+        'cartographers-tools' => [
+            'label' => "Cartographer's Tools",
             'category' => self::CATEGORY_ARTISANS_TOOLS,
             'choice' => false,
         ],
@@ -73,6 +85,12 @@ final class ToolProficiency implements Stringable
 
         'land-vehicles' => [
             'label' => 'Land Vehicles',
+            'category' => null,
+            'choice' => false,
+        ],
+
+        'navigators-tools' => [
+            'label' => "Navigator's Tools",
             'category' => null,
             'choice' => false,
         ],

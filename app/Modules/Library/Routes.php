@@ -15,4 +15,9 @@ return static function (Router $router): void {
         '/library/spells',
         [LibraryController::class, 'spells']
     );
+
+    $router->get(
+        '/library/backgrounds',
+        [LibraryController::class, 'backgrounds']
+    );
 };

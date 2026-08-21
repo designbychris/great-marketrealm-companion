@@ -121,6 +121,7 @@ $catalogueClasses = is_array($catalogueClasses ?? null) ? $catalogueClasses : Ch
 $catalogueHeritages = is_array($catalogueHeritages ?? null) ? $catalogueHeritages : [];
 $catalogueSubclasses = is_array($catalogueSubclasses ?? null) ? $catalogueSubclasses : [];
 $subclassPreviews = is_array($subclassPreviews ?? null) ? $subclassPreviews : [];
+$backgroundReferences = is_array($backgroundReferences ?? null) ? $backgroundReferences : [];
 
 $classValue = isset($old['class'])
     && is_scalar($old['class'])
@@ -648,6 +649,26 @@ $charactersUrl = add_query_arg(
                                         </span>
                                     </span>
                                 </span>
+                                <?php if ($backgroundReference !== null) : ?>
+                                    <span class="gmrc-background-option__detail gmrc-background-option__detail--feature">
+                                        <strong>
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $backgroundReference['feature_name']
+                                                    ?? 'Background Feature'
+                                                )
+                                            ); ?>
+                                        </strong>
+                                        <span>
+                                            <?php echo esc_html(
+                                                (string) (
+                                                    $backgroundReference['feature_detail']
+                                                    ?? ''
+                                                )
+                                            ); ?>
+                                        </span>
+                                    </span>
+                                <?php endif; ?>
                             </span>
                         </label>
                     <?php endforeach; ?>
@@ -1093,6 +1114,12 @@ $charactersUrl = add_query_arg(
                             $background->skillProficiencies()->proficiencies()
                         );
                         $tools = $background->toolProficiencyIdentifiers();
+                        $backgroundReference = is_array(
+                            $backgroundReferences[$identifier]
+                            ?? null
+                        )
+                            ? $backgroundReferences[$identifier]
+                            : null;
                         $needsArtisanTools = in_array(
                             ToolProficiency::CATEGORY_ARTISANS_TOOLS,
                             $tools,
