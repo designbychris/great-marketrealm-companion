@@ -41,11 +41,6 @@ final class BackgroundTest extends TestCase
             ],
             'waste warden' => [
                 'waste-warden',
-                'crateborn-noble',
-                'backshelf-forager',
-                'discount-bin-survivor',
-                'cleaners-acolyte',
-                'cart-ranger',
                 'waste-warden',
             ],
             'guild artisan' => [
@@ -612,6 +607,11 @@ final class BackgroundTest extends TestCase
                 'market-runner',
                 'shelf-scholar',
                 'waste-warden',
+                'crateborn-noble',
+                'backshelf-forager',
+                'discount-bin-survivor',
+                'cleaners-acolyte',
+                'cart-ranger',
                 'guild-artisan',
                 'folk-hero',
                 'sage',

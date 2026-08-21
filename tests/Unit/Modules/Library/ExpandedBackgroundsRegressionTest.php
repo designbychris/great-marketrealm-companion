@@ -113,7 +113,7 @@ final class ExpandedBackgroundsRegressionTest extends TestCase
         $crateborn = Background::fromString('crateborn-noble');
         $cleaner = Background::fromString('cleaners-acolyte');
         $cart = Background::fromString('cart-ranger');
-        self::assertSame(['persuasion', 'history'], $crateborn->skillProficiencies()->proficiencies());
+        self::assertSame(['history', 'persuasion'], $crateborn->skillProficiencies()->proficiencies());
         self::assertSame(['cartographers-tools'], $crateborn->toolProficiencyIdentifiers());
         self::assertSame(['alchemists-supplies'], $cleaner->toolProficiencyIdentifiers());
         self::assertSame(['navigators-tools'], $cart->toolProficiencyIdentifiers());
