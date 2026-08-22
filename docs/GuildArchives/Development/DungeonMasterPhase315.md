@@ -32,3 +32,19 @@ Campaign membership, Player invitations, Character/Fellowship assignment, Sessio
 ## Next certified slice
 
 **Phase III.15.2 — The Player Roster** should begin connecting Guild accounts and their Characters to DM-owned campaigns without weakening campaign ownership boundaries.
+
+## III.15.1A — Dungeon Master's Desk Visual Treatment
+
+Certified incoming baseline: **3,403 tests / 11,216 assertions — all green**.
+
+The Dungeon Master's workspace now uses the dedicated
+`assets/images/dungeon-master/dungeon-master-desk-background.png` artwork across
+both the Desk and Campaign Register. The image is scoped only to the direct
+`.gmrc-content` workspace with `:has(> ...)`, keeping the global application
+navigation outside the illustrated layer.
+
+The treatment includes a transparent artwork-first hero, dark translucent
+command panels, gold-edged DM ledger cards, integrated Campaign Register
+surfaces, mobile-safe background positioning, keyboard focus treatment,
+reduced-transparency fallbacks, no-backdrop-filter fallbacks, and forced-colour
+support.
