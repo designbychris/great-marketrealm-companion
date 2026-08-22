@@ -206,3 +206,35 @@ Canonical records never create WordPress posts and never belong to an individual
 The source-preservation rule is strict. A missing ability score, CR, AC or HP is not inferred from ordinary D&D material. Canonical entries without the minimum Encounter snapshot data remain visible as **Reference only** and cannot be assigned a quantity. Source conflicts are retained explicitly: the Dungeon Master Guide contains two different Spoiled Shambler stat blocks, and its Rotten Core summary describes The Molder as CR 2 while the later legendary block is materially stronger. Those discrepancies are surfaced as source notes rather than silently reconciled.
 
 The initial canonical register includes the Guide's named monsters, faction adversaries, bosses, Rotten Core creatures, mounts and Tim the Cursed Recipe Book, including Croissant Dragon, Pickled Basilisk, Grease Titan, Garlic Wraith, Cheddar Chimera, Kale Hydra, Poultrygeist, The Mind-Ham, Gor’Garnash, Gelatinous Mold, Rotisserie Wight, Chicken Ghoul, Salmonster, Wightloaf Dragon, Meat Obilisk, The Cornucopia, Rotling, The Molder and Gravy Golem.
+
+## Phase III.15.7 — The Combat Console
+
+### Certified incoming baseline for III.15.7
+
+- 3,458 tests
+- 11,579 assertions
+- all green
+
+The Combat Console upgrades the persistent Initiative Table into the Dungeon Master's live combat control surface without creating a second combat record or weakening Player ownership.
+
+This slice provides:
+
+- the existing Encounter-owned Initiative route and nonce as the single live-combat persistence boundary;
+- Advance and Rewind turn controls with round rollover in both directions;
+- encounter-local current HP and temporary HP, with quick Damage and Heal controls;
+- damage consuming temporary HP before current HP and healing capped by maximum HP in the live UI;
+- Player Character maximum HP and starting temporary HP read from the Character Ledger without writing combat changes back to that Player-owned record;
+- Standing / Unconscious / Defeated combat states;
+- standard-condition chips backed by the existing persisted free-text condition field, leaving room for Marketrealm-specific conditions;
+- concentration tracking and private per-combatant Dungeon Master notes;
+- mid-combat addition and removal of unexpected adversaries or allies without rewriting the prepared Encounter roster;
+- a bounded persistent Combat Log recording HP, temporary HP, conditions, concentration, state, arrivals/removals, turn movement, round changes, resets, and completion;
+- explicit confirmation before removing a combatant, resetting the table, or completing the Encounter;
+- archived Campaigns preserving the final Combat Console as read-only combat history;
+- the existing navigation-safe `.gmrc-content:has(> ...)` Dungeon Master background scope, responsive behaviour, keyboard focus, reduced-transparency, no-backdrop-filter, and forced-colour fallbacks.
+
+The Combat Console deliberately remains encounter-local. Dungeon Master damage, healing, temporary HP, conditions, state, concentration, and notes do not silently mutate Player Character Ledgers. A future explicit synchronisation feature can bridge those domains with auditable Player/DM intent if desired.
+
+## Next certified slice
+
+**Phase III.15.8 — The Campaign Journal / DM Notes** should add private campaign intelligence, NPC/location/plot-thread notes, and Session-linked preparation without weakening the Campaign, Session, Encounter, Bestiary, or Combat Console ownership boundaries.
