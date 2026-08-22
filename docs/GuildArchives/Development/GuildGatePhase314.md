@@ -90,3 +90,11 @@ work:
    `gmrc_manage_campaigns`.
 4. Ownership/audit rules that connect Characters, Fellowships and later
    Campaigns to Guild accounts.
+
+## Phase III.14.1 — The Guild Profile
+
+Certified incoming baseline: **3,367 tests / 11,057 assertions**.
+
+The Guild Gate now continues into an authenticated Guild Profile. Signed-in members can edit their display name, email address and optional Companion biography without changing their protected Player/DM calling. A custom profile portrait may be uploaded through WordPress media handling (JPG, PNG or WebP; 5 MB maximum), stored through `gmrc_profile_portrait_attachment_id`, and removed to restore the normal WordPress avatar fallback. Profile update and portrait commands use dedicated Companion nonces and the existing admin-post/router PRG pipeline.
+
+The Guild Profile is registered in signed-in Companion navigation and has its own enqueued responsive/accessibility stylesheet. Role mutation is intentionally excluded from profile editing so the Guild Gate capability boundary remains authoritative for the later DM programme.

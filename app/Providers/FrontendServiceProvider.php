@@ -199,6 +199,19 @@ class FrontendServiceProvider extends ServiceProvider
         }
 
         if (
+            in_array($method, ['POST', 'DELETE'], true)
+            && in_array(
+                $route,
+                ['guild-profile', 'guild-profile/portrait'],
+                true
+            )
+        ) {
+            return $route === 'guild-profile'
+                ? 'gmrc_guild_profile_update'
+                : 'gmrc_guild_profile_portrait';
+        }
+
+        if (
             $method === 'POST'
             && $route === 'characters'
         ) {
@@ -577,6 +590,7 @@ class FrontendServiceProvider extends ServiceProvider
         $this->enqueueComponents();
         $this->enqueueScripts();
         $this->enqueueTheme();
+        $this->enqueueGuildProfile();
 
     }
 
@@ -626,6 +640,22 @@ class FrontendServiceProvider extends ServiceProvider
             'gmrc-guild-gate',
             GMRC_URL
                 . 'assets/css/modules/guild-gate/guild-gate.css',
+            ['gmrc-guild-ornaments'],
+            file_exists($path)
+                ? (string) filemtime($path)
+                : GMRC_VERSION
+        );
+    }
+
+    protected function enqueueGuildProfile(): void
+    {
+        $path = GMRC_PATH
+            . 'assets/css/modules/guild-gate/guild-profile.css';
+
+        wp_enqueue_style(
+            'gmrc-guild-profile',
+            GMRC_URL
+                . 'assets/css/modules/guild-gate/guild-profile.css',
             ['gmrc-guild-ornaments'],
             file_exists($path)
                 ? (string) filemtime($path)

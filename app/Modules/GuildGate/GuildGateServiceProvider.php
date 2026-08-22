@@ -7,8 +7,10 @@ namespace GreatMarketrealmCompanion\Modules\GuildGate;
 use GreatMarketrealmCompanion\Core\Container;
 use GreatMarketrealmCompanion\Modules\GuildGate\Controllers\GuildGateController;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\AuthenticateGuildMember;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildPortraitManager;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildRoleRegistrar;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\RegisterGuildMember;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\UpdateGuildProfile;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 
 defined('ABSPATH') || exit;
@@ -20,6 +22,8 @@ final class GuildGateServiceProvider extends ServiceProvider
         $this->app->singleton(GuildRoleRegistrar::class);
         $this->app->singleton(AuthenticateGuildMember::class);
         $this->app->singleton(RegisterGuildMember::class);
+        $this->app->singleton(UpdateGuildProfile::class);
+        $this->app->singleton(GuildPortraitManager::class);
         $this->app->bind(
             GuildGateController::class,
             static fn (Container $container): GuildGateController =>
@@ -30,7 +34,9 @@ final class GuildGateServiceProvider extends ServiceProvider
                     $container->make(\GreatMarketrealmCompanion\Core\Http\ResponseFactory::class),
                     $container->make(\GreatMarketrealmCompanion\Core\Session\FlashStore::class),
                     $container->make(AuthenticateGuildMember::class),
-                    $container->make(RegisterGuildMember::class)
+                    $container->make(RegisterGuildMember::class),
+                    $container->make(UpdateGuildProfile::class),
+                    $container->make(GuildPortraitManager::class)
                 )
         );
     }

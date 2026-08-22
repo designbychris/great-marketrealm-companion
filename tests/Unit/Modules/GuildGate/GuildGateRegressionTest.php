@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class GuildGateRegressionTest extends TestCase
 {
-    public function testGuildGateIsInstalledWithoutNavigationEntry(): void
+    public function testGuildGateIsInstalledWithSignedInProfileNavigation(): void
     {
         $registry = $this->source('app/Providers/KingdomServiceProvider.php');
         $kingdom = $this->source('app/Kingdoms/GuildGateKingdom.php');
@@ -16,7 +16,8 @@ final class GuildGateRegressionTest extends TestCase
         self::assertStringContainsString('new GuildGateKingdom($this->app)', $registry);
         self::assertStringContainsString("return 'guild-gate';", $kingdom);
         self::assertStringContainsString('GuildGateServiceProvider::class', $kingdom);
-        self::assertStringContainsString('The Gate is deliberately absent', $kingdom);
+        self::assertStringContainsString("'Guild Profile'", $kingdom);
+        self::assertStringContainsString("'guild-profile'", $kingdom);
     }
 
     public function testGateRoutesUseExistingApplicationRouter(): void

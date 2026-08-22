@@ -12,8 +12,11 @@ use GreatMarketrealmCompanion\Core\Session\FlashStore;
 use GreatMarketrealmCompanion\Core\View\View;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\GuildGate\AccountType;
+use GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\AuthenticateGuildMember;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildPortraitManager;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\RegisterGuildMember;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\UpdateGuildProfile;
 use Throwable;
 
 defined('ABSPATH') || exit;
@@ -27,7 +30,9 @@ final class GuildGateController
         private ResponseFactory $responses,
         private FlashStore $flash,
         private AuthenticateGuildMember $authenticate,
-        private RegisterGuildMember $registerMember
+        private RegisterGuildMember $registerMember,
+        private UpdateGuildProfile $updateProfile,
+        private GuildPortraitManager $portraits
     ) {
     }
 
@@ -41,12 +46,76 @@ final class GuildGateController
         );
     }
 
+    public function profile(): string
+    {
+        $user = wp_get_current_user();
+        $accountType = GuildProfile::accountType((int) $user->ID);
+        $portraitId = GuildProfile::portraitAttachmentId((int) $user->ID);
+
+        return $this->views->render(
+            View::make('guildgate.profile', [
+                'guildUser' => $user,
+                'accountType' => $accountType,
+                'accountTypeLabel' => AccountType::label($accountType),
+                'portraitId' => $portraitId,
+                'profileBio' => GuildProfile::bio((int) $user->ID),
+            ])
+        );
+    }
+
+    public function updateProfile(): RedirectResponse
+    {
+        $userId = get_current_user_id();
+
+        try {
+            $this->updateProfile->handle(
+                $userId,
+                $this->request->string('display_name'),
+                $this->request->string('email'),
+                $this->request->string('profile_bio')
+            );
+            $this->flash->success('Your Guild profile has been updated.');
+        } catch (Throwable $exception) {
+            $this->flash->flashOldInput([
+                'display_name' => $this->request->string('display_name'),
+                'email' => $this->request->string('email'),
+                'profile_bio' => $this->request->string('profile_bio'),
+            ]);
+            $this->flash->error($exception->getMessage());
+        }
+
+        return $this->responses->redirect($this->profileUrl());
+    }
+
+    public function uploadPortrait(): RedirectResponse
+    {
+        try {
+            $file = isset($_FILES['gmrc_profile_portrait'])
+                && is_array($_FILES['gmrc_profile_portrait'])
+                    ? $_FILES['gmrc_profile_portrait']
+                    : [];
+
+            $this->portraits->upload(get_current_user_id(), $file);
+            $this->flash->success('The Guild Illuminator has framed your new profile portrait.');
+        } catch (Throwable $exception) {
+            $this->flash->error($exception->getMessage());
+        }
+
+        return $this->responses->redirect($this->profileUrl());
+    }
+
+    public function removePortrait(): RedirectResponse
+    {
+        $this->portraits->remove(get_current_user_id());
+        $this->flash->success('Your custom portrait has been removed. The Guild avatar has been restored.');
+
+        return $this->responses->redirect($this->profileUrl());
+    }
+
     public function login(): RedirectResponse
     {
         if (is_user_logged_in()) {
-            return $this->responses->redirect(
-                $this->returnUrl()
-            );
+            return $this->responses->redirect($this->returnUrl());
         }
 
         $login = $this->request->string('login');
@@ -73,9 +142,7 @@ final class GuildGateController
     public function register(): RedirectResponse
     {
         if (is_user_logged_in()) {
-            return $this->responses->redirect(
-                $this->returnUrl()
-            );
+            return $this->responses->redirect($this->returnUrl());
         }
 
         $input = [
@@ -101,9 +168,7 @@ final class GuildGateController
 
             return $this->responses->redirect($this->returnUrl());
         } catch (Throwable $exception) {
-            $this->flash->flashOldInput(
-                ['gate_intent' => 'register'] + $input
-            );
+            $this->flash->flashOldInput(['gate_intent' => 'register'] + $input);
             $this->flash->error($exception->getMessage());
 
             return $this->responses->redirect($this->gateUrl());
@@ -117,10 +182,7 @@ final class GuildGateController
                 'return_route',
                 $this->request->string(
                     'gmrc_route',
-                    (string) $this->flash->old(
-                        'return_route',
-                        ''
-                    )
+                    (string) $this->flash->old('return_route', '')
                 )
             ),
             '/'
@@ -139,6 +201,11 @@ final class GuildGateController
         return $route === 'dashboard'
             ? $url
             : add_query_arg('gmrc_route', $route, $url);
+    }
+
+    private function profileUrl(): string
+    {
+        return add_query_arg('gmrc_route', 'guild-profile', $this->gateUrl());
     }
 
     private function gateUrl(): string
