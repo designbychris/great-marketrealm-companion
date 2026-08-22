@@ -6,9 +6,18 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\PlayerRosterCont
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\SessionController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\EncounterController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\InitiativeController;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\MonsterController;
 defined('ABSPATH') || exit;
 return static function (Router $router): void {
  $router->get('/dungeon-master',[DungeonMasterController::class,'index']);
+
+ $router->get('/dungeon-master/monsters',[MonsterController::class,'index']);
+ $router->get('/dungeon-master/monsters/create',[MonsterController::class,'create']);
+ $router->post('/dungeon-master/monsters',[MonsterController::class,'store']);
+ $router->get('/dungeon-master/monsters/{monsterId}/edit',[MonsterController::class,'edit']);
+ $router->get('/dungeon-master/monsters/{monsterId}',[MonsterController::class,'show']);
+ $router->put('/dungeon-master/monsters/{monsterId}',[MonsterController::class,'update']);
+ $router->post('/dungeon-master/monsters/{monsterId}/archive',[MonsterController::class,'archive']);
  $router->get('/dungeon-master/campaigns',[CampaignController::class,'index']);
  $router->get('/dungeon-master/campaigns/create',[CampaignController::class,'create']);
  $router->post('/dungeon-master/campaigns',[CampaignController::class,'store']);

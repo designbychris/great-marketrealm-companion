@@ -10,6 +10,11 @@ $campaignUrl = add_query_arg(
     'dungeon-master/campaigns',
     $baseUrl
 );
+$monsterUrl = add_query_arg(
+    'gmrc_route',
+    'dungeon-master/monsters',
+    $baseUrl
+);
 ?>
 
 <section class="gmrc-dm-desk" aria-labelledby="gmrc-dm-desk-title">
@@ -77,6 +82,16 @@ $campaignUrl = add_query_arg(
                     <p>Gather registered Guild Players and attach their adventurers inside each campaign.</p>
                 </div>
                 <a class="gmrc-dm-ledger__action" href="<?php echo esc_url($campaignUrl); ?>">Choose Campaign <span aria-hidden="true">→</span></a>
+            </article>
+
+            <article class="gmrc-dm-ledger gmrc-dm-ledger--monster">
+                <div class="gmrc-dm-ledger__icon" aria-hidden="true">🐉</div>
+                <div>
+                    <p class="gmrc-dm-ledger__status">Ledger V · Open</p>
+                    <h3>Monster Ledger</h3>
+                    <p>Keep reusable creature stat blocks ready for encounters and live initiative.</p>
+                </div>
+                <a class="gmrc-dm-ledger__action" href="<?php echo esc_url($monsterUrl); ?>">Open Bestiary <span aria-hidden="true">→</span></a>
             </article>
         </div>
     </section>

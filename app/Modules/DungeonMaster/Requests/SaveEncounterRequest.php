@@ -22,6 +22,7 @@ final class SaveEncounterRequest extends FormRequest
             'adversaries' => ['string', 'max:5000'],
             'notes' => ['string', 'max:10000'],
             'character_ids' => ['array'],
+            'monster_quantities' => ['array'],
         ];
     }
     public function title(): string { return trim($this->validated()->string('title')); }
@@ -32,4 +33,5 @@ final class SaveEncounterRequest extends FormRequest
     public function adversaries(): string { return trim($this->validated()->string('adversaries')); }
     public function notes(): string { return trim($this->validated()->string('notes')); }
     /** @return array<mixed> */ public function characterIds(): array { return $this->validated()->array('character_ids'); }
+    /** @return array<mixed> */ public function monsterQuantities(): array { return $this->validated()->array('monster_quantities'); }
 }

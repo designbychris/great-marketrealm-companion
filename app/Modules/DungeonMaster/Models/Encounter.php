@@ -31,7 +31,8 @@ final class Encounter
         private string $location,
         private string $adversaries,
         private string $notes,
-        private array $characterIds
+        private array $characterIds,
+        private array $monsterGroups
     ) {
         if (! Ulid::isValid($id) || ! Ulid::isValid($campaignId)) {
             throw new InvalidArgumentException('Invalid Encounter or Campaign identifier.');
@@ -41,20 +42,20 @@ final class Encounter
         }
     }
 
-    /** @param string[] $characterIds */
-    public static function create(string $campaignId, int $ownerId, string $title, string $sessionId, string $status, string $threat, string $location, string $adversaries, string $notes, array $characterIds): self
+    /** @param string[] $characterIds @param array<int,array<string,mixed>> $monsterGroups */
+    public static function create(string $campaignId, int $ownerId, string $title, string $sessionId, string $status, string $threat, string $location, string $adversaries, string $notes, array $characterIds, array $monsterGroups = []): self
     {
-        return new self(Ulid::generate(), $campaignId, $ownerId, $title, $sessionId, self::normaliseStatus($status), self::normaliseThreat($threat), $location, $adversaries, $notes, $characterIds);
+        return new self(Ulid::generate(), $campaignId, $ownerId, $title, $sessionId, self::normaliseStatus($status), self::normaliseThreat($threat), $location, $adversaries, $notes, $characterIds, $monsterGroups);
     }
 
-    /** @param string[] $characterIds */
-    public static function restore(string $id, string $campaignId, int $ownerId, string $title, string $sessionId, string $status, string $threat, string $location, string $adversaries, string $notes, array $characterIds): self
+    /** @param string[] $characterIds @param array<int,array<string,mixed>> $monsterGroups */
+    public static function restore(string $id, string $campaignId, int $ownerId, string $title, string $sessionId, string $status, string $threat, string $location, string $adversaries, string $notes, array $characterIds, array $monsterGroups = []): self
     {
-        return new self($id, $campaignId, $ownerId, $title, $sessionId, self::normaliseStatus($status), self::normaliseThreat($threat), $location, $adversaries, $notes, $characterIds);
+        return new self($id, $campaignId, $ownerId, $title, $sessionId, self::normaliseStatus($status), self::normaliseThreat($threat), $location, $adversaries, $notes, $characterIds, $monsterGroups);
     }
 
-    /** @param string[] $characterIds */
-    public function update(string $title, string $sessionId, string $status, string $threat, string $location, string $adversaries, string $notes, array $characterIds): void
+    /** @param string[] $characterIds @param array<int,array<string,mixed>> $monsterGroups */
+    public function update(string $title, string $sessionId, string $status, string $threat, string $location, string $adversaries, string $notes, array $characterIds, array $monsterGroups = []): void
     {
         $this->title = $title;
         $this->sessionId = $sessionId;
@@ -64,6 +65,7 @@ final class Encounter
         $this->adversaries = $adversaries;
         $this->notes = $notes;
         $this->characterIds = $characterIds;
+        $this->monsterGroups = $monsterGroups;
     }
 
     private static function normaliseStatus(string $status): string
@@ -87,4 +89,5 @@ final class Encounter
     public function adversaries(): string { return $this->adversaries; }
     public function notes(): string { return $this->notes; }
     /** @return string[] */ public function characterIds(): array { return $this->characterIds; }
+    /** @return array<int,array<string,mixed>> */ public function monsterGroups(): array { return $this->monsterGroups; }
 }

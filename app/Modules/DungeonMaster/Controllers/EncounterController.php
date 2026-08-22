@@ -16,6 +16,7 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Models\Encounter;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRosterRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\EncounterRepository;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\MonsterRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\SessionRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Requests\SaveEncounterRequest;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\DungeonMasterAccess;
@@ -31,6 +32,7 @@ final class EncounterController
         private SessionRepository $sessions,
         private CampaignRosterRepository $rosters,
         private CharacterRepository $characters,
+        private MonsterRepository $monsters,
         private DungeonMasterAccess $access,
         private ViewFactory $views,
         private ResponseFactory $responses,
@@ -52,7 +54,7 @@ final class EncounterController
     public function store(string $id, SaveEncounterRequest $request): RedirectResponse
     {
         $campaign = $this->campaign($id); $this->assertActive($campaign);
-        $encounter = Encounter::create($campaign->id(), $campaign->ownerId(), $request->title(), $this->validSessionId($campaign, $request->sessionId()), $request->status(), $request->threat(), $request->location(), $request->adversaries(), $request->notes(), $this->validCharacterIds($campaign, $request->characterIds()));
+        $encounter = Encounter::create($campaign->id(), $campaign->ownerId(), $request->title(), $this->validSessionId($campaign, $request->sessionId()), $request->status(), $request->threat(), $request->location(), $request->adversaries(), $request->notes(), $this->validCharacterIds($campaign, $request->characterIds()), $this->validMonsterGroups($campaign, $request->monsterQuantities()));
         $this->encounters->save($encounter, $campaign);
         $this->flash->success('The Encounter has been pinned to the Board.');
         return $this->responses->redirect($this->showUrl($campaign->id(), $encounter->id()));
@@ -73,7 +75,7 @@ final class EncounterController
     public function update(string $id, string $encounterId, SaveEncounterRequest $request): RedirectResponse
     {
         $campaign = $this->campaign($id); $this->assertActive($campaign); $encounter = $this->encounter($encounterId, $campaign);
-        $encounter->update($request->title(), $this->validSessionId($campaign, $request->sessionId()), $request->status(), $request->threat(), $request->location(), $request->adversaries(), $request->notes(), $this->validCharacterIds($campaign, $request->characterIds()));
+        $encounter->update($request->title(), $this->validSessionId($campaign, $request->sessionId()), $request->status(), $request->threat(), $request->location(), $request->adversaries(), $request->notes(), $this->validCharacterIds($campaign, $request->characterIds()), $this->validMonsterGroups($campaign, $request->monsterQuantities()));
         $this->encounters->save($encounter, $campaign);
         $this->flash->success('The Encounter Board entry has been updated.');
         return $this->responses->redirect($this->showUrl($campaign->id(), $encounter->id()));
@@ -108,6 +110,22 @@ final class EncounterController
         foreach ($this->rosters->members($campaign) as $member) { $allowed = array_merge($allowed, array_map('strval', $member['character_ids'] ?? [])); }
         return array_values(array_intersect($submitted, array_unique($allowed)));
     }
+
+    /** @param array<mixed> $submitted @return array<int,array<string,mixed>> */
+    private function validMonsterGroups(Campaign $campaign, array $submitted): array
+    {
+        $groups = [];
+        foreach ($submitted as $monsterId => $quantity) {
+            $monsterId = sanitize_text_field((string) $monsterId);
+            $quantity = max(0, min(20, (int) $quantity));
+            if ($monsterId === '' || $quantity < 1) { continue; }
+            $monster = $this->monsters->findForOwner($monsterId, $campaign->ownerId());
+            if ($monster === null) { continue; }
+            $groups[] = $monster->encounterSnapshot($quantity);
+        }
+        return $groups;
+    }
+
     /** @return array<string,mixed> */
     private function formData(Campaign $campaign, ?Encounter $encounter): array
     {
@@ -118,7 +136,7 @@ final class EncounterController
                 try { $character = $this->characters->findForOwner(CharacterId::fromString((string) $characterId), $ownerId); if ($character !== null) { $characters[] = $character; } } catch (\Throwable) { continue; }
             }
         }
-        return ['encounter' => $encounter, 'sessions' => $this->sessions->allForCampaign($campaign), 'characters' => $characters];
+        return ['encounter' => $encounter, 'sessions' => $this->sessions->allForCampaign($campaign), 'characters' => $characters, 'monsters' => $this->monsters->allForOwner($campaign->ownerId())];
     }
     /** @return array<int,mixed> */
     private function charactersForEncounter(Encounter $encounter, Campaign $campaign): array

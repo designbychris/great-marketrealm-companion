@@ -212,6 +212,21 @@ class FrontendServiceProvider extends ServiceProvider
         }
 
         if (
+            in_array($method, ['POST', 'PUT'], true)
+            && (
+                $route === 'dungeon-master/monsters'
+                || preg_match('#^dungeon-master/monsters/([^/]+)(?:/archive)?$#', $route, $monsterMatch)
+            )
+        ) {
+            if ($route === 'dungeon-master/monsters') {
+                return 'gmrc_dm_monster_create';
+            }
+
+            return 'gmrc_dm_monster_'
+                . sanitize_text_field($monsterMatch[1]);
+        }
+
+        if (
             $method === 'PUT'
             && preg_match(
                 '#^dungeon-master/campaigns/([^/]+)/encounters/([^/]+)/initiative$#',
@@ -813,6 +828,10 @@ class FrontendServiceProvider extends ServiceProvider
             [
                 'handle' => 'gmrc-initiative-table',
                 'path' => 'modules/dungeon-master/initiative-table.css',
+            ],
+            [
+                'handle' => 'gmrc-monster-ledger',
+                'path' => 'modules/dungeon-master/monster-ledger.css',
             ],
             [
                 'handle' => 'gmrc-fellowship-register',

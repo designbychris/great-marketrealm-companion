@@ -444,3 +444,8 @@
         text-shadow: none;
     }
 }
+
+/* Phase III.15.6 — Monster Ledger folio */
+.gmrc-dm-ledger--monster {
+    background: linear-gradient(145deg, rgba(65, 42, 83, .94), rgba(29, 22, 38, .96));
+}

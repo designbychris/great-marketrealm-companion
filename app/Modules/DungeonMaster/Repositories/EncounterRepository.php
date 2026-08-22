@@ -23,6 +23,7 @@ final class EncounterRepository
     private const META_ADVERSARIES = '_gmrc_encounter_adversaries';
     private const META_NOTES = '_gmrc_encounter_notes';
     private const META_CHARACTERS = '_gmrc_encounter_character_ids';
+    private const META_MONSTERS = '_gmrc_encounter_monster_groups';
     private const META_INITIATIVE = '_gmrc_encounter_initiative_table';
 
     public function __construct(private CampaignRepository $campaigns) {}
@@ -101,6 +102,7 @@ final class EncounterRepository
             self::META_ADVERSARIES => $encounter->adversaries(),
             self::META_NOTES => $encounter->notes(),
             self::META_CHARACTERS => $encounter->characterIds(),
+            self::META_MONSTERS => $encounter->monsterGroups(),
         ];
         foreach ($meta as $key => $value) { update_post_meta((int) $postId, $key, $value); }
     }
@@ -125,6 +127,7 @@ final class EncounterRepository
     private function map(WP_Post $post): Encounter
     {
         $characters = get_post_meta($post->ID, self::META_CHARACTERS, true);
+        $monsterGroups = get_post_meta($post->ID, self::META_MONSTERS, true);
         return Encounter::restore(
             (string) get_post_meta($post->ID, self::META_ID, true),
             (string) get_post_meta($post->ID, self::META_CAMPAIGN_ID, true),
@@ -136,7 +139,8 @@ final class EncounterRepository
             (string) get_post_meta($post->ID, self::META_LOCATION, true),
             (string) get_post_meta($post->ID, self::META_ADVERSARIES, true),
             (string) get_post_meta($post->ID, self::META_NOTES, true),
-            is_array($characters) ? array_values(array_map('strval', $characters)) : []
+            is_array($characters) ? array_values(array_map('strval', $characters)) : [],
+            is_array($monsterGroups) ? array_values($monsterGroups) : []
         );
     }
 }

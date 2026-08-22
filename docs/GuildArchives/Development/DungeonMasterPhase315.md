@@ -165,3 +165,34 @@ The Initiative Table deliberately does not write DM-side HP changes back into a 
 ## Next certified slice
 
 **Phase III.15.6** should build on the live Encounter foundation without weakening the ownership boundaries certified through the Initiative Table.
+
+## III.15.6 — The Monster Ledger / Bestiary Integration
+
+### Certified incoming baseline for III.15.6
+
+- 3,444 tests
+- 11,471 assertions
+- all green
+
+The Monster Ledger establishes reusable Dungeon Master creature stat blocks and connects them directly to Encounter preparation and live Initiative without inventing canonical Marketrealm monster statistics that have not yet been entered into the Companion.
+
+This slice provides:
+
+- private `gmrc_monster` WordPress persistence with permanent ULID identity and Dungeon Master ownership;
+- reusable creature name, type, size, Armor Class, maximum HP, speed, STR / DEX / CON / INT / WIS / CHA, challenge label, traits, actions, and private notes;
+- initiative modifier derived from the stored Dexterity score;
+- Create, View, Edit, Archive, and Ledger-index workflows protected by `gmrc_manage_campaigns`;
+- dedicated create and creature-scoped Monster Ledger nonces through the existing Companion command pipeline;
+- non-destructive archive behaviour so old references remain historically understandable;
+- Encounter Board selection of owned Monster Ledger records with quantities of 1–20;
+- encounter-local stat snapshots containing Monster ID, name, quantity, AC, HP, initiative modifier, and challenge label;
+- preserved free-form adversaries/hazards for one-off opposition that does not need a reusable stat block;
+- Initiative Table seeding from structured Monster snapshots with correct HP and initiative modifiers, while retaining loose adversary support;
+- a fifth open DM Desk ledger linking directly to the Bestiary;
+- immersive Dungeon Master workspace styling with the navigation-safe `.gmrc-content:has(> ...)` background scope, responsive behaviour, keyboard focus, reduced-transparency, no-backdrop-filter, and forced-colour fallbacks.
+
+Monster Ledger entries in this slice are private to the Dungeon Master who authored them. A later Administrator’s Ledger can add curated/global Marketrealm bestiary management without weakening the DM ownership model or rewriting historical Encounter snapshots.
+
+## Next certified slice
+
+**Phase III.15.7** should continue the Dungeon Master programme from the now-structured Campaign → Session → Encounter → Monster → Initiative chain while preserving the ownership and historical-snapshot boundaries certified through III.15.6.

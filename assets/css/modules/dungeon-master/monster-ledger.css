@@ -1,0 +1,177 @@
+/* Phase III.15.6 — Monster Ledger / Bestiary Integration */
+.gmrc-content:has(> .gmrc-monster-ledger) {
+    background:
+        linear-gradient(rgba(11, 8, 13, .26), rgba(11, 8, 13, .52)),
+        url('../../../images/dungeon-master/dungeon-master-desk-background.png') center top / cover fixed no-repeat;
+}
+
+.gmrc-monster-ledger {
+    width: min(1180px, calc(100% - 3rem));
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4.5rem) 0 5rem;
+    color: #fff4df;
+}
+
+.gmrc-monster-ledger__hero,
+.gmrc-monster-empty,
+.gmrc-monster-card,
+.gmrc-monster-form__form,
+.gmrc-monster-sheet__combat,
+.gmrc-monster-ability-line,
+.gmrc-monster-sheet__details > section {
+    border: 1px solid rgba(226, 177, 77, .38);
+    border-radius: 1rem;
+    background: rgba(18, 13, 21, .9);
+    box-shadow: 0 1.1rem 2.8rem rgba(0, 0, 0, .32);
+    backdrop-filter: blur(8px) saturate(112%);
+    -webkit-backdrop-filter: blur(8px) saturate(112%);
+}
+
+.gmrc-monster-ledger__hero {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: clamp(1.4rem, 3vw, 2.4rem);
+    margin-bottom: 1rem;
+}
+
+.gmrc-monster-ledger h1,
+.gmrc-monster-ledger h2,
+.gmrc-monster-ledger h3 { color: #fff4df; }
+.gmrc-monster-ledger h1 { font: 700 clamp(2.1rem, 5vw, 4.2rem)/1.05 Georgia, "Times New Roman", serif; }
+.gmrc-monster-ledger p { color: #d9c9b4; line-height: 1.65; }
+
+.gmrc-monster-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.7rem;
+    padding: .68rem 1rem;
+    border: 1px solid #f1c96d;
+    border-radius: .55rem;
+    background: linear-gradient(#e9bd5a, #c78c2e);
+    color: #251407 !important;
+    text-decoration: none;
+    font-weight: 900;
+}
+
+.gmrc-monster-notice,
+.gmrc-monster-empty { padding: 1.2rem; }
+.gmrc-monster-notice { border-left: .3rem solid #dfb75b; background: rgba(18, 13, 21, .92); }
+
+.gmrc-monster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.gmrc-monster-card { padding: 1.25rem; }
+.gmrc-monster-card.is-archived { opacity: .68; }
+.gmrc-monster-card__status { color: #e4b14b !important; font-size: .76rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.gmrc-monster-card a { color: #f2ce78; }
+.gmrc-monster-card__stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: .45rem; margin: 1rem 0 0; }
+.gmrc-monster-card__stats div { padding: .55rem; border: 1px solid rgba(226,177,77,.22); border-radius: .5rem; text-align: center; background: rgba(255,255,255,.035); }
+.gmrc-monster-card__stats dt { color: #c9b79e; font-size: .7rem; text-transform: uppercase; }
+.gmrc-monster-card__stats dd { margin: .15rem 0 0; font-weight: 900; }
+
+.gmrc-monster-form { max-width: 980px; }
+.gmrc-monster-form__form { display: grid; gap: 1rem; padding: clamp(1rem, 3vw, 1.6rem); }
+.gmrc-monster-form__form label { display: grid; gap: .4rem; color: #f8ead7; font-weight: 700; }
+.gmrc-monster-form__row { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; }
+.gmrc-monster-form__form input,
+.gmrc-monster-form__form textarea {
+    width: 100%; box-sizing: border-box; padding: .72rem; border: 1px solid rgba(229,180,82,.46); border-radius: .5rem; background: rgba(255,249,232,.97); color: #24170d;
+}
+.gmrc-monster-abilities { border: 1px solid rgba(226,177,77,.25); border-radius: .75rem; padding: 1rem; }
+.gmrc-monster-abilities legend { padding: 0 .4rem; font-weight: 900; }
+.gmrc-monster-abilities__grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: .6rem; }
+
+.gmrc-monster-sheet__actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+.gmrc-monster-sheet__combat,
+.gmrc-monster-ability-line { display: grid; gap: .7rem; padding: 1rem; margin-top: 1rem; }
+.gmrc-monster-sheet__combat { grid-template-columns: repeat(4, 1fr); }
+.gmrc-monster-ability-line { grid-template-columns: repeat(6, 1fr); }
+.gmrc-monster-sheet__combat div,
+.gmrc-monster-ability-line div { text-align: center; }
+.gmrc-monster-sheet__combat span,
+.gmrc-monster-ability-line span { display: block; color: #c9b79e; font-size: .72rem; text-transform: uppercase; }
+.gmrc-monster-sheet__combat strong,
+.gmrc-monster-ability-line strong { display: block; margin-top: .15rem; font-size: 1.2rem; }
+.gmrc-monster-sheet__details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem; }
+.gmrc-monster-sheet__details > section { padding: 1.1rem; }
+.gmrc-monster-archive { margin-top: 1rem; }
+.gmrc-monster-archive button { padding: .65rem .85rem; border: 1px solid #d6b36d; border-radius: .5rem; background: rgba(83,24,28,.78); color: #fff1dd; }
+
+.gmrc-encounter-bestiary { border: 1px solid rgba(226,177,77,.3); border-radius: .8rem; padding: 1rem; }
+.gmrc-encounter-bestiary legend { padding: 0 .4rem; font-weight: 900; }
+.gmrc-encounter-bestiary__grid { display: grid; gap: .6rem; }
+.gmrc-encounter-bestiary__creature { display: flex !important; grid-template-columns: none !important; align-items: center; justify-content: space-between; gap: 1rem; padding: .7rem; border: 1px solid rgba(226,177,77,.18); border-radius: .55rem; background: rgba(255,255,255,.035); }
+.gmrc-encounter-bestiary__creature span { display: grid; gap: .15rem; }
+.gmrc-encounter-bestiary__creature small { color: #cbbca8; }
+.gmrc-encounter-bestiary__creature input { width: 5rem; }
+.gmrc-encounter-bestiary__creature.is-archived { opacity: .7; }
+
+.gmrc-monster-ledger a:focus-visible,
+.gmrc-monster-ledger button:focus-visible,
+.gmrc-monster-ledger input:focus-visible,
+.gmrc-monster-ledger textarea:focus-visible,
+.gmrc-encounter-bestiary input:focus-visible {
+    outline: 3px solid #ffe5a1;
+    outline-offset: 3px;
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+    .gmrc-monster-ledger__hero,
+    .gmrc-monster-empty,
+    .gmrc-monster-card,
+    .gmrc-monster-form__form,
+    .gmrc-monster-sheet__combat,
+    .gmrc-monster-ability-line,
+    .gmrc-monster-sheet__details > section { background-color: rgb(20, 14, 22); }
+}
+
+@media (max-width: 760px) {
+    .gmrc-content:has(> .gmrc-monster-ledger) { background-attachment: scroll; background-position: center top; }
+    .gmrc-monster-ledger { width: min(100% - 1.25rem, 1180px); padding-top: 1rem; }
+    .gmrc-monster-ledger__hero { display: block; }
+    .gmrc-monster-ledger__hero .gmrc-monster-button { margin-top: 1rem; }
+    .gmrc-monster-form__row,
+    .gmrc-monster-sheet__details { grid-template-columns: 1fr; }
+    .gmrc-monster-abilities__grid { grid-template-columns: repeat(3, 1fr); }
+    .gmrc-monster-sheet__combat { grid-template-columns: repeat(2, 1fr); }
+    .gmrc-monster-ability-line { grid-template-columns: repeat(3, 1fr); }
+    .gmrc-encounter-bestiary__creature { align-items: flex-start; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    .gmrc-monster-ledger__hero,
+    .gmrc-monster-empty,
+    .gmrc-monster-card,
+    .gmrc-monster-form__form,
+    .gmrc-monster-sheet__combat,
+    .gmrc-monster-ability-line,
+    .gmrc-monster-sheet__details > section {
+        background-color: rgb(20, 14, 22);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-monster-ledger__hero,
+    .gmrc-monster-empty,
+    .gmrc-monster-card,
+    .gmrc-monster-form__form,
+    .gmrc-monster-sheet__combat,
+    .gmrc-monster-ability-line,
+    .gmrc-monster-sheet__details > section,
+    .gmrc-monster-button,
+    .gmrc-encounter-bestiary {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText !important;
+        box-shadow: none;
+        text-shadow: none;
+    }
+}

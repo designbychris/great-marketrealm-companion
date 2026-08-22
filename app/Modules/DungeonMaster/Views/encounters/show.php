@@ -1,3 +1,23 @@
-<?php defined('ABSPATH') || exit; $base=home_url('/companion/'); $root='dungeon-master/campaigns/'.$campaign->id().'/encounters'; ?>
-<section class="gmrc-encounter-board gmrc-encounter-entry"><header class="gmrc-encounter-board__hero"><div><p class="gmrc-dm-desk__eyebrow">Encounter · <?php echo esc_html(ucfirst($encounter->status())); ?></p><h1><?php echo esc_html($encounter->title()); ?></h1><p><?php echo esc_html(ucfirst($encounter->threat())); ?> threat<?php echo $encounter->location()!==''?' · '.esc_html($encounter->location()):''; ?></p></div><div class="gmrc-encounter-board__actions"><a class="gmrc-encounter-button" href="<?php echo esc_url(add_query_arg('gmrc_route',$root.'/'.$encounter->id().'/initiative',$base)); ?>">Open Initiative Table</a><?php if(!$campaign->isArchived()): ?><a class="gmrc-encounter-button" href="<?php echo esc_url(add_query_arg('gmrc_route',$root.'/'.$encounter->id().'/edit',$base)); ?>">Edit Encounter</a><?php endif; ?></div></header>
-<div class="gmrc-encounter-entry__grid"><article><h2>Session assignment</h2><p><?php echo $session instanceof \GreatMarketrealmCompanion\Modules\DungeonMaster\Models\Session ? esc_html('Session '.$session->number().' — '.$session->title()) : 'Unassigned — ready for a future Session.'; ?></p></article><article><h2>Participating adventurers</h2><?php if(($characters??[])===[]): ?><p>No Characters selected yet.</p><?php else: ?><ul><?php foreach($characters as $character): ?><li><?php echo esc_html($character->name()->value()); ?></li><?php endforeach; ?></ul><?php endif; ?></article><article><h2>Adversary roster</h2><p><?php echo nl2br(esc_html($encounter->adversaries()!==''?$encounter->adversaries():'No opposition has been recorded yet.')); ?></p></article><article><h2>Dungeon Master notes</h2><p><?php echo nl2br(esc_html($encounter->notes()!==''?$encounter->notes():'No encounter notes have been written yet.')); ?></p></article></div><p class="gmrc-encounter-back"><a href="<?php echo esc_url(add_query_arg('gmrc_route',$root,$base)); ?>">← Back to Encounter Board</a></p></section>
+<?php
+
+declare(strict_types=1);
+
+defined('ABSPATH') || exit;
+$base = home_url('/companion/');
+$root = 'dungeon-master/campaigns/' . $campaign->id() . '/encounters';
+?>
+<section class="gmrc-encounter-board gmrc-encounter-entry">
+    <header class="gmrc-encounter-board__hero">
+        <div><p class="gmrc-dm-desk__eyebrow">Encounter · <?php echo esc_html(ucfirst($encounter->status())); ?></p><h1><?php echo esc_html($encounter->title()); ?></h1><p><?php echo esc_html(ucfirst($encounter->threat())); ?> threat<?php echo $encounter->location() !== '' ? ' · ' . esc_html($encounter->location()) : ''; ?></p></div>
+        <div class="gmrc-encounter-board__actions"><a class="gmrc-encounter-button" href="<?php echo esc_url(add_query_arg('gmrc_route', $root . '/' . $encounter->id() . '/initiative', $base)); ?>">Open Initiative Table</a><?php if (! $campaign->isArchived()) : ?><a class="gmrc-encounter-button" href="<?php echo esc_url(add_query_arg('gmrc_route', $root . '/' . $encounter->id() . '/edit', $base)); ?>">Edit Encounter</a><?php endif; ?></div>
+    </header>
+
+    <div class="gmrc-encounter-entry__grid">
+        <article><h2>Session assignment</h2><p><?php echo $session instanceof \GreatMarketrealmCompanion\Modules\DungeonMaster\Models\Session ? esc_html('Session ' . $session->number() . ' — ' . $session->title()) : 'Unassigned — ready for a future Session.'; ?></p></article>
+        <article><h2>Participating adventurers</h2><?php if (($characters ?? []) === []) : ?><p>No Characters selected yet.</p><?php else : ?><ul><?php foreach ($characters as $character) : ?><li><?php echo esc_html($character->name()->value()); ?></li><?php endforeach; ?></ul><?php endif; ?></article>
+        <article><h2>Monster Ledger company</h2><?php if ($encounter->monsterGroups() === []) : ?><p>No reusable Monster Ledger creatures selected.</p><?php else : ?><ul><?php foreach ($encounter->monsterGroups() as $group) : if (! is_array($group)) { continue; } ?><li><strong><?php echo esc_html((string) ($group['quantity'] ?? 1) . '× ' . (string) ($group['name'] ?? 'Creature')); ?></strong> — AC <?php echo esc_html((string) ($group['armor_class'] ?? '—')); ?> · HP <?php echo esc_html((string) ($group['max_hp'] ?? '—')); ?> · Init <?php echo esc_html(sprintf('%+d', (int) ($group['initiative_modifier'] ?? 0))); ?></li><?php endforeach; ?></ul><?php endif; ?></article>
+        <article><h2>Loose adversaries / hazards</h2><p><?php echo nl2br(esc_html($encounter->adversaries() !== '' ? $encounter->adversaries() : 'No additional opposition has been recorded.')); ?></p></article>
+        <article><h2>Dungeon Master notes</h2><p><?php echo nl2br(esc_html($encounter->notes() !== '' ? $encounter->notes() : 'No encounter notes have been written yet.')); ?></p></article>
+    </div>
+    <p class="gmrc-encounter-back"><a href="<?php echo esc_url(add_query_arg('gmrc_route', $root, $base)); ?>">← Back to Encounter Board</a></p>
+</section>
