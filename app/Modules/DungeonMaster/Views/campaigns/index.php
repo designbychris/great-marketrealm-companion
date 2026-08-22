@@ -1,0 +1,6 @@
+<?php defined('ABSPATH') || exit; $base=home_url('/companion/'); ?>
+<section class="gmrc-campaign-register" aria-labelledby="campaign-register-title">
+<header class="gmrc-campaign-register__hero"><div><p class="gmrc-dm-desk__eyebrow">Dungeon Master’s Desk · Ledger I</p><h1 id="campaign-register-title">Campaign Register</h1><p>Keep every campaign chronicle under its Dungeon Master’s seal.</p></div><a class="gmrc-campaign-button" href="<?php echo esc_url(add_query_arg('gmrc_route','dungeon-master/campaigns/create',$base)); ?>">Create campaign</a></header>
+<?php if (empty($campaigns)) : ?><div class="gmrc-campaign-empty"><h2>The ledger is waiting.</h2><p>No campaigns have been entered yet. Open the first chronicle when you are ready.</p></div><?php else : ?>
+<div class="gmrc-campaign-grid"><?php foreach($campaigns as $campaign): ?><article class="gmrc-campaign-card<?php echo $campaign->isArchived()?' is-archived':''; ?>"><p class="gmrc-campaign-card__status"><?php echo esc_html(ucfirst($campaign->status())); ?></p><h2><?php echo esc_html($campaign->name()); ?></h2><p><?php echo esc_html($campaign->description() ?: 'No chronicle summary has been written yet.'); ?></p><a href="<?php echo esc_url(add_query_arg('gmrc_route','dungeon-master/campaigns/'.$campaign->id(),$base)); ?>">Open campaign →</a></article><?php endforeach; ?></div><?php endif; ?>
+</section>

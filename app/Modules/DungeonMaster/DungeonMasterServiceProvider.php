@@ -1,30 +1,24 @@
 <?php
 
 declare(strict_types=1);
-
 namespace GreatMarketrealmCompanion\Modules\DungeonMaster;
-
 use GreatMarketrealmCompanion\Core\Container;
+use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
+use GreatMarketrealmCompanion\Core\Session\FlashStore;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\CampaignController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\DungeonMasterController;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\DungeonMasterAccess;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
-
 defined('ABSPATH') || exit;
-
 final class DungeonMasterServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        $this->app->singleton(DungeonMasterAccess::class);
-
-        $this->app->bind(
-            DungeonMasterController::class,
-            static fn (Container $container): DungeonMasterController =>
-                new DungeonMasterController(
-                    $container->make(ViewFactory::class),
-                    $container->make(DungeonMasterAccess::class)
-                )
-        );
-    }
+ public function register(): void {
+  $this->app->singleton(DungeonMasterAccess::class);$this->app->singleton(CampaignRepository::class);
+  $this->app->bind(DungeonMasterController::class,static fn(Container $c): DungeonMasterController=>new DungeonMasterController($c->make(ViewFactory::class),$c->make(DungeonMasterAccess::class)));
+  $this->app->bind(CampaignController::class,static fn(Container $c): CampaignController=>new CampaignController($c->make(CampaignRepository::class),$c->make(DungeonMasterAccess::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class)));
+ }
+ public function boot(): void { add_action('init',[$this,'registerPostType']); }
+ public function registerPostType(): void { register_post_type(CampaignRepository::POST_TYPE,['labels'=>['name'=>'Campaigns','singular_name'=>'Campaign'],'public'=>false,'show_ui'=>false,'show_in_rest'=>false,'supports'=>['title','author'],'capability_type'=>'post','map_meta_cap'=>true]); }
 }

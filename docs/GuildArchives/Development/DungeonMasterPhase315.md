@@ -2,30 +2,33 @@
 
 ## Certified incoming baseline
 
-- 3,385 tests
-- 11,148 assertions
+- 3,397 tests
+- 11,204 assertions
 - all green
 
 ## III.15 — Desk Foundation
 
-The Dungeon Master's Desk establishes the DM-only workspace that will contain the later campaign-management programme.
+The Dungeon Master's Desk is the capability-protected workspace for the DM programme. Navigation capability checks happen at request time, never during Kingdom boot, while controllers remain the server-side security boundary.
 
-The Desk is implemented as its own Companion Kingdom and module rather than as a special case inside Dashboard or Guild Gate. Its route is `dungeon-master`, and its navigation contribution is visible only to members who hold the `gmrc_manage_campaigns` capability or WordPress administrative access.
+## III.15.1 — The Campaign Register
 
-The controller independently enforces the same permission boundary. A Player who manually requests the route receives an HTTP 403 and a themed sealed-desk notice rather than access to DM content. This makes navigation visibility a convenience while capability checks remain the actual security boundary.
+The Campaign Register establishes campaigns as first-class, DM-owned Companion records.
 
-WordPress administrators continue to receive both Player-facing Companion access and DM-facing access through the Guild Gate role contract.
+The first certified slice provides:
 
-## Initial Desk Surface
+- private `gmrc_campaign` WordPress persistence;
+- ULID campaign identity;
+- Dungeon Master ownership through the WordPress post author;
+- ownership-scoped repository reads and writes;
+- Create, View, Edit, and Archive workflows;
+- active and archived campaign states without destructive deletion;
+- dedicated command nonces through the existing Companion `admin-post` pipeline;
+- `gmrc_manage_campaigns` authorization on campaign form requests;
+- an open Campaign Register link from the Dungeon Master's Desk;
+- responsive, keyboard-focus, reduced-transparency, and forced-colour treatment.
 
-The first Desk provides:
-
-- a private DM workspace hero and status panel;
-- the future Campaign Register as the next ledger to open;
-- placeholders for Session Ledger, Encounter Board, and Player Roster;
-- quick links to the existing Character Register, Fellowships, and Guild Library;
-- responsive, keyboard-focus, reduced-transparency, no-backdrop-filter, and forced-colour support.
+Campaign membership, Player invitations, Character/Fellowship assignment, Sessions, and Encounters deliberately remain outside this slice. They will attach to the stable campaign identity established here.
 
 ## Next certified slice
 
-**Phase III.15.1 — The Campaign Register** should establish campaign records, ownership, membership invitations/assignments, and the relationship between campaigns, Fellowships, characters, and Guild accounts.
+**Phase III.15.2 — The Player Roster** should begin connecting Guild accounts and their Characters to DM-owned campaigns without weakening campaign ownership boundaries.

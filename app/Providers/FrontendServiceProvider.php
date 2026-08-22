@@ -212,6 +212,21 @@ class FrontendServiceProvider extends ServiceProvider
         }
 
         if (
+            in_array($method, ['POST', 'PUT'], true)
+            && (
+                $route === 'dungeon-master/campaigns'
+                || preg_match('#^dungeon-master/campaigns/([^/]+)(?:/archive)?$#', $route, $campaignMatch)
+            )
+        ) {
+            if ($route === 'dungeon-master/campaigns') {
+                return 'gmrc_dm_campaign_create';
+            }
+
+            return 'gmrc_dm_campaign_'
+                . sanitize_text_field($campaignMatch[1]);
+        }
+
+        if (
             $method === 'POST'
             && $route === 'characters'
         ) {
@@ -728,6 +743,10 @@ class FrontendServiceProvider extends ServiceProvider
             [
                 'handle' => 'gmrc-guild-dice',
                 'path' => 'modules/characters/guild-dice.css',
+            ],
+            [
+                'handle' => 'gmrc-campaign-register',
+                'path' => 'modules/dungeon-master/campaign-register.css',
             ],
             [
                 'handle' => 'gmrc-fellowship-register',

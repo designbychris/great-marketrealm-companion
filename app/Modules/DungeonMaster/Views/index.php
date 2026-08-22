@@ -36,7 +36,7 @@ $baseUrl = home_url('/companion/');
                 <h2>Campaign Register</h2>
                 <p>Create and oversee the campaigns that bind players, Fellowships, sessions, and adventures together.</p>
             </div>
-            <span class="gmrc-dm-ledger__coming">Coming in Phase III.15.1</span>
+            <a class="gmrc-dm-ledger__coming" href="<?php echo esc_url(add_query_arg('gmrc_route', 'dungeon-master/campaigns', $baseUrl)); ?>">Open Campaign Register →</a>
         </article>
 
         <article class="gmrc-dm-ledger">
