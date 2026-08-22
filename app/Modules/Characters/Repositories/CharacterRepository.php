@@ -68,11 +68,23 @@ final class CharacterRepository implements CharacterRepositoryInterface
      */
     public function all(): array
     {
+        return $this->allForOwner(
+            get_current_user_id()
+        );
+    }
+
+    /**
+     * Retrieve all Characters belonging to a specific Guild account.
+     *
+     * @return Character[]
+     */
+    public function allForOwner(int $ownerId): array
+    {
         $posts = get_posts([
             'post_type' => $this->postType,
             'post_status' => 'publish',
             'posts_per_page' => -1,
-            'author' => get_current_user_id(),
+            'author' => $ownerId,
             'orderby' => 'date',
             'order' => 'DESC',
         ]);
@@ -90,7 +102,23 @@ final class CharacterRepository implements CharacterRepositoryInterface
     public function find(
         CharacterId $id
     ): ?Character {
-        $post = $this->findPostByCharacterId($id);
+        return $this->findForOwner(
+            $id,
+            get_current_user_id()
+        );
+    }
+
+    /**
+     * Find a Character belonging to a specific Guild account.
+     */
+    public function findForOwner(
+        CharacterId $id,
+        int $ownerId
+    ): ?Character {
+        $post = $this->findPostByCharacterIdForOwner(
+            $id,
+            $ownerId
+        );
 
         return $post instanceof WP_Post
             ? $this->mapPost($post)
@@ -159,11 +187,24 @@ final class CharacterRepository implements CharacterRepositoryInterface
     private function findPostByCharacterId(
         CharacterId $id
     ): ?WP_Post {
+        return $this->findPostByCharacterIdForOwner(
+            $id,
+            get_current_user_id()
+        );
+    }
+
+    /**
+     * Find a Character post owned by a specific Guild account.
+     */
+    private function findPostByCharacterIdForOwner(
+        CharacterId $id,
+        int $ownerId
+    ): ?WP_Post {
         $posts = get_posts([
             'post_type' => $this->postType,
             'post_status' => 'publish',
             'posts_per_page' => 2,
-            'author' => get_current_user_id(),
+            'author' => $ownerId,
             'meta_key' => self::META_CHARACTER_ID,
             'meta_value' => $id->value(),
             'orderby' => 'ID',

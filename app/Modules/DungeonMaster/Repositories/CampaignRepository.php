@@ -32,6 +32,15 @@ final class CampaignRepository
         return $post instanceof WP_Post ? $this->map($post) : null;
     }
 
+    public function postIdForOwner(string $id, int $ownerId): ?int
+    {
+        $post = $this->postForOwner($id, $ownerId);
+
+        return $post instanceof WP_Post
+            ? (int) $post->ID
+            : null;
+    }
+
     public function save(Campaign $campaign): void
     {
         $existing=$this->postForOwner($campaign->id(),$campaign->ownerId());

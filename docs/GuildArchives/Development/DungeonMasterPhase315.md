@@ -48,3 +48,31 @@ command panels, gold-edged DM ledger cards, integrated Campaign Register
 surfaces, mobile-safe background positioning, keyboard focus treatment,
 reduced-transparency fallbacks, no-backdrop-filter fallbacks, and forced-colour
 support.
+
+## III.15.2 — The Player Roster
+
+### Certified incoming baseline for III.15.2
+
+- 3,409 tests
+- 11,246 assertions
+- all green
+
+The Player Roster connects existing Player Guild accounts to DM-owned campaigns while preserving campaign ownership and character authorship boundaries.
+
+The first slice provides:
+
+- exact username/email lookup for existing Companion Player accounts;
+- campaign-scoped Player membership stored on the private campaign record;
+- profile portrait, display identity, and optional Guild bio presentation;
+- owner-aware Character reads for rostered Players;
+- explicit attach/detach actions for a Player's own Characters;
+- server-side verification that attached Characters belong to the rostered Player;
+- remove-Player behaviour that also clears the campaign's character links for that Player;
+- campaign-scoped nonces and `gmrc_manage_campaigns` authorization;
+- immersive Dungeon Master's Desk visual treatment with responsive and accessibility fallbacks.
+
+Co-DM permissions, email invitations, pending invitations, Sessions, and Encounters remain outside this slice.
+
+## Next certified slice
+
+**Phase III.15.3 — The Session Ledger** should establish campaign-owned session records and attendance against the stable Campaign Roster.

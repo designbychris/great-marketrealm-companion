@@ -2,6 +2,7 @@
 use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\DungeonMasterController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\CampaignController;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\PlayerRosterController;
 defined('ABSPATH') || exit;
 return static function (Router $router): void {
  $router->get('/dungeon-master',[DungeonMasterController::class,'index']);
@@ -12,4 +13,9 @@ return static function (Router $router): void {
  $router->get('/dungeon-master/campaigns/{id}',[CampaignController::class,'show']);
  $router->put('/dungeon-master/campaigns/{id}',[CampaignController::class,'update']);
  $router->post('/dungeon-master/campaigns/{id}/archive',[CampaignController::class,'archive']);
+ $router->get('/dungeon-master/campaigns/{id}/players',[PlayerRosterController::class,'index']);
+ $router->post('/dungeon-master/campaigns/{id}/players',[PlayerRosterController::class,'store']);
+ $router->delete('/dungeon-master/campaigns/{id}/players/{playerId}',[PlayerRosterController::class,'destroy']);
+ $router->post('/dungeon-master/campaigns/{id}/players/{playerId}/characters/{characterId}',[PlayerRosterController::class,'attachCharacter']);
+ $router->delete('/dungeon-master/campaigns/{id}/players/{playerId}/characters/{characterId}',[PlayerRosterController::class,'detachCharacter']);
 };

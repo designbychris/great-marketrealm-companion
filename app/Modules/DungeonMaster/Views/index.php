@@ -72,11 +72,11 @@ $campaignUrl = add_query_arg(
             <article class="gmrc-dm-ledger gmrc-dm-ledger--roster">
                 <div class="gmrc-dm-ledger__icon" aria-hidden="true">👥</div>
                 <div>
-                    <p class="gmrc-dm-ledger__status">Ledger IV · Next</p>
+                    <p class="gmrc-dm-ledger__status">Ledger IV · Open</p>
                     <h3>Player Roster</h3>
-                    <p>Manage players, invitations and participation across your campaigns.</p>
+                    <p>Gather registered Guild Players and attach their adventurers inside each campaign.</p>
                 </div>
-                <span class="gmrc-dm-ledger__action is-disabled" aria-disabled="true">Opening in III.15.2</span>
+                <a class="gmrc-dm-ledger__action" href="<?php echo esc_url($campaignUrl); ?>">Choose Campaign <span aria-hidden="true">→</span></a>
             </article>
         </div>
     </section>

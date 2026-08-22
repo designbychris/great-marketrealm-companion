@@ -1,0 +1,319 @@
+/* Phase III.15.2 — The Player Roster */
+.gmrc-player-roster {
+    width: min(1180px, calc(100% - 3rem));
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4.5rem) 0 5rem;
+    color: #fff4df;
+}
+
+.gmrc-content:has(> .gmrc-player-roster) {
+    min-height: calc(100vh - 5rem);
+    background:
+        linear-gradient(rgba(15, 7, 5, .18), rgba(15, 7, 5, .48)),
+        url("../../../images/dungeon-master/dungeon-master-desk-background.png")
+        center top / cover no-repeat fixed;
+}
+
+.gmrc-player-roster__hero,
+.gmrc-player-roster__invite,
+.gmrc-player-roster__ledger,
+.gmrc-player-roster__member,
+.gmrc-player-roster__notice {
+    border: 1px solid rgba(226, 177, 77, .36);
+    border-radius: 1rem;
+    background: rgba(21, 13, 15, .88);
+    box-shadow: 0 1.1rem 2.8rem rgba(0, 0, 0, .3);
+    backdrop-filter: blur(7px) saturate(110%);
+    -webkit-backdrop-filter: blur(7px) saturate(110%);
+}
+
+.gmrc-player-roster__hero {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: clamp(1.4rem, 3vw, 2.4rem);
+}
+
+.gmrc-player-roster h1,
+.gmrc-player-roster h2,
+.gmrc-player-roster h3,
+.gmrc-player-roster h4 {
+    color: #fff4df;
+}
+
+.gmrc-player-roster h1 {
+    margin: .15rem 0 .55rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.gmrc-player-roster p,
+.gmrc-player-roster small,
+.gmrc-player-roster__characters span {
+    color: #d7c6ae;
+    line-height: 1.55;
+}
+
+.gmrc-player-roster__kicker {
+    margin: 0 0 .35rem;
+    color: #e4b14b !important;
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.gmrc-player-roster__invite,
+.gmrc-player-roster__ledger {
+    margin-top: 1rem;
+    padding: clamp(1rem, 2.5vw, 1.6rem);
+}
+
+.gmrc-player-roster__invite {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, .8fr);
+    gap: 1.25rem;
+    align-items: end;
+}
+
+.gmrc-player-roster__invite form,
+.gmrc-player-roster__invite label {
+    display: grid;
+    gap: .45rem;
+}
+
+.gmrc-player-roster__invite-row {
+    display: flex;
+    gap: .6rem;
+}
+
+.gmrc-player-roster input {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: .78rem;
+    border: 1px solid rgba(229, 180, 82, .48);
+    border-radius: .5rem;
+    background: rgba(255, 249, 232, .96);
+    color: #24170d;
+}
+
+.gmrc-player-roster__heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.gmrc-player-roster__heading h2 {
+    margin: 0;
+}
+
+.gmrc-player-roster__heading > span {
+    padding: .4rem .65rem;
+    border: 1px solid rgba(226, 177, 77, .3);
+    border-radius: 999px;
+    color: #f3d38b;
+    font-size: .8rem;
+    font-weight: 800;
+}
+
+.gmrc-player-roster__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.gmrc-player-roster__member {
+    padding: 1.1rem;
+    background: linear-gradient(145deg, rgba(34, 53, 70, .94), rgba(23, 29, 35, .96));
+}
+
+.gmrc-player-roster__member-header {
+    display: flex;
+    gap: .85rem;
+    align-items: center;
+}
+
+.gmrc-player-roster__member-header h3 {
+    margin: 0 0 .15rem;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+.gmrc-player-roster__portrait {
+    width: 4.5rem;
+    height: 4.5rem;
+    overflow: hidden;
+    flex: 0 0 4.5rem;
+    border: 2px solid #d6ad5a;
+    border-radius: 50%;
+    background: #1a1114;
+}
+
+.gmrc-player-roster__portrait-image,
+.gmrc-player-roster__portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gmrc-player-roster__bio {
+    margin: .85rem 0;
+    font-style: italic;
+}
+
+.gmrc-player-roster__characters {
+    margin-top: 1rem;
+    padding-top: .9rem;
+    border-top: 1px solid rgba(226, 177, 77, .2);
+}
+
+.gmrc-player-roster__characters h4 {
+    margin: 0 0 .65rem;
+}
+
+.gmrc-player-roster__characters ul {
+    display: grid;
+    gap: .55rem;
+    padding: 0;
+    list-style: none;
+}
+
+.gmrc-player-roster__characters li {
+    display: flex;
+    justify-content: space-between;
+    gap: .8rem;
+    align-items: center;
+    padding: .65rem;
+    border: 1px solid rgba(220, 185, 111, .18);
+    border-radius: .55rem;
+    background: rgba(5, 10, 14, .3);
+}
+
+.gmrc-player-roster__characters li.is-linked {
+    border-color: rgba(114, 187, 117, .58);
+    background: rgba(29, 75, 43, .28);
+}
+
+.gmrc-player-roster__characters li > div {
+    display: grid;
+    gap: .12rem;
+}
+
+.gmrc-player-roster button,
+.gmrc-player-roster__remove button {
+    padding: .55rem .7rem;
+    border: 1px solid rgba(230, 190, 105, .55);
+    border-radius: .45rem;
+    background: rgba(20, 13, 15, .72);
+    color: #f3d38b;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.gmrc-player-roster__remove {
+    margin-top: 1rem;
+    text-align: right;
+}
+
+.gmrc-player-roster__remove button {
+    border-color: rgba(207, 108, 103, .48);
+    color: #ffd0c8;
+}
+
+.gmrc-player-roster__notice,
+.gmrc-player-roster__empty {
+    margin-top: 1rem;
+    padding: .9rem 1rem;
+}
+
+.gmrc-player-roster__notice.is-success {
+    border-color: rgba(114, 187, 117, .58);
+}
+
+.gmrc-player-roster__notice.is-error {
+    border-color: rgba(207, 108, 103, .65);
+}
+
+.gmrc-player-roster a:focus-visible,
+.gmrc-player-roster button:focus-visible,
+.gmrc-player-roster input:focus-visible {
+    outline: 3px solid #ffe5a1;
+    outline-offset: 3px;
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+    .gmrc-player-roster__hero,
+    .gmrc-player-roster__invite,
+    .gmrc-player-roster__ledger,
+    .gmrc-player-roster__member,
+    .gmrc-player-roster__notice {
+        background-color: rgb(25, 15, 17);
+    }
+}
+
+@media (max-width: 760px) {
+    .gmrc-content:has(> .gmrc-player-roster) {
+        background-attachment: scroll;
+        background-position: 62% top;
+    }
+
+    .gmrc-player-roster {
+        width: min(100% - 1.25rem, 1180px);
+        padding-top: 1rem;
+    }
+
+    .gmrc-player-roster__hero,
+    .gmrc-player-roster__invite {
+        display: block;
+    }
+
+    .gmrc-player-roster__invite form,
+    .gmrc-player-roster__hero .gmrc-campaign-button {
+        margin-top: 1rem;
+    }
+
+    .gmrc-player-roster__invite-row,
+    .gmrc-player-roster__characters li {
+        align-items: stretch;
+        flex-direction: column;
+    }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    .gmrc-player-roster__hero,
+    .gmrc-player-roster__invite,
+    .gmrc-player-roster__ledger,
+    .gmrc-player-roster__member,
+    .gmrc-player-roster__notice {
+        background-color: rgb(25, 15, 17);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-player-roster__hero,
+    .gmrc-player-roster__invite,
+    .gmrc-player-roster__ledger,
+    .gmrc-player-roster__member,
+    .gmrc-player-roster__notice,
+    .gmrc-player-roster button,
+    .gmrc-player-roster input {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText !important;
+        box-shadow: none;
+    }
+}
+
+.gmrc-player-roster__linked-label {
+    padding: .38rem .55rem;
+    border: 1px solid rgba(114, 187, 117, .58);
+    border-radius: .4rem;
+    color: #c9f3ca;
+    font-size: .75rem;
+    font-weight: 800;
+}
