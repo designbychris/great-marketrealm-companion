@@ -76,3 +76,33 @@ Co-DM permissions, email invitations, pending invitations, Sessions, and Encount
 ## Next certified slice
 
 **Phase III.15.3 — The Session Ledger** should establish campaign-owned session records and attendance against the stable Campaign Roster.
+
+## III.15.3 — The Session Ledger
+
+### Certified incoming baseline for III.15.3
+
+- 3,417 tests
+- 11,301 assertions
+- all green
+
+The Session Ledger establishes Sessions as first-class, campaign-owned Dungeon Master records.
+
+This slice provides:
+
+- private `gmrc_session` WordPress persistence with permanent ULID identity;
+- stable Campaign ID and WordPress parent linkage back to the owned Campaign record;
+- DM-owned, campaign-scoped Session queries and writes;
+- Session number, title, optional date, Planned / Played / Cancelled status;
+- Dungeon Master preparation notes and post-session recap;
+- attendance selected only from the stable Campaign Player Roster;
+- Character attendance limited to Characters already attached to the attending Player;
+- Create, View, Edit, and Ledger-index workflows;
+- campaign-scoped Session nonces and `gmrc_manage_campaigns` authorization;
+- archived Campaigns preserving a read-only Session history;
+- immersive Dungeon Master workspace styling with responsive and accessibility fallbacks.
+
+Encounter planning remains outside this slice. The Session identity established here is intended to become the parent context for Encounter Board records.
+
+## Next certified slice
+
+**Phase III.15.4 — The Encounter Board** should create campaign/session-scoped encounters without weakening the Campaign, Player Roster, or Session ownership boundaries.

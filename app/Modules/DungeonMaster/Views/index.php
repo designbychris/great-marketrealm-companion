@@ -52,11 +52,11 @@ $campaignUrl = add_query_arg(
             <article class="gmrc-dm-ledger gmrc-dm-ledger--session">
                 <div class="gmrc-dm-ledger__icon" aria-hidden="true">📖</div>
                 <div>
-                    <p class="gmrc-dm-ledger__status">Ledger II · Planned</p>
+                    <p class="gmrc-dm-ledger__status">Ledger II · Open</p>
                     <h3>Session Ledger</h3>
                     <p>Plan, run and record your sessions. Track milestones and memorable moments.</p>
                 </div>
-                <span class="gmrc-dm-ledger__action is-disabled" aria-disabled="true">Coming soon</span>
+                <a class="gmrc-dm-ledger__action" href="<?php echo esc_url($campaignUrl); ?>">Choose Campaign <span aria-hidden="true">→</span></a>
             </article>
 
             <article class="gmrc-dm-ledger gmrc-dm-ledger--encounter">
