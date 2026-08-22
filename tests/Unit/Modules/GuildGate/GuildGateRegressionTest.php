@@ -110,8 +110,8 @@ final class GuildGateRegressionTest extends TestCase
         );
 
         self::assertStringContainsString('wp_logout_url($homeUrl)', $sidebar);
-        self::assertStringContainsString("'gmrc_dm'", $sidebar);
-        self::assertStringContainsString("'Dungeon Master'", $sidebar);
+        self::assertStringContainsString('GuildProfile::accountType(', $sidebar);
+        self::assertStringContainsString('AccountType::label(', $sidebar);
         self::assertStringContainsString('GuildProfile::PORTRAIT_ATTACHMENT_META', $sidebar);
         self::assertStringContainsString('wp_get_attachment_image(', $sidebar);
     }

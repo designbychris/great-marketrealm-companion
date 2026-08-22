@@ -7,6 +7,7 @@ namespace GreatMarketrealmCompanion\Modules\GuildGate;
 use GreatMarketrealmCompanion\Core\Container;
 use GreatMarketrealmCompanion\Modules\GuildGate\Controllers\GuildGateController;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\AuthenticateGuildMember;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildAdminBarVisibility;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildPortraitManager;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildRoleRegistrar;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\RegisterGuildMember;
@@ -20,6 +21,7 @@ final class GuildGateServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(GuildRoleRegistrar::class);
+        $this->app->singleton(GuildAdminBarVisibility::class);
         $this->app->singleton(AuthenticateGuildMember::class);
         $this->app->singleton(RegisterGuildMember::class);
         $this->app->singleton(UpdateGuildProfile::class);
@@ -44,5 +46,10 @@ final class GuildGateServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->make(GuildRoleRegistrar::class)->register();
+
+        add_filter(
+            'show_admin_bar',
+            [$this->app->make(GuildAdminBarVisibility::class), 'filter']
+        );
     }
 }

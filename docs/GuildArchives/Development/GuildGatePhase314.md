@@ -108,3 +108,9 @@ The Guild Profile is registered in signed-in Companion navigation and has its ow
 - Password management delegates to WordPress's native lost-password/reset flow; the Companion never implements a parallel password store.
 - Player/DM permissions remain read-only from profile updates and are enforced through Companion capabilities.
 - Logout returns to the Guild Gate at `/companion/`.
+
+### Phase III.14.2 integration hardening
+
+- WordPress administrators retain both Companion access and Dungeon Master management capabilities, so an administrator can use both Player-facing and DM-facing Companion features.
+- The WordPress front-end admin bar is hidden for Companion Players and Dungeon Masters; users with the WordPress `manage_options` administrative capability retain WordPress's normal admin-bar behaviour.
+- Sidebar role presentation is certified against the canonical `GuildProfile::accountType()` contract rather than duplicated role literals.

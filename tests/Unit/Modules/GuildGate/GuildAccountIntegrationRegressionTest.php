@@ -61,6 +61,35 @@ final class GuildAccountIntegrationRegressionTest extends TestCase
         self::assertStringContainsString('@media(forced-colors:active)', $css);
     }
 
+    public function testAdministratorsReceivePlayerAndDmCompanionAccess(): void
+    {
+        $roles = $this->source(
+            'app/Modules/GuildGate/Services/GuildRoleRegistrar.php'
+        );
+
+        self::assertStringContainsString("\$administrator->add_cap(self::ACCESS)", $roles);
+        self::assertStringContainsString(
+            "\$administrator->add_cap(self::MANAGE_CAMPAIGNS)",
+            $roles
+        );
+    }
+
+    public function testWordPressAdminBarIsReservedForAdministrators(): void
+    {
+        $provider = $this->source(
+            'app/Modules/GuildGate/GuildGateServiceProvider.php'
+        );
+        $policy = $this->source(
+            'app/Modules/GuildGate/Services/GuildAdminBarVisibility.php'
+        );
+
+        self::assertStringContainsString("'show_admin_bar'", $provider);
+        self::assertStringContainsString('GuildAdminBarVisibility::class', $provider);
+        self::assertStringContainsString("current_user_can('manage_options')", $policy);
+        self::assertStringContainsString('? $show', $policy);
+        self::assertStringContainsString(': false', $policy);
+    }
+
     public function testDocumentationClosesGuildAccountIntegrationSlice(): void
     {
         $docs = $this->source('docs/GuildArchives/Development/GuildGatePhase314.md');
