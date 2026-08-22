@@ -223,7 +223,7 @@ final class AdventurerFellowshipBridgeSealRegressionTest extends TestCase
             $compactRepository
         );
         self::assertStringContainsString(
-            "'author' => $ownerId",
+            "'author' => \$ownerId",
             $compactRepository
         );
     }
