@@ -161,6 +161,38 @@ final class MenuItemTest extends TestCase
         );
     }
 
+    public function testRequiredCapabilityDefaultsToNull(): void
+    {
+        $item = MenuItem::make(
+            'characters',
+            'Characters',
+            'users',
+            '/characters'
+        );
+
+        $this->assertNull($item->requiredCapability());
+        $this->assertFalse($item->requiresCapability());
+    }
+
+    public function testRequiredCapabilityCanBeSet(): void
+    {
+        $item = MenuItem::make(
+            'dungeon-master',
+            "Dungeon Master's Desk",
+            'shield',
+            'dungeon-master',
+            50,
+            null,
+            'gmrc_manage_campaigns'
+        );
+
+        $this->assertSame(
+            'gmrc_manage_campaigns',
+            $item->requiredCapability()
+        );
+        $this->assertTrue($item->requiresCapability());
+    }
+
     public function testHasParentReturnsFalseWhenParentIsNull(): void
     {
         $item = MenuItem::make(

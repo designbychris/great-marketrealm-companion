@@ -19,15 +19,30 @@ final class DungeonMasterDeskRegressionTest extends TestCase
         self::assertStringContainsString('DungeonMasterServiceProvider::class', $kingdom);
     }
 
-    public function testDungeonMasterNavigationIsCapabilityAware(): void
+    public function testDungeonMasterNavigationIsCapabilityAwareWithoutBootTimeUserLookup(): void
+    {
+        $kingdom = $this->source('app/Kingdoms/DungeonMasterKingdom.php');
+        $controller = $this->source('app/Http/Controllers/AppController.php');
+        $menuItem = $this->source('app/Navigation/MenuItem.php');
+
+        self::assertStringContainsString('GuildRoleRegistrar::MANAGE_CAMPAIGNS', $kingdom);
+        self::assertStringNotContainsString('current_user_can(', $kingdom);
+        self::assertStringContainsString("Dungeon Master's Desk", $kingdom);
+        self::assertStringContainsString('Icons::DUNGEON_MASTER', $kingdom);
+        self::assertStringContainsString('requiredCapability()', $menuItem);
+        self::assertStringContainsString('requiresCapability()', $menuItem);
+        self::assertStringContainsString('current_user_can(', $controller);
+    }
+
+    public function testKingdomBootDoesNotResolveCurrentWordPressUser(): void
     {
         $kingdom = $this->source('app/Kingdoms/DungeonMasterKingdom.php');
 
-        self::assertStringContainsString('GuildRoleRegistrar::MANAGE_CAMPAIGNS', $kingdom);
-        self::assertStringContainsString("current_user_can('manage_options')", $kingdom);
-        self::assertStringContainsString("\"Dungeon Master's Desk\"", $kingdom);
-        self::assertStringContainsString('Icons::DUNGEON_MASTER', $kingdom);
+        self::assertStringNotContainsString('current_user_can(', $kingdom);
+        self::assertStringNotContainsString('wp_get_current_user(', $kingdom);
+        self::assertStringNotContainsString('is_user_logged_in(', $kingdom);
     }
+
 
     public function testDeskRouteUsesDedicatedController(): void
     {

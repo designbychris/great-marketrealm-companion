@@ -31,6 +31,7 @@ class MenuItem
         protected string $route,
         protected int $sortOrder = 100,
         protected ?string $parent = null,
+        protected ?string $requiredCapability = null,
     ) {
     }
 
@@ -44,6 +45,7 @@ class MenuItem
         string $route,
         int $sortOrder = 100,
         ?string $parent = null,
+        ?string $requiredCapability = null,
     ): self {
         return new self(
             $key,
@@ -51,7 +53,8 @@ class MenuItem
             $icon,
             $route,
             $sortOrder,
-            $parent
+            $parent,
+            $requiredCapability
         );
     }
 
@@ -101,6 +104,28 @@ class MenuItem
     public function parent(): ?string
     {
         return $this->parent;
+    }
+
+    /**
+     * Return the WordPress capability required to see this item.
+     *
+     * A null value means the item is available to every authenticated
+     * Companion member. Capability checks are deliberately performed
+     * later, while building request-time navigation, rather than during
+     * plugin bootstrap.
+     */
+    public function requiredCapability(): ?string
+    {
+        return $this->requiredCapability;
+    }
+
+    /**
+     * Determine whether this item has a visibility capability.
+     */
+    public function requiresCapability(): bool
+    {
+        return $this->requiredCapability !== null
+            && $this->requiredCapability !== '';
     }
 
     /**

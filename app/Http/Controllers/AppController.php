@@ -138,7 +138,18 @@ class AppController
     ): array {
 
         $items = array_values(
-            $this->navigation->items()
+            array_filter(
+                $this->navigation->items(),
+                static function (MenuItem $item): bool {
+                    if (! $item->requiresCapability()) {
+                        return true;
+                    }
+
+                    return current_user_can(
+                        (string) $item->requiredCapability()
+                    );
+                }
+            )
         );
 
         usort(

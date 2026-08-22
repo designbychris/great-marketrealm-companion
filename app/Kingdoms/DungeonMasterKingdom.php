@@ -39,14 +39,7 @@ final class DungeonMasterKingdom extends Kingdom
 
     public function registerNavigation(Navigation $navigation): void
     {
-        if (
-            $navigation->has($this->key())
-            || ! function_exists('current_user_can')
-            || (
-                ! current_user_can(GuildRoleRegistrar::MANAGE_CAMPAIGNS)
-                && ! current_user_can('manage_options')
-            )
-        ) {
+        if ($navigation->has($this->key())) {
             return;
         }
 
@@ -56,7 +49,9 @@ final class DungeonMasterKingdom extends Kingdom
                 "Dungeon Master's Desk",
                 Icons::DUNGEON_MASTER,
                 'dungeon-master',
-                50
+                50,
+                null,
+                GuildRoleRegistrar::MANAGE_CAMPAIGNS
             )
         );
     }
