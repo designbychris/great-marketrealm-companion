@@ -49,7 +49,10 @@ final class DungeonMasterDeskRegressionTest extends TestCase
         $routes = $this->source('app/Modules/DungeonMaster/Routes.php');
 
         self::assertStringContainsString("'/dungeon-master'", $routes);
-        self::assertStringContainsString("[DungeonMasterController::class, 'index']", $routes);
+        self::assertStringContainsString(
+            "[DungeonMasterController::class,'index']",
+            str_replace(' ', '', $routes)
+        );
     }
 
     public function testDirectRequestsAreProtectedServerSide(): void
@@ -116,9 +119,9 @@ final class DungeonMasterDeskRegressionTest extends TestCase
         $docs = $this->source('docs/GuildArchives/Development/DungeonMasterPhase315.md');
 
         self::assertStringContainsString("Phase III.15 — The Dungeon Master's Desk", $docs);
-        self::assertStringContainsString('Phase III.15.1 — The Campaign Register', $docs);
-        self::assertStringContainsString('3,385 tests', $docs);
-        self::assertStringContainsString('11,148 assertions', $docs);
+        self::assertStringContainsString('## III.15.1 — The Campaign Register', $docs);
+        self::assertStringContainsString('3,397 tests', $docs);
+        self::assertStringContainsString('11,204 assertions', $docs);
     }
 
     private function source(string $path): string
