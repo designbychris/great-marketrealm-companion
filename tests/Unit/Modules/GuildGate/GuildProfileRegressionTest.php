@@ -8,6 +8,22 @@ use PHPUnit\Framework\TestCase;
 
 final class GuildProfileRegressionTest extends TestCase
 {
+    public function testGuildGateViewsResolveOnCaseSensitiveFilesystems(): void
+    {
+        $finder = new \GreatMarketrealmCompanion\Core\View\ViewFinder(
+            dirname(__DIR__, 4)
+        );
+
+        self::assertStringEndsWith(
+            'app/Modules/GuildGate/Views/index.php',
+            str_replace('\\', '/', $finder->find('guildgate.index'))
+        );
+        self::assertStringEndsWith(
+            'app/Modules/GuildGate/Views/profile.php',
+            str_replace('\\', '/', $finder->find('guildgate.profile'))
+        );
+    }
+
     public function testProfileRoutesUseGuildGateController(): void
     {
         $routes = $this->source('app/Modules/GuildGate/Routes.php');

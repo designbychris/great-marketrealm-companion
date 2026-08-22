@@ -122,13 +122,29 @@ class ViewFinder
         return sprintf(
             '%sapp/Modules/%s/Views/%s.php',
             $this->basePath,
-            ucfirst($module),
+            $this->moduleDirectory($module),
             str_replace(
                 '.',
                 DIRECTORY_SEPARATOR,
                 $template
             )
         );
+    }
+
+
+    /**
+     * Resolve a view namespace to its case-sensitive module directory.
+     *
+     * Most module namespaces map cleanly with ucfirst(). Compound module
+     * names such as GuildGate require an explicit canonical directory on
+     * case-sensitive filesystems (including the production Linux host).
+     */
+    protected function moduleDirectory(string $module): string
+    {
+        return match (strtolower($module)) {
+            'guildgate' => 'GuildGate',
+            default => ucfirst($module),
+        };
     }
 
     /**
