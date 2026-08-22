@@ -17,6 +17,7 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignReposit
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRosterRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\EncounterRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\MonsterRepository;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Repositories\CanonicalBestiary;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\SessionRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Requests\SaveEncounterRequest;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\DungeonMasterAccess;
@@ -33,6 +34,7 @@ final class EncounterController
         private CampaignRosterRepository $rosters,
         private CharacterRepository $characters,
         private MonsterRepository $monsters,
+        private CanonicalBestiary $canonicalBestiary,
         private DungeonMasterAccess $access,
         private ViewFactory $views,
         private ResponseFactory $responses,
@@ -119,9 +121,12 @@ final class EncounterController
             $monsterId = sanitize_text_field((string) $monsterId);
             $quantity = max(0, min(20, (int) $quantity));
             if ($monsterId === '' || $quantity < 1) { continue; }
-            $monster = $this->monsters->findForOwner($monsterId, $campaign->ownerId());
+            $monster = str_starts_with($monsterId, 'canonical:')
+                ? $this->canonicalBestiary->find($monsterId)
+                : $this->monsters->findForOwner($monsterId, $campaign->ownerId());
             if ($monster === null) { continue; }
-            $groups[] = $monster->encounterSnapshot($quantity);
+            $snapshot = $monster->encounterSnapshot($quantity);
+            if ($snapshot !== []) { $groups[] = $snapshot; }
         }
         return $groups;
     }
@@ -136,7 +141,7 @@ final class EncounterController
                 try { $character = $this->characters->findForOwner(CharacterId::fromString((string) $characterId), $ownerId); if ($character !== null) { $characters[] = $character; } } catch (\Throwable) { continue; }
             }
         }
-        return ['encounter' => $encounter, 'sessions' => $this->sessions->allForCampaign($campaign), 'characters' => $characters, 'monsters' => $this->monsters->allForOwner($campaign->ownerId())];
+        return ['encounter' => $encounter, 'sessions' => $this->sessions->allForCampaign($campaign), 'characters' => $characters, 'monsters' => $this->monsters->allForOwner($campaign->ownerId()), 'canonicalMonsters' => $this->canonicalBestiary->all()];
     }
     /** @return array<int,mixed> */
     private function charactersForEncounter(Encounter $encounter, Campaign $campaign): array

@@ -175,3 +175,14 @@
         text-shadow: none;
     }
 }
+
+/* Phase III.15.6A — Canonical Marketrealm Bestiary */
+.gmrc-canonical-bestiary { margin: 1.5rem 0 2rem; padding: 1.25rem; border: 1px solid rgba(120, 88, 42, .34); border-radius: 1rem; background: rgba(24, 18, 13, .62); }
+.gmrc-canonical-bestiary__header { display: flex; gap: 1rem; justify-content: space-between; align-items: end; margin-bottom: 1rem; }
+.gmrc-canonical-bestiary__header h2 { margin: .15rem 0 .35rem; }
+.gmrc-canonical-bestiary__count { white-space: nowrap; font-size: .82rem; opacity: .78; }
+.gmrc-monster-card.is-canonical { border-color: rgba(202, 164, 86, .42); background: linear-gradient(180deg, rgba(86, 60, 27, .22), rgba(22, 16, 12, .74)); }
+.gmrc-canonical-bestiary__source-note { margin-top: .75rem; padding-top: .65rem; border-top: 1px dashed rgba(202, 164, 86, .28); font-size: .82rem; opacity: .82; }
+.gmrc-encounter-bestiary__creature.is-reference-only { opacity: .62; }
+.gmrc-encounter-bestiary__creature.is-reference-only input { cursor: not-allowed; }
+@media (max-width: 720px) { .gmrc-canonical-bestiary__header { align-items: flex-start; flex-direction: column; } }

@@ -60,16 +60,17 @@ $monsterLedgerUrl = add_query_arg('gmrc_route', 'dungeon-master/monsters', home_
     <fieldset class="gmrc-encounter-bestiary">
         <legend>Monster Ledger adversaries</legend>
         <p>Choose reusable stat blocks and quantities. The Encounter stores a snapshot, so later edits to the Monster Ledger do not silently rewrite this preparation.</p>
-        <?php if (($monsters ?? []) === []) : ?>
+        <?php if (($monsters ?? []) === [] && ($canonicalMonsters ?? []) === []) : ?>
             <p>No creatures are recorded yet. <a href="<?php echo esc_url($monsterLedgerUrl); ?>">Open the Monster Ledger</a> to create a reusable stat block.</p>
         <?php else : ?>
             <div class="gmrc-encounter-bestiary__grid">
-                <?php foreach ($monsters as $monster) :
+                <?php foreach (array_merge(($canonicalMonsters ?? []), ($monsters ?? [])) as $monster) :
                     $quantity = (int) ($selectedMonsters[$monster->id()] ?? 0);
                     ?>
-                    <label class="gmrc-encounter-bestiary__creature<?php echo $monster->isArchived() ? ' is-archived' : ''; ?>">
-                        <span><strong><?php echo esc_html($monster->name()); ?></strong><small>AC <?php echo esc_html((string) $monster->armorClass()); ?> · HP <?php echo esc_html((string) $monster->maxHp()); ?> · Init <?php echo esc_html(sprintf('%+d', $monster->initiativeModifier())); ?><?php echo $monster->isArchived() ? ' · Archived' : ''; ?></small></span>
-                        <span>Qty <input type="number" name="monster_quantities[<?php echo esc_attr($monster->id()); ?>]" min="0" max="20" value="<?php echo esc_attr((string) $quantity); ?>" aria-label="Quantity of <?php echo esc_attr($monster->name()); ?>"></span>
+                    <?php $ready = ! method_exists($monster, 'encounterReady') || $monster->encounterReady(); ?>
+                    <label class="gmrc-encounter-bestiary__creature<?php echo $monster->isArchived() ? ' is-archived' : ''; ?><?php echo ! $ready ? ' is-reference-only' : ''; ?>">
+                        <span><strong><?php echo esc_html($monster->name()); ?></strong><small><?php echo method_exists($monster, 'isCanonical') ? 'Canonical · ' : 'My Ledger · '; ?>AC <?php echo esc_html($monster->armorClass() === null ? '—' : (string) $monster->armorClass()); ?> · HP <?php echo esc_html($monster->maxHp() === null ? '—' : (string) $monster->maxHp()); ?> · Init <?php echo esc_html($monster->initiativeModifier() === null ? '—' : sprintf('%+d', $monster->initiativeModifier())); ?><?php echo $monster->isArchived() ? ' · Archived' : ''; ?><?php echo ! $ready ? ' · Reference only' : ''; ?></small></span>
+                        <span>Qty <input type="number" name="monster_quantities[<?php echo esc_attr($monster->id()); ?>]" min="0" max="20" value="<?php echo esc_attr((string) $quantity); ?>" aria-label="Quantity of <?php echo esc_attr($monster->name()); ?>" <?php disabled(! $ready); ?>></span>
                     </label>
                 <?php endforeach; ?>
             </div>

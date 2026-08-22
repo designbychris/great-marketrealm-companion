@@ -11,11 +11,41 @@ $createUrl = add_query_arg('gmrc_route', 'dungeon-master/monsters/create', $base
     <header class="gmrc-monster-ledger__hero">
         <div>
             <p class="gmrc-dm-desk__eyebrow">Ledger V · Reusable adversaries</p>
-            <h1 id="gmrc-monster-ledger-title">Monster Ledger</h1>
-            <p>Keep private reusable creature stat blocks ready for the Encounter Board. Existing encounters preserve a snapshot, so later stat edits do not rewrite past preparations.</p>
+            <h1 id="gmrc-monster-ledger-title">The Bestiary</h1>
+            <p>Browse the canonical Marketrealm creatures beside your private Monster Ledger. Existing encounters preserve a snapshot, so later source or custom-stat changes do not rewrite past preparations.</p>
         </div>
         <a class="gmrc-monster-button" href="<?php echo esc_url($createUrl); ?>">Record Creature</a>
     </header>
+
+
+    <section class="gmrc-canonical-bestiary" aria-labelledby="gmrc-canonical-bestiary-title">
+        <header class="gmrc-canonical-bestiary__header">
+            <div>
+                <p class="gmrc-dm-desk__eyebrow">Phase III.15.6A · Dungeon Master Guide canon</p>
+                <h2 id="gmrc-canonical-bestiary-title">Canonical Marketrealm Bestiary</h2>
+                <p>Official creatures are read-only and shared by every Dungeon Master. Missing source statistics are shown as unknown rather than guessed.</p>
+            </div>
+            <span class="gmrc-canonical-bestiary__count"><?php echo esc_html((string) count($canonicalMonsters ?? [])); ?> canonical records</span>
+        </header>
+        <div class="gmrc-monster-grid">
+            <?php foreach (($canonicalMonsters ?? []) as $monster) : ?>
+                <article class="gmrc-monster-card is-canonical">
+                    <p class="gmrc-monster-card__status">Canonical · <?php echo $monster->encounterReady() ? 'Ready for encounters' : 'Reference only'; ?></p>
+                    <h3><?php echo esc_html($monster->name()); ?></h3>
+                    <p><?php echo esc_html(trim($monster->size() . ' ' . $monster->creatureType()) ?: 'Canonical creature'); ?></p>
+                    <dl class="gmrc-monster-card__stats">
+                        <div><dt>AC</dt><dd><?php echo esc_html($monster->armorClass() === null ? '—' : (string) $monster->armorClass()); ?></dd></div>
+                        <div><dt>HP</dt><dd><?php echo esc_html($monster->maxHp() === null ? '—' : (string) $monster->maxHp()); ?></dd></div>
+                        <div><dt>Init.</dt><dd><?php echo esc_html($monster->initiativeModifier() === null ? '—' : sprintf('%+d', $monster->initiativeModifier())); ?></dd></div>
+                        <div><dt>CR</dt><dd><?php echo esc_html($monster->challenge() !== '' ? $monster->challenge() : '—'); ?></dd></div>
+                    </dl>
+                    <?php if ($monster->traits() !== '') : ?><p><strong>Traits:</strong> <?php echo esc_html($monster->traits()); ?></p><?php endif; ?>
+                    <?php if ($monster->actions() !== '') : ?><p><strong>Actions:</strong> <?php echo esc_html($monster->actions()); ?></p><?php endif; ?>
+                    <?php if ($monster->sourceIssue() !== '') : ?><p class="gmrc-canonical-bestiary__source-note"><strong>Source note:</strong> <?php echo esc_html($monster->sourceIssue()); ?></p><?php endif; ?>
+                </article>
+            <?php endforeach; ?>
+        </div>
+    </section>
 
     <?php if (! empty($flash['success'])) : ?>
         <p class="gmrc-monster-notice" role="status"><?php echo esc_html((string) $flash['success']); ?></p>

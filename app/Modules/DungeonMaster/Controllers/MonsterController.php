@@ -10,6 +10,7 @@ use GreatMarketrealmCompanion\Core\Session\FlashStore;
 use GreatMarketrealmCompanion\Core\View\View;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Models\Monster;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Repositories\CanonicalBestiary;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\MonsterRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Requests\SaveMonsterRequest;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\DungeonMasterAccess;
@@ -21,6 +22,7 @@ final class MonsterController
 {
     public function __construct(
         private MonsterRepository $monsters,
+        private CanonicalBestiary $canonicalBestiary,
         private DungeonMasterAccess $access,
         private ViewFactory $views,
         private ResponseFactory $responses,
@@ -32,6 +34,7 @@ final class MonsterController
         $ownerId = $this->ownerId();
         return $this->render('dungeonmaster.monsters.index', [
             'monsters' => $this->monsters->allForOwner($ownerId),
+            'canonicalMonsters' => $this->canonicalBestiary->all(),
         ]);
     }
 

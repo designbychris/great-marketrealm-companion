@@ -196,3 +196,13 @@ Monster Ledger entries in this slice are private to the Dungeon Master who autho
 ## Next certified slice
 
 **Phase III.15.7** should continue the Dungeon Master programme from the now-structured Campaign → Session → Encounter → Monster → Initiative chain while preserving the ownership and historical-snapshot boundaries certified through III.15.6.
+
+## Phase III.15.6A — The Canonical Marketrealm Bestiary
+
+The Monster Ledger now has two deliberately separate shelves. The **Canonical Marketrealm Bestiary** is a read-only application register transcribed from *The Great MarketRealm Dungeon Master Guide*; **My Monster Ledger** remains the Dungeon Master's private editable collection.
+
+Canonical records never create WordPress posts and never belong to an individual user. They are supplied by `CanonicalBestiary` from a version-controlled data register. Encounter preparation can select canonical creatures using stable `canonical:<key>` identifiers, and the existing Encounter snapshot boundary is retained: AC, HP, initiative modifier, challenge and name are copied into the Encounter rather than linked live.
+
+The source-preservation rule is strict. A missing ability score, CR, AC or HP is not inferred from ordinary D&D material. Canonical entries without the minimum Encounter snapshot data remain visible as **Reference only** and cannot be assigned a quantity. Source conflicts are retained explicitly: the Dungeon Master Guide contains two different Spoiled Shambler stat blocks, and its Rotten Core summary describes The Molder as CR 2 while the later legendary block is materially stronger. Those discrepancies are surfaced as source notes rather than silently reconciled.
+
+The initial canonical register includes the Guide's named monsters, faction adversaries, bosses, Rotten Core creatures, mounts and Tim the Cursed Recipe Book, including Croissant Dragon, Pickled Basilisk, Grease Titan, Garlic Wraith, Cheddar Chimera, Kale Hydra, Poultrygeist, The Mind-Ham, Gor’Garnash, Gelatinous Mold, Rotisserie Wight, Chicken Ghoul, Salmonster, Wightloaf Dragon, Meat Obilisk, The Cornucopia, Rotling, The Molder and Gravy Golem.
