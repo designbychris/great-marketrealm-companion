@@ -591,6 +591,7 @@ class FrontendServiceProvider extends ServiceProvider
         $this->enqueueScripts();
         $this->enqueueTheme();
         $this->enqueueGuildProfile();
+        $this->enqueueDungeonMasterDesk();
 
     }
 
@@ -656,6 +657,22 @@ class FrontendServiceProvider extends ServiceProvider
             'gmrc-guild-profile',
             GMRC_URL
                 . 'assets/css/modules/guild-gate/guild-profile.css',
+            ['gmrc-guild-ornaments'],
+            file_exists($path)
+                ? (string) filemtime($path)
+                : GMRC_VERSION
+        );
+    }
+
+    protected function enqueueDungeonMasterDesk(): void
+    {
+        $path = GMRC_PATH
+            . 'assets/css/modules/dungeon-master/dungeon-master-desk.css';
+
+        wp_enqueue_style(
+            'gmrc-dungeon-master-desk',
+            GMRC_URL
+                . 'assets/css/modules/dungeon-master/dungeon-master-desk.css',
             ['gmrc-guild-ornaments'],
             file_exists($path)
                 ? (string) filemtime($path)

@@ -60,6 +60,15 @@ final class Icons
         </svg>
     ';
 
+    public const DUNGEON_MASTER = '
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+                fill="currentColor"
+                d="M5 3h14v2h-1v14h1v2H5v-2h1V5H5V3Zm3 2v14h8V5H8Zm2 2h4v2h-4V7Zm0 4h4v2h-4v-2Zm0 4h3v2h-3v-2Z"
+            />
+        </svg>
+    ';
+
     public const SETTINGS = '
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path

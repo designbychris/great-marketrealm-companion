@@ -143,6 +143,7 @@ class ViewFinder
     {
         return match (strtolower($module)) {
             'guildgate' => 'GuildGate',
+            'dungeonmaster' => 'DungeonMaster',
             default => ucfirst($module),
         };
     }
