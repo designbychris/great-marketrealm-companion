@@ -206,9 +206,25 @@ final class AdventurerFellowshipBridgeSealRegressionTest extends TestCase
         );
 
         self::assertIsString($repository);
-        self::assertStringContainsString(
-            "'author' => get_current_user_id()",
+
+        $compactRepository = preg_replace(
+            '/\s+/',
+            ' ',
             $repository
+        );
+
+        self::assertIsString($compactRepository);
+        self::assertStringContainsString(
+            'return $this->allForOwner( get_current_user_id() );',
+            $compactRepository
+        );
+        self::assertStringContainsString(
+            'return $this->findForOwner( $id, get_current_user_id() );',
+            $compactRepository
+        );
+        self::assertStringContainsString(
+            "'author' => $ownerId",
+            $compactRepository
         );
     }
 
