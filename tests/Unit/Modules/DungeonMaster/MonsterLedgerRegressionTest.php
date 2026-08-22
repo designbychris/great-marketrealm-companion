@@ -91,7 +91,7 @@ final class MonsterLedgerRegressionTest extends TestCase
         self::assertStringContainsString('$encounter->monsterGroups()', $controller);
         self::assertStringContainsString("['max_hp']", $controller);
         self::assertStringContainsString("['initiative_modifier']", $controller);
-        self::assertStringContainsString("'source_id'=>$monsterId", $this->compact($controller));
+        self::assertStringContainsString("'source_id'=>\$monsterId", $this->compact($controller));
         self::assertStringContainsString('$encounter->adversaries()', $controller);
         self::assertStringContainsString('$encounter->monsterGroups()', $controller);
     }
