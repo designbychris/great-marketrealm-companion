@@ -3,6 +3,7 @@
 namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Http\Controllers\AppController;
+use GreatMarketrealmCompanion\Modules\GuildGate\Controllers\GuildGateController;
 use GreatMarketrealmCompanion\Core\Http\Response;
 use GreatMarketrealmCompanion\Core\Routing\Router;
 use WP_Post;
@@ -92,6 +93,20 @@ class FrontendServiceProvider extends ServiceProvider
                 )
                 : 'POST';
     
+        $publicGuildGateRoute = in_array(
+            trim($route, '/'),
+            ['guild-gate/login', 'guild-gate/register'],
+            true
+        );
+
+        if (! is_user_logged_in() && ! $publicGuildGateRoute) {
+            wp_safe_redirect(
+                home_url('/companion/')
+            );
+
+            exit;
+        }
+
         $submittedNonce = isset($_POST['gmrc_nonce'])
             && is_scalar($_POST['gmrc_nonce'])
                 ? sanitize_text_field(
@@ -170,6 +185,19 @@ class FrontendServiceProvider extends ServiceProvider
             '/'
         );
     
+        if (
+            $method === 'POST'
+            && in_array(
+                $route,
+                ['guild-gate/login', 'guild-gate/register'],
+                true
+            )
+        ) {
+            return $route === 'guild-gate/login'
+                ? 'gmrc_guild_gate_login'
+                : 'gmrc_guild_gate_register';
+        }
+
         if (
             $method === 'POST'
             && $route === 'characters'
@@ -540,6 +568,12 @@ class FrontendServiceProvider extends ServiceProvider
     
         $this->enqueueFoundation();
         $this->enqueueFonts();
+
+        if (! is_user_logged_in()) {
+            $this->enqueueGuildGate();
+            return;
+        }
+
         $this->enqueueComponents();
         $this->enqueueScripts();
         $this->enqueueTheme();
@@ -580,6 +614,22 @@ class FrontendServiceProvider extends ServiceProvider
             'https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap',
             [],
             null
+        );
+    }
+
+    protected function enqueueGuildGate(): void
+    {
+        $path = GMRC_PATH
+            . 'assets/css/modules/guild-gate/guild-gate.css';
+
+        wp_enqueue_style(
+            'gmrc-guild-gate',
+            GMRC_URL
+                . 'assets/css/modules/guild-gate/guild-gate.css',
+            ['gmrc-guild-ornaments'],
+            file_exists($path)
+                ? (string) filemtime($path)
+                : GMRC_VERSION
         );
     }
 
@@ -1294,6 +1344,12 @@ class FrontendServiceProvider extends ServiceProvider
         ?string $content = null
     ): string {
         unset($attributes, $content);
+
+        if (! is_user_logged_in()) {
+            return $this->app
+                ->make(GuildGateController::class)
+                ->show();
+        }
 
         return $this->app
             ->make(AppController::class)

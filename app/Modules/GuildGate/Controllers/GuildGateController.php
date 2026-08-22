@@ -1,0 +1,148 @@
+<?php
+
+declare(strict_types=1);
+
+namespace GreatMarketrealmCompanion\Modules\GuildGate\Controllers;
+
+use GreatMarketrealmCompanion\Core\Http\RedirectResponse;
+use GreatMarketrealmCompanion\Core\Http\Request;
+use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
+use GreatMarketrealmCompanion\Core\Routing\Router;
+use GreatMarketrealmCompanion\Core\Session\FlashStore;
+use GreatMarketrealmCompanion\Core\View\View;
+use GreatMarketrealmCompanion\Core\View\ViewFactory;
+use GreatMarketrealmCompanion\Modules\GuildGate\AccountType;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\AuthenticateGuildMember;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\RegisterGuildMember;
+use Throwable;
+
+defined('ABSPATH') || exit;
+
+final class GuildGateController
+{
+    public function __construct(
+        private ViewFactory $views,
+        private Request $request,
+        private Router $router,
+        private ResponseFactory $responses,
+        private FlashStore $flash,
+        private AuthenticateGuildMember $authenticate,
+        private RegisterGuildMember $registerMember
+    ) {
+    }
+
+    public function show(): string
+    {
+        return $this->views->render(
+            View::make('guildgate.index', [
+                'returnRoute' => $this->returnRoute(),
+                'accountTypes' => AccountType::values(),
+            ])
+        );
+    }
+
+    public function login(): RedirectResponse
+    {
+        if (is_user_logged_in()) {
+            return $this->responses->redirect(
+                $this->returnUrl()
+            );
+        }
+
+        $login = $this->request->string('login');
+        $password = (string) $this->request->input('password', '');
+        $remember = $this->request->string('remember') === '1';
+
+        try {
+            $this->authenticate->handle($login, $password, $remember);
+            $this->flash->success('Welcome back. The Guild Gate is open.');
+
+            return $this->responses->redirect($this->returnUrl());
+        } catch (Throwable $exception) {
+            $this->flash->flashOldInput([
+                'gate_intent' => 'login',
+                'login' => $login,
+                'return_route' => $this->returnRoute(),
+            ]);
+            $this->flash->error($exception->getMessage());
+
+            return $this->responses->redirect($this->gateUrl());
+        }
+    }
+
+    public function register(): RedirectResponse
+    {
+        if (is_user_logged_in()) {
+            return $this->responses->redirect(
+                $this->returnUrl()
+            );
+        }
+
+        $input = [
+            'display_name' => $this->request->string('display_name'),
+            'username' => $this->request->string('username'),
+            'email' => $this->request->string('email'),
+            'account_type' => $this->request->string('account_type'),
+            'return_route' => $this->returnRoute(),
+        ];
+
+        try {
+            $userId = $this->registerMember->handle(
+                $input['username'],
+                $input['email'],
+                (string) $this->request->input('password', ''),
+                $input['display_name'],
+                $input['account_type']
+            );
+
+            wp_set_current_user($userId);
+            wp_set_auth_cookie($userId, true, is_ssl());
+            $this->flash->success('Your Guild papers are sealed. Welcome to the Companion.');
+
+            return $this->responses->redirect($this->returnUrl());
+        } catch (Throwable $exception) {
+            $this->flash->flashOldInput(
+                ['gate_intent' => 'register'] + $input
+            );
+            $this->flash->error($exception->getMessage());
+
+            return $this->responses->redirect($this->gateUrl());
+        }
+    }
+
+    private function returnRoute(): string
+    {
+        $route = trim(
+            $this->request->string(
+                'return_route',
+                $this->request->string(
+                    'gmrc_route',
+                    (string) $this->flash->old(
+                        'return_route',
+                        ''
+                    )
+                )
+            ),
+            '/'
+        );
+
+        return $route !== '' && $this->router->has('GET', '/' . $route)
+            ? $route
+            : 'dashboard';
+    }
+
+    private function returnUrl(): string
+    {
+        $route = $this->returnRoute();
+        $url = $this->gateUrl();
+
+        return $route === 'dashboard'
+            ? $url
+            : add_query_arg('gmrc_route', $route, $url);
+    }
+
+    private function gateUrl(): string
+    {
+        return home_url('/companion/');
+    }
+}

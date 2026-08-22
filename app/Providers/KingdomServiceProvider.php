@@ -4,6 +4,7 @@ namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Kingdoms\CharactersKingdom;
 use GreatMarketrealmCompanion\Kingdoms\DashboardKingdom;
+use GreatMarketrealmCompanion\Kingdoms\GuildGateKingdom;
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
 use GreatMarketrealmCompanion\Kingdoms\LibraryKingdom;
 use GreatMarketrealmCompanion\Kingdoms\PartiesKingdom;
@@ -34,6 +35,10 @@ class KingdomServiceProvider extends ServiceProvider
 
                 $registry->add(
                     new DashboardKingdom($this->app)
+                );
+
+                $registry->add(
+                    new GuildGateKingdom($this->app)
                 );
 
                 $registry->add(

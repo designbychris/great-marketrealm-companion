@@ -1,0 +1,92 @@
+.gmrc-guild-gate {
+    --gate-ink: #2d1d32;
+    --gate-wine: #5b2039;
+    --gate-gold: #c49a55;
+    --gate-paper: rgba(249, 239, 210, 0.94);
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(18rem, 0.85fr) minmax(32rem, 1.35fr);
+    gap: clamp(1.25rem, 4vw, 4rem);
+    align-items: center;
+    width: min(1180px, calc(100% - 2rem));
+    min-height: min(860px, calc(100vh - 4rem));
+    margin: 2rem auto;
+    padding: clamp(1.25rem, 4vw, 4rem);
+    overflow: hidden;
+    color: var(--gate-ink);
+    border: 1px solid rgba(196, 154, 85, 0.65);
+    border-radius: 28px;
+    background:
+        linear-gradient(120deg, rgba(27, 17, 30, 0.92), rgba(62, 35, 45, 0.72)),
+        url("../../../images/guild-hall/navigation/cocoa-woodgrain.webp") center / cover;
+    box-shadow: 0 28px 80px rgba(18, 10, 19, 0.32);
+    isolation: isolate;
+}
+
+.gmrc-guild-gate__veil {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(circle at 18% 26%, rgba(224, 187, 108, 0.22), transparent 34%),
+        radial-gradient(circle at 80% 78%, rgba(103, 45, 65, 0.32), transparent 42%);
+    pointer-events: none;
+}
+
+.gmrc-guild-gate__welcome { color: #fff9e7; }
+.gmrc-guild-gate__seal { display: grid; place-items: center; width: 4.5rem; aspect-ratio: 1; margin-bottom: 1rem; border: 2px solid var(--gate-gold); border-radius: 50%; color: #f4d899; font-size: 2rem; box-shadow: inset 0 0 0 6px rgba(196, 154, 85, 0.12); }
+.gmrc-guild-gate__eyebrow, .gmrc-guild-gate__folio-kicker { margin: 0 0 .45rem; text-transform: uppercase; letter-spacing: .14em; font-size: .74rem; font-weight: 800; }
+.gmrc-guild-gate__welcome h1 { margin: 0; color: #fff5d8; font-size: clamp(2.8rem, 7vw, 5.8rem); line-height: .92; text-wrap: balance; }
+.gmrc-guild-gate__lead { max-width: 34rem; margin: 1.35rem 0; color: rgba(255, 249, 231, 0.84); font-size: clamp(1rem, 1.6vw, 1.2rem); line-height: 1.65; }
+.gmrc-guild-gate__promise { display: flex; flex-wrap: wrap; gap: .55rem; }
+.gmrc-guild-gate__promise span { padding: .45rem .7rem; border: 1px solid rgba(244, 216, 153, 0.34); border-radius: 999px; background: rgba(26, 15, 27, 0.36); color: #f4d899; font-size: .78rem; }
+
+.gmrc-guild-gate__desk { padding: clamp(1rem, 2.4vw, 1.5rem); border: 1px solid rgba(255, 244, 210, .45); border-radius: 22px; background: rgba(255, 248, 225, .12); backdrop-filter: blur(12px); }
+.gmrc-guild-gate__notice { margin: 0 0 1rem; padding: .8rem 1rem; border-radius: 12px; font-weight: 700; }
+.gmrc-guild-gate__notice--error { border: 1px solid #9f5361; background: #fff0ec; color: #6f1d2e; }
+.gmrc-guild-gate__switcher { display: flex; gap: .5rem; margin-bottom: 1rem; }
+.gmrc-guild-gate__switcher a { padding: .55rem .8rem; border: 1px solid rgba(244, 216, 153, .34); border-radius: 999px; color: #fff5d8; text-decoration: none; }
+.gmrc-guild-gate__switcher a[aria-current="true"] { background: #f4d899; color: #3b2332; }
+.gmrc-guild-gate__forms { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 1rem; align-items: start; }
+.gmrc-guild-gate__folio { padding: clamp(1rem, 2vw, 1.5rem); border: 1px solid rgba(104, 76, 48, .24); border-radius: 16px; background: var(--gate-paper); box-shadow: 0 12px 32px rgba(20, 12, 20, .18); }
+.gmrc-guild-gate__folio h2 { margin: 0 0 1rem; color: #4a2638; font-size: clamp(1.35rem, 2vw, 1.8rem); }
+.gmrc-guild-gate__folio-kicker { color: #8a5e3b; }
+.gmrc-guild-gate__folio form { display: grid; gap: .62rem; }
+.gmrc-guild-gate__folio label, .gmrc-guild-gate__calling legend { font-weight: 750; }
+.gmrc-guild-gate__folio input[type="text"], .gmrc-guild-gate__folio input[type="email"], .gmrc-guild-gate__folio input[type="password"] { width: 100%; min-height: 2.8rem; padding: .58rem .7rem; border: 1px solid #a88a64; border-radius: 9px; background: rgba(255, 253, 241, .86); color: var(--gate-ink); }
+.gmrc-guild-gate__folio input:focus-visible, .gmrc-guild-gate__folio button:focus-visible, .gmrc-guild-gate__switcher a:focus-visible { outline: 3px solid #f0bd62; outline-offset: 3px; }
+.gmrc-guild-gate__folio button { min-height: 2.9rem; margin-top: .35rem; padding: .65rem 1rem; border: 1px solid #3e1728; border-radius: 10px; background: linear-gradient(#74304b, #552036); color: #fff9e7; font-weight: 800; cursor: pointer; }
+.gmrc-guild-gate__folio button:hover { filter: brightness(1.08); }
+.gmrc-guild-gate__login-options { display: grid; gap: .45rem; margin-top: .15rem; }
+.gmrc-guild-gate__login-options > a { width: fit-content; color: #6b334a; font-size: .86rem; font-weight: 700; }
+.gmrc-guild-gate__remember { display: flex; gap: .5rem; align-items: flex-start; font-size: .88rem; }
+.gmrc-guild-gate__calling { display: grid; gap: .5rem; margin: .35rem 0; padding: .75rem; border: 1px solid rgba(104, 76, 48, .25); border-radius: 10px; }
+.gmrc-guild-gate__calling label { display: grid; grid-template-columns: auto 1fr; gap: .55rem; align-items: start; }
+.gmrc-guild-gate__calling small { display: block; margin-top: .14rem; color: #68584c; font-weight: 500; line-height: 1.35; }
+.gmrc-guild-gate__folio > form > small { color: #69584d; line-height: 1.4; }
+
+@media (max-width: 980px) {
+    .gmrc-guild-gate { grid-template-columns: 1fr; min-height: auto; }
+    .gmrc-guild-gate__welcome h1 { font-size: clamp(2.8rem, 12vw, 5rem); }
+}
+
+@media (max-width: 720px) {
+    .gmrc-guild-gate { width: calc(100% - 1rem); margin: .5rem auto; padding: 1rem; border-radius: 18px; }
+    .gmrc-guild-gate__forms { grid-template-columns: 1fr; }
+    .gmrc-guild-gate__switcher { position: sticky; top: .5rem; z-index: 2; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    .gmrc-guild-gate__desk { background: #4b3040; backdrop-filter: none; }
+    .gmrc-guild-gate__folio { background: #f8edcf; }
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+    .gmrc-guild-gate__desk { background: rgba(62, 38, 51, .96); }
+}
+
+@media (forced-colors: active) {
+    .gmrc-guild-gate, .gmrc-guild-gate__desk, .gmrc-guild-gate__folio, .gmrc-guild-gate__calling { border: 1px solid CanvasText; background: Canvas; color: CanvasText; box-shadow: none; }
+    .gmrc-guild-gate__welcome, .gmrc-guild-gate__welcome h1, .gmrc-guild-gate__lead, .gmrc-guild-gate__promise span, .gmrc-guild-gate__switcher a { color: CanvasText; }
+    .gmrc-guild-gate__folio button { border: 1px solid ButtonText; background: ButtonFace; color: ButtonText; }
+}

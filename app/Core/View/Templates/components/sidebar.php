@@ -1,5 +1,7 @@
 <?php
 
+use GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile;
+
 defined('ABSPATH') || exit;
 
 $currentUser = wp_get_current_user();
@@ -11,6 +13,34 @@ $homeUrl = remove_query_arg(
     'gmrc_route',
     get_permalink()
 );
+
+$guildRoleLabel = in_array(
+    'gmrc_dm',
+    (array) $currentUser->roles,
+    true
+) || current_user_can('gmrc_manage_campaigns')
+    ? 'Dungeon Master'
+    : 'Player';
+
+$profilePortraitId = absint(
+    get_user_meta(
+        $currentUser->ID,
+        GuildProfile::PORTRAIT_ATTACHMENT_META,
+        true
+    )
+);
+
+$guildAvatar = $profilePortraitId > 0
+    ? wp_get_attachment_image(
+        $profilePortraitId,
+        [38, 38],
+        false,
+        [
+            'class' => 'avatar avatar-38 photo',
+            'alt' => '',
+        ]
+    )
+    : get_avatar($currentUser->ID, 38);
 
 /**
  * Render the SVG supplied by the Navigation icon registry.
@@ -216,10 +246,7 @@ $navigationIconHtml = static function (
             aria-hidden="true"
         >
             <?php
-            echo get_avatar(
-                $currentUser->ID,
-                38
-            );
+            echo $guildAvatar; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             ?>
         </div>
 
@@ -234,14 +261,14 @@ $navigationIconHtml = static function (
             </strong>
 
             <span>
-                Adventurer
+                <?php echo esc_html($guildRoleLabel); ?>
             </span>
 
         </div>
 
         <a
             href="<?php echo esc_url(
-                wp_logout_url(home_url())
+                wp_logout_url($homeUrl)
             ); ?>"
             class="gmrc-navigation__logout"
         >
