@@ -106,3 +106,33 @@ Encounter planning remains outside this slice. The Session identity established 
 ## Next certified slice
 
 **Phase III.15.4 — The Encounter Board** should create campaign/session-scoped encounters without weakening the Campaign, Player Roster, or Session ownership boundaries.
+
+## III.15.4 — The Encounter Board
+
+### Certified incoming baseline for III.15.4
+
+- 3,426 tests
+- 11,364 assertions
+- all green
+
+The Encounter Board establishes encounters as first-class, campaign-owned Dungeon Master records that may be prepared independently and assigned to a Session when the story is ready.
+
+This slice provides:
+
+- private `gmrc_encounter` WordPress persistence with permanent ULID identity;
+- stable Campaign ownership and WordPress parent linkage;
+- optional assignment to a Session that must belong to the same owned Campaign;
+- Prepared / Running / Completed encounter lifecycle;
+- Low / Moderate / High / Deadly threat designation;
+- location/environment, adversary roster, and Dungeon Master notes;
+- participating Characters limited to Characters already attached through the Campaign Player Roster;
+- Create, View, Edit, and Board-index workflows;
+- campaign-scoped Encounter nonces and `gmrc_manage_campaigns` authorization;
+- archived Campaigns preserving a read-only Encounter Board;
+- immersive Dungeon Master workspace styling with responsive and accessibility fallbacks.
+
+Initiative order, live combat state, hit-point tracking for adversaries, monster stat blocks, and completed combat history deliberately remain outside this first Encounter Board slice.
+
+## Next certified slice
+
+**Phase III.15.5 — The Initiative Table** should turn a prepared Encounter into a live table-facing combat workspace while preserving the Campaign, Session, Roster, Character, and Encounter ownership boundaries established so far.

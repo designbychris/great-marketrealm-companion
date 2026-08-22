@@ -62,11 +62,11 @@ $campaignUrl = add_query_arg(
             <article class="gmrc-dm-ledger gmrc-dm-ledger--encounter">
                 <div class="gmrc-dm-ledger__icon" aria-hidden="true">⚔️</div>
                 <div>
-                    <p class="gmrc-dm-ledger__status">Ledger III · Planned</p>
+                    <p class="gmrc-dm-ledger__status">Ledger III · Open</p>
                     <h3>Encounter Board</h3>
                     <p>Design encounters, marshal adversaries and prepare the challenges ahead.</p>
                 </div>
-                <span class="gmrc-dm-ledger__action is-disabled" aria-disabled="true">Coming soon</span>
+                <a class="gmrc-dm-ledger__action" href="<?php echo esc_url($campaignUrl); ?>">Choose Campaign <span aria-hidden="true">→</span></a>
             </article>
 
             <article class="gmrc-dm-ledger gmrc-dm-ledger--roster">

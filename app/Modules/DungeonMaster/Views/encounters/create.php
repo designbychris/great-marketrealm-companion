@@ -1,0 +1,2 @@
+<?php defined('ABSPATH') || exit; $route='dungeon-master/campaigns/'.$campaign->id().'/encounters'; ?>
+<section class="gmrc-encounter-board gmrc-encounter-form"><header><p class="gmrc-dm-desk__eyebrow">Encounter Board · <?php echo esc_html($campaign->name()); ?></p><h1>Prepare an Encounter</h1><p>Sketch the opposition now and assign it to a Session whenever the story is ready.</p></header><?php require __DIR__.'/_form.php'; ?></section>

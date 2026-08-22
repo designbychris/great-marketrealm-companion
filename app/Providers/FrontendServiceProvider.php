@@ -214,6 +214,18 @@ class FrontendServiceProvider extends ServiceProvider
         if (
             in_array($method, ['POST', 'PUT'], true)
             && preg_match(
+                '#^dungeon-master/campaigns/([^/]+)/encounters(?:/[^/]+)?$#',
+                $route,
+                $encounterMatch
+            )
+        ) {
+            return 'gmrc_dm_encounter_'
+                . sanitize_text_field($encounterMatch[1]);
+        }
+
+        if (
+            in_array($method, ['POST', 'PUT'], true)
+            && preg_match(
                 '#^dungeon-master/campaigns/([^/]+)/sessions(?:/[^/]+)?$#',
                 $route,
                 $sessionMatch
@@ -779,6 +791,10 @@ class FrontendServiceProvider extends ServiceProvider
             [
                 'handle' => 'gmrc-session-ledger',
                 'path' => 'modules/dungeon-master/session-ledger.css',
+            ],
+            [
+                'handle' => 'gmrc-encounter-board',
+                'path' => 'modules/dungeon-master/encounter-board.css',
             ],
             [
                 'handle' => 'gmrc-fellowship-register',
