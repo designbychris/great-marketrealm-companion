@@ -1,5 +1,6 @@
 <?php
 
+use GreatMarketrealmCompanion\Modules\GuildGate\AccountType;
 use GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile;
 
 defined('ABSPATH') || exit;
@@ -14,13 +15,15 @@ $homeUrl = remove_query_arg(
     get_permalink()
 );
 
-$guildRoleLabel = in_array(
-    'gmrc_dm',
-    (array) $currentUser->roles,
-    true
-) || current_user_can('gmrc_manage_campaigns')
-    ? 'Dungeon Master'
-    : 'Player';
+$guildRoleLabel = AccountType::label(
+    GuildProfile::accountType((int) $currentUser->ID)
+);
+
+$profileUrl = add_query_arg(
+    'gmrc_route',
+    'guild-profile',
+    $homeUrl
+);
 
 $profilePortraitId = absint(
     get_user_meta(
@@ -241,30 +244,36 @@ $navigationIconHtml = static function (
 
     <div class="gmrc-sidebar__user">
 
-        <div
-            class="gmrc-sidebar__avatar"
-            aria-hidden="true"
+        <a
+            href="<?php echo esc_url($profileUrl); ?>"
+            class="gmrc-sidebar__account-link"
+            aria-label="Open Guild Account"
         >
-            <?php
-            echo $guildAvatar; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-            ?>
-        </div>
-
-        <div class="gmrc-sidebar__user-details">
-
-            <strong>
+            <div
+                class="gmrc-sidebar__avatar"
+                aria-hidden="true"
+            >
                 <?php
-                echo esc_html(
-                    $currentUser->display_name
-                );
+                echo $guildAvatar; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 ?>
-            </strong>
+            </div>
 
-            <span>
-                <?php echo esc_html($guildRoleLabel); ?>
-            </span>
+            <div class="gmrc-sidebar__user-details">
 
-        </div>
+                <strong>
+                    <?php
+                    echo esc_html(
+                        $currentUser->display_name
+                    );
+                    ?>
+                </strong>
+
+                <span>
+                    <?php echo esc_html($guildRoleLabel); ?>
+                </span>
+
+            </div>
+        </a>
 
         <a
             href="<?php echo esc_url(

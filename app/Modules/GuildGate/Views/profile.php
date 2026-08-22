@@ -15,6 +15,9 @@ $portrait = $portraitId > 0
     ? wp_get_attachment_image($portraitId, 'medium', false, ['class' => 'gmrc-guild-profile__portrait-image', 'alt' => ''])
     : get_avatar($userId, 220, '', '', ['class' => 'gmrc-guild-profile__portrait-image']);
 $action = admin_url('admin-post.php');
+$passwordUrl = (string) ($passwordUrl ?? wp_lostpassword_url());
+$logoutUrl = (string) ($logoutUrl ?? wp_logout_url(home_url('/companion/')));
+$isDm = ($accountType ?? '') === \GreatMarketrealmCompanion\Modules\GuildGate\AccountType::DM;
 ?>
 <section class="gmrc-guild-profile" aria-labelledby="gmrc-guild-profile-title">
     <header class="gmrc-guild-profile__hero">
@@ -88,4 +91,25 @@ $action = admin_url('admin-post.php');
             </form>
         </main>
     </div>
+
+    <section class="gmrc-guild-profile__card gmrc-guild-profile__security" aria-labelledby="gmrc-profile-security-title">
+        <div>
+            <p class="gmrc-guild-profile__kicker">Account &amp; security</p>
+            <h2 id="gmrc-profile-security-title">Guild account</h2>
+            <p>Your Companion access is backed by your WordPress account. Password recovery and sign-out continue through WordPress's secure authentication flow.</p>
+        </div>
+
+        <dl class="gmrc-guild-profile__account-facts">
+            <div><dt>Signed in as</dt><dd><?php echo esc_html((string) ($guildUser->user_login ?? '')); ?></dd></div>
+            <div><dt>Recovery email</dt><dd><?php echo esc_html($email); ?></dd></div>
+            <div><dt>Guild calling</dt><dd><?php echo esc_html((string) $accountTypeLabel); ?></dd></div>
+            <div><dt>Access</dt><dd><?php echo esc_html($isDm ? 'Companion + Dungeon Master tools' : 'Companion player tools'); ?></dd></div>
+        </dl>
+
+        <div class="gmrc-guild-profile__security-actions">
+            <a class="gmrc-guild-profile__action" href="<?php echo esc_url($passwordUrl); ?>">Manage password</a>
+            <a class="gmrc-guild-profile__action gmrc-guild-profile__action--secondary" href="<?php echo esc_url($logoutUrl); ?>">Sign out of the Companion</a>
+        </div>
+        <p class="gmrc-guild-profile__role-note">Guild calling is capability-protected. Changing profile details never changes Player or Dungeon Master permissions.</p>
+    </section>
 </section>

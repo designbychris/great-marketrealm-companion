@@ -59,6 +59,8 @@ final class GuildGateController
                 'accountTypeLabel' => AccountType::label($accountType),
                 'portraitId' => $portraitId,
                 'profileBio' => GuildProfile::bio((int) $user->ID),
+                'passwordUrl' => wp_lostpassword_url($this->profileUrl()),
+                'logoutUrl' => wp_logout_url($this->gateUrl()),
             ])
         );
     }

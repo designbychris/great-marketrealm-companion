@@ -98,3 +98,13 @@ Certified incoming baseline: **3,367 tests / 11,057 assertions**.
 The Guild Gate now continues into an authenticated Guild Profile. Signed-in members can edit their display name, email address and optional Companion biography without changing their protected Player/DM calling. A custom profile portrait may be uploaded through WordPress media handling (JPG, PNG or WebP; 5 MB maximum), stored through `gmrc_profile_portrait_attachment_id`, and removed to restore the normal WordPress avatar fallback. Profile update and portrait commands use dedicated Companion nonces and the existing admin-post/router PRG pipeline.
 
 The Guild Profile is registered in signed-in Companion navigation and has its own enqueued responsive/accessibility stylesheet. Role mutation is intentionally excluded from profile editing so the Guild Gate capability boundary remains authoritative for the later DM programme.
+
+## Phase III.14.2 — Guild Account & Gate Integration
+
+- The Guild Profile is the canonical signed-in account destination.
+- Sidebar identity links directly to the Guild Account while Logout remains a separate explicit action.
+- Sidebar role presentation now uses `GuildProfile::accountType()` so profile and navigation share one role/capability contract.
+- Account & Security presents username, recovery email, Guild calling and effective Companion access.
+- Password management delegates to WordPress's native lost-password/reset flow; the Companion never implements a parallel password store.
+- Player/DM permissions remain read-only from profile updates and are enforced through Companion capabilities.
+- Logout returns to the Guild Gate at `/companion/`.
