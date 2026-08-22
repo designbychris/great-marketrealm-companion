@@ -212,6 +212,20 @@ class FrontendServiceProvider extends ServiceProvider
         }
 
         if (
+            $method === 'PUT'
+            && preg_match(
+                '#^dungeon-master/campaigns/([^/]+)/encounters/([^/]+)/initiative$#',
+                $route,
+                $initiativeMatch
+            )
+        ) {
+            return 'gmrc_dm_initiative_'
+                . sanitize_text_field($initiativeMatch[1])
+                . '_'
+                . sanitize_text_field($initiativeMatch[2]);
+        }
+
+        if (
             in_array($method, ['POST', 'PUT'], true)
             && preg_match(
                 '#^dungeon-master/campaigns/([^/]+)/encounters(?:/[^/]+)?$#',
@@ -797,6 +811,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/dungeon-master/encounter-board.css',
             ],
             [
+                'handle' => 'gmrc-initiative-table',
+                'path' => 'modules/dungeon-master/initiative-table.css',
+            ],
+            [
                 'handle' => 'gmrc-fellowship-register',
                 'path' => 'modules/parties/fellowship-register.css',
             ],
@@ -941,6 +959,15 @@ class FrontendServiceProvider extends ServiceProvider
      */
     protected function enqueueScripts(): void
     {
+        $initiativeScriptPath = GMRC_PATH . 'assets/js/modules/dungeon-master/initiative-table.js';
+        wp_enqueue_script(
+            'gmrc-initiative-table',
+            GMRC_URL . 'assets/js/modules/dungeon-master/initiative-table.js',
+            [],
+            file_exists($initiativeScriptPath) ? (string) filemtime($initiativeScriptPath) : GMRC_VERSION,
+            true
+        );
+
         wp_enqueue_script(
             'gmrc-grand-catalogue',
             GMRC_URL . 'assets/js/modules/characters/grand-catalogue.js',

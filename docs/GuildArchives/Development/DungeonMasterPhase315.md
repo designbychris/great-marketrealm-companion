@@ -136,3 +136,32 @@ Initiative order, live combat state, hit-point tracking for adversaries, monster
 ## Next certified slice
 
 **Phase III.15.5 — The Initiative Table** should turn a prepared Encounter into a live table-facing combat workspace while preserving the Campaign, Session, Roster, Character, and Encounter ownership boundaries established so far.
+
+## III.15.5 — The Initiative Table
+
+### Certified incoming baseline for III.15.5
+
+- 3,435 tests
+- 11,427 assertions
+- all green
+
+The Initiative Table turns a prepared Encounter into a persistent live-play workspace without creating a second encounter model.
+
+This slice provides:
+
+- Encounter-owned persistent initiative state stored on the private Encounter record;
+- combatants seeded only from the Encounter's participating Campaign Characters and adversary roster;
+- Player Character initiative modifiers and certified maximum HP drawn from the Character Ledger;
+- secure d20 initiative rolling in the browser using the same `window.crypto.getRandomValues` principle as Guild Diceworks;
+- manual initiative, current HP, adversary maximum HP, conditions, and down-state tracking;
+- deterministic initiative sorting, active-turn tracking, round advancement, and reset-from-Encounter behaviour;
+- completion of the Initiative Table promoting the Encounter to Completed;
+- dedicated Encounter-scoped Initiative nonces and `gmrc_manage_campaigns` authorization;
+- archived Campaigns preserving the Initiative Table as read-only combat history;
+- immersive Dungeon Master workspace styling with responsive, reduced-transparency, and forced-colour fallbacks.
+
+The Initiative Table deliberately does not write DM-side HP changes back into a Player's Character Ledger. It is encounter-local combat state, preventing a Dungeon Master from silently mutating Player-owned character records.
+
+## Next certified slice
+
+**Phase III.15.6** should build on the live Encounter foundation without weakening the ownership boundaries certified through the Initiative Table.

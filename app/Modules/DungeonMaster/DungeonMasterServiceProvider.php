@@ -11,6 +11,7 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\DungeonMasterCon
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\PlayerRosterController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\SessionController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\EncounterController;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\InitiativeController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRosterRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\SessionRepository;
@@ -27,6 +28,7 @@ final class DungeonMasterServiceProvider extends ServiceProvider
   $this->app->bind(CampaignController::class,static fn(Container $c): CampaignController=>new CampaignController($c->make(CampaignRepository::class),$c->make(DungeonMasterAccess::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class)));
   $this->app->bind(PlayerRosterController::class,static fn(Container $c): PlayerRosterController=>new PlayerRosterController($c->make(CampaignRepository::class),$c->make(CampaignRosterRepository::class),$c->make(CharacterRepository::class),$c->make(DungeonMasterAccess::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class)));
   $this->app->bind(SessionController::class,static fn(Container $c): SessionController=>new SessionController($c->make(CampaignRepository::class),$c->make(SessionRepository::class),$c->make(CampaignRosterRepository::class),$c->make(CharacterRepository::class),$c->make(DungeonMasterAccess::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class)));
+  $this->app->bind(InitiativeController::class,static fn(Container $c): InitiativeController=>new InitiativeController($c->make(CampaignRepository::class),$c->make(EncounterRepository::class),$c->make(CampaignRosterRepository::class),$c->make(CharacterRepository::class),$c->make(DungeonMasterAccess::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class)));
   $this->app->bind(EncounterController::class,static fn(Container $c): EncounterController=>new EncounterController($c->make(CampaignRepository::class),$c->make(EncounterRepository::class),$c->make(SessionRepository::class),$c->make(CampaignRosterRepository::class),$c->make(CharacterRepository::class),$c->make(DungeonMasterAccess::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class)));
  }
  public function boot(): void { add_action('init',[$this,'registerPostType']); }

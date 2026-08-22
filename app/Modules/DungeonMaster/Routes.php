@@ -5,6 +5,7 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\CampaignControll
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\PlayerRosterController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\SessionController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\EncounterController;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\InitiativeController;
 defined('ABSPATH') || exit;
 return static function (Router $router): void {
  $router->get('/dungeon-master',[DungeonMasterController::class,'index']);
@@ -32,4 +33,6 @@ return static function (Router $router): void {
  $router->get('/dungeon-master/campaigns/{id}/encounters/{encounterId}/edit',[EncounterController::class,'edit']);
  $router->get('/dungeon-master/campaigns/{id}/encounters/{encounterId}',[EncounterController::class,'show']);
  $router->put('/dungeon-master/campaigns/{id}/encounters/{encounterId}',[EncounterController::class,'update']);
+ $router->get('/dungeon-master/campaigns/{id}/encounters/{encounterId}/initiative',[InitiativeController::class,'index']);
+ $router->put('/dungeon-master/campaigns/{id}/encounters/{encounterId}/initiative',[InitiativeController::class,'update']);
 };

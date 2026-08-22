@@ -23,6 +23,7 @@ final class EncounterRepository
     private const META_ADVERSARIES = '_gmrc_encounter_adversaries';
     private const META_NOTES = '_gmrc_encounter_notes';
     private const META_CHARACTERS = '_gmrc_encounter_character_ids';
+    private const META_INITIATIVE = '_gmrc_encounter_initiative_table';
 
     public function __construct(private CampaignRepository $campaigns) {}
 
@@ -45,6 +46,23 @@ final class EncounterRepository
     {
         $post = $this->findPost($encounterId, $campaign);
         return $post instanceof WP_Post ? $this->map($post) : null;
+    }
+
+    /** @return array<string,mixed> */
+    public function initiativeForCampaign(string $encounterId, Campaign $campaign): array
+    {
+        $post = $this->findPost($encounterId, $campaign);
+        if (! $post instanceof WP_Post) { return []; }
+        $state = get_post_meta($post->ID, self::META_INITIATIVE, true);
+        return is_array($state) ? $state : [];
+    }
+
+    /** @param array<string,mixed> $state */
+    public function saveInitiative(string $encounterId, Campaign $campaign, array $state): void
+    {
+        $post = $this->findPost($encounterId, $campaign);
+        if (! $post instanceof WP_Post) { throw new RuntimeException('The Encounter could not be found for Initiative.'); }
+        update_post_meta($post->ID, self::META_INITIATIVE, $state);
     }
 
     public function save(Encounter $encounter, Campaign $campaign): void
