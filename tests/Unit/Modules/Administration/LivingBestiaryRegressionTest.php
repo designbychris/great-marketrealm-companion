@@ -49,8 +49,9 @@ final class LivingBestiaryRegressionTest extends TestCase
         $view = $this->source('app/Modules/Administration/Views/canonical-records.php');
         foreach (['damage_resistances', 'condition_immunities', 'spellcasting', 'legendary_actions', 'mythic_actions', 'lair_actions'] as $field) {
             self::assertStringContainsString("'" . $field . "'", $service);
-            self::assertStringContainsString('name="' . $field . '"', $view);
+            self::assertStringContainsString("'" . $field . "' => [", $view);
         }
+        self::assertStringContainsString('name="<?php echo esc_attr($name); ?>"', $view);
         self::assertStringContainsString('Restore Dungeon Master Guide baseline', $view);
     }
 
