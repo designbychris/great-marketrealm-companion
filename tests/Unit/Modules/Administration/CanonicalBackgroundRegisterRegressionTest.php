@@ -21,7 +21,7 @@ final class CanonicalBackgroundRegisterRegressionTest extends TestCase
         self::assertStringContainsString('CanonicalBackgroundRegister::class', $source);
         self::assertStringContainsString('admin_post_gmrc_save_canonical_background', $source);
         self::assertStringContainsString('admin_post_gmrc_reset_canonical_background', $source);
-        self::assertStringContainsString("$section === 'canonical-backgrounds'", $source);
+        self::assertStringContainsString("\$section === 'canonical-backgrounds'", $source);
     }
 
     public function testRegisterUsesExistingHandbookBackgroundSource(): void
