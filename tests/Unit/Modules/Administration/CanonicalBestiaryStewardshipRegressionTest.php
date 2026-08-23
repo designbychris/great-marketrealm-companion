@@ -62,7 +62,7 @@ final class CanonicalBestiaryStewardshipRegressionTest extends TestCase
     public function testBestiaryListingLinksCanonicalCardsAndShowsArtwork(): void
     {
         $view = $this->source('app/Modules/DungeonMaster/Views/monsters/index.php');
-        self::assertStringContainsString("'dungeon-master/monsters/' . \$monster->id()", $view);
+        self::assertStringContainsString("'dungeon-master/monsters/canonical/' . \$monster->key()", $view);
         self::assertStringContainsString('imageAttachmentId()', $view);
         self::assertStringContainsString('gmrc-canonical-bestiary__image', $view);
         self::assertStringContainsString('Bestiary folio', $view);
@@ -70,8 +70,12 @@ final class CanonicalBestiaryStewardshipRegressionTest extends TestCase
 
     public function testCanonicalCreatureHasInteractiveFolioWithFullRulesSections(): void
     {
+        $routes = $this->source('app/Modules/DungeonMaster/Routes.php');
         $controller = $this->source('app/Modules/DungeonMaster/Controllers/MonsterController.php');
         $view = $this->source('app/Modules/DungeonMaster/Views/monsters/canonical.php');
+        self::assertStringContainsString("'/dungeon-master/monsters/canonical/{monsterKey}'", $routes);
+        self::assertStringContainsString('showCanonical', $routes);
+        self::assertStringContainsString('showCanonical(string $monsterKey)', $controller);
         self::assertStringContainsString("str_starts_with(\$monsterId, 'canonical:')", $controller);
         self::assertStringContainsString('dungeonmaster.monsters.canonical', $controller);
         self::assertStringContainsString('Canonical Marketrealm Bestiary · Field Folio', $view);

@@ -71,15 +71,16 @@ final class MonsterController
         return $this->responses->redirect($this->url($monster->id()));
     }
 
+    public function showCanonical(string $monsterKey): string
+    {
+        return $this->renderCanonical($monsterKey);
+    }
+
     public function show(string $monsterId): string
     {
         $this->guard();
         if (str_starts_with($monsterId, 'canonical:')) {
-            $monster = $this->canonicalBestiary->find($monsterId);
-            if ($monster === null) {
-                throw new RuntimeException('Canonical creature not found in the Marketrealm Bestiary.');
-            }
-            return $this->render('dungeonmaster.monsters.canonical', ['monster' => $monster]);
+            return $this->renderCanonical($monsterId);
         }
 
         return $this->render('dungeonmaster.monsters.show', [
@@ -130,6 +131,19 @@ final class MonsterController
         $this->monsters->save($monster);
         $this->flash->success('The creature has been archived without disturbing existing Encounter snapshots.');
         return $this->responses->redirect($this->registerUrl());
+    }
+
+    private function renderCanonical(string $monsterId): string
+    {
+        $this->guard();
+        $monster = $this->canonicalBestiary->find($monsterId);
+        if ($monster === null) {
+            throw new RuntimeException('Canonical creature not found in the Marketrealm Bestiary.');
+        }
+
+        return $this->render('dungeonmaster.monsters.canonical', [
+            'monster' => $monster,
+        ]);
     }
 
     private function monster(string $monsterId): Monster

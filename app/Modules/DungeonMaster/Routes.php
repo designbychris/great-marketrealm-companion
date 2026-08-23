@@ -15,6 +15,7 @@ return static function (Router $router): void {
  $router->get('/dungeon-master/monsters',[MonsterController::class,'index']);
  $router->get('/dungeon-master/monsters/create',[MonsterController::class,'create']);
  $router->post('/dungeon-master/monsters',[MonsterController::class,'store']);
+ $router->get('/dungeon-master/monsters/canonical/{monsterKey}',[MonsterController::class,'showCanonical']);
  $router->get('/dungeon-master/monsters/{monsterId}/edit',[MonsterController::class,'edit']);
  $router->get('/dungeon-master/monsters/{monsterId}',[MonsterController::class,'show']);
  $router->put('/dungeon-master/monsters/{monsterId}',[MonsterController::class,'update']);

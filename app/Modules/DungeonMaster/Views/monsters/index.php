@@ -29,7 +29,7 @@ $createUrl = add_query_arg('gmrc_route', 'dungeon-master/monsters/create', $base
         </header>
         <div class="gmrc-monster-grid">
             <?php foreach (($canonicalMonsters ?? []) as $monster) : ?>
-                <?php $canonicalUrl = add_query_arg('gmrc_route', 'dungeon-master/monsters/' . $monster->id(), $base); ?>
+                <?php $canonicalUrl = add_query_arg('gmrc_route', 'dungeon-master/monsters/canonical/' . $monster->key(), $base); ?>
                 <article class="gmrc-monster-card is-canonical">
                     <?php if ($monster->imageAttachmentId() > 0) : ?>
                         <a class="gmrc-canonical-bestiary__image" href="<?php echo esc_url($canonicalUrl); ?>" aria-label="Open <?php echo esc_attr($monster->name()); ?> Bestiary folio">
