@@ -130,4 +130,40 @@ final class StateChangingFormGatewayRegressionTest extends TestCase
         );
     }
 
+    public function testGenericApplicationGatewayIsCapturedBeforeLateAdminPostDispatch(): void
+    {
+        $root = dirname(__DIR__, 5);
+
+        $provider = file_get_contents(
+            $root . '/app/Providers/FrontendServiceProvider.php'
+        );
+
+        self::assertIsString($provider);
+
+        self::assertStringContainsString(
+            "[\$this, 'captureApplicationRequest']",
+            $provider
+        );
+
+        self::assertStringContainsString(
+            "'admin_init'",
+            $provider
+        );
+
+        self::assertStringContainsString(
+            "action !== 'gmrc_app_request'",
+            $provider
+        );
+
+        self::assertStringContainsString(
+            "application_admin_init_captured",
+            $provider
+        );
+
+        self::assertStringContainsString(
+            '$this->handleApplicationRequest();',
+            $provider
+        );
+    }
+
 }

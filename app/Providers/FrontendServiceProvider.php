@@ -70,6 +70,12 @@ class FrontendServiceProvider extends ServiceProvider
             [$this, 'captureGuildGateRegistrationRequest'],
             0
         );
+
+        add_action(
+            'admin_init',
+            [$this, 'captureApplicationRequest'],
+            1
+        );
     }
 
     /**
@@ -94,6 +100,38 @@ class FrontendServiceProvider extends ServiceProvider
 
         $this->auditGuildGateGateway('registration_admin_init_captured');
         $this->handleGuildGateRegistration();
+    }
+
+    /**
+     * Capture the generic Companion application command before admin-post.php
+     * performs its final action dispatch.
+     *
+     * The managed hosting stack used by the live Companion has demonstrated
+     * that late admin_post_* dispatch can be skipped even though WordPress has
+     * fully booted. Capturing the explicit Companion command at admin_init
+     * keeps every existing nonce-protected application form on the same
+     * gateway while avoiding that fragile final handoff.
+     */
+    public function captureApplicationRequest(): void
+    {
+        $method = strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET'));
+        $action = isset($_REQUEST['action']) && is_scalar($_REQUEST['action'])
+            ? sanitize_key(wp_unslash((string) $_REQUEST['action']))
+            : '';
+
+        if ($method !== 'POST' || $action !== 'gmrc_app_request') {
+            return;
+        }
+
+        $route = isset($_POST['gmrc_route']) && is_scalar($_POST['gmrc_route'])
+            ? sanitize_text_field(wp_unslash((string) $_POST['gmrc_route']))
+            : '';
+
+        $this->auditGuildGateGateway('application_admin_init_captured', [
+            'route' => trim($route, '/'),
+        ]);
+
+        $this->handleApplicationRequest();
     }
 
     /**
