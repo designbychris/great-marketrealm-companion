@@ -238,3 +238,11 @@ The Combat Console deliberately remains encounter-local. Dungeon Master damage, 
 ## Next certified slice
 
 **Phase III.15.8 — The Campaign Journal / DM Notes** should add private campaign intelligence, NPC/location/plot-thread notes, and Session-linked preparation without weakening the Campaign, Session, Encounter, Bestiary, or Combat Console ownership boundaries.
+
+## Phase III.15.8 — The Campaign Journal
+
+The Campaign Journal gives each Dungeon Master a private campaign-owned chronicle for persistent notes between sessions. Entries support General Notes, NPCs, Locations, Plot Threads, Secrets, Lore, Treasure, and Factions; Active, Resolved, and Archived states; optional Session relationships; and pinned priority pages.
+
+Journal records are private WordPress persistence, owner-scoped through the Campaign, non-destructively archived, and read-only when the parent Campaign is archived. Session links are accepted only when the Session belongs to the same Campaign. The Journal is deliberately DM-private and does not expose notes to Players.
+
+The next certified slice is **Phase III.15.9 — The DM Command Centre / Final Integration & Polish**.

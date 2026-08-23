@@ -93,6 +93,16 @@ $monsterUrl = add_query_arg(
                 </div>
                 <a class="gmrc-dm-ledger__action" href="<?php echo esc_url($monsterUrl); ?>">Open Bestiary <span aria-hidden="true">→</span></a>
             </article>
+
+            <article class="gmrc-dm-ledger gmrc-dm-ledger--journal">
+                <div class="gmrc-dm-ledger__icon" aria-hidden="true">📔</div>
+                <div>
+                    <p class="gmrc-dm-ledger__status">Ledger VI · Open</p>
+                    <h3>Campaign Journal</h3>
+                    <p>Keep private NPCs, locations, secrets, lore and plot threads beside each campaign.</p>
+                </div>
+                <a class="gmrc-dm-ledger__action" href="<?php echo esc_url($campaignUrl); ?>">Choose Campaign <span aria-hidden="true">→</span></a>
+            </article>
         </div>
     </section>
 

@@ -1,0 +1,2 @@
+<?php defined('ABSPATH') || exit;$route='dungeon-master/campaigns/'.$campaign->id().'/journal'; ?>
+<section class="gmrc-campaign-journal gmrc-journal-form"><header class="gmrc-campaign-journal__hero"><div><p class="gmrc-dm-desk__eyebrow">Campaign Journal · <?php echo esc_html($campaign->name()); ?></p><h1>Write a New Note</h1><p>This page is private to the Dungeon Master.</p></div></header><?php require __DIR__.'/_form.php'; ?></section>
