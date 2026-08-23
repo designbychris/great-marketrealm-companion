@@ -93,7 +93,8 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
 
         <section class="gmrc-stewards-office__card">
             <span class="dashicons dashicons-book-alt" aria-hidden="true"></span><h2>Canonical Records</h2>
-            <p>Future stewardship tools will manage Bestiary entries, Callings, and other certified game records.</p><span class="gmrc-stewards-office__status">Foundation ready</span>
+            <p>Curate the official Marketrealm Bestiary, including stat lines, traits, actions, and WordPress Media Library artwork.</p>
+            <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'canonical-records'], admin_url('admin.php'))); ?>">Open Bestiary Stewardship</a>
         </section>
 
         <section class="gmrc-stewards-office__card gmrc-stewards-office__card--settings" id="companion-settings">

@@ -21,3 +21,7 @@ This foundation provides:
 - a post-DM visual fix that defines the standard Dungeon Master's Desk background for the Campaign Command Centre.
 
 Later III.16 slices can add anti-bot credentials, security policy, Bestiary/content stewardship, and other administrator controls without weakening this foundation.
+
+## Phase III.16.4 — Canonical Records / Bestiary Stewardship
+
+Canonical Records is now an active Steward workspace. The Dungeon Master Guide register remains the baseline while `gmrc_canonical_bestiary_overrides` stores administrator-owned tuning and WordPress Media Library attachment IDs. Canonical Bestiary cards link to full creature folios, and existing Encounter snapshots remain immutable historical combat preparation.

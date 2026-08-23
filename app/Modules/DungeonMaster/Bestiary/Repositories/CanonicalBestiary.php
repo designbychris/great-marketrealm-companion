@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Repositories;
 
+use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalBestiarySteward;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Models\CanonicalMonster;
 
 defined('ABSPATH') || exit;
@@ -25,16 +26,32 @@ final class CanonicalBestiary
         return $this->records()[sanitize_key($key)] ?? null;
     }
 
+    public function flush(): void
+    {
+        $this->records = null;
+    }
+
     /** @return array<string,CanonicalMonster> */
     private function records(): array
     {
-        if ($this->records !== null) { return $this->records; }
+        if ($this->records !== null) {
+            return $this->records;
+        }
+
         $source = require dirname(__DIR__) . '/Data/dungeon-master-guide-monsters.php';
+        $overrides = get_option(CanonicalBestiarySteward::OPTION, []);
+        $overrides = is_array($overrides) ? $overrides : [];
         $records = [];
+
         foreach ($source as $entry) {
-            $record = new CanonicalMonster($entry);
+            $key = sanitize_key((string) ($entry['key'] ?? ''));
+            $override = isset($overrides[$key]) && is_array($overrides[$key])
+                ? $overrides[$key]
+                : [];
+            $record = new CanonicalMonster(array_merge($entry, $override, ['key' => $key]));
             $records[$record->key()] = $record;
         }
+
         return $this->records = $records;
     }
 }

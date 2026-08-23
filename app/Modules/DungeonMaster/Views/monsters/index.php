@@ -29,9 +29,15 @@ $createUrl = add_query_arg('gmrc_route', 'dungeon-master/monsters/create', $base
         </header>
         <div class="gmrc-monster-grid">
             <?php foreach (($canonicalMonsters ?? []) as $monster) : ?>
+                <?php $canonicalUrl = add_query_arg('gmrc_route', 'dungeon-master/monsters/' . $monster->id(), $base); ?>
                 <article class="gmrc-monster-card is-canonical">
+                    <?php if ($monster->imageAttachmentId() > 0) : ?>
+                        <a class="gmrc-canonical-bestiary__image" href="<?php echo esc_url($canonicalUrl); ?>" aria-label="Open <?php echo esc_attr($monster->name()); ?> Bestiary folio">
+                            <?php echo wp_get_attachment_image($monster->imageAttachmentId(), 'medium', false, ['alt' => '']); ?>
+                        </a>
+                    <?php endif; ?>
                     <p class="gmrc-monster-card__status">Canonical · <?php echo $monster->encounterReady() ? 'Ready for encounters' : 'Reference only'; ?></p>
-                    <h3><?php echo esc_html($monster->name()); ?></h3>
+                    <h3><a href="<?php echo esc_url($canonicalUrl); ?>"><?php echo esc_html($monster->name()); ?></a></h3>
                     <p><?php echo esc_html(trim($monster->size() . ' ' . $monster->creatureType()) ?: 'Canonical creature'); ?></p>
                     <dl class="gmrc-monster-card__stats">
                         <div><dt>AC</dt><dd><?php echo esc_html($monster->armorClass() === null ? '—' : (string) $monster->armorClass()); ?></dd></div>

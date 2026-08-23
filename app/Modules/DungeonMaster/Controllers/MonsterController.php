@@ -73,6 +73,15 @@ final class MonsterController
 
     public function show(string $monsterId): string
     {
+        $this->guard();
+        if (str_starts_with($monsterId, 'canonical:')) {
+            $monster = $this->canonicalBestiary->find($monsterId);
+            if ($monster === null) {
+                throw new RuntimeException('Canonical creature not found in the Marketrealm Bestiary.');
+            }
+            return $this->render('dungeonmaster.monsters.canonical', ['monster' => $monster]);
+        }
+
         return $this->render('dungeonmaster.monsters.show', [
             'monster' => $this->monster($monsterId),
         ]);
