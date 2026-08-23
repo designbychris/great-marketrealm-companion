@@ -7,14 +7,27 @@ defined('ABSPATH') || exit;
 $old = is_array($old ?? null) ? $old : [];
 $flash = is_array($flash ?? null) ? $flash : [];
 $returnRoute = isset($returnRoute) ? (string) $returnRoute : 'dashboard';
-$intent = (string) ($old['gate_intent'] ?? 'login');
+$intent = isset($gateIntent) && $gateIntent === 'register' ? 'register' : 'login';
 $showRegister = $intent === 'register';
 $action = admin_url('admin-post.php');
+$gateBase = home_url('/companion/');
+$gateTabUrl = static fn (string $tab): string => add_query_arg(
+    [
+        'gate' => $tab,
+        'return_route' => $returnRoute,
+    ],
+    $gateBase
+);
 $turnstile = is_array($turnstile ?? null) ? $turnstile : [];
 $turnstileConfigured = ! empty($turnstileConfigured);
 $siteKey = (string) ($turnstile['site_key'] ?? '');
 ?>
-<section class="gmrc-guild-gate" aria-labelledby="gmrc-guild-gate-title">
+<section
+    class="gmrc-guild-gate"
+    aria-labelledby="gmrc-guild-gate-title"
+    data-guild-gate
+    data-guild-gate-active="<?php echo esc_attr($intent); ?>"
+>
     <div class="gmrc-guild-gate__veil" aria-hidden="true"></div>
 
     <div class="gmrc-guild-gate__welcome">
@@ -39,13 +52,45 @@ $siteKey = (string) ($turnstile['site_key'] ?? '');
             </div>
         <?php endif; ?>
 
-        <div class="gmrc-guild-gate__switcher" role="group" aria-label="Guild Gate forms">
-            <a href="#guild-gate-login" <?php echo ! $showRegister ? 'aria-current="true"' : ''; ?>>Sign in</a>
-            <a href="#guild-gate-register" <?php echo $showRegister ? 'aria-current="true"' : ''; ?>>Join the Guild</a>
-        </div>
+        <nav
+            class="gmrc-guild-gate__switcher"
+            role="tablist"
+            aria-label="Guild Gate account access"
+            data-guild-gate-tabs
+        >
+            <a
+                id="gmrc-gate-tab-login"
+                href="<?php echo esc_url($gateTabUrl('login')); ?>"
+                role="tab"
+                aria-selected="<?php echo $showRegister ? 'false' : 'true'; ?>"
+                aria-controls="guild-gate-login"
+                tabindex="<?php echo $showRegister ? '-1' : '0'; ?>"
+                data-guild-gate-tab="login"
+            >
+                Log In
+            </a>
+            <a
+                id="gmrc-gate-tab-register"
+                href="<?php echo esc_url($gateTabUrl('register')); ?>"
+                role="tab"
+                aria-selected="<?php echo $showRegister ? 'true' : 'false'; ?>"
+                aria-controls="guild-gate-register"
+                tabindex="<?php echo $showRegister ? '0' : '-1'; ?>"
+                data-guild-gate-tab="register"
+            >
+                Join the Guild
+            </a>
+        </nav>
 
-        <div class="gmrc-guild-gate__forms">
-            <section id="guild-gate-login" class="gmrc-guild-gate__folio">
+        <div class="gmrc-guild-gate__forms" data-guild-gate-panels>
+            <section
+                id="guild-gate-login"
+                class="gmrc-guild-gate__folio"
+                role="tabpanel"
+                aria-labelledby="gmrc-gate-tab-login"
+                data-guild-gate-panel="login"
+                <?php echo $showRegister ? 'hidden' : ''; ?>
+            >
                 <p class="gmrc-guild-gate__folio-kicker">Returning member</p>
                 <h2>Open your ledger</h2>
                 <form method="post" action="<?php echo esc_url($action); ?>">
@@ -70,7 +115,6 @@ $siteKey = (string) ($turnstile['site_key'] ?? '');
                         </a>
                     </div>
 
-
                     <?php if ($turnstileConfigured && ! empty($turnstile['protect_login'])) : ?>
                         <div class="gmrc-guild-gate__turnstile">
                             <div class="cf-turnstile" data-sitekey="<?php echo esc_attr($siteKey); ?>" data-theme="auto"></div>
@@ -82,7 +126,14 @@ $siteKey = (string) ($turnstile['site_key'] ?? '');
                 </form>
             </section>
 
-            <section id="guild-gate-register" class="gmrc-guild-gate__folio">
+            <section
+                id="guild-gate-register"
+                class="gmrc-guild-gate__folio"
+                role="tabpanel"
+                aria-labelledby="gmrc-gate-tab-register"
+                data-guild-gate-panel="register"
+                <?php echo $showRegister ? '' : 'hidden'; ?>
+            >
                 <p class="gmrc-guild-gate__folio-kicker">First visit</p>
                 <h2>Register your Guild papers</h2>
                 <form method="post" action="<?php echo esc_url($action); ?>">
@@ -108,14 +159,13 @@ $siteKey = (string) ($turnstile['site_key'] ?? '');
                         </label>
                         <label>
                             <input type="radio" name="account_type" value="dm" <?php checked(($old['account_type'] ?? ''), 'dm'); ?>>
-                            <span><strong>Dungeon Master</strong><small>Player tools now, with DM campaign tools added in the coming phase.</small></span>
+                            <span><strong>Dungeon Master</strong><small>Campaigns, players, sessions, encounters and live combat tools.</small></span>
                         </label>
                     </fieldset>
 
                     <label for="gmrc-gate-new-password">Passphrase</label>
                     <input id="gmrc-gate-new-password" name="password" type="password" autocomplete="new-password" minlength="10" aria-describedby="gmrc-gate-password-help" required>
                     <small id="gmrc-gate-password-help">Use at least 10 characters. The Guild never stores your plain passphrase.</small>
-
 
                     <?php if ($turnstileConfigured && ! empty($turnstile['protect_registration'])) : ?>
                         <div class="gmrc-guild-gate__turnstile">

@@ -93,3 +93,63 @@
 
 /* Phase III.16.2 — Gate Security */
 .gmrc-guild-gate__turnstile{display:grid;gap:.45rem;justify-items:start;margin:1rem 0}.gmrc-guild-gate__turnstile small{opacity:.72}
+
+/* Phase III.16.2A — Guild Gate Tabbed Authentication */
+.gmrc-guild-gate__switcher {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .35rem;
+    padding: .3rem;
+    border: 1px solid rgba(244, 216, 153, .34);
+    border-radius: 14px;
+    background: rgba(31, 19, 30, .38);
+}
+
+.gmrc-guild-gate__switcher [role="tab"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 2.85rem;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: #fff5d8;
+    font-weight: 800;
+    text-align: center;
+    text-decoration: none;
+}
+
+.gmrc-guild-gate__switcher [role="tab"][aria-selected="true"] {
+    border-color: #f4d899;
+    background: #f4d899;
+    color: #3b2332;
+    box-shadow: 0 6px 18px rgba(18, 10, 19, .2);
+}
+
+.gmrc-guild-gate__forms {
+    display: block;
+}
+
+.gmrc-guild-gate__folio {
+    width: 100%;
+}
+
+.gmrc-guild-gate__folio[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 720px) {
+    .gmrc-guild-gate__switcher {
+        position: static;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-guild-gate__switcher [role="tab"] {
+        border: 1px solid ButtonText;
+    }
+
+    .gmrc-guild-gate__switcher [role="tab"][aria-selected="true"] {
+        background: Highlight;
+        color: HighlightText;
+    }
+}

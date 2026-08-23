@@ -726,6 +726,20 @@ class FrontendServiceProvider extends ServiceProvider
                 ? (string) filemtime($path)
                 : GMRC_VERSION
         );
+
+        $scriptPath = GMRC_PATH
+            . 'assets/js/modules/guild-gate/guild-gate-tabs.js';
+
+        wp_enqueue_script(
+            'gmrc-guild-gate-tabs',
+            GMRC_URL
+                . 'assets/js/modules/guild-gate/guild-gate-tabs.js',
+            [],
+            file_exists($scriptPath)
+                ? (string) filemtime($scriptPath)
+                : GMRC_VERSION,
+            true
+        );
     }
 
     protected function enqueueGuildProfile(): void

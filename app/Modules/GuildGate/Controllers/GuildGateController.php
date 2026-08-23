@@ -48,6 +48,7 @@ final class GuildGateController
                 'accountTypes' => AccountType::values(),
                 'turnstile' => $this->gateSecurity->all(),
                 'turnstileConfigured' => $this->gateSecurity->configured(),
+                'gateIntent' => $this->gateIntent(),
             ])
         );
     }
@@ -196,6 +197,15 @@ final class GuildGateController
             ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR']))
             : '';
         $this->turnstile->verify($token, $remoteIp);
+    }
+
+    private function gateIntent(): string
+    {
+        $flashedIntent = (string) $this->flash->old('gate_intent', '');
+        $requestedIntent = $this->request->string('gate', '');
+        $intent = $flashedIntent !== '' ? $flashedIntent : $requestedIntent;
+
+        return $intent === 'register' ? 'register' : 'login';
     }
 
     private function returnRoute(): string
