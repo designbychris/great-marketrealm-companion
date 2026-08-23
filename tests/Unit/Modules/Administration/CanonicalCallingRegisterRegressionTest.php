@@ -49,7 +49,7 @@ final class CanonicalCallingRegisterRegressionTest extends TestCase
     {
         $source = file_get_contents($this->root . '/app/Modules/Administration/Views/canonical-callings.php');
         self::assertIsString($source);
-        self::assertStringContainsString('Mechanical identity remains read-only in III.16.5.', $source);
+        self::assertStringContainsString('Mechanical identity remains read-only to protect existing characters.', $source);
         self::assertStringContainsString('Parentage remains read-only to protect existing characters.', $source);
         self::assertStringNotContainsString('name="hit_die"', $source);
         self::assertStringNotContainsString('name="parent"', $source);

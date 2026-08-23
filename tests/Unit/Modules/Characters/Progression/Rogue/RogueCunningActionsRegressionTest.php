@@ -420,7 +420,7 @@ final class RogueCunningActionsRegressionTest extends TestCase
         );
 
         self::assertStringContainsString(
-            'Contextual attack handling arrives in',
+            'Apply this precision damage only',
             $view
         );
 

@@ -311,7 +311,7 @@ final class RogueCunningRegisterRegressionTest extends TestCase
         );
 
         self::assertStringContainsString(
-            'Contextual attack handling arrives in',
+            'Sneak Attack is ready for this turn.',
             $source
         );
 

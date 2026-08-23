@@ -283,7 +283,7 @@ final class MarketrealmArmouryRegressionTest extends TestCase
         );
 
         self::assertStringContainsString(
-            'Phase III.13.5',
+            'Those are kept separately in the Restricted Archive.',
             $view
         );
         self::assertStringContainsString(

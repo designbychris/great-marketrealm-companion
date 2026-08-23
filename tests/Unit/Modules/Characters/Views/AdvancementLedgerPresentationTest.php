@@ -241,7 +241,7 @@ final class AdvancementLedgerPresentationTest extends TestCase
         );
 
         self::assertStringContainsString(
-            'Assigned to Phase',
+            'Specialist folios identified',
             $view
         );
     }
