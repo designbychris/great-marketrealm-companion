@@ -174,7 +174,7 @@ final class PostCallingFoundationRegressionTest extends TestCase
         );
     }
 
-    public function testFoundationPageNamesAllThreeFutureLibraries(): void
+    public function testFoundationPageNamesRegisteredLibraryCollections(): void
     {
         $view = $this->source(
             'app/Modules/Library/Views/index.php'
@@ -193,7 +193,11 @@ final class PostCallingFoundationRegressionTest extends TestCase
             $view
         );
         self::assertStringContainsString(
-            'Records remain intentionally untouched',
+            'Open Guild Field Guide',
+            $view
+        );
+        self::assertStringContainsString(
+            "['spells', 'backgrounds', 'armoury', 'relics', 'field-guide']",
             $view
         );
     }
