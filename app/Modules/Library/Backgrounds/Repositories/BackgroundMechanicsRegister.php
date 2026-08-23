@@ -92,7 +92,9 @@ final class BackgroundMechanicsRegister
     /** @return array<string,array<string,mixed>> */
     private function overrides(): array
     {
-        $value = get_option(self::OPTION, []);
+        $value = \function_exists('get_option')
+            ? \get_option(self::OPTION, [])
+            : [];
         return is_array($value) ? $value : [];
     }
 }
