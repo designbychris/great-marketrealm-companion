@@ -24,7 +24,7 @@ final class CampaignCommandCentreRegressionTest extends TestCase
         $controller = $this->read('app/Modules/DungeonMaster/Controllers/CampaignController.php');
         $view = $this->read('app/Modules/DungeonMaster/Views/campaigns/show.php');
         self::assertStringContainsString('CampaignCommandCentre', $controller);
-        self::assertStringContainsString("'commandCentre'=>$this->commandCentre->build($campaign)", $controller);
+        self::assertStringContainsString("'commandCentre'=>\$this->commandCentre->build(\$campaign)", $controller);
         self::assertStringContainsString('Campaign Command Centre', $view);
         self::assertStringContainsString('Continue combat', $view);
         self::assertStringContainsString('Run encounter', $view);

@@ -82,10 +82,10 @@ $preparedEncounter = $commandCentre['preparedEncounter'];
     </div>
 
     <nav class="gmrc-command-centre__tools" aria-label="Campaign ledgers">
-        <a href="<?php echo esc_url($route($campaignPath . '/players')); ?>">Player Roster</a>
-        <a href="<?php echo esc_url($route($campaignPath . '/sessions')); ?>">Session Ledger</a>
-        <a href="<?php echo esc_url($route($campaignPath . '/encounters')); ?>">Encounter Board</a>
-        <a href="<?php echo esc_url($route($campaignPath . '/journal')); ?>">Campaign Journal</a>
+        <a href="<?php echo esc_url($route($campaignPath . '/players')); ?>">Open Player Roster</a>
+        <a href="<?php echo esc_url($route($campaignPath . '/sessions')); ?>">Open Session Ledger</a>
+        <a href="<?php echo esc_url($route($campaignPath . '/encounters')); ?>">Open Encounter Board</a>
+        <a href="<?php echo esc_url($route($campaignPath . '/journal')); ?>">Open Campaign Journal</a>
         <a href="<?php echo esc_url($route('dungeon-master/monsters')); ?>">Bestiary</a>
     </nav>
 </section>
