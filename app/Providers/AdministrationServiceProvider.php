@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Providers;
 
+use GreatMarketrealmCompanion\Modules\Administration\Diagnostics\StewardDiagnostics;
 use GreatMarketrealmCompanion\Modules\Administration\Security\GateSecuritySettings;
+use GreatMarketrealmCompanion\Modules\Administration\Settings\CompanionSettings;
 
 defined('ABSPATH') || exit;
 
@@ -22,6 +24,8 @@ final class AdministrationServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(GateSecuritySettings::class);
+        $this->app->singleton(CompanionSettings::class);
+        $this->app->singleton(StewardDiagnostics::class);
     }
 
     public function boot(): void
@@ -29,6 +33,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         add_action('admin_menu', [$this, 'registerMenu']);
         add_action('admin_enqueue_scripts', [$this, 'enqueueAssets']);
         add_action('admin_post_gmrc_save_gate_security', [$this, 'saveGateSecurity']);
+        add_action('admin_post_gmrc_save_companion_settings', [$this, 'saveCompanionSettings']);
     }
 
     public function registerMenu(): void
@@ -82,6 +87,23 @@ final class AdministrationServiceProvider extends ServiceProvider
         exit;
     }
 
+    public function saveCompanionSettings(): void
+    {
+        if (! current_user_can(self::CAPABILITY)) {
+            wp_die(esc_html__('Access denied.', 'great-marketrealm-companion'), '', ['response' => 403]);
+        }
+
+        check_admin_referer('gmrc_save_companion_settings', 'gmrc_companion_settings_nonce');
+
+        $this->app->make(CompanionSettings::class)->save(
+            sanitize_email(wp_unslash((string) ($_POST['steward_email'] ?? ''))),
+            ! empty($_POST['show_environment_details'])
+        );
+
+        wp_safe_redirect(add_query_arg(['page' => self::MENU_SLUG, 'gmrc_settings_saved' => '1'], admin_url('admin.php')));
+        exit;
+    }
+
     public function renderOffice(): void
     {
         if (! current_user_can(self::CAPABILITY)) {
@@ -94,6 +116,8 @@ final class AdministrationServiceProvider extends ServiceProvider
 
         $gateSecurity = $this->app->make(GateSecuritySettings::class)->all();
         $gateSecurityConfigured = $this->app->make(GateSecuritySettings::class)->configured();
+        $companionSettings = $this->app->make(CompanionSettings::class)->all();
+        $diagnostics = $this->app->make(StewardDiagnostics::class)->report();
         require GMRC_PATH . 'app/Modules/Administration/Views/stewards-office.php';
     }
 }

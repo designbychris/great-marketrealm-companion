@@ -3,6 +3,9 @@
 defined('ABSPATH') || exit;
 $gateSecurity = is_array($gateSecurity ?? null) ? $gateSecurity : [];
 $configured = ! empty($gateSecurityConfigured);
+$companionSettings = is_array($companionSettings ?? null) ? $companionSettings : [];
+$diagnostics = is_array($diagnostics ?? null) ? $diagnostics : [];
+$counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['healthy' => 0, 'attention' => 0, 'info' => 0];
 ?>
 <div class="wrap gmrc-admin gmrc-stewards-office">
     <header class="gmrc-stewards-office__hero">
@@ -14,8 +17,47 @@ $configured = ! empty($gateSecurityConfigured);
     <?php if (isset($_GET['gmrc_saved'])) : ?>
         <div class="notice notice-success is-dismissible"><p>Gate Security settings have been sealed.</p></div>
     <?php endif; ?>
+    <?php if (isset($_GET['gmrc_settings_saved'])) : ?>
+        <div class="notice notice-success is-dismissible"><p>Companion Settings have been sealed.</p></div>
+    <?php endif; ?>
+
+    <section class="gmrc-steward-health" aria-labelledby="gmrc-steward-health-title">
+        <div>
+            <p class="gmrc-stewards-office__eyebrow">Steward Diagnostics</p>
+            <h2 id="gmrc-steward-health-title"><?php echo esc_html((string) ($diagnostics['seal'] ?? 'Companion status unavailable.')); ?></h2>
+            <p>Live checks cover the WordPress environment, media services, Gate Security, and the Companion's operational foundations.</p>
+        </div>
+        <div class="gmrc-steward-health__counts" aria-label="Diagnostic summary">
+            <span class="is-healthy"><strong><?php echo esc_html((string) ($counts['healthy'] ?? 0)); ?></strong> Healthy</span>
+            <span class="is-attention"><strong><?php echo esc_html((string) ($counts['attention'] ?? 0)); ?></strong> Attention</span>
+            <span class="is-info"><strong><?php echo esc_html((string) ($counts['info'] ?? 0)); ?></strong> Informational</span>
+        </div>
+    </section>
 
     <div class="gmrc-stewards-office__grid">
+        <section class="gmrc-stewards-office__card gmrc-stewards-office__card--wide" id="diagnostics">
+            <span class="dashicons dashicons-heart" aria-hidden="true"></span>
+            <h2>System Diagnostics</h2>
+            <div class="gmrc-diagnostic-list">
+                <?php foreach ((array) ($diagnostics['checks'] ?? []) as $check) : ?>
+                    <article class="gmrc-diagnostic gmrc-diagnostic--<?php echo esc_attr((string) ($check['status'] ?? 'info')); ?>">
+                        <span class="gmrc-diagnostic__status" aria-hidden="true"></span>
+                        <div><h3><?php echo esc_html((string) ($check['label'] ?? 'Check')); ?></h3><p><?php echo esc_html((string) ($check['detail'] ?? '')); ?></p></div>
+                        <strong><?php echo esc_html(ucfirst((string) ($check['status'] ?? 'info'))); ?></strong>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+
+            <?php if (! empty($diagnostics['environment'])) : ?>
+                <h3>Environment</h3>
+                <dl class="gmrc-environment-list">
+                    <?php foreach ((array) $diagnostics['environment'] as $label => $value) : ?>
+                        <div><dt><?php echo esc_html((string) $label); ?></dt><dd><?php echo esc_html((string) $value); ?></dd></div>
+                    <?php endforeach; ?>
+                </dl>
+            <?php endif; ?>
+        </section>
+
         <section class="gmrc-stewards-office__card gmrc-stewards-office__card--wide" id="gate-security">
             <span class="dashicons dashicons-shield-alt" aria-hidden="true"></span>
             <h2>Gate Security</h2>
@@ -53,11 +95,21 @@ $configured = ! empty($gateSecurityConfigured);
             <span class="dashicons dashicons-book-alt" aria-hidden="true"></span><h2>Canonical Records</h2>
             <p>Future stewardship tools will manage Bestiary entries, Callings, and other certified game records.</p><span class="gmrc-stewards-office__status">Foundation ready</span>
         </section>
-        <section class="gmrc-stewards-office__card">
+
+        <section class="gmrc-stewards-office__card gmrc-stewards-office__card--settings" id="companion-settings">
             <span class="dashicons dashicons-admin-settings" aria-hidden="true"></span><h2>Companion Settings</h2>
-            <p>Shared application configuration will live behind administrator capability checks.</p><span class="gmrc-stewards-office__status">Foundation ready</span>
+            <p>Small operational preferences shared by the Steward's Office live here. These settings do not alter game mechanics.</p>
+            <form class="gmrc-companion-settings-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+                <input type="hidden" name="action" value="gmrc_save_companion_settings">
+                <?php wp_nonce_field('gmrc_save_companion_settings', 'gmrc_companion_settings_nonce'); ?>
+                <label for="gmrc-steward-email"><strong>Steward contact email</strong></label>
+                <input id="gmrc-steward-email" name="steward_email" type="email" value="<?php echo esc_attr((string) ($companionSettings['steward_email'] ?? '')); ?>">
+                <p class="description">Reserved for future Steward notices and service alerts.</p>
+                <label><input type="checkbox" name="show_environment_details" value="1" <?php checked(! empty($companionSettings['show_environment_details'])); ?>> Show detailed environment values in diagnostics</label>
+                <?php submit_button('Save Companion Settings', 'secondary', 'submit', false); ?>
+            </form>
         </section>
     </div>
 
-    <aside class="gmrc-stewards-office__seal"><strong>Steward's seal:</strong> Turnstile credentials are administrator-only, the secret is never printed back into the Office, and Guild Gate verification occurs on the server.</aside>
+    <aside class="gmrc-stewards-office__seal"><strong>Steward's seal:</strong> diagnostics are read-only, configuration changes require administrator capability and nonces, and saved Gate secrets are never rendered back into the Office.</aside>
 </div>
