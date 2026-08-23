@@ -838,6 +838,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/dungeon-master/campaign-journal.css',
             ],
             [
+                'handle' => 'gmrc-command-centre',
+                'path' => 'modules/dungeon-master/command-centre.css',
+            ],
+            [
                 'handle' => 'gmrc-fellowship-register',
                 'path' => 'modules/parties/fellowship-register.css',
             ],

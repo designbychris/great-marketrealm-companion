@@ -1,0 +1,29 @@
+/* Phase III.15.9 — DM Dashboard / Campaign Command Centre */
+.gmrc-content:has(> .gmrc-command-centre) { min-height:100vh; background:linear-gradient(rgba(10,7,8,.42),rgba(10,7,8,.7)),var(--gmrc-dm-background,transparent); background-size:cover; background-position:center; background-attachment:fixed; }
+.gmrc-command-centre { width:min(1180px,calc(100% - 3rem)); margin:0 auto; padding:clamp(2rem,5vw,4.5rem) 0 5rem; color:#fff4df; }
+.gmrc-command-centre__hero,.gmrc-command-card,.gmrc-command-centre__stats,.gmrc-command-centre__tools { border:1px solid rgba(226,177,77,.38); border-radius:1rem; background:rgba(21,13,15,.9); box-shadow:0 1.1rem 2.8rem rgba(0,0,0,.3); backdrop-filter:blur(7px) saturate(110%); -webkit-backdrop-filter:blur(7px) saturate(110%); }
+.gmrc-command-centre__hero { display:flex; align-items:flex-start; justify-content:space-between; gap:1.5rem; padding:clamp(1.4rem,3vw,2.4rem); }
+.gmrc-command-centre h1,.gmrc-command-centre h2,.gmrc-command-centre h3 { color:#fff4df; font-family:Georgia,"Times New Roman",serif; }
+.gmrc-command-centre h1 { margin:.15rem 0 .75rem; font-size:clamp(2rem,5vw,4rem); }
+.gmrc-command-centre p { color:#d7c6ae; line-height:1.65; }
+.gmrc-command-centre__stats { display:grid; grid-template-columns:repeat(5,1fr); margin:1rem 0; overflow:hidden; }
+.gmrc-command-centre__stats a { display:grid; gap:.2rem; padding:1.1rem; text-align:center; color:#f5ddac; text-decoration:none; border-right:1px solid rgba(226,177,77,.2); }
+.gmrc-command-centre__stats a:last-child { border-right:0; }
+.gmrc-command-centre__stats strong { font:700 1.8rem Georgia,"Times New Roman",serif; color:#f1c96d; }
+.gmrc-command-centre__grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+.gmrc-command-card { position:relative; min-height:15rem; padding:1.5rem; overflow:hidden; }
+.gmrc-command-card::after { content:""; position:absolute; inset:auto -2rem -3rem auto; width:9rem; height:9rem; border:1px solid rgba(241,201,109,.12); border-radius:50%; pointer-events:none; }
+.gmrc-command-card h2 { margin:.15rem 0 .6rem; }
+.gmrc-command-card h3 { margin:.2rem 0; color:#f1c96d; }
+.gmrc-command-centre__notes { list-style:none; padding:0; margin:.5rem 0 1rem; }
+.gmrc-command-centre__notes a { display:grid; gap:.15rem; padding:.65rem 0; color:#fff4df; text-decoration:none; border-bottom:1px solid rgba(226,177,77,.18); }
+.gmrc-command-centre__notes span { color:#cba65b; font-size:.75rem; text-transform:uppercase; letter-spacing:.08em; }
+.gmrc-command-centre__tools { display:flex; flex-wrap:wrap; gap:.65rem; margin-top:1rem; padding:1rem; }
+.gmrc-command-centre__tools a { color:#f5ddac; padding:.55rem .75rem; border-radius:.45rem; text-decoration:none; }
+.gmrc-command-centre a:focus-visible { outline:3px solid #fff4df; outline-offset:3px; }
+.gmrc-command-centre__tools a:hover,.gmrc-command-centre__notes a:hover { color:#fff; background:rgba(241,201,109,.1); }
+@media (max-width:800px) { .gmrc-command-centre__hero { flex-direction:column; } .gmrc-command-centre__stats { grid-template-columns:repeat(2,1fr); } .gmrc-command-centre__stats a { border-bottom:1px solid rgba(226,177,77,.2); } .gmrc-command-centre__grid { grid-template-columns:1fr; } }
+@media (max-width:520px) { .gmrc-command-centre { width:min(100% - 1.25rem,1180px); } .gmrc-command-centre__stats { grid-template-columns:1fr; } }
+@media (prefers-reduced-transparency:reduce) { .gmrc-command-centre__hero,.gmrc-command-card,.gmrc-command-centre__stats,.gmrc-command-centre__tools { background:#211317; backdrop-filter:none; -webkit-backdrop-filter:none; } }
+@supports not (backdrop-filter:blur(1px)) { .gmrc-command-centre__hero,.gmrc-command-card,.gmrc-command-centre__stats,.gmrc-command-centre__tools { background:rgba(21,13,15,.97); } }
+@media (forced-colors:active) { .gmrc-command-centre__hero,.gmrc-command-card,.gmrc-command-centre__stats,.gmrc-command-centre__tools { border:1px solid CanvasText; background:Canvas; color:CanvasText; } .gmrc-command-centre h1,.gmrc-command-centre h2,.gmrc-command-centre h3,.gmrc-command-centre p,.gmrc-command-centre a { color:CanvasText; } }

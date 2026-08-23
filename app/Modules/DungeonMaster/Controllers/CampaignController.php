@@ -12,15 +12,16 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignReposit
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Requests\StoreCampaignRequest;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Requests\UpdateCampaignRequest;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\DungeonMasterAccess;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\CampaignCommandCentre;
 use RuntimeException;
 defined('ABSPATH') || exit;
 final class CampaignController
 {
- public function __construct(private CampaignRepository $campaigns,private DungeonMasterAccess $access,private ViewFactory $views,private ResponseFactory $responses,private FlashStore $flash){}
+ public function __construct(private CampaignRepository $campaigns,private DungeonMasterAccess $access,private ViewFactory $views,private ResponseFactory $responses,private FlashStore $flash,private CampaignCommandCentre $commandCentre){}
  public function index(): string { $this->guard(); return $this->views->render(View::make('dungeonmaster.campaigns.index',['campaigns'=>$this->campaigns->allForOwner($this->ownerId())])); }
  public function create(): string { $this->guard(); return $this->views->render(View::make('dungeonmaster.campaigns.create')); }
  public function store(StoreCampaignRequest $request): RedirectResponse { $this->guard(); $campaign=Campaign::create($request->name(),$this->ownerId(),$request->description());$this->campaigns->save($campaign);$this->flash->success('The campaign has been entered into the Campaign Register.');return $this->responses->redirect($this->url($campaign->id())); }
- public function show(string $id): string { $this->guard(); return $this->views->render(View::make('dungeonmaster.campaigns.show',['campaign'=>$this->campaign($id)])); }
+ public function show(string $id): string { $this->guard(); $campaign=$this->campaign($id); return $this->views->render(View::make('dungeonmaster.campaigns.show',['campaign'=>$campaign,'commandCentre'=>$this->commandCentre->build($campaign)])); }
  public function edit(string $id): string { $this->guard(); return $this->views->render(View::make('dungeonmaster.campaigns.edit',['campaign'=>$this->campaign($id)])); }
  public function update(string $id,UpdateCampaignRequest $request): RedirectResponse { $this->guard();$campaign=$this->campaign($id);$campaign->update($request->name(),$request->description());$this->campaigns->save($campaign);$this->flash->success('The campaign record has been updated.');return $this->responses->redirect($this->url($id)); }
  public function archive(string $id): RedirectResponse { $this->guard();$campaign=$this->campaign($id);$campaign->archive();$this->campaigns->save($campaign);$this->flash->success('The campaign has been archived.');return $this->responses->redirect($this->registerUrl()); }

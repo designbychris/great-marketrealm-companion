@@ -246,3 +246,20 @@ The Campaign Journal gives each Dungeon Master a private campaign-owned chronicl
 Journal records are private WordPress persistence, owner-scoped through the Campaign, non-destructively archived, and read-only when the parent Campaign is archived. Session links are accepted only when the Session belongs to the same Campaign. The Journal is deliberately DM-private and does not expose notes to Players.
 
 The next certified slice is **Phase III.15.9 — The DM Command Centre / Final Integration & Polish**.
+
+
+## Phase III.15.9 — The DM Dashboard / Campaign Command Centre
+
+### Certified incoming baseline for III.15.9
+
+- 3,478 tests
+- 11,692 assertions
+- all green
+
+The Campaign Command Centre turns the existing Campaign Chronicle into an operational Dungeon Master dashboard. It is an aggregation layer over the certified Campaign, Player Roster, Session Ledger, Encounter Board, Combat Console, and Campaign Journal repositories; it does not create duplicate campaign state.
+
+This slice provides campaign-level counts, next/recent Session context, live or prepared Encounter priority actions, pinned Campaign Journal intelligence, Player/Character muster totals, useful empty-state actions, and direct navigation to each existing campaign ledger and the Bestiary. A Running Encounter surfaces **Continue combat**, while a Prepared Encounter surfaces **Run encounter**, keeping live play one action away without creating a second combat record.
+
+All data remains owner-scoped through the existing Campaign boundary. Archived Campaign behaviour remains inherited from the underlying ledgers, and the Command Centre preserves the established Dungeon Master visual treatment, responsive layout, keyboard focus, reduced-transparency fallback, and forced-colour support.
+
+Phase III.15.9 is the final integration and polish slice of the initial Dungeon Master's Desk programme.

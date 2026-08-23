@@ -23,14 +23,15 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\JournalReposito
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Repositories\CanonicalBestiary;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\DungeonMasterAccess;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\CampaignCommandCentre;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 defined('ABSPATH') || exit;
 final class DungeonMasterServiceProvider extends ServiceProvider
 {
  public function register(): void {
-  $this->app->singleton(DungeonMasterAccess::class);$this->app->singleton(CampaignRepository::class);$this->app->singleton(CampaignRosterRepository::class);$this->app->singleton(SessionRepository::class);$this->app->singleton(EncounterRepository::class);$this->app->singleton(MonsterRepository::class);$this->app->singleton(CanonicalBestiary::class);$this->app->singleton(JournalRepository::class);
+  $this->app->singleton(DungeonMasterAccess::class);$this->app->singleton(CampaignCommandCentre::class);$this->app->singleton(CampaignRepository::class);$this->app->singleton(CampaignRosterRepository::class);$this->app->singleton(SessionRepository::class);$this->app->singleton(EncounterRepository::class);$this->app->singleton(MonsterRepository::class);$this->app->singleton(CanonicalBestiary::class);$this->app->singleton(JournalRepository::class);
   $this->app->bind(DungeonMasterController::class,static fn(Container $c): DungeonMasterController=>new DungeonMasterController($c->make(ViewFactory::class),$c->make(DungeonMasterAccess::class)));
-  $this->app->bind(CampaignController::class,static fn(Container $c): CampaignController=>new CampaignController($c->make(CampaignRepository::class),$c->make(DungeonMasterAccess::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class)));
+  $this->app->bind(CampaignController::class,static fn(Container $c): CampaignController=>new CampaignController($c->make(CampaignRepository::class),$c->make(DungeonMasterAccess::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class),$c->make(CampaignCommandCentre::class)));
   $this->app->bind(PlayerRosterController::class,static fn(Container $c): PlayerRosterController=>new PlayerRosterController($c->make(CampaignRepository::class),$c->make(CampaignRosterRepository::class),$c->make(CharacterRepository::class),$c->make(DungeonMasterAccess::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class)));
   $this->app->bind(SessionController::class,static fn(Container $c): SessionController=>new SessionController($c->make(CampaignRepository::class),$c->make(SessionRepository::class),$c->make(CampaignRosterRepository::class),$c->make(CharacterRepository::class),$c->make(DungeonMasterAccess::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class)));
   $this->app->bind(JournalController::class,static fn(Container $c): JournalController=>new JournalController($c->make(CampaignRepository::class),$c->make(JournalRepository::class),$c->make(SessionRepository::class),$c->make(DungeonMasterAccess::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class)));
