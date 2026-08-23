@@ -32,7 +32,7 @@ $libraryUrl = add_query_arg(
 
         <div>
             <p class="gmrc-eyebrow">
-                Phase III.13.1B · The Guild Library
+                The Guild Library
             </p>
             <h1 id="gmrc-spellbook-title">
                 Sage’s Spellbook

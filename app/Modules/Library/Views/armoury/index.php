@@ -30,7 +30,7 @@ $groupLabels = [
 >
     <header class="gmrc-armoury__hero">
         <p class="gmrc-eyebrow">
-            Phase III.13.4 · The Guild Library
+            The Guild Library
         </p>
         <h1 id="gmrc-armoury-title">
             The Marketrealm Armoury
@@ -41,7 +41,7 @@ $groupLabels = [
         </p>
         <p>
             Magical relics and artefacts are deliberately absent here.
-            Those remain sealed for Phase III.13.5.
+            Those are kept separately in the Restricted Archive.
         </p>
     </header>
 

@@ -27,7 +27,7 @@ $conditionOptions = [
     <header class="gmrc-initiative-table__hero">
         <div>
             <p class="gmrc-dm-desk__eyebrow">
-                Phase III.15.7 · Initiative Table · Round
+                Initiative Table · Round
                 <?php echo esc_html((string) $table->round()); ?>
             </p>
             <h1>The Combat Console</h1>

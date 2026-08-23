@@ -19,7 +19,7 @@ $libraryUrl = add_query_arg(
 >
     <header class="gmrc-background-register__hero">
         <p class="gmrc-eyebrow">
-            Phase III.13.3 · The Guild Library
+            The Guild Library
         </p>
         <h1 id="gmrc-background-register-title">
             The Background Register

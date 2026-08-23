@@ -21,7 +21,7 @@ $createUrl = add_query_arg('gmrc_route', 'dungeon-master/monsters/create', $base
     <section class="gmrc-canonical-bestiary" aria-labelledby="gmrc-canonical-bestiary-title">
         <header class="gmrc-canonical-bestiary__header">
             <div>
-                <p class="gmrc-dm-desk__eyebrow">Phase III.15.6A · Dungeon Master Guide canon</p>
+                <p class="gmrc-dm-desk__eyebrow">Dungeon Master Guide canon</p>
                 <h2 id="gmrc-canonical-bestiary-title">Canonical Marketrealm Bestiary</h2>
                 <p>Official creatures are read-only and shared by every Dungeon Master. Missing source statistics are shown as unknown rather than guessed.</p>
             </div>

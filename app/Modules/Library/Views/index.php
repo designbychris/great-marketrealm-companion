@@ -35,7 +35,7 @@ $relicsUrl = add_query_arg(
 >
     <header class="gmrc-guild-library__hero">
         <p class="gmrc-eyebrow">
-            Phase III.13 · The Post-Calling Expansion
+            The Guild Library
         </p>
 
         <h1 id="gmrc-guild-library-title">
@@ -71,14 +71,6 @@ $relicsUrl = add_query_arg(
                     )
                 ); ?>"
             >
-                <span class="gmrc-guild-library-card__phase">
-                    <?php echo esc_html(
-                        (string) (
-                            $domain['phase']
-                            ?? ''
-                        )
-                    ); ?>
-                </span>
 
                 <h2>
                     <?php echo esc_html(

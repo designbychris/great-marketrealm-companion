@@ -26,7 +26,7 @@ $relicsUrl = add_query_arg(
 >
     <header class="gmrc-relics__hero">
         <div class="gmrc-relics__hero-copy">
-            <p class="gmrc-eyebrow">Phase III.13.5 · Restricted Archive</p>
+            <p class="gmrc-eyebrow">Restricted Archive</p>
             <h1 id="gmrc-relics-title">Relics of the Marketrealm</h1>
             <p>
                 Sage and Auby keep the Marketrealm’s enchanted equipment,

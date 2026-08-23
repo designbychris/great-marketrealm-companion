@@ -45,7 +45,7 @@ $advancementSeal = isset($advancementSeal)
 >
     <header class="gmrc-advancement-ledger__hero">
         <div>
-            <p class="gmrc-eyebrow">The Ascending Register · Phase III.8.9</p>
+            <p class="gmrc-eyebrow">The Ascending Register</p>
             <h1 id="gmrc-advancement-ledger-title">The Advancement Ledger</h1>
             <p>
                 The Registrar has opened a pending advancement folio for
@@ -141,7 +141,7 @@ $advancementSeal = isset($advancementSeal)
             <header class="gmrc-rising-folios__header">
                 <div>
                     <p class="gmrc-eyebrow">
-                        Phase III.8.2 · The Rising Folios
+                        The Rising Folios
                     </p>
 
                     <h2 id="gmrc-rising-folios-title">
@@ -324,18 +324,6 @@ $advancementSeal = isset($advancementSeal)
                                                     )
                                                 ); ?></p>
 
-                                                <?php if (
-                                                    ! empty(
-                                                        $delegated['phase']
-                                                    )
-                                                ) : ?>
-                                                    <small>
-                                                        Assigned to Phase
-                                                        <?php echo esc_html(
-                                                            (string) $delegated['phase']
-                                                        ); ?>
-                                                    </small>
-                                                <?php endif; ?>
                                             </div>
                                         </li>
                                     <?php endforeach; ?>

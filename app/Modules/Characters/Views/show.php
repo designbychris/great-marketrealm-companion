@@ -8284,8 +8284,8 @@ $callingPathLabel = $callingPath !== ''
                                             ?? 'Once per turn'
                                         )
                                     ); ?>.
-                                    Contextual attack handling arrives in
-                                    Phase III.12.4D.
+                                    Use the standard attack controls when applying
+                                    this precision damage.
                                 </p>
                             </div>
                         </article>
