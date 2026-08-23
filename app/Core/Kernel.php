@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Core;
 
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
+use GreatMarketrealmCompanion\Providers\AdministrationServiceProvider;
 use GreatMarketrealmCompanion\Providers\CodexServiceProvider;
 use GreatMarketrealmCompanion\Providers\DefinitionServiceProvider;
 use GreatMarketrealmCompanion\Providers\FrontendServiceProvider;
@@ -67,6 +68,7 @@ class Kernel
      * @var array<int, class-string<ServiceProvider>>
      */
     protected array $applicationProviders = [
+        AdministrationServiceProvider::class,
         ResourceServiceProvider::class,
         PageServiceProvider::class,
         RouteServiceProvider::class,
