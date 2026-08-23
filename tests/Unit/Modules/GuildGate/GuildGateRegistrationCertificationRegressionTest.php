@@ -55,6 +55,21 @@ final class GuildGateRegistrationCertificationRegressionTest extends TestCase
         self::assertStringContainsString('GuildProfile::ACCOUNT_TYPE_META', $registration);
     }
 
+
+    public function testRegistrationUsesDedicatedWordPressAdminPostGateway(): void
+    {
+        $frontend = $this->source('app/Providers/FrontendServiceProvider.php');
+        $view = $this->source('app/Modules/GuildGate/Views/index.php');
+
+        self::assertStringContainsString("'admin_post_gmrc_guild_gate_register'", $frontend);
+        self::assertStringContainsString("'admin_post_nopriv_gmrc_guild_gate_register'", $frontend);
+        self::assertStringContainsString('handleGuildGateRegistration', $frontend);
+        self::assertStringContainsString("'registration_gateway_received'", $frontend);
+        self::assertStringContainsString("'application_gateway_dispatching'", $frontend);
+        self::assertStringContainsString('value="gmrc_guild_gate_register"', $view);
+        self::assertStringContainsString('value="gmrc_app_request"', $view);
+    }
+
     private function source(string $path): string
     {
         $source = file_get_contents(dirname(__DIR__, 4) . '/' . $path);

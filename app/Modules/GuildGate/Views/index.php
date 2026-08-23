@@ -137,7 +137,7 @@ $siteKey = (string) ($turnstile['site_key'] ?? '');
                 <p class="gmrc-guild-gate__folio-kicker">First visit</p>
                 <h2>Register your Guild papers</h2>
                 <form method="post" action="<?php echo esc_url($action); ?>">
-                    <input type="hidden" name="action" value="gmrc_app_request">
+                    <input type="hidden" name="action" value="gmrc_guild_gate_register">
                     <input type="hidden" name="gmrc_route" value="guild-gate/register">
                     <input type="hidden" name="return_route" value="<?php echo esc_attr($returnRoute); ?>">
                     <?php wp_nonce_field('gmrc_guild_gate_register', 'gmrc_nonce'); ?>

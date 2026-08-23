@@ -54,6 +54,32 @@ class FrontendServiceProvider extends ServiceProvider
             'admin_post_nopriv_gmrc_app_request',
             [$this, 'handleApplicationRequest']
         );
+
+        add_action(
+            'admin_post_gmrc_guild_gate_register',
+            [$this, 'handleGuildGateRegistration']
+        );
+
+        add_action(
+            'admin_post_nopriv_gmrc_guild_gate_register',
+            [$this, 'handleGuildGateRegistration']
+        );
+    }
+
+    /**
+     * Handle the public Guild registration command explicitly.
+     *
+     * Registration gets its own admin-post action so WordPress can hand the
+     * request to the Guild Gate without relying on the generic application
+     * command action being inferred correctly by the browser/request layer.
+     */
+    public function handleGuildGateRegistration(): void
+    {
+        $this->auditGuildGateGateway('registration_gateway_received');
+
+        $_POST['gmrc_route'] = 'guild-gate/register';
+
+        $this->handleApplicationRequest();
     }
 
     /**
@@ -61,6 +87,7 @@ class FrontendServiceProvider extends ServiceProvider
      */
     public function handleApplicationRequest(): void
     {
+        $this->auditGuildGateGateway('application_gateway_received');
         $method = strtoupper(
             $_SERVER['REQUEST_METHOD'] ?? 'GET'
         );
@@ -129,6 +156,12 @@ class FrontendServiceProvider extends ServiceProvider
                 $nonceAction
             )
         ) {
+            $this->auditGuildGateGateway('application_gateway_nonce_rejected', [
+                'route' => trim($route, '/'),
+                'nonce_action_resolved' => $nonceAction !== null ? 'yes' : 'no',
+                'nonce_present' => $submittedNonce !== '' ? 'yes' : 'no',
+            ]);
+
             wp_die(
                 esc_html__(
                     'The form request could not be verified.',
@@ -144,6 +177,11 @@ class FrontendServiceProvider extends ServiceProvider
             );
         }
     
+        $this->auditGuildGateGateway('application_gateway_dispatching', [
+            'route' => trim($route, '/'),
+            'method' => $methodOverride,
+        ]);
+
         $result = $this->app
             ->make(Router::class)
             ->dispatch(
@@ -167,6 +205,27 @@ class FrontendServiceProvider extends ServiceProvider
         );
 
         exit;
+    }
+
+    /**
+     * Record safe command-gateway breadcrumbs while WP_DEBUG is enabled.
+     *
+     * @param array<string,string> $context
+     */
+    private function auditGuildGateGateway(string $event, array $context = []): void
+    {
+        if (! defined('WP_DEBUG') || WP_DEBUG !== true) {
+            return;
+        }
+
+        $payload = ['event' => sanitize_key($event)] + $context;
+        $encoded = function_exists('wp_json_encode')
+            ? wp_json_encode($payload)
+            : json_encode($payload);
+
+        if (is_string($encoded)) {
+            error_log('[GMRC Gateway] ' . $encoded);
+        }
     }
 
     /**
