@@ -8,6 +8,7 @@ use GreatMarketrealmCompanion\Core\Http\Validation\ValidationException;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Language;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiency;
+use GreatMarketrealmCompanion\Modules\Library\Backgrounds\Repositories\BackgroundMechanicsRegister;
 
 defined('ABSPATH') || exit;
 
@@ -66,7 +67,7 @@ trait ResolvesRegistrationInput
             );
         }
 
-        return Background::fromString($value);
+        return (new BackgroundMechanicsRegister())->background($value);
     }
 
     /**

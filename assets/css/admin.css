@@ -44,3 +44,5 @@
 
 /* Phase III.16.8 — Canonical Background Register */
 .gmrc-background-steward__mechanics,.gmrc-background-steward__source-gaps{padding:1rem;border:1px solid #d8ca9f;border-radius:8px;background:#fffaf0}.gmrc-background-steward__mechanics h3{margin-top:0}.gmrc-background-steward__mechanics p{margin-bottom:0;color:#5d554a}.gmrc-background-steward__source-gaps strong{display:block;margin-bottom:.4rem}.gmrc-background-steward__source-gaps ul{margin-bottom:0}.gmrc-background-steward textarea{width:100%}@media (forced-colors:active){.gmrc-background-steward__mechanics,.gmrc-background-steward__source-gaps{border-color:CanvasText}}
+
+.gmrc-background-steward__checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.4rem .8rem;margin:.65rem 0 1rem}.gmrc-background-steward__checks label{display:flex;align-items:center;gap:.4rem}.gmrc-background-steward__history-note{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem;padding:.65rem .75rem;border-left:4px solid currentColor;background:#fff}.gmrc-background-steward__mechanics select{min-width:min(100%,24rem)}@media(max-width:700px){.gmrc-background-steward__checks{grid-template-columns:1fr}}

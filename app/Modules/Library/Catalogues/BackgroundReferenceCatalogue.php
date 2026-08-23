@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Library\Catalogues;
 
-use GreatMarketrealmCompanion\Modules\Library\Backgrounds\Repositories\HandbookBackgroundRegister;
+use GreatMarketrealmCompanion\Modules\Library\Backgrounds\Repositories\BackgroundMechanicsRegister;
 
 defined('ABSPATH') || exit;
 
@@ -14,9 +14,9 @@ defined('ABSPATH') || exit;
 final class BackgroundReferenceCatalogue extends AbstractFoundationCatalogue
 {
     public function __construct(
-        private ?HandbookBackgroundRegister $register = null
+        private ?BackgroundMechanicsRegister $register = null
     ) {
-        $this->register ??= new HandbookBackgroundRegister();
+        $this->register ??= new BackgroundMechanicsRegister();
     }
 
     public function key(): string { return 'backgrounds'; }

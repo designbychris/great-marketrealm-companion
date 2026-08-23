@@ -164,6 +164,8 @@ final class StoreCharacterRequest extends FormRequest
      *     },
      *     languages:array<int,string>,
      *     tools:array<int,string>,
+     *     background_skills:array<int,string>,
+     *     background_tools:array<int,string>,
      *     confirmed:bool
      * }
      */
@@ -188,6 +190,8 @@ final class StoreCharacterRequest extends FormRequest
                 $this->registrationAbilityScores(),
             'languages' => $choices['languages'],
             'tools' => $choices['tools'],
+            'background_skills' => $background->skillProficiencies()->proficiencies(),
+            'background_tools' => $background->toolProficiencyIdentifiers(),
             'confirmed' =>
                 $this->registrationIsConfirmed(),
         ];

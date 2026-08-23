@@ -1109,17 +1109,23 @@ $charactersUrl = add_query_arg(
                         <?php
                         $identifier = $background->value();
                         $isSelected = $identifier === $backgroundValue;
-                        $skills = array_map(
-                            $identifierLabel,
-                            $background->skillProficiencies()->proficiencies()
-                        );
-                        $tools = $background->toolProficiencyIdentifiers();
                         $backgroundReference = is_array(
                             $backgroundReferences[$identifier]
                             ?? null
                         )
                             ? $backgroundReferences[$identifier]
                             : null;
+                        $resolvedSkills = is_array($backgroundReference['skills'] ?? null)
+                            ? $backgroundReference['skills']
+                            : $background->skillProficiencies()->proficiencies();
+                        $tools = is_array($backgroundReference['tools'] ?? null)
+                            ? $backgroundReference['tools']
+                            : $background->toolProficiencyIdentifiers();
+                        $displayLabel = is_string($backgroundReference['name'] ?? null)
+                            && trim($backgroundReference['name']) !== ''
+                                ? $backgroundReference['name']
+                                : $background->label();
+                        $skills = array_map($identifierLabel, $resolvedSkills);
                         $needsArtisanTools = in_array(
                             ToolProficiency::CATEGORY_ARTISANS_TOOLS,
                             $tools,
@@ -1137,7 +1143,7 @@ $charactersUrl = add_query_arg(
                                 type="radio"
                                 name="background"
                                 value="<?php echo esc_attr($identifier); ?>"
-                                data-background-label="<?php echo esc_attr($background->label()); ?>"
+                                data-background-label="<?php echo esc_attr($displayLabel); ?>"
                                 data-language-choices="<?php echo esc_attr((string) $background->languageChoices()); ?>"
                                 data-needs-artisan-tools="<?php echo $needsArtisanTools ? '1' : '0'; ?>"
                                 data-needs-gaming-set="<?php echo $needsGamingSet ? '1' : '0'; ?>"
@@ -1145,10 +1151,10 @@ $charactersUrl = add_query_arg(
                                 required
                             >
                             <span class="gmrc-background-option__image" aria-hidden="true">
-                                <span class="gmrc-background-option__monogram"><?php echo esc_html(strtoupper(substr($background->label(), 0, 1))); ?></span>
+                                <span class="gmrc-background-option__monogram"><?php echo esc_html(strtoupper(substr($displayLabel, 0, 1))); ?></span>
                             </span>
                             <span class="gmrc-background-option__heading">
-                                <strong class="gmrc-background-option__title"><?php echo esc_html($background->label()); ?></strong>
+                                <strong class="gmrc-background-option__title"><?php echo esc_html($displayLabel); ?></strong>
                                 <span class="gmrc-background-option__control" aria-hidden="true"></span>
                             </span>
                             <span class="gmrc-background-option__summary"><?php echo esc_html(implode(', ', $skills)); ?></span>

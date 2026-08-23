@@ -95,7 +95,7 @@ use GreatMarketrealmCompanion\Services\Characters\RaceRegistry;
 use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\CharacterFellowshipPresenter;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
-use GreatMarketrealmCompanion\Modules\Library\Backgrounds\Repositories\HandbookBackgroundRegister;
+use GreatMarketrealmCompanion\Modules\Library\Backgrounds\Repositories\BackgroundMechanicsRegister;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -300,8 +300,10 @@ final class CharacterController
                     $abilities['charisma']
                 )
             ),
-            background: Background::fromString(
-                $registration['background']
+            background: Background::fromStringWithMechanics(
+                $registration['background'],
+                $registration['background_skills'],
+                $registration['background_tools']
             ),
             selectedLanguages: Languages::fromStrings(
                 $registration['languages']
@@ -366,9 +368,10 @@ final class CharacterController
             )
         );
     
-        $background = Background::fromString(
-            $data['background']
-        );
+        $currentBackground = $character->background();
+        $background = $currentBackground->value() === $data['background']
+            ? $currentBackground
+            : (new BackgroundMechanicsRegister())->background($data['background']);
 
         $registration = $request
             ->registrationChoicesFor(
@@ -2991,7 +2994,7 @@ final class CharacterController
     {
         $references = [];
 
-        foreach ((new HandbookBackgroundRegister())->all() as $background) {
+        foreach ((new BackgroundMechanicsRegister())->all() as $background) {
             $references[$background->key()] = $background->toArray();
         }
 

@@ -145,7 +145,7 @@ final class ExpandedBackgroundsRegressionTest extends TestCase
         $controller = $this->source('app/Modules/Characters/Controllers/CharacterController.php');
         $create = $this->source('app/Modules/Characters/Views/create.php');
         $edit = $this->source('app/Modules/Characters/Views/edit.php');
-        self::assertStringContainsString('HandbookBackgroundRegister', $controller);
+        self::assertStringContainsString('BackgroundMechanicsRegister', $controller);
         self::assertStringContainsString("'backgroundReferences'", $controller);
         self::assertStringContainsString('feature_name', $create);
         self::assertStringContainsString('feature_detail', $create);

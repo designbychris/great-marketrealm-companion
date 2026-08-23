@@ -52,6 +52,8 @@ final class CharacterRepository implements CharacterRepositoryInterface
     private const META_WISDOM = '_gmrc_wisdom';
     private const META_CHARISMA = '_gmrc_charisma';
     private const META_BACKGROUND = '_gmrc_background';
+    private const META_BACKGROUND_SKILLS = '_gmrc_background_skills';
+    private const META_BACKGROUND_TOOLS = '_gmrc_background_tools';
     private const META_SELECTED_LANGUAGES = '_gmrc_selected_languages';
     private const META_SELECTED_TOOLS = '_gmrc_selected_tools';
     private const META_SPELLBOOK = '_gmrc_spellbook';
@@ -317,6 +319,10 @@ final class CharacterRepository implements CharacterRepositoryInterface
                 ->background()
                 ->value()
         );
+
+        $backgroundMechanics = $character->background()->mechanicsSnapshot();
+        update_post_meta($postId, self::META_BACKGROUND_SKILLS, $backgroundMechanics['skills']);
+        update_post_meta($postId, self::META_BACKGROUND_TOOLS, $backgroundMechanics['tools']);
 
         update_post_meta(
             $postId,
@@ -738,9 +744,19 @@ final class CharacterRepository implements CharacterRepositoryInterface
             );
         }
     
-        return Background::fromString(
-            $stored
-        );
+        $skills = get_post_meta($postId, self::META_BACKGROUND_SKILLS, true);
+        $tools = get_post_meta($postId, self::META_BACKGROUND_TOOLS, true);
+
+        if (is_array($skills) && is_array($tools)) {
+            return Background::fromStringWithMechanics($stored, $skills, $tools);
+        }
+
+        /*
+         * Legacy Characters intentionally resolve the immutable bundled
+         * Background baseline, never a later Steward override. Their next
+         * save will persist that baseline as an explicit mechanics snapshot.
+         */
+        return Background::fromString($stored);
     }
 
     /**

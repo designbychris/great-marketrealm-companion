@@ -6,6 +6,9 @@ namespace GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords;
 
 use GreatMarketrealmCompanion\Modules\Library\Backgrounds\Models\BackgroundRecord;
 use GreatMarketrealmCompanion\Modules\Library\Backgrounds\Repositories\HandbookBackgroundRegister;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SkillProficiencies;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiency;
+use InvalidArgumentException;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -47,11 +50,16 @@ final class CanonicalBackgroundRegister
             throw new RuntimeException('Canonical Background record not found.');
         }
 
+        $skills = $this->skills($input['skills'] ?? []);
+        $tools = $this->tools($input['tools'] ?? []);
+
         $overrides = $this->overrides();
         $overrides[$record->key()] = [
             'name' => sanitize_text_field((string) ($input['name'] ?? '')),
             'feature_name' => sanitize_text_field((string) ($input['feature_name'] ?? '')),
             'feature_detail' => sanitize_textarea_field((string) ($input['feature_detail'] ?? '')),
+            'skills' => $skills,
+            'tools' => $tools,
             'steward_notes' => sanitize_textarea_field((string) ($input['steward_notes'] ?? '')),
         ];
         update_option(self::OPTION, $overrides, false);
@@ -82,16 +90,49 @@ final class CanonicalBackgroundRegister
             trim((string) ($override['name'] ?? $record->name())),
             trim((string) ($override['feature_name'] ?? $record->featureName())),
             trim((string) ($override['feature_detail'] ?? $record->featureDetail())),
-            $record->skills(),
-            $record->tools(),
-            $record->toolLabel(),
+            is_array($override['skills'] ?? null) ? array_values($override['skills']) : $record->skills(),
+            is_array($override['tools'] ?? null) ? array_values($override['tools']) : $record->tools(),
+            $this->toolLabel(is_array($override['tools'] ?? null) ? array_values($override['tools']) : $record->tools(), $record->toolLabel()),
             $record->sourceIssues(),
             self::SOURCE,
             trim((string) ($override['steward_notes'] ?? ''))
         );
     }
 
-    /** @return array<string,array<string,string>> */
+    /** @return array<int,string> */
+    private function skills(mixed $value): array
+    {
+        $skills = is_array($value) ? array_values(array_unique(array_map('sanitize_key', $value))) : [];
+        if (count($skills) !== 2) {
+            throw new RuntimeException('Choose exactly two certified Background skill proficiencies.');
+        }
+
+        try {
+            return SkillProficiencies::proficient($skills)->proficiencies();
+        } catch (InvalidArgumentException) {
+            throw new RuntimeException('Choose recognised Character skill proficiencies.');
+        }
+    }
+
+    /** @return array<int,string> */
+    private function tools(mixed $value): array
+    {
+        $tools = is_array($value) ? array_values(array_unique(array_map('sanitize_key', $value))) : [];
+        if (count($tools) !== 1 || ! ToolProficiency::supports($tools[0])) {
+            throw new RuntimeException('Choose one recognised Background tool proficiency.');
+        }
+
+        return $tools;
+    }
+
+    private function toolLabel(array $tools, string $fallback): string
+    {
+        return count($tools) === 1 && ToolProficiency::supports((string) $tools[0])
+            ? ToolProficiency::fromString((string) $tools[0])->label()
+            : $fallback;
+    }
+
+    /** @return array<string,array<string,mixed>> */
     private function overrides(): array
     {
         $value = get_option(self::OPTION, []);

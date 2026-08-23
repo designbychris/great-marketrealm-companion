@@ -195,7 +195,9 @@ final class Background implements Stringable
      * @throws InvalidArgumentException
      */
     private function __construct(
-        private readonly string $value
+        private readonly string $value,
+        private readonly ?array $skillSnapshot = null,
+        private readonly ?array $toolSnapshot = null
     ) {
         $this->guardAgainstInvalidValue(
             $value
@@ -212,6 +214,26 @@ final class Background implements Stringable
     ): self {
         return new self(
             self::normalise($value)
+        );
+    }
+
+    /**
+     * Rebuild a Background with certified mechanics captured at inscription.
+     *
+     * @param array<int,string> $skills
+     * @param array<int,string> $tools
+     */
+    public static function fromStringWithMechanics(
+        string $value,
+        array $skills,
+        array $tools
+    ): self {
+        $value = self::normalise($value);
+
+        return new self(
+            $value,
+            SkillProficiencies::proficient($skills)->proficiencies(),
+            ToolProficiencies::fromStrings($tools)->values()
         );
     }
 
@@ -240,9 +262,10 @@ final class Background implements Stringable
     public function skillProficiencies(): SkillProficiencies
     {
         return SkillProficiencies::proficient(
-            self::BACKGROUNDS[
-                $this->value
-            ]['skills']
+            $this->skillSnapshot
+                ?? self::BACKGROUNDS[
+                    $this->value
+                ]['skills']
         );
     }
 
@@ -281,9 +304,10 @@ final class Background implements Stringable
      */
     public function toolProficiencyIdentifiers(): array
     {
-        return self::BACKGROUNDS[
-            $this->value
-        ]['tools'];
+        return $this->toolSnapshot
+            ?? self::BACKGROUNDS[
+                $this->value
+            ]['tools'];
     }
 
     /**
@@ -312,6 +336,19 @@ final class Background implements Stringable
             $this->toolProficiencyIdentifiers(),
             true
         );
+    }
+
+    /**
+     * Return the certified proficiency snapshot carried by this instance.
+     *
+     * @return array{skills:array<int,string>,tools:array<int,string>}
+     */
+    public function mechanicsSnapshot(): array
+    {
+        return [
+            'skills' => $this->skillProficiencies()->proficiencies(),
+            'tools' => $this->toolProficiencyIdentifiers(),
+        ];
     }
 
     /**

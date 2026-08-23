@@ -10,6 +10,19 @@ $labels = static fn (array $items): string => implode(', ', array_map(
     static fn (string $item): string => ucwords(str_replace('-', ' ', $item)),
     $items
 ));
+$skillOptions = [
+    'acrobatics','animal-handling','arcana','athletics','deception','history',
+    'insight','intimidation','investigation','medicine','nature','perception',
+    'performance','persuasion','religion','sleight-of-hand','stealth','survival',
+];
+$toolOptions = [
+    'alchemists-supplies','calligraphers-supplies','cartographers-tools','herbalism-kit',
+    'land-vehicles','navigators-tools','thieves-tools','brewers-supplies','carpenters-tools',
+    'cobblers-tools','cooks-utensils','glassblowers-tools','jewelers-tools',
+    'leatherworkers-tools','masons-tools','painters-supplies','potters-tools','smiths-tools',
+    'tinkers-tools','weavers-tools','woodcarvers-tools','dice-set','dragonchess-set',
+    'playing-card-set','three-dragon-ante-set',
+];
 ?>
 <div class="wrap gmrc-admin gmrc-stewards-office gmrc-background-steward">
     <header class="gmrc-stewards-office__hero">
@@ -59,9 +72,15 @@ $labels = static fn (array $items): string => implode(', ', array_map(
                     <label><strong>Feature text</strong><textarea name="feature_detail" rows="5" required><?php echo esc_textarea($selectedBackground->featureDetail()); ?></textarea></label>
 
                     <section class="gmrc-background-steward__mechanics" aria-labelledby="gmrc-background-mechanics-title">
-                        <h3 id="gmrc-background-mechanics-title">Certified proficiencies</h3>
-                        <dl class="gmrc-definition-list"><div><dt>Skills</dt><dd><?php echo esc_html($labels($selectedBackground->skills())); ?></dd></div><div><dt>Tool</dt><dd><?php echo esc_html($selectedBackground->toolLabel() !== '' ? $selectedBackground->toolLabel() : $labels($selectedBackground->tools())); ?></dd></div></dl>
-                        <p>Skills and tools remain read-only here so existing Character records keep their certified mechanical identity. A dedicated mechanics bridge will govern validated future-character changes.</p>
+                        <h3 id="gmrc-background-mechanics-title">Future-character proficiencies</h3>
+                        <p>These mechanics are used when a new adventurer is inscribed. Existing Characters keep the proficiency snapshot certified when they were created.</p>
+                        <fieldset><legend><strong>Skills</strong> · choose exactly two</legend><div class="gmrc-background-steward__checks">
+                            <?php foreach ($skillOptions as $skill) : ?><label><input type="checkbox" name="skills[]" value="<?php echo esc_attr($skill); ?>" <?php checked(in_array($skill, $selectedBackground->skills(), true)); ?>> <?php echo esc_html(ucwords(str_replace('-', ' ', $skill))); ?></label><?php endforeach; ?>
+                        </div></fieldset>
+                        <label><strong>Tool proficiency</strong><select name="tools[]" required>
+                            <?php foreach ($toolOptions as $tool) : ?><option value="<?php echo esc_attr($tool); ?>" <?php selected(in_array($tool, $selectedBackground->tools(), true)); ?>><?php echo esc_html(\GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiency::fromString($tool)->label()); ?></option><?php endforeach; ?>
+                        </select></label>
+                        <aside class="gmrc-background-steward__history-note" role="note"><strong>Historical protection</strong><span>Changing these values never rewrites an existing Character’s stored Background proficiency snapshot.</span></aside>
                     </section>
 
                     <?php if ($selectedBackground->sourceIssues() !== []) : ?><aside class="gmrc-background-steward__source-gaps"><strong>Handbook source gaps</strong><ul><?php foreach ($selectedBackground->sourceIssues() as $issue) : ?><li><?php echo esc_html(ucwords(str_replace('-', ' ', $issue))); ?></li><?php endforeach; ?></ul></aside><?php endif; ?>

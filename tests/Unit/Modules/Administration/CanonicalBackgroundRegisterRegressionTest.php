@@ -42,16 +42,15 @@ final class CanonicalBackgroundRegisterRegressionTest extends TestCase
         self::assertStringContainsString('unset($overrides[$record->key()])', $source);
     }
 
-    public function testCertifiedSkillsAndToolsRemainReadOnlyInThisSlice(): void
+    public function testBackgroundMechanicsBridgeAllowsValidatedFutureCharacterProficiencies(): void
     {
         $view = $this->source('app/Modules/Administration/Views/canonical-backgrounds.php');
         $register = $this->source('app/Modules/Administration/CanonicalRecords/CanonicalBackgroundRegister.php');
-        self::assertStringContainsString('Certified proficiencies', $view);
-        self::assertStringContainsString('Skills and tools remain read-only here', $view);
-        self::assertStringNotContainsString('name="skills"', $view);
-        self::assertStringNotContainsString('name="tools"', $view);
-        self::assertStringNotContainsString("'skills' => sanitize", $register);
-        self::assertStringNotContainsString("'tools' => sanitize", $register);
+        self::assertStringContainsString('Future-character proficiencies', $view);
+        self::assertStringContainsString('name="skills[]"', $view);
+        self::assertStringContainsString('name="tools[]"', $view);
+        self::assertStringContainsString("'skills' => \$skills", $register);
+        self::assertStringContainsString("'tools' => \$tools", $register);
     }
 
     public function testBackgroundWritesUseRecordSpecificNonces(): void
