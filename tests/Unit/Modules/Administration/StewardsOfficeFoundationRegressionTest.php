@@ -30,11 +30,11 @@ final class StewardsOfficeFoundationRegressionTest extends TestCase
         self::assertStringContainsString("The Steward's Office", $provider);
     }
 
-    public function testFoundationDoesNotYetExposeEditableSecrets(): void
+    public function testFoundationNowHandsGateSecurityToDedicatedPhase(): void
     {
         $view = $this->source('app/Modules/Administration/Views/stewards-office.php');
-        self::assertStringContainsString('No secrets or canonical records are editable yet.', $view);
-        self::assertStringNotContainsString('<input', $view);
+        self::assertStringContainsString('Gate Security', $view);
+        self::assertStringContainsString('Canonical Records', $view);
     }
 
     public function testCampaignCommandCentreDefinesDungeonMasterBackground(): void

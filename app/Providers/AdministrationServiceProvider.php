@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Providers;
 
+use GreatMarketrealmCompanion\Modules\Administration\Security\GateSecuritySettings;
+
 defined('ABSPATH') || exit;
 
 /**
@@ -19,12 +21,14 @@ final class AdministrationServiceProvider extends ServiceProvider
 
     public function register(): void
     {
+        $this->app->singleton(GateSecuritySettings::class);
     }
 
     public function boot(): void
     {
         add_action('admin_menu', [$this, 'registerMenu']);
         add_action('admin_enqueue_scripts', [$this, 'enqueueAssets']);
+        add_action('admin_post_gmrc_save_gate_security', [$this, 'saveGateSecurity']);
     }
 
     public function registerMenu(): void
@@ -54,6 +58,30 @@ final class AdministrationServiceProvider extends ServiceProvider
         );
     }
 
+    public function saveGateSecurity(): void
+    {
+        if (! current_user_can(self::CAPABILITY)) {
+            wp_die(esc_html__('Access denied.', 'great-marketrealm-companion'), '', ['response' => 403]);
+        }
+
+        check_admin_referer('gmrc_save_gate_security', 'gmrc_gate_security_nonce');
+
+        $settings = $this->app->make(GateSecuritySettings::class);
+        if (! empty($_POST['clear_secret'])) {
+            $settings->clearSecret();
+        } else {
+            $settings->save(
+                sanitize_text_field(wp_unslash((string) ($_POST['site_key'] ?? ''))),
+                sanitize_text_field(wp_unslash((string) ($_POST['secret_key'] ?? ''))),
+                ! empty($_POST['protect_registration']),
+                ! empty($_POST['protect_login'])
+            );
+        }
+
+        wp_safe_redirect(add_query_arg(['page' => self::MENU_SLUG, 'gmrc_saved' => '1'], admin_url('admin.php')));
+        exit;
+    }
+
     public function renderOffice(): void
     {
         if (! current_user_can(self::CAPABILITY)) {
@@ -64,6 +92,8 @@ final class AdministrationServiceProvider extends ServiceProvider
             );
         }
 
+        $gateSecurity = $this->app->make(GateSecuritySettings::class)->all();
+        $gateSecurityConfigured = $this->app->make(GateSecuritySettings::class)->configured();
         require GMRC_PATH . 'app/Modules/Administration/Views/stewards-office.php';
     }
 }

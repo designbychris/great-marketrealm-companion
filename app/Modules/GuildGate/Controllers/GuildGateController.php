@@ -12,11 +12,13 @@ use GreatMarketrealmCompanion\Core\Session\FlashStore;
 use GreatMarketrealmCompanion\Core\View\View;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\GuildGate\AccountType;
+use GreatMarketrealmCompanion\Modules\Administration\Security\GateSecuritySettings;
 use GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\AuthenticateGuildMember;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildPortraitManager;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\RegisterGuildMember;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\UpdateGuildProfile;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\TurnstileVerifier;
 use Throwable;
 
 defined('ABSPATH') || exit;
@@ -32,7 +34,9 @@ final class GuildGateController
         private AuthenticateGuildMember $authenticate,
         private RegisterGuildMember $registerMember,
         private UpdateGuildProfile $updateProfile,
-        private GuildPortraitManager $portraits
+        private GuildPortraitManager $portraits,
+        private GateSecuritySettings $gateSecurity,
+        private TurnstileVerifier $turnstile
     ) {
     }
 
@@ -42,6 +46,8 @@ final class GuildGateController
             View::make('guildgate.index', [
                 'returnRoute' => $this->returnRoute(),
                 'accountTypes' => AccountType::values(),
+                'turnstile' => $this->gateSecurity->all(),
+                'turnstileConfigured' => $this->gateSecurity->configured(),
             ])
         );
     }
@@ -125,6 +131,7 @@ final class GuildGateController
         $remember = $this->request->string('remember') === '1';
 
         try {
+            $this->verifyGateSecurity('login');
             $this->authenticate->handle($login, $password, $remember);
             $this->flash->success('Welcome back. The Guild Gate is open.');
 
@@ -156,6 +163,7 @@ final class GuildGateController
         ];
 
         try {
+            $this->verifyGateSecurity('register');
             $userId = $this->registerMember->handle(
                 $input['username'],
                 $input['email'],
@@ -175,6 +183,19 @@ final class GuildGateController
 
             return $this->responses->redirect($this->gateUrl());
         }
+    }
+
+    private function verifyGateSecurity(string $intent): void
+    {
+        if (! $this->gateSecurity->protects($intent)) {
+            return;
+        }
+
+        $token = $this->request->string('cf-turnstile-response');
+        $remoteIp = isset($_SERVER['REMOTE_ADDR']) && is_string($_SERVER['REMOTE_ADDR'])
+            ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR']))
+            : '';
+        $this->turnstile->verify($token, $remoteIp);
     }
 
     private function returnRoute(): string

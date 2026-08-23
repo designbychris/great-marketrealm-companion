@@ -90,3 +90,6 @@
     .gmrc-guild-gate__welcome, .gmrc-guild-gate__welcome h1, .gmrc-guild-gate__lead, .gmrc-guild-gate__promise span, .gmrc-guild-gate__switcher a { color: CanvasText; }
     .gmrc-guild-gate__folio button { border: 1px solid ButtonText; background: ButtonFace; color: ButtonText; }
 }
+
+/* Phase III.16.2 — Gate Security */
+.gmrc-guild-gate__turnstile{display:grid;gap:.45rem;justify-items:start;margin:1rem 0}.gmrc-guild-gate__turnstile small{opacity:.72}

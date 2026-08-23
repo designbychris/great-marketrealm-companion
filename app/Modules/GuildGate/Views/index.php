@@ -10,6 +10,9 @@ $returnRoute = isset($returnRoute) ? (string) $returnRoute : 'dashboard';
 $intent = (string) ($old['gate_intent'] ?? 'login');
 $showRegister = $intent === 'register';
 $action = admin_url('admin-post.php');
+$turnstile = is_array($turnstile ?? null) ? $turnstile : [];
+$turnstileConfigured = ! empty($turnstileConfigured);
+$siteKey = (string) ($turnstile['site_key'] ?? '');
 ?>
 <section class="gmrc-guild-gate" aria-labelledby="gmrc-guild-gate-title">
     <div class="gmrc-guild-gate__veil" aria-hidden="true"></div>
@@ -67,6 +70,14 @@ $action = admin_url('admin-post.php');
                         </a>
                     </div>
 
+
+                    <?php if ($turnstileConfigured && ! empty($turnstile['protect_login'])) : ?>
+                        <div class="gmrc-guild-gate__turnstile">
+                            <div class="cf-turnstile" data-sitekey="<?php echo esc_attr($siteKey); ?>" data-theme="auto"></div>
+                            <small>Protected by Cloudflare Turnstile.</small>
+                        </div>
+                    <?php endif; ?>
+
                     <button type="submit">Enter the Companion</button>
                 </form>
             </section>
@@ -104,6 +115,14 @@ $action = admin_url('admin-post.php');
                     <label for="gmrc-gate-new-password">Passphrase</label>
                     <input id="gmrc-gate-new-password" name="password" type="password" autocomplete="new-password" minlength="10" aria-describedby="gmrc-gate-password-help" required>
                     <small id="gmrc-gate-password-help">Use at least 10 characters. The Guild never stores your plain passphrase.</small>
+
+
+                    <?php if ($turnstileConfigured && ! empty($turnstile['protect_registration'])) : ?>
+                        <div class="gmrc-guild-gate__turnstile">
+                            <div class="cf-turnstile" data-sitekey="<?php echo esc_attr($siteKey); ?>" data-theme="auto"></div>
+                            <small>Protected by Cloudflare Turnstile.</small>
+                        </div>
+                    <?php endif; ?>
 
                     <button type="submit">Seal my Guild papers</button>
                 </form>
