@@ -39,16 +39,29 @@ final class CanonicalBestiary
         }
 
         $source = require dirname(__DIR__) . '/Data/dungeon-master-guide-monsters.php';
+        $publications = require dirname(__DIR__) . '/Data/guild-field-guide-publications.php';
+        $publications = is_array($publications) ? $publications : [];
         $overrides = get_option(CanonicalBestiarySteward::OPTION, []);
         $overrides = is_array($overrides) ? $overrides : [];
         $records = [];
 
         foreach ($source as $entry) {
             $key = sanitize_key((string) ($entry['key'] ?? ''));
+            $publication = isset($publications[$key])
+                ? [
+                    'field_guide_visible' => true,
+                    'player_description' => (string) $publications[$key],
+                ]
+                : [];
             $override = isset($overrides[$key]) && is_array($overrides[$key])
                 ? $overrides[$key]
                 : [];
-            $record = new CanonicalMonster(array_merge($entry, $override, ['key' => $key]));
+            $record = new CanonicalMonster(array_merge(
+                $entry,
+                $publication,
+                $override,
+                ['key' => $key]
+            ));
             $records[$record->key()] = $record;
         }
 
