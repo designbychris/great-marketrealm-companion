@@ -63,6 +63,9 @@ final class GuildGateRegistrationCertificationRegressionTest extends TestCase
 
         self::assertStringContainsString("'admin_post_gmrc_guild_gate_register'", $frontend);
         self::assertStringContainsString("'admin_post_nopriv_gmrc_guild_gate_register'", $frontend);
+        self::assertStringContainsString("'admin_init'", $frontend);
+        self::assertStringContainsString('captureGuildGateRegistrationRequest', $frontend);
+        self::assertStringContainsString("'registration_admin_init_captured'", $frontend);
         self::assertStringContainsString('handleGuildGateRegistration', $frontend);
         self::assertStringContainsString("'registration_gateway_received'", $frontend);
         self::assertStringContainsString("'application_gateway_dispatching'", $frontend);

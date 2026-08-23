@@ -64,6 +64,36 @@ class FrontendServiceProvider extends ServiceProvider
             'admin_post_nopriv_gmrc_guild_gate_register',
             [$this, 'handleGuildGateRegistration']
         );
+
+        add_action(
+            'admin_init',
+            [$this, 'captureGuildGateRegistrationRequest'],
+            0
+        );
+    }
+
+    /**
+     * Capture the dedicated Guild registration request before admin-post.php
+     * performs its final action dispatch.
+     *
+     * Some managed WordPress stacks can interfere with unknown admin-post
+     * actions after admin_init. Capturing the explicit Companion action here
+     * keeps registration inside WordPress's normal admin-post endpoint while
+     * ensuring the request still reaches the same nonce-protected gateway.
+     */
+    public function captureGuildGateRegistrationRequest(): void
+    {
+        $method = strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET'));
+        $action = isset($_REQUEST['action']) && is_scalar($_REQUEST['action'])
+            ? sanitize_key(wp_unslash((string) $_REQUEST['action']))
+            : '';
+
+        if ($method !== 'POST' || $action !== 'gmrc_guild_gate_register') {
+            return;
+        }
+
+        $this->auditGuildGateGateway('registration_admin_init_captured');
+        $this->handleGuildGateRegistration();
     }
 
     /**
