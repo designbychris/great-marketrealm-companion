@@ -41,3 +41,6 @@
 .gmrc-canonical-steward__toggle span,
 .gmrc-canonical-steward__toggle small { display: block; }
 .gmrc-canonical-steward__toggle small { margin-top: .2rem; color: #646970; }
+
+/* Phase III.16.8 — Canonical Background Register */
+.gmrc-background-steward__mechanics,.gmrc-background-steward__source-gaps{padding:1rem;border:1px solid #d8ca9f;border-radius:8px;background:#fffaf0}.gmrc-background-steward__mechanics h3{margin-top:0}.gmrc-background-steward__mechanics p{margin-bottom:0;color:#5d554a}.gmrc-background-steward__source-gaps strong{display:block;margin-bottom:.4rem}.gmrc-background-steward__source-gaps ul{margin-bottom:0}.gmrc-background-steward textarea{width:100%}@media (forced-colors:active){.gmrc-background-steward__mechanics,.gmrc-background-steward__source-gaps{border-color:CanvasText}}

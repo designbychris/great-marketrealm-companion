@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalBestiarySteward;
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalCallingRegister;
+use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalBackgroundRegister;
 use GreatMarketrealmCompanion\Modules\Administration\Diagnostics\StewardDiagnostics;
 use GreatMarketrealmCompanion\Modules\Administration\Security\GateSecuritySettings;
 use GreatMarketrealmCompanion\Modules\Administration\Settings\CompanionSettings;
@@ -29,6 +30,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         $this->app->singleton(StewardDiagnostics::class);
         $this->app->singleton(CanonicalBestiarySteward::class);
         $this->app->singleton(CanonicalCallingRegister::class);
+        $this->app->singleton(CanonicalBackgroundRegister::class);
     }
 
     public function boot(): void
@@ -41,6 +43,8 @@ final class AdministrationServiceProvider extends ServiceProvider
         add_action('admin_post_gmrc_reset_canonical_monster', [$this, 'resetCanonicalMonster']);
         add_action('admin_post_gmrc_save_canonical_calling', [$this, 'saveCanonicalCalling']);
         add_action('admin_post_gmrc_reset_canonical_calling', [$this, 'resetCanonicalCalling']);
+        add_action('admin_post_gmrc_save_canonical_background', [$this, 'saveCanonicalBackground']);
+        add_action('admin_post_gmrc_reset_canonical_background', [$this, 'resetCanonicalBackground']);
     }
 
     public function registerMenu(): void
@@ -70,6 +74,17 @@ final class AdministrationServiceProvider extends ServiceProvider
         );
 
         $section = sanitize_key((string) ($_GET['section'] ?? ''));
+        if ($section === 'canonical-backgrounds') {
+            wp_enqueue_script(
+                'gmrc-canonical-background-steward',
+                GMRC_URL . 'assets/js/admin/canonical-backgrounds.js',
+                [],
+                GMRC_VERSION,
+                true
+            );
+            return;
+        }
+
         if ($section === 'canonical-callings') {
             wp_enqueue_script(
                 'gmrc-canonical-calling-steward',
@@ -188,11 +203,48 @@ final class AdministrationServiceProvider extends ServiceProvider
         exit;
     }
 
+    public function saveCanonicalBackground(): void
+    {
+        $this->guard();
+        $key = sanitize_key(wp_unslash((string) ($_POST['background_key'] ?? '')));
+        check_admin_referer('gmrc_save_canonical_background_' . $key, 'gmrc_canonical_background_nonce');
+
+        try {
+            $this->app->make(CanonicalBackgroundRegister::class)->save($key, wp_unslash($_POST));
+            $args = ['gmrc_background_saved' => '1'];
+        } catch (RuntimeException $exception) {
+            $args = ['gmrc_background_error' => rawurlencode($exception->getMessage())];
+        }
+
+        wp_safe_redirect($this->backgroundUrl($key, $args));
+        exit;
+    }
+
+    public function resetCanonicalBackground(): void
+    {
+        $this->guard();
+        $key = sanitize_key(wp_unslash((string) ($_POST['background_key'] ?? '')));
+        check_admin_referer('gmrc_reset_canonical_background_' . $key, 'gmrc_canonical_background_reset_nonce');
+        $this->app->make(CanonicalBackgroundRegister::class)->reset($key);
+        wp_safe_redirect($this->backgroundUrl($key, ['gmrc_background_reset' => '1']));
+        exit;
+    }
+
     public function renderOffice(): void
     {
         $this->guard(true);
 
         $section = sanitize_key((string) ($_GET['section'] ?? ''));
+        if ($section === 'canonical-backgrounds') {
+            $register = $this->app->make(CanonicalBackgroundRegister::class);
+            $backgrounds = $register->all();
+            $selectedKey = sanitize_key((string) ($_GET['background'] ?? ''));
+            $selectedBackground = $selectedKey !== '' ? $register->find($selectedKey) : null;
+            $selectedBackgroundOverridden = $selectedBackground ? $register->hasOverride($selectedBackground) : false;
+            require GMRC_PATH . 'app/Modules/Administration/Views/canonical-backgrounds.php';
+            return;
+        }
+
         if ($section === 'canonical-callings') {
             $register = $this->app->make(CanonicalCallingRegister::class);
             $callings = $register->all();
@@ -236,6 +288,16 @@ final class AdministrationServiceProvider extends ServiceProvider
         );
     }
 
+
+    /** @param array<string,string> $extra */
+    private function backgroundUrl(string $key, array $extra = []): string
+    {
+        return add_query_arg(array_merge([
+            'page' => self::MENU_SLUG,
+            'section' => 'canonical-backgrounds',
+            'background' => $key,
+        ], $extra), admin_url('admin.php'));
+    }
 
     /** @param array<string,string> $extra */
     private function callingUrl(string $kind, string $key, array $extra = []): string

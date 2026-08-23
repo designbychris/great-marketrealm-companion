@@ -103,6 +103,12 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
             <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'canonical-callings'], admin_url('admin.php'))); ?>">Open Calling Register</a>
         </section>
 
+        <section class="gmrc-stewards-office__card">
+            <span class="dashicons dashicons-id" aria-hidden="true"></span><h2>Canonical Backgrounds</h2>
+            <p>Curate Players Handbook background names and features while keeping certified skills and tools protected until the dedicated mechanics bridge.</p>
+            <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'canonical-backgrounds'], admin_url('admin.php'))); ?>">Open Background Register</a>
+        </section>
+
         <section class="gmrc-stewards-office__card gmrc-stewards-office__card--settings" id="companion-settings">
             <span class="dashicons dashicons-admin-settings" aria-hidden="true"></span><h2>Companion Settings</h2>
             <p>Small operational preferences shared by the Steward's Office live here. These settings do not alter game mechanics.</p>
