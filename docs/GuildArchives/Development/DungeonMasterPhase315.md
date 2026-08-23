@@ -262,4 +262,34 @@ This slice provides campaign-level counts, next/recent Session context, live or 
 
 All data remains owner-scoped through the existing Campaign boundary. Archived Campaign behaviour remains inherited from the underlying ledgers, and the Command Centre preserves the established Dungeon Master visual treatment, responsive layout, keyboard focus, reduced-transparency fallback, and forced-colour support.
 
-Phase III.15.9 is the final integration and polish slice of the initial Dungeon Master's Desk programme.
+Phase III.15.9 establishes the integrated Campaign Command Centre. Phase III.15.10 performs the final cross-ledger polish and certification seal for the initial Dungeon Master's Desk programme.
+
+
+## Phase III.15.10 — Dungeon Master’s Desk Final Polish & Certification
+
+### Certified incoming baseline for III.15.10
+
+- 3,481 tests
+- 11,714 assertions
+- all green
+
+This final seal consolidates the initial Dungeon Master programme rather than adding another major subsystem. The Desk, Campaign Command Centre, Player Roster, Session Ledger, Encounter Board, Initiative Table / Combat Console, Monster Ledger / Canonical Bestiary, and Campaign Journal are treated as one connected DM journey.
+
+The certification pass locks in:
+
+- explicit routes back to the Campaign Register and Dungeon Master’s Desk from the Campaign Command Centre;
+- archived Campaign Command Centres that remain navigable but no longer advertise campaign editing;
+- archived campaign editing guarded in the presentation layer as read-only history, matching the already-certified write boundaries in the campaign-owned ledgers;
+- intentional empty states and direct actions across Sessions, Encounters, Journal, Roster, and Campaign records;
+- live/prepared Encounter resumability through the Command Centre without creating a second combat state;
+- owner-scoped Campaign access and the shared `gmrc_manage_campaigns` / administrator capability boundary;
+- navigation-safe Dungeon Master background treatment, responsive layouts, keyboard focus, reduced-transparency fallbacks, and forced-colour support;
+- regression coverage that seals the cross-phase contracts established from III.15.1 through III.15.9.
+
+Phase III.15.10 deliberately does **not** introduce Market Pass invitations, anti-bot / Turnstile configuration, Companion administration, or the planned richer Living Bestiary editing experience. Those remain subsequent programme work so the Dungeon Master’s Desk can be certified as a stable foundation.
+
+## Phase III.15 certification seal
+
+**Phase III.15 — The Dungeon Master’s Desk is implementation-complete and ready for final server certification.**
+
+The next programme is **Phase III.16 — Companion Administration & Security**.

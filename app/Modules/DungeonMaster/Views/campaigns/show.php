@@ -7,6 +7,9 @@ $nextSession = $commandCentre['nextSession'];
 $recentSession = $commandCentre['recentSession'];
 $liveEncounter = $commandCentre['liveEncounter'];
 $preparedEncounter = $commandCentre['preparedEncounter'];
+$archived = $campaign->isArchived();
+$deskUrl = $route('dungeon-master');
+$registerUrl = $route('dungeon-master/campaigns');
 ?>
 <section class="gmrc-command-centre" aria-labelledby="gmrc-command-centre-title">
     <header class="gmrc-command-centre__hero">
@@ -15,8 +18,17 @@ $preparedEncounter = $commandCentre['preparedEncounter'];
             <h1 id="gmrc-command-centre-title"><?php echo esc_html($campaign->name()); ?></h1>
             <p><?php echo nl2br(esc_html($campaign->description() ?: 'No chronicle summary has been written yet.')); ?></p>
         </div>
-        <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/edit')); ?>">Edit campaign</a>
+        <div class="gmrc-command-centre__hero-actions">
+            <a class="gmrc-campaign-button" href="<?php echo esc_url($registerUrl); ?>">Campaign Register</a>
+            <?php if (! $archived) : ?>
+                <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/edit')); ?>">Edit campaign</a>
+            <?php endif; ?>
+        </div>
     </header>
+
+    <?php if ($archived) : ?>
+        <p class="gmrc-command-centre__notice" role="status">This campaign is archived. Its Command Centre and campaign ledgers are preserved as read-only history.</p>
+    <?php endif; ?>
 
     <div class="gmrc-command-centre__stats" aria-label="Campaign overview">
         <a href="<?php echo esc_url($route($campaignPath . '/players')); ?>"><strong><?php echo esc_html((string) $commandCentre['playerCount']); ?></strong><span>Players</span></a>
@@ -87,5 +99,10 @@ $preparedEncounter = $commandCentre['preparedEncounter'];
         <a href="<?php echo esc_url($route($campaignPath . '/encounters')); ?>">Open Encounter Board</a>
         <a href="<?php echo esc_url($route($campaignPath . '/journal')); ?>">Open Campaign Journal</a>
         <a href="<?php echo esc_url($route('dungeon-master/monsters')); ?>">Bestiary</a>
+    </nav>
+
+    <nav class="gmrc-command-centre__return" aria-label="Dungeon Master navigation">
+        <a href="<?php echo esc_url($registerUrl); ?>">← Campaign Register</a>
+        <a href="<?php echo esc_url($deskUrl); ?>">Dungeon Master’s Desk</a>
     </nav>
 </section>
