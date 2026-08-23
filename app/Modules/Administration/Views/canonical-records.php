@@ -101,8 +101,28 @@ $recordsUrl = add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'can
                         <?php endforeach; ?>
                     </fieldset>
 
+                    <label><strong>Bestiary Description</strong><textarea name="description" rows="3"><?php echo esc_textarea($selectedMonster->description()); ?></textarea></label>
+                    <div class="gmrc-canonical-steward__fields gmrc-canonical-steward__fields--rules">
+                        <?php foreach ([
+                            'saving_throws' => ['Saving Throws', $selectedMonster->savingThrows()],
+                            'skills' => ['Skills', $selectedMonster->skills()],
+                            'damage_resistances' => ['Damage Resistances', $selectedMonster->damageResistances()],
+                            'damage_immunities' => ['Damage Immunities', $selectedMonster->damageImmunities()],
+                            'damage_vulnerabilities' => ['Damage Vulnerabilities', $selectedMonster->damageVulnerabilities()],
+                            'condition_immunities' => ['Condition Immunities', $selectedMonster->conditionImmunities()],
+                            'senses' => ['Senses', $selectedMonster->senses()],
+                            'languages' => ['Languages', $selectedMonster->languages()],
+                        ] as $name => [$label, $value]) : ?>
+                            <label><strong><?php echo esc_html($label); ?></strong><textarea name="<?php echo esc_attr($name); ?>" rows="2"><?php echo esc_textarea($value); ?></textarea></label>
+                        <?php endforeach; ?>
+                    </div>
                     <label><strong>Special Traits</strong><textarea name="traits" rows="7"><?php echo esc_textarea($selectedMonster->traits()); ?></textarea></label>
+                    <label><strong>Spellcasting</strong><textarea name="spellcasting" rows="5"><?php echo esc_textarea($selectedMonster->spellcasting()); ?></textarea></label>
                     <label><strong>Actions</strong><textarea name="actions" rows="7"><?php echo esc_textarea($selectedMonster->actions()); ?></textarea></label>
+                    <label><strong>Reactions</strong><textarea name="reactions" rows="4"><?php echo esc_textarea($selectedMonster->reactions()); ?></textarea></label>
+                    <label><strong>Legendary Actions</strong><textarea name="legendary_actions" rows="6"><?php echo esc_textarea($selectedMonster->legendaryActions()); ?></textarea></label>
+                    <label><strong>Mythic Features</strong><textarea name="mythic_actions" rows="6"><?php echo esc_textarea($selectedMonster->mythicActions()); ?></textarea></label>
+                    <label><strong>Lair Actions</strong><textarea name="lair_actions" rows="5"><?php echo esc_textarea($selectedMonster->lairActions()); ?></textarea></label>
                     <label><strong>Steward / lore notes</strong><textarea name="notes" rows="5"><?php echo esc_textarea($selectedMonster->notes()); ?></textarea></label>
                     <?php if ($selectedMonster->sourceIssue() !== '') : ?><p class="gmrc-canonical-steward__source"><strong>Source note:</strong> <?php echo esc_html($selectedMonster->sourceIssue()); ?></p><?php endif; ?>
 

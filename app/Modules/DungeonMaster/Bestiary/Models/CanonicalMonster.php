@@ -23,6 +23,20 @@ final class CanonicalMonster
     public function hpFormula(): string { return (string) ($this->data['hp_formula'] ?? ''); }
     public function speed(): string { return (string) ($this->data['speed'] ?? ''); }
     public function challenge(): string { return (string) ($this->data['cr'] ?? ''); }
+    public function description(): string { return $this->text('description'); }
+    public function savingThrows(): string { return $this->text('saving_throws'); }
+    public function skills(): string { return $this->text('skills'); }
+    public function damageResistances(): string { return $this->text('damage_resistances'); }
+    public function damageImmunities(): string { return $this->text('damage_immunities'); }
+    public function damageVulnerabilities(): string { return $this->text('damage_vulnerabilities'); }
+    public function conditionImmunities(): string { return $this->text('condition_immunities'); }
+    public function senses(): string { return $this->text('senses'); }
+    public function languages(): string { return $this->text('languages'); }
+    public function spellcasting(): string { return $this->text('spellcasting'); }
+    public function reactions(): string { return $this->text('reactions'); }
+    public function legendaryActions(): string { return $this->text('legendary_actions'); }
+    public function mythicActions(): string { return $this->text('mythic_actions'); }
+    public function lairActions(): string { return $this->text('lair_actions'); }
     public function traits(): string { return (string) ($this->data['traits'] ?? ''); }
     public function actions(): string { return (string) ($this->data['actions'] ?? ''); }
     public function notes(): string { return (string) ($this->data['notes'] ?? ''); }
@@ -68,6 +82,11 @@ final class CanonicalMonster
             'challenge' => $this->challenge(),
             'canonical' => true,
         ];
+    }
+
+    private function text(string $key): string
+    {
+        return (string) ($this->data[$key] ?? '');
     }
 
     private function ability(string $key): ?int

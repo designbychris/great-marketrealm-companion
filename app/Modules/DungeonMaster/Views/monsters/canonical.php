@@ -15,7 +15,7 @@ $subtitle = trim(implode(' · ', array_filter([
 ?>
 <section class="gmrc-monster-ledger gmrc-monster-sheet gmrc-canonical-folio" aria-labelledby="gmrc-monster-title">
     <header class="gmrc-monster-ledger__hero">
-        <div><p class="gmrc-dm-desk__eyebrow">Canonical Marketrealm Bestiary · Field Folio</p><h1 id="gmrc-monster-title"><?php echo esc_html($monster->name()); ?></h1><p><?php echo esc_html($subtitle !== '' ? $subtitle : 'Canonical creature'); ?></p></div>
+        <div><p class="gmrc-dm-desk__eyebrow">Canonical Marketrealm Bestiary · Field Folio</p><h1 id="gmrc-monster-title"><?php echo esc_html($monster->name()); ?></h1><p><?php echo esc_html($subtitle !== '' ? $subtitle : 'Canonical creature'); ?></p><?php if ($monster->description() !== '') : ?><p class="gmrc-canonical-folio__lede"><?php echo esc_html($monster->description()); ?></p><?php endif; ?></div>
         <a class="gmrc-monster-button" href="<?php echo esc_url($registerUrl); ?>">Back to Bestiary</a>
     </header>
 
@@ -42,9 +42,32 @@ $subtitle = trim(implode(' · ', array_filter([
                 <?php endforeach; ?>
             </section>
 
+            <?php
+            $rules = [
+                'Saving Throws' => $monster->savingThrows(),
+                'Skills' => $monster->skills(),
+                'Damage Resistances' => $monster->damageResistances(),
+                'Damage Immunities' => $monster->damageImmunities(),
+                'Damage Vulnerabilities' => $monster->damageVulnerabilities(),
+                'Condition Immunities' => $monster->conditionImmunities(),
+                'Senses' => $monster->senses(),
+                'Languages' => $monster->languages(),
+            ];
+            ?>
+            <dl class="gmrc-canonical-folio__rules" aria-label="Canonical rules profile">
+                <?php foreach ($rules as $label => $value) : if ($value === '') { continue; } ?>
+                    <div><dt><?php echo esc_html($label); ?></dt><dd><?php echo esc_html($value); ?></dd></div>
+                <?php endforeach; ?>
+            </dl>
+
             <div class="gmrc-canonical-folio__details">
                 <section><h2>Special Traits</h2><p><?php echo nl2br(esc_html($monster->traits() !== '' ? $monster->traits() : 'No special traits are recorded in the canonical source.')); ?></p></section>
+                <?php if ($monster->spellcasting() !== '') : ?><section><h2>Spellcasting</h2><p><?php echo nl2br(esc_html($monster->spellcasting())); ?></p></section><?php endif; ?>
                 <section><h2>Actions</h2><p><?php echo nl2br(esc_html($monster->actions() !== '' ? $monster->actions() : 'No actions are recorded in the canonical source.')); ?></p></section>
+                <?php if ($monster->reactions() !== '') : ?><section><h2>Reactions</h2><p><?php echo nl2br(esc_html($monster->reactions())); ?></p></section><?php endif; ?>
+                <?php if ($monster->legendaryActions() !== '') : ?><section class="gmrc-canonical-folio__legendary"><h2>Legendary Actions</h2><p><?php echo nl2br(esc_html($monster->legendaryActions())); ?></p></section><?php endif; ?>
+                <?php if ($monster->mythicActions() !== '') : ?><section class="gmrc-canonical-folio__mythic"><h2>Mythic Features</h2><p><?php echo nl2br(esc_html($monster->mythicActions())); ?></p></section><?php endif; ?>
+                <?php if ($monster->lairActions() !== '') : ?><section><h2>Lair Actions</h2><p><?php echo nl2br(esc_html($monster->lairActions())); ?></p></section><?php endif; ?>
                 <?php if ($monster->notes() !== '') : ?><section><h2>Lore & Steward Notes</h2><p><?php echo nl2br(esc_html($monster->notes())); ?></p></section><?php endif; ?>
                 <?php if ($monster->sourceIssue() !== '') : ?><section class="gmrc-canonical-folio__source"><h2>Canonical Source Note</h2><p><?php echo esc_html($monster->sourceIssue()); ?></p></section><?php endif; ?>
             </div>
