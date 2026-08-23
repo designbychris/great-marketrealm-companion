@@ -97,6 +97,12 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
             <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'canonical-records'], admin_url('admin.php'))); ?>">Open Bestiary Stewardship</a>
         </section>
 
+        <section class="gmrc-stewards-office__card">
+            <span class="dashicons dashicons-welcome-learn-more" aria-hidden="true"></span><h2>Canonical Callings</h2>
+            <p>Browse the Players Handbook class and subclass register, maintain canonical wording, and keep private Steward balance notes without rewriting certified character mechanics.</p>
+            <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'canonical-callings'], admin_url('admin.php'))); ?>">Open Calling Register</a>
+        </section>
+
         <section class="gmrc-stewards-office__card gmrc-stewards-office__card--settings" id="companion-settings">
             <span class="dashicons dashicons-admin-settings" aria-hidden="true"></span><h2>Companion Settings</h2>
             <p>Small operational preferences shared by the Steward's Office live here. These settings do not alter game mechanics.</p>

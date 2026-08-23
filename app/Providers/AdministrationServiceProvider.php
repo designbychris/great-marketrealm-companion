@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalBestiarySteward;
+use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalCallingRegister;
 use GreatMarketrealmCompanion\Modules\Administration\Diagnostics\StewardDiagnostics;
 use GreatMarketrealmCompanion\Modules\Administration\Security\GateSecuritySettings;
 use GreatMarketrealmCompanion\Modules\Administration\Settings\CompanionSettings;
@@ -27,6 +28,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         $this->app->singleton(CompanionSettings::class);
         $this->app->singleton(StewardDiagnostics::class);
         $this->app->singleton(CanonicalBestiarySteward::class);
+        $this->app->singleton(CanonicalCallingRegister::class);
     }
 
     public function boot(): void
@@ -37,6 +39,8 @@ final class AdministrationServiceProvider extends ServiceProvider
         add_action('admin_post_gmrc_save_companion_settings', [$this, 'saveCompanionSettings']);
         add_action('admin_post_gmrc_save_canonical_monster', [$this, 'saveCanonicalMonster']);
         add_action('admin_post_gmrc_reset_canonical_monster', [$this, 'resetCanonicalMonster']);
+        add_action('admin_post_gmrc_save_canonical_calling', [$this, 'saveCanonicalCalling']);
+        add_action('admin_post_gmrc_reset_canonical_calling', [$this, 'resetCanonicalCalling']);
     }
 
     public function registerMenu(): void
@@ -66,6 +70,17 @@ final class AdministrationServiceProvider extends ServiceProvider
         );
 
         $section = sanitize_key((string) ($_GET['section'] ?? ''));
+        if ($section === 'canonical-callings') {
+            wp_enqueue_script(
+                'gmrc-canonical-calling-steward',
+                GMRC_URL . 'assets/js/admin/canonical-callings.js',
+                [],
+                GMRC_VERSION,
+                true
+            );
+            return;
+        }
+
         if ($section !== 'canonical-records') {
             return;
         }
@@ -143,11 +158,52 @@ final class AdministrationServiceProvider extends ServiceProvider
         exit;
     }
 
+
+    public function saveCanonicalCalling(): void
+    {
+        $this->guard();
+        $kind = sanitize_key(wp_unslash((string) ($_POST['calling_kind'] ?? '')));
+        $key = sanitize_key(wp_unslash((string) ($_POST['calling_key'] ?? '')));
+        check_admin_referer('gmrc_save_canonical_calling_' . $kind . '_' . $key, 'gmrc_canonical_calling_nonce');
+
+        try {
+            $this->app->make(CanonicalCallingRegister::class)->save($kind, $key, wp_unslash($_POST));
+            $args = ['gmrc_calling_saved' => '1'];
+        } catch (RuntimeException $exception) {
+            $args = ['gmrc_calling_error' => rawurlencode($exception->getMessage())];
+        }
+
+        wp_safe_redirect($this->callingUrl($kind, $key, $args));
+        exit;
+    }
+
+    public function resetCanonicalCalling(): void
+    {
+        $this->guard();
+        $kind = sanitize_key(wp_unslash((string) ($_POST['calling_kind'] ?? '')));
+        $key = sanitize_key(wp_unslash((string) ($_POST['calling_key'] ?? '')));
+        check_admin_referer('gmrc_reset_canonical_calling_' . $kind . '_' . $key, 'gmrc_canonical_calling_reset_nonce');
+        $this->app->make(CanonicalCallingRegister::class)->reset($kind, $key);
+        wp_safe_redirect($this->callingUrl($kind, $key, ['gmrc_calling_reset' => '1']));
+        exit;
+    }
+
     public function renderOffice(): void
     {
         $this->guard(true);
 
         $section = sanitize_key((string) ($_GET['section'] ?? ''));
+        if ($section === 'canonical-callings') {
+            $register = $this->app->make(CanonicalCallingRegister::class);
+            $callings = $register->all();
+            $selectedKind = sanitize_key((string) ($_GET['kind'] ?? ''));
+            $selectedKey = sanitize_key((string) ($_GET['calling'] ?? ''));
+            $selectedCalling = ($selectedKind !== '' && $selectedKey !== '') ? $register->find($selectedKind, $selectedKey) : null;
+            $selectedCallingOverridden = $selectedCalling ? $register->hasOverride($selectedCalling) : false;
+            require GMRC_PATH . 'app/Modules/Administration/Views/canonical-callings.php';
+            return;
+        }
+
         if ($section === 'canonical-records') {
             $steward = $this->app->make(CanonicalBestiarySteward::class);
             $canonicalMonsters = $steward->all();
@@ -178,6 +234,18 @@ final class AdministrationServiceProvider extends ServiceProvider
             esc_html__('Access denied', 'great-marketrealm-companion'),
             ['response' => 403]
         );
+    }
+
+
+    /** @param array<string,string> $extra */
+    private function callingUrl(string $kind, string $key, array $extra = []): string
+    {
+        return add_query_arg(array_merge([
+            'page' => self::MENU_SLUG,
+            'section' => 'canonical-callings',
+            'kind' => $kind,
+            'calling' => $key,
+        ], $extra), admin_url('admin.php'));
     }
 
     /** @param array<string,string> $extra */
