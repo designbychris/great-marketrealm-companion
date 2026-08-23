@@ -42,6 +42,8 @@ final class CanonicalMonster
     public function notes(): string { return (string) ($this->data['notes'] ?? ''); }
     public function sourceIssue(): string { return (string) ($this->data['source_issue'] ?? ''); }
     public function imageAttachmentId(): int { return absint($this->data['image_attachment_id'] ?? 0); }
+    public function fieldGuideVisible(): bool { return ! empty($this->data['field_guide_visible']); }
+    public function playerDescription(): string { return $this->text('player_description'); }
     public function isArchived(): bool { return false; }
     public function isCanonical(): bool { return true; }
 

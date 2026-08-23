@@ -17,3 +17,27 @@
 
 /* Phase III.16.5 — Canonical Calling Register */
 .gmrc-calling-steward__seal{display:grid;grid-template-columns:max-content 1fr;gap:.45rem 1rem;padding:1rem;margin:1rem 0;background:rgba(255,255,255,.55);border:1px solid rgba(76,52,31,.18);border-radius:8px}.gmrc-calling-steward__seal code{width:max-content}.gmrc-calling-steward__mechanic{padding:1rem;border-left:4px solid #8a6b3d;background:#f8f2e7}.gmrc-calling-steward__mechanic span{display:block;margin-top:.35rem;color:#5d554a}.gmrc-calling-steward textarea{width:100%}@media(max-width:782px){.gmrc-calling-steward__seal{grid-template-columns:1fr}}
+
+.gmrc-canonical-steward__field-guide {
+    display: grid;
+    gap: 1rem;
+    margin: 1.4rem 0;
+    padding: 1.2rem;
+    border: 1px solid #c3b691;
+    border-radius: 12px;
+    background: #fffaf0;
+}
+.gmrc-canonical-steward__field-guide h3 { margin: .15rem 0; }
+.gmrc-canonical-steward__toggle {
+    display: flex;
+    gap: .75rem;
+    align-items: flex-start;
+    padding: .9rem;
+    border: 1px solid #d8ca9f;
+    border-radius: 8px;
+    background: #fff;
+}
+.gmrc-canonical-steward__toggle input { margin-top: .2rem; }
+.gmrc-canonical-steward__toggle span,
+.gmrc-canonical-steward__toggle small { display: block; }
+.gmrc-canonical-steward__toggle small { margin-top: .2rem; color: #646970; }

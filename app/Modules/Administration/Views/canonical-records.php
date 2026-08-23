@@ -102,6 +102,18 @@ $recordsUrl = add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'can
                     </fieldset>
 
                     <label><strong>Bestiary Description</strong><textarea name="description" rows="3"><?php echo esc_textarea($selectedMonster->description()); ?></textarea></label>
+                    <section class="gmrc-canonical-steward__field-guide" aria-labelledby="gmrc-field-guide-steward-title">
+                        <div>
+                            <p class="gmrc-stewards-office__eyebrow">Guild Library projection</p>
+                            <h3 id="gmrc-field-guide-steward-title">Guild Field Guide</h3>
+                            <p>Publish only spoiler-safe lore here. Dungeon Master statistics, traits and actions are never exposed through the player Field Guide.</p>
+                        </div>
+                        <label class="gmrc-canonical-steward__toggle">
+                            <input name="field_guide_visible" type="checkbox" value="1"<?php checked($selectedMonster->fieldGuideVisible()); ?>>
+                            <span><strong>Visible in the Guild Field Guide</strong><small>Make this creature available to signed-in Guild adventurers.</small></span>
+                        </label>
+                        <label><strong>Player-safe description</strong><textarea name="player_description" rows="4" placeholder="A short, spoiler-safe field note for adventurers."><?php echo esc_textarea($selectedMonster->playerDescription()); ?></textarea></label>
+                    </section>
                     <div class="gmrc-canonical-steward__fields gmrc-canonical-steward__fields--rules">
                         <?php foreach ([
                             'saving_throws' => ['Saving Throws', $selectedMonster->savingThrows()],

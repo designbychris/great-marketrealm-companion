@@ -8,6 +8,7 @@ use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\View\View;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\Library\Models\ReferenceLibraryRegistry;
+use GreatMarketrealmCompanion\Modules\Library\FieldGuide\Services\GuildFieldGuide;
 use GreatMarketrealmCompanion\Modules\Library\Relics\Services\RelicRegisterPresenter;
 use GreatMarketrealmCompanion\Modules\Library\Spells\Services\SpellbookPresenter;
 
@@ -20,10 +21,14 @@ final class LibraryController
         private ViewFactory $views,
         private Request $request,
         private ?SpellbookPresenter $spellbook = null,
-        private ?RelicRegisterPresenter $relics = null
+        private ?RelicRegisterPresenter $relics = null,
+        private ?GuildFieldGuide $fieldGuide = null
     ) {
         $this->spellbook ??= new SpellbookPresenter();
         $this->relics ??= new RelicRegisterPresenter();
+        $this->fieldGuide ??= new GuildFieldGuide(
+            new \GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Repositories\CanonicalBestiary()
+        );
     }
 
     public function index(): string
@@ -98,6 +103,36 @@ final class LibraryController
                 'library.backgrounds.index',
                 ['backgrounds' => $catalogue?->entries() ?? []]
             )
+        );
+    }
+
+
+    public function fieldGuide(): string
+    {
+        $query = $this->request->string('q');
+
+        return $this->views->render(
+            View::make(
+                'library.field-guide.index',
+                [
+                    'entries' => $this->fieldGuide->all($query),
+                    'query' => $query,
+                ]
+            )
+        );
+    }
+
+    public function fieldGuideEntry(string $monsterKey): string
+    {
+        $entry = $this->fieldGuide->find($monsterKey);
+        if ($entry === null) {
+            return $this->views->render(
+                View::make('dashboard.not-found')
+            );
+        }
+
+        return $this->views->render(
+            View::make('library.field-guide.show', ['entry' => $entry])
         );
     }
 

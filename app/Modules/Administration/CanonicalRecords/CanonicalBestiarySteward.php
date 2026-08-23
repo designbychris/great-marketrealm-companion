@@ -82,6 +82,8 @@ final class CanonicalBestiarySteward
             'actions' => sanitize_textarea_field((string) ($input['actions'] ?? '')),
             'notes' => sanitize_textarea_field((string) ($input['notes'] ?? '')),
             'image_attachment_id' => $attachmentId,
+            'field_guide_visible' => ! empty($input['field_guide_visible']),
+            'player_description' => sanitize_textarea_field((string) ($input['player_description'] ?? '')),
         ];
 
         update_option(self::OPTION, $overrides, false);

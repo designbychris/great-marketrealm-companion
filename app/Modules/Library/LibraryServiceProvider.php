@@ -9,9 +9,12 @@ use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\Library\Catalogues\ArmouryReferenceCatalogue;
 use GreatMarketrealmCompanion\Modules\Library\Catalogues\BackgroundReferenceCatalogue;
+use GreatMarketrealmCompanion\Modules\Library\Catalogues\FieldGuideReferenceCatalogue;
 use GreatMarketrealmCompanion\Modules\Library\Catalogues\RelicReferenceCatalogue;
 use GreatMarketrealmCompanion\Modules\Library\Catalogues\SpellReferenceCatalogue;
 use GreatMarketrealmCompanion\Modules\Library\Controllers\LibraryController;
+use GreatMarketrealmCompanion\Modules\Library\FieldGuide\Services\GuildFieldGuide;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Repositories\CanonicalBestiary;
 use GreatMarketrealmCompanion\Modules\Library\Models\ReferenceLibraryRegistry;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 
@@ -25,8 +28,16 @@ final class LibraryServiceProvider extends ServiceProvider
             $this->app->container();
 
         $container->singleton(
+            GuildFieldGuide::class,
+            static fn (Container $container): GuildFieldGuide =>
+                new GuildFieldGuide(
+                    $container->make(CanonicalBestiary::class)
+                )
+        );
+
+        $container->singleton(
             ReferenceLibraryRegistry::class,
-            static function (): ReferenceLibraryRegistry {
+            static function (Container $container): ReferenceLibraryRegistry {
                 $registry =
                     new ReferenceLibraryRegistry();
 
@@ -41,6 +52,11 @@ final class LibraryServiceProvider extends ServiceProvider
                 );
                 $registry->add(
                     new RelicReferenceCatalogue()
+                );
+                $registry->add(
+                    new FieldGuideReferenceCatalogue(
+                        $container->make(GuildFieldGuide::class)
+                    )
                 );
 
                 return $registry;
@@ -61,7 +77,10 @@ final class LibraryServiceProvider extends ServiceProvider
                     ),
                     $container->make(
                         Request::class
-                    )
+                    ),
+                    null,
+                    null,
+                    $container->make(GuildFieldGuide::class)
                 )
         );
     }

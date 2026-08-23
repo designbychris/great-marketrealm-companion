@@ -1123,3 +1123,255 @@
         color: LinkText;
     }
 }
+
+/* Guild Field Guide */
+.gmrc-content:has(> .gmrc-field-guide),
+.gmrc-content:has(> .gmrc-field-guide-folio) {
+    background:
+        linear-gradient(rgba(24, 14, 27, .24), rgba(24, 14, 27, .58)),
+        url("../../../images/library/guild-library-background.png")
+        center top / cover no-repeat fixed;
+    background-size: cover;
+    background-position: center top;
+    background-attachment: fixed;
+}
+
+.gmrc-field-guide,
+.gmrc-field-guide-folio {
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 2rem 0 4rem;
+}
+
+.gmrc-field-guide__hero {
+    max-width: 780px;
+    margin: 1rem 0 1.5rem;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border: 1px solid rgba(111, 75, 44, .34);
+    border-radius: 1.4rem;
+    background: rgba(255, 248, 226, .94);
+    box-shadow: 0 1.2rem 3rem rgba(26, 10, 31, .24);
+}
+
+.gmrc-field-guide__search,
+.gmrc-field-guide__empty,
+.gmrc-field-guide__count {
+    padding: 1rem 1.2rem;
+    border: 1px solid rgba(111, 75, 44, .28);
+    border-radius: 1rem;
+    background: rgba(255, 251, 238, .95);
+}
+
+.gmrc-field-guide__search label {
+    display: block;
+    margin-bottom: .5rem;
+    font-weight: 700;
+}
+
+.gmrc-field-guide__search > div {
+    display: flex;
+    gap: .6rem;
+    align-items: center;
+}
+
+.gmrc-field-guide__search input {
+    flex: 1;
+    min-width: 0;
+    padding: .72rem .85rem;
+}
+
+.gmrc-field-guide__search button,
+.gmrc-field-guide__search a {
+    padding: .72rem 1rem;
+    border: 1px solid currentColor;
+    border-radius: .75rem;
+    background: #fff8e5;
+    color: #3f213d;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.gmrc-field-guide__count {
+    display: inline-block;
+    margin: 1rem 0;
+    padding: .55rem .9rem;
+}
+
+.gmrc-field-guide__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 1.2rem;
+}
+
+.gmrc-field-guide-card {
+    overflow: hidden;
+    border: 1px solid rgba(105, 72, 43, .34);
+    border-radius: 1rem;
+    background: #fff8e5;
+    box-shadow: 0 .8rem 2rem rgba(30, 15, 27, .22);
+}
+
+.gmrc-field-guide-card__link {
+    display: block;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
+.gmrc-field-guide-card__art {
+    display: grid;
+    min-height: 13rem;
+    place-items: center;
+    overflow: hidden;
+    background: linear-gradient(145deg, #e9ddbb, #fff8e5);
+}
+
+.gmrc-field-guide-card__art img {
+    width: 100%;
+    height: 15rem;
+    object-fit: cover;
+    transition: transform .24s ease;
+}
+
+.gmrc-field-guide-card__art[data-empty-art] {
+    padding: 2rem;
+    text-align: center;
+}
+
+.gmrc-field-guide-card__art[data-empty-art] span {
+    display: block;
+    font-size: 3rem;
+}
+
+.gmrc-field-guide-card__copy {
+    padding: 1.2rem;
+}
+
+.gmrc-field-guide-card__copy > p:first-child,
+.gmrc-field-guide-folio__kind {
+    color: #765a3d;
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.gmrc-field-guide-card__copy h2 {
+    margin: .25rem 0 .6rem;
+}
+
+.gmrc-field-guide-card__copy > span {
+    display: inline-block;
+    margin-top: .7rem;
+    font-weight: 700;
+}
+
+.gmrc-field-guide-card__link:hover .gmrc-field-guide-card__art img,
+.gmrc-field-guide-card__link:focus-visible .gmrc-field-guide-card__art img {
+    transform: scale(1.035);
+}
+
+.gmrc-field-guide-card__link:focus-visible,
+.gmrc-field-guide__search button:focus-visible,
+.gmrc-field-guide__search a:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+}
+
+.gmrc-field-guide-folio__paper {
+    display: grid;
+    grid-template-columns: minmax(250px, .85fr) minmax(0, 1.15fr);
+    gap: clamp(1.4rem, 4vw, 3rem);
+    margin-top: 1rem;
+    padding: clamp(1.4rem, 5vw, 3.5rem);
+    border: 1px solid rgba(103, 72, 42, .4);
+    border-radius: 1.2rem;
+    background:
+        linear-gradient(rgba(255, 251, 236, .94), rgba(248, 236, 204, .96));
+    box-shadow: 0 1.5rem 4rem rgba(30, 14, 28, .3);
+}
+
+.gmrc-field-guide-folio__art {
+    display: grid;
+    min-height: 20rem;
+    margin: 0;
+    place-items: center;
+    overflow: hidden;
+    border: .7rem solid #f3e5bf;
+    box-shadow: 0 .6rem 1.5rem rgba(82, 54, 31, .25);
+    background: #eadbb4;
+    transform: rotate(-.5deg);
+}
+
+.gmrc-field-guide-folio__art img {
+    width: 100%;
+    height: 100%;
+    min-height: 24rem;
+    object-fit: cover;
+}
+
+.gmrc-field-guide-folio__art[data-empty-art] {
+    padding: 2rem;
+    text-align: center;
+}
+
+.gmrc-field-guide-folio__description {
+    font-size: 1.06rem;
+    line-height: 1.75;
+}
+
+.gmrc-field-guide-folio__notice {
+    margin-top: 1.5rem;
+    padding: 1rem 1.1rem;
+    border-left: .3rem solid #7d5634;
+    background: rgba(239, 220, 176, .6);
+}
+
+@media (max-width: 720px) {
+    .gmrc-field-guide-folio__paper {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-field-guide__search > div {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .gmrc-content:has(> .gmrc-field-guide),
+    .gmrc-content:has(> .gmrc-field-guide-folio) {
+        background-attachment: scroll;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-field-guide-card__art img {
+        transition: none;
+    }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    .gmrc-field-guide__hero,
+    .gmrc-field-guide__search,
+    .gmrc-field-guide__empty,
+    .gmrc-field-guide__count {
+        background: rgb(255, 251, 238);
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-content:has(> .gmrc-field-guide),
+    .gmrc-content:has(> .gmrc-field-guide-folio),
+    .gmrc-field-guide__hero,
+    .gmrc-field-guide__search,
+    .gmrc-field-guide__empty,
+    .gmrc-field-guide__count,
+    .gmrc-field-guide-card,
+    .gmrc-field-guide-folio__paper,
+    .gmrc-field-guide-folio__art,
+    .gmrc-field-guide-folio__notice {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+        box-shadow: none;
+    }
+}

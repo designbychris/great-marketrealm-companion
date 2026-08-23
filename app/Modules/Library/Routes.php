@@ -30,4 +30,15 @@ return static function (Router $router): void {
         '/library/relics',
         [LibraryController::class, 'relics']
     );
+
+
+    $router->get(
+        '/library/field-guide',
+        [LibraryController::class, 'fieldGuide']
+    );
+
+    $router->get(
+        '/library/field-guide/{monsterKey}',
+        [LibraryController::class, 'fieldGuideEntry']
+    );
 };

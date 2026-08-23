@@ -27,6 +27,12 @@ $relicsUrl = add_query_arg(
     'library/relics',
     home_url('/companion/')
 );
+
+$fieldGuideUrl = add_query_arg(
+    'gmrc_route',
+    'library/field-guide',
+    home_url('/companion/')
+);
 ?>
 
 <section
@@ -56,7 +62,7 @@ $relicsUrl = add_query_arg(
     >
         <strong>Canonical source</strong>
         <span>
-            The Great Marketrealm - Players Handbook
+            The Great Marketrealm - Players Handbook · Steward-approved creature field notes
         </span>
     </div>
 
@@ -120,7 +126,7 @@ $relicsUrl = add_query_arg(
                     ($domain['status'] ?? '') === 'registered'
                     && in_array(
                         ($domain['key'] ?? ''),
-                        ['spells', 'backgrounds', 'armoury', 'relics'],
+                        ['spells', 'backgrounds', 'armoury', 'relics', 'field-guide'],
                         true
                     )
                 ) : ?>
@@ -131,7 +137,8 @@ $relicsUrl = add_query_arg(
                                 'spells' => $spellbookUrl,
                                 'backgrounds' => $backgroundRegisterUrl,
                                 'armoury' => $armouryUrl,
-                                default => $relicsUrl,
+                                'relics' => $relicsUrl,
+                                default => $fieldGuideUrl,
                             }
                         ); ?>"
                     >
@@ -140,14 +147,14 @@ $relicsUrl = add_query_arg(
                                 'spells' => 'Open Sage’s Spellbook',
                                 'backgrounds' => 'Open Background Register',
                                 'armoury' => 'Open Marketrealm Armoury',
-                                default => 'Open Relic Register',
+                                'relics' => 'Open Relic Register',
+                                default => 'Open Guild Field Guide',
                             }
                         ); ?>
                     </a>
                 <?php else : ?>
                     <p class="gmrc-guild-library-card__note">
-                        Records remain intentionally untouched until this
-                        library receives its dedicated III.13.x phase.
+                        This collection remains sealed until its dedicated Guild Library work is ready.
                     </p>
                 <?php endif; ?>
             </article>
