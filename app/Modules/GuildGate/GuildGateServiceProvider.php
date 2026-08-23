@@ -10,6 +10,7 @@ use GreatMarketrealmCompanion\Modules\GuildGate\Controllers\GuildGateController;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\AuthenticateGuildMember;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildAdminBarVisibility;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildPortraitManager;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildGateAudit;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildRoleRegistrar;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\RegisterGuildMember;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\UpdateGuildProfile;
@@ -28,6 +29,7 @@ final class GuildGateServiceProvider extends ServiceProvider
         $this->app->singleton(RegisterGuildMember::class);
         $this->app->singleton(UpdateGuildProfile::class);
         $this->app->singleton(GuildPortraitManager::class);
+        $this->app->singleton(GuildGateAudit::class);
         $this->app->singleton(TurnstileVerifier::class);
         $this->app->bind(
             GuildGateController::class,
@@ -43,7 +45,8 @@ final class GuildGateServiceProvider extends ServiceProvider
                     $container->make(UpdateGuildProfile::class),
                     $container->make(GuildPortraitManager::class),
                     $container->make(GateSecuritySettings::class),
-                    $container->make(TurnstileVerifier::class)
+                    $container->make(TurnstileVerifier::class),
+                    $container->make(GuildGateAudit::class)
                 )
         );
     }
@@ -70,6 +73,12 @@ final class GuildGateServiceProvider extends ServiceProvider
         if (! $configuration['protect_registration'] && ! $configuration['protect_login']) {
             return;
         }
-        wp_enqueue_script('gmrc-cloudflare-turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', [], null, true);
+        wp_enqueue_script(
+            'gmrc-cloudflare-turnstile',
+            'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit',
+            [],
+            null,
+            true
+        );
     }
 }

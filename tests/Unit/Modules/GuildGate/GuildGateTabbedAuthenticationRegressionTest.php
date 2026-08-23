@@ -69,7 +69,8 @@ final class GuildGateTabbedAuthenticationRegressionTest extends TestCase
 
         self::assertStringContainsString("protect_login", $view);
         self::assertStringContainsString("protect_registration", $view);
-        self::assertSame(2, substr_count($view, 'class="cf-turnstile"'));
+        self::assertSame(2, substr_count($view, 'data-gmrc-turnstile'));
+        self::assertStringNotContainsString('class="cf-turnstile"', $view);
         self::assertStringContainsString("gmrc_guild_gate_login", $view);
         self::assertStringContainsString("gmrc_guild_gate_register", $view);
     }

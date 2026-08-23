@@ -40,6 +40,16 @@ final class RegisterGuildMember
             );
         }
 
+        $user = get_userdata((int) $userId);
+        if (! $user) {
+            throw new RuntimeException('The Guild account was created but could not be reopened. Please contact the Steward.');
+        }
+
+        $role = AccountType::role($accountType);
+        if (! in_array($role, (array) $user->roles, true)) {
+            $user->set_role($role);
+        }
+
         update_user_meta(
             (int) $userId,
             GuildProfile::ACCOUNT_TYPE_META,

@@ -16,6 +16,7 @@ use GreatMarketrealmCompanion\Modules\Administration\Security\GateSecuritySettin
 use GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\AuthenticateGuildMember;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildPortraitManager;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildGateAudit;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\RegisterGuildMember;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\UpdateGuildProfile;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\TurnstileVerifier;
@@ -36,7 +37,8 @@ final class GuildGateController
         private UpdateGuildProfile $updateProfile,
         private GuildPortraitManager $portraits,
         private GateSecuritySettings $gateSecurity,
-        private TurnstileVerifier $turnstile
+        private TurnstileVerifier $turnstile,
+        private GuildGateAudit $audit
     ) {
     }
 
@@ -163,8 +165,12 @@ final class GuildGateController
             'return_route' => $this->returnRoute(),
         ];
 
+        $this->audit->record('registration_started');
+
         try {
             $this->verifyGateSecurity('register');
+            $this->audit->record('registration_security_verified');
+
             $userId = $this->registerMember->handle(
                 $input['username'],
                 $input['email'],
@@ -172,17 +178,23 @@ final class GuildGateController
                 $input['display_name'],
                 $input['account_type']
             );
+            $this->audit->record('registration_account_created');
 
             wp_set_current_user($userId);
             wp_set_auth_cookie($userId, true, is_ssl());
+            $this->audit->record('registration_session_established');
             $this->flash->success('Your Guild papers are sealed. Welcome to the Companion.');
 
             return $this->responses->redirect($this->returnUrl());
         } catch (Throwable $exception) {
+            $this->audit->record('registration_rejected', [
+                'reason' => sanitize_text_field($exception->getMessage()),
+                'exception' => get_class($exception),
+            ]);
             $this->flash->flashOldInput(['gate_intent' => 'register'] + $input);
             $this->flash->error($exception->getMessage());
 
-            return $this->responses->redirect($this->gateUrl());
+            return $this->responses->redirect($this->gateTabUrl('register'));
         }
     }
 
@@ -196,7 +208,11 @@ final class GuildGateController
         $remoteIp = isset($_SERVER['REMOTE_ADDR']) && is_string($_SERVER['REMOTE_ADDR'])
             ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR']))
             : '';
-        $this->turnstile->verify($token, $remoteIp);
+        $this->turnstile->verify(
+            $token,
+            $remoteIp,
+            $intent === 'login' ? 'gmrc_login' : 'gmrc_register'
+        );
     }
 
     private function gateIntent(): string
@@ -234,6 +250,17 @@ final class GuildGateController
         return $route === 'dashboard'
             ? $url
             : add_query_arg('gmrc_route', $route, $url);
+    }
+
+    private function gateTabUrl(string $intent): string
+    {
+        return add_query_arg(
+            [
+                'gate' => $intent === 'register' ? 'register' : 'login',
+                'return_route' => $this->returnRoute(),
+            ],
+            $this->gateUrl()
+        );
     }
 
     private function profileUrl(): string

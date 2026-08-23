@@ -117,7 +117,7 @@ $siteKey = (string) ($turnstile['site_key'] ?? '');
 
                     <?php if ($turnstileConfigured && ! empty($turnstile['protect_login'])) : ?>
                         <div class="gmrc-guild-gate__turnstile">
-                            <div class="cf-turnstile" data-sitekey="<?php echo esc_attr($siteKey); ?>" data-theme="auto"></div>
+                            <div data-gmrc-turnstile data-sitekey="<?php echo esc_attr($siteKey); ?>" data-action="gmrc_login" data-theme="auto"></div>
                             <small>Protected by Cloudflare Turnstile.</small>
                         </div>
                     <?php endif; ?>
@@ -169,7 +169,7 @@ $siteKey = (string) ($turnstile['site_key'] ?? '');
 
                     <?php if ($turnstileConfigured && ! empty($turnstile['protect_registration'])) : ?>
                         <div class="gmrc-guild-gate__turnstile">
-                            <div class="cf-turnstile" data-sitekey="<?php echo esc_attr($siteKey); ?>" data-theme="auto"></div>
+                            <div data-gmrc-turnstile data-sitekey="<?php echo esc_attr($siteKey); ?>" data-action="gmrc_register" data-theme="auto"></div>
                             <small>Protected by Cloudflare Turnstile.</small>
                         </div>
                     <?php endif; ?>

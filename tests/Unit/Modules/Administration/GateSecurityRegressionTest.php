@@ -24,7 +24,7 @@ final class GateSecurityRegressionTest extends TestCase
     }
     public function testTurnstileWidgetAndScriptOnlyAppearWhenConfigured(): void
     {
-        $provider=$this->source('app/Modules/GuildGate/GuildGateServiceProvider.php');$view=$this->source('app/Modules/GuildGate/Views/index.php');self::assertStringContainsString('gmrc-cloudflare-turnstile',$provider);self::assertStringContainsString('cf-turnstile',$view);self::assertStringContainsString('turnstileConfigured',$view);
+        $provider=$this->source('app/Modules/GuildGate/GuildGateServiceProvider.php');$view=$this->source('app/Modules/GuildGate/Views/index.php');self::assertStringContainsString('gmrc-cloudflare-turnstile',$provider);self::assertStringContainsString('data-gmrc-turnstile',$view);self::assertStringContainsString('api.js?render=explicit',$provider);self::assertStringContainsString('turnstileConfigured',$view);
     }
     public function testRegistrationAndLoginCanBeProtectedIndependently(): void
     {

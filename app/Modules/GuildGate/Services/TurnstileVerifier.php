@@ -17,7 +17,11 @@ final class TurnstileVerifier
     {
     }
 
-    public function verify(string $token, string $remoteIp = ''): void
+    public function verify(
+        string $token,
+        string $remoteIp = '',
+        string $expectedAction = ''
+    ): void
     {
         if (trim($token) === '') {
             throw new RuntimeException('Please complete the Guild Gate security check.');
@@ -44,6 +48,13 @@ final class TurnstileVerifier
         $decoded = json_decode((string) wp_remote_retrieve_body($response), true);
         if (! is_array($decoded) || empty($decoded['success'])) {
             throw new RuntimeException('The Guild Gate security check was not accepted. Please try again.');
+        }
+
+        if (
+            $expectedAction !== ''
+            && (string) ($decoded['action'] ?? '') !== $expectedAction
+        ) {
+            throw new RuntimeException('The Guild Gate security check did not match this form. Please try again.');
         }
     }
 }
