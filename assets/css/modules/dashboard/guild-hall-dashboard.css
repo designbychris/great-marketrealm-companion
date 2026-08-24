@@ -534,3 +534,73 @@
         transform: none;
     }
 }
+
+/* Phase III.16.15 — Companion Wayfinding & Application Completeness Certification */
+.gmrc-guild-hall-directory {
+    display: grid;
+    gap: 1rem;
+}
+
+.gmrc-guild-hall-directory__heading {
+    max-width: 54rem;
+}
+
+.gmrc-guild-hall-directory__heading h2 {
+    margin: 0.25rem 0 0.4rem;
+}
+
+.gmrc-guild-hall-directory__heading p:last-child {
+    margin: 0;
+}
+
+.gmrc-guild-hall-room__actions {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+    margin-top: 1rem;
+}
+
+.gmrc-guild-hall-room__actions .gmrc-guild-hall-room__link {
+    margin-top: 0;
+}
+
+.gmrc-guild-hall-room--planned {
+    border-style: dashed;
+    opacity: 0.78;
+}
+
+.gmrc-guild-hall-room__planned {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    margin-top: 1rem;
+    padding: 0.3rem 0.65rem;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.gmrc-guild-hall-room__link:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-guild-hall-room,
+    .gmrc-guild-hall-room__link {
+        scroll-behavior: auto;
+        transition: none;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-guild-hall-room,
+    .gmrc-guild-hall-room__planned {
+        border-color: CanvasText;
+    }
+}

@@ -31,6 +31,11 @@ final class GuildHallDashboardContractTest extends TestCase
         );
 
         self::assertStringContainsString(
+            'Your Companion map',
+            $view
+        );
+
+        self::assertStringNotContainsString(
             'Project Leather Satchel',
             $view
         );

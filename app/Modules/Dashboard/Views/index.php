@@ -2,33 +2,8 @@
 
 defined('ABSPATH') || exit;
 
-$companionUrl = remove_query_arg(
-    'gmrc_route'
-);
-
-$charactersUrl = add_query_arg(
-    'gmrc_route',
-    'characters',
-    $companionUrl
-);
-
-$createCharacterUrl = add_query_arg(
-    'gmrc_route',
-    'characters/create',
-    $companionUrl
-);
-
-$marketPassUrl = add_query_arg(
-    'gmrc_route',
-    'market-pass',
-    $companionUrl
-);
-
-$activeCampaignsUrl = add_query_arg(
-    'gmrc_route',
-    'active-campaigns',
-    $companionUrl
-);
+$companionUrl = remove_query_arg('gmrc_route');
+$rooms = is_array($rooms ?? null) ? $rooms : [];
 ?>
 
 <section class="gmrc-guild-hall">
@@ -37,24 +12,18 @@ $activeCampaignsUrl = add_query_arg(
         aria-labelledby="gmrc-guild-welcome-title"
     >
         <div class="gmrc-guild-welcome__paper">
-
             <span
-                class="gmrc-guild-welcome__tape
-                    gmrc-guild-welcome__tape--left"
+                class="gmrc-guild-welcome__tape gmrc-guild-welcome__tape--left"
                 aria-hidden="true"
             ></span>
-
             <span
-                class="gmrc-guild-welcome__tape
-                    gmrc-guild-welcome__tape--right"
+                class="gmrc-guild-welcome__tape gmrc-guild-welcome__tape--right"
                 aria-hidden="true"
             ></span>
 
             <p class="gmrc-guild-welcome__eyebrow">
                 <span aria-hidden="true">✦</span>
-
                 The Great Marketrealm Companion
-
                 <span aria-hidden="true">✦</span>
             </p>
 
@@ -65,10 +34,7 @@ $activeCampaignsUrl = add_query_arg(
                 Welcome back to the Guild Hall.
             </h1>
 
-            <div
-                class="gmrc-guild-welcome__divider"
-                aria-hidden="true"
-            >
+            <div class="gmrc-guild-welcome__divider" aria-hidden="true">
                 <span></span>
                 <b>◆</b>
                 <span></span>
@@ -78,13 +44,8 @@ $activeCampaignsUrl = add_query_arg(
                 Your Journal is waiting, the Registrar has kept your
                 records safe, and Auby appears to have been rearranging
                 the desk again.
-
-                <span
-                    class="gmrc-guild-welcome__auby-mark"
-                    aria-hidden="true"
-                >♡</span>
+                <span class="gmrc-guild-welcome__auby-mark" aria-hidden="true">♡</span>
             </p>
-
         </div>
     </header>
 
@@ -92,123 +53,72 @@ $activeCampaignsUrl = add_query_arg(
         'components.guild-hall.auby-desk',
         [
             'note' =>
-                'I left your Guild Journal open for you. '
-                . 'I was absolutely not reading it. '
-                . 'Also, I found a copper coin under the desk. '
-                . 'We should probably work out whose it is.',
+                'I checked the signposts this time. Every open room now '
+                . 'goes somewhere useful. I only moved three of them.',
         ]
     ); ?>
 
-    <nav
-        class="gmrc-guild-hall__rooms"
-        aria-label="Guild Hall"
+    <section
+        class="gmrc-guild-hall-directory"
+        aria-labelledby="gmrc-guild-hall-directory-title"
     >
-        <article
-            class="gmrc-guild-hall-room"
-            data-room-symbol="✒"
-        >
-            <span class="gmrc-guild-hall-room__eyebrow">
-                Open now
-            </span>
-
-            <h2>Adventurer Register</h2>
-
+        <header class="gmrc-guild-hall-directory__heading">
+            <p class="gmrc-guild-hall-room__eyebrow">Your Companion map</p>
+            <h2 id="gmrc-guild-hall-directory-title">Choose a Guild Hall room</h2>
             <p>
-                Visit your recorded adventurers or inscribe a new Guild member.
+                Open the records available to your Guild calling. Planned rooms
+                are clearly marked and never masquerade as finished features.
             </p>
+        </header>
 
-            <a
-                class="gmrc-guild-hall-room__link"
-                href="<?php echo esc_url(
-                    $charactersUrl
-                ); ?>"
-            >
-                Open the Register →
-            </a>
+        <nav class="gmrc-guild-hall__rooms" aria-label="Guild Hall directory">
+            <?php foreach ($rooms as $room) : ?>
+                <?php
+                $planned = ! empty($room['planned']);
+                $actions = is_array($room['actions'] ?? null)
+                    ? $room['actions']
+                    : [];
+                ?>
+                <article
+                    class="gmrc-guild-hall-room<?php echo $planned
+                        ? ' gmrc-guild-hall-room--planned'
+                        : ''; ?>"
+                    data-room-key="<?php echo esc_attr((string) ($room['key'] ?? '')); ?>"
+                    data-room-symbol="<?php echo esc_attr((string) ($room['symbol'] ?? '✦')); ?>"
+                >
+                    <span class="gmrc-guild-hall-room__eyebrow">
+                        <?php echo esc_html((string) ($room['eyebrow'] ?? 'Guild Hall')); ?>
+                    </span>
 
-            <br>
+                    <h2><?php echo esc_html((string) ($room['title'] ?? 'Guild Room')); ?></h2>
 
-            <a
-                class="gmrc-guild-hall-room__link"
-                href="<?php echo esc_url(
-                    $createCharacterUrl
-                ); ?>"
-            >
-                Inscribe an Adventurer →
-            </a>
-        </article>
+                    <p><?php echo esc_html((string) ($room['description'] ?? '')); ?></p>
 
-        <?php if (\GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile::accountType(get_current_user_id()) === \GreatMarketrealmCompanion\Modules\GuildGate\AccountType::PLAYER) : ?>
-        <article
-            class="gmrc-guild-hall-room"
-            data-room-symbol="🗺"
-        >
-            <span class="gmrc-guild-hall-room__eyebrow">Your adventuring tables</span>
-            <h2>Active Campaigns</h2>
-            <p>See the Campaigns you have joined and your place at each table.</p>
-            <a class="gmrc-guild-hall-room__link" href="<?php echo esc_url($activeCampaignsUrl); ?>">Open Active Campaigns →</a>
-        </article>
+                    <?php if ($planned) : ?>
+                        <span class="gmrc-guild-hall-room__planned" aria-label="Planned feature">
+                            Planned
+                        </span>
+                    <?php elseif ($actions !== []) : ?>
+                        <div class="gmrc-guild-hall-room__actions">
+                            <?php foreach ($actions as $action) : ?>
+                                <?php
+                                $route = trim((string) ($action['route'] ?? ''));
+                                $label = trim((string) ($action['label'] ?? 'Open'));
 
-        <article
-            class="gmrc-guild-hall-room"
-            data-room-symbol="🎟"
-        >
-            <span class="gmrc-guild-hall-room__eyebrow">Campaign invitation</span>
-            <h2>Market Pass</h2>
-            <p>Have a code from your Dungeon Master? Redeem it to join their Campaign roster.</p>
-            <a class="gmrc-guild-hall-room__link" href="<?php echo esc_url($marketPassUrl); ?>">Redeem a Market Pass →</a>
-        </article>
+                                if ($route === '') {
+                                    continue;
+                                }
 
-        <?php endif; ?>
-
-        <article
-            class="gmrc-guild-hall-room
-                gmrc-guild-hall-room--future"
-            data-room-symbol="📖"
-        >
-            <span class="gmrc-guild-hall-room__eyebrow">
-                Guild Journal Initiative
-            </span>
-
-            <h2>Guild Journal</h2>
-
-            <p>
-                Your illuminated character record, portrait and personal archive.
-            </p>
-        </article>
-
-        <article
-            class="gmrc-guild-hall-room
-                gmrc-guild-hall-room--future"
-            data-room-symbol="🎒"
-        >
-            <span class="gmrc-guild-hall-room__eyebrow">
-                Project Leather Satchel
-            </span>
-
-            <h2>Leather Satchel</h2>
-
-            <p>
-                Equipment, provisions, coins and suspicious things Auby found
-                in the lining.
-            </p>
-        </article>
-
-        <article
-            class="gmrc-guild-hall-room
-                gmrc-guild-hall-room--future"
-            data-room-symbol="★"
-        >
-            <span class="gmrc-guild-hall-room__eyebrow">
-                Book of Deeds
-            </span>
-
-            <h2>Guild Honours</h2>
-
-            <p>
-                Achievements, milestones and the occasional very enthusiastic
-                Seal of Approval.
-            </p>
-        </article>
-    </nav>
+                                $url = add_query_arg('gmrc_route', $route, $companionUrl);
+                                ?>
+                                <a class="gmrc-guild-hall-room__link" href="<?php echo esc_url($url); ?>">
+                                    <?php echo esc_html($label); ?> <span aria-hidden="true">→</span>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </article>
+            <?php endforeach; ?>
+        </nav>
+    </section>
 </section>

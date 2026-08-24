@@ -76,3 +76,8 @@ The Guild Profile is now the certified account junction for the Companion's rela
 ## Phase III.16.14 — Guild Session & Account Security Certification
 
 The Companion now distinguishes a WordPress session from certified Guild admission. `GuildAccessPolicy` requires the canonical `gmrc_access_companion` capability at the application shell and private command gateway. Valid WordPress credentials without Guild access are rejected and their fresh auth cookie is cleared; already-signed-in non-Guild accounts receive a dedicated admission-refusal folio with a nonce-protected logout path. Anonymous login/registration remain public, while registered Players, Dungeon Masters, and administrators retain their established access.
+
+## Phase III.16.15 — Companion Wayfinding & Application Completeness Certification
+
+The Guild Hall is now a certified role-aware directory of completed Companion functionality. Player-only Campaign invitation destinations and the Dungeon Master's Desk are resolved before rendering, common registers are directly discoverable, and the old Guild Journal / Leather Satchel future cards have been retired because those systems already live inside the Character Ledger. Guild Honours remains explicitly planned and unlinked rather than pretending to be complete.
+
