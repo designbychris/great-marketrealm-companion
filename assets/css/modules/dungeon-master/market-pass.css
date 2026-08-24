@@ -1,0 +1,12 @@
+.gmrc-market-pass{max-width:860px;margin:0 auto;padding:clamp(1rem,3vw,2.5rem)}
+.gmrc-market-pass__hero,.gmrc-market-pass__paper{background:rgba(246,232,194,.94);border:1px solid rgba(78,50,24,.32);box-shadow:0 12px 35px rgba(20,12,7,.16);padding:clamp(1.2rem,3vw,2rem)}
+.gmrc-market-pass__hero{margin-bottom:1rem}.gmrc-market-pass__eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.gmrc-market-pass__hero h1{margin:.2rem 0 .65rem}.gmrc-market-pass__paper label{display:block;font-weight:700;margin-bottom:.45rem}
+.gmrc-market-pass__entry{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.65rem}.gmrc-market-pass__entry input{font:700 1.2rem/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;padding:.8rem;border:1px solid #795b37;background:#fffaf0}
+.gmrc-market-pass__entry button,.gmrc-market-pass__return{display:inline-flex;align-items:center;justify-content:center;border:1px solid #5b3a20;background:#5b3a20;color:#fff;padding:.75rem 1rem;font-weight:700;text-decoration:none;cursor:pointer}
+.gmrc-market-pass__return{margin-top:1rem}.gmrc-market-pass__hint{font-size:.88rem;margin-bottom:0}.gmrc-market-pass__notice{padding:.8rem 1rem;margin:0 0 1rem;border-left:4px solid currentColor;background:rgba(255,255,255,.9)}
+.gmrc-market-pass__notice.is-success{color:#315a34}.gmrc-market-pass__notice.is-error{color:#7a2d2d}.gmrc-market-pass :focus-visible{outline:3px solid currentColor;outline-offset:3px}
+.gmrc-market-pass-admin{margin:1rem 0;padding:1rem;border:1px dashed rgba(78,50,24,.45);background:rgba(255,249,226,.58)}.gmrc-market-pass-admin__code{font:800 1.35rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;padding:.45rem .6rem;background:#fff9e8;border:1px solid rgba(78,50,24,.35);display:inline-block}.gmrc-market-pass-admin__actions{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:.7rem}.gmrc-market-pass-admin__actions form{margin:0}
+@media(max-width:640px){.gmrc-market-pass__entry{grid-template-columns:1fr}.gmrc-market-pass__entry button{width:100%}}
+@media(forced-colors:active){.gmrc-market-pass__hero,.gmrc-market-pass__paper,.gmrc-market-pass-admin{border:1px solid CanvasText;box-shadow:none}}
+@media(prefers-reduced-transparency:reduce){.gmrc-market-pass__hero,.gmrc-market-pass__paper,.gmrc-market-pass__notice,.gmrc-market-pass-admin{background:#fffaf0}}

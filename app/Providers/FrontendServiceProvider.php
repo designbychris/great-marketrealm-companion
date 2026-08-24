@@ -391,6 +391,22 @@ class FrontendServiceProvider extends ServiceProvider
                 . sanitize_text_field($sessionMatch[1]);
         }
 
+        if ($method === 'POST' && $route === 'market-pass') {
+            return 'gmrc_market_pass_redeem';
+        }
+
+        if (
+            in_array($method, ['POST', 'DELETE'], true)
+            && preg_match(
+                '#^dungeon-master/campaigns/([^/]+)/market-pass$#',
+                $route,
+                $marketPassMatch
+            )
+        ) {
+            return 'gmrc_dm_market_pass_'
+                . sanitize_text_field($marketPassMatch[1]);
+        }
+
         if (
             in_array($method, ['POST', 'DELETE'], true)
             && preg_match(
@@ -959,6 +975,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/dungeon-master/player-roster.css',
             ],
             [
+                'handle' => 'gmrc-market-pass',
+                'path' => 'modules/dungeon-master/market-pass.css',
+            ],
+            [
                 'handle' => 'gmrc-session-ledger',
                 'path' => 'modules/dungeon-master/session-ledger.css',
             ],
@@ -1133,6 +1153,15 @@ class FrontendServiceProvider extends ServiceProvider
             GMRC_URL . 'assets/js/modules/dungeon-master/initiative-table.js',
             [],
             file_exists($initiativeScriptPath) ? (string) filemtime($initiativeScriptPath) : GMRC_VERSION,
+            true
+        );
+
+        $marketPassScriptPath = GMRC_PATH . 'assets/js/modules/dungeon-master/market-pass.js';
+        wp_enqueue_script(
+            'gmrc-market-pass',
+            GMRC_URL . 'assets/js/modules/dungeon-master/market-pass.js',
+            [],
+            file_exists($marketPassScriptPath) ? (string) filemtime($marketPassScriptPath) : GMRC_VERSION,
             true
         );
 

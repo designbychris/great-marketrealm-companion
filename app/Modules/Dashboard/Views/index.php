@@ -17,6 +17,12 @@ $createCharacterUrl = add_query_arg(
     'characters/create',
     $companionUrl
 );
+
+$marketPassUrl = add_query_arg(
+    'gmrc_route',
+    'market-pass',
+    $companionUrl
+);
 ?>
 
 <section class="gmrc-guild-hall">
@@ -125,6 +131,19 @@ $createCharacterUrl = add_query_arg(
                 Inscribe an Adventurer →
             </a>
         </article>
+
+        <?php if (\GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile::accountType(get_current_user_id()) === \GreatMarketrealmCompanion\Modules\GuildGate\AccountType::PLAYER) : ?>
+        <article
+            class="gmrc-guild-hall-room"
+            data-room-symbol="🎟"
+        >
+            <span class="gmrc-guild-hall-room__eyebrow">Campaign invitation</span>
+            <h2>Market Pass</h2>
+            <p>Have a code from your Dungeon Master? Redeem it to join their Campaign roster.</p>
+            <a class="gmrc-guild-hall-room__link" href="<?php echo esc_url($marketPassUrl); ?>">Redeem a Market Pass →</a>
+        </article>
+
+        <?php endif; ?>
 
         <article
             class="gmrc-guild-hall-room

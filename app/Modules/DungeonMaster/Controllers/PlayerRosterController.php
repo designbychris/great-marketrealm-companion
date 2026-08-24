@@ -14,6 +14,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepositor
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Models\Campaign;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRosterRepository;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\MarketPassRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Requests\AddRosterPlayerRequest;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\DungeonMasterAccess;
 use GreatMarketrealmCompanion\Modules\GuildGate\AccountType;
@@ -28,6 +29,7 @@ final class PlayerRosterController
     public function __construct(
         private CampaignRepository $campaigns,
         private CampaignRosterRepository $rosters,
+        private MarketPassRepository $passes,
         private CharacterRepository $characters,
         private DungeonMasterAccess $access,
         private ViewFactory $views,
@@ -46,6 +48,7 @@ final class PlayerRosterController
                 [
                     'campaign' => $campaign,
                     'members' => $this->memberData($campaign),
+                    'marketPass' => $this->passes->current($campaign),
                     'flash' => [
                         'success' => $this->flash->get('success'),
                         'error' => $this->flash->get('error'),

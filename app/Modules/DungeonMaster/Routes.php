@@ -8,9 +8,12 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\EncounterControl
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\InitiativeController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\MonsterController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\JournalController;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\MarketPassController;
 defined('ABSPATH') || exit;
 return static function (Router $router): void {
  $router->get('/dungeon-master',[DungeonMasterController::class,'index']);
+ $router->get('/market-pass',[MarketPassController::class,'index']);
+ $router->post('/market-pass',[MarketPassController::class,'redeem']);
 
  $router->get('/dungeon-master/monsters',[MonsterController::class,'index']);
  $router->get('/dungeon-master/monsters/create',[MonsterController::class,'create']);
@@ -32,6 +35,8 @@ return static function (Router $router): void {
  $router->delete('/dungeon-master/campaigns/{id}/players/{playerId}',[PlayerRosterController::class,'destroy']);
  $router->post('/dungeon-master/campaigns/{id}/players/{playerId}/characters/{characterId}',[PlayerRosterController::class,'attachCharacter']);
  $router->delete('/dungeon-master/campaigns/{id}/players/{playerId}/characters/{characterId}',[PlayerRosterController::class,'detachCharacter']);
+ $router->post('/dungeon-master/campaigns/{id}/market-pass',[MarketPassController::class,'issue']);
+ $router->delete('/dungeon-master/campaigns/{id}/market-pass',[MarketPassController::class,'revoke']);
  $router->get('/dungeon-master/campaigns/{id}/sessions',[SessionController::class,'index']);
  $router->get('/dungeon-master/campaigns/{id}/sessions/create',[SessionController::class,'create']);
  $router->post('/dungeon-master/campaigns/{id}/sessions',[SessionController::class,'store']);

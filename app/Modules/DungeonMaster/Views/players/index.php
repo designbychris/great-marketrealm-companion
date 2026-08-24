@@ -33,6 +33,41 @@ $campaignUrl = add_query_arg(
     <?php endif; ?>
 
     <?php if (! $campaign->isArchived()) : ?>
+    <section class="gmrc-market-pass-admin" aria-labelledby="gmrc-market-pass-admin-title">
+        <p class="gmrc-player-roster__kicker">Market Pass</p>
+        <h2 id="gmrc-market-pass-admin-title">Invite Players by Code</h2>
+        <p>Issue a short-lived Market Pass and share it with your players. Redeeming the code joins their Guild account to this Campaign Roster; it does not expose usernames or email addresses.</p>
+
+        <?php if ($marketPass instanceof \GreatMarketrealmCompanion\Modules\DungeonMaster\Models\MarketPass && $marketPass->isRedeemable()) : ?>
+            <p><span class="gmrc-market-pass-admin__code" aria-label="Current Market Pass"><?php echo esc_html($marketPass->code()); ?></span></p>
+            <p>Valid until <?php echo esc_html(wp_date('j M Y, H:i', $marketPass->expiresAt())); ?>. Rotating the code does not remove Players who have already joined.</p>
+            <div class="gmrc-market-pass-admin__actions">
+                <button type="button" data-market-pass-copy="<?php echo esc_attr($marketPass->code()); ?>">Copy code</button>
+                <form method="post" action="<?php echo esc_url($action); ?>">
+                    <input type="hidden" name="action" value="gmrc_app_request">
+                    <input type="hidden" name="gmrc_route" value="dungeon-master/campaigns/<?php echo esc_attr($campaignId); ?>/market-pass">
+                    <?php wp_nonce_field('gmrc_dm_market_pass_' . $campaignId, 'gmrc_nonce'); ?>
+                    <button type="submit">Rotate Market Pass</button>
+                </form>
+                <form method="post" action="<?php echo esc_url($action); ?>">
+                    <input type="hidden" name="action" value="gmrc_app_request">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="gmrc_route" value="dungeon-master/campaigns/<?php echo esc_attr($campaignId); ?>/market-pass">
+                    <?php wp_nonce_field('gmrc_dm_market_pass_' . $campaignId, 'gmrc_nonce'); ?>
+                    <button type="submit">Revoke Market Pass</button>
+                </form>
+            </div>
+        <?php else : ?>
+            <p>No active Market Pass is currently open for this Campaign.</p>
+            <form method="post" action="<?php echo esc_url($action); ?>">
+                <input type="hidden" name="action" value="gmrc_app_request">
+                <input type="hidden" name="gmrc_route" value="dungeon-master/campaigns/<?php echo esc_attr($campaignId); ?>/market-pass">
+                <?php wp_nonce_field('gmrc_dm_market_pass_' . $campaignId, 'gmrc_nonce'); ?>
+                <button class="gmrc-campaign-button" type="submit">Issue Market Pass</button>
+            </form>
+        <?php endif; ?>
+    </section>
+
     <section class="gmrc-player-roster__invite" aria-labelledby="gmrc-roster-add-title">
         <div>
             <p class="gmrc-player-roster__kicker">Guild Registry</p>

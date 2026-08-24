@@ -41,6 +41,17 @@ final class CampaignRepository
             : null;
     }
 
+    public function findByPostId(int $postId): ?Campaign
+    {
+        $post = get_post($postId);
+
+        if (! $post instanceof WP_Post || $post->post_type !== self::POST_TYPE) {
+            return null;
+        }
+
+        return $this->map($post);
+    }
+
     public function save(Campaign $campaign): void
     {
         $existing=$this->postForOwner($campaign->id(),$campaign->ownerId());
