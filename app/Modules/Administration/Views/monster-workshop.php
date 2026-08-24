@@ -16,7 +16,7 @@ $value = static fn (string $method, string $fallback = ''): string => $isNew ? $
 ?>
 <div class="wrap gmrc-stewards-office gmrc-canonical-steward gmrc-monster-workshop">
     <header class="gmrc-stewards-office__hero">
-        <p class="gmrc-stewards-office__eyebrow">Phase III.16.19 · Custom Content Registry</p>
+        <p class="gmrc-stewards-office__eyebrow">Steward-authored content · Custom Content Registry</p>
         <h1>The Steward's Workshop</h1>
         <p>Create shared Marketrealm creatures without editing PHP. Drafts remain private to the Steward's Office; published creatures join the Bestiary for every Dungeon Master; archived records remain preserved but unavailable for new encounters.</p>
     </header>

@@ -21,8 +21,8 @@ $createUrl = add_query_arg('gmrc_route', 'dungeon-master/monsters/create', $base
     <section class="gmrc-canonical-bestiary" aria-labelledby="gmrc-canonical-bestiary-title">
         <header class="gmrc-canonical-bestiary__header">
             <div>
-                <p class="gmrc-dm-desk__eyebrow">Canon + Steward publications</p>
-                <h2 id="gmrc-canonical-bestiary-title">Shared Marketrealm Bestiary</h2>
+                <p class="gmrc-dm-desk__eyebrow">Dungeon Master Guide canon + Steward publications</p>
+                <h2 id="gmrc-canonical-bestiary-title">Canonical Marketrealm Bestiary</h2>
                 <p>Canonical creatures and published Steward creations are read-only here and shared by every Dungeon Master. Draft and archived Workshop records remain sealed.</p>
             </div>
             <span class="gmrc-canonical-bestiary__count"><?php echo esc_html((string) count($canonicalMonsters ?? [])); ?> shared records</span>
