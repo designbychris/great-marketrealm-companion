@@ -10,6 +10,7 @@ use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalB
 use GreatMarketrealmCompanion\Modules\Administration\Diagnostics\StewardDiagnostics;
 use GreatMarketrealmCompanion\Modules\Administration\Security\GateSecuritySettings;
 use GreatMarketrealmCompanion\Modules\Administration\Settings\CompanionSettings;
+use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\CanonicalSpellRegister;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Repositories\CanonicalBestiary;
 use RuntimeException;
 
@@ -31,6 +32,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         $this->app->singleton(CanonicalBestiarySteward::class);
         $this->app->singleton(CanonicalCallingRegister::class);
         $this->app->singleton(CanonicalBackgroundRegister::class);
+        $this->app->singleton(CanonicalSpellRegister::class);
     }
 
     public function boot(): void
@@ -45,6 +47,8 @@ final class AdministrationServiceProvider extends ServiceProvider
         add_action('admin_post_gmrc_reset_canonical_calling', [$this, 'resetCanonicalCalling']);
         add_action('admin_post_gmrc_save_canonical_background', [$this, 'saveCanonicalBackground']);
         add_action('admin_post_gmrc_reset_canonical_background', [$this, 'resetCanonicalBackground']);
+        add_action('admin_post_gmrc_save_canonical_spell', [$this, 'saveCanonicalSpell']);
+        add_action('admin_post_gmrc_reset_canonical_spell', [$this, 'resetCanonicalSpell']);
     }
 
     public function registerMenu(): void
@@ -74,6 +78,16 @@ final class AdministrationServiceProvider extends ServiceProvider
         );
 
         $section = sanitize_key((string) ($_GET['section'] ?? ''));
+        if ($section === 'canonical-spells') {
+            wp_enqueue_script(
+                'gmrc-canonical-spell-steward',
+                GMRC_URL . 'assets/js/admin/canonical-spells.js',
+                [],
+                GMRC_VERSION,
+                true
+            );
+            return;
+        }
         if ($section === 'canonical-backgrounds') {
             wp_enqueue_script(
                 'gmrc-canonical-background-steward',
@@ -203,6 +217,33 @@ final class AdministrationServiceProvider extends ServiceProvider
         exit;
     }
 
+    public function saveCanonicalSpell(): void
+    {
+        $this->guard();
+        $key = sanitize_key(wp_unslash((string) ($_POST['spell_key'] ?? '')));
+        check_admin_referer('gmrc_save_canonical_spell_' . $key, 'gmrc_canonical_spell_nonce');
+
+        try {
+            $this->app->make(CanonicalSpellRegister::class)->save($key, wp_unslash($_POST));
+            $args = ['gmrc_spell_saved' => '1'];
+        } catch (RuntimeException $exception) {
+            $args = ['gmrc_spell_error' => rawurlencode($exception->getMessage())];
+        }
+
+        wp_safe_redirect($this->spellUrl($key, $args));
+        exit;
+    }
+
+    public function resetCanonicalSpell(): void
+    {
+        $this->guard();
+        $key = sanitize_key(wp_unslash((string) ($_POST['spell_key'] ?? '')));
+        check_admin_referer('gmrc_reset_canonical_spell_' . $key, 'gmrc_canonical_spell_reset_nonce');
+        $this->app->make(CanonicalSpellRegister::class)->reset($key);
+        wp_safe_redirect($this->spellUrl($key, ['gmrc_spell_reset' => '1']));
+        exit;
+    }
+
     public function saveCanonicalBackground(): void
     {
         $this->guard();
@@ -235,6 +276,16 @@ final class AdministrationServiceProvider extends ServiceProvider
         $this->guard(true);
 
         $section = sanitize_key((string) ($_GET['section'] ?? ''));
+        if ($section === 'canonical-spells') {
+            $register = $this->app->make(CanonicalSpellRegister::class);
+            $spells = $register->all();
+            $selectedKey = sanitize_key((string) ($_GET['spell'] ?? ''));
+            $selectedSpell = $selectedKey !== '' ? $register->find($selectedKey) : null;
+            $selectedSpellOverridden = $selectedSpell ? $register->hasOverride($selectedSpell) : false;
+            $selectedSpellNotes = $selectedSpell ? $register->stewardNotes($selectedSpell) : '';
+            require GMRC_PATH . 'app/Modules/Administration/Views/canonical-spells.php';
+            return;
+        }
         if ($section === 'canonical-backgrounds') {
             $register = $this->app->make(CanonicalBackgroundRegister::class);
             $backgrounds = $register->all();
@@ -288,6 +339,16 @@ final class AdministrationServiceProvider extends ServiceProvider
         );
     }
 
+
+    /** @param array<string,string> $extra */
+    private function spellUrl(string $key, array $extra = []): string
+    {
+        return add_query_arg(array_merge([
+            'page' => self::MENU_SLUG,
+            'section' => 'canonical-spells',
+            'spell' => $key,
+        ], $extra), admin_url('admin.php'));
+    }
 
     /** @param array<string,string> $extra */
     private function backgroundUrl(string $key, array $extra = []): string

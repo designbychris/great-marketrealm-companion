@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Library\Spells\Services;
 
 use GreatMarketrealmCompanion\Modules\Library\Spells\Models\SpellRecord;
-use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\HandbookSpellRegister;
+use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\CanonicalSpellRegister;
 
 defined('ABSPATH') || exit;
 
@@ -15,9 +15,9 @@ defined('ABSPATH') || exit;
 final class SpellbookPresenter
 {
     public function __construct(
-        private ?HandbookSpellRegister $register = null
+        private ?CanonicalSpellRegister $register = null
     ) {
-        $this->register ??= new HandbookSpellRegister();
+        $this->register ??= new CanonicalSpellRegister();
     }
 
     /**

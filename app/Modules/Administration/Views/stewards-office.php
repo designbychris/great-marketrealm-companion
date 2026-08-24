@@ -105,8 +105,14 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
 
         <section class="gmrc-stewards-office__card">
             <span class="dashicons dashicons-id" aria-hidden="true"></span><h2>Canonical Backgrounds</h2>
-            <p>Curate Players Handbook background names and features while keeping certified skills and tools protected until the dedicated mechanics bridge.</p>
+            <p>Curate Players Handbook background names, features and future-character proficiencies while preserving existing adventurers’ certified Background snapshots.</p>
             <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'canonical-backgrounds'], admin_url('admin.php'))); ?>">Open Background Register</a>
+        </section>
+
+        <section class="gmrc-stewards-office__card">
+            <span class="dashicons dashicons-editor-spellcheck" aria-hidden="true"></span><h2>Canonical Spells</h2>
+            <p>Curate the Players Handbook spell names and canonical rules wording while keeping stable spell identity, source variants and access metadata protected.</p>
+            <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'canonical-spells'], admin_url('admin.php'))); ?>">Open Spell Register</a>
         </section>
 
         <section class="gmrc-stewards-office__card gmrc-stewards-office__card--settings" id="companion-settings">
