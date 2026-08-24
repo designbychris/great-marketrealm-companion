@@ -10,12 +10,17 @@ use GreatMarketrealmCompanion\Modules\GuildGate\Controllers\GuildGateController;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\AuthenticateGuildMember;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildAdminBarVisibility;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildPortraitManager;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildMembershipSummary;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildGateAudit;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildRoleRegistrar;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\RegisterGuildMember;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\UpdateGuildProfile;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\TurnstileVerifier;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
+use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRepository;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\PlayerCampaignRepository;
+use GreatMarketrealmCompanion\Modules\Parties\Services\SharedFellowshipAccess;
 
 defined('ABSPATH') || exit;
 
@@ -29,6 +34,16 @@ final class GuildGateServiceProvider extends ServiceProvider
         $this->app->singleton(RegisterGuildMember::class);
         $this->app->singleton(UpdateGuildProfile::class);
         $this->app->singleton(GuildPortraitManager::class);
+        $this->app->singleton(
+            GuildMembershipSummary::class,
+            static fn (Container $container): GuildMembershipSummary =>
+                new GuildMembershipSummary(
+                    $container->make(CharacterRepository::class),
+                    $container->make(CampaignRepository::class),
+                    $container->make(PlayerCampaignRepository::class),
+                    $container->make(SharedFellowshipAccess::class)
+                )
+        );
         $this->app->singleton(GuildGateAudit::class);
         $this->app->singleton(TurnstileVerifier::class);
         $this->app->bind(
@@ -44,6 +59,7 @@ final class GuildGateServiceProvider extends ServiceProvider
                     $container->make(RegisterGuildMember::class),
                     $container->make(UpdateGuildProfile::class),
                     $container->make(GuildPortraitManager::class),
+                    $container->make(GuildMembershipSummary::class),
                     $container->make(GateSecuritySettings::class),
                     $container->make(TurnstileVerifier::class),
                     $container->make(GuildGateAudit::class)

@@ -645,9 +645,17 @@ final class CharacterController
         $character = $this->findCharacter($id);
         $name = $character->name()->value();
 
-        $this->deleteCharacter->handle(
-            $character->id()
-        );
+        try {
+            $this->deleteCharacter->handle(
+                $character->id()
+            );
+        } catch (RuntimeException $exception) {
+            $this->flash->error($exception->getMessage());
+
+            return $this->responses->redirect(
+                $this->charactersUrl()
+            );
+        }
 
         $this->flash->success(
             sprintf(

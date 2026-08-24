@@ -8,6 +8,7 @@ use GreatMarketrealmCompanion\Core\Actions\Action;
 use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\CharacterPortraitRepositoryInterface;
+use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterMembershipGuard;
 
 defined('ABSPATH') || exit;
 
@@ -23,7 +24,8 @@ final class DeleteCharacterAction extends Action
 {
     public function __construct(
         private CharacterRepositoryInterface $characters,
-        private ?CharacterPortraitRepositoryInterface $portraits = null
+        private ?CharacterPortraitRepositoryInterface $portraits = null,
+        private ?CharacterMembershipGuard $memberships = null
     ) {
     }
 
@@ -33,6 +35,10 @@ final class DeleteCharacterAction extends Action
     public function handle(
         CharacterId $id
     ): void {
+        if ($this->memberships instanceof CharacterMembershipGuard) {
+            $this->memberships->assertDeletable($id);
+        }
+
         /*
          * Portrait metadata lives on the Character post, so it must be
          * removed before the Character repository permanently deletes

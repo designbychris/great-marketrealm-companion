@@ -68,3 +68,7 @@ Phase III.16.11C certifies the complete Market Pass → Campaign membership → 
 
 Fellowship Seals establish the account-to-account invitation path for ordinary Fellowships. A custodian issues a secure short-lived Seal; a registered Guild Player redeems it with one Character owned by their account. Redemption is ownership-checked, idempotent, and grants normal Fellowship membership without transferring custodianship or Company administration rights. Seals reuse the Core `InviteCodeGenerator` prepared during the Market Pass foundation.
 
+
+## Phase III.16.13 — Guild Account & Membership Certification
+
+The Guild Profile is now the certified account junction for the Companion's relationship graph. It resolves owner-scoped Characters, Player membership versus Dungeon Master stewardship of Campaigns, and owned versus shared Fellowships without duplicating persistence. Live Character deletion is guarded before portrait or Character persistence removal so active Campaign and Fellowship relationships cannot become dangling. Archived Campaign roster history remains immutable, Guild calling remains capability-protected, and the established Companion application gateway remains unchanged.

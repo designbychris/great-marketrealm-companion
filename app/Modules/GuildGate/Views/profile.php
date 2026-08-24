@@ -18,6 +18,14 @@ $action = admin_url('admin-post.php');
 $passwordUrl = (string) ($passwordUrl ?? wp_lostpassword_url());
 $logoutUrl = (string) ($logoutUrl ?? wp_logout_url(home_url('/companion/')));
 $isDm = ($accountType ?? '') === \GreatMarketrealmCompanion\Modules\GuildGate\AccountType::DM;
+$membershipSummary = is_array($membershipSummary ?? null) ? $membershipSummary : [];
+$charactersUrl = add_query_arg('gmrc_route', 'characters', home_url('/companion/'));
+$campaignsUrl = add_query_arg(
+    'gmrc_route',
+    $isDm ? 'dungeon-master/campaigns' : 'active-campaigns',
+    home_url('/companion/')
+);
+$fellowshipsUrl = add_query_arg('gmrc_route', 'parties', home_url('/companion/'));
 ?>
 <section class="gmrc-guild-profile" aria-labelledby="gmrc-guild-profile-title">
     <header class="gmrc-guild-profile__hero">
@@ -91,6 +99,42 @@ $isDm = ($accountType ?? '') === \GreatMarketrealmCompanion\Modules\GuildGate\Ac
             </form>
         </main>
     </div>
+
+
+    <section class="gmrc-guild-profile__card gmrc-guild-profile__memberships" aria-labelledby="gmrc-profile-memberships-title">
+        <div class="gmrc-guild-profile__memberships-heading">
+            <div>
+                <p class="gmrc-guild-profile__kicker">Certified relationships</p>
+                <h2 id="gmrc-profile-memberships-title">Guild memberships</h2>
+                <p>Your account relationships are resolved from the live Character, Campaign and Fellowship registers.</p>
+            </div>
+            <span class="gmrc-guild-profile__certificate" aria-label="Membership relationships certified">Certified</span>
+        </div>
+
+        <div class="gmrc-guild-profile__membership-grid">
+            <a class="gmrc-guild-profile__membership-card" href="<?php echo esc_url($charactersUrl); ?>">
+                <span>Adventurers</span>
+                <strong><?php echo esc_html((string) ($membershipSummary['characters'] ?? 0)); ?></strong>
+                <small>Characters owned by this Guild account</small>
+            </a>
+
+            <a class="gmrc-guild-profile__membership-card" href="<?php echo esc_url($campaignsUrl); ?>">
+                <span><?php echo esc_html((string) ($membershipSummary['campaign_label'] ?? 'Campaigns')); ?></span>
+                <strong><?php echo esc_html((string) ($membershipSummary['active_campaigns'] ?? 0)); ?></strong>
+                <small><?php echo esc_html((string) ($membershipSummary['archived_campaigns'] ?? 0)); ?> archived record(s)</small>
+            </a>
+
+            <a class="gmrc-guild-profile__membership-card" href="<?php echo esc_url($fellowshipsUrl); ?>">
+                <span>Fellowships</span>
+                <strong><?php echo esc_html((string) (($membershipSummary['owned_fellowships'] ?? 0) + ($membershipSummary['shared_fellowships'] ?? 0))); ?></strong>
+                <small><?php echo esc_html((string) ($membershipSummary['owned_fellowships'] ?? 0)); ?> owned · <?php echo esc_html((string) ($membershipSummary['shared_fellowships'] ?? 0)); ?> shared</small>
+            </a>
+        </div>
+
+        <p class="gmrc-guild-profile__membership-note">
+            Removing a Character is blocked while that adventurer still has a live Campaign or Fellowship relationship. Archived Campaign records remain historical and read-only.
+        </p>
+    </section>
 
     <section class="gmrc-guild-profile__card gmrc-guild-profile__security" aria-labelledby="gmrc-profile-security-title">
         <div>

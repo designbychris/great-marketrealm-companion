@@ -16,6 +16,7 @@ use GreatMarketrealmCompanion\Modules\Administration\Security\GateSecuritySettin
 use GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\AuthenticateGuildMember;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildPortraitManager;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildMembershipSummary;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildGateAudit;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\RegisterGuildMember;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\UpdateGuildProfile;
@@ -36,6 +37,7 @@ final class GuildGateController
         private RegisterGuildMember $registerMember,
         private UpdateGuildProfile $updateProfile,
         private GuildPortraitManager $portraits,
+        private GuildMembershipSummary $memberships,
         private GateSecuritySettings $gateSecurity,
         private TurnstileVerifier $turnstile,
         private GuildGateAudit $audit
@@ -68,6 +70,10 @@ final class GuildGateController
                 'accountTypeLabel' => AccountType::label($accountType),
                 'portraitId' => $portraitId,
                 'profileBio' => GuildProfile::bio((int) $user->ID),
+                'membershipSummary' => $this->memberships->forAccount(
+                    (int) $user->ID,
+                    $accountType
+                ),
                 'passwordUrl' => wp_lostpassword_url($this->profileUrl()),
                 'logoutUrl' => wp_logout_url($this->gateUrl()),
             ])

@@ -13,6 +13,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Rules\CharacterCreationRules;
 use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
+use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterMembershipGuard;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterCatalogueRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterBuildProfileRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\CharacterPortraitRepositoryInterface;
@@ -45,6 +46,9 @@ use GreatMarketrealmCompanion\Modules\Characters\Portraits\Generation2\Services\
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Generation2\Rendering\Generation2PortraitRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Generation2\Services\Generation2CollectionResolver;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRepository;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRosterRepository;
+use GreatMarketrealmCompanion\Modules\Parties\Repositories\PartyRepository;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteRepository;
 
@@ -145,6 +149,18 @@ final class CharactersServiceProvider extends ServiceProvider
                 )
         );
 
+        $container->singleton(
+            CharacterMembershipGuard::class,
+            static fn (
+                Container $container
+            ): CharacterMembershipGuard =>
+                new CharacterMembershipGuard(
+                    $container->make(CampaignRepository::class),
+                    $container->make(CampaignRosterRepository::class),
+                    $container->make(PartyRepository::class)
+                )
+        );
+
         $container->bind(
             DeleteCharacterAction::class,
             static fn (
@@ -156,7 +172,8 @@ final class CharactersServiceProvider extends ServiceProvider
                     ),
                     $container->make(
                         CharacterPortraitRepositoryInterface::class
-                    )
+                    ),
+                    $container->make(CharacterMembershipGuard::class)
                 )
         );
 
