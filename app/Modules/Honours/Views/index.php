@@ -93,7 +93,7 @@ $icons = [
         <div>
             <strong>Honours are permanent</strong>
             <p>Once a deed is earned, it is written in the Book of Deeds for all time. Leaving a fellowship or campaign will not erase your honoured history.</p>
-            <small>Auby’s archival note: Character-specific wax stamps can build on this certified register later without changing the deeds already recorded here.</small>
+            <small>These are account-level Guild Honours. Auby’s archival note: Character-specific wax stamps can build on this certified register later without changing the deeds already recorded here.</small>
         </div>
     </aside>
 </section>

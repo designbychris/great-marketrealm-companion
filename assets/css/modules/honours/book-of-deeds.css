@@ -230,7 +230,7 @@
     .gmrc-book-of-deeds__note { background: #160d0b; backdrop-filter: none; }
 }
 
-@media (forced-colors: active) {
+@media(forced-colors:active) {
     .gmrc-book-of-deeds::before,
     .gmrc-book-of-deeds::after { display: none; }
     .gmrc-book-of-deeds__trail,
