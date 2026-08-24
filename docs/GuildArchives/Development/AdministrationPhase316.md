@@ -42,3 +42,16 @@ Market Passes establish the secure Dungeon Master-to-Player campaign invitation 
 ### Active Campaigns
 
 Player Campaign membership now has a dedicated, player-safe Active Campaigns surface. It is resolved from Campaign roster membership established by Market Passes and deliberately excludes Dungeon Master sessions, encounters, journals and command-centre controls. Character assignment remains a separate concern for the following Campaign roster phase.
+
+### Character Assignment, DM Roster & Campaign Fellowships
+
+Active Campaign membership now bridges into the adventuring company without collapsing account membership and Character identity into one record.
+
+- Players nominate exactly one Character they own for each joined active Campaign, and may change or clear that nomination while the Campaign remains active.
+- Character ownership is re-checked server-side; a Player cannot nominate another Guild account's adventurer.
+- The Dungeon Master roster immediately reflects the same roster assignment data.
+- A Dungeon Master may **Found a Fellowship from the roster**, snapshotting the currently nominated adventurers into a new Campaign Fellowship, or link an existing Fellowship from their Fellowship Register.
+- Campaign-to-Fellowship linkage is stored separately from the Fellowship aggregate. Releasing a link never deletes the Fellowship.
+- Founding is deliberately a one-time snapshot: later Campaign roster changes do not silently add or remove Fellowship members. Fellowship Seals will own the future account-to-account membership workflow.
+- Campaign-founded Fellowships may resolve explicitly nominated Character references across Guild accounts for presentation, while normal Character ownership mutations remain owner-scoped.
+- Market Pass remains the primary Player invitation route; direct username/email roster entry is retained only as a Dungeon Master fallback.

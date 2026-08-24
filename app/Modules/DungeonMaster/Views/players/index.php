@@ -6,6 +6,8 @@ defined('ABSPATH') || exit;
 
 $members = is_array($members ?? null) ? $members : [];
 $flash = is_array($flash ?? null) ? $flash : [];
+$availableFellowships = is_array($availableFellowships ?? null) ? $availableFellowships : [];
+$campaignFellowship = $campaignFellowship ?? null;
 $base = home_url('/companion/');
 $action = admin_url('admin-post.php');
 $campaignId = $campaign->id();
@@ -71,8 +73,8 @@ $campaignUrl = add_query_arg(
     <section class="gmrc-player-roster__invite" aria-labelledby="gmrc-roster-add-title">
         <div>
             <p class="gmrc-player-roster__kicker">Guild Registry</p>
-            <h2 id="gmrc-roster-add-title">Add a Player</h2>
-            <p>Enter the exact Guild username or email of an existing Player account. Dungeon Master accounts are kept separate from the Player Roster.</p>
+            <h2 id="gmrc-roster-add-title">Direct Player Add</h2>
+            <p>Market Pass is the normal invitation route. This exact username/email form remains available as a Dungeon Master fallback.</p>
         </div>
         <form method="post" action="<?php echo esc_url($action); ?>">
             <input type="hidden" name="action" value="gmrc_app_request">
@@ -88,6 +90,66 @@ $campaignUrl = add_query_arg(
     <?php else : ?>
         <div class="gmrc-player-roster__notice" role="status">This campaign is archived. Its Player Roster is preserved as a read-only Guild record.</div>
     <?php endif; ?>
+
+    <section class="gmrc-campaign-fellowship" aria-labelledby="gmrc-campaign-fellowship-title">
+        <div class="gmrc-player-roster__heading">
+            <div>
+                <p class="gmrc-player-roster__kicker">Adventuring Company</p>
+                <h2 id="gmrc-campaign-fellowship-title">Campaign Fellowship</h2>
+            </div>
+        </div>
+
+        <?php if ($campaignFellowship instanceof \GreatMarketrealmCompanion\Modules\Parties\Models\Party) : ?>
+            <div class="gmrc-campaign-fellowship__linked">
+                <div>
+                    <strong><?php echo esc_html($campaignFellowship->name()->value()); ?></strong>
+                    <p>This Fellowship is linked to the Campaign. Roster changes do not silently rewrite Fellowship membership.</p>
+                </div>
+                <a class="gmrc-campaign-button" href="<?php echo esc_url(add_query_arg('gmrc_route', 'parties/' . $campaignFellowship->id()->value(), $base)); ?>">View Fellowship</a>
+                <?php if (! $campaign->isArchived()) : ?>
+                    <form method="post" action="<?php echo esc_url($action); ?>">
+                        <input type="hidden" name="action" value="gmrc_app_request">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="gmrc_route" value="dungeon-master/campaigns/<?php echo esc_attr($campaignId); ?>/fellowship">
+                        <?php wp_nonce_field('gmrc_dm_campaign_fellowship_' . $campaignId, 'gmrc_nonce'); ?>
+                        <button type="submit">Release Fellowship link</button>
+                    </form>
+                <?php endif; ?>
+            </div>
+        <?php elseif (! $campaign->isArchived()) : ?>
+            <p>Once Players have nominated their Campaign adventurers, you can found a Fellowship from that company or link one already in your Fellowship Register.</p>
+            <div class="gmrc-campaign-fellowship__choices">
+                <form method="post" action="<?php echo esc_url($action); ?>">
+                    <input type="hidden" name="action" value="gmrc_app_request">
+                    <input type="hidden" name="gmrc_route" value="dungeon-master/campaigns/<?php echo esc_attr($campaignId); ?>/fellowship">
+                    <?php wp_nonce_field('gmrc_dm_campaign_fellowship_' . $campaignId, 'gmrc_nonce'); ?>
+                    <button class="gmrc-campaign-button" type="submit">Found Fellowship from roster</button>
+                </form>
+
+                <?php if ($availableFellowships !== []) : ?>
+                    <form method="post" action="<?php echo esc_url($action); ?>">
+                        <input type="hidden" name="action" value="gmrc_app_request">
+                        <input type="hidden" name="_method" value="PUT">
+                        <input type="hidden" name="gmrc_route" value="dungeon-master/campaigns/<?php echo esc_attr($campaignId); ?>/fellowship">
+                        <?php wp_nonce_field('gmrc_dm_campaign_fellowship_' . $campaignId, 'gmrc_nonce'); ?>
+                        <label for="gmrc-campaign-fellowship-select">Link an existing Fellowship</label>
+                        <div class="gmrc-campaign-fellowship__select-row">
+                            <select id="gmrc-campaign-fellowship-select" name="party_id" required>
+                                <option value="">Choose a Fellowship…</option>
+                                <?php foreach ($availableFellowships as $fellowship) : ?>
+                                    <option value="<?php echo esc_attr($fellowship->id()->value()); ?>"><?php echo esc_html($fellowship->name()->value()); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <button type="submit">Link Fellowship</button>
+                        </div>
+                    </form>
+                <?php endif; ?>
+            </div>
+            <p class="gmrc-campaign-fellowship__note">Founding copies the currently nominated adventurers once. New Campaign Players are never added to the Fellowship automatically.</p>
+        <?php else : ?>
+            <p>No Fellowship was linked before this Campaign was closed.</p>
+        <?php endif; ?>
+    </section>
 
     <section class="gmrc-player-roster__ledger" aria-labelledby="gmrc-roster-ledger-title">
         <div class="gmrc-player-roster__heading">

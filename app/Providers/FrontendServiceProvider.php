@@ -410,6 +410,30 @@ class FrontendServiceProvider extends ServiceProvider
         if (
             in_array($method, ['POST', 'DELETE'], true)
             && preg_match(
+                '#^active-campaigns/([^/]+)/adventurer$#',
+                $route,
+                $activeCampaignMatch
+            )
+        ) {
+            return 'gmrc_active_campaign_character_'
+                . sanitize_text_field($activeCampaignMatch[1]);
+        }
+
+        if (
+            in_array($method, ['POST', 'PUT', 'DELETE'], true)
+            && preg_match(
+                '#^dungeon-master/campaigns/([^/]+)/fellowship$#',
+                $route,
+                $campaignFellowshipMatch
+            )
+        ) {
+            return 'gmrc_dm_campaign_fellowship_'
+                . sanitize_text_field($campaignFellowshipMatch[1]);
+        }
+
+        if (
+            in_array($method, ['POST', 'DELETE'], true)
+            && preg_match(
                 '#^dungeon-master/campaigns/([^/]+)/players(?:/[^/]+(?:/characters/[^/]+)?)?$#',
                 $route,
                 $rosterMatch

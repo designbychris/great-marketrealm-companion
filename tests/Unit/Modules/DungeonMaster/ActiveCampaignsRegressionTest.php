@@ -45,7 +45,8 @@ final class ActiveCampaignsRegressionTest extends TestCase
     {
         $controller = $this->source('app/Modules/DungeonMaster/Controllers/ActiveCampaignController.php');
         self::assertStringContainsString("'dungeon_master'", $controller);
-        self::assertStringContainsString("'character_count'", $controller);
+        self::assertStringContainsString("'assigned_characters'", $controller);
+        self::assertStringContainsString("'characters'", $controller);
         self::assertStringContainsString("'is_archived'", $controller);
         self::assertStringContainsString('$this->rosters->members($campaign)', $controller);
     }

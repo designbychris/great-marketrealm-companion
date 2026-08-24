@@ -14,6 +14,8 @@ defined('ABSPATH') || exit;
 return static function (Router $router): void {
  $router->get('/dungeon-master',[DungeonMasterController::class,'index']);
  $router->get('/active-campaigns',[ActiveCampaignController::class,'index']);
+ $router->post('/active-campaigns/{id}/adventurer',[ActiveCampaignController::class,'assign']);
+ $router->delete('/active-campaigns/{id}/adventurer',[ActiveCampaignController::class,'clear']);
  $router->get('/market-pass',[MarketPassController::class,'index']);
  $router->post('/market-pass',[MarketPassController::class,'redeem']);
 
@@ -37,6 +39,9 @@ return static function (Router $router): void {
  $router->delete('/dungeon-master/campaigns/{id}/players/{playerId}',[PlayerRosterController::class,'destroy']);
  $router->post('/dungeon-master/campaigns/{id}/players/{playerId}/characters/{characterId}',[PlayerRosterController::class,'attachCharacter']);
  $router->delete('/dungeon-master/campaigns/{id}/players/{playerId}/characters/{characterId}',[PlayerRosterController::class,'detachCharacter']);
+ $router->post('/dungeon-master/campaigns/{id}/fellowship',[PlayerRosterController::class,'foundFellowship']);
+ $router->put('/dungeon-master/campaigns/{id}/fellowship',[PlayerRosterController::class,'linkFellowship']);
+ $router->delete('/dungeon-master/campaigns/{id}/fellowship',[PlayerRosterController::class,'unlinkFellowship']);
  $router->post('/dungeon-master/campaigns/{id}/market-pass',[MarketPassController::class,'issue']);
  $router->delete('/dungeon-master/campaigns/{id}/market-pass',[MarketPassController::class,'revoke']);
  $router->get('/dungeon-master/campaigns/{id}/sessions',[SessionController::class,'index']);

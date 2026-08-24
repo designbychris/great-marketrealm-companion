@@ -62,6 +62,39 @@ final class CampaignRosterRepository
         $this->write($campaign, $roster);
     }
 
+    public function assignCharacter(
+        Campaign $campaign,
+        int $playerId,
+        string $characterId
+    ): void {
+        $roster = $this->read($campaign);
+        $key = (string) $playerId;
+
+        if (! isset($roster[$key])) {
+            throw new RuntimeException(
+                'The Player must belong to this Campaign Roster first.'
+            );
+        }
+
+        $roster[$key]['character_ids'] = [$characterId];
+        $this->write($campaign, $roster);
+    }
+
+    public function clearCharacterAssignment(
+        Campaign $campaign,
+        int $playerId
+    ): void {
+        $roster = $this->read($campaign);
+        $key = (string) $playerId;
+
+        if (! isset($roster[$key])) {
+            return;
+        }
+
+        $roster[$key]['character_ids'] = [];
+        $this->write($campaign, $roster);
+    }
+
     public function attachCharacter(
         Campaign $campaign,
         int $playerId,

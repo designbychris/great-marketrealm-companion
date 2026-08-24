@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Parties\Presenters;
 
-use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
+use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\ViewModels\PortraitViewModel;
@@ -23,7 +23,7 @@ defined('ABSPATH') || exit;
 final class FellowshipPresenter
 {
     public function __construct(
-        private CharacterRepositoryInterface $characters,
+        private CharacterRepository $characters,
         private PortraitRenderer $portraits
     ) {
     }
@@ -59,11 +59,12 @@ final class FellowshipPresenter
         $memberCharacters = [];
 
         foreach ($party->memberships() as $membership) {
-            $character = $byId[
-                $membership->characterId()->value()
-            ] ?? null;
+            $membershipId = $membership->characterId();
+            $character = $byId[$membershipId->value()]
+                ?? $this->characters->findAcrossOwners($membershipId);
 
             if ($character instanceof Character) {
+                $byId[$membershipId->value()] = $character;
                 $resolvedCharacters[] = $character;
                 $memberCharacters[
                     $character->id()->value()

@@ -15,10 +15,16 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Models\Campaign;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRosterRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\MarketPassRepository;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignFellowshipRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Requests\AddRosterPlayerRequest;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Requests\LinkCampaignFellowshipRequest;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\DungeonMasterAccess;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\CampaignFellowshipService;
 use GreatMarketrealmCompanion\Modules\GuildGate\AccountType;
 use GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile;
+use GreatMarketrealmCompanion\Modules\Parties\Models\Party;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
+use GreatMarketrealmCompanion\Modules\Parties\Repositories\PartyRepository;
 use RuntimeException;
 use WP_User;
 
@@ -30,6 +36,9 @@ final class PlayerRosterController
         private CampaignRepository $campaigns,
         private CampaignRosterRepository $rosters,
         private MarketPassRepository $passes,
+        private CampaignFellowshipRepository $campaignFellowships,
+        private CampaignFellowshipService $campaignFellowshipService,
+        private PartyRepository $parties,
         private CharacterRepository $characters,
         private DungeonMasterAccess $access,
         private ViewFactory $views,
@@ -49,6 +58,10 @@ final class PlayerRosterController
                     'campaign' => $campaign,
                     'members' => $this->memberData($campaign),
                     'marketPass' => $this->passes->current($campaign),
+                    'campaignFellowship' => $this->campaignFellowships->linked($campaign),
+                    'availableFellowships' => $this->parties->allForOwner(
+                        PartyOwnerId::fromInt($campaign->ownerId())
+                    ),
                     'flash' => [
                         'success' => $this->flash->get('success'),
                         'error' => $this->flash->get('error'),
@@ -77,6 +90,47 @@ final class PlayerRosterController
         $this->rosters->addPlayer($campaign, (int) $player->ID);
         $this->flash->success(
             sprintf('%s has joined the Campaign Roster.', $player->display_name)
+        );
+
+        return $this->responses->redirect($this->url($id));
+    }
+
+    public function foundFellowship(string $id): RedirectResponse
+    {
+        $campaign = $this->campaign($id);
+        $this->assertActive($campaign);
+        $party = $this->campaignFellowshipService->found($campaign);
+        $this->flash->success(
+            sprintf('%s has been founded from the nominated adventuring company.', $party->name()->value())
+        );
+
+        return $this->responses->redirect($this->url($id));
+    }
+
+    public function linkFellowship(
+        string $id,
+        LinkCampaignFellowshipRequest $request
+    ): RedirectResponse {
+        $campaign = $this->campaign($id);
+        $this->assertActive($campaign);
+        $party = $this->campaignFellowshipService->linkExisting(
+            $campaign,
+            $request->partyId()
+        );
+        $this->flash->success(
+            sprintf('%s is now the Campaign Fellowship.', $party->name()->value())
+        );
+
+        return $this->responses->redirect($this->url($id));
+    }
+
+    public function unlinkFellowship(string $id): RedirectResponse
+    {
+        $campaign = $this->campaign($id);
+        $this->assertActive($campaign);
+        $this->campaignFellowshipService->unlink($campaign);
+        $this->flash->success(
+            'The Campaign Fellowship link has been released. The Fellowship itself remains safely in the Guild Register.'
         );
 
         return $this->responses->redirect($this->url($id));

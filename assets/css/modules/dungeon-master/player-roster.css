@@ -317,3 +317,16 @@
     font-size: .75rem;
     font-weight: 800;
 }
+
+/* Campaign Fellowship bridge */
+.gmrc-campaign-fellowship{margin:1.25rem 0;padding:1rem;border:1px solid rgba(255,255,255,.16);border-radius:.8rem;background:rgba(8,7,8,.22)}
+.gmrc-campaign-fellowship__linked{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:.8rem;align-items:center;padding:.9rem;border:1px dashed rgba(255,255,255,.22);border-radius:.7rem}
+.gmrc-campaign-fellowship__linked p,.gmrc-campaign-fellowship__note{margin:.2rem 0 0;opacity:.82}
+.gmrc-campaign-fellowship__choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:.9rem}
+.gmrc-campaign-fellowship__choices form{display:grid;align-content:start;gap:.5rem;padding:.85rem;border:1px solid rgba(255,255,255,.14);border-radius:.7rem}
+.gmrc-campaign-fellowship__select-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.55rem}
+.gmrc-campaign-fellowship select{min-width:0;width:100%;padding:.6rem;border-radius:.5rem}
+.gmrc-campaign-fellowship button{cursor:pointer}
+.gmrc-campaign-fellowship button:focus-visible,.gmrc-campaign-fellowship select:focus-visible,.gmrc-campaign-fellowship a:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+@media (max-width:760px){.gmrc-campaign-fellowship__choices,.gmrc-campaign-fellowship__linked{grid-template-columns:1fr}.gmrc-campaign-fellowship__select-row{grid-template-columns:1fr}}
+@media (forced-colors:active){.gmrc-campaign-fellowship,.gmrc-campaign-fellowship__linked,.gmrc-campaign-fellowship__choices form{border:1px solid CanvasText}}

@@ -24,6 +24,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Presenters\FellowshipPresenter;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\CharacterFellowshipPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
+use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Modules\Parties\Contracts\PartyRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Parties\Repositories\PartyRepository;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
@@ -73,7 +74,7 @@ final class PartiesServiceProvider extends ServiceProvider
             static fn (Container $container): FellowshipPresenter =>
                 new FellowshipPresenter(
                     $container->make(
-                        CharacterRepositoryInterface::class
+                        CharacterRepository::class
                     ),
                     $container->make(
                         PortraitRenderer::class

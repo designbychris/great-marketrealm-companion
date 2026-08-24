@@ -128,6 +128,41 @@ final class CharacterRepository implements CharacterRepositoryInterface
     }
 
     /**
+     * Resolve a Character by stable identifier regardless of account owner.
+     *
+     * This is reserved for trusted cross-account presentation surfaces such
+     * as a Campaign-founded Fellowship whose membership was explicitly
+     * assembled from Campaign roster nominations.
+     */
+    public function findAcrossOwners(CharacterId $id): ?Character
+    {
+        $posts = get_posts([
+            'post_type' => $this->postType,
+            'post_status' => 'publish',
+            'posts_per_page' => 2,
+            'meta_key' => self::META_CHARACTER_ID,
+            'meta_value' => $id->value(),
+            'orderby' => 'ID',
+            'order' => 'ASC',
+        ]);
+
+        if (count($posts) > 1) {
+            throw new RuntimeException(
+                sprintf(
+                    'The Guild Register contains duplicate records for Character %s.',
+                    $id->value()
+                )
+            );
+        }
+
+        $post = $posts[0] ?? null;
+
+        return $post instanceof WP_Post
+            ? $this->mapPost($post)
+            : null;
+    }
+
+    /**
      * Persist a Character.
      */
     public function save(
