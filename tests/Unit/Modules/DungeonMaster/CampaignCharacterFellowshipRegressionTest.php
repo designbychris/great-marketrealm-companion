@@ -69,25 +69,25 @@ final class CampaignCharacterFellowshipRegressionTest extends TestCase
         self::assertStringNotContainsString('delete($party', $repository);
     }
 
-    public function testFoundingFellowshipSnapshotsNominatedAdventurersWithoutFutureAutoSync(): void
+    public function testFoundingFellowshipSeedsNominatedAdventurersAndEnablesCertifiedSync(): void
     {
         $service = $this->source('app/Modules/DungeonMaster/Services/CampaignFellowshipService.php');
         self::assertStringContainsString('assignedCharacterIds($campaign)', $service);
         self::assertStringContainsString('$party->addMember(CharacterId::fromString($characterId))', $service);
         self::assertStringContainsString('$this->parties->save($party)', $service);
-        self::assertStringContainsString('$this->links->link($campaign, $party)', $service);
+        self::assertStringContainsString('$this->links->link($campaign, $party, $characterIds)', $service);
+        self::assertStringContainsString('$this->membershipSync->synchronize($campaign)', $service);
         self::assertStringNotContainsString('addPlayer(', $service);
-        self::assertStringNotContainsString('updateRoster', $service);
     }
 
-    public function testDungeonMasterCanFoundOrLinkButRosterChangesAreExplicitlyNotSilent(): void
+    public function testDungeonMasterCanFoundOrLinkWithCertifiedMembershipSynchronisation(): void
     {
         $view = $this->source('app/Modules/DungeonMaster/Views/players/index.php');
         self::assertStringContainsString('Found Fellowship from roster', $view);
         self::assertStringContainsString('Link an existing Fellowship', $view);
         self::assertStringContainsString('Release Fellowship link', $view);
-        self::assertStringContainsString('do not silently rewrite Fellowship membership', $view);
-        self::assertStringContainsString('never added to the Fellowship automatically', $view);
+        self::assertStringContainsString('kept in step automatically', $view);
+        self::assertStringContainsString('pre-existing Fellowship members are never removed', $view);
         self::assertStringContainsString('Market Pass is the normal invitation route', $view);
     }
 

@@ -20,7 +20,8 @@ final class CampaignFellowshipService
     public function __construct(
         private CampaignRosterRepository $rosters,
         private CampaignFellowshipRepository $links,
-        private PartyRepository $parties
+        private PartyRepository $parties,
+        private CampaignMembershipSynchronizer $membershipSync
     ) {
     }
 
@@ -49,13 +50,27 @@ final class CampaignFellowshipService
         }
 
         $this->parties->save($party);
-        $this->links->link($campaign, $party);
+        $this->links->link($campaign, $party, $characterIds);
+        $this->membershipSync->synchronize($campaign);
 
         return $party;
     }
 
     public function linkExisting(Campaign $campaign, string $partyId): Party
     {
+        $current = $this->links->linked($campaign);
+
+        if ($current instanceof Party) {
+            if ($current->id()->value() === $partyId) {
+                $this->membershipSync->synchronize($campaign);
+                return $this->links->linked($campaign) ?? $current;
+            }
+
+            throw new RuntimeException(
+                'Release the current Campaign Fellowship before linking another.'
+            );
+        }
+
         $party = $this->parties->findForOwner(
             PartyId::fromString($partyId),
             PartyOwnerId::fromInt($campaign->ownerId())
@@ -68,13 +83,14 @@ final class CampaignFellowshipService
         }
 
         $this->links->link($campaign, $party);
+        $this->membershipSync->synchronize($campaign);
 
-        return $party;
+        return $this->links->linked($campaign) ?? $party;
     }
 
     public function unlink(Campaign $campaign): void
     {
-        $this->links->unlink($campaign);
+        $this->membershipSync->release($campaign);
     }
 
     /** @return string[] */

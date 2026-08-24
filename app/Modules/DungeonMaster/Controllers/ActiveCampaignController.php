@@ -17,6 +17,7 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignFellows
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRosterRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\PlayerCampaignRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Requests\AssignCampaignCharacterRequest;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\CampaignMembershipSynchronizer;
 use GreatMarketrealmCompanion\Modules\GuildGate\AccountType;
 use GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile;
 use GreatMarketrealmCompanion\Modules\Parties\Models\Party;
@@ -29,6 +30,7 @@ final class ActiveCampaignController
         private CampaignRosterRepository $rosters,
         private CampaignFellowshipRepository $fellowships,
         private CharacterRepository $characters,
+        private CampaignMembershipSynchronizer $membershipSync,
         private ViewFactory $views,
         private ResponseFactory $responses,
         private FlashStore $flash
@@ -77,6 +79,7 @@ final class ActiveCampaignController
             $playerId,
             $characterId->value()
         );
+        $this->membershipSync->synchronize($campaign);
         $this->flash->success(
             sprintf('%s is now your nominated adventurer for %s.', $character->name()->value(), $campaign->name())
         );
@@ -90,6 +93,7 @@ final class ActiveCampaignController
         $campaign = $this->playerCampaign($id, $playerId);
         $this->assertActive($campaign);
         $this->rosters->clearCharacterAssignment($campaign, $playerId);
+        $this->membershipSync->synchronize($campaign);
         $this->flash->success('Your Campaign adventurer nomination has been cleared.');
 
         return $this->responses->redirect($this->url());

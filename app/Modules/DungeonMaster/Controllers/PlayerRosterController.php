@@ -20,6 +20,7 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Requests\AddRosterPlayerRequ
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Requests\LinkCampaignFellowshipRequest;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\DungeonMasterAccess;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\CampaignFellowshipService;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\CampaignMembershipSynchronizer;
 use GreatMarketrealmCompanion\Modules\GuildGate\AccountType;
 use GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile;
 use GreatMarketrealmCompanion\Modules\Parties\Models\Party;
@@ -38,6 +39,7 @@ final class PlayerRosterController
         private MarketPassRepository $passes,
         private CampaignFellowshipRepository $campaignFellowships,
         private CampaignFellowshipService $campaignFellowshipService,
+        private CampaignMembershipSynchronizer $membershipSync,
         private PartyRepository $parties,
         private CharacterRepository $characters,
         private DungeonMasterAccess $access,
@@ -88,6 +90,7 @@ final class PlayerRosterController
         }
 
         $this->rosters->addPlayer($campaign, (int) $player->ID);
+        $this->membershipSync->synchronize($campaign);
         $this->flash->success(
             sprintf('%s has joined the Campaign Roster.', $player->display_name)
         );
@@ -141,6 +144,7 @@ final class PlayerRosterController
         $campaign = $this->campaign($id);
         $this->assertActive($campaign);
         $this->rosters->removePlayer($campaign, $playerId);
+        $this->membershipSync->synchronize($campaign);
         $this->flash->success('The Player has been removed from this Campaign Roster.');
 
         return $this->responses->redirect($this->url($id));
@@ -166,6 +170,7 @@ final class PlayerRosterController
         }
 
         $this->rosters->attachCharacter($campaign, $playerId, $characterId);
+        $this->membershipSync->synchronize($campaign);
         $this->flash->success('The Character has been attached to this campaign.');
 
         return $this->responses->redirect($this->url($id));
@@ -180,6 +185,7 @@ final class PlayerRosterController
         $this->assertActive($campaign);
         $this->assertRosteredPlayer($campaign, $playerId);
         $this->rosters->detachCharacter($campaign, $playerId, $characterId);
+        $this->membershipSync->synchronize($campaign);
         $this->flash->success('The Character has been detached from this campaign.');
 
         return $this->responses->redirect($this->url($id));

@@ -15,6 +15,7 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRosterR
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\MarketPassRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Requests\RedeemMarketPassRequest;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\DungeonMasterAccess;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\CampaignMembershipSynchronizer;
 use GreatMarketrealmCompanion\Modules\GuildGate\AccountType;
 use GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile;
 use RuntimeException;
@@ -28,6 +29,7 @@ final class MarketPassController
         private CampaignRosterRepository $rosters,
         private MarketPassRepository $passes,
         private DungeonMasterAccess $access,
+        private CampaignMembershipSynchronizer $membershipSync,
         private ViewFactory $views,
         private ResponseFactory $responses,
         private FlashStore $flash
@@ -63,11 +65,13 @@ final class MarketPassController
         }
 
         if ($this->rosters->hasPlayer($campaign, $playerId)) {
+            $this->membershipSync->synchronize($campaign);
             $this->flash->success('You are already signed into ' . $campaign->name() . '.');
             return $this->responses->redirect($this->activeCampaignsUrl());
         }
 
         $this->rosters->addPlayer($campaign, $playerId);
+        $this->membershipSync->synchronize($campaign);
         $this->flash->success('Market Pass accepted. You have joined ' . $campaign->name() . '.');
 
         return $this->responses->redirect($this->activeCampaignsUrl());

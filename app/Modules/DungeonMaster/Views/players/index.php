@@ -103,7 +103,7 @@ $campaignUrl = add_query_arg(
             <div class="gmrc-campaign-fellowship__linked">
                 <div>
                     <strong><?php echo esc_html($campaignFellowship->name()->value()); ?></strong>
-                    <p>This Fellowship is linked to the Campaign. Roster changes do not silently rewrite Fellowship membership.</p>
+                    <p>This Fellowship is linked to the Campaign. Nominated Campaign adventurers are kept in step automatically, while pre-existing Fellowship members remain untouched.</p>
                 </div>
                 <a class="gmrc-campaign-button" href="<?php echo esc_url(add_query_arg('gmrc_route', 'parties/' . $campaignFellowship->id()->value(), $base)); ?>">View Fellowship</a>
                 <?php if (! $campaign->isArchived()) : ?>
@@ -145,7 +145,7 @@ $campaignUrl = add_query_arg(
                     </form>
                 <?php endif; ?>
             </div>
-            <p class="gmrc-campaign-fellowship__note">Founding copies the currently nominated adventurers once. New Campaign Players are never added to the Fellowship automatically.</p>
+            <p class="gmrc-campaign-fellowship__note">Campaign Fellowship membership follows nominated adventurers. Players without a nomination do not enter the Fellowship, and pre-existing Fellowship members are never removed by Campaign synchronisation.</p>
         <?php else : ?>
             <p>No Fellowship was linked before this Campaign was closed.</p>
         <?php endif; ?>
