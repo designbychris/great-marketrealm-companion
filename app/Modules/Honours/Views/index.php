@@ -78,7 +78,7 @@ $icons = [
                     <div class="gmrc-deed__rule" aria-hidden="true"></div>
                     <p class="gmrc-deed__state">
                         <span aria-hidden="true">●</span>
-                        <?php echo $earnedEntry ? 'Certified honour' : 'Not yet earned'; ?>
+                        <?php echo $earnedEntry ? 'Certified honour' : 'Deed yet to be witnessed'; ?>
                     </p>
                     <?php if ($earnedEntry && ! empty($entry['certified_at'])) : ?>
                         <p class="gmrc-deed__date">Entered <?php echo esc_html(wp_date('j F Y', strtotime((string) $entry['certified_at']))); ?></p>
