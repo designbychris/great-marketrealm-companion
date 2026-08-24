@@ -89,7 +89,7 @@ final class FellowshipSealsRegressionTest extends TestCase
         $controller = $this->source('app/Modules/Parties/Controllers/FellowshipSealController.php');
 
         self::assertStringContainsString('AccountType::PLAYER', $request);
-        self::assertStringContainsString("user_can($userId, 'gmrc_access_companion')", $request);
+        self::assertStringContainsString("user_can(\$userId, 'gmrc_access_companion')", $request);
         self::assertStringContainsString('GuildProfile::accountType($accountId) !== AccountType::PLAYER', $controller);
         self::assertStringContainsString('status_header(403)', $controller);
     }
@@ -98,7 +98,7 @@ final class FellowshipSealsRegressionTest extends TestCase
     {
         $frontend = $this->source('app/Providers/FrontendServiceProvider.php');
 
-        self::assertStringContainsString("$route === 'fellowship-seal'", $frontend);
+        self::assertStringContainsString("\$route === 'fellowship-seal'", $frontend);
         self::assertStringContainsString("'gmrc_fellowship_seal_redeem'", $frontend);
         self::assertStringContainsString("'#^parties/([^/]+)/seal$#'", $frontend);
         self::assertStringContainsString("'gmrc_fellowship_seal_'", $frontend);
