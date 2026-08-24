@@ -11512,6 +11512,7 @@ $callingPathLabel = $callingPath !== ''
                     <h2 id="gmrc-ledger-honours-title">Character Honours</h2>
                     <p class="gmrc-ledger-copy">
                         Wax stamps certify milestones earned by this adventurer. Once witnessed, a distinction remains part of their Guild record.
+                        The Leather Satchel, progression records and other adventuring measures remain in their dedicated Ledger folios.
                     </p>
                 </header>
 
