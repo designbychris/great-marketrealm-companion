@@ -69,6 +69,16 @@ final class Icons
         </svg>
     ';
 
+
+    public const HONOURS = '
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+                fill="currentColor"
+                d="m12 2 2.7 5.47 6.04.88-4.37 4.26 1.03 6.02L12 15.8l-5.4 2.83 1.03-6.02-4.37-4.26 6.04-.88L12 2Z"
+            />
+        </svg>
+    ';
+
     public const SETTINGS = '
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path

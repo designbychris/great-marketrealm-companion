@@ -11493,35 +11493,36 @@ $callingPathLabel = $callingPath !== ''
 
             <section
                 class="gmrc-ledger-page gmrc-ledger-page--future"
-                aria-labelledby="gmrc-ledger-future-title"
+                aria-labelledby="gmrc-ledger-honours-title"
             >
                 <p class="gmrc-ledger-page__folio">Adventuring Record · VI</p>
 
                 <header class="gmrc-ledger-page__heading">
-                    <p class="gmrc-eyebrow">Pages Yet to Be Written</p>
-                    <h2 id="gmrc-ledger-future-title">The Road Ahead</h2>
+                    <p class="gmrc-eyebrow">Guild Distinctions</p>
+                    <h2 id="gmrc-ledger-honours-title">The Book of Deeds</h2>
                 </header>
 
                 <div class="gmrc-ledger-future__grid">
                     <article>
+                        <span aria-hidden="true">🏆</span>
+                        <h4>Guild Honours</h4>
+                        <p>Your account-level deeds are now certified in the Guild Hall’s Book of Deeds.</p>
+                        <a href="<?php echo esc_url(add_query_arg('gmrc_route', 'guild-honours', $companionUrl)); ?>">Open the Book of Deeds</a>
+                    </article>
+                    <article>
                         <span aria-hidden="true">🎒</span>
                         <h4>Leather Satchel</h4>
-                        <p>Inventory and equipment will be recorded here.</p>
+                        <p>Your equipment and provisions are already recorded throughout this Character Ledger.</p>
                     </article>
                     <article>
                         <span aria-hidden="true">✦</span>
                         <h4>Progression</h4>
-                        <p>New spells and class features will unlock as the adventurer rises.</p>
-                    </article>
-                    <article>
-                        <span aria-hidden="true">🏆</span>
-                        <h4>Honours</h4>
-                        <p>Guild achievements will become stamps within the Ledger.</p>
+                        <p>Experience, calling features, spells and gifts now advance within this living record.</p>
                     </article>
                 </div>
 
                 <blockquote class="gmrc-ledger-auby-note gmrc-ledger-auby-note--archive">
-                    <p>“Plenty of room left. That usually means adventure is about to happen.”</p>
+                    <p>“Turns out the road ahead was mostly paperwork we already finished. I’ve filed the medals properly. Probably.”</p>
                     <footer>— Auby</footer>
                 </blockquote>
 

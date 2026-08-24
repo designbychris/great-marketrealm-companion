@@ -66,8 +66,8 @@ $rooms = is_array($rooms ?? null) ? $rooms : [];
             <p class="gmrc-guild-hall-room__eyebrow">Your Companion map</p>
             <h2 id="gmrc-guild-hall-directory-title">Choose a Guild Hall room</h2>
             <p>
-                Open the records available to your Guild calling. Planned rooms
-                are clearly marked and never masquerade as finished features.
+                Open the records available to your Guild calling. Every room on
+                this directory now leads to a working Companion record.
             </p>
         </header>
 

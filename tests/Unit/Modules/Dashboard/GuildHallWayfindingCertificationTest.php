@@ -61,14 +61,15 @@ final class GuildHallWayfindingCertificationTest extends TestCase
         self::assertSame('guild-profile', $this->room('profile', $rooms)['actions'][0]['route']);
     }
 
-    public function testOnlyGuildHonoursRemainsExplicitlyPlanned(): void
+    public function testEveryGuildHallRoomNowPointsAtARealDestination(): void
     {
         $rooms = (new GuildHallDirectory())->forAccount(AccountType::PLAYER, false);
         $planned = array_values(array_filter($rooms, static fn (array $room): bool => ! empty($room['planned'])));
+        $honours = $this->room('guild-honours', $rooms);
 
-        self::assertCount(1, $planned);
-        self::assertSame('guild-honours', $planned[0]['key']);
-        self::assertSame([], $planned[0]['actions']);
+        self::assertSame([], $planned);
+        self::assertSame('guild-honours', $honours['actions'][0]['route']);
+        self::assertSame('Open the Book of Deeds', $honours['actions'][0]['label']);
     }
 
     public function testDashboardRendersDirectoryDataInsteadOfPerformingRoleChecks(): void

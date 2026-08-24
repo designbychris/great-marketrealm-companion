@@ -21,7 +21,7 @@ final class GuildHallDirectory
             array_splice($rooms, 1, 0, [$this->dungeonMasterRoom()]);
         }
 
-        $rooms[] = $this->plannedHonoursRoom();
+        $rooms[] = $this->honoursRoom();
 
         return $rooms;
     }
@@ -53,17 +53,16 @@ final class GuildHallDirectory
     }
 
     /** @return array<string, mixed> */
-    private function plannedHonoursRoom(): array
+    private function honoursRoom(): array
     {
-        return [
-            'key' => 'guild-honours',
-            'symbol' => '★',
-            'eyebrow' => 'Planned Guild Hall room',
-            'title' => 'Guild Honours',
-            'description' => 'Achievements, milestones and the occasional very enthusiastic Seal of Approval.',
-            'actions' => [],
-            'planned' => true,
-        ];
+        return $this->room(
+            'guild-honours',
+            '★',
+            'Certified deeds and milestones',
+            'Guild Honours',
+            'Open the Book of Deeds to review honours certified from your Companion records.',
+            [['route' => 'guild-honours', 'label' => 'Open the Book of Deeds']]
+        );
     }
 
     /** @return array<int, array{route:string,label:string}> */

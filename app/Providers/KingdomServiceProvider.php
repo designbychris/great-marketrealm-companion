@@ -6,6 +6,7 @@ use GreatMarketrealmCompanion\Kingdoms\CharactersKingdom;
 use GreatMarketrealmCompanion\Kingdoms\DashboardKingdom;
 use GreatMarketrealmCompanion\Kingdoms\DungeonMasterKingdom;
 use GreatMarketrealmCompanion\Kingdoms\GuildGateKingdom;
+use GreatMarketrealmCompanion\Kingdoms\HonoursKingdom;
 use GreatMarketrealmCompanion\Kingdoms\KingdomRegistry;
 use GreatMarketrealmCompanion\Kingdoms\LibraryKingdom;
 use GreatMarketrealmCompanion\Kingdoms\PartiesKingdom;
@@ -56,6 +57,10 @@ class KingdomServiceProvider extends ServiceProvider
 
                 $registry->add(
                     new LibraryKingdom($this->app)
+                );
+
+                $registry->add(
+                    new HonoursKingdom($this->app)
                 );
 
                 return $registry;
