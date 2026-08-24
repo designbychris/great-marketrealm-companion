@@ -11491,38 +11491,72 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-ledger-page__number" aria-hidden="true">5</p>
             </section>
 
+            <?php
+            $characterHonours = is_array($characterHonours ?? null)
+                ? $characterHonours
+                : [];
+            $characterHonourEntries = is_array($characterHonours['entries'] ?? null)
+                ? $characterHonours['entries']
+                : [];
+            $characterHonoursEarned = (int) ($characterHonours['earned'] ?? 0);
+            $characterHonoursTotal = (int) ($characterHonours['total'] ?? count($characterHonourEntries));
+            ?>
             <section
-                class="gmrc-ledger-page gmrc-ledger-page--future"
+                class="gmrc-ledger-page gmrc-ledger-page--honours"
                 aria-labelledby="gmrc-ledger-honours-title"
             >
                 <p class="gmrc-ledger-page__folio">Adventuring Record · VI</p>
 
                 <header class="gmrc-ledger-page__heading">
                     <p class="gmrc-eyebrow">Guild Distinctions</p>
-                    <h2 id="gmrc-ledger-honours-title">The Book of Deeds</h2>
+                    <h2 id="gmrc-ledger-honours-title">Character Honours</h2>
+                    <p class="gmrc-ledger-copy">
+                        Wax stamps certify milestones earned by this adventurer. Once witnessed, a distinction remains part of their Guild record.
+                    </p>
                 </header>
 
-                <div class="gmrc-ledger-future__grid">
-                    <article>
-                        <span aria-hidden="true">🏆</span>
-                        <h4>Guild Honours</h4>
-                        <p>Your account-level deeds are now certified in the Guild Hall’s Book of Deeds.</p>
-                        <a href="<?php echo esc_url(add_query_arg('gmrc_route', 'guild-honours', $companionUrl)); ?>">Open the Book of Deeds</a>
-                    </article>
-                    <article>
-                        <span aria-hidden="true">🎒</span>
-                        <h4>Leather Satchel</h4>
-                        <p>Your equipment and provisions are already recorded throughout this Character Ledger.</p>
-                    </article>
-                    <article>
-                        <span aria-hidden="true">✦</span>
-                        <h4>Progression</h4>
-                        <p>Experience, calling features, spells and gifts now advance within this living record.</p>
-                    </article>
+                <div class="gmrc-character-honours__summary" aria-label="Character honours summary">
+                    <span aria-hidden="true">🏆</span>
+                    <strong><?php echo esc_html((string) $characterHonoursEarned); ?></strong>
+                    <small>of <?php echo esc_html((string) $characterHonoursTotal); ?> distinctions certified</small>
                 </div>
 
+                <?php if ($characterHonourEntries === []) : ?>
+                    <p class="gmrc-ledger-copy">The Archivists have not opened this adventurer’s stamp register yet.</p>
+                <?php else : ?>
+                    <div class="gmrc-character-honours__grid">
+                        <?php foreach ($characterHonourEntries as $honour) : ?>
+                            <?php $earnedHonour = ! empty($honour['earned']); ?>
+                            <article class="gmrc-character-honour<?php echo $earnedHonour ? ' is-earned' : ' is-unwitnessed'; ?>">
+                                <div class="gmrc-character-honour__seal" aria-hidden="true">
+                                    <span><?php echo esc_html((string) ($honour['symbol'] ?? '★')); ?></span>
+                                </div>
+                                <div>
+                                    <h3><?php echo esc_html((string) ($honour['title'] ?? 'Guild Distinction')); ?></h3>
+                                    <p><?php echo esc_html((string) ($honour['description'] ?? '')); ?></p>
+                                    <strong class="gmrc-character-honour__state">
+                                        <?php echo $earnedHonour ? 'Certified distinction' : 'Deed yet to be witnessed'; ?>
+                                    </strong>
+                                    <?php if ($earnedHonour && ! empty($honour['certified_at'])) : ?>
+                                        <small>Stamped in the Ledger: <?php echo esc_html(wp_date('j F Y', strtotime((string) $honour['certified_at']))); ?></small>
+                                    <?php endif; ?>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+
+                <aside class="gmrc-character-honours__book-link">
+                    <span aria-hidden="true">📖</span>
+                    <div>
+                        <strong>Guild-wide Book of Deeds</strong>
+                        <p>Account-level Guild Honours are recorded separately in the Guild Hall archive.</p>
+                        <a href="<?php echo esc_url(add_query_arg('gmrc_route', 'guild-honours', $companionUrl)); ?>">Open the Book of Deeds</a>
+                    </div>
+                </aside>
+
                 <blockquote class="gmrc-ledger-auby-note gmrc-ledger-auby-note--archive">
-                    <p>“Turns out the road ahead was mostly paperwork we already finished. I’ve filed the medals properly. Probably.”</p>
+                    <p>“I found the wax. I also found the official stamp. These were apparently two different problems.”</p>
                     <footer>— Auby</footer>
                 </blockquote>
 

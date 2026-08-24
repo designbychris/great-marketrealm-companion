@@ -11,6 +11,9 @@ use GreatMarketrealmCompanion\Modules\Honours\Controllers\HonoursController;
 use GreatMarketrealmCompanion\Modules\Honours\Services\BookOfDeeds;
 use GreatMarketrealmCompanion\Modules\Honours\Services\GuildHonourLedger;
 use GreatMarketrealmCompanion\Modules\Honours\Services\GuildHonourRegistry;
+use GreatMarketrealmCompanion\Modules\Honours\Services\CharacterBookOfDeeds;
+use GreatMarketrealmCompanion\Modules\Honours\Services\CharacterHonourLedger;
+use GreatMarketrealmCompanion\Modules\Honours\Services\CharacterHonourRegistry;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 
 defined('ABSPATH') || exit;
@@ -21,6 +24,16 @@ final class HonoursServiceProvider extends ServiceProvider
     {
         $this->app->singleton(GuildHonourRegistry::class);
         $this->app->singleton(GuildHonourLedger::class);
+        $this->app->singleton(CharacterHonourRegistry::class);
+        $this->app->singleton(CharacterHonourLedger::class);
+        $this->app->container()->bind(
+            CharacterBookOfDeeds::class,
+            static fn (Container $container): CharacterBookOfDeeds =>
+                new CharacterBookOfDeeds(
+                    $container->make(CharacterHonourRegistry::class),
+                    $container->make(CharacterHonourLedger::class)
+                )
+        );
         $this->app->container()->bind(
             BookOfDeeds::class,
             static fn (Container $container): BookOfDeeds => new BookOfDeeds(

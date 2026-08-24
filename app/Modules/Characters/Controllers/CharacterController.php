@@ -98,6 +98,7 @@ use GreatMarketrealmCompanion\Services\Guild\GuildSealRegistry;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\CharacterFellowshipPresenter;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyOwnerId;
 use GreatMarketrealmCompanion\Modules\Library\Backgrounds\Repositories\BackgroundMechanicsRegister;
+use GreatMarketrealmCompanion\Modules\Honours\Services\CharacterBookOfDeeds;
 use RuntimeException;
 
 defined('ABSPATH') || exit;
@@ -133,7 +134,8 @@ final class CharacterController
         private SubmittedPortraitRecipeFactory $submittedPortraits,
         private CharacterCatalogueRepository $catalogue,
         private CharacterBuildProfileRepository $buildProfiles,
-        private ?CharacterFellowshipPresenter $fellowships = null
+        private ?CharacterFellowshipPresenter $fellowships = null,
+        private ?CharacterBookOfDeeds $characterHonours = null
     ) {
     }
 
@@ -932,6 +934,7 @@ final class CharacterController
             );
 
         $fellowships = [];
+        $characterHonours = [];
 
         if (
             $includeFellowships
@@ -947,6 +950,22 @@ final class CharacterController
                 $fellowships = $this->fellowships->present(
                     $character->id(),
                     PartyOwnerId::fromInt($ownerUserId)
+                );
+            }
+        }
+
+        if (
+            $includeFellowships
+            && $this->characterHonours instanceof CharacterBookOfDeeds
+        ) {
+            $ownerUserId = function_exists('get_current_user_id')
+                ? (int) \get_current_user_id()
+                : 0;
+
+            if ($ownerUserId > 0) {
+                $characterHonours = $this->characterHonours->forCharacter(
+                    $character,
+                    $ownerUserId
                 );
             }
         }
@@ -995,6 +1014,7 @@ final class CharacterController
                     'livingRegister' => $livingRegister,
                     'completeAdventurer' => $completeAdventurer,
                     'fellowships' => $fellowships,
+                    'characterHonours' => $characterHonours,
                     ],
                     $viewContext
                 )

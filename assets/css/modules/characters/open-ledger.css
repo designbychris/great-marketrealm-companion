@@ -3514,3 +3514,205 @@
         color: CanvasText;
     }
 }
+
+/* -----------------------------------------------------------------
+ * Phase III.16.18 — Character Honours & Ledger Stamps
+ * ----------------------------------------------------------------- */
+
+.gmrc-ledger-page--honours {
+    --gmrc-honour-wax: #7d2230;
+    --gmrc-honour-wax-dark: #4f131d;
+    --gmrc-honour-gold: #a7772d;
+}
+
+.gmrc-character-honours__summary {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: .65rem;
+    align-items: center;
+    margin: 1rem 0 1.25rem;
+    padding: .8rem 1rem;
+    border: 1px solid rgba(112, 73, 31, .24);
+    background: rgba(255, 248, 225, .34);
+}
+
+.gmrc-character-honours__summary > span {
+    font-size: 1.35rem;
+}
+
+.gmrc-character-honours__summary > strong {
+    color: var(--gmrc-ledger-purple);
+    font-family: var(--gmrc-font-heading, Georgia, serif);
+    font-size: 1.5rem;
+}
+
+.gmrc-character-honours__summary > small {
+    color: rgba(65, 44, 34, .72);
+    font-size: .76rem;
+}
+
+.gmrc-character-honours__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .85rem;
+}
+
+.gmrc-character-honour {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: .85rem;
+    min-height: 8.75rem;
+    padding: .9rem;
+    border: 1px solid rgba(89, 57, 34, .18);
+    background: rgba(255, 255, 255, .16);
+}
+
+.gmrc-character-honour__seal {
+    display: grid;
+    width: 4.1rem;
+    height: 4.1rem;
+    place-items: center;
+    align-self: start;
+    border-radius: 50%;
+    color: #f5dec0;
+    background:
+        radial-gradient(circle at 36% 30%, #a54a57 0 10%, transparent 11%),
+        radial-gradient(circle, var(--gmrc-honour-wax) 0 56%, var(--gmrc-honour-wax-dark) 58% 72%, #3a0d14 73% 100%);
+    box-shadow:
+        inset 0 0 0 .22rem rgba(255, 222, 180, .08),
+        0 .35rem .6rem rgba(77, 35, 24, .25);
+    transform: rotate(-4deg);
+}
+
+.gmrc-character-honour__seal span {
+    font-size: 1.55rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+}
+
+.gmrc-character-honour h3 {
+    margin: .05rem 0 .3rem;
+    color: #3d2818;
+    font-family: var(--gmrc-font-heading, Georgia, serif);
+    font-size: .95rem;
+}
+
+.gmrc-character-honour p {
+    margin: 0;
+    color: rgba(65, 44, 34, .75);
+    font-size: .76rem;
+    line-height: 1.5;
+}
+
+.gmrc-character-honour__state {
+    display: block;
+    margin-top: .55rem;
+    color: var(--gmrc-honour-wax);
+    font-size: .7rem;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+}
+
+.gmrc-character-honour small {
+    display: block;
+    margin-top: .25rem;
+    color: rgba(65, 44, 34, .62);
+    font-size: .67rem;
+    font-style: italic;
+}
+
+.gmrc-character-honour.is-unwitnessed {
+    opacity: .68;
+}
+
+.gmrc-character-honour.is-unwitnessed .gmrc-character-honour__seal {
+    filter: grayscale(.75) sepia(.12);
+    opacity: .62;
+}
+
+.gmrc-character-honour.is-earned {
+    border-color: rgba(125, 34, 48, .3);
+    background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(151,93,44,.08));
+    box-shadow: inset 0 0 1.5rem rgba(125, 34, 48, .035);
+}
+
+.gmrc-character-honours__book-link {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .8rem;
+    margin-top: 1.1rem;
+    padding: .85rem 1rem;
+    border: 1px dashed rgba(96, 55, 115, .3);
+    background: rgba(255, 248, 225, .3);
+}
+
+.gmrc-character-honours__book-link > span {
+    font-size: 1.4rem;
+}
+
+.gmrc-character-honours__book-link strong {
+    color: #452d1d;
+    font-family: var(--gmrc-font-heading, Georgia, serif);
+    font-size: .82rem;
+}
+
+.gmrc-character-honours__book-link p {
+    margin: .18rem 0 .35rem;
+    color: rgba(65, 44, 34, .72);
+    font-size: .73rem;
+    line-height: 1.45;
+}
+
+.gmrc-character-honours__book-link a {
+    color: var(--gmrc-ledger-purple);
+    font-size: .73rem;
+    font-weight: 700;
+}
+
+@media (max-width: 760px) {
+    .gmrc-character-honours__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 420px) {
+    .gmrc-character-honour {
+        grid-template-columns: 3.7rem minmax(0, 1fr);
+        padding: .75rem;
+    }
+
+    .gmrc-character-honour__seal {
+        width: 3.35rem;
+        height: 3.35rem;
+    }
+
+    .gmrc-character-honour__seal span {
+        font-size: 1.25rem;
+    }
+
+    .gmrc-character-honours__summary {
+        grid-template-columns: auto 1fr;
+    }
+
+    .gmrc-character-honours__summary > small {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-character-honour__seal {
+        transform: none;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-character-honour,
+    .gmrc-character-honours__summary,
+    .gmrc-character-honours__book-link,
+    .gmrc-character-honour__seal {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+        box-shadow: none;
+        filter: none;
+    }
+}
