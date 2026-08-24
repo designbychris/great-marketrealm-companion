@@ -36,3 +36,316 @@
 .gmrc-command-centre__return a:focus-visible{outline:3px solid currentColor;outline-offset:4px}
 @media(max-width:800px){.gmrc-command-centre__hero-actions,.gmrc-command-centre__return{align-items:stretch;flex-direction:column}}
 @media(forced-colors:active){.gmrc-command-centre__notice{border-color:CanvasText;background:Canvas;color:CanvasText}}
+
+/* Phase III.16.16 — Dungeon Master Read-Only Character Ledger visual polish. */
+.gmrc-dm-character-ledger {
+    --gmrc-dm-ledger-gold: #f1c96d;
+    --gmrc-dm-ledger-gold-soft: #dfb45d;
+    --gmrc-dm-ledger-cream: #fff4df;
+    --gmrc-dm-ledger-copy: #e4d3ba;
+    --gmrc-dm-ledger-muted: #c6ad88;
+    --gmrc-dm-ledger-rule: rgba(226, 177, 77, 0.24);
+    --gmrc-dm-ledger-panel: rgba(21, 13, 15, 0.94);
+}
+
+.gmrc-dm-character-ledger > * + * {
+    margin-top: 1rem;
+}
+
+.gmrc-dm-character-ledger .gmrc-command-centre__hero {
+    align-items: center;
+    margin-bottom: 1.15rem;
+}
+
+.gmrc-dm-character-ledger .gmrc-command-centre__hero p:not(.gmrc-dm-desk__eyebrow) {
+    max-width: 52rem;
+    margin-bottom: 0;
+}
+
+.gmrc-dm-character-ledger .gmrc-dm-desk__eyebrow {
+    margin: 0 0 0.35rem;
+    color: var(--gmrc-dm-ledger-gold-soft);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.13em;
+    line-height: 1.35;
+    text-transform: uppercase;
+}
+
+.gmrc-dm-character-ledger .gmrc-command-centre__stats {
+    gap: 0;
+    margin: 0 0 1.1rem;
+}
+
+.gmrc-dm-character-ledger .gmrc-command-centre__stats > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.38rem;
+    min-width: 0;
+    padding: 0.9rem 0.8rem;
+    text-align: center;
+    border-right: 1px solid var(--gmrc-dm-ledger-rule);
+}
+
+.gmrc-dm-character-ledger .gmrc-command-centre__stats > div:last-child {
+    border-right: 0;
+}
+
+.gmrc-dm-character-ledger .gmrc-command-centre__stats > div strong {
+    flex: 0 0 auto;
+    color: var(--gmrc-dm-ledger-gold);
+    font: 700 clamp(1.45rem, 2.2vw, 1.85rem)/1 Georgia, "Times New Roman", serif;
+}
+
+.gmrc-dm-character-ledger .gmrc-command-centre__stats > div span {
+    min-width: 0;
+    color: var(--gmrc-dm-ledger-cream);
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+.gmrc-dm-character-ledger .gmrc-command-centre__grid {
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.gmrc-dm-character-ledger .gmrc-command-card {
+    min-height: 0;
+    padding: clamp(1.35rem, 2.4vw, 1.75rem);
+    background: var(--gmrc-dm-ledger-panel);
+}
+
+.gmrc-dm-character-ledger .gmrc-command-card > :first-child {
+    margin-top: 0;
+}
+
+.gmrc-dm-character-ledger .gmrc-command-card > :last-child {
+    margin-bottom: 0;
+}
+
+.gmrc-dm-character-ledger .gmrc-command-card h2 {
+    margin: 0.12rem 0 1rem;
+    color: var(--gmrc-dm-ledger-cream);
+    font-size: clamp(1.35rem, 2vw, 1.7rem);
+    line-height: 1.15;
+}
+
+.gmrc-dm-character-ledger .gmrc-command-card p {
+    margin-top: 0.5rem;
+    color: var(--gmrc-dm-ledger-copy);
+}
+
+.gmrc-dm-character-ledger .gmrc-ledger-page__portrait {
+    width: min(100%, 22rem);
+    margin: 0.15rem auto 1.45rem;
+    padding: 0.55rem;
+    border: 1px solid rgba(241, 201, 109, 0.32);
+    border-radius: 0.35rem;
+    background: rgba(255, 244, 213, 0.08);
+    box-shadow: 0 0.9rem 2rem rgba(0, 0, 0, 0.24);
+    transform: none;
+}
+
+.gmrc-dm-character-ledger .gmrc-ledger-page__portrait::before {
+    display: none;
+}
+
+.gmrc-dm-character-ledger .gmrc-ledger-background {
+    margin: 0.35rem 0 0;
+}
+
+.gmrc-dm-character-ledger .gmrc-ledger-background div {
+    display: grid;
+    grid-template-columns: minmax(7.5rem, 0.7fr) minmax(0, 1fr);
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px dotted var(--gmrc-dm-ledger-rule);
+}
+
+.gmrc-dm-character-ledger .gmrc-ledger-background div:last-child {
+    border-bottom: 0;
+}
+
+.gmrc-dm-character-ledger .gmrc-ledger-background dt {
+    color: var(--gmrc-dm-ledger-muted);
+    font-size: 0.69rem;
+    font-weight: 900;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.gmrc-dm-character-ledger .gmrc-ledger-background dd {
+    margin: 0;
+    color: var(--gmrc-dm-ledger-cream);
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.gmrc-dm-character-ledger .gmrc-ledger-saves,
+.gmrc-dm-character-ledger .gmrc-ledger-skill-list {
+    margin: 0.65rem 0 0;
+    gap: 0 1.1rem;
+}
+
+.gmrc-dm-character-ledger .gmrc-ledger-saves div,
+.gmrc-dm-character-ledger .gmrc-ledger-skill-list div {
+    min-height: 2.25rem;
+    padding: 0.48rem 0;
+    border-bottom: 1px dotted var(--gmrc-dm-ledger-rule);
+}
+
+.gmrc-dm-character-ledger .gmrc-ledger-saves dt,
+.gmrc-dm-character-ledger .gmrc-ledger-skill-list dt {
+    color: var(--gmrc-dm-ledger-copy);
+    font-size: 0.84rem;
+    font-weight: 600;
+}
+
+.gmrc-dm-character-ledger .gmrc-ledger-saves dd,
+.gmrc-dm-character-ledger .gmrc-ledger-skill-list dd {
+    margin: 0;
+    color: var(--gmrc-dm-ledger-cream);
+    font-size: 0.9rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.gmrc-dm-character-ledger .gmrc-ledger-saves .is-proficient dt,
+.gmrc-dm-character-ledger .gmrc-ledger-skill-list .is-proficient dt,
+.gmrc-dm-character-ledger .gmrc-ledger-skill-list .has-expertise dt {
+    color: var(--gmrc-dm-ledger-cream);
+    font-weight: 800;
+}
+
+.gmrc-dm-character-ledger .gmrc-ledger-saves .is-proficient dd,
+.gmrc-dm-character-ledger .gmrc-ledger-skill-list .is-proficient dd,
+.gmrc-dm-character-ledger .gmrc-ledger-skill-list .has-expertise dd {
+    color: var(--gmrc-dm-ledger-gold);
+}
+
+.gmrc-dm-character-ledger .gmrc-ledger-skill-list dd small {
+    color: var(--gmrc-dm-ledger-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.gmrc-dm-character-ledger .gmrc-command-centre__notes {
+    margin: 0.75rem 0 0;
+}
+
+.gmrc-dm-character-ledger .gmrc-command-centre__notes li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    color: var(--gmrc-dm-ledger-cream);
+    border-bottom: 1px dotted var(--gmrc-dm-ledger-rule);
+}
+
+.gmrc-dm-character-ledger .gmrc-command-centre__notes li:last-child {
+    border-bottom: 0;
+}
+
+.gmrc-dm-character-ledger .gmrc-command-centre__notes li strong {
+    color: var(--gmrc-dm-ledger-cream);
+}
+
+.gmrc-dm-character-ledger .gmrc-command-centre__notes li span {
+    color: var(--gmrc-dm-ledger-gold-soft);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.035em;
+    text-align: right;
+    text-transform: none;
+}
+
+.gmrc-dm-character-ledger > .gmrc-command-centre__notice {
+    margin: 1rem 0 0;
+    padding: 1rem 1.15rem;
+    border-color: rgba(241, 201, 109, 0.48);
+    border-radius: 0.65rem;
+    background: rgba(45, 28, 21, 0.92);
+    color: var(--gmrc-dm-ledger-copy);
+    line-height: 1.55;
+}
+
+.gmrc-dm-character-ledger > .gmrc-command-centre__notice strong {
+    color: var(--gmrc-dm-ledger-gold);
+}
+
+@media (max-width: 800px) {
+    .gmrc-dm-character-ledger .gmrc-command-centre__stats > div {
+        border-right: 0;
+        border-bottom: 1px solid var(--gmrc-dm-ledger-rule);
+    }
+
+    .gmrc-dm-character-ledger .gmrc-command-centre__stats > div:last-child {
+        border-bottom: 0;
+    }
+
+    .gmrc-dm-character-ledger .gmrc-ledger-saves,
+    .gmrc-dm-character-ledger .gmrc-ledger-skill-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .gmrc-dm-character-ledger .gmrc-command-centre__stats > div {
+        justify-content: space-between;
+        padding: 0.8rem 1rem;
+        text-align: left;
+    }
+
+    .gmrc-dm-character-ledger .gmrc-ledger-background div {
+        grid-template-columns: 1fr;
+        gap: 0.2rem;
+    }
+
+    .gmrc-dm-character-ledger .gmrc-command-centre__notes li {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    .gmrc-dm-character-ledger .gmrc-command-centre__notes li span {
+        text-align: left;
+    }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    .gmrc-dm-character-ledger .gmrc-command-card,
+    .gmrc-dm-character-ledger > .gmrc-command-centre__notice {
+        background: #211317;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-dm-character-ledger .gmrc-command-centre__stats > div,
+    .gmrc-dm-character-ledger .gmrc-ledger-background div,
+    .gmrc-dm-character-ledger .gmrc-ledger-saves div,
+    .gmrc-dm-character-ledger .gmrc-ledger-skill-list div,
+    .gmrc-dm-character-ledger .gmrc-command-centre__notes li {
+        border-color: CanvasText;
+    }
+
+    .gmrc-dm-character-ledger .gmrc-dm-desk__eyebrow,
+    .gmrc-dm-character-ledger .gmrc-command-centre__stats > div strong,
+    .gmrc-dm-character-ledger .gmrc-command-centre__stats > div span,
+    .gmrc-dm-character-ledger .gmrc-ledger-background dt,
+    .gmrc-dm-character-ledger .gmrc-ledger-background dd,
+    .gmrc-dm-character-ledger .gmrc-ledger-saves dt,
+    .gmrc-dm-character-ledger .gmrc-ledger-saves dd,
+    .gmrc-dm-character-ledger .gmrc-ledger-skill-list dt,
+    .gmrc-dm-character-ledger .gmrc-ledger-skill-list dd,
+    .gmrc-dm-character-ledger .gmrc-command-centre__notes li,
+    .gmrc-dm-character-ledger .gmrc-command-centre__notes li strong,
+    .gmrc-dm-character-ledger .gmrc-command-centre__notes li span,
+    .gmrc-dm-character-ledger > .gmrc-command-centre__notice,
+    .gmrc-dm-character-ledger > .gmrc-command-centre__notice strong {
+        color: CanvasText;
+    }
+}
