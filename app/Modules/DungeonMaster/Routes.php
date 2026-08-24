@@ -9,9 +9,11 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\InitiativeContro
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\MonsterController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\JournalController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\MarketPassController;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\ActiveCampaignController;
 defined('ABSPATH') || exit;
 return static function (Router $router): void {
  $router->get('/dungeon-master',[DungeonMasterController::class,'index']);
+ $router->get('/active-campaigns',[ActiveCampaignController::class,'index']);
  $router->get('/market-pass',[MarketPassController::class,'index']);
  $router->post('/market-pass',[MarketPassController::class,'redeem']);
 

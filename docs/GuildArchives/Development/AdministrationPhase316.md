@@ -38,3 +38,7 @@ Market Passes establish the secure Dungeon Master-to-Player campaign invitation 
 - Redemption adds account-level Campaign membership only. Character nomination remains a later Active Campaigns/roster phase.
 - Archived Campaigns, expired/revoked codes, self-invites, duplicate membership, and code collisions are explicitly guarded.
 - The underlying `InviteCodeGenerator` lives in Core so Fellowship Seals can reuse the same invitation primitive later.
+
+### Active Campaigns
+
+Player Campaign membership now has a dedicated, player-safe Active Campaigns surface. It is resolved from Campaign roster membership established by Market Passes and deliberately excludes Dungeon Master sessions, encounters, journals and command-centre controls. Character assignment remains a separate concern for the following Campaign roster phase.

@@ -23,6 +23,12 @@ $marketPassUrl = add_query_arg(
     'market-pass',
     $companionUrl
 );
+
+$activeCampaignsUrl = add_query_arg(
+    'gmrc_route',
+    'active-campaigns',
+    $companionUrl
+);
 ?>
 
 <section class="gmrc-guild-hall">
@@ -133,6 +139,16 @@ $marketPassUrl = add_query_arg(
         </article>
 
         <?php if (\GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile::accountType(get_current_user_id()) === \GreatMarketrealmCompanion\Modules\GuildGate\AccountType::PLAYER) : ?>
+        <article
+            class="gmrc-guild-hall-room"
+            data-room-symbol="🗺"
+        >
+            <span class="gmrc-guild-hall-room__eyebrow">Your adventuring tables</span>
+            <h2>Active Campaigns</h2>
+            <p>See the Campaigns you have joined and your place at each table.</p>
+            <a class="gmrc-guild-hall-room__link" href="<?php echo esc_url($activeCampaignsUrl); ?>">Open Active Campaigns →</a>
+        </article>
+
         <article
             class="gmrc-guild-hall-room"
             data-room-symbol="🎟"

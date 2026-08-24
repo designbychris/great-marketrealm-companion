@@ -18,6 +18,23 @@ final class CampaignRepository
     private const META_STATUS = '_gmrc_campaign_status';
 
     /** @return Campaign[] */
+    public function all(): array
+    {
+        $posts = get_posts([
+            'post_type' => self::POST_TYPE,
+            'post_status' => 'publish',
+            'posts_per_page' => -1,
+            'orderby' => 'date',
+            'order' => 'DESC',
+        ]);
+
+        return array_map(
+            fn (WP_Post $post): Campaign => $this->map($post),
+            $posts
+        );
+    }
+
+    /** @return Campaign[] */
     public function allForOwner(int $ownerId): array
     {
         $posts = get_posts(['post_type'=>self::POST_TYPE,'post_status'=>'publish','posts_per_page'=>-1,'author'=>$ownerId,'orderby'=>'date','order'=>'DESC']);

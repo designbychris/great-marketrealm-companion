@@ -979,6 +979,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/dungeon-master/market-pass.css',
             ],
             [
+                'handle' => 'gmrc-active-campaigns',
+                'path' => 'modules/dungeon-master/active-campaigns.css',
+            ],
+            [
                 'handle' => 'gmrc-session-ledger',
                 'path' => 'modules/dungeon-master/session-ledger.css',
             ],

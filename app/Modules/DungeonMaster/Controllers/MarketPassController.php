@@ -64,13 +64,13 @@ final class MarketPassController
 
         if ($this->rosters->hasPlayer($campaign, $playerId)) {
             $this->flash->success('You are already signed into ' . $campaign->name() . '.');
-            return $this->responses->redirect($this->playerUrl());
+            return $this->responses->redirect($this->activeCampaignsUrl());
         }
 
         $this->rosters->addPlayer($campaign, $playerId);
         $this->flash->success('Market Pass accepted. You have joined ' . $campaign->name() . '.');
 
-        return $this->responses->redirect($this->playerUrl());
+        return $this->responses->redirect($this->activeCampaignsUrl());
     }
 
     public function issue(string $id): RedirectResponse
@@ -131,6 +131,11 @@ final class MarketPassController
     private function playerUrl(): string
     {
         return add_query_arg('gmrc_route', 'market-pass', home_url('/companion/'));
+    }
+
+    private function activeCampaignsUrl(): string
+    {
+        return add_query_arg('gmrc_route', 'active-campaigns', home_url('/companion/'));
     }
 
     private function rosterUrl(string $campaignId): string
