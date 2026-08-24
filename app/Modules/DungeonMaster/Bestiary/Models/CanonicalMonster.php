@@ -11,7 +11,7 @@ final class CanonicalMonster
     /** @param array<string,mixed> $data */
     public function __construct(private array $data) {}
 
-    public function id(): string { return 'canonical:' . $this->key(); }
+    public function id(): string { return ($this->isStewardAuthored() ? 'steward:' : 'canonical:') . $this->key(); }
     public function key(): string { return (string) ($this->data['key'] ?? ''); }
     public function name(): string { return (string) ($this->data['name'] ?? ''); }
     public function creatureType(): string { return (string) ($this->data['type'] ?? ''); }
@@ -45,7 +45,9 @@ final class CanonicalMonster
     public function fieldGuideVisible(): bool { return ! empty($this->data['field_guide_visible']); }
     public function playerDescription(): string { return $this->text('player_description'); }
     public function isArchived(): bool { return false; }
-    public function isCanonical(): bool { return true; }
+    public function isCanonical(): bool { return ! $this->isStewardAuthored(); }
+    public function isStewardAuthored(): bool { return ($this->data['origin'] ?? 'canonical') === 'steward'; }
+    public function publicationStatus(): string { return (string) ($this->data['status'] ?? 'published'); }
 
     public function strength(): ?int { return $this->ability('str'); }
     public function dexterity(): ?int { return $this->ability('dex'); }
@@ -82,7 +84,8 @@ final class CanonicalMonster
             'max_hp' => $this->maxHp(),
             'initiative_modifier' => $this->initiativeModifier(),
             'challenge' => $this->challenge(),
-            'canonical' => true,
+            'canonical' => $this->isCanonical(),
+            'steward_authored' => $this->isStewardAuthored(),
         ];
     }
 

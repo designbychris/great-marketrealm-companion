@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords;
+namespace GreatMarketrealmCompanion\Modules\Administration\Workshop;
 
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Models\CanonicalMonster;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Repositories\CanonicalBestiary;
@@ -10,48 +10,63 @@ use RuntimeException;
 
 defined('ABSPATH') || exit;
 
-/**
- * Administrator-owned canonical Bestiary overrides.
- *
- * The Dungeon Master Guide remains the immutable baseline. Steward changes are
- * stored separately so an individual creature can always be restored to canon.
- */
-final class CanonicalBestiarySteward
+/** Persistent Steward-authored creatures kept separate from immutable canon. */
+final class MonsterWorkshop
 {
-    public const OPTION = 'gmrc_canonical_bestiary_overrides';
+    public const OPTION = 'gmrc_steward_monsters';
+    public const STATUS_DRAFT = 'draft';
+    public const STATUS_PUBLISHED = 'published';
+    public const STATUS_ARCHIVED = 'archived';
 
     public function __construct(private CanonicalBestiary $bestiary) {}
 
-    /** @return CanonicalMonster[] */
+    /** @return array<string,array<string,mixed>> */
     public function all(): array
     {
-        return array_values(array_filter(
-            $this->bestiary->all(),
-            static fn (CanonicalMonster $monster): bool => $monster->isCanonical()
-        ));
+        $records = get_option(self::OPTION, []);
+        return is_array($records) ? $records : [];
     }
 
-    public function find(string $key): ?CanonicalMonster
+    /** @return array<string,array<string,mixed>> */
+    public function published(): array
     {
-        return $this->bestiary->findCanonical($key);
+        return array_filter($this->all(), static fn (array $record): bool => ($record['status'] ?? '') === self::STATUS_PUBLISHED);
+    }
+
+    /** @return array<string,mixed>|null */
+    public function find(string $key): ?array
+    {
+        $key = sanitize_key($key);
+        $records = $this->all();
+        return isset($records[$key]) && is_array($records[$key]) ? $records[$key] : null;
     }
 
     /** @param array<string,mixed> $input */
-    public function save(string $key, array $input): void
+    public function save(string $key, array $input): string
     {
-        $record = $this->bestiary->findCanonical($key);
-        if (! $record instanceof CanonicalMonster) {
-            throw new RuntimeException('Canonical Bestiary record not found.');
+        $records = $this->all();
+        $existing = $key !== '' ? ($records[sanitize_key($key)] ?? null) : null;
+        $name = sanitize_text_field((string) ($input['name'] ?? ''));
+        if ($name === '') {
+            throw new RuntimeException('A Steward creature requires a name.');
         }
 
+        $key = is_array($existing) ? sanitize_key($key) : $this->uniqueKey($name, $records);
         $attachmentId = absint($input['image_attachment_id'] ?? 0);
         if ($attachmentId > 0 && ! wp_attachment_is_image($attachmentId)) {
             throw new RuntimeException('The selected Bestiary artwork must be a WordPress image attachment.');
         }
 
-        $overrides = $this->overrides();
-        $overrides[$record->key()] = [
-            'name' => sanitize_text_field((string) ($input['name'] ?? '')),
+        $status = sanitize_key((string) ($input['status'] ?? self::STATUS_DRAFT));
+        if (! in_array($status, [self::STATUS_DRAFT, self::STATUS_PUBLISHED, self::STATUS_ARCHIVED], true)) {
+            $status = self::STATUS_DRAFT;
+        }
+
+        $records[$key] = [
+            'key' => $key,
+            'origin' => 'steward',
+            'status' => $status,
+            'name' => $name,
             'type' => sanitize_text_field((string) ($input['type'] ?? '')),
             'size' => sanitize_text_field((string) ($input['size'] ?? '')),
             'alignment' => sanitize_text_field((string) ($input['alignment'] ?? '')),
@@ -76,54 +91,39 @@ final class CanonicalBestiarySteward
             'condition_immunities' => sanitize_textarea_field((string) ($input['condition_immunities'] ?? '')),
             'senses' => sanitize_textarea_field((string) ($input['senses'] ?? '')),
             'languages' => sanitize_textarea_field((string) ($input['languages'] ?? '')),
+            'traits' => sanitize_textarea_field((string) ($input['traits'] ?? '')),
             'spellcasting' => sanitize_textarea_field((string) ($input['spellcasting'] ?? '')),
+            'actions' => sanitize_textarea_field((string) ($input['actions'] ?? '')),
             'reactions' => sanitize_textarea_field((string) ($input['reactions'] ?? '')),
             'legendary_actions' => sanitize_textarea_field((string) ($input['legendary_actions'] ?? '')),
             'mythic_actions' => sanitize_textarea_field((string) ($input['mythic_actions'] ?? '')),
             'lair_actions' => sanitize_textarea_field((string) ($input['lair_actions'] ?? '')),
-            'traits' => sanitize_textarea_field((string) ($input['traits'] ?? '')),
-            'actions' => sanitize_textarea_field((string) ($input['actions'] ?? '')),
             'notes' => sanitize_textarea_field((string) ($input['notes'] ?? '')),
             'image_attachment_id' => $attachmentId,
             'field_guide_visible' => ! empty($input['field_guide_visible']),
             'player_description' => sanitize_textarea_field((string) ($input['player_description'] ?? '')),
+            'updated_at' => gmdate('c'),
         ];
 
-        update_option(self::OPTION, $overrides, false);
+        update_option(self::OPTION, $records, false);
         $this->bestiary->flush();
+        return $key;
     }
 
-    public function reset(string $key): void
+    private function uniqueKey(string $name, array $records): string
     {
-        $record = $this->bestiary->findCanonical($key);
-        if (! $record instanceof CanonicalMonster) {
-            throw new RuntimeException('Canonical Bestiary record not found.');
+        $base = sanitize_key($name) ?: 'steward-creature';
+        $key = 'steward-' . $base;
+        $suffix = 2;
+        while (isset($records[$key]) || $this->bestiary->findCanonical($key) instanceof CanonicalMonster) {
+            $key = 'steward-' . $base . '-' . $suffix++;
         }
-
-        $overrides = $this->overrides();
-        unset($overrides[$record->key()]);
-        update_option(self::OPTION, $overrides, false);
-        $this->bestiary->flush();
-    }
-
-    public function hasOverride(string $key): bool
-    {
-        return isset($this->overrides()[sanitize_key($key)]);
-    }
-
-    /** @return array<string,array<string,mixed>> */
-    private function overrides(): array
-    {
-        $value = get_option(self::OPTION, []);
-        return is_array($value) ? $value : [];
+        return $key;
     }
 
     private function nullableInt(mixed $value, int $min, int $max): ?int
     {
-        if ($value === '' || $value === null) {
-            return null;
-        }
-
+        if ($value === '' || $value === null) return null;
         return max($min, min($max, (int) $value));
     }
 }

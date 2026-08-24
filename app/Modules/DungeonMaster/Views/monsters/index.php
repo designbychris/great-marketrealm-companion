@@ -21,11 +21,11 @@ $createUrl = add_query_arg('gmrc_route', 'dungeon-master/monsters/create', $base
     <section class="gmrc-canonical-bestiary" aria-labelledby="gmrc-canonical-bestiary-title">
         <header class="gmrc-canonical-bestiary__header">
             <div>
-                <p class="gmrc-dm-desk__eyebrow">Dungeon Master Guide canon</p>
-                <h2 id="gmrc-canonical-bestiary-title">Canonical Marketrealm Bestiary</h2>
-                <p>Official creatures are read-only and shared by every Dungeon Master. Missing source statistics are shown as unknown rather than guessed.</p>
+                <p class="gmrc-dm-desk__eyebrow">Canon + Steward publications</p>
+                <h2 id="gmrc-canonical-bestiary-title">Shared Marketrealm Bestiary</h2>
+                <p>Canonical creatures and published Steward creations are read-only here and shared by every Dungeon Master. Draft and archived Workshop records remain sealed.</p>
             </div>
-            <span class="gmrc-canonical-bestiary__count"><?php echo esc_html((string) count($canonicalMonsters ?? [])); ?> canonical records</span>
+            <span class="gmrc-canonical-bestiary__count"><?php echo esc_html((string) count($canonicalMonsters ?? [])); ?> shared records</span>
         </header>
         <div class="gmrc-monster-grid">
             <?php foreach (($canonicalMonsters ?? []) as $monster) : ?>
@@ -36,7 +36,7 @@ $createUrl = add_query_arg('gmrc_route', 'dungeon-master/monsters/create', $base
                             <?php echo wp_get_attachment_image($monster->imageAttachmentId(), 'medium', false, ['alt' => '']); ?>
                         </a>
                     <?php endif; ?>
-                    <p class="gmrc-monster-card__status">Canonical · <?php echo $monster->encounterReady() ? 'Ready for encounters' : 'Reference only'; ?></p>
+                    <p class="gmrc-monster-card__status"><?php echo esc_html($monster->isStewardAuthored() ? 'Steward Creation' : 'Canonical'); ?> · <?php echo $monster->encounterReady() ? 'Ready for encounters' : 'Reference only'; ?></p>
                     <h3><a href="<?php echo esc_url($canonicalUrl); ?>"><?php echo esc_html($monster->name()); ?></a></h3>
                     <p><?php echo esc_html(trim($monster->size() . ' ' . $monster->creatureType()) ?: 'Canonical creature'); ?></p>
                     <dl class="gmrc-monster-card__stats">

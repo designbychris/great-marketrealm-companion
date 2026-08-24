@@ -49,3 +49,6 @@
 
 /* Canonical Spell Register */
 .gmrc-spell-steward__identity,.gmrc-spell-steward__variants{padding:1rem;border:1px solid #d8ca9f;border-radius:8px;background:#fffaf0;margin:1rem 0}.gmrc-spell-steward__identity h3,.gmrc-spell-steward__variants h3{margin-top:0}.gmrc-spell-steward__identity dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem 1rem}.gmrc-spell-steward__identity dl div{padding:.65rem;background:rgba(255,255,255,.62);border-radius:6px}.gmrc-spell-steward__identity dt{font-weight:700}.gmrc-spell-steward__identity dd{margin:.25rem 0 0}.gmrc-spell-steward__variants label{display:block;margin-top:1rem}.gmrc-spell-steward textarea{width:100%}@media(max-width:700px){.gmrc-spell-steward__identity dl{grid-template-columns:1fr}}@media(forced-colors:active){.gmrc-spell-steward__identity,.gmrc-spell-steward__variants{border-color:CanvasText}}
+
+/* Phase III.16.19 — Steward's Workshop */
+.gmrc-monster-workshop .gmrc-canonical-steward__register-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.gmrc-monster-workshop select{width:100%;max-width:none}.gmrc-monster-workshop .gmrc-stewards-office__hero{margin-bottom:20px}.gmrc-monster-workshop .gmrc-canonical-steward__register>p:last-child{margin:18px 0 0}

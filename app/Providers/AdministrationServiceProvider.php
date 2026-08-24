@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalBestiarySteward;
+use GreatMarketrealmCompanion\Modules\Administration\Workshop\MonsterWorkshop;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Models\CanonicalMonster;
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalCallingRegister;
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalBackgroundRegister;
 use GreatMarketrealmCompanion\Modules\Administration\Diagnostics\StewardDiagnostics;
@@ -32,6 +34,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         $this->app->singleton(CompanionSettings::class);
         $this->app->singleton(StewardDiagnostics::class);
         $this->app->singleton(CanonicalBestiarySteward::class);
+        $this->app->singleton(MonsterWorkshop::class);
         $this->app->singleton(CanonicalCallingRegister::class);
         $this->app->singleton(CanonicalBackgroundRegister::class);
         $this->app->singleton(CanonicalSpellRegister::class);
@@ -47,6 +50,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         add_action('admin_post_gmrc_save_companion_settings', [$this, 'saveCompanionSettings']);
         add_action('admin_post_gmrc_save_canonical_monster', [$this, 'saveCanonicalMonster']);
         add_action('admin_post_gmrc_reset_canonical_monster', [$this, 'resetCanonicalMonster']);
+        add_action('admin_post_gmrc_save_steward_monster', [$this, 'saveStewardMonster']);
         add_action('admin_post_gmrc_save_canonical_calling', [$this, 'saveCanonicalCalling']);
         add_action('admin_post_gmrc_reset_canonical_calling', [$this, 'resetCanonicalCalling']);
         add_action('admin_post_gmrc_save_canonical_background', [$this, 'saveCanonicalBackground']);
@@ -116,7 +120,7 @@ final class AdministrationServiceProvider extends ServiceProvider
             return;
         }
 
-        if ($section !== 'canonical-records') {
+        if (! in_array($section, ['canonical-records', 'monster-workshop'], true)) {
             return;
         }
 
@@ -190,6 +194,24 @@ final class AdministrationServiceProvider extends ServiceProvider
 
         $this->app->make(CanonicalBestiarySteward::class)->reset($key);
         wp_safe_redirect($this->canonicalUrl($key, ['gmrc_canonical_reset' => '1']));
+        exit;
+    }
+
+
+    public function saveStewardMonster(): void
+    {
+        $this->guard();
+        $key = sanitize_key(wp_unslash((string) ($_POST['monster_key'] ?? '')));
+        check_admin_referer('gmrc_save_steward_monster_' . ($key ?: 'new'), 'gmrc_steward_monster_nonce');
+
+        try {
+            $key = $this->app->make(MonsterWorkshop::class)->save($key, wp_unslash($_POST));
+            $args = ['gmrc_workshop_saved' => '1'];
+        } catch (RuntimeException $exception) {
+            $args = ['gmrc_workshop_error' => rawurlencode($exception->getMessage())];
+        }
+
+        wp_safe_redirect($this->workshopUrl($key, $args));
         exit;
     }
 
@@ -349,6 +371,16 @@ final class AdministrationServiceProvider extends ServiceProvider
             return;
         }
 
+        if ($section === 'monster-workshop') {
+            $workshop = $this->app->make(MonsterWorkshop::class);
+            $stewardMonsters = $workshop->all();
+            $selectedKey = sanitize_key((string) ($_GET['monster'] ?? ''));
+            $selectedData = $selectedKey !== '' ? $workshop->find($selectedKey) : null;
+            $selectedMonster = is_array($selectedData) ? new CanonicalMonster($selectedData) : null;
+            require GMRC_PATH . 'app/Modules/Administration/Views/monster-workshop.php';
+            return;
+        }
+
         if ($section === 'canonical-records') {
             $steward = $this->app->make(CanonicalBestiarySteward::class);
             $canonicalMonsters = $steward->all();
@@ -422,6 +454,14 @@ final class AdministrationServiceProvider extends ServiceProvider
             'kind' => $kind,
             'calling' => $key,
         ], $extra), admin_url('admin.php'));
+    }
+
+    /** @param array<string,string> $extra */
+    private function workshopUrl(string $key = '', array $extra = []): string
+    {
+        $args = array_merge(['page' => self::MENU_SLUG, 'section' => 'monster-workshop'], $extra);
+        if ($key !== '') $args['monster'] = $key;
+        return add_query_arg($args, admin_url('admin.php'));
     }
 
     /** @param array<string,string> $extra */

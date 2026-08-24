@@ -121,7 +121,7 @@ final class EncounterController
             $monsterId = sanitize_text_field((string) $monsterId);
             $quantity = max(0, min(20, (int) $quantity));
             if ($monsterId === '' || $quantity < 1) { continue; }
-            $monster = str_starts_with($monsterId, 'canonical:')
+            $monster = str_starts_with($monsterId, 'canonical:') || str_starts_with($monsterId, 'steward:')
                 ? $this->canonicalBestiary->find($monsterId)
                 : $this->monsters->findForOwner($monsterId, $campaign->ownerId());
             if ($monster === null) { continue; }
