@@ -395,6 +395,22 @@ class FrontendServiceProvider extends ServiceProvider
             return 'gmrc_market_pass_redeem';
         }
 
+        if ($method === 'POST' && $route === 'fellowship-seal') {
+            return 'gmrc_fellowship_seal_redeem';
+        }
+
+        if (
+            in_array($method, ['POST', 'DELETE'], true)
+            && preg_match(
+                '#^parties/([^/]+)/seal$#',
+                $route,
+                $fellowshipSealMatch
+            )
+        ) {
+            return 'gmrc_fellowship_seal_'
+                . sanitize_text_field($fellowshipSealMatch[1]);
+        }
+
         if (
             in_array($method, ['POST', 'DELETE'], true)
             && preg_match(
@@ -1033,6 +1049,10 @@ class FrontendServiceProvider extends ServiceProvider
             [
                 'handle' => 'gmrc-fellowship-register',
                 'path' => 'modules/parties/fellowship-register.css',
+            ],
+            [
+                'handle' => 'gmrc-fellowship-seals',
+                'path' => 'modules/parties/fellowship-seals.css',
             ],
             [
                 'handle' => 'gmrc-adventurers-pack',

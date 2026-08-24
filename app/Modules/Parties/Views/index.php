@@ -16,6 +16,11 @@ $createUrl = add_query_arg(
     'parties/create',
     $companionUrl
 );
+$sealUrl = add_query_arg(
+    'gmrc_route',
+    'fellowship-seal',
+    $companionUrl
+);
 
 $flash = is_array($flash ?? null)
     ? $flash
@@ -58,6 +63,12 @@ ob_start();
     require GMRC_PATH
         . 'app/Views/components/furniture/chapter-heading.php';
     ?>
+
+    <div class="gmrc-fellowship-register__actions">
+        <a class="gmrc-fellowship-button" href="<?php echo esc_url($sealUrl); ?>">
+            Redeem a Fellowship Seal
+        </a>
+    </div>
 
     <aside class="gmrc-fellowship-auby-note">
         <span class="gmrc-fellowship-auby-note__seal" aria-hidden="true">

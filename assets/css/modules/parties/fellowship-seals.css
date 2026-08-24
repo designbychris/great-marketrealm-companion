@@ -1,0 +1,166 @@
+/* Phase III.16.12 — Fellowship Seals */
+.gmrc-fellowship-seal {
+    width: min(880px, 100%);
+    margin-inline: auto;
+    padding: clamp(1rem, 3vw, 2rem);
+}
+
+.gmrc-fellowship-seal__hero,
+.gmrc-fellowship-seal__paper,
+.gmrc-fellowship-seal__note {
+    border: 1px solid rgba(84, 57, 30, .28);
+    border-radius: 18px;
+    background: rgba(252, 244, 218, .94);
+    box-shadow: 0 12px 32px rgba(58, 36, 18, .12);
+}
+
+.gmrc-fellowship-seal__hero {
+    position: relative;
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+    text-align: center;
+    overflow: hidden;
+}
+
+.gmrc-fellowship-seal__hero h1 {
+    margin-block: .25rem .75rem;
+}
+
+.gmrc-fellowship-seal__mark {
+    display: grid;
+    width: 4.5rem;
+    aspect-ratio: 1;
+    margin: .75rem auto;
+    place-items: center;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    font-size: 2rem;
+    transform: rotate(-5deg);
+}
+
+.gmrc-fellowship-seal__paper,
+.gmrc-fellowship-seal__note {
+    margin-top: 1rem;
+    padding: clamp(1rem, 3vw, 1.75rem);
+}
+
+.gmrc-fellowship-seal__paper form {
+    display: grid;
+    gap: .8rem;
+}
+
+.gmrc-fellowship-seal__paper input,
+.gmrc-fellowship-seal__paper select {
+    width: 100%;
+    min-height: 44px;
+    padding: .7rem .8rem;
+    border: 1px solid rgba(84, 57, 30, .42);
+    border-radius: 9px;
+    background: rgba(255, 253, 243, .9);
+    color: inherit;
+}
+
+.gmrc-fellowship-seal__code {
+    margin-block: .45rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: clamp(1.7rem, 6vw, 3rem);
+    font-weight: 800;
+    letter-spacing: .14em;
+}
+
+.gmrc-fellowship-seal__status {
+    margin: 0;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.gmrc-fellowship-seal__controls,
+.gmrc-fellowship-register__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    align-items: center;
+}
+
+.gmrc-fellowship-register__actions {
+    justify-content: flex-end;
+    margin-block: 0 1rem;
+}
+
+.gmrc-fellowship-seal__notice {
+    margin-top: 1rem;
+    padding: .8rem 1rem;
+    border: 1px solid currentColor;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.gmrc-fellowship-seal__return {
+    display: inline-block;
+    margin-top: 1rem;
+}
+
+.gmrc-fellowship-seal__hint {
+    margin: 0;
+    font-size: .9rem;
+    opacity: .82;
+}
+
+.gmrc-fellowship-seal a:focus-visible,
+.gmrc-fellowship-seal button:focus-visible,
+.gmrc-fellowship-seal input:focus-visible,
+.gmrc-fellowship-seal select:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+}
+
+@media (max-width: 720px) {
+    .gmrc-fellowship-seal {
+        padding-inline: .75rem;
+    }
+
+    .gmrc-fellowship-seal__controls,
+    .gmrc-fellowship-register__actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .gmrc-fellowship-seal__controls form,
+    .gmrc-fellowship-seal__controls button,
+    .gmrc-fellowship-register__actions a {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-fellowship-seal *,
+    .gmrc-fellowship-seal *::before,
+    .gmrc-fellowship-seal *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+        animation-duration: .001ms !important;
+    }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    .gmrc-fellowship-seal__hero,
+    .gmrc-fellowship-seal__paper,
+    .gmrc-fellowship-seal__note {
+        background: #fff8df;
+        box-shadow: none;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-fellowship-seal__hero,
+    .gmrc-fellowship-seal__paper,
+    .gmrc-fellowship-seal__note,
+    .gmrc-fellowship-seal__notice,
+    .gmrc-fellowship-seal__paper input,
+    .gmrc-fellowship-seal__paper select {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+        box-shadow: none;
+    }
+}

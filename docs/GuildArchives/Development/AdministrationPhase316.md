@@ -59,3 +59,12 @@ Active Campaign membership now bridges into the adventuring company without coll
 ### Shared Campaign Fellowship Membership
 
 Campaign-founded Fellowships remain owned by their Dungeon Master custodian, while Guild accounts whose nominated Characters were captured into the Fellowship can now discover and open that Fellowship from their own Fellowship Register. Membership never transfers administrative ownership. Shared members may move coin between the Fellowship Treasury and their own member Character purse; direct company adjustments, roster administration and permanent Fellowship editing remain custodian-only. Treasury movements continue to use the existing recorded transfer ledger.
+
+### Market Pass & Campaign Membership Certification
+
+Phase III.16.11C certifies the complete Market Pass → Campaign membership → Character assignment → Campaign Fellowship lifecycle. Every membership mutation converges on one idempotent synchronizer, Campaign-added Fellowship membership is provenance-aware, legacy direct Player add remains a protected Dungeon Master fallback, and archived Campaigns stay read-only.
+
+## Phase III.16.12 — Fellowship Seals
+
+Fellowship Seals establish the account-to-account invitation path for ordinary Fellowships. A custodian issues a secure short-lived Seal; a registered Guild Player redeems it with one Character owned by their account. Redemption is ownership-checked, idempotent, and grants normal Fellowship membership without transferring custodianship or Company administration rights. Seals reuse the Core `InviteCodeGenerator` prepared during the Market Pass foundation.
+

@@ -41,6 +41,11 @@ $editUrl = add_query_arg(
     'parties/' . rawurlencode($id) . '/edit',
     $companionUrl
 );
+$sealManageUrl = add_query_arg(
+    'gmrc_route',
+    'parties/' . rawurlencode($id) . '/seal',
+    $companionUrl
+);
 
 $officeHolders = array_values(
     array_filter(
@@ -238,6 +243,12 @@ foreach ($officeHolders as $holder) {
                     href="<?php echo esc_url($editUrl); ?>"
                 >
                     Edit Fellowship
+                </a>
+                <a
+                    class="gmrc-fellowship-button gmrc-fellowship-button--quiet"
+                    href="<?php echo esc_url($sealManageUrl); ?>"
+                >
+                    Fellowship Seal
                 </a>
                 <?php endif; ?>
             </div>

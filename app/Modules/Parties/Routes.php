@@ -4,10 +4,21 @@ declare(strict_types=1);
 
 use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Modules\Parties\Controllers\PartyController;
+use GreatMarketrealmCompanion\Modules\Parties\Controllers\FellowshipSealController;
 
 defined('ABSPATH') || exit;
 
 return static function (Router $router): void {
+    $router->get(
+        '/fellowship-seal',
+        [FellowshipSealController::class, 'index']
+    );
+
+    $router->post(
+        '/fellowship-seal',
+        [FellowshipSealController::class, 'redeem']
+    );
+
     $router->get(
         '/parties',
         [PartyController::class, 'index']
@@ -31,6 +42,21 @@ return static function (Router $router): void {
     $router->post(
         '/parties/{id}/members',
         [PartyController::class, 'addMember']
+    );
+
+    $router->get(
+        '/parties/{id}/seal',
+        [FellowshipSealController::class, 'manage']
+    );
+
+    $router->post(
+        '/parties/{id}/seal',
+        [FellowshipSealController::class, 'issue']
+    );
+
+    $router->delete(
+        '/parties/{id}/seal',
+        [FellowshipSealController::class, 'revoke']
     );
 
     $router->put(

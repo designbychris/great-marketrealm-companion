@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Parties;
 
 use GreatMarketrealmCompanion\Core\Container;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\AddPartyMemberAction;
+use GreatMarketrealmCompanion\Modules\Parties\Actions\RedeemFellowshipSealAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\ChangePartyMemberRoleAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\ChangePartyMemberOfficeAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\CreatePartyAction;
@@ -21,6 +22,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Actions\TransferCoinBetweenCharact
 use GreatMarketrealmCompanion\Modules\Parties\Services\PartyFinder;
 use GreatMarketrealmCompanion\Modules\Parties\Services\SharedFellowshipAccess;
 use GreatMarketrealmCompanion\Modules\Parties\Controllers\PartyController;
+use GreatMarketrealmCompanion\Modules\Parties\Controllers\FellowshipSealController;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\FellowshipPresenter;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\CharacterFellowshipPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
@@ -28,6 +30,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryIn
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Modules\Parties\Contracts\PartyRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Parties\Repositories\PartyRepository;
+use GreatMarketrealmCompanion\Modules\Parties\Repositories\FellowshipSealRepository;
+use GreatMarketrealmCompanion\Core\Invitations\InviteCodeGenerator;
 use GreatMarketrealmCompanion\Providers\ServiceProvider;
 
 defined('ABSPATH') || exit;
@@ -37,6 +41,11 @@ final class PartiesServiceProvider extends ServiceProvider
     public function register(): void
     {
         $container = $this->app->container();
+
+        $container->singleton(
+            InviteCodeGenerator::class,
+            static fn (): InviteCodeGenerator => new InviteCodeGenerator()
+        );
 
         $container->singleton(
             PartyRepository::class,
@@ -57,6 +66,15 @@ final class PartiesServiceProvider extends ServiceProvider
                     $container->make(
                         PartyRepositoryInterface::class
                     )
+                )
+        );
+
+        $container->singleton(
+            FellowshipSealRepository::class,
+            static fn (Container $container): FellowshipSealRepository =>
+                new FellowshipSealRepository(
+                    $container->make(PartyRepository::class),
+                    $container->make(InviteCodeGenerator::class)
                 )
         );
 
@@ -99,6 +117,16 @@ final class PartiesServiceProvider extends ServiceProvider
                     $container->make(
                         PartyRepositoryInterface::class
                     )
+                )
+        );
+
+        $container->bind(
+            RedeemFellowshipSealAction::class,
+            static fn (Container $container): RedeemFellowshipSealAction =>
+                new RedeemFellowshipSealAction(
+                    $container->make(FellowshipSealRepository::class),
+                    $container->make(PartyRepository::class),
+                    $container->make(CharacterRepository::class)
                 )
         );
 
@@ -172,6 +200,20 @@ final class PartiesServiceProvider extends ServiceProvider
 
         $container->bind(
             DeletePartyAction::class
+        );
+
+        $container->bind(
+            FellowshipSealController::class,
+            static fn (Container $container): FellowshipSealController =>
+                new FellowshipSealController(
+                    $container->make(FellowshipSealRepository::class),
+                    $container->make(PartyFinder::class),
+                    $container->make(CharacterRepository::class),
+                    $container->make(RedeemFellowshipSealAction::class),
+                    $container->make(\GreatMarketrealmCompanion\Core\View\ViewFactory::class),
+                    $container->make(\GreatMarketrealmCompanion\Core\Http\ResponseFactory::class),
+                    $container->make(\GreatMarketrealmCompanion\Core\Session\FlashStore::class)
+                )
         );
 
         $container->bind(
