@@ -100,6 +100,7 @@ namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Characters\Requests {
                 'class',
                 'heritage',
                 'subclass',
+                'starting_equipment_package',
                 'portrait_seed',
                 'portrait_background',
                 'portrait_body',
