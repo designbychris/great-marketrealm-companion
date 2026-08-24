@@ -10,6 +10,7 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\MonsterControlle
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\JournalController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\MarketPassController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\ActiveCampaignController;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\ReadOnlyCharacterController;
 defined('ABSPATH') || exit;
 return static function (Router $router): void {
  $router->get('/dungeon-master',[DungeonMasterController::class,'index']);
@@ -35,6 +36,7 @@ return static function (Router $router): void {
  $router->put('/dungeon-master/campaigns/{id}',[CampaignController::class,'update']);
  $router->post('/dungeon-master/campaigns/{id}/archive',[CampaignController::class,'archive']);
  $router->get('/dungeon-master/campaigns/{id}/players',[PlayerRosterController::class,'index']);
+ $router->get('/dungeon-master/campaigns/{id}/characters/{characterId}',[ReadOnlyCharacterController::class,'show']);
  $router->post('/dungeon-master/campaigns/{id}/players',[PlayerRosterController::class,'store']);
  $router->delete('/dungeon-master/campaigns/{id}/players/{playerId}',[PlayerRosterController::class,'destroy']);
  $router->post('/dungeon-master/campaigns/{id}/players/{playerId}/characters/{characterId}',[PlayerRosterController::class,'attachCharacter']);

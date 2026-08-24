@@ -208,6 +208,9 @@ $campaignUrl = add_query_arg(
                                                 <strong><?php echo esc_html($character->name()->value()); ?></strong>
                                                 <span><?php echo esc_html($character->race()->label()); ?> · <?php echo esc_html($character->characterClass()->label()); ?> · Level <?php echo esc_html((string) $character->level()->value()); ?></span>
                                             </div>
+                                            <?php if ($isLinked && ! $campaign->isArchived()) : ?>
+                                                <a class="gmrc-campaign-button" href="<?php echo esc_url(add_query_arg('gmrc_route', 'dungeon-master/campaigns/' . $campaignId . '/characters/' . $characterId, $base)); ?>">View Character Ledger</a>
+                                            <?php endif; ?>
                                             <?php if (! $campaign->isArchived()) : ?>
                                                 <form method="post" action="<?php echo esc_url($action); ?>">
                                                     <input type="hidden" name="action" value="gmrc_app_request">

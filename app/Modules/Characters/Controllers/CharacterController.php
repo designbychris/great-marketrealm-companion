@@ -675,7 +675,45 @@ final class CharacterController
     public function show(
         string $id
     ): string {
-        $character = $this->findCharacter($id);
+        return $this->renderLedger(
+            $this->findCharacter($id),
+            'characters.show',
+            true
+        );
+    }
+
+    /**
+     * Render a trusted cross-account Character projection without mutation
+     * controls. The caller must establish its own authorization boundary.
+     */
+    public function renderReadOnlyForCampaign(
+        Character $character,
+        string $campaignId,
+        string $campaignName
+    ): string {
+        return $this->renderLedger(
+            $character,
+            'dungeonmaster.characters.show',
+            false,
+            [
+                'campaignId' => $campaignId,
+                'campaignName' => $campaignName,
+                'readOnly' => true,
+            ]
+        );
+    }
+
+    /**
+     * Assemble the canonical Character Ledger projection.
+     *
+     * @param array<string,mixed> $viewContext
+     */
+    private function renderLedger(
+        Character $character,
+        string $viewName,
+        bool $includeFellowships,
+        array $viewContext = []
+    ): string {
     
         $catalogue = new ItemCatalogue();
         $inventoryRepository = new CharacterInventoryRepository();
@@ -896,7 +934,8 @@ final class CharacterController
         $fellowships = [];
 
         if (
-            $this->fellowships instanceof CharacterFellowshipPresenter
+            $includeFellowships
+            && $this->fellowships instanceof CharacterFellowshipPresenter
         ) {
             $ownerUserId = function_exists(
                 'get_current_user_id'
@@ -914,8 +953,9 @@ final class CharacterController
 
         return $this->views->render(
             View::make(
-                'characters.show',
-                [
+                $viewName,
+                array_merge(
+                    [
                     'character' => $character,
                     'portrait' => $portrait,
                     'sealRegistry' => $this->sealRegistry,
@@ -955,7 +995,9 @@ final class CharacterController
                     'livingRegister' => $livingRegister,
                     'completeAdventurer' => $completeAdventurer,
                     'fellowships' => $fellowships,
-                ]
+                    ],
+                    $viewContext
+                )
             )
         );
     }

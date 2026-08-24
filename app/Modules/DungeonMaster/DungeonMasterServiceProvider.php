@@ -17,6 +17,7 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\MonsterControlle
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\JournalController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\MarketPassController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\ActiveCampaignController;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\ReadOnlyCharacterController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRosterRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\MarketPassRepository;
@@ -28,6 +29,7 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\MonsterReposito
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\JournalRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Repositories\CanonicalBestiary;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Controllers\CharacterController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\DungeonMasterAccess;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\CampaignCommandCentre;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\CampaignFellowshipService;
@@ -43,6 +45,7 @@ final class DungeonMasterServiceProvider extends ServiceProvider
   $this->app->bind(CampaignController::class,static fn(Container $c): CampaignController=>new CampaignController($c->make(CampaignRepository::class),$c->make(DungeonMasterAccess::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class),$c->make(CampaignCommandCentre::class)));
   $this->app->bind(PlayerRosterController::class,static fn(Container $c): PlayerRosterController=>new PlayerRosterController($c->make(CampaignRepository::class),$c->make(CampaignRosterRepository::class),$c->make(MarketPassRepository::class),$c->make(CampaignFellowshipRepository::class),$c->make(CampaignFellowshipService::class),$c->make(CampaignMembershipSynchronizer::class),$c->make(PartyRepository::class),$c->make(CharacterRepository::class),$c->make(DungeonMasterAccess::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class)));
   $this->app->bind(ActiveCampaignController::class,static fn(Container $c): ActiveCampaignController=>new ActiveCampaignController($c->make(PlayerCampaignRepository::class),$c->make(CampaignRosterRepository::class),$c->make(CampaignFellowshipRepository::class),$c->make(CharacterRepository::class),$c->make(CampaignMembershipSynchronizer::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class)));
+  $this->app->bind(ReadOnlyCharacterController::class,static fn(Container $c): ReadOnlyCharacterController=>new ReadOnlyCharacterController($c->make(CampaignRepository::class),$c->make(CampaignRosterRepository::class),$c->make(CharacterRepository::class),$c->make(DungeonMasterAccess::class),$c->make(CharacterController::class)));
   $this->app->bind(MarketPassController::class,static fn(Container $c): MarketPassController=>new MarketPassController($c->make(CampaignRepository::class),$c->make(CampaignRosterRepository::class),$c->make(MarketPassRepository::class),$c->make(DungeonMasterAccess::class),$c->make(CampaignMembershipSynchronizer::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class)));
   $this->app->bind(SessionController::class,static fn(Container $c): SessionController=>new SessionController($c->make(CampaignRepository::class),$c->make(SessionRepository::class),$c->make(CampaignRosterRepository::class),$c->make(CharacterRepository::class),$c->make(DungeonMasterAccess::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class)));
   $this->app->bind(JournalController::class,static fn(Container $c): JournalController=>new JournalController($c->make(CampaignRepository::class),$c->make(JournalRepository::class),$c->make(SessionRepository::class),$c->make(DungeonMasterAccess::class),$c->make(ViewFactory::class),$c->make(ResponseFactory::class),$c->make(FlashStore::class)));
