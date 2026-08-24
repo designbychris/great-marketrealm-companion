@@ -30,6 +30,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
 use GreatMarketrealmCompanion\Modules\Characters\Services\CompleteAdventurerPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Models\ItemCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Repositories\CharacterInventoryRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Inventory\Repositories\StartingEquipmentPackageRegister;
+use GreatMarketrealmCompanion\Modules\Characters\Inventory\Services\StartingEquipmentGrantService;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Services\InventoryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Combat\Services\AttackPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Combat\Targets\Services\RollTargetCatalogue;
@@ -226,6 +228,15 @@ final class CharacterController
                     )->all(),
                     'backgroundReferences' =>
                         $this->backgroundReferences(),
+                    'startingEquipmentPackages' => array_map(
+                        static fn ($package): array => [
+                            'id' => $package->id(),
+                            'class' => $package->classKey(),
+                            'label' => $package->label(),
+                            'items' => $package->items(),
+                        ],
+                        (new StartingEquipmentPackageRegister())->all()
+                    ),
     
                     /*
                      * The provisional portrait uses the same rendering
@@ -325,6 +336,12 @@ final class CharacterController
         $this->createCharacter->handle(
             $character,
             $portraitRecipe
+        );
+
+        (new StartingEquipmentGrantService())->grant(
+            $character->id(),
+            $data['class'],
+            $request->startingEquipmentPackage()
         );
 
         if (
@@ -2980,6 +2997,15 @@ final class CharacterController
                         ->options(),
                     'backgroundReferences' =>
                         $this->backgroundReferences(),
+                    'startingEquipmentPackages' => array_map(
+                        static fn ($package): array => [
+                            'id' => $package->id(),
+                            'class' => $package->classKey(),
+                            'label' => $package->label(),
+                            'items' => $package->items(),
+                        ],
+                        (new StartingEquipmentPackageRegister())->all()
+                    ),
                 ]
             )
         );

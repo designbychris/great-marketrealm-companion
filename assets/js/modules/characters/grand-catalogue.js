@@ -55,6 +55,11 @@
                 '[data-catalogue-child="subclass"]'
             );
 
+        const startingEquipment =
+            document.querySelector(
+                '[data-catalogue-child="starting-equipment"]'
+            );
+
         const race = function () {
             return document
                 .querySelector(
@@ -107,6 +112,16 @@
                 subclass,
                 characterClass()
             );
+
+            filter(
+                startingEquipment,
+                characterClass()
+            );
+
+            if (startingEquipment instanceof HTMLSelectElement && startingEquipment.value === '') {
+                const first = Array.from(startingEquipment.options).find(function (option) { return option.value !== '' && !option.disabled; });
+                if (first) { startingEquipment.value = first.value; }
+            }
 
             refreshSubclassPreview();
         };

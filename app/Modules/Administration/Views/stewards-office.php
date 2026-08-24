@@ -115,6 +115,12 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
             <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'canonical-spells'], admin_url('admin.php'))); ?>">Open Spell Register</a>
         </section>
 
+        <section class="gmrc-stewards-office__card">
+            <span class="dashicons dashicons-archive" aria-hidden="true"></span><h2>Starting Equipment</h2>
+            <p>Maintain certified class starter kits mapped to the Marketrealm Armoury. Changes affect future Characters only.</p>
+            <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'starting-equipment'], admin_url('admin.php'))); ?>">Open Equipment Packages</a>
+        </section>
+
         <section class="gmrc-stewards-office__card gmrc-stewards-office__card--settings" id="companion-settings">
             <span class="dashicons dashicons-admin-settings" aria-hidden="true"></span><h2>Companion Settings</h2>
             <p>Small operational preferences shared by the Steward's Office live here. These settings do not alter game mechanics.</p>

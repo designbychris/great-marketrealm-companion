@@ -10,6 +10,7 @@ use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalB
 use GreatMarketrealmCompanion\Modules\Administration\Diagnostics\StewardDiagnostics;
 use GreatMarketrealmCompanion\Modules\Administration\Security\GateSecuritySettings;
 use GreatMarketrealmCompanion\Modules\Administration\Settings\CompanionSettings;
+use GreatMarketrealmCompanion\Modules\Characters\Inventory\Repositories\StartingEquipmentPackageRegister;
 use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\CanonicalSpellRegister;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Repositories\CanonicalBestiary;
 use RuntimeException;
@@ -33,6 +34,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         $this->app->singleton(CanonicalCallingRegister::class);
         $this->app->singleton(CanonicalBackgroundRegister::class);
         $this->app->singleton(CanonicalSpellRegister::class);
+        $this->app->singleton(StartingEquipmentPackageRegister::class);
     }
 
     public function boot(): void
@@ -49,6 +51,8 @@ final class AdministrationServiceProvider extends ServiceProvider
         add_action('admin_post_gmrc_reset_canonical_background', [$this, 'resetCanonicalBackground']);
         add_action('admin_post_gmrc_save_canonical_spell', [$this, 'saveCanonicalSpell']);
         add_action('admin_post_gmrc_reset_canonical_spell', [$this, 'resetCanonicalSpell']);
+        add_action('admin_post_gmrc_save_starting_equipment_package', [$this, 'saveStartingEquipmentPackage']);
+        add_action('admin_post_gmrc_reset_starting_equipment_package', [$this, 'resetStartingEquipmentPackage']);
     }
 
     public function registerMenu(): void
@@ -271,11 +275,46 @@ final class AdministrationServiceProvider extends ServiceProvider
         exit;
     }
 
+
+    public function saveStartingEquipmentPackage(): void
+    {
+        $this->guard();
+        $id = sanitize_key(wp_unslash((string) ($_POST['package_id'] ?? '')));
+        check_admin_referer('gmrc_save_starting_equipment_package_' . $id, 'gmrc_starting_equipment_nonce');
+        try {
+            $this->app->make(StartingEquipmentPackageRegister::class)->save($id, wp_unslash($_POST));
+            $args = ['gmrc_equipment_saved' => '1'];
+        } catch (RuntimeException $exception) {
+            $args = ['gmrc_equipment_error' => rawurlencode($exception->getMessage())];
+        }
+        wp_safe_redirect($this->startingEquipmentUrl($id, $args));
+        exit;
+    }
+
+    public function resetStartingEquipmentPackage(): void
+    {
+        $this->guard();
+        $id = sanitize_key(wp_unslash((string) ($_POST['package_id'] ?? '')));
+        check_admin_referer('gmrc_reset_starting_equipment_package_' . $id, 'gmrc_starting_equipment_reset_nonce');
+        $this->app->make(StartingEquipmentPackageRegister::class)->reset($id);
+        wp_safe_redirect($this->startingEquipmentUrl($id, ['gmrc_equipment_reset' => '1']));
+        exit;
+    }
+
     public function renderOffice(): void
     {
         $this->guard(true);
 
         $section = sanitize_key((string) ($_GET['section'] ?? ''));
+        if ($section === 'starting-equipment') {
+            $register = $this->app->make(StartingEquipmentPackageRegister::class);
+            $startingEquipmentPackages = $register->all();
+            $selectedId = sanitize_key((string) ($_GET['package'] ?? ''));
+            $selectedPackage = $selectedId !== '' ? $register->find($selectedId) : null;
+            $selectedPackageOverridden = $selectedPackage ? $register->hasOverride($selectedPackage->id()) : false;
+            require GMRC_PATH . 'app/Modules/Administration/Views/starting-equipment.php';
+            return;
+        }
         if ($section === 'canonical-spells') {
             $register = $this->app->make(CanonicalSpellRegister::class);
             $spells = $register->all();
@@ -339,6 +378,17 @@ final class AdministrationServiceProvider extends ServiceProvider
         );
     }
 
+
+
+    /** @param array<string,string> $extra */
+    private function startingEquipmentUrl(string $id, array $extra = []): string
+    {
+        return add_query_arg(array_merge([
+            'page' => self::MENU_SLUG,
+            'section' => 'starting-equipment',
+            'package' => $id,
+        ], $extra), admin_url('admin.php'));
+    }
 
     /** @param array<string,string> $extra */
     private function spellUrl(string $key, array $extra = []): string

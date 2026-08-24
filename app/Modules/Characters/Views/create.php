@@ -122,6 +122,9 @@ $catalogueHeritages = is_array($catalogueHeritages ?? null) ? $catalogueHeritage
 $catalogueSubclasses = is_array($catalogueSubclasses ?? null) ? $catalogueSubclasses : [];
 $subclassPreviews = is_array($subclassPreviews ?? null) ? $subclassPreviews : [];
 $backgroundReferences = is_array($backgroundReferences ?? null) ? $backgroundReferences : [];
+$startingEquipmentPackages = is_array($startingEquipmentPackages ?? null) ? $startingEquipmentPackages : [];
+$startingEquipmentValue = isset($old['starting_equipment_package']) && is_scalar($old['starting_equipment_package']) ? (string) $old['starting_equipment_package'] : '';
+$startingEquipmentError = $fieldError('starting_equipment_package');
 
 $classValue = isset($old['class'])
     && is_scalar($old['class'])
@@ -909,6 +912,20 @@ $charactersUrl = add_query_arg(
                     <?php echo esc_html($classError); ?>
                 </p>
             <?php endif; ?>
+
+            <div class="gmrc-catalogue-dependent" data-catalogue-dependent="starting-equipment">
+                <label for="character-starting-equipment"><strong>Choose your starting equipment package</strong></label>
+                <select id="character-starting-equipment" name="starting_equipment_package" data-catalogue-child="starting-equipment" required>
+                    <option value="">Choose a Calling first</option>
+                    <?php foreach ($startingEquipmentPackages as $package) : ?>
+                        <option value="<?php echo esc_attr((string) ($package['id'] ?? '')); ?>" data-parent="<?php echo esc_attr((string) ($package['class'] ?? '')); ?>" <?php selected($startingEquipmentValue, (string) ($package['id'] ?? '')); ?>>
+                            <?php echo esc_html((string) ($package['label'] ?? 'Starting kit')); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <p>Your selected kit is copied into the Character Inventory when the adventurer is certified. Later Steward changes do not rewrite existing inventories.</p>
+                <?php if ($startingEquipmentError !== null) : ?><p class="gmrc-form-error" role="alert"><?php echo esc_html($startingEquipmentError); ?></p><?php endif; ?>
+            </div>
 
             <div class="gmrc-catalogue-dependent" data-catalogue-dependent="subclass">
                 <label for="character-subclass"><strong>Future path / subclass</strong></label>

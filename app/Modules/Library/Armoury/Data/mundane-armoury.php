@@ -89,4 +89,5 @@ return [
     ['dungeoneers-pack', 'Dungeoneer’s Pack', 'gear', 'A bundle of supplies intended for hazardous underground expeditions.', 61.5, 'handbook-mentioned', null, null, null, null, null, 0, [], null],
     ['diplomats-pack', 'Diplomat’s Pack', 'gear', 'Travel and presentation supplies for formal social business.', 36.0, 'handbook-mentioned', null, null, null, null, null, 0, [], null],
     ['entertainers-pack', 'Entertainer’s Pack', 'gear', 'Travel supplies useful to a performer on the road.', 38.0, 'handbook-mentioned', null, null, null, null, null, 0, [], null],
+    ['scholars-pack', 'Scholar’s Pack', 'gear', 'Books, writing supplies and practical tools for an itinerant scholar.', 10.0, 'standard-compatible', null, null, null, null, null, 0, [], null],
 ];

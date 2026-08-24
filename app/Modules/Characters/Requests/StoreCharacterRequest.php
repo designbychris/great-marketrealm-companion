@@ -101,6 +101,10 @@ final class StoreCharacterRequest extends FormRequest
                 'string',
                 'max:150',
             ],
+            'starting_equipment_package' => [
+                'string',
+                'max:150',
+            ],
         ];
 
         foreach (
@@ -144,6 +148,12 @@ final class StoreCharacterRequest extends FormRequest
             'heritage' => $input->string('heritage'),
             'subclass' => $input->string('subclass'),
         ];
+    }
+
+
+    public function startingEquipmentPackage(): string
+    {
+        return sanitize_key($this->validated()->string('starting_equipment_package'));
     }
 
     /**
