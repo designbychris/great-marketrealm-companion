@@ -63,7 +63,9 @@ final class ActiveCampaignsRegressionTest extends TestCase
     {
         $view = $this->source('app/Modules/DungeonMaster/Views/active-campaigns/index.php');
         self::assertStringContainsString('No Campaigns joined yet', $view);
-        self::assertStringContainsString('Adventurer assignment', $view);
+        $this->assertStringContainsString('Your Campaign Adventurer', $view);
+        $this->assertStringContainsString('Choose your adventurer', $view);
+        $this->assertStringContainsString('Nominate adventurer', $view);
         self::assertStringContainsString('No adventurer nominated yet', $view);
         self::assertStringContainsString('Redeem another Market Pass', $view);
         self::assertStringNotContainsString('Phase III.', $view);
