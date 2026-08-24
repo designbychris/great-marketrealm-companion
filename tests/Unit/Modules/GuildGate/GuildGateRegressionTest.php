@@ -44,7 +44,8 @@ final class GuildGateRegressionTest extends TestCase
         $frontend = $this->source('app/Providers/FrontendServiceProvider.php');
 
         self::assertStringContainsString("['guild-gate/login', 'guild-gate/register']", $frontend);
-        self::assertStringContainsString('! is_user_logged_in() && ! $publicGuildGateRoute', $frontend);
+        self::assertStringContainsString('! $publicGuildGateRoute', $frontend);
+        self::assertStringContainsString('GuildAccessPolicy::class)->allowsCurrentUser()', $frontend);
         self::assertStringContainsString("'gmrc_guild_gate_login'", $frontend);
         self::assertStringContainsString("'gmrc_guild_gate_register'", $frontend);
     }

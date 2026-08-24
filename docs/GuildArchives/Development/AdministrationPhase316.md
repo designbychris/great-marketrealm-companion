@@ -72,3 +72,7 @@ Fellowship Seals establish the account-to-account invitation path for ordinary F
 ## Phase III.16.13 — Guild Account & Membership Certification
 
 The Guild Profile is now the certified account junction for the Companion's relationship graph. It resolves owner-scoped Characters, Player membership versus Dungeon Master stewardship of Campaigns, and owned versus shared Fellowships without duplicating persistence. Live Character deletion is guarded before portrait or Character persistence removal so active Campaign and Fellowship relationships cannot become dangling. Archived Campaign roster history remains immutable, Guild calling remains capability-protected, and the established Companion application gateway remains unchanged.
+
+## Phase III.16.14 — Guild Session & Account Security Certification
+
+The Companion now distinguishes a WordPress session from certified Guild admission. `GuildAccessPolicy` requires the canonical `gmrc_access_companion` capability at the application shell and private command gateway. Valid WordPress credentials without Guild access are rejected and their fresh auth cookie is cleared; already-signed-in non-Guild accounts receive a dedicated admission-refusal folio with a nonce-protected logout path. Anonymous login/registration remain public, while registered Players, Dungeon Masters, and administrators retain their established access.

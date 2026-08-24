@@ -4,6 +4,7 @@ namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Http\Controllers\AppController;
 use GreatMarketrealmCompanion\Modules\GuildGate\Controllers\GuildGateController;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildAccessPolicy;
 use GreatMarketrealmCompanion\Core\Http\Response;
 use GreatMarketrealmCompanion\Core\Routing\Router;
 use WP_Post;
@@ -194,7 +195,10 @@ class FrontendServiceProvider extends ServiceProvider
             true
         );
 
-        if (! is_user_logged_in() && ! $publicGuildGateRoute) {
+        if (
+            ! $publicGuildGateRoute
+            && ! $this->app->make(GuildAccessPolicy::class)->allowsCurrentUser()
+        ) {
             wp_safe_redirect(
                 home_url('/companion/')
             );
@@ -845,7 +849,7 @@ class FrontendServiceProvider extends ServiceProvider
         $this->enqueueFoundation();
         $this->enqueueFonts();
 
-        if (! is_user_logged_in()) {
+        if (! $this->app->make(GuildAccessPolicy::class)->allowsCurrentUser()) {
             $this->enqueueGuildGate();
             return;
         }
@@ -1731,10 +1735,14 @@ class FrontendServiceProvider extends ServiceProvider
     ): string {
         unset($attributes, $content);
 
+        $gate = $this->app->make(GuildGateController::class);
+
         if (! is_user_logged_in()) {
-            return $this->app
-                ->make(GuildGateController::class)
-                ->show();
+            return $gate->show();
+        }
+
+        if (! $this->app->make(GuildAccessPolicy::class)->allowsCurrentUser()) {
+            return $gate->accessDenied();
         }
 
         return $this->app

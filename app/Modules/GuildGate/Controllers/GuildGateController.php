@@ -57,6 +57,16 @@ final class GuildGateController
         );
     }
 
+    public function accessDenied(): string
+    {
+        return $this->views->render(
+            View::make('guildgate.access-denied', [
+                'guildUser' => wp_get_current_user(),
+                'logoutUrl' => wp_logout_url($this->gateUrl()),
+            ])
+        );
+    }
+
     public function profile(): string
     {
         $user = wp_get_current_user();

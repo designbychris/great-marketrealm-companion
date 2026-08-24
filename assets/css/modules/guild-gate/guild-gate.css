@@ -153,3 +153,43 @@
         color: HighlightText;
     }
 }
+
+/* Phase III.16.14 — Guild Session & Account Security Certification */
+.gmrc-guild-gate--access-denied .gmrc-guild-gate__desk {
+    align-self: center;
+}
+
+.gmrc-guild-gate__access-actions {
+    margin-top: 1.25rem;
+}
+
+.gmrc-guild-gate__access-action {
+    display: inline-flex;
+    min-height: 2.9rem;
+    align-items: center;
+    justify-content: center;
+    padding: .65rem 1rem;
+    border: 1px solid #3e1728;
+    border-radius: 10px;
+    background: linear-gradient(#74304b, #552036);
+    color: #fff9e7;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.gmrc-guild-gate__access-action:hover {
+    filter: brightness(1.08);
+}
+
+.gmrc-guild-gate__access-action:focus-visible {
+    outline: 3px solid #f0bd62;
+    outline-offset: 3px;
+}
+
+@media (forced-colors: active) {
+    .gmrc-guild-gate__access-action {
+        border: 1px solid ButtonText;
+        background: ButtonFace;
+        color: ButtonText;
+    }
+}

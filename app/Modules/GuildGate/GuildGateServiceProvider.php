@@ -9,6 +9,7 @@ use GreatMarketrealmCompanion\Modules\Administration\Security\GateSecuritySettin
 use GreatMarketrealmCompanion\Modules\GuildGate\Controllers\GuildGateController;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\AuthenticateGuildMember;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildAdminBarVisibility;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildAccessPolicy;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildPortraitManager;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildMembershipSummary;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildGateAudit;
@@ -30,6 +31,7 @@ final class GuildGateServiceProvider extends ServiceProvider
     {
         $this->app->singleton(GuildRoleRegistrar::class);
         $this->app->singleton(GuildAdminBarVisibility::class);
+        $this->app->singleton(GuildAccessPolicy::class);
         $this->app->singleton(AuthenticateGuildMember::class);
         $this->app->singleton(RegisterGuildMember::class);
         $this->app->singleton(UpdateGuildProfile::class);
