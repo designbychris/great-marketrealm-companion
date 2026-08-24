@@ -11,6 +11,7 @@ use GreatMarketrealmCompanion\Modules\Administration\Diagnostics\StewardDiagnost
 use GreatMarketrealmCompanion\Modules\Administration\Security\GateSecuritySettings;
 use GreatMarketrealmCompanion\Modules\Administration\Settings\CompanionSettings;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Repositories\StartingEquipmentPackageRegister;
+use GreatMarketrealmCompanion\Modules\Characters\Inventory\Services\StartingEquipmentCoverage;
 use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\CanonicalSpellRegister;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Repositories\CanonicalBestiary;
 use RuntimeException;
@@ -35,6 +36,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         $this->app->singleton(CanonicalBackgroundRegister::class);
         $this->app->singleton(CanonicalSpellRegister::class);
         $this->app->singleton(StartingEquipmentPackageRegister::class);
+        $this->app->singleton(StartingEquipmentCoverage::class);
     }
 
     public function boot(): void
@@ -309,6 +311,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         if ($section === 'starting-equipment') {
             $register = $this->app->make(StartingEquipmentPackageRegister::class);
             $startingEquipmentPackages = $register->all();
+            $startingEquipmentCoverage = $this->app->make(StartingEquipmentCoverage::class)->report();
             $selectedId = sanitize_key((string) ($_GET['package'] ?? ''));
             $selectedPackage = $selectedId !== '' ? $register->find($selectedId) : null;
             $selectedPackageOverridden = $selectedPackage ? $register->hasOverride($selectedPackage->id()) : false;
