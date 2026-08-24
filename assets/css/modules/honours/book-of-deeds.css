@@ -1,1 +1,242 @@
-.gmrc-book-of-deeds{max-width:1180px;margin:0 auto;padding:clamp(1rem,2vw,2rem);color:#f5ead5}.gmrc-book-of-deeds__header{position:relative;padding:clamp(1.4rem,3vw,2.5rem);border:1px solid rgba(205,157,61,.55);border-radius:22px;background:linear-gradient(145deg,rgba(34,19,17,.96),rgba(17,10,10,.98));box-shadow:0 18px 50px rgba(0,0,0,.28)}.gmrc-book-of-deeds__eyebrow,.gmrc-deed__state{margin:0 0 .45rem;color:#d8b56b;font-size:.76rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.gmrc-book-of-deeds h1{margin:.25rem 0 .8rem;font-size:clamp(2rem,4vw,3.4rem);line-height:1.05;color:#fff1c9}.gmrc-book-of-deeds__header>p:not(.gmrc-book-of-deeds__eyebrow){max-width:760px;color:#dccdb9;line-height:1.7}.gmrc-book-of-deeds__seal{display:inline-flex;align-items:baseline;gap:.5rem;margin-top:1rem;padding:.65rem 1rem;border:1px solid rgba(216,181,107,.5);border-radius:999px;background:rgba(216,181,107,.08)}.gmrc-book-of-deeds__seal strong{font-size:1.5rem;color:#f3c968}.gmrc-book-of-deeds__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:1rem}.gmrc-deed{position:relative;min-height:180px;padding:1.35rem 1.4rem 1.25rem 5rem;border:1px solid rgba(177,130,46,.42);border-radius:18px;background:rgba(24,13,13,.94);overflow:hidden}.gmrc-deed--earned{border-color:rgba(239,190,82,.75);box-shadow:inset 0 0 0 1px rgba(255,226,157,.06),0 12px 28px rgba(0,0,0,.18)}.gmrc-deed--locked{opacity:.72;filter:saturate(.72)}.gmrc-deed__symbol{position:absolute;left:1.25rem;top:1.35rem;display:grid;width:2.8rem;height:2.8rem;place-items:center;border:1px solid rgba(226,181,83,.55);border-radius:50%;background:rgba(226,181,83,.1);font-size:1.35rem}.gmrc-deed h2{margin:.1rem 0 .6rem;color:#fff0cb;font-size:1.35rem}.gmrc-deed p{margin:.35rem 0;color:#d8c9b6;line-height:1.55}.gmrc-deed__date{margin-top:1rem!important;color:#d9b86f!important;font-size:.85rem;font-style:italic}.gmrc-book-of-deeds__note{margin-top:1rem;padding:1rem 1.2rem;border-left:4px solid #d0a24c;background:rgba(24,13,13,.88);color:#d8c9b6}.gmrc-book-of-deeds__note strong{color:#f3d18b}.gmrc-deed:focus-within{outline:3px solid rgba(247,205,112,.8);outline-offset:3px}@media(max-width:760px){.gmrc-book-of-deeds__grid{grid-template-columns:1fr}.gmrc-deed{padding-left:4.5rem}}@media(prefers-reduced-motion:reduce){.gmrc-book-of-deeds *{scroll-behavior:auto!important;transition:none!important}}@media(forced-colors:active){.gmrc-book-of-deeds__header,.gmrc-deed,.gmrc-book-of-deeds__note,.gmrc-book-of-deeds__seal{border:1px solid CanvasText;background:Canvas;color:CanvasText}.gmrc-deed__symbol{border:1px solid CanvasText}}
+.gmrc-book-of-deeds {
+    --deeds-gold: #d9a84f;
+    --deeds-gold-bright: #f3ca72;
+    --deeds-cream: #fff0ce;
+    --deeds-ink: #170d0b;
+    --deeds-panel: rgba(15, 9, 8, .91);
+    position: relative;
+    isolation: isolate;
+    width: min(100%, 1500px);
+    min-height: calc(100vh - 2rem);
+    margin: 0 auto;
+    padding: clamp(1rem, 2vw, 2rem) clamp(1rem, 3vw, 3.5rem) clamp(2.5rem, 5vw, 5rem);
+    color: #f6e8ce;
+}
+
+.gmrc-book-of-deeds::before {
+    content: "";
+    position: fixed;
+    z-index: -2;
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgba(5, 3, 2, .28), rgba(5, 3, 2, .46)),
+        url("../../../images/honours/book-of-deeds-library.png") center top / cover no-repeat;
+}
+
+.gmrc-book-of-deeds::after {
+    content: "";
+    position: fixed;
+    z-index: -1;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 38%, transparent 20%, rgba(4, 2, 1, .18) 68%, rgba(4, 2, 1, .58) 100%);
+}
+
+.gmrc-book-of-deeds__trail,
+.gmrc-book-of-deeds__summary,
+.gmrc-deed,
+.gmrc-book-of-deeds__note {
+    border: 1px solid rgba(217, 168, 79, .7);
+    background: linear-gradient(145deg, rgba(21, 12, 10, .94), rgba(10, 7, 6, .91));
+    box-shadow: 0 16px 42px rgba(0, 0, 0, .32), inset 0 0 0 1px rgba(255, 229, 169, .035);
+    backdrop-filter: blur(5px);
+}
+
+.gmrc-book-of-deeds__trail {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    min-height: 2.75rem;
+    padding: .55rem .9rem;
+    border-radius: 10px;
+    color: #e8c77e;
+    font-size: .92rem;
+}
+
+.gmrc-book-of-deeds__trail a { color: #f2ca72; text-decoration: none; }
+.gmrc-book-of-deeds__trail a:hover { color: #fff1c9; text-decoration: underline; }
+.gmrc-book-of-deeds__trail strong { color: #fff0cb; }
+.gmrc-book-of-deeds__back { margin-left: auto; }
+
+.gmrc-book-of-deeds__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(330px, .85fr);
+    gap: clamp(1.25rem, 3vw, 3rem);
+    align-items: center;
+    max-width: 1000px;
+    margin: clamp(2.4rem, 5vw, 4.8rem) auto 1.25rem;
+}
+
+.gmrc-book-of-deeds__header {
+    padding: .75rem 0 1rem;
+    text-align: center;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, .8);
+}
+
+.gmrc-book-of-deeds__eyebrow {
+    margin: 0 0 .45rem;
+    color: #e0bd73;
+    font-size: .76rem;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+.gmrc-book-of-deeds h1 {
+    margin: .15rem 0 .75rem;
+    color: #fff3d5;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.6rem, 5vw, 4.25rem);
+    line-height: 1;
+}
+
+.gmrc-book-of-deeds__header > p:not(.gmrc-book-of-deeds__eyebrow) {
+    max-width: 620px;
+    margin: 0 auto;
+    color: #f1dfc4;
+    font-size: clamp(1rem, 1.5vw, 1.12rem);
+    line-height: 1.65;
+}
+
+.gmrc-book-of-deeds__flourish {
+    display: block;
+    margin-top: 1rem;
+    color: var(--deeds-gold-bright);
+    letter-spacing: -.12em;
+}
+
+.gmrc-book-of-deeds__summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.gmrc-book-of-deeds__summary-item {
+    display: flex;
+    min-height: 145px;
+    padding: 1rem .75rem;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.gmrc-book-of-deeds__summary-item + .gmrc-book-of-deeds__summary-item { border-left: 1px solid rgba(217, 168, 79, .28); }
+.gmrc-book-of-deeds__summary-icon { color: var(--deeds-gold-bright); font-size: 1.45rem; }
+.gmrc-book-of-deeds__summary-item > span:not(.gmrc-book-of-deeds__summary-icon) { margin-top: .3rem; color: #e7d3af; font-size: .8rem; }
+.gmrc-book-of-deeds__summary-item strong { margin-top: .15rem; color: #f5c967; font-family: Georgia, serif; font-size: 2rem; line-height: 1; }
+.gmrc-book-of-deeds__summary-item strong.gmrc-book-of-deeds__edition { font-size: 1.12rem; line-height: 1.2; }
+.gmrc-book-of-deeds__summary-item small { margin-top: .25rem; color: #c9ae7d; font-size: .72rem; }
+
+.gmrc-book-of-deeds__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .65rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.gmrc-deed {
+    position: relative;
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 1rem;
+    min-height: 205px;
+    padding: 1.25rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.gmrc-deed::before,
+.gmrc-deed::after {
+    content: "◆";
+    position: absolute;
+    color: rgba(239, 190, 82, .78);
+    font-size: .62rem;
+}
+.gmrc-deed::before { top: .35rem; left: .45rem; }
+.gmrc-deed::after { right: .45rem; bottom: .35rem; }
+.gmrc-deed--earned { border-color: rgba(245, 195, 83, .95); box-shadow: 0 16px 36px rgba(0, 0, 0, .34), inset 0 0 24px rgba(202, 141, 42, .07); }
+.gmrc-deed--locked { filter: saturate(.78); }
+
+.gmrc-deed__medallion {
+    display: grid;
+    width: 86px;
+    height: 86px;
+    margin-top: .25rem;
+    place-items: center;
+    border: 1px solid rgba(232, 180, 75, .78);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(117, 77, 28, .22), rgba(8, 6, 5, .75) 68%);
+    box-shadow: inset 0 0 0 5px rgba(217, 168, 79, .06), 0 5px 15px rgba(0, 0, 0, .25);
+}
+
+.gmrc-deed__symbol { color: #e6b95e; font-size: 2rem; filter: drop-shadow(0 2px 2px #000); }
+.gmrc-deed__body { display: flex; min-width: 0; flex-direction: column; }
+.gmrc-deed h2 { margin: .1rem 0 .55rem; color: #fff0cf; font-family: Georgia, serif; font-size: 1.25rem; line-height: 1.2; }
+.gmrc-deed p { margin: 0; color: #e1d0b5; font-size: .9rem; line-height: 1.55; }
+.gmrc-deed__rule { margin: auto 0 .65rem; border-top: 1px solid rgba(217, 168, 79, .22); }
+.gmrc-deed p.gmrc-deed__state { color: #e7bf6c; font-size: .78rem; font-weight: 700; }
+.gmrc-deed__state span { margin-right: .35rem; color: #a9762d; font-size: .58rem; }
+.gmrc-deed--earned .gmrc-deed__state span { color: #f0c45e; }
+.gmrc-deed p.gmrc-deed__date { margin-top: .35rem; color: #cdb27f; font-size: .72rem; font-style: italic; }
+
+.gmrc-book-of-deeds__note {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    max-width: 700px;
+    margin: 1.25rem auto 0;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+}
+
+.gmrc-book-of-deeds__note-icon { color: var(--deeds-gold-bright); font-size: 2rem; }
+.gmrc-book-of-deeds__note strong { display: block; margin-bottom: .2rem; color: #f3ca72; font-family: Georgia, serif; font-size: 1rem; }
+.gmrc-book-of-deeds__note p { margin: 0; color: #e4d3b8; font-size: .85rem; line-height: 1.55; }
+.gmrc-book-of-deeds__note small { display: block; margin-top: .4rem; color: #bfa77e; font-size: .72rem; line-height: 1.45; }
+
+.gmrc-book-of-deeds a:focus-visible { outline: 3px solid #f5cf77; outline-offset: 3px; border-radius: 3px; }
+
+@media (max-width: 1050px) {
+    .gmrc-book-of-deeds__intro { grid-template-columns: 1fr; max-width: 780px; margin-top: 2rem; }
+    .gmrc-book-of-deeds__summary { width: min(100%, 620px); margin: 0 auto; }
+    .gmrc-book-of-deeds__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 780px; }
+}
+
+@media (max-width: 720px) {
+    .gmrc-book-of-deeds { padding-inline: .75rem; }
+    .gmrc-book-of-deeds::before { background-position: center top; }
+    .gmrc-book-of-deeds__trail { flex-wrap: wrap; }
+    .gmrc-book-of-deeds__back { width: 100%; margin-left: 0; padding-top: .35rem; border-top: 1px solid rgba(217,168,79,.2); }
+    .gmrc-book-of-deeds__summary { grid-template-columns: 1fr; }
+    .gmrc-book-of-deeds__summary-item { min-height: 100px; }
+    .gmrc-book-of-deeds__summary-item + .gmrc-book-of-deeds__summary-item { border-top: 1px solid rgba(217,168,79,.28); border-left: 0; }
+    .gmrc-book-of-deeds__grid { grid-template-columns: 1fr; }
+    .gmrc-deed { grid-template-columns: 72px minmax(0, 1fr); min-height: 175px; padding: 1rem; }
+    .gmrc-deed__medallion { width: 66px; height: 66px; }
+    .gmrc-deed__symbol { font-size: 1.55rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-book-of-deeds * { scroll-behavior: auto !important; transition: none !important; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    .gmrc-book-of-deeds__trail,
+    .gmrc-book-of-deeds__summary,
+    .gmrc-deed,
+    .gmrc-book-of-deeds__note { background: #160d0b; backdrop-filter: none; }
+}
+
+@media (forced-colors: active) {
+    .gmrc-book-of-deeds::before,
+    .gmrc-book-of-deeds::after { display: none; }
+    .gmrc-book-of-deeds__trail,
+    .gmrc-book-of-deeds__summary,
+    .gmrc-deed,
+    .gmrc-book-of-deeds__note,
+    .gmrc-deed__medallion { border: 1px solid CanvasText; background: Canvas; color: CanvasText; box-shadow: none; }
+    .gmrc-book-of-deeds__trail a { color: LinkText; }
+}
