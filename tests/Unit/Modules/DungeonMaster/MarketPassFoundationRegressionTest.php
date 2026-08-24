@@ -78,13 +78,14 @@ final class MarketPassFoundationRegressionTest extends TestCase
     {
         $roster = $this->source('app/Modules/DungeonMaster/Views/players/index.php');
         $player = $this->source('app/Modules/DungeonMaster/Views/market-pass/index.php');
-        $dashboard = $this->source('app/Modules/Dashboard/Views/index.php');
+        $directory = $this->source('app/Modules/Dashboard/Services/GuildHallDirectory.php');
         $css = $this->source('assets/css/modules/dungeon-master/market-pass.css');
         self::assertStringContainsString('Issue Market Pass', $roster);
         self::assertStringContainsString('Rotate Market Pass', $roster);
         self::assertStringContainsString('Revoke Market Pass', $roster);
         self::assertStringContainsString('Redeem a Market Pass', $player);
-        self::assertStringContainsString('Market Pass', $dashboard);
+        self::assertStringContainsString('Market Pass', $directory);
+        self::assertStringContainsString('Redeem a Market Pass', $directory);
         self::assertStringContainsString(':focus-visible', $css);
         self::assertStringContainsString('forced-colors:active', $css);
         self::assertStringContainsString('prefers-reduced-transparency:reduce', $css);

@@ -53,10 +53,10 @@ final class ActiveCampaignsRegressionTest extends TestCase
 
     public function testGuildHallLinksPlayersToActiveCampaigns(): void
     {
-        $dashboard = $this->source('app/Modules/Dashboard/Views/index.php');
-        self::assertStringContainsString("'active-campaigns'", $dashboard);
-        self::assertStringContainsString('Active Campaigns', $dashboard);
-        self::assertStringContainsString('Open Active Campaigns', $dashboard);
+        $directory = $this->source('app/Modules/Dashboard/Services/GuildHallDirectory.php');
+        self::assertStringContainsString("'active-campaigns'", $directory);
+        self::assertStringContainsString('Active Campaigns', $directory);
+        self::assertStringContainsString('Open Active Campaigns', $directory);
     }
 
     public function testActiveCampaignsSurfaceExplainsAssignmentBoundaryAndEmptyState(): void
