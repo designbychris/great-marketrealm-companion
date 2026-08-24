@@ -36,6 +36,51 @@ final class PartyRepository implements PartyRepositoryInterface
     private const META_TREASURY = '_gmrc_party_treasury';
     private const META_CHRONICLE = '_gmrc_party_chronicle';
 
+    /** @return Party[] */
+    public function allAcrossOwners(): array
+    {
+        $posts = get_posts([
+            'post_type' => self::POST_TYPE,
+            'post_status' => 'publish',
+            'posts_per_page' => -1,
+            'orderby' => 'date',
+            'order' => 'DESC',
+        ]);
+
+        return array_values(array_filter(array_map(
+            fn (WP_Post $post): ?Party => $this->mapPost($post),
+            $posts
+        )));
+    }
+
+    public function findAcrossOwners(PartyId $id): ?Party
+    {
+        $posts = get_posts([
+            'post_type' => self::POST_TYPE,
+            'post_status' => 'publish',
+            'posts_per_page' => 2,
+            'meta_key' => self::META_PARTY_ID,
+            'meta_value' => $id->value(),
+            'orderby' => 'ID',
+            'order' => 'ASC',
+        ]);
+
+        if (count($posts) > 1) {
+            throw new RuntimeException(
+                sprintf(
+                    'The Fellowship Register contains duplicate records for Party %s.',
+                    $id->value()
+                )
+            );
+        }
+
+        $post = $posts[0] ?? null;
+
+        return $post instanceof WP_Post
+            ? $this->mapPost($post)
+            : null;
+    }
+
     public function allForOwner(PartyOwnerId $ownerId): array
     {
         $posts = get_posts([

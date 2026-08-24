@@ -55,3 +55,7 @@ Active Campaign membership now bridges into the adventuring company without coll
 - Founding is deliberately a one-time snapshot: later Campaign roster changes do not silently add or remove Fellowship members. Fellowship Seals will own the future account-to-account membership workflow.
 - Campaign-founded Fellowships may resolve explicitly nominated Character references across Guild accounts for presentation, while normal Character ownership mutations remain owner-scoped.
 - Market Pass remains the primary Player invitation route; direct username/email roster entry is retained only as a Dungeon Master fallback.
+
+### Shared Campaign Fellowship Membership
+
+Campaign-founded Fellowships remain owned by their Dungeon Master custodian, while Guild accounts whose nominated Characters were captured into the Fellowship can now discover and open that Fellowship from their own Fellowship Register. Membership never transfers administrative ownership. Shared members may move coin between the Fellowship Treasury and their own member Character purse; direct company adjustments, roster administration and permanent Fellowship editing remain custodian-only. Treasury movements continue to use the existing recorded transfer ledger.

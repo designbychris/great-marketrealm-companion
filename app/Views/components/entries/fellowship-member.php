@@ -14,6 +14,8 @@ $portrait = $portrait ?? null;
 $partyId = isset($partyId) && is_scalar($partyId)
     ? (string) $partyId
     : '';
+$canManage = ! empty($canManage);
+$canOpenLedger = ! empty($canOpenLedger);
 
 if (! $membership instanceof PartyMembership) {
     return;
@@ -43,7 +45,7 @@ $level = $character instanceof Character
     ? $character->level()->value()
     : null;
 
-$characterUrl = $character instanceof Character
+$characterUrl = $character instanceof Character && $canOpenLedger
     ? add_query_arg(
         'gmrc_route',
         'characters/' . rawurlencode($characterId),
@@ -153,6 +155,7 @@ $characterUrl = $character instanceof Character
                 </a>
             <?php endif; ?>
 
+            <?php if ($canManage) : ?>
             <form
                 action="<?php echo esc_url(
                     admin_url('admin-post.php')
@@ -328,6 +331,7 @@ $characterUrl = $character instanceof Character
                     Remove
                 </button>
             </form>
+            <?php endif; ?>
         </div>
     </div>
 </article>

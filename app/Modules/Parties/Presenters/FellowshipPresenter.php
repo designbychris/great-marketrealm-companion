@@ -44,15 +44,16 @@ final class FellowshipPresenter
     {
         $characters = $this->characters->all();
         $byId = [];
+        $ownedIds = [];
 
         foreach ($characters as $character) {
             if (! $character instanceof Character) {
                 continue;
             }
 
-            $byId[
-                $character->id()->value()
-            ] = $character;
+            $characterId = $character->id()->value();
+            $byId[$characterId] = $character;
+            $ownedIds[$characterId] = true;
         }
 
         $resolvedCharacters = [];
@@ -95,6 +96,7 @@ final class FellowshipPresenter
                         ?? null,
                 'missing' =>
                     ! $character instanceof Character,
+                'owned_by_account' => isset($ownedIds[$characterId]),
             ];
         }
 
@@ -111,10 +113,18 @@ final class FellowshipPresenter
             )
         );
 
+        $transferable = array_values(array_filter(
+            $members,
+            static fn (array $member): bool =>
+                ! empty($member['owned_by_account'])
+                && ($member['character'] ?? null) instanceof Character
+        ));
+
         return [
             'party' => $party,
             'members' => $members,
             'available' => $available,
+            'transferable' => $transferable,
         ];
     }
 

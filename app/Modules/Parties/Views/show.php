@@ -19,6 +19,12 @@ $available = is_array($available ?? null)
     ? $available
     : [];
 
+$transferable = is_array($transferable ?? null)
+    ? $transferable
+    : [];
+
+$canManage = ! empty($can_manage);
+
 $flash = is_array($flash ?? null)
     ? $flash
     : [];
@@ -210,6 +216,12 @@ foreach ($officeHolders as $holder) {
                     : 's'; ?>.
             </p>
 
+            <?php if (! $canManage) : ?>
+                <p class="gmrc-fellowship-hero__shared">
+                    Shared Campaign Fellowship · visible through one of your adventurers
+                </p>
+            <?php endif; ?>
+
             <div class="gmrc-fellowship-hero__actions">
                 <a
                     class="gmrc-fellowship-button"
@@ -217,6 +229,7 @@ foreach ($officeHolders as $holder) {
                 >
                     Fellowship Register
                 </a>
+                <?php if ($canManage) : ?>
                 <a
                     class="
                         gmrc-fellowship-button
@@ -226,6 +239,7 @@ foreach ($officeHolders as $holder) {
                 >
                     Edit Fellowship
                 </a>
+                <?php endif; ?>
             </div>
         </div>
     </header>
@@ -334,6 +348,7 @@ foreach ($officeHolders as $holder) {
             </div>
         </aside>
 
+        <?php if ($canManage) : ?>
         <form
             class="gmrc-fellowship-chronicle__form"
             action="<?php echo esc_url(
@@ -405,6 +420,12 @@ foreach ($officeHolders as $holder) {
                 Add to Chronicle
             </button>
         </form>
+        <?php else : ?>
+            <p class="gmrc-fellowship-offices__empty">
+                The Fellowship Chronicle is shared with you as a member.
+                The Fellowship custodian keeps the permanent company record.
+            </p>
+        <?php endif; ?>
 
         <div class="gmrc-fellowship-chronicle__timeline">
             <?php if ($party->chronicle()->entries() === []) : ?>
@@ -570,9 +591,9 @@ foreach ($officeHolders as $holder) {
             $coinTransferId = wp_generate_uuid4();
             ?>
 
-            <?php if ($members === []) : ?>
+            <?php if ($transferable === []) : ?>
                 <p class="gmrc-fellowship-offices__empty">
-                    Add an adventurer to the Fellowship before transferring
+                    One of your adventurers must be a Fellowship member before transferring
                     personal coin to or from the shared coffers.
                 </p>
             <?php else : ?>
@@ -629,7 +650,7 @@ foreach ($officeHolders as $holder) {
                             name="character_id"
                             required
                         >
-                            <?php foreach ($members as $member) : ?>
+                            <?php foreach ($transferable as $member) : ?>
                                 <?php
                                 $transferCharacter =
                                     $member['character'] ?? null;
@@ -731,6 +752,7 @@ foreach ($officeHolders as $holder) {
             <?php endif; ?>
         </section>
 
+        <?php if ($canManage) : ?>
         <details class="gmrc-fellowship-treasury-adjustments">
             <summary>
                 <span>
@@ -852,6 +874,7 @@ foreach ($officeHolders as $holder) {
                 <?php endforeach; ?>
             </div>
         </details>
+        <?php endif; ?>
 
         <div class="gmrc-fellowship-treasury__ledger">
             <h3>Recent Treasury Ledger</h3>
@@ -1042,6 +1065,9 @@ foreach ($officeHolders as $holder) {
                             'portrait' =>
                                 $member['portrait'] ?? null,
                             'partyId' => $id,
+                            'canManage' => $canManage,
+                            'canOpenLedger' =>
+                                ! empty($member['owned_by_account']),
                         ]
                     ); ?>
                 <?php endforeach; ?>
@@ -1049,6 +1075,7 @@ foreach ($officeHolders as $holder) {
         <?php endif; ?>
     </section>
 
+    <?php if ($canManage) : ?>
     <section
         class="gmrc-fellowship-recruit"
         aria-labelledby="gmrc-fellowship-recruit-title"
@@ -1141,6 +1168,7 @@ foreach ($officeHolders as $holder) {
             </form>
         <?php endif; ?>
     </section>
+    <?php endif; ?>
         </div>
     </div>
 </section>

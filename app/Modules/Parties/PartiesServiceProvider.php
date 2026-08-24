@@ -19,6 +19,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Actions\WithdrawPartyTreasuryActio
 use GreatMarketrealmCompanion\Modules\Parties\Actions\AddPartyChronicleNoteAction;
 use GreatMarketrealmCompanion\Modules\Parties\Actions\TransferCoinBetweenCharacterAndPartyAction;
 use GreatMarketrealmCompanion\Modules\Parties\Services\PartyFinder;
+use GreatMarketrealmCompanion\Modules\Parties\Services\SharedFellowshipAccess;
 use GreatMarketrealmCompanion\Modules\Parties\Controllers\PartyController;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\FellowshipPresenter;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\CharacterFellowshipPresenter;
@@ -56,6 +57,15 @@ final class PartiesServiceProvider extends ServiceProvider
                     $container->make(
                         PartyRepositoryInterface::class
                     )
+                )
+        );
+
+        $container->singleton(
+            SharedFellowshipAccess::class,
+            static fn (Container $container): SharedFellowshipAccess =>
+                new SharedFellowshipAccess(
+                    $container->make(PartyRepository::class),
+                    $container->make(CharacterRepository::class)
                 )
         );
 

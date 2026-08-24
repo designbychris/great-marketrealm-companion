@@ -45,6 +45,7 @@ use GreatMarketrealmCompanion\Modules\Parties\Requests\WithdrawPartyTreasuryRequ
 use GreatMarketrealmCompanion\Modules\Parties\Requests\AddPartyChronicleNoteRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Requests\TransferPartyCoinRequest;
 use GreatMarketrealmCompanion\Modules\Parties\Services\PartyFinder;
+use GreatMarketrealmCompanion\Modules\Parties\Services\SharedFellowshipAccess;
 use GreatMarketrealmCompanion\Modules\Parties\Presenters\FellowshipPresenter;
 use RuntimeException;
 
@@ -54,6 +55,7 @@ final class PartyController
 {
     public function __construct(
         private PartyFinder $parties,
+        private SharedFellowshipAccess $sharedFellowships,
         private CharacterRepositoryInterface $characters,
         private FellowshipPresenter $fellowships,
         private CreatePartyAction $createParty,
@@ -77,16 +79,22 @@ final class PartyController
 
     public function index(): string
     {
+        $accountId = $this->accountId();
+        $presented = $this->fellowships->presentMany(
+            $this->sharedFellowships->allForAccount($accountId)
+        );
+
+        foreach ($presented as &$fellowship) {
+            $party = $fellowship['party'] ?? null;
+            $fellowship['can_manage'] = $party instanceof \GreatMarketrealmCompanion\Modules\Parties\Models\Party
+                && $this->sharedFellowships->canManage($party, $accountId);
+        }
+        unset($fellowship);
+
         return $this->views->render(
             View::make(
                 'parties.index',
-                [
-                    'fellowships' => $this->fellowships->presentMany(
-                        $this->parties->all(
-                            $this->ownerId()
-                        )
-                    ),
-                ]
+                ['fellowships' => $presented]
             )
         );
     }
@@ -121,15 +129,17 @@ final class PartyController
 
     public function show(string $id): string
     {
-        $party = $this->party($id);
+        $accountId = $this->accountId();
+        $party = $this->sharedFellowships->findForAccount(
+            PartyId::fromString($id),
+            $accountId
+        );
+        $presentation = $this->fellowships->present($party);
+        $presentation['can_manage'] =
+            $this->sharedFellowships->canManage($party, $accountId);
 
         return $this->views->render(
-            View::make(
-                'parties.show',
-                $this->fellowships->present(
-                    $party
-                )
-            )
+            View::make('parties.show', $presentation)
         );
     }
 
@@ -290,9 +300,13 @@ final class PartyController
         }
 
         try {
-            $party = $this->transferCoin->handle(
+            $accessibleParty = $this->sharedFellowships->findForAccount(
                 PartyId::fromString($id),
-                $this->ownerId(),
+                $this->accountId()
+            );
+            $party = $this->transferCoin->handle(
+                $accessibleParty->id(),
+                $accessibleParty->ownerId(),
                 CharacterId::fromString(
                     $request->characterId()
                 ),
@@ -477,15 +491,18 @@ final class PartyController
 
     private function ownerId(): PartyOwnerId
     {
+        return PartyOwnerId::fromInt($this->accountId());
+    }
+
+    private function accountId(): int
+    {
         if (! is_user_logged_in()) {
             throw new RuntimeException(
                 'A signed-in Guild account is required to access Fellowships.'
             );
         }
 
-        return PartyOwnerId::fromInt(
-            get_current_user_id()
-        );
+        return get_current_user_id();
     }
 
     private function partyUrl(

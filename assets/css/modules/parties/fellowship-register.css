@@ -2291,3 +2291,18 @@
         color: CanvasText;
     }
 }
+
+.gmrc-fellowship-hero__shared {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    width: fit-content;
+    margin: .25rem 0 0;
+    padding: .42rem .7rem;
+    border: 1px solid rgba(117, 91, 46, .28);
+    border-radius: 999px;
+    background: rgba(255, 248, 223, .7);
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+}

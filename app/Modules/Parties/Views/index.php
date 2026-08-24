@@ -99,6 +99,7 @@ ob_start();
                 $members = is_array($fellowship['members'] ?? null)
                     ? $fellowship['members']
                     : [];
+                $canManage = ! empty($fellowship['can_manage']);
 
                 if (! $party instanceof Party) {
                     continue;
@@ -155,12 +156,21 @@ ob_start();
                     </div>
 
                     <div class="gmrc-fellowship-entry__content">
-                        <p class="gmrc-eyebrow">Registered Fellowship</p>
+                        <p class="gmrc-eyebrow"><?php echo $canManage
+                            ? 'Registered Fellowship'
+                            : 'Shared Campaign Fellowship'; ?></p>
                         <h2>
                             <?php echo esc_html(
                                 $party->name()->value()
                             ); ?>
                         </h2>
+
+                        <?php if (! $canManage) : ?>
+                            <p class="gmrc-fellowship-entry__description">
+                                Shared with your Guild account through one of
+                                your registered adventurers.
+                            </p>
+                        <?php endif; ?>
 
                         <?php if ($party->charter()->motto() !== '') : ?>
                             <p class="gmrc-fellowship-entry__motto">
