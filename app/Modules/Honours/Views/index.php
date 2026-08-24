@@ -81,7 +81,7 @@ $icons = [
                         <?php echo $earnedEntry ? 'Certified honour' : 'Deed yet to be witnessed'; ?>
                     </p>
                     <?php if ($earnedEntry && ! empty($entry['certified_at'])) : ?>
-                        <p class="gmrc-deed__date">Entered <?php echo esc_html(wp_date('j F Y', strtotime((string) $entry['certified_at']))); ?></p>
+                        <p class="gmrc-deed__date">Entered in the Book: <?php echo esc_html(wp_date('j F Y', strtotime((string) $entry['certified_at']))); ?></p>
                     <?php endif; ?>
                 </div>
             </article>

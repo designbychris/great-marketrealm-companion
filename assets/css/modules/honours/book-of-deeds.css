@@ -219,7 +219,7 @@
     .gmrc-deed__symbol { font-size: 1.55rem; }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media(prefers-reduced-motion:reduce) {
     .gmrc-book-of-deeds * { scroll-behavior: auto !important; transition: none !important; }
 }
 
