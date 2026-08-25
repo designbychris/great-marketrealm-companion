@@ -37,7 +37,8 @@ final class CharacterFactory
      * Create the Character factory.
      */
     public function __construct(
-        private CharacterCreationRules $rules
+        private CharacterCreationRules $rules,
+        private ?StewardFolkMechanics $folkMechanics = null
     ) {
     }
 
@@ -53,6 +54,18 @@ final class CharacterFactory
         ?Languages $selectedLanguages = null,
         ?ToolProficiencies $selectedToolProficiencies = null
     ): Character {
+        $folkMechanics = $this->folkMechanics
+            ?? new StewardFolkMechanics();
+
+        $abilityScores = $folkMechanics->applyAbilityModifiers(
+            $race->value(),
+            $abilityScores
+        );
+        $selectedLanguages = ($selectedLanguages ?? Languages::none())
+            ->merge($folkMechanics->languages($race->value()));
+        $selectedToolProficiencies = ($selectedToolProficiencies ?? ToolProficiencies::none())
+            ->merge($folkMechanics->tools($race->value()));
+
         $startingHitPoints = $this->rules
             ->startingHitPoints(
                 $characterClass,
@@ -70,7 +83,10 @@ final class CharacterFactory
             $abilityScores,
             $background,
             $selectedLanguages,
-            $selectedToolProficiencies
+            $selectedToolProficiencies,
+            racialSkillProficiencies: $folkMechanics->skills(
+                $race->value()
+            )
         );
     }
 

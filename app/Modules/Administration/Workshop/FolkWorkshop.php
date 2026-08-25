@@ -75,6 +75,17 @@ final class FolkWorkshop
         $portraitUrl = esc_url_raw(
             trim((string) ($input['portrait_url'] ?? ''))
         );
+        $abilityModifiers = [];
+        foreach (['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'] as $ability) {
+            $abilityModifiers[$ability] = max(
+                0,
+                min(4, (int) ($input['ability_' . $ability] ?? 0))
+            );
+        }
+        $skillProficiencies = $this->lines((string) ($input['skill_proficiencies'] ?? ''));
+        $toolProficiencies = $this->lines((string) ($input['tool_proficiencies'] ?? ''));
+        $automaticLanguages = $this->lines((string) ($input['automatic_languages'] ?? ''));
+        $resistances = $this->lines((string) ($input['resistances'] ?? ''));
         $heritages = $this->heritages((string) ($input['heritages'] ?? ''), $key);
 
         if ($status === self::STATUS_PUBLISHED && (
@@ -99,6 +110,14 @@ final class FolkWorkshop
             'languages' => $languages,
             'traits' => $traits,
             'portrait_url' => $portraitUrl,
+            'mechanics' => [
+                'ability_modifiers' => $abilityModifiers,
+                'skill_proficiencies' => $skillProficiencies,
+                'tool_proficiencies' => $toolProficiencies,
+                'automatic_languages' => $automaticLanguages,
+                'chosen_language_count' => max(0, min(4, (int) ($input['chosen_language_count'] ?? 0))),
+                'resistances' => $resistances,
+            ],
             'heritages' => $heritages,
             'steward_notes' => sanitize_textarea_field((string) ($input['steward_notes'] ?? '')),
             'updated_at' => gmdate('c'),

@@ -32,8 +32,29 @@ $baseUrl = add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'folk-w
 <label><strong>Default Folk portrait image URL</strong><input type="url" class="large-text" name="portrait_url" value="<?php echo esc_attr($value('portrait_url')); ?>" placeholder="https://…"></label>
 <p class="description">Optional. Choose or upload a representative image in the WordPress Media Library and paste its file URL here. Characters of this Steward Folk use it as their safe default portrait instead of an unsuitable procedural anatomy. A Character's own custom portrait still takes priority.</p>
 </section>
+<?php
+$mechanics = is_array($folk['mechanics'] ?? null) ? $folk['mechanics'] : [];
+$abilityModifiers = is_array($mechanics['ability_modifiers'] ?? null) ? $mechanics['ability_modifiers'] : [];
+?>
+<section class="gmrc-spell-workshop__mechanics gmrc-folk-workshop__mechanics">
+<h3>Playable Folk mechanics</h3>
+<p>These structured grants are applied by the Character Builder. Keep descriptive lore in Traits; put executable Character rules here.</p>
+<h4>Ability score improvements</h4>
+<div class="gmrc-canonical-steward__fields">
+<?php foreach (['strength'=>'Strength','dexterity'=>'Dexterity','constitution'=>'Constitution','intelligence'=>'Intelligence','wisdom'=>'Wisdom','charisma'=>'Charisma'] as $abilityKey=>$abilityLabel) : ?>
+<label><strong><?php echo esc_html($abilityLabel); ?></strong><select name="ability_<?php echo esc_attr($abilityKey); ?>"><?php for ($bonus=0;$bonus<=4;$bonus++) : ?><option value="<?php echo esc_attr((string)$bonus); ?>"<?php selected((int)($abilityModifiers[$abilityKey]??0),$bonus); ?>><?php echo esc_html($bonus===0?'No increase':'+' . $bonus); ?></option><?php endfor; ?></select></label>
+<?php endforeach; ?>
+</div>
+<div class="gmrc-canonical-steward__fields">
+<label><strong>Granted skill proficiencies</strong><textarea name="skill_proficiencies" rows="5" placeholder="One canonical skill per line, e.g. persuasion"><?php echo esc_textarea(implode("\n",(array)($mechanics['skill_proficiencies']??[]))); ?></textarea></label>
+<label><strong>Granted tool proficiencies</strong><textarea name="tool_proficiencies" rows="5" placeholder="One canonical tool identifier per line"><?php echo esc_textarea(implode("\n",(array)($mechanics['tool_proficiencies']??[]))); ?></textarea></label>
+<label><strong>Automatic languages</strong><textarea name="automatic_languages" rows="5" placeholder="One canonical language per line, e.g. common&#10;piespeak"><?php echo esc_textarea(implode("\n",(array)($mechanics['automatic_languages']??[]))); ?></textarea></label>
+<label><strong>Additional language choices</strong><input type="number" name="chosen_language_count" min="0" max="4" value="<?php echo esc_attr((string)($mechanics['chosen_language_count']??0)); ?>"><span class="description">Recorded now for the choice-aware registration bridge; automatic languages are applied immediately.</span></label>
+<label><strong>Damage resistances</strong><textarea name="resistances" rows="5" placeholder="One damage type per line"><?php echo esc_textarea(implode("\n",(array)($mechanics['resistances']??[]))); ?></textarea></label>
+</div>
+</section>
 <div class="gmrc-canonical-steward__fields"><label><strong>Languages</strong><textarea name="languages" rows="5" placeholder="One language per line"><?php echo esc_textarea(implode("\n", (array) ($folk['languages'] ?? []))); ?></textarea></label><label><strong>Traits / lore markers</strong><textarea name="traits" rows="5" placeholder="One trait per line"><?php echo esc_textarea(implode("\n", (array) ($folk['traits'] ?? []))); ?></textarea></label></div>
-<section class="gmrc-spell-workshop__mechanics"><h3>Heritages</h3><p>One Heritage per line: <code>Name | description | identity | trait summary</code>. Published Heritages become selectable only beneath their Published parent Folk.</p><textarea name="heritages" rows="10" class="large-text code"><?php echo esc_textarea(implode("\n", $heritageLines)); ?></textarea><p class="description">Folk without dedicated portrait assets use the Companion's existing safe portrait fallback. This Workshop certifies playable identity and Heritage selection; bespoke racial powers remain descriptive until a structured mechanics bridge exists.</p></section>
+<section class="gmrc-spell-workshop__mechanics"><h3>Heritages</h3><p>One Heritage per line: <code>Name | description | identity | trait summary</code>. Published Heritages become selectable only beneath their Published parent Folk.</p><textarea name="heritages" rows="10" class="large-text code"><?php echo esc_textarea(implode("\n", $heritageLines)); ?></textarea><p class="description">Folk without dedicated portrait assets use the Companion's existing safe portrait fallback. This Workshop certifies playable identity and Heritage selection; base Folk mechanics above are executable; Heritage-specific powers remain descriptive until the dedicated Heritage mechanics bridge.</p></section>
 <label><strong>Private Steward notes</strong><textarea name="steward_notes" rows="4"><?php echo esc_textarea($value('steward_notes')); ?></textarea></label><?php submit_button($isNew ? 'Create Folk' : 'Save Folk'); ?></form></main>
 </div></div>
 <?php $deleteType='folk'; $deleteKey=$isNew?'':(string)($folk['key']??''); $deleteLabel=$isNew?'this Folk':(string)($folk['name']??'this Folk'); require GMRC_PATH . 'app/Modules/Administration/Views/_steward-delete.php'; ?>

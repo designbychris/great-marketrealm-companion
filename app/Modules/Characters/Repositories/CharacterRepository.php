@@ -17,6 +17,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Level;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Languages;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\SkillProficiencies;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiencies;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Spellbook;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CallingPath;
@@ -55,6 +56,7 @@ final class CharacterRepository implements CharacterRepositoryInterface
     private const META_BACKGROUND_SKILLS = '_gmrc_background_skills';
     private const META_BACKGROUND_TOOLS = '_gmrc_background_tools';
     private const META_BACKGROUND_LABEL = '_gmrc_background_label';
+    private const META_RACIAL_SKILLS = '_gmrc_racial_skills';
     private const META_SELECTED_LANGUAGES = '_gmrc_selected_languages';
     private const META_SELECTED_TOOLS = '_gmrc_selected_tools';
     private const META_SPELLBOOK = '_gmrc_spellbook';
@@ -360,6 +362,11 @@ final class CharacterRepository implements CharacterRepositoryInterface
         update_post_meta($postId, self::META_BACKGROUND_SKILLS, $backgroundMechanics['skills']);
         update_post_meta($postId, self::META_BACKGROUND_TOOLS, $backgroundMechanics['tools']);
         update_post_meta($postId, self::META_BACKGROUND_LABEL, $character->background()->label());
+        update_post_meta(
+            $postId,
+            self::META_RACIAL_SKILLS,
+            $character->racialSkillProficiencies()->proficiencies()
+        );
 
         update_post_meta(
             $postId,
@@ -645,8 +652,25 @@ final class CharacterRepository implements CharacterRepositoryInterface
                         true
                     )
                 )
+            ),
+            racialSkillProficiencies: SkillProficiencies::proficient(
+                $this->mapStringArray($post->ID, self::META_RACIAL_SKILLS)
             )
         );
+    }
+
+    /**
+     * Read a persisted list of canonical string identifiers.
+     *
+     * @return array<int,string>
+     */
+    private function mapStringArray(int $postId, string $metaKey): array
+    {
+        $stored = get_post_meta($postId, $metaKey, true);
+
+        return is_array($stored)
+            ? array_values(array_filter($stored, 'is_string'))
+            : [];
     }
 
     /**

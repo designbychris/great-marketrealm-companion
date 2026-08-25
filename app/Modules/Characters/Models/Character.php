@@ -62,6 +62,7 @@ final class Character
         private CallingPath $callingPath,
         private PathGifts $pathGifts,
         private CharacterPurse $purse,
+        private SkillProficiencies $racialSkillProficiencies,
     ) {
     }
 
@@ -82,6 +83,7 @@ final class Character
         ?CallingPath $callingPath = null,
         ?PathGifts $pathGifts = null,
         ?CharacterPurse $purse = null,
+        ?SkillProficiencies $racialSkillProficiencies = null,
     ): self {
         return new self(
             id: $id,
@@ -111,6 +113,8 @@ final class Character
                 ?? PathGifts::none(),
             purse: $purse
                 ?? CharacterPurse::empty(),
+            racialSkillProficiencies: $racialSkillProficiencies
+                ?? SkillProficiencies::none(),
         );
     }
 
@@ -137,6 +141,7 @@ final class Character
         ?CallingPath $callingPath = null,
         ?PathGifts $pathGifts = null,
         ?CharacterPurse $purse = null,
+        ?SkillProficiencies $racialSkillProficiencies = null,
     ): self {
         return new self(
             id: $id,
@@ -167,6 +172,8 @@ final class Character
                 ?? PathGifts::none(),
             purse: $purse
                 ?? CharacterPurse::empty(),
+            racialSkillProficiencies: $racialSkillProficiencies
+                ?? SkillProficiencies::none(),
         );
     }
 
@@ -348,7 +355,16 @@ final class Character
     public function skillProficiencies(): SkillProficiencies
     {
         return $this->background
-            ->skillProficiencies();
+            ->skillProficiencies()
+            ->merge($this->racialSkillProficiencies);
+    }
+
+    /**
+     * Return the immutable Folk-granted skill snapshot.
+     */
+    public function racialSkillProficiencies(): SkillProficiencies
+    {
+        return $this->racialSkillProficiencies;
     }
 
     /**
