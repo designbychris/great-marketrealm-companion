@@ -92,11 +92,17 @@ final class StewardWorkshopCertification
         $certified = count($families) === 7
             && $totals['attention'] === 0;
 
+        // Backward-compatible certification of the six physical
+        // Steward authoring rooms. Heritages are audited separately
+        // as the seventh content family.
+        $rows = array_slice($families, 0, 6);
+
         return [
             'certified' => $certified,
             'family_count' => count($families),
             'workshop_count' => 6,
             'legacy_folk_family_label' => 'Folk & Heritages',
+            'legacy_workshop_certified' => count($rows) === 6,
             'statuses' => ['Draft', 'Published', 'Archived'],
             'rows' => $families,
             'totals' => $totals,
