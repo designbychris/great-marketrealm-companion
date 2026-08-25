@@ -1,5 +1,5 @@
 {
-  "version": "3.7.4",
+  "version": "3.7.5",
   "source": {
     "title": "The Great Marketrealm Players Handbook",
     "kind": "curated-google-doc-snapshot"
@@ -239,7 +239,39 @@
       "name": "Bananari",
       "description": "Bananari heritage of the Fructan family.",
       "traits": [],
-      "parent": "fructan"
+      "parent": "fructan",
+      "size": "Medium",
+      "speed": 35,
+      "mechanics": {
+        "ability_modifiers": {
+          "dexterity": 2,
+          "intelligence": 1
+        },
+        "features": [
+          {
+            "name": "Slippery Skin",
+            "description": "When hit by a melee attack, you can use a reaction to impose disadvantage on the next attack roll against you (1/short rest)."
+          },
+          {
+            "name": "Quick Peel",
+            "description": "You can take the Disengage action as a bonus action."
+          },
+          {
+            "name": "Flexible Logic",
+            "description": "Proficient in Acrobatics or Sleight of Hand."
+          }
+        ],
+        "proficiency_choices": [
+          {
+            "name": "Flexible Logic",
+            "choose": 1,
+            "from": [
+              "Acrobatics",
+              "Sleight of Hand"
+            ]
+          }
+        ]
+      }
     },
     {
       "key": "berryling",

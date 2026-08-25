@@ -113,7 +113,7 @@ final class FolkWorkshop
             throw new RuntimeException('Published Steward Folk require a complete description, recognised size, creature type and a walking speed from 0–120 feet in five-foot increments.');
         }
 
-        $records[$key] = [
+        $record = [
             'key' => $key,
             'origin' => 'steward',
             'status' => $status,
@@ -138,6 +138,15 @@ final class FolkWorkshop
             'steward_notes' => sanitize_textarea_field((string) ($input['steward_notes'] ?? '')),
             'updated_at' => gmdate('c'),
         ];
+
+        if ($status === self::STATUS_PUBLISHED) {
+            $certificationErrors = (new CustomFolkCertification())->errors($record);
+            if ($certificationErrors !== []) {
+                throw new RuntimeException(implode(' ', $certificationErrors));
+            }
+        }
+
+        $records[$key] = $record;
         update_option(self::OPTION, $records, false);
         return $key;
     }
@@ -247,7 +256,53 @@ final class FolkWorkshop
             'resistances' => $this->lines(
                 (string) ($posted['resistances'] ?? '')
             ),
+            'size' => sanitize_text_field((string) ($posted['size'] ?? '')),
+            'speed' => ($posted['speed'] ?? '') === ''
+                ? ''
+                : max(0, min(120, (int) $posted['speed'])),
+            'features' => $this->heritageFeatures(
+                (string) ($posted['features'] ?? '')
+            ),
+            'proficiency_choices' => $this->heritageProficiencyChoices(
+                (string) ($posted['proficiency_choices'] ?? '')
+            ),
         ];
+    }
+
+    /** @return array<int,array{name:string,description:string}> */
+    private function heritageFeatures(string $text): array
+    {
+        $features = [];
+        foreach (preg_split('/\R/', $text) ?: [] as $line) {
+            $parts = array_map('trim', explode('|', $line, 2));
+            $name = sanitize_text_field((string) ($parts[0] ?? ''));
+            $description = sanitize_textarea_field((string) ($parts[1] ?? ''));
+            if ($name !== '' || $description !== '') {
+                $features[] = ['name' => $name, 'description' => $description];
+            }
+        }
+
+        return $features;
+    }
+
+    /** @return array<int,array{name:string,choose:int,from:array<int,string>}> */
+    private function heritageProficiencyChoices(string $text): array
+    {
+        $choices = [];
+        foreach (preg_split('/\R/', $text) ?: [] as $line) {
+            $parts = array_map('trim', explode('|', $line, 3));
+            $name = sanitize_text_field((string) ($parts[0] ?? ''));
+            $choose = max(1, min(6, (int) ($parts[1] ?? 1)));
+            $from = array_values(array_filter(array_map(
+                'sanitize_text_field',
+                array_map('trim', explode(',', (string) ($parts[2] ?? '')))
+            )));
+            if ($name !== '' || $from !== []) {
+                $choices[] = ['name' => $name, 'choose' => $choose, 'from' => $from];
+            }
+        }
+
+        return $choices;
     }
 
     /** @param array<string,array<string,mixed>> $records */

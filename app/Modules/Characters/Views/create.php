@@ -204,7 +204,23 @@ $heritageMechanicSummary = static function (array $mechanics) use ($identifierLa
         ];
     }
 
+    foreach (['size' => 'Size', 'speed' => 'Speed'] as $key => $label) {
+        $value = $mechanics[$key] ?? '';
+        if (is_scalar($value) && trim((string) $value) !== '') {
+            $rows[] = ['label' => $label, 'value' => trim((string) $value)];
+        }
+    }
+
     return $rows;
+};
+
+/** @return array<int,string> */
+$heritageTraitList = static function (mixed $traits): array {
+    $traits = is_array($traits) ? $traits : (is_scalar($traits) ? [$traits] : []);
+    return array_values(array_filter(array_map(
+        static fn (mixed $trait): string => is_scalar($trait) ? trim((string) $trait) : '',
+        $traits
+    )));
 };
 
 $backgroundValue = isset($old['background'])
@@ -781,18 +797,34 @@ $charactersUrl = add_query_arg(
 
                         $heritageKey = (string) ($heritage['key'] ?? '');
                         $heritageParent = (string) ($heritage['parent'] ?? '');
-                        $heritageDescription = trim((string) ($heritage['description'] ?? ''));
-                        $heritageIdentity = trim((string) ($heritage['identity'] ?? ''));
-                        $heritageTraits = trim((string) ($heritage['traits'] ?? ''));
+                        $heritageDescription = is_scalar($heritage['description'] ?? null)
+                            ? trim((string) $heritage['description'])
+                            : '';
+                        $heritageIdentity = is_scalar($heritage['identity'] ?? null)
+                            ? trim((string) $heritage['identity'])
+                            : '';
+                        $heritageTraits = $heritageTraitList($heritage['traits'] ?? []);
                         $heritageMechanics = is_array($heritage['mechanics'] ?? null)
                             ? $heritage['mechanics']
+                            : [];
+                        $heritageFeatures = is_array($heritageMechanics['features'] ?? null)
+                            ? $heritageMechanics['features']
+                            : [];
+                        $heritageChoices = is_array($heritageMechanics['proficiency_choices'] ?? null)
+                            ? $heritageMechanics['proficiency_choices']
                             : [];
                         $parentMechanics = is_array($heritage['parent_mechanics'] ?? null)
                             ? $heritage['parent_mechanics']
                             : [];
+                        $parentTraits = $heritageTraitList($heritage['parent_traits'] ?? []);
+                        $parentFeatures = is_array($parentMechanics['features'] ?? null)
+                            ? $parentMechanics['features']
+                            : [];
                         $mechanicRows = $heritageMechanicSummary($heritageMechanics);
                         $parentRows = $heritageMechanicSummary($parentMechanics);
-                        $parentName = trim((string) ($heritage['parent_name'] ?? ''));
+                        $parentName = is_scalar($heritage['parent_name'] ?? null)
+                            ? trim((string) $heritage['parent_name'])
+                            : '';
                     ?>
                         <article
                             class="gmrc-heritage-preview__card"
@@ -817,10 +849,14 @@ $charactersUrl = add_query_arg(
                                 </p>
                             <?php endif; ?>
 
-                            <?php if ($heritageTraits !== '') : ?>
+                            <?php if ($heritageTraits !== []) : ?>
                                 <div class="gmrc-heritage-preview__trait">
                                     <strong>Heritage traits</strong>
-                                    <p><?php echo esc_html($heritageTraits); ?></p>
+                                    <ul>
+                                        <?php foreach ($heritageTraits as $trait) : ?>
+                                            <li><?php echo esc_html($trait); ?></li>
+                                        <?php endforeach; ?>
+                                    </ul>
                                 </div>
                             <?php endif; ?>
 
@@ -836,7 +872,44 @@ $charactersUrl = add_query_arg(
                                         <?php endforeach; ?>
                                     </dl>
                                 </div>
-                            <?php else : ?>
+                            <?php endif; ?>
+
+                            <?php if ($heritageFeatures !== []) : ?>
+                                <div class="gmrc-heritage-preview__features">
+                                    <h4>Core traits</h4>
+                                    <?php foreach ($heritageFeatures as $feature) :
+                                        if (! is_array($feature)) { continue; }
+                                        $featureName = is_scalar($feature['name'] ?? null) ? trim((string) $feature['name']) : '';
+                                        $featureDescription = is_scalar($feature['description'] ?? null) ? trim((string) $feature['description']) : '';
+                                        if ($featureName === '' || $featureDescription === '') { continue; }
+                                    ?>
+                                        <div class="gmrc-heritage-preview__trait">
+                                            <strong><?php echo esc_html($featureName); ?></strong>
+                                            <p><?php echo esc_html($featureDescription); ?></p>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if ($heritageChoices !== []) : ?>
+                                <div class="gmrc-heritage-preview__choices">
+                                    <h4>Choices</h4>
+                                    <?php foreach ($heritageChoices as $choice) :
+                                        if (! is_array($choice)) { continue; }
+                                        $choiceName = is_scalar($choice['name'] ?? null) ? trim((string) $choice['name']) : 'Proficiency choice';
+                                        $choiceFrom = $heritageTraitList($choice['from'] ?? []);
+                                        $choiceCount = max(1, (int) ($choice['choose'] ?? 1));
+                                        if ($choiceFrom === []) { continue; }
+                                    ?>
+                                        <p><strong><?php echo esc_html($choiceName); ?>:</strong>
+                                            Choose <?php echo esc_html((string) $choiceCount); ?> —
+                                            <?php echo esc_html(implode(' or ', $choiceFrom)); ?>.
+                                        </p>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if ($mechanicRows === [] && $heritageFeatures === [] && $heritageChoices === []) : ?>
                                 <p class="gmrc-heritage-preview__legacy">
                                     No additional structured bonuses are recorded
                                     for this Heritage. Its published description
@@ -844,7 +917,7 @@ $charactersUrl = add_query_arg(
                                 </p>
                             <?php endif; ?>
 
-                            <?php if ($parentRows !== [] || $parentName !== '') : ?>
+                            <?php if ($parentRows !== [] || $parentTraits !== [] || $parentFeatures !== [] || $parentName !== '') : ?>
                                 <details class="gmrc-heritage-preview__inherited">
                                     <summary>
                                         Inherited from
@@ -859,11 +932,30 @@ $charactersUrl = add_query_arg(
                                                 </div>
                                             <?php endforeach; ?>
                                         </dl>
-                                    <?php else : ?>
-                                        <p>
-                                            Your parent Folk’s published identity
-                                            and traits still apply in full.
-                                        </p>
+                                    <?php endif; ?>
+                                    <?php if ($parentTraits !== []) : ?>
+                                        <div class="gmrc-heritage-preview__trait">
+                                            <strong>Shared Folk traits</strong>
+                                            <ul>
+                                                <?php foreach ($parentTraits as $trait) : ?>
+                                                    <li><?php echo esc_html($trait); ?></li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php foreach ($parentFeatures as $feature) :
+                                        if (! is_array($feature)) { continue; }
+                                        $featureName = is_scalar($feature['name'] ?? null) ? trim((string) $feature['name']) : '';
+                                        $featureDescription = is_scalar($feature['description'] ?? null) ? trim((string) $feature['description']) : '';
+                                        if ($featureName === '' || $featureDescription === '') { continue; }
+                                    ?>
+                                        <div class="gmrc-heritage-preview__trait">
+                                            <strong><?php echo esc_html($featureName); ?></strong>
+                                            <p><?php echo esc_html($featureDescription); ?></p>
+                                        </div>
+                                    <?php endforeach; ?>
+                                    <?php if ($parentRows === [] && $parentTraits === [] && $parentFeatures === []) : ?>
+                                        <p>Your parent Folk’s published identity and traits still apply in full.</p>
                                     <?php endif; ?>
                                 </details>
                             <?php endif; ?>

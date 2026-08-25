@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories;
 
+use GreatMarketrealmCompanion\Modules\Characters\Catalogue\HeritageGuidance;
+
 defined('ABSPATH') || exit;
 
 final class CharacterCatalogueRepository
 {
     private const OPTION = 'gmrc_character_catalogue';
-    private const VERSION = '3.7.4';
+    private const VERSION = '3.7.5';
 
     /** @return array<string,mixed> */
     public function snapshot(): array
@@ -81,7 +83,23 @@ final class CharacterCatalogueRepository
     /** @return array<int,array<string,mixed>> */
     public function heritages(): array
     {
-        $items = array_values($this->snapshot()['heritages'] ?? []);
+        $snapshot = $this->snapshot();
+        $parents = [];
+        foreach ((array) ($snapshot['races'] ?? []) as $race) {
+            if (is_array($race) && is_string($race['key'] ?? null)) {
+                $parents[$race['key']] = $race;
+            }
+        }
+
+        $items = [];
+        foreach ((array) ($snapshot['heritages'] ?? []) as $heritage) {
+            if (! is_array($heritage)) {
+                continue;
+            }
+            $parent = $parents[(string) ($heritage['parent'] ?? '')] ?? [];
+            $items[] = $this->withHeritageGuidance($heritage, $parent);
+        }
+
         if (function_exists('get_option')) {
             $records = get_option('gmrc_steward_folk', []);
             foreach (is_array($records) ? $records : [] as $record) {
@@ -90,20 +108,26 @@ final class CharacterCatalogueRepository
                 }
                 foreach ((array) ($record['heritages'] ?? []) as $heritage) {
                     if (is_array($heritage)) {
-                        $heritage['parent_name'] =
-                            (string) ($record['name'] ?? '');
-                        $heritage['parent_description'] =
-                            (string) ($record['description'] ?? '');
-                        $heritage['parent_mechanics'] =
-                            is_array($record['mechanics'] ?? null)
-                                ? $record['mechanics']
-                                : [];
-                        $items[] = $heritage;
+                        $items[] = $this->withHeritageGuidance($heritage, $record);
                     }
                 }
             }
         }
+
         return $items;
+    }
+
+    /** @param array<string,mixed> $heritage @param array<string,mixed> $parent */
+    private function withHeritageGuidance(array $heritage, array $parent): array
+    {
+        $heritage['mechanics'] = HeritageGuidance::normalize($heritage);
+        $heritage['traits'] = HeritageGuidance::traits($heritage);
+        $heritage['parent_name'] = (string) ($parent['name'] ?? '');
+        $heritage['parent_description'] = (string) ($parent['description'] ?? '');
+        $heritage['parent_traits'] = HeritageGuidance::traits($parent);
+        $heritage['parent_mechanics'] = HeritageGuidance::normalize($parent);
+
+        return $heritage;
     }
 
     /** @return array<int,array<string,mixed>> */
