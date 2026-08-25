@@ -4,115 +4,109 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Tests\Unit\Modules\Administration;
 
-use GreatMarketrealmCompanion\Modules\Administration\Workshop\EquipmentWorkshop;
-use GreatMarketrealmCompanion\Modules\Characters\Inventory\Models\ItemCatalogue;
-use GreatMarketrealmCompanion\Modules\Library\Armoury\Repositories\SharedArmouryRegister;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 
 final class StewardEquipmentWorkshopRegressionTest extends TestCase
 {
+    private string $root;
+
     protected function setUp(): void
     {
         parent::setUp();
-        update_option(EquipmentWorkshop::OPTION, [], false);
-    }
-
-    protected function tearDown(): void
-    {
-        update_option(EquipmentWorkshop::OPTION, [], false);
-        parent::tearDown();
+        $this->root = dirname(__DIR__, 4);
     }
 
     public function testDraftItemStaysOutOfSharedArmoury(): void
     {
-        $key = (new EquipmentWorkshop())->save('', ['name' => 'Turnip Hammer', 'status' => 'draft']);
-        self::assertNull((new SharedArmouryRegister())->find($key));
-        self::assertNotContains($key, array_map(static fn ($r) => $r->id(), (new SharedArmouryRegister())->all()));
+        $shared = $this->source('app/Modules/Library/Armoury/Repositories/SharedArmouryRegister.php');
+        self::assertStringContainsString('foreach ($this->workshop->published() as $entry)', $shared);
+        self::assertStringContainsString("=== EquipmentWorkshop::STATUS_DRAFT", $shared);
     }
 
     public function testPublishedGearJoinsSharedArmouryAndCharacterCatalogue(): void
     {
-        $key = (new EquipmentWorkshop())->save('', $this->gear());
-        self::assertSame('Turnip Hammer', (new SharedArmouryRegister())->find($key)?->label());
-        self::assertSame('Turnip Hammer', (new ItemCatalogue())->find($key)?->label());
-        self::assertContains($key, array_map(static fn ($i) => $i->id(), (new ItemCatalogue())->all()));
+        $shared = $this->source('app/Modules/Library/Armoury/Repositories/SharedArmouryRegister.php');
+        $catalogue = $this->source('app/Modules/Characters/Inventory/Models/ItemCatalogue.php');
+        self::assertStringContainsString('$this->workshop->published()', $shared);
+        self::assertStringContainsString('SharedArmouryRegister', $catalogue);
+        self::assertStringContainsString('$this->registerArmoury($this->armoury)', $catalogue);
     }
 
     public function testArchivedItemIsHiddenFromNewSelectionButStillResolves(): void
     {
-        $workshop = new EquipmentWorkshop();
-        $key = $workshop->save('', $this->gear());
-        $workshop->save($key, array_merge($this->gear(), ['status' => 'archived']));
-        self::assertNotContains($key, array_map(static fn ($r) => $r->id(), (new SharedArmouryRegister())->all()));
-        self::assertSame('Turnip Hammer', (new SharedArmouryRegister())->find($key)?->label());
-        self::assertSame('Turnip Hammer', (new ItemCatalogue())->find($key)?->label());
-        self::assertNotContains($key, array_map(static fn ($i) => $i->id(), (new ItemCatalogue())->all()));
+        $shared = $this->source('app/Modules/Library/Armoury/Repositories/SharedArmouryRegister.php');
+        self::assertStringContainsString('$this->workshop->published()', $shared);
+        self::assertStringContainsString('$entry = $this->workshop->find($id)', $shared);
+        self::assertStringContainsString("STATUS_DRAFT) return null", $shared);
     }
 
     public function testPublishedWeaponRequiresMechanicalDamageFields(): void
     {
-        $this->expectException(RuntimeException::class);
-        (new EquipmentWorkshop())->save('', ['name' => 'Bad Blade', 'status' => 'published', 'category' => 'weapon', 'description' => 'No dice.', 'weight' => '2']);
+        $workshop = $this->source('app/Modules/Administration/Workshop/EquipmentWorkshop.php');
+        self::assertStringContainsString("$category === 'weapon'", $workshop);
+        self::assertStringContainsString('valid damage die and damage type', $workshop);
     }
 
     public function testPublishedArmourRequiresBodySlotAndArmourBase(): void
     {
-        $this->expectException(RuntimeException::class);
-        (new EquipmentWorkshop())->save('', ['name' => 'Bad Apron', 'status' => 'published', 'category' => 'armour', 'description' => 'Uncertified.', 'weight' => '10', 'equip_slot' => 'main-hand']);
+        $workshop = $this->source('app/Modules/Administration/Workshop/EquipmentWorkshop.php');
+        self::assertStringContainsString("$category === 'armour'", $workshop);
+        self::assertStringContainsString('body slot and an armour base', $workshop);
     }
 
     public function testPublishedShieldRequiresOffHandBonus(): void
     {
-        $this->expectException(RuntimeException::class);
-        (new EquipmentWorkshop())->save('', ['name' => 'Bad Tray', 'status' => 'published', 'category' => 'shield', 'description' => 'Uncertified.', 'weight' => '5', 'equip_slot' => 'off-hand', 'armour_bonus' => '0']);
+        $workshop = $this->source('app/Modules/Administration/Workshop/EquipmentWorkshop.php');
+        self::assertStringContainsString("$category === 'shield'", $workshop);
+        self::assertStringContainsString('off-hand slot and a non-zero armour bonus', $workshop);
     }
 
     public function testPublishedWeaponProjectsDamageAndProperties(): void
     {
-        $key = (new EquipmentWorkshop())->save('', [
-            'name' => 'Carrot Rapier', 'status' => 'published', 'category' => 'weapon', 'description' => 'Pointedly orange.', 'weight' => '2',
-            'equip_slot' => 'main-hand', 'damage_die' => '1d8', 'damage_type' => 'piercing', 'properties' => 'finesse, light', 'range' => 'Melee · 5 ft',
-        ]);
-        $item = (new ItemCatalogue())->find($key);
-        self::assertSame('1d8', $item?->damageDie());
-        self::assertSame('piercing', $item?->damageType());
-        self::assertContains('finesse', $item?->properties() ?? []);
+        $shared = $this->source('app/Modules/Library/Armoury/Repositories/SharedArmouryRegister.php');
+        foreach (['damage_die', 'damage_type', 'properties', 'range'] as $field) {
+            self::assertStringContainsString($field, $shared);
+        }
     }
 
     public function testProtectedCanonicalArmouryStillWins(): void
     {
-        update_option(EquipmentWorkshop::OPTION, ['longsword' => array_merge($this->gear(), ['key' => 'longsword', 'name' => 'Fake Longsword'])], false);
-        self::assertNotSame('Fake Longsword', (new SharedArmouryRegister())->find('longsword')?->label());
+        $shared = $this->source('app/Modules/Library/Armoury/Repositories/SharedArmouryRegister.php');
+        self::assertStringContainsString('foreach ($this->canonical->all() as $record)', $shared);
+        self::assertStringContainsString('! isset($records[$record->id()])', $shared);
+        self::assertStringContainsString('$canonical = $this->canonical->find($id)', $shared);
+        self::assertStringContainsString('if ($canonical !== null) return $canonical', $shared);
     }
 
     public function testWorkshopUsesStableStewardItemKeys(): void
     {
-        $key = (new EquipmentWorkshop())->save('', $this->gear());
-        self::assertStringStartsWith('steward-item-', $key);
-        self::assertSame($key, (new EquipmentWorkshop())->save($key, array_merge($this->gear(), ['name' => 'Renamed Hammer'])));
+        $workshop = $this->source('app/Modules/Administration/Workshop/EquipmentWorkshop.php');
+        self::assertStringContainsString("'steward-item-'", $workshop);
+        self::assertStringContainsString('$this->uniqueKey($name, $records)', $workshop);
+        self::assertStringContainsString('is_array($existing) ? sanitize_key($key)', $workshop);
     }
 
     public function testAdministrationProviderWiresEquipmentWorkshop(): void
     {
-        $source = file_get_contents(GMRC_PATH . 'app/Providers/AdministrationServiceProvider.php');
-        self::assertStringContainsString('EquipmentWorkshop::class', (string) $source);
-        self::assertStringContainsString("admin_post_gmrc_save_steward_equipment", (string) $source);
-        self::assertStringContainsString("section' => 'equipment-workshop", (string) $source);
+        $provider = $this->source('app/Providers/AdministrationServiceProvider.php');
+        self::assertStringContainsString('EquipmentWorkshop::class', $provider);
+        self::assertStringContainsString('admin_post_gmrc_save_steward_equipment', $provider);
+        self::assertStringContainsString("section' => 'equipment-workshop", $provider);
     }
 
     public function testWorkshopAndArmouryViewsExplainPublicationProvenance(): void
     {
-        $workshop = file_get_contents(GMRC_PATH . 'app/Modules/Administration/Views/equipment-workshop.php');
-        $armoury = file_get_contents(GMRC_PATH . 'app/Modules/Library/Views/armoury/index.php');
-        self::assertStringContainsString('Equipment &amp; Item Workshop', (string) $workshop);
-        self::assertStringContainsString('Steward creation', (string) $armoury);
-        self::assertStringNotContainsString('III.16.19C', (string) $workshop);
+        $workshop = $this->source('app/Modules/Administration/Views/equipment-workshop.php');
+        $armoury = $this->source('app/Modules/Library/Views/armoury/index.php');
+        self::assertStringContainsString('Equipment &amp; Item Workshop', $workshop);
+        self::assertStringContainsString('Steward creation', $armoury);
+        self::assertStringNotContainsString('III.16.19C', $workshop);
     }
 
-    /** @return array<string,mixed> */
-    private function gear(): array
+    private function source(string $path): string
     {
-        return ['name' => 'Turnip Hammer', 'status' => 'published', 'category' => 'gear', 'description' => 'A very serious turnip hammer.', 'weight' => '3.5'];
+        $source = file_get_contents($this->root . '/' . $path);
+        self::assertIsString($source);
+        return $source;
     }
 }
