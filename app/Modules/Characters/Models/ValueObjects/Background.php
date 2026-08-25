@@ -197,7 +197,8 @@ final class Background implements Stringable
     private function __construct(
         private readonly string $value,
         private readonly ?array $skillSnapshot = null,
-        private readonly ?array $toolSnapshot = null
+        private readonly ?array $toolSnapshot = null,
+        private readonly ?string $labelSnapshot = null
     ) {
         $this->guardAgainstInvalidValue(
             $value
@@ -226,14 +227,16 @@ final class Background implements Stringable
     public static function fromStringWithMechanics(
         string $value,
         array $skills,
-        array $tools
+        array $tools,
+        ?string $label = null
     ): self {
         $value = self::normalise($value);
 
         return new self(
             $value,
             SkillProficiencies::proficient($skills)->proficiencies(),
-            ToolProficiencies::fromStrings($tools)->values()
+            ToolProficiencies::fromStrings($tools)->values(),
+            $label !== null ? trim($label) : null
         );
     }
 
@@ -250,9 +253,11 @@ final class Background implements Stringable
      */
     public function label(): string
     {
-        return self::BACKGROUNDS[
-            $this->value
-        ]['label'];
+        if ($this->labelSnapshot !== null && $this->labelSnapshot !== '') {
+            return $this->labelSnapshot;
+        }
+
+        return self::BACKGROUNDS[$this->value]['label'] ?? ucwords(str_replace('-', ' ', preg_replace('/^steward-background-/', '', $this->value)));
     }
 
     /**
@@ -460,10 +465,8 @@ final class Background implements Stringable
         }
 
         if (
-            ! array_key_exists(
-                $value,
-                self::BACKGROUNDS
-            )
+            ! array_key_exists($value, self::BACKGROUNDS)
+            && ($this->skillSnapshot === null || $this->toolSnapshot === null)
         ) {
             throw new InvalidArgumentException(
                 sprintf(

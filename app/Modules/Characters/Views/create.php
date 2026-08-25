@@ -143,6 +143,16 @@ $raceOptions = $catalogueRaces;
 
 $classOptions = $catalogueClasses;
 $backgroundOptions = Background::all();
+foreach ((new \GreatMarketrealmCompanion\Modules\Library\Backgrounds\Repositories\BackgroundMechanicsRegister())->all() as $record) {
+    if (str_starts_with($record->key(), 'steward-background-')) {
+        $backgroundOptions[] = Background::fromStringWithMechanics(
+            $record->key(),
+            $record->skills(),
+            $record->tools(),
+            $record->name()
+        );
+    }
+}
 $languageOptions = Language::all();
 $artisanToolOptions = ToolProficiency::artisansTools();
 $gamingSetOptions = ToolProficiency::gamingSets();
@@ -152,7 +162,7 @@ $backgroundValue = isset($old['background'])
         ? (string) $old['background']
         : '';
 
-if (! Background::supports($backgroundValue)) {
+if (! Background::supports($backgroundValue) && (new \GreatMarketrealmCompanion\Modules\Library\Backgrounds\Repositories\BackgroundMechanicsRegister())->find($backgroundValue) === null) {
     $backgroundValue = '';
 }
 

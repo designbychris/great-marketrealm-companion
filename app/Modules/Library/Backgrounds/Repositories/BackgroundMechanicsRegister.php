@@ -18,6 +18,7 @@ defined('ABSPATH') || exit;
 final class BackgroundMechanicsRegister
 {
     public const OPTION = 'gmrc_canonical_background_overrides';
+    public const STEWARD_OPTION = 'gmrc_steward_backgrounds';
 
     public function __construct(private ?HandbookBackgroundRegister $handbook = null)
     {
@@ -27,16 +28,23 @@ final class BackgroundMechanicsRegister
     /** @return BackgroundRecord[] */
     public function all(): array
     {
-        return array_map(
+        $canonical = array_map(
             fn (BackgroundRecord $record): BackgroundRecord => $this->resolved($record),
             $this->handbook->all()
         );
+
+        return array_merge($canonical, array_values($this->stewardRecords()));
     }
 
     public function find(string $key): ?BackgroundRecord
     {
-        $record = $this->handbook->find(sanitize_key($key));
-        return $record instanceof BackgroundRecord ? $this->resolved($record) : null;
+        $key = sanitize_key($key);
+        $record = $this->handbook->find($key);
+        if ($record instanceof BackgroundRecord) {
+            return $this->resolved($record);
+        }
+
+        return $this->stewardRecords()[$key] ?? null;
     }
 
     public function background(string $key): Background
@@ -49,7 +57,8 @@ final class BackgroundMechanicsRegister
         return Background::fromStringWithMechanics(
             $record->key(),
             $record->skills(),
-            $record->tools()
+            $record->tools(),
+            $record->name()
         );
     }
 
@@ -87,6 +96,42 @@ final class BackgroundMechanicsRegister
         }
 
         return \GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\ToolProficiency::fromString($tool)->label();
+    }
+
+
+    /** @return array<string,BackgroundRecord> */
+    private function stewardRecords(): array
+    {
+        $stored = \function_exists('get_option') ? \get_option(self::STEWARD_OPTION, []) : [];
+        if (! is_array($stored)) {
+            return [];
+        }
+
+        $records = [];
+        foreach ($stored as $key => $entry) {
+            if (! is_array($entry) || ($entry['status'] ?? '') !== 'published') {
+                continue;
+            }
+            $skills = is_array($entry['skills'] ?? null) ? array_values($entry['skills']) : [];
+            $tools = is_array($entry['tools'] ?? null) ? array_values($entry['tools']) : [];
+            if (count($skills) !== 2 || count($tools) !== 1) {
+                continue;
+            }
+            $record = new BackgroundRecord(
+                sanitize_key((string) ($entry['key'] ?? $key)),
+                trim((string) ($entry['name'] ?? '')),
+                trim((string) ($entry['feature_name'] ?? '')),
+                trim((string) ($entry['feature_detail'] ?? '')),
+                $skills,
+                $tools,
+                trim((string) ($entry['tool_label'] ?? '')),
+                []
+            );
+            if ($record->key() !== '' && $record->name() !== '' && $record->featureName() !== '' && $record->featureDetail() !== '') {
+                $records[$record->key()] = $record;
+            }
+        }
+        return $records;
     }
 
     /** @return array<string,array<string,mixed>> */

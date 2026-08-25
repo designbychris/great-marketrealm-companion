@@ -104,6 +104,12 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
         </section>
 
         <section class="gmrc-stewards-office__card">
+            <span class="dashicons dashicons-id-alt" aria-hidden="true"></span><h2>Background Workshop</h2>
+            <p>Create new Marketrealm backgrounds as Drafts, publish mechanically complete histories into future Character inscription and the Guild Library, or archive them without deleting their Steward record.</p>
+            <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'background-workshop'], admin_url('admin.php'))); ?>">Open Background Workshop</a>
+        </section>
+
+        <section class="gmrc-stewards-office__card">
             <span class="dashicons dashicons-book-alt" aria-hidden="true"></span><h2>Canonical Records</h2>
             <p>Curate the official Marketrealm Bestiary, including stat lines, traits, actions, and WordPress Media Library artwork.</p>
             <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'canonical-records'], admin_url('admin.php'))); ?>">Open Bestiary Stewardship</a>

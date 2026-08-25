@@ -60,7 +60,7 @@ trait ResolvesRegistrationInput
             $fallback
         );
 
-        if (! Background::supports($value)) {
+        if ((new BackgroundMechanicsRegister())->find($value) === null && ! Background::supports($value)) {
             $this->registrationFail(
                 'background',
                 'Choose a recognised background from the Guild Register.'
