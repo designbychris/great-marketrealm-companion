@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Characters\Inventory\Models;
 
-use GreatMarketrealmCompanion\Modules\Library\Armoury\Repositories\MarketrealmArmouryRegister;
+use GreatMarketrealmCompanion\Modules\Library\Armoury\Repositories\SharedArmouryRegister;
 use InvalidArgumentException;
 
 defined('ABSPATH') || exit;
@@ -17,17 +17,24 @@ final class ItemCatalogue
     /** @var array<string, ItemDefinition> */
     private array $items = [];
 
+    private SharedArmouryRegister $armoury;
+
     public function __construct(
-        ?MarketrealmArmouryRegister $armoury = null
+        ?SharedArmouryRegister $armoury = null
     ) {
+        $this->armoury = $armoury ?? new SharedArmouryRegister();
         $this->registerDefaults();
-        $this->registerArmoury(
-            $armoury ?? new MarketrealmArmouryRegister()
-        );
+        $this->registerArmoury($this->armoury);
     }
 
     public function add(ItemDefinition $item): void { $this->items[$item->id()] = $item; }
-    public function find(string $id): ?ItemDefinition { return $this->items[$id] ?? null; }
+    public function find(string $id): ?ItemDefinition
+    {
+        $id = sanitize_key($id);
+        if (isset($this->items[$id])) return $this->items[$id];
+        $record = $this->armoury->find($id);
+        return $record !== null ? $this->definition($record) : null;
+    }
     /** @return ItemDefinition[] */
     public function all(): array { return array_values($this->items); }
 
@@ -41,31 +48,26 @@ final class ItemCatalogue
 
 
     private function registerArmoury(
-        MarketrealmArmouryRegister $armoury
+        SharedArmouryRegister $armoury
     ): void {
         foreach ($armoury->all() as $record) {
-            if ($this->find($record->id()) !== null) {
+            if (isset($this->items[$record->id()])) {
                 continue;
             }
 
-            $this->add(
-                new ItemDefinition(
-                    $record->id(),
-                    $record->label(),
-                    $record->category(),
-                    $record->description(),
-                    $record->weight(),
-                    $record->equipSlot(),
-                    $record->damageDie(),
-                    $record->damageType(),
-                    $record->armourBase(),
-                    $record->dexterityCap(),
-                    $record->armourBonus(),
-                    $record->properties(),
-                    $record->range()
-                )
-            );
+            $this->add($this->definition($record));
         }
+    }
+
+
+    private function definition(\GreatMarketrealmCompanion\Modules\Library\Armoury\Models\ArmouryRecord $record): ItemDefinition
+    {
+        return new ItemDefinition(
+            $record->id(), $record->label(), $record->category(), $record->description(),
+            $record->weight(), $record->equipSlot(), $record->damageDie(), $record->damageType(),
+            $record->armourBase(), $record->dexterityCap(), $record->armourBonus(),
+            $record->properties(), $record->range()
+        );
     }
 
     private function registerDefaults(): void

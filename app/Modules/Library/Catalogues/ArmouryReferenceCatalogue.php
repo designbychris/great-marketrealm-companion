@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Library\Catalogues;
 
-use GreatMarketrealmCompanion\Modules\Library\Armoury\Repositories\MarketrealmArmouryRegister;
+use GreatMarketrealmCompanion\Modules\Library\Armoury\Repositories\SharedArmouryRegister;
 
 defined('ABSPATH') || exit;
 
@@ -17,9 +17,9 @@ defined('ABSPATH') || exit;
 final class ArmouryReferenceCatalogue extends AbstractFoundationCatalogue
 {
     public function __construct(
-        private ?MarketrealmArmouryRegister $register = null
+        private ?SharedArmouryRegister $register = null
     ) {
-        $this->register ??= new MarketrealmArmouryRegister();
+        $this->register ??= new SharedArmouryRegister();
     }
 
     public function key(): string

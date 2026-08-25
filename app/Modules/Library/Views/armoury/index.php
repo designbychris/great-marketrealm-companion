@@ -21,6 +21,8 @@ $groupLabels = [
     'armour' => 'Armour',
     'shield' => 'Shields',
     'gear' => 'Adventuring Gear',
+    'tool' => 'Tools',
+    'consumable' => 'Consumables',
 ];
 ?>
 
@@ -72,6 +74,10 @@ $groupLabels = [
             <strong>Standard-compatible</strong> means mundane equipment
             added to broaden the Companion’s practical choices. It is not
             presented as Marketrealm-handbook canon.
+        </p>
+        <p>
+            <strong>Steward creation</strong> marks published equipment made
+            through the Steward’s Equipment &amp; Item Workshop.
         </p>
     </aside>
 
@@ -140,7 +146,9 @@ $groupLabels = [
                                     ($item['provenance'] ?? '')
                                         === 'handbook-mentioned'
                                             ? 'Handbook-mentioned'
-                                            : 'Standard-compatible'
+                                            : (($item['provenance'] ?? '') === 'steward-created'
+                                                ? 'Steward creation'
+                                                : 'Standard-compatible')
                                 ); ?>
                             </span>
                         </header>

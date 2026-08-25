@@ -8,6 +8,7 @@ use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalB
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\MonsterWorkshop;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\SpellWorkshop;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\BackgroundWorkshop;
+use GreatMarketrealmCompanion\Modules\Administration\Workshop\EquipmentWorkshop;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Models\CanonicalMonster;
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalCallingRegister;
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalBackgroundRegister;
@@ -39,6 +40,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         $this->app->singleton(MonsterWorkshop::class);
         $this->app->singleton(SpellWorkshop::class);
         $this->app->singleton(BackgroundWorkshop::class);
+        $this->app->singleton(EquipmentWorkshop::class);
         $this->app->singleton(CanonicalCallingRegister::class);
         $this->app->singleton(CanonicalBackgroundRegister::class);
         $this->app->singleton(CanonicalSpellRegister::class);
@@ -57,6 +59,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         add_action('admin_post_gmrc_save_steward_monster', [$this, 'saveStewardMonster']);
         add_action('admin_post_gmrc_save_steward_spell', [$this, 'saveStewardSpell']);
         add_action('admin_post_gmrc_save_steward_background', [$this, 'saveStewardBackground']);
+        add_action('admin_post_gmrc_save_steward_equipment', [$this, 'saveStewardEquipment']);
         add_action('admin_post_gmrc_save_canonical_calling', [$this, 'saveCanonicalCalling']);
         add_action('admin_post_gmrc_reset_canonical_calling', [$this, 'resetCanonicalCalling']);
         add_action('admin_post_gmrc_save_canonical_background', [$this, 'saveCanonicalBackground']);
@@ -263,6 +266,21 @@ final class AdministrationServiceProvider extends ServiceProvider
         exit;
     }
 
+    public function saveStewardEquipment(): void
+    {
+        $this->guard();
+        $key = sanitize_key(wp_unslash((string) ($_POST['item_key'] ?? '')));
+        check_admin_referer('gmrc_save_steward_equipment_' . ($key !== '' ? $key : 'new'), 'gmrc_steward_equipment_nonce');
+        try {
+            $key = $this->app->make(EquipmentWorkshop::class)->save($key, wp_unslash($_POST));
+            $args = ['gmrc_equipment_workshop_saved' => '1'];
+        } catch (RuntimeException $exception) {
+            $args = ['gmrc_equipment_workshop_error' => rawurlencode($exception->getMessage())];
+        }
+        wp_safe_redirect($this->equipmentWorkshopUrl($key, $args));
+        exit;
+    }
+
     public function saveCanonicalCalling(): void
     {
         $this->guard();
@@ -377,6 +395,14 @@ final class AdministrationServiceProvider extends ServiceProvider
         $this->guard(true);
 
         $section = sanitize_key((string) ($_GET['section'] ?? ''));
+        if ($section === 'equipment-workshop') {
+            $workshop = $this->app->make(EquipmentWorkshop::class);
+            $stewardEquipment = $workshop->all();
+            $selectedKey = sanitize_key((string) ($_GET['item'] ?? ''));
+            $selectedEquipment = $selectedKey !== '' ? $workshop->find($selectedKey) : null;
+            require GMRC_PATH . 'app/Modules/Administration/Views/equipment-workshop.php';
+            return;
+        }
         if ($section === 'starting-equipment') {
             $register = $this->app->make(StartingEquipmentPackageRegister::class);
             $startingEquipmentPackages = $register->all();
@@ -477,6 +503,14 @@ final class AdministrationServiceProvider extends ServiceProvider
     }
 
 
+
+    /** @param array<string,string> $args */
+    private function equipmentWorkshopUrl(string $key = '', array $args = []): string
+    {
+        $base = ['page' => self::MENU_SLUG, 'section' => 'equipment-workshop'];
+        if ($key !== '') $base['item'] = $key;
+        return add_query_arg(array_merge($base, $args), admin_url('admin.php'));
+    }
 
     /** @param array<string,string> $extra */
     private function startingEquipmentUrl(string $id, array $extra = []): string

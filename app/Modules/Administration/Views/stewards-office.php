@@ -109,6 +109,13 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
             <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'background-workshop'], admin_url('admin.php'))); ?>">Open Background Workshop</a>
         </section>
 
+
+        <section class="gmrc-stewards-office__card">
+            <span class="dashicons dashicons-hammer" aria-hidden="true"></span><h2>Equipment &amp; Item Workshop</h2>
+            <p>Create mundane weapons, armour, shields, tools, consumables and adventuring gear. Published items join the shared Armoury and Character satchels; archived records remain safe for existing adventurers.</p>
+            <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'equipment-workshop'], admin_url('admin.php'))); ?>">Open Equipment Workshop</a>
+        </section>
+
         <section class="gmrc-stewards-office__card">
             <span class="dashicons dashicons-book-alt" aria-hidden="true"></span><h2>Canonical Records</h2>
             <p>Curate the official Marketrealm Bestiary, including stat lines, traits, actions, and WordPress Media Library artwork.</p>
