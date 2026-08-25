@@ -70,7 +70,7 @@ final class StewardBackgroundWorkshopRegressionTest extends TestCase
     public function testCharacterRegistrationAcceptsOnlyResolvedPublishedStewardBackgrounds(): void
     {
         $source=$this->source('app/Modules/Characters/Requests/Concerns/ResolvesRegistrationInput.php');
-        self::assertStringContainsString("BackgroundMechanicsRegister())->find($value) === null", $source);
+        self::assertStringContainsString('BackgroundMechanicsRegister())->find($value) === null', $source);
         self::assertStringContainsString('Choose a recognised background from the Guild Register.', $source);
     }
 
