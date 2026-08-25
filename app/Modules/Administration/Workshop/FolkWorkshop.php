@@ -72,6 +72,9 @@ final class FolkWorkshop
         $darkvision = max(0, min(300, (int) ($input['darkvision'] ?? 0)));
         $languages = $this->lines((string) ($input['languages'] ?? ''));
         $traits = $this->lines((string) ($input['traits'] ?? ''));
+        $portraitUrl = esc_url_raw(
+            trim((string) ($input['portrait_url'] ?? ''))
+        );
         $heritages = $this->heritages((string) ($input['heritages'] ?? ''), $key);
 
         if ($status === self::STATUS_PUBLISHED && (
@@ -95,6 +98,7 @@ final class FolkWorkshop
             'darkvision' => $darkvision,
             'languages' => $languages,
             'traits' => $traits,
+            'portrait_url' => $portraitUrl,
             'heritages' => $heritages,
             'steward_notes' => sanitize_textarea_field((string) ($input['steward_notes'] ?? '')),
             'updated_at' => gmdate('c'),

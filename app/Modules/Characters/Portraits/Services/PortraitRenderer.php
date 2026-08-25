@@ -146,6 +146,20 @@ final class PortraitRenderer
             )->label()
             : '';
 
+        $stewardPortraitUrl = $this->stewardDefaultPortraitUrl($race);
+
+        if ($stewardPortraitUrl !== null) {
+            return new PortraitViewModel(
+                mode: 'custom',
+                name: $name,
+                race: $race,
+                raceLabel: $raceLabel,
+                characterClass: $characterClass,
+                classLabel: $classLabel,
+                attachmentUrl: $stewardPortraitUrl
+            );
+        }
+
         $context = PortraitRenderContext::provisional(
             $name,
             $race,
@@ -225,6 +239,17 @@ final class PortraitRenderer
         }
 
         $mode = $portrait->mode()->value();
+
+        if ($mode === 'generated') {
+            $stewardPortraitUrl = $this->stewardDefaultPortraitUrl(
+                $character->race()->value()
+            );
+
+            if ($stewardPortraitUrl !== null) {
+                $mode = 'custom';
+                $attachmentUrl = $stewardPortraitUrl;
+            }
+        }
 
         /*
          * Fall back to the generated recipe when a custom media
@@ -340,4 +365,32 @@ final class PortraitRenderer
 
         return $layers;
     }
+
+    /**
+     * Resolve the optional safe default portrait for a Steward-authored Folk.
+     */
+    private function stewardDefaultPortraitUrl(string $race): ?string
+    {
+        if (! function_exists('get_option')) {
+            return null;
+        }
+
+        $records = get_option('gmrc_steward_folk', []);
+        $key = sanitize_key($race);
+
+        if (! is_array($records) || ! isset($records[$key]) || ! is_array($records[$key])) {
+            return null;
+        }
+
+        $record = $records[$key];
+
+        if (($record['status'] ?? '') !== 'published') {
+            return null;
+        }
+
+        $url = esc_url_raw(trim((string) ($record['portrait_url'] ?? '')));
+
+        return $url !== '' ? $url : null;
+    }
+
 }

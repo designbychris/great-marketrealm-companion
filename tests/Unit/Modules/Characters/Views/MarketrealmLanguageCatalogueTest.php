@@ -26,6 +26,7 @@ final class MarketrealmLanguageCatalogueTest extends TestCase
                 'Dairy Tongue',
                 'Meat Speech',
                 'Shelf Script',
+                'PieSpeak',
             ],
             $languages
         );

@@ -40,6 +40,7 @@ final class Language implements Stringable
         'dairy-tongue' => 'Dairy Tongue',
         'meat-speech' => 'Meat Speech',
         'shelf-script' => 'Shelf Script',
+        'piespeak' => 'PieSpeak',
     ];
 
     /**
