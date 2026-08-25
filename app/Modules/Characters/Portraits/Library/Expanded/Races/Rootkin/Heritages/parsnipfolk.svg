@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img">
+<g data-portrait-layer="heritage" data-heritage="parsnipfolk" data-parent-race="rootkin">
+  <path d="M187 128Q173 78 208 93Q224 48 240 92Q261 51 275 97Q306 80 296 134"
+        fill="#709354" stroke="#405e36" stroke-width="7"/>
+  <path d="M211 330L191 387M269 330L289 387"
+        stroke="#d7c39c" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="186" cy="392" r="8" fill="#b79e73"/>
+  <circle cx="294" cy="392" r="8" fill="#b79e73"/>
+</g>
+</svg>

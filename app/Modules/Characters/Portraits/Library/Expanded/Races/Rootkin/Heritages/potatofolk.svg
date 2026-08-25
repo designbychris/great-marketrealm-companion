@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img">
+<g data-portrait-layer="heritage" data-heritage="potatofolk" data-parent-race="rootkin">
+  <ellipse cx="196" cy="235" rx="13" ry="9" fill="#5b3d2a"/>
+  <ellipse cx="284" cy="258" rx="12" ry="8" fill="#5b3d2a"/>
+  <ellipse cx="232" cy="302" rx="10" ry="7" fill="#5b3d2a"/>
+  <path d="M150 450Q240 500 330 450" fill="none" stroke="#4a3022" stroke-width="9" stroke-linecap="round"/>
+</g>
+</svg>
