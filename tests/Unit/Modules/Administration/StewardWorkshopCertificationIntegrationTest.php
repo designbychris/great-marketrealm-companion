@@ -92,10 +92,10 @@ final class StewardWorkshopCertificationIntegrationTest extends TestCase
     public function testCertificationProjectionCoversAllWorkshopFamilies(): void
     {
         $source = $this->source('app/Modules/Administration/Workshop/StewardWorkshopCertification.php');
-        foreach (['Monsters', 'Spells', 'Backgrounds', 'Equipment', 'Callings & Paths', 'Folk & Heritages'] as $label) {
+        foreach (['Monsters', 'Spells', 'Backgrounds', 'Equipment & Items', 'Callings & Paths', 'Folk', 'Heritages'] as $label) {
             self::assertStringContainsString("'" . $label . "'", $source);
         }
-        self::assertStringContainsString("'certified' => count(" . '$rows' . ") === 6", $source);
+        self::assertStringContainsString('count($families) === 7', $source);
     }
 
     public function testCertificationProjectionCountsAllThreeLifecycleStates(): void
@@ -110,9 +110,9 @@ final class StewardWorkshopCertificationIntegrationTest extends TestCase
     public function testStewardsOfficeDisplaysWorkshopHealthWithoutInternalPhaseLanguage(): void
     {
         $source = $this->source('app/Modules/Administration/Views/stewards-office.php');
-        self::assertStringContainsString('Workshop Certification', $source);
-        self::assertStringContainsString('Workshop system certified', $source);
-        self::assertStringContainsString('6 authoring rooms registered', $source);
+        self::assertStringContainsString('Content Health &amp; Certification', $source);
+        self::assertStringContainsString('Content pipeline certified', $source);
+        self::assertStringContainsString('/7 content families healthy', $source);
         self::assertStringNotContainsString('III.16.19E', $source);
     }
 

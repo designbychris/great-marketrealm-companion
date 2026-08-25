@@ -116,3 +116,96 @@
     .gmrc-stewards-office__workshop-certification { grid-template-columns: 1fr; }
     .gmrc-stewards-office__workshop-totals { grid-template-columns: repeat(2, 1fr); }
 }
+
+
+/* Phase III.16.21 — Steward Workshop final content certification */
+.gmrc-stewards-office__workshop-certification {
+    grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.gmrc-stewards-office__workshop-seal.is-certified {
+    border-color: #4f7638;
+    background: #eef6df;
+    color: #2d4b20;
+}
+
+.gmrc-stewards-office__workshop-seal.needs-attention {
+    border-color: #b85c32;
+    background: #fff0e5;
+    color: #733016;
+}
+
+.gmrc-stewards-office__workshop-totals {
+    grid-template-columns: repeat(5, minmax(90px, 1fr));
+}
+
+.gmrc-stewards-office__content-health-table-wrap {
+    grid-column: 1 / -1;
+    overflow-x: auto;
+}
+
+.gmrc-stewards-office__content-health-table {
+    border-color: #d8cfb5;
+}
+
+.gmrc-stewards-office__content-health-table th,
+.gmrc-stewards-office__content-health-table td {
+    vertical-align: middle;
+}
+
+.gmrc-stewards-office__content-health-table tbody th a {
+    color: #5f401d;
+    font-weight: 700;
+}
+
+.gmrc-content-health {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 68px;
+    font-weight: 700;
+}
+
+.gmrc-content-health::before {
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    background: currentColor;
+    content: "";
+}
+
+.gmrc-content-health.is-healthy {
+    color: #3b6d2a;
+}
+
+.gmrc-content-health.needs-attention {
+    color: #a33b27;
+}
+
+.gmrc-stewards-office__workshop-policy {
+    grid-column: 1 / -1;
+    margin-top: 0;
+    padding-top: 4px;
+}
+
+@media (max-width: 782px) {
+    .gmrc-stewards-office__workshop-totals {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gmrc-stewards-office__workshop-totals div:first-child {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-stewards-office__workshop-seal,
+    .gmrc-stewards-office__content-health-table {
+        border-color: CanvasText;
+    }
+
+    .gmrc-content-health::before {
+        border: 1px solid CanvasText;
+        background: CanvasText;
+    }
+}

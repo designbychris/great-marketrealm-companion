@@ -34,25 +34,113 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
         </div>
     </section>
 
-    <?php $workshopCertification = is_array($workshopCertification ?? null) ? $workshopCertification : []; ?>
-    <section class="gmrc-stewards-office__workshop-certification" aria-labelledby="gmrc-workshop-certification-title">
+    <?php
+    $workshopCertification = is_array($workshopCertification ?? null)
+        ? $workshopCertification
+        : [];
+    $certificationRows = is_array($workshopCertification['rows'] ?? null)
+        ? $workshopCertification['rows']
+        : [];
+    $totals = is_array($workshopCertification['totals'] ?? null)
+        ? $workshopCertification['totals']
+        : [];
+    ?>
+    <section
+        class="gmrc-stewards-office__workshop-certification"
+        aria-labelledby="gmrc-workshop-certification-title"
+    >
         <div>
-            <p class="gmrc-stewards-office__eyebrow">Steward-authored content · Integration health</p>
-            <h2 id="gmrc-workshop-certification-title">Workshop Certification</h2>
-            <p>One lifecycle now governs Monsters, Spells, Backgrounds, Equipment, Callings &amp; Paths, and Folk &amp; Heritages: Draft, Published, Archived, with dependency-safe permanent deletion for disposable Steward records.</p>
+            <p class="gmrc-stewards-office__eyebrow">
+                Steward-authored content · Final pipeline audit
+            </p>
+            <h2 id="gmrc-workshop-certification-title">
+                Content Health &amp; Certification
+            </h2>
+            <p>
+                The Steward's Workshop now audits every authored content
+                family from Draft through Published and Archived, including
+                the published projection consumed by the Companion.
+            </p>
         </div>
-        <div class="gmrc-stewards-office__workshop-seal">
-            <strong><?php echo ! empty($workshopCertification['certified']) ? 'Workshop system certified' : 'Workshop system needs attention'; ?></strong>
-            <span><?php echo esc_html((string) ($workshopCertification['workshop_count'] ?? 0)); ?>/6 authoring rooms registered</span>
+
+        <div
+            class="gmrc-stewards-office__workshop-seal <?php echo ! empty($workshopCertification['certified']) ? 'is-certified' : 'needs-attention'; ?>"
+            aria-label="Content pipeline certification status"
+        >
+            <strong>
+                <?php echo esc_html((string) ($workshopCertification['seal'] ?? 'Certification unavailable')); ?>
+            </strong>
+            <span>
+                <?php echo esc_html((string) ($workshopCertification['family_count'] ?? 0)); ?>/7 content families healthy
+            </span>
         </div>
-        <?php $totals = is_array($workshopCertification['totals'] ?? null) ? $workshopCertification['totals'] : []; ?>
+
         <dl class="gmrc-stewards-office__workshop-totals">
             <div><dt>Records</dt><dd><?php echo esc_html((string) ($totals['records'] ?? 0)); ?></dd></div>
             <div><dt>Draft</dt><dd><?php echo esc_html((string) ($totals['draft'] ?? 0)); ?></dd></div>
             <div><dt>Published</dt><dd><?php echo esc_html((string) ($totals['published'] ?? 0)); ?></dd></div>
             <div><dt>Archived</dt><dd><?php echo esc_html((string) ($totals['archived'] ?? 0)); ?></dd></div>
+            <div><dt>Attention</dt><dd><?php echo esc_html((string) ($totals['attention'] ?? 0)); ?></dd></div>
         </dl>
-        <p class="description"><?php echo esc_html((string) ($workshopCertification['policy'] ?? '')); ?></p>
+
+        <div class="gmrc-stewards-office__content-health-table-wrap">
+            <table class="widefat striped gmrc-stewards-office__content-health-table">
+                <caption class="screen-reader-text">
+                    Steward Workshop content family health
+                </caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Content family</th>
+                        <th scope="col">Records</th>
+                        <th scope="col">Draft</th>
+                        <th scope="col">Published</th>
+                        <th scope="col">Archived</th>
+                        <th scope="col">Live projection</th>
+                        <th scope="col">Health</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($certificationRows as $row) :
+                        if (! is_array($row)) {
+                            continue;
+                        }
+                        $section = sanitize_key((string) ($row['section'] ?? ''));
+                        $url = add_query_arg(
+                            [
+                                'page' => \GreatMarketrealmCompanion\Providers\AdministrationServiceProvider::MENU_SLUG,
+                                'section' => $section,
+                            ],
+                            admin_url('admin.php')
+                        );
+                    ?>
+                        <tr>
+                            <th scope="row">
+                                <a href="<?php echo esc_url($url); ?>">
+                                    <?php echo esc_html((string) ($row['label'] ?? 'Workshop')); ?>
+                                </a>
+                            </th>
+                            <td><?php echo esc_html((string) ($row['records'] ?? 0)); ?></td>
+                            <td><?php echo esc_html((string) ($row['draft'] ?? 0)); ?></td>
+                            <td><?php echo esc_html((string) ($row['published'] ?? 0)); ?></td>
+                            <td><?php echo esc_html((string) ($row['archived'] ?? 0)); ?></td>
+                            <td><?php echo esc_html((string) ($row['projection'] ?? 0)); ?></td>
+                            <td>
+                                <span class="gmrc-content-health <?php echo ! empty($row['healthy']) ? 'is-healthy' : 'needs-attention'; ?>">
+                                    <?php echo ! empty($row['healthy']) ? 'Healthy' : 'Review'; ?>
+                                </span>
+                                <span class="screen-reader-text">
+                                    <?php echo esc_html((string) ($row['detail'] ?? '')); ?>
+                                </span>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <p class="description gmrc-stewards-office__workshop-policy">
+            <?php echo esc_html((string) ($workshopCertification['policy'] ?? '')); ?>
+        </p>
     </section>
 
     <div class="gmrc-stewards-office__grid">
@@ -119,7 +207,7 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
         </section>
 
         <section class="gmrc-stewards-office__card">
-            <span class="dashicons dashicons-layout" aria-hidden="true"></span><h2>Spell Workshop</h2>
+            <span class="dashicons dashicons-wand" aria-hidden="true"></span><h2>Spell Workshop</h2>
             <p>Create new Marketrealm spells as Drafts, publish mechanically complete magic into Sage’s Spellbook and Character spell catalogues, or archive it without deleting its Steward record.</p>
             <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'spell-workshop'], admin_url('admin.php'))); ?>">Open Spell Workshop</a>
         </section>
