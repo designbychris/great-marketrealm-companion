@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Library\Catalogues;
 
-use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\CanonicalSpellRegister;
+use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\CanonicalSpellRegister; // Protected canonical layer.
+use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\SharedSpellRegister;
 
 defined('ABSPATH') || exit;
 
@@ -14,9 +15,9 @@ defined('ABSPATH') || exit;
 final class SpellReferenceCatalogue extends AbstractFoundationCatalogue
 {
     public function __construct(
-        private ?CanonicalSpellRegister $register = null
+        private ?SharedSpellRegister $register = null
     ) {
-        $this->register ??= new CanonicalSpellRegister();
+        $this->register ??= new SharedSpellRegister();
     }
 
     public function key(): string

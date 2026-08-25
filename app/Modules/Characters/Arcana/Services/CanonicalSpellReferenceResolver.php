@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Characters\Arcana\Services;
 
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityDefinition;
-use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\CanonicalSpellRegister;
+use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\CanonicalSpellRegister; // Canonical records remain first-class in shared register.
+use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\SharedSpellRegister;
 
 defined('ABSPATH') || exit;
 
@@ -24,9 +25,9 @@ final class CanonicalSpellReferenceResolver
     ];
 
     public function __construct(
-        private ?CanonicalSpellRegister $register = null
+        private ?SharedSpellRegister $register = null
     ) {
-        $this->register ??= new CanonicalSpellRegister();
+        $this->register ??= new SharedSpellRegister();
     }
 
     /** @return array<string,mixed> */

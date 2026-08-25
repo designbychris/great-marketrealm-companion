@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Characters\Arcana\Models;
 
+use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\StewardSpellAbilityBridge;
+
 defined('ABSPATH') || exit;
 
 /**
@@ -662,6 +664,11 @@ final class ArcaneAbilityCatalogue
                 'damage', '1d8', 'radiant', null, false, false, 2
             ),
         ];
+
+        $this->abilities = array_merge(
+            $this->abilities,
+            (new StewardSpellAbilityBridge())->abilities()
+        );
     }
 
     /** @return ArcaneAbilityDefinition[] */

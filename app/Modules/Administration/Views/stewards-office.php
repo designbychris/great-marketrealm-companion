@@ -98,6 +98,12 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
         </section>
 
         <section class="gmrc-stewards-office__card">
+            <span class="dashicons dashicons-wand" aria-hidden="true"></span><h2>Spell Workshop</h2>
+            <p>Create new Marketrealm spells as Drafts, publish mechanically complete magic into Sage’s Spellbook and Character spell catalogues, or archive it without deleting its Steward record.</p>
+            <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'spell-workshop'], admin_url('admin.php'))); ?>">Open Spell Workshop</a>
+        </section>
+
+        <section class="gmrc-stewards-office__card">
             <span class="dashicons dashicons-book-alt" aria-hidden="true"></span><h2>Canonical Records</h2>
             <p>Curate the official Marketrealm Bestiary, including stat lines, traits, actions, and WordPress Media Library artwork.</p>
             <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'canonical-records'], admin_url('admin.php'))); ?>">Open Bestiary Stewardship</a>

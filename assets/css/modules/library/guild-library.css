@@ -1497,3 +1497,18 @@
         color: LinkText;
     }
 }
+
+.gmrc-spell-card__steward-mechanics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .45rem .75rem;
+    margin: 0;
+    padding: .6rem;
+    border: 1px solid rgba(92, 76, 45, .16);
+    border-radius: .4rem;
+    background: rgba(255, 255, 255, .38);
+}
+.gmrc-spell-card__steward-mechanics div { min-width: 0; }
+.gmrc-spell-card__steward-mechanics dt { font-size: .68rem; font-weight: 700; text-transform: uppercase; opacity: .72; }
+.gmrc-spell-card__steward-mechanics dd { margin: .08rem 0 0; overflow-wrap: anywhere; }
+@media (max-width: 620px) { .gmrc-spell-card__steward-mechanics { grid-template-columns: 1fr; } }

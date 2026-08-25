@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Providers;
 
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalBestiarySteward;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\MonsterWorkshop;
+use GreatMarketrealmCompanion\Modules\Administration\Workshop\SpellWorkshop;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Models\CanonicalMonster;
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalCallingRegister;
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalBackgroundRegister;
@@ -35,6 +36,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         $this->app->singleton(StewardDiagnostics::class);
         $this->app->singleton(CanonicalBestiarySteward::class);
         $this->app->singleton(MonsterWorkshop::class);
+        $this->app->singleton(SpellWorkshop::class);
         $this->app->singleton(CanonicalCallingRegister::class);
         $this->app->singleton(CanonicalBackgroundRegister::class);
         $this->app->singleton(CanonicalSpellRegister::class);
@@ -51,6 +53,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         add_action('admin_post_gmrc_save_canonical_monster', [$this, 'saveCanonicalMonster']);
         add_action('admin_post_gmrc_reset_canonical_monster', [$this, 'resetCanonicalMonster']);
         add_action('admin_post_gmrc_save_steward_monster', [$this, 'saveStewardMonster']);
+        add_action('admin_post_gmrc_save_steward_spell', [$this, 'saveStewardSpell']);
         add_action('admin_post_gmrc_save_canonical_calling', [$this, 'saveCanonicalCalling']);
         add_action('admin_post_gmrc_reset_canonical_calling', [$this, 'resetCanonicalCalling']);
         add_action('admin_post_gmrc_save_canonical_background', [$this, 'saveCanonicalBackground']);
@@ -216,6 +219,22 @@ final class AdministrationServiceProvider extends ServiceProvider
     }
 
 
+    public function saveStewardSpell(): void
+    {
+        $this->guard();
+        $key = sanitize_key(wp_unslash((string) ($_POST['spell_key'] ?? '')));
+        check_admin_referer('gmrc_save_steward_spell_' . ($key ?: 'new'), 'gmrc_steward_spell_nonce');
+        try {
+            $key = $this->app->make(SpellWorkshop::class)->save($key, wp_unslash($_POST));
+            $args = ['gmrc_spell_workshop_saved' => '1'];
+        } catch (RuntimeException $exception) {
+            $args = ['gmrc_spell_workshop_error' => rawurlencode($exception->getMessage())];
+        }
+        wp_safe_redirect($this->spellWorkshopUrl($key, $args));
+        exit;
+    }
+
+
     public function saveCanonicalCalling(): void
     {
         $this->guard();
@@ -340,6 +359,14 @@ final class AdministrationServiceProvider extends ServiceProvider
             require GMRC_PATH . 'app/Modules/Administration/Views/starting-equipment.php';
             return;
         }
+        if ($section === 'spell-workshop') {
+            $workshop = $this->app->make(SpellWorkshop::class);
+            $stewardSpells = $workshop->all();
+            $selectedKey = sanitize_key((string) ($_GET['spell'] ?? ''));
+            $selectedSpell = $selectedKey !== '' ? $workshop->find($selectedKey) : null;
+            require GMRC_PATH . 'app/Modules/Administration/Views/spell-workshop.php';
+            return;
+        }
         if ($section === 'canonical-spells') {
             $register = $this->app->make(CanonicalSpellRegister::class);
             $spells = $register->all();
@@ -426,6 +453,14 @@ final class AdministrationServiceProvider extends ServiceProvider
     }
 
     /** @param array<string,string> $extra */
+    /** @param array<string,string> $args */
+    private function spellWorkshopUrl(string $key = '', array $args = []): string
+    {
+        $base = ['page' => self::MENU_SLUG, 'section' => 'spell-workshop'];
+        if ($key !== '') $base['spell'] = $key;
+        return add_query_arg(array_merge($base, $args), admin_url('admin.php'));
+    }
+
     private function spellUrl(string $key, array $extra = []): string
     {
         return add_query_arg(array_merge([

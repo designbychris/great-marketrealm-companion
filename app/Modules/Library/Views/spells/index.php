@@ -301,7 +301,7 @@ $libraryUrl = add_query_arg(
 
                     <?php if (! empty($spell['access_labels'])) : ?>
                         <p>
-                            <strong>Handbook access:</strong>
+                            <strong><?php echo ! empty($spell['origin']) && $spell['origin'] === 'steward' ? 'Class access:' : 'Handbook access:'; ?></strong>
                             <?php echo esc_html(
                                 implode(
                                     ', ',
@@ -338,6 +338,15 @@ $libraryUrl = add_query_arg(
                                 <?php endforeach; ?>
                             </ul>
                         </aside>
+                    <?php endif; ?>
+
+                    <?php if (($spell['origin'] ?? '') === 'steward') : ?>
+                        <dl class="gmrc-spell-card__steward-mechanics">
+                            <?php if (! empty($spell['casting_time'])) : ?><div><dt>Casting</dt><dd><?php echo esc_html((string) $spell['casting_time']); ?></dd></div><?php endif; ?>
+                            <?php if (! empty($spell['range'])) : ?><div><dt>Range</dt><dd><?php echo esc_html((string) $spell['range']); ?></dd></div><?php endif; ?>
+                            <?php if (! empty($spell['components'])) : ?><div><dt>Components</dt><dd><?php echo esc_html((string) $spell['components']); ?></dd></div><?php endif; ?>
+                            <?php if (! empty($spell['duration'])) : ?><div><dt>Duration</dt><dd><?php echo esc_html((string) $spell['duration']); ?></dd></div><?php endif; ?>
+                        </dl>
                     <?php endif; ?>
 
                     <?php foreach (

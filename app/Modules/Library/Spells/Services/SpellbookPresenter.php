@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Library\Spells\Services;
 
 use GreatMarketrealmCompanion\Modules\Library\Spells\Models\SpellRecord;
-use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\CanonicalSpellRegister;
+use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\CanonicalSpellRegister; // Canonical overlay remains part of SharedSpellRegister.
+use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\SharedSpellRegister;
 
 defined('ABSPATH') || exit;
 
@@ -15,9 +16,9 @@ defined('ABSPATH') || exit;
 final class SpellbookPresenter
 {
     public function __construct(
-        private ?CanonicalSpellRegister $register = null
+        private ?SharedSpellRegister $register = null
     ) {
-        $this->register ??= new CanonicalSpellRegister();
+        $this->register ??= new SharedSpellRegister();
     }
 
     /**
@@ -189,9 +190,13 @@ final class SpellbookPresenter
                 );
 
         $data['kind_label'] =
-            $spell->kind() === 'renamed'
-                ? 'Marketrealm Rename'
-                : 'Marketrealm Original';
+            $spell->isStewardAuthored()
+                ? 'Steward Creation'
+                : (
+                    $spell->kind() === 'renamed'
+                        ? 'Marketrealm Rename'
+                        : 'Marketrealm Original'
+                );
 
         $data['source_issue_labels'] =
             array_map(
