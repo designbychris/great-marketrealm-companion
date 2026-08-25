@@ -11,7 +11,7 @@ defined('ABSPATH') || exit;
 final class CharacterCatalogueRepository
 {
     private const OPTION = 'gmrc_character_catalogue';
-    private const VERSION = '3.7.5';
+    private const VERSION = '3.7.6';
 
     /** @return array<string,mixed> */
     public function snapshot(): array

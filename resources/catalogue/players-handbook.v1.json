@@ -1,5 +1,5 @@
 {
-  "version": "3.7.5",
+  "version": "3.7.6",
   "source": {
     "title": "The Great Marketrealm Players Handbook",
     "kind": "curated-google-doc-snapshot"
@@ -566,6 +566,178 @@
       "description": "Steamspouts heritage of the Drinkling family.",
       "traits": [],
       "parent": "drink-folk"
+    },
+    {
+      "key": "carrotfolk",
+      "name": "Carrotfolk — The Keenroots",
+      "description": "Carrotfolk — The Keenroots.",
+      "traits": [
+        "Keen Eyes",
+        "Spring from the Soil"
+      ],
+      "parent": "rootkin",
+      "mechanics": {
+        "ability_modifiers": {
+          "dexterity": 2,
+          "wisdom": 1
+        },
+        "skill_proficiencies": [
+          "Perception"
+        ],
+        "speed": 30,
+        "features": [
+          {
+            "name": "Keen Eyes",
+            "description": "You have darkvision out to 60 feet and are proficient in Perception."
+          },
+          {
+            "name": "Spring from the Soil",
+            "description": "When initiative is rolled, you can move up to 10 feet without provoking opportunity attacks."
+          }
+        ]
+      }
+    },
+    {
+      "key": "potatofolk",
+      "name": "Potatofolk — The Stoutroots",
+      "description": "Potatofolk — The Stoutroots.",
+      "traits": [
+        "Stout Growth",
+        "Firmly Planted",
+        "Watchful Tuber",
+        "Potato Resilience"
+      ],
+      "parent": "rootkin",
+      "mechanics": {
+        "ability_modifiers": {
+          "constitution": 2,
+          "strength": 1
+        },
+        "features": [
+          {
+            "name": "Stout Growth",
+            "description": "Your maximum hit points increase by 1 for each character level."
+          },
+          {
+            "name": "Firmly Planted",
+            "description": "Your rooted build helps you resist effects that would forcibly move you or knock you prone."
+          },
+          {
+            "name": "Watchful Tuber",
+            "description": "You gain the Potatofolk perception-related proficiency benefit described in the Players Handbook, including its listed Insight or Survival fallback."
+          },
+          {
+            "name": "Potato Resilience",
+            "description": "Once per long rest, when you would be reduced to 0 hit points, you can remain at 1 hit point instead."
+          }
+        ]
+      }
+    },
+    {
+      "key": "onionfolk",
+      "name": "Onionfolk — The Many-Layered",
+      "description": "Onionfolk — The Many-Layered.",
+      "traits": [
+        "Layered Defence",
+        "Eye-Watering Defence",
+        "Peel Away"
+      ],
+      "parent": "rootkin",
+      "mechanics": {
+        "ability_modifiers": {
+          "wisdom": 2,
+          "constitution": 1
+        },
+        "features": [
+          {
+            "name": "Layered Defence",
+            "description": "Your many protective layers grant the defensive benefit described for Onionfolk in the Players Handbook."
+          },
+          {
+            "name": "Eye-Watering Defence",
+            "description": "Your pungent defensive reaction follows the Eye-Watering Defence rule described in the Players Handbook."
+          },
+          {
+            "name": "Peel Away",
+            "description": "You have advantage on checks or saves used to resist or escape being grappled or restrained."
+          }
+        ]
+      }
+    },
+    {
+      "key": "garlicfolk",
+      "name": "Garlicfolk — The Pungent",
+      "description": "Garlicfolk — The Pungent.",
+      "traits": [
+        "Pungent Presence",
+        "Repellent Aroma",
+        "Graveward"
+      ],
+      "parent": "rootkin",
+      "mechanics": {
+        "ability_modifiers": {
+          "wisdom": 1,
+          "charisma": 2
+        },
+        "skill_proficiencies": [
+          "Intimidation"
+        ],
+        "features": [
+          {
+            "name": "Pungent Presence",
+            "description": "You are proficient in Intimidation."
+          },
+          {
+            "name": "Repellent Aroma",
+            "description": "Your aroma provides the protective effect described for Garlicfolk in the Players Handbook."
+          },
+          {
+            "name": "Graveward",
+            "description": "You gain the Garlicfolk protection against undead fear and know the spare the dying cantrip, using Wisdom or Charisma as described in the Players Handbook."
+          }
+        ]
+      }
+    },
+    {
+      "key": "parsnipfolk",
+      "name": "Parsnipfolk — The Deeproots",
+      "description": "Parsnipfolk — The Deeproots.",
+      "traits": [
+        "Deep Lore",
+        "Root Magic",
+        "Rooted Meditation"
+      ],
+      "parent": "rootkin",
+      "mechanics": {
+        "ability_modifiers": {
+          "wisdom": 2,
+          "intelligence": 1
+        },
+        "proficiency_choices": [
+          {
+            "name": "Deep Lore",
+            "choose": 1,
+            "from": [
+              "Nature",
+              "History"
+            ]
+          }
+        ],
+        "features": [
+          {
+            "name": "Deep Lore",
+            "description": "Choose proficiency in Nature or History."
+          },
+          {
+            "name": "Root Magic",
+            "description": "You know druidcraft and later gain the speak with animals and speak with plants magic described for Parsnipfolk in the Players Handbook."
+          },
+          {
+            "name": "Rooted Meditation",
+            "description": "You gain the Rooted Meditation benefit described for Parsnipfolk in the Players Handbook."
+          }
+        ]
+      }
     }
   ],
   "classes": [

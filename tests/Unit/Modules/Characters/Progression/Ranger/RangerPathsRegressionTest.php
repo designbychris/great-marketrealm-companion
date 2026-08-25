@@ -172,7 +172,7 @@ final class RangerPathsRegressionTest extends TestCase
 
         self::assertIsString($source);
         self::assertStringContainsString(
-            "private const VERSION = '3.7.5';",
+            "private const VERSION = '3.7.6';",
             $source
         );
 
@@ -184,7 +184,7 @@ final class RangerPathsRegressionTest extends TestCase
             true
         );
 
-        self::assertSame('3.7.5', $catalogue['version']);
+        self::assertSame('3.7.6', $catalogue['version']);
     }
 
     public function testFieldRegisterNowReportsAvailableRangerPaths(): void

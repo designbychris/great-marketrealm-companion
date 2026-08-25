@@ -764,7 +764,7 @@ $charactersUrl = add_query_arg(
                 </p>
             <?php endif; ?>
 
-            <div class="gmrc-catalogue-dependent" data-catalogue-dependent="heritage">
+            <div class="gmrc-catalogue-dependent" data-catalogue-dependent="heritage" data-heritage-selector>
                 <label for="character-heritage"><strong>Choose a heritage / subtype</strong></label>
                 <select id="character-heritage" name="heritage" data-catalogue-child="heritage">
                     <option value="">No additional subtype</option>

@@ -74,6 +74,32 @@
                 )?.value || '';
         };
 
+        const refreshHeritageAvailability = function () {
+            if (!(heritage instanceof HTMLSelectElement)) {
+                return;
+            }
+
+            const wrapper = heritage.closest('[data-heritage-selector]');
+            if (!(wrapper instanceof HTMLElement)) {
+                return;
+            }
+
+            const hasHeritages = Array.from(heritage.options).some(
+                function (option) {
+                    return option.value !== ''
+                        && !option.hidden
+                        && !option.disabled;
+                }
+            );
+
+            wrapper.hidden = !hasHeritages;
+            heritage.disabled = !hasHeritages;
+
+            if (!hasHeritages) {
+                heritage.value = '';
+            }
+        };
+
         const refreshHeritagePreview = function () {
             const selected =
                 heritage instanceof HTMLSelectElement
@@ -140,6 +166,7 @@
                 heritage,
                 race()
             );
+            refreshHeritageAvailability();
 
             filter(
                 subclass,

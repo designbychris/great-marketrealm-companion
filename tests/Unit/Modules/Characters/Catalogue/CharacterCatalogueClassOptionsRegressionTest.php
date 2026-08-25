@@ -30,7 +30,7 @@ final class CharacterCatalogueClassOptionsRegressionTest extends TestCase
 
         self::assertIsString($repository);
         self::assertStringContainsString(
-            "private const VERSION = '3.7.5';",
+            "private const VERSION = '3.7.6';",
             $repository
         );
 
@@ -43,7 +43,7 @@ final class CharacterCatalogueClassOptionsRegressionTest extends TestCase
         );
 
         self::assertIsArray($catalogue);
-        self::assertSame('3.7.5', $catalogue['version']);
+        self::assertSame('3.7.6', $catalogue['version']);
     }
 
     private function root(): string
