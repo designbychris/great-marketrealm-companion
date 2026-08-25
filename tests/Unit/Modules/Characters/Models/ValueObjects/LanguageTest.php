@@ -151,6 +151,7 @@ final class LanguageTest extends TestCase
             'dairy tongue' => ['dairy-tongue'],
             'meat speech' => ['meat-speech'],
             'shelf script' => ['shelf-script'],
+            'piespeak' => ['piespeak'],
         ];
     }
 
@@ -283,7 +284,7 @@ final class LanguageTest extends TestCase
         $languages = Language::all();
 
         self::assertCount(
-            7,
+            8,
             $languages
         );
 
@@ -311,6 +312,7 @@ final class LanguageTest extends TestCase
                 'dairy-tongue',
                 'meat-speech',
                 'shelf-script',
+                'piespeak',
             ],
             $values
         );
