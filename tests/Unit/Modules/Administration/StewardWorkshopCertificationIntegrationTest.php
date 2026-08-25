@@ -95,7 +95,7 @@ final class StewardWorkshopCertificationIntegrationTest extends TestCase
         foreach (['Monsters', 'Spells', 'Backgrounds', 'Equipment', 'Callings & Paths'] as $label) {
             self::assertStringContainsString("'" . $label . "'", $source);
         }
-        self::assertStringContainsString("'certified' => count($rows) === 5", $source);
+        self::assertStringContainsString("'certified' => count(" . '$rows' . ") === 5", $source);
     }
 
     public function testCertificationProjectionCountsAllThreeLifecycleStates(): void
