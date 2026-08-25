@@ -56,3 +56,17 @@
 
 /* Steward Spell Workshop */
 .gmrc-spell-workshop select{width:100%;max-width:none}.gmrc-spell-workshop .gmrc-canonical-steward__register-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.gmrc-spell-workshop__access{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 16px;padding:14px;border:1px solid #dcdcde;border-radius:7px}.gmrc-spell-workshop__access legend{padding:0 6px;font-weight:700}.gmrc-spell-workshop__toggles{display:flex;gap:18px;align-items:center;flex-wrap:wrap}.gmrc-spell-workshop__mechanics{padding:16px;border:1px solid #d8ca9f;border-radius:8px;background:#fffaf0}.gmrc-spell-workshop__mechanics h3{margin-top:0}@media(max-width:782px){.gmrc-spell-workshop__access{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(forced-colors:active){.gmrc-spell-workshop__access,.gmrc-spell-workshop__mechanics{border-color:CanvasText}}
+
+/* Steward Workshop safe deletion */
+.gmrc-steward-delete {
+    margin-top: 24px;
+    padding: 18px 20px;
+    border: 1px solid #c33;
+    border-radius: 8px;
+    background: #fff8f7;
+    max-width: 860px;
+}
+.gmrc-steward-delete h3 { margin-top: 0; color: #8b1f1f; }
+.gmrc-steward-delete .button-link-delete { color: #b32d2e; font-weight: 600; }
+.gmrc-steward-delete .button-link-delete:hover,
+.gmrc-steward-delete .button-link-delete:focus { color: #8b1f1f; }

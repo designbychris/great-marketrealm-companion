@@ -75,3 +75,5 @@ $value = static fn (string $method, string $fallback = ''): string => $isNew ? $
         </main>
     </div>
 </div>
+
+<?php $deleteType = 'monster'; $deleteKey = is_array($selectedData ?? null) ? (string) ($selectedData['key'] ?? '') : ''; $deleteLabel = is_array($selectedData ?? null) ? (string) ($selectedData['name'] ?? 'this creature') : 'this creature'; require GMRC_PATH . 'app/Modules/Administration/Views/_steward-delete.php'; ?>

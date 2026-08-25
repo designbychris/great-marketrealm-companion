@@ -38,3 +38,5 @@ $properties = implode(', ', is_array($item['properties'] ?? null) ? $item['prope
 </div>
 <div class="gmrc-canonical-steward__actions"><?php submit_button($isNew ? 'Create item' : 'Save item', 'primary', 'submit', false); ?><p class="description">Drafts stay private. Published items become available to the Guild Armoury and Character inventory. Archived items are hidden from new selection but preserved for existing satchels.</p></div>
 </form></main></div></div>
+
+<?php $deleteType = 'equipment'; $deleteKey = $isNew ? '' : (string) ($item['key'] ?? ''); $deleteLabel = $isNew ? 'this item' : (string) ($item['name'] ?? 'this item'); require GMRC_PATH . 'app/Modules/Administration/Views/_steward-delete.php'; ?>

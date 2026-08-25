@@ -10,6 +10,7 @@ use GreatMarketrealmCompanion\Modules\Administration\Workshop\SpellWorkshop;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\BackgroundWorkshop;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\EquipmentWorkshop;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\CallingWorkshop;
+use GreatMarketrealmCompanion\Modules\Administration\Workshop\StewardWorkshopDeletionGuard;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Models\CanonicalMonster;
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalCallingRegister;
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalBackgroundRegister;
@@ -43,6 +44,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         $this->app->singleton(BackgroundWorkshop::class);
         $this->app->singleton(EquipmentWorkshop::class);
         $this->app->singleton(CallingWorkshop::class);
+        $this->app->singleton(StewardWorkshopDeletionGuard::class);
         $this->app->singleton(CanonicalCallingRegister::class);
         $this->app->singleton(CanonicalBackgroundRegister::class);
         $this->app->singleton(CanonicalSpellRegister::class);
@@ -63,6 +65,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         add_action('admin_post_gmrc_save_steward_background', [$this, 'saveStewardBackground']);
         add_action('admin_post_gmrc_save_steward_equipment', [$this, 'saveStewardEquipment']);
         add_action('admin_post_gmrc_save_steward_calling', [$this, 'saveStewardCalling']);
+        add_action('admin_post_gmrc_delete_steward_record', [$this, 'deleteStewardRecord']);
         add_action('admin_post_gmrc_save_canonical_calling', [$this, 'saveCanonicalCalling']);
         add_action('admin_post_gmrc_reset_canonical_calling', [$this, 'resetCanonicalCalling']);
         add_action('admin_post_gmrc_save_canonical_background', [$this, 'saveCanonicalBackground']);
@@ -299,6 +302,35 @@ final class AdministrationServiceProvider extends ServiceProvider
         exit;
     }
 
+    public function deleteStewardRecord(): void
+    {
+        $this->guard();
+        $type = sanitize_key(wp_unslash((string) ($_POST['record_type'] ?? '')));
+        $key = sanitize_key(wp_unslash((string) ($_POST['record_key'] ?? '')));
+        check_admin_referer('gmrc_delete_steward_' . $type . '_' . $key, 'gmrc_steward_delete_nonce');
+
+        try {
+            $this->app->make(StewardWorkshopDeletionGuard::class)->assertDeletable($type, $key);
+            $workshops = [
+                'monster' => MonsterWorkshop::class,
+                'spell' => SpellWorkshop::class,
+                'background' => BackgroundWorkshop::class,
+                'equipment' => EquipmentWorkshop::class,
+                'calling' => CallingWorkshop::class,
+            ];
+            if (! isset($workshops[$type])) {
+                throw new RuntimeException('That Steward Workshop record type cannot be deleted.');
+            }
+            $this->app->make($workshops[$type])->delete($key);
+            $args = ['gmrc_workshop_deleted' => '1'];
+        } catch (RuntimeException $exception) {
+            $args = ['gmrc_workshop_delete_error' => rawurlencode($exception->getMessage())];
+        }
+
+        wp_safe_redirect($this->stewardRecordUrl($type, isset($args['gmrc_workshop_delete_error']) ? $key : '', $args));
+        exit;
+    }
+
     public function saveCanonicalCalling(): void
     {
         $this->guard();
@@ -530,6 +562,22 @@ final class AdministrationServiceProvider extends ServiceProvider
     }
 
 
+
+    /** @param array<string,string> $args */
+    private function stewardRecordUrl(string $type, string $key = '', array $args = []): string
+    {
+        $map = [
+            'monster' => ['section' => 'monster-workshop', 'query' => 'monster'],
+            'spell' => ['section' => 'spell-workshop', 'query' => 'spell'],
+            'background' => ['section' => 'background-workshop', 'query' => 'background'],
+            'equipment' => ['section' => 'equipment-workshop', 'query' => 'item'],
+            'calling' => ['section' => 'calling-workshop', 'query' => 'calling'],
+        ];
+        $target = $map[$type] ?? $map['monster'];
+        $base = ['page' => self::MENU_SLUG, 'section' => $target['section']];
+        if ($key !== '') $base[$target['query']] = $key;
+        return add_query_arg(array_merge($base, $args), admin_url('admin.php'));
+    }
 
     /** @param array<string,string> $args */
     private function equipmentWorkshopUrl(string $key = '', array $args = []): string

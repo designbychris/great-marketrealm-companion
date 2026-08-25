@@ -46,6 +46,17 @@ final class BackgroundWorkshop
         return isset($records[$key]) && is_array($records[$key]) ? $records[$key] : null;
     }
 
+    public function delete(string $key): void
+    {
+        $key = sanitize_key($key);
+        $records = $this->all();
+        if ($key === '' || ! isset($records[$key])) {
+            throw new RuntimeException('The Steward record could not be found.');
+        }
+        unset($records[$key]);
+        update_option(self::OPTION, $records, false);
+    }
+
     /** @param array<string,mixed> $input */
     public function save(string $key, array $input): string
     {
