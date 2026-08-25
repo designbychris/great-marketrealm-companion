@@ -39,11 +39,11 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
         <div>
             <p class="gmrc-stewards-office__eyebrow">Steward-authored content · Integration health</p>
             <h2 id="gmrc-workshop-certification-title">Workshop Certification</h2>
-            <p>One lifecycle now governs Monsters, Spells, Backgrounds, Equipment, and Callings &amp; Paths: Draft, Published, Archived, with dependency-safe permanent deletion for disposable Steward records.</p>
+            <p>One lifecycle now governs Monsters, Spells, Backgrounds, Equipment, Callings &amp; Paths, and Folk &amp; Heritages: Draft, Published, Archived, with dependency-safe permanent deletion for disposable Steward records.</p>
         </div>
         <div class="gmrc-stewards-office__workshop-seal">
             <strong><?php echo ! empty($workshopCertification['certified']) ? 'Workshop system certified' : 'Workshop system needs attention'; ?></strong>
-            <span><?php echo esc_html((string) ($workshopCertification['workshop_count'] ?? 0)); ?>/5 authoring rooms registered</span>
+            <span><?php echo esc_html((string) ($workshopCertification['workshop_count'] ?? 0)); ?>/6 authoring rooms registered</span>
         </div>
         <?php $totals = is_array($workshopCertification['totals'] ?? null) ? $workshopCertification['totals'] : []; ?>
         <dl class="gmrc-stewards-office__workshop-totals">
@@ -135,6 +135,13 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
             <span class="dashicons dashicons-hammer" aria-hidden="true"></span><h2>Equipment &amp; Item Workshop</h2>
             <p>Create mundane weapons, armour, shields, tools, consumables and adventuring gear. Published items join the shared Armoury and Character satchels; archived records remain safe for existing adventurers.</p>
             <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'equipment-workshop'], admin_url('admin.php'))); ?>">Open Equipment Workshop</a>
+        </section>
+
+
+        <section class="gmrc-stewards-office__card">
+            <span class="dashicons dashicons-buddicons-community" aria-hidden="true"></span><h2>Folk &amp; Heritage Workshop</h2>
+            <p>Create new playable Marketrealm Folk and their Heritages. Published identities join future Character inscription while protected canonical peoples remain untouched.</p>
+            <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'folk-workshop'], admin_url('admin.php'))); ?>">Open Folk Workshop</a>
         </section>
 
         <section class="gmrc-stewards-office__card">

@@ -10,6 +10,7 @@ use GreatMarketrealmCompanion\Modules\Administration\Workshop\SpellWorkshop;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\BackgroundWorkshop;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\EquipmentWorkshop;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\CallingWorkshop;
+use GreatMarketrealmCompanion\Modules\Administration\Workshop\FolkWorkshop;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\StewardWorkshopDeletionGuard;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\StewardWorkshopCertification;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Models\CanonicalMonster;
@@ -45,6 +46,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         $this->app->singleton(BackgroundWorkshop::class);
         $this->app->singleton(EquipmentWorkshop::class);
         $this->app->singleton(CallingWorkshop::class);
+        $this->app->singleton(FolkWorkshop::class);
         $this->app->singleton(StewardWorkshopDeletionGuard::class);
         $this->app->singleton(StewardWorkshopCertification::class);
         $this->app->singleton(CanonicalCallingRegister::class);
@@ -67,6 +69,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         add_action('admin_post_gmrc_save_steward_background', [$this, 'saveStewardBackground']);
         add_action('admin_post_gmrc_save_steward_equipment', [$this, 'saveStewardEquipment']);
         add_action('admin_post_gmrc_save_steward_calling', [$this, 'saveStewardCalling']);
+        add_action('admin_post_gmrc_save_steward_folk', [$this, 'saveStewardFolk']);
         add_action('admin_post_gmrc_delete_steward_record', [$this, 'deleteStewardRecord']);
         add_action('admin_post_gmrc_save_canonical_calling', [$this, 'saveCanonicalCalling']);
         add_action('admin_post_gmrc_reset_canonical_calling', [$this, 'resetCanonicalCalling']);
@@ -299,6 +302,21 @@ final class AdministrationServiceProvider extends ServiceProvider
         exit;
     }
 
+    public function saveStewardFolk(): void
+    {
+        $this->guard();
+        $key = sanitize_key(wp_unslash((string) ($_POST['folk_key'] ?? '')));
+        check_admin_referer('gmrc_save_steward_folk_' . ($key !== '' ? $key : 'new'), 'gmrc_steward_folk_nonce');
+        try {
+            $key = $this->app->make(FolkWorkshop::class)->save($key, wp_unslash($_POST));
+            $args = ['gmrc_folk_workshop_saved' => '1'];
+        } catch (RuntimeException $exception) {
+            $args = ['gmrc_folk_workshop_error' => rawurlencode($exception->getMessage())];
+        }
+        wp_safe_redirect($this->folkWorkshopUrl($key, $args));
+        exit;
+    }
+
     public function deleteStewardRecord(): void
     {
         $this->guard();
@@ -314,6 +332,7 @@ final class AdministrationServiceProvider extends ServiceProvider
                 'background' => BackgroundWorkshop::class,
                 'equipment' => EquipmentWorkshop::class,
                 'calling' => CallingWorkshop::class,
+                'folk' => FolkWorkshop::class,
             ];
             if (! isset($workshops[$type])) {
                 throw new RuntimeException('That Steward Workshop record type cannot be deleted.');
@@ -496,6 +515,15 @@ final class AdministrationServiceProvider extends ServiceProvider
             return;
         }
 
+        if ($section === 'folk-workshop') {
+            $workshop = $this->app->make(FolkWorkshop::class);
+            $stewardFolk = $workshop->all();
+            $selectedKey = sanitize_key((string) ($_GET['folk'] ?? ''));
+            $selectedFolk = $selectedKey !== '' ? $workshop->find($selectedKey) : null;
+            require GMRC_PATH . 'app/Modules/Administration/Views/folk-workshop.php';
+            return;
+        }
+
         if ($section === 'calling-workshop') {
             $workshop = $this->app->make(CallingWorkshop::class);
             $stewardCallings = $workshop->all();
@@ -570,6 +598,7 @@ final class AdministrationServiceProvider extends ServiceProvider
             'background' => ['section' => 'background-workshop', 'query' => 'background'],
             'equipment' => ['section' => 'equipment-workshop', 'query' => 'item'],
             'calling' => ['section' => 'calling-workshop', 'query' => 'calling'],
+            'folk' => ['section' => 'folk-workshop', 'query' => 'folk'],
         ];
         $target = $map[$type] ?? $map['monster'];
         $base = ['page' => self::MENU_SLUG, 'section' => $target['section']];
@@ -630,6 +659,17 @@ final class AdministrationServiceProvider extends ServiceProvider
             'section' => 'canonical-backgrounds',
             'background' => $key,
         ], $extra), admin_url('admin.php'));
+    }
+
+
+    /** @param array<string,string> $args */
+    private function folkWorkshopUrl(string $key = '', array $args = []): string
+    {
+        $base = ['page' => self::MENU_SLUG, 'section' => 'folk-workshop'];
+        if ($key !== '') {
+            $base['folk'] = $key;
+        }
+        return add_query_arg(array_merge($base, $args), admin_url('admin.php'));
     }
 
     /** @param array<string,string> $extra */

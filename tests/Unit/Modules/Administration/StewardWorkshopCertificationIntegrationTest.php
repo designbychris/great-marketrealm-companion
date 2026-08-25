@@ -15,9 +15,9 @@ final class StewardWorkshopCertificationIntegrationTest extends TestCase
         $this->root = dirname(__DIR__, 4);
     }
 
-    public function testAllFiveWorkshopFamiliesShareTheCertifiedLifecycle(): void
+    public function testAllWorkshopFamiliesShareTheCertifiedLifecycle(): void
     {
-        foreach (['Monster', 'Spell', 'Background', 'Equipment', 'Calling'] as $name) {
+        foreach (['Monster', 'Spell', 'Background', 'Equipment', 'Calling', 'Folk'] as $name) {
             $source = $this->source('app/Modules/Administration/Workshop/' . $name . 'Workshop.php');
             self::assertStringContainsString("STATUS_DRAFT = 'draft'", $source, $name);
             self::assertStringContainsString("STATUS_PUBLISHED = 'published'", $source, $name);
@@ -27,7 +27,7 @@ final class StewardWorkshopCertificationIntegrationTest extends TestCase
 
     public function testEveryWorkshopHasStableReadPublishAndDeleteOperations(): void
     {
-        foreach (['Monster', 'Spell', 'Background', 'Equipment', 'Calling'] as $name) {
+        foreach (['Monster', 'Spell', 'Background', 'Equipment', 'Calling', 'Folk'] as $name) {
             $source = $this->source('app/Modules/Administration/Workshop/' . $name . 'Workshop.php');
             self::assertStringContainsString('public function all(): array', $source, $name);
             self::assertStringContainsString('public function published(): array', $source, $name);
@@ -39,7 +39,7 @@ final class StewardWorkshopCertificationIntegrationTest extends TestCase
     public function testAllWorkshopSaveActionsRemainDedicatedAdminPostRoutes(): void
     {
         $source = $this->source('app/Providers/AdministrationServiceProvider.php');
-        foreach (['monster', 'spell', 'background', 'equipment', 'calling'] as $type) {
+        foreach (['monster', 'spell', 'background', 'equipment', 'calling', 'folk'] as $type) {
             self::assertStringContainsString('admin_post_gmrc_save_steward_' . $type, $source, $type);
         }
         self::assertStringContainsString('admin_post_gmrc_delete_steward_record', $source);
@@ -48,7 +48,7 @@ final class StewardWorkshopCertificationIntegrationTest extends TestCase
     public function testWorkshopMutationsRemainCapabilityAndNonceGuarded(): void
     {
         $source = $this->source('app/Providers/AdministrationServiceProvider.php');
-        foreach (['saveStewardMonster', 'saveStewardSpell', 'saveStewardBackground', 'saveStewardEquipment', 'saveStewardCalling', 'deleteStewardRecord'] as $method) {
+        foreach (['saveStewardMonster', 'saveStewardSpell', 'saveStewardBackground', 'saveStewardEquipment', 'saveStewardCalling', 'saveStewardFolk', 'deleteStewardRecord'] as $method) {
             $body = $this->method($source, $method);
             self::assertStringContainsString('$this->guard();', $body, $method);
             self::assertStringContainsString('check_admin_referer(', $body, $method);
@@ -57,7 +57,7 @@ final class StewardWorkshopCertificationIntegrationTest extends TestCase
 
     public function testCanonicalAndStewardNamespacesRemainSeparated(): void
     {
-        foreach (['Monster', 'Spell', 'Background', 'Equipment', 'Calling'] as $name) {
+        foreach (['Monster', 'Spell', 'Background', 'Equipment', 'Calling', 'Folk'] as $name) {
             $source = $this->source('app/Modules/Administration/Workshop/' . $name . 'Workshop.php');
             self::assertStringContainsString('steward-', $source, $name);
         }
@@ -68,7 +68,7 @@ final class StewardWorkshopCertificationIntegrationTest extends TestCase
     public function testSafeDeletionStillCoversEveryPersistentDependencyFamily(): void
     {
         $source = $this->source('app/Modules/Administration/Workshop/StewardWorkshopDeletionGuard.php');
-        foreach (['_gmrc_class', '_gmrc_subclass', '_gmrc_spellbook', '_gmrc_background', '_gmrc_inventory', '_gmrc_encounter_monster_groups'] as $marker) {
+        foreach (['_gmrc_class', '_gmrc_subclass', '_gmrc_spellbook', '_gmrc_background', '_gmrc_inventory', '_gmrc_race', '_gmrc_heritage', '_gmrc_encounter_monster_groups'] as $marker) {
             self::assertStringContainsString($marker, $source, $marker);
         }
     }
@@ -89,13 +89,13 @@ final class StewardWorkshopCertificationIntegrationTest extends TestCase
         self::assertStringContainsString("Views/background-workshop.php", $render);
     }
 
-    public function testCertificationProjectionCoversExactlyFiveWorkshopFamilies(): void
+    public function testCertificationProjectionCoversAllWorkshopFamilies(): void
     {
         $source = $this->source('app/Modules/Administration/Workshop/StewardWorkshopCertification.php');
-        foreach (['Monsters', 'Spells', 'Backgrounds', 'Equipment', 'Callings & Paths'] as $label) {
+        foreach (['Monsters', 'Spells', 'Backgrounds', 'Equipment', 'Callings & Paths', 'Folk & Heritages'] as $label) {
             self::assertStringContainsString("'" . $label . "'", $source);
         }
-        self::assertStringContainsString("'certified' => count(" . '$rows' . ") === 5", $source);
+        self::assertStringContainsString("'certified' => count(" . '$rows' . ") === 6", $source);
     }
 
     public function testCertificationProjectionCountsAllThreeLifecycleStates(): void
@@ -112,7 +112,7 @@ final class StewardWorkshopCertificationIntegrationTest extends TestCase
         $source = $this->source('app/Modules/Administration/Views/stewards-office.php');
         self::assertStringContainsString('Workshop Certification', $source);
         self::assertStringContainsString('Workshop system certified', $source);
-        self::assertStringContainsString('5 authoring rooms registered', $source);
+        self::assertStringContainsString('6 authoring rooms registered', $source);
         self::assertStringNotContainsString('III.16.19E', $source);
     }
 

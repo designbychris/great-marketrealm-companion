@@ -81,7 +81,7 @@ final class StoreCharacterRequest extends FormRequest
                 'max:100',
                 'in:' . implode(
                     ',',
-                    Race::identifiers()
+                    Race::creationIdentifiers()
                 ),
             ],
             'class' => [

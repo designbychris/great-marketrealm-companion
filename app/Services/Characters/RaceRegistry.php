@@ -108,6 +108,35 @@ final class RaceRegistry extends Registry
                 ->trait('Deep Roots')
                 ->done();
 
+        if (function_exists('get_option')) {
+            $records = get_option('gmrc_steward_folk', []);
+            foreach (is_array($records) ? $records : [] as $key => $record) {
+                if (! is_array($record) || ($record['status'] ?? '') !== 'published') {
+                    continue;
+                }
+                $name = trim((string) ($record['name'] ?? ''));
+                $description = trim((string) ($record['description'] ?? ''));
+                if ($name === '' || $description === '') {
+                    continue;
+                }
+                $builder = $scriptorium->race(key: sanitize_key((string) $key), name: $name)
+                    ->description($description)
+                    ->speed((int) ($record['speed'] ?? 30))
+                    ->size((string) ($record['size'] ?? 'Medium'))
+                    ->creatureType((string) ($record['creature_type'] ?? 'Humanoid'));
+                if ((int) ($record['darkvision'] ?? 0) > 0) {
+                    $builder->darkvision((int) $record['darkvision']);
+                }
+                foreach ((array) ($record['languages'] ?? []) as $language) {
+                    $builder->language((string) $language);
+                }
+                foreach ((array) ($record['traits'] ?? []) as $trait) {
+                    $builder->trait((string) $trait);
+                }
+                $builder->done();
+            }
+        }
+
         $this->registerDefinitions(
             $scriptorium->definitions()
         );

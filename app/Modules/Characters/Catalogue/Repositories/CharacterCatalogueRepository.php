@@ -39,7 +39,16 @@ final class CharacterCatalogueRepository
     /** @return array<string,string> */
     public function raceOptions(): array
     {
-        return $this->options($this->snapshot()['races'] ?? []);
+        $options = $this->options($this->snapshot()['races'] ?? []);
+        if (function_exists('get_option')) {
+            $records = get_option('gmrc_steward_folk', []);
+            foreach (is_array($records) ? $records : [] as $key => $record) {
+                if (is_array($record) && ($record['status'] ?? '') === 'published' && ! isset($options[$key])) {
+                    $options[sanitize_key((string) $key)] = (string) ($record['name'] ?? $key);
+                }
+            }
+        }
+        return $options;
     }
 
     /** @return array<string,string> */
@@ -72,7 +81,21 @@ final class CharacterCatalogueRepository
     /** @return array<int,array<string,mixed>> */
     public function heritages(): array
     {
-        return array_values($this->snapshot()['heritages'] ?? []);
+        $items = array_values($this->snapshot()['heritages'] ?? []);
+        if (function_exists('get_option')) {
+            $records = get_option('gmrc_steward_folk', []);
+            foreach (is_array($records) ? $records : [] as $record) {
+                if (! is_array($record) || ($record['status'] ?? '') !== 'published') {
+                    continue;
+                }
+                foreach ((array) ($record['heritages'] ?? []) as $heritage) {
+                    if (is_array($heritage)) {
+                        $items[] = $heritage;
+                    }
+                }
+            }
+        }
+        return $items;
     }
 
     /** @return array<int,array<string,mixed>> */

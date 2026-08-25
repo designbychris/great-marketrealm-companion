@@ -1,0 +1,34 @@
+<?php
+use GreatMarketrealmCompanion\Modules\Administration\Workshop\FolkWorkshop;
+defined('ABSPATH') || exit;
+$isNew = ! is_array($selectedFolk ?? null);
+$folk = $isNew ? [] : $selectedFolk;
+$status = $isNew ? FolkWorkshop::STATUS_DRAFT : (string) ($folk['status'] ?? FolkWorkshop::STATUS_DRAFT);
+$value = static fn (string $key): string => (string) ($folk[$key] ?? '');
+$heritageLines = [];
+foreach ((array) ($folk['heritages'] ?? []) as $heritage) {
+    if (is_array($heritage)) {
+        $heritageLines[] = implode(' | ', [
+            (string) ($heritage['name'] ?? ''),
+            (string) ($heritage['description'] ?? ''),
+            (string) ($heritage['identity'] ?? ''),
+            (string) ($heritage['traits'] ?? ''),
+        ]);
+    }
+}
+$baseUrl = add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'folk-workshop'], admin_url('admin.php'));
+?>
+<div class="wrap gmrc-admin gmrc-canonical-steward gmrc-folk-workshop">
+<header class="gmrc-canonical-steward__hero"><div><p class="gmrc-stewards-office__eyebrow">Steward-authored identity · Custom Folk Registry</p><h1>Folk &amp; Heritage Workshop</h1><p>Create playable Marketrealm peoples and Heritages without altering protected canonical Folk or requiring bespoke portrait artwork.</p></div><a class="button" href="<?php echo esc_url(add_query_arg(['page'=>'gmrc-stewards-office'],admin_url('admin.php')));?>">Back to Steward's Office</a></header>
+<?php if (isset($_GET['gmrc_folk_workshop_saved'])) : ?><div class="notice notice-success"><p>Steward Folk saved.</p></div><?php endif; ?>
+<?php if (isset($_GET['gmrc_folk_workshop_error'])) : ?><div class="notice notice-error"><p><?php echo esc_html(rawurldecode((string) $_GET['gmrc_folk_workshop_error'])); ?></p></div><?php endif; ?>
+<div class="gmrc-canonical-steward__workspace">
+<aside class="gmrc-canonical-steward__register"><div class="gmrc-canonical-steward__register-head"><h2>Steward Folk</h2><a class="button button-primary" href="<?php echo esc_url($baseUrl); ?>">Add Folk</a></div><?php if ($stewardFolk === []) : ?><p>No custom Folk have been recorded yet.</p><?php endif; ?><div class="gmrc-canonical-steward__list"><?php foreach ($stewardFolk as $key => $data) : $url=add_query_arg(['page'=>'gmrc-stewards-office','section'=>'folk-workshop','folk'=>$key],admin_url('admin.php')); ?><a href="<?php echo esc_url($url); ?>"<?php echo ! $isNew && ($folk['key'] ?? '') === $key ? ' aria-current="page"' : ''; ?>><span class="gmrc-canonical-steward__thumb" aria-hidden="true">🍎</span><span><strong><?php echo esc_html((string) ($data['name'] ?? 'Untitled Folk')); ?></strong><small><?php echo esc_html(ucfirst((string) ($data['status'] ?? 'draft'))); ?></small></span></a><?php endforeach; ?></div></aside>
+<main class="gmrc-canonical-steward__editor"><form class="gmrc-canonical-steward__form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>"><input type="hidden" name="action" value="gmrc_save_steward_folk"><input type="hidden" name="folk_key" value="<?php echo esc_attr($isNew ? '' : (string) $folk['key']); ?>"><?php wp_nonce_field('gmrc_save_steward_folk_' . ($isNew ? 'new' : (string) $folk['key']), 'gmrc_steward_folk_nonce'); ?><header><div><p class="gmrc-stewards-office__eyebrow"><?php echo $isNew ? 'New playable Folk' : 'Editing Steward Folk'; ?></p><h2><?php echo esc_html($isNew ? 'Untitled Folk' : (string) $folk['name']); ?></h2></div><span class="gmrc-stewards-office__status"><?php echo esc_html(ucfirst($status)); ?></span></header>
+<div class="gmrc-canonical-steward__fields"><label><strong>Name</strong><input name="name" required value="<?php echo esc_attr($value('name')); ?>"></label><label><strong>Status</strong><select name="status"><?php foreach (['draft'=>'Draft','published'=>'Published','archived'=>'Archived'] as $key=>$label) : ?><option value="<?php echo esc_attr($key); ?>"<?php selected($status,$key); ?>><?php echo esc_html($label); ?></option><?php endforeach; ?></select></label><label><strong>Walking speed</strong><input type="number" name="speed" min="0" max="120" step="5" value="<?php echo esc_attr((string) ($folk['speed'] ?? 30)); ?>"></label><label><strong>Size</strong><select name="size"><?php foreach (['Small','Medium','Small or Medium'] as $size) : ?><option value="<?php echo esc_attr($size); ?>"<?php selected((string)($folk['size']??'Medium'),$size); ?>><?php echo esc_html($size); ?></option><?php endforeach; ?></select></label><label><strong>Creature type</strong><input name="creature_type" value="<?php echo esc_attr($value('creature_type') ?: 'Humanoid'); ?>"></label><label><strong>Darkvision</strong><input type="number" name="darkvision" min="0" max="300" step="5" value="<?php echo esc_attr((string) ($folk['darkvision'] ?? 0)); ?>"></label></div>
+<label><strong>Folk description</strong><textarea name="description" rows="6"><?php echo esc_textarea($value('description')); ?></textarea></label>
+<div class="gmrc-canonical-steward__fields"><label><strong>Languages</strong><textarea name="languages" rows="5" placeholder="One language per line"><?php echo esc_textarea(implode("\n", (array) ($folk['languages'] ?? []))); ?></textarea></label><label><strong>Traits / lore markers</strong><textarea name="traits" rows="5" placeholder="One trait per line"><?php echo esc_textarea(implode("\n", (array) ($folk['traits'] ?? []))); ?></textarea></label></div>
+<section class="gmrc-spell-workshop__mechanics"><h3>Heritages</h3><p>One Heritage per line: <code>Name | description | identity | trait summary</code>. Published Heritages become selectable only beneath their Published parent Folk.</p><textarea name="heritages" rows="10" class="large-text code"><?php echo esc_textarea(implode("\n", $heritageLines)); ?></textarea><p class="description">Folk without dedicated portrait assets use the Companion's existing safe portrait fallback. This Workshop certifies playable identity and Heritage selection; bespoke racial powers remain descriptive until a structured mechanics bridge exists.</p></section>
+<label><strong>Private Steward notes</strong><textarea name="steward_notes" rows="4"><?php echo esc_textarea($value('steward_notes')); ?></textarea></label><?php submit_button($isNew ? 'Create Folk' : 'Save Folk'); ?></form></main>
+</div></div>
+<?php $deleteType='folk'; $deleteKey=$isNew?'':(string)($folk['key']??''); $deleteLabel=$isNew?'this Folk':(string)($folk['name']??'this Folk'); require GMRC_PATH . 'app/Modules/Administration/Views/_steward-delete.php'; ?>

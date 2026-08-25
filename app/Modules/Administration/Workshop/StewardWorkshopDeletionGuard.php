@@ -11,7 +11,7 @@ use RuntimeException;
 /** Protects persistent Character and Encounter references from destructive Workshop deletion. */
 final class StewardWorkshopDeletionGuard
 {
-    public const TYPES = ['monster', 'spell', 'background', 'equipment', 'calling'];
+    public const TYPES = ['monster', 'spell', 'background', 'equipment', 'calling', 'folk'];
 
     public function assertDeletable(string $type, string $key): void
     {
@@ -63,6 +63,15 @@ final class StewardWorkshopDeletionGuard
             $record = get_option(CallingWorkshop::OPTION, []);
             foreach ((array) (($record[$key]['paths'] ?? [])) as $candidate) {
                 if (is_array($candidate) && sanitize_key((string) ($candidate['key'] ?? '')) === $path) return true;
+            }
+            return false;
+        }
+        if ($type === 'folk') {
+            if (sanitize_key((string) get_post_meta($postId, '_gmrc_race', true)) === $key) return true;
+            $heritage = sanitize_key((string) get_post_meta($postId, '_gmrc_heritage', true));
+            $records = get_option(FolkWorkshop::OPTION, []);
+            foreach ((array) (($records[$key]['heritages'] ?? [])) as $candidate) {
+                if (is_array($candidate) && sanitize_key((string) ($candidate['key'] ?? '')) === $heritage) return true;
             }
             return false;
         }

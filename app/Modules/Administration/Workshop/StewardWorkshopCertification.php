@@ -16,7 +16,8 @@ final class StewardWorkshopCertification
         private SpellWorkshop $spells,
         private BackgroundWorkshop $backgrounds,
         private EquipmentWorkshop $equipment,
-        private CallingWorkshop $callings
+        private CallingWorkshop $callings,
+        private FolkWorkshop $folk
     ) {}
 
     /** @return array<string,mixed> */
@@ -28,6 +29,7 @@ final class StewardWorkshopCertification
             'Backgrounds' => $this->backgrounds->all(),
             'Equipment' => $this->equipment->all(),
             'Callings & Paths' => $this->callings->all(),
+            'Folk & Heritages' => $this->folk->all(),
         ];
 
         $totals = ['draft' => 0, 'published' => 0, 'archived' => 0, 'records' => 0];
@@ -47,7 +49,7 @@ final class StewardWorkshopCertification
         }
 
         return [
-            'certified' => count($rows) === 5,
+            'certified' => count($rows) === 6,
             'workshop_count' => count($rows),
             'statuses' => ['Draft', 'Published', 'Archived'],
             'rows' => $rows,

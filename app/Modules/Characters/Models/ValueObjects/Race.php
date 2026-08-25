@@ -127,9 +127,7 @@ final class Race implements Stringable
      */
     public function label(): string
     {
-        return self::RACES[
-            $this->value
-        ]['label'];
+        return self::definition($this->value)['label'];
     }
 
     /**
@@ -155,10 +153,7 @@ final class Race implements Stringable
     public static function supports(
         string $value
     ): bool {
-        return array_key_exists(
-            self::normalise($value),
-            self::RACES
-        );
+        return self::definition(self::normalise($value)) !== null;
     }
 
     /**
@@ -172,7 +167,7 @@ final class Race implements Stringable
             static fn (
                 string $race
             ): self => new self($race),
-            array_keys(self::RACES)
+            self::identifiers()
         );
     }
 
@@ -183,9 +178,7 @@ final class Race implements Stringable
      */
     public static function identifiers(): array
     {
-        return array_keys(
-            self::RACES
-        );
+        return array_keys(self::definitions());
     }
     
     /**
@@ -197,11 +190,74 @@ final class Race implements Stringable
     public static function labels(): array
     {
         return array_map(
-            static fn (
-                array $race
-            ): string => $race['label'],
-            self::RACES
+            static fn (array $race): string => $race['label'],
+            self::definitions()
         );
+    }
+
+
+
+    /** Canonical-only support check used to protect Steward identities. */
+    public static function canonicalSupports(string $value): bool
+    {
+        return array_key_exists(self::normalise($value), self::RACES);
+    }
+
+    /** Identifiers that may be chosen by newly created Characters. @return array<int,string> */
+    public static function creationIdentifiers(): array
+    {
+        $definitions = self::RACES;
+        foreach (self::stewardDefinitions(false) as $key => $definition) {
+            if (! isset($definitions[$key])) {
+                $definitions[$key] = $definition;
+            }
+        }
+        return array_keys($definitions);
+    }
+
+    /** @return array<string,array{label:string}> */
+    private static function definitions(): array
+    {
+        $definitions = self::RACES;
+        foreach (self::stewardDefinitions(true) as $key => $definition) {
+            if (! isset($definitions[$key])) {
+                $definitions[$key] = $definition;
+            }
+        }
+        return $definitions;
+    }
+
+    /** @return array<string,array{label:string}> */
+    private static function stewardDefinitions(bool $includeArchived): array
+    {
+        if (! function_exists('get_option')) {
+            return [];
+        }
+        $records = get_option('gmrc_steward_folk', []);
+        if (! is_array($records)) {
+            return [];
+        }
+        $definitions = [];
+        foreach ($records as $key => $record) {
+            if (! is_array($record)) {
+                continue;
+            }
+            $status = (string) ($record['status'] ?? '');
+            if ($status !== 'published' && ! ($includeArchived && $status === 'archived')) {
+                continue;
+            }
+            $label = trim((string) ($record['name'] ?? ''));
+            if ($label !== '') {
+                $definitions[sanitize_key((string) $key)] = ['label' => $label];
+            }
+        }
+        return $definitions;
+    }
+
+    /** @return array{label:string}|null */
+    private static function definition(string $value): ?array
+    {
+        return self::definitions()[$value] ?? null;
     }
 
     /**
@@ -239,7 +295,7 @@ final class Race implements Stringable
             );
         }
 
-        if (! array_key_exists($value, self::RACES)) {
+        if (self::definition($value) === null) {
             throw new InvalidArgumentException(
                 sprintf(
                     'The Character race "%s" is not supported.',
