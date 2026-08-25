@@ -86,7 +86,23 @@ final class FolkWorkshop
         $toolProficiencies = $this->lines((string) ($input['tool_proficiencies'] ?? ''));
         $automaticLanguages = $this->lines((string) ($input['automatic_languages'] ?? ''));
         $resistances = $this->lines((string) ($input['resistances'] ?? ''));
-        $heritages = $this->heritages((string) ($input['heritages'] ?? ''), $key);
+        $existingHeritageMechanics = [];
+        foreach ((array) ($records[$key]['heritages'] ?? []) as $existingHeritage) {
+            if (! is_array($existingHeritage) || empty($existingHeritage['key'])) {
+                continue;
+            }
+            $existingHeritageMechanics[(string) $existingHeritage['key']] =
+                is_array($existingHeritage['mechanics'] ?? null)
+                    ? $existingHeritage['mechanics']
+                    : [];
+        }
+
+        $heritages = $this->heritages(
+            (string) ($input['heritages'] ?? ''),
+            $key,
+            $existingHeritageMechanics,
+            $input
+        );
 
         if ($status === self::STATUS_PUBLISHED && (
             $description === ''
@@ -139,27 +155,99 @@ final class FolkWorkshop
         return array_values(array_unique($values));
     }
 
-    /** @return array<int,array<string,mixed>> */
-    private function heritages(string $text, string $folkKey): array
-    {
+    /**
+     * @param array<string,array<string,mixed>> $existingMechanics
+     * @param array<string,mixed> $input
+     * @return array<int,array<string,mixed>>
+     */
+    private function heritages(
+        string $text,
+        string $folkKey,
+        array $existingMechanics = [],
+        array $input = []
+    ): array {
         $items = [];
         foreach (preg_split('/\R/', $text) ?: [] as $line) {
             $parts = array_map('trim', explode('|', $line, 4));
             if (($parts[0] ?? '') === '') {
                 continue;
             }
+
             $name = sanitize_text_field($parts[0]);
+            $heritageKey = 'steward-heritage-'
+                . sanitize_key($folkKey . '-' . $name);
+            $mechanics = $this->heritageMechanics(
+                $heritageKey,
+                $existingMechanics[$heritageKey] ?? [],
+                $input
+            );
+
             $items[] = [
-                'key' => 'steward-heritage-' . sanitize_key($folkKey . '-' . $name),
+                'key' => $heritageKey,
                 'parent' => $folkKey,
                 'name' => $name,
                 'description' => sanitize_textarea_field($parts[1] ?? ''),
                 'identity' => sanitize_text_field($parts[2] ?? ''),
                 'traits' => sanitize_text_field($parts[3] ?? ''),
                 'origin' => 'steward',
+                'mechanics' => $mechanics,
             ];
         }
+
         return $items;
+    }
+
+    /**
+     * Resolve the structured mechanical additions for one Heritage.
+     *
+     * @param array<string,mixed> $existing
+     * @param array<string,mixed> $input
+     * @return array<string,mixed>
+     */
+    private function heritageMechanics(
+        string $heritageKey,
+        array $existing,
+        array $input
+    ): array {
+        $posted = is_array($input['heritage_mechanics'][$heritageKey] ?? null)
+            ? $input['heritage_mechanics'][$heritageKey]
+            : null;
+
+        if ($posted === null) {
+            return $existing;
+        }
+
+        $abilityModifiers = [];
+        $rawAbilities = is_array($posted['ability_modifiers'] ?? null)
+            ? $posted['ability_modifiers']
+            : [];
+
+        foreach (['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'] as $ability) {
+            $abilityModifiers[$ability] = max(
+                0,
+                min(4, (int) ($rawAbilities[$ability] ?? 0))
+            );
+        }
+
+        return [
+            'ability_modifiers' => $abilityModifiers,
+            'skill_proficiencies' => $this->lines(
+                (string) ($posted['skill_proficiencies'] ?? '')
+            ),
+            'tool_proficiencies' => $this->lines(
+                (string) ($posted['tool_proficiencies'] ?? '')
+            ),
+            'automatic_languages' => $this->lines(
+                (string) ($posted['automatic_languages'] ?? '')
+            ),
+            'chosen_language_count' => max(
+                0,
+                min(4, (int) ($posted['chosen_language_count'] ?? 0))
+            ),
+            'resistances' => $this->lines(
+                (string) ($posted['resistances'] ?? '')
+            ),
+        ];
     }
 
     /** @param array<string,array<string,mixed>> $records */

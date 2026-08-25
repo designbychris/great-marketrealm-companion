@@ -324,7 +324,8 @@ final class CharacterController
             selectedToolProficiencies:
                 ToolProficiencies::fromStrings(
                     $registration['tools']
-                )
+                ),
+            heritage: $catalogueData['heritage']
         );
 
         $portraitRecipe = $this

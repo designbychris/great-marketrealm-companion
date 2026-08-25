@@ -54,7 +54,35 @@ $abilityModifiers = is_array($mechanics['ability_modifiers'] ?? null) ? $mechani
 </div>
 </section>
 <div class="gmrc-canonical-steward__fields"><label><strong>Languages</strong><textarea name="languages" rows="5" placeholder="One language per line"><?php echo esc_textarea(implode("\n", (array) ($folk['languages'] ?? []))); ?></textarea></label><label><strong>Traits / lore markers</strong><textarea name="traits" rows="5" placeholder="One trait per line"><?php echo esc_textarea(implode("\n", (array) ($folk['traits'] ?? []))); ?></textarea></label></div>
-<section class="gmrc-spell-workshop__mechanics"><h3>Heritages</h3><p>One Heritage per line: <code>Name | description | identity | trait summary</code>. Published Heritages become selectable only beneath their Published parent Folk.</p><textarea name="heritages" rows="10" class="large-text code"><?php echo esc_textarea(implode("\n", $heritageLines)); ?></textarea><p class="description">Folk without dedicated portrait assets use the Companion's existing safe portrait fallback. This Workshop certifies playable identity and Heritage selection; base Folk mechanics above are executable; Heritage-specific powers remain descriptive until the dedicated Heritage mechanics bridge.</p></section>
+<section class="gmrc-spell-workshop__mechanics"><h3>Heritages</h3><p>One Heritage per line: <code>Name | description | identity | trait summary</code>. Published Heritages become selectable only beneath their Published parent Folk.</p><textarea name="heritages" rows="10" class="large-text code"><?php echo esc_textarea(implode("\n", $heritageLines)); ?></textarea><p class="description">Save newly written Heritage identities once. Their structured mechanical inheritance cards will then appear below.</p></section>
+<?php if (! empty($folk['heritages'])) : ?>
+<section class="gmrc-spell-workshop__mechanics gmrc-folk-workshop__heritage-mechanics">
+<h3>Heritage mechanics &amp; inheritance</h3>
+<p>Each Heritage adds these grants <strong>on top of</strong> its parent Folk. Leaving a field empty means the Heritage inherits the Folk without changing that rule.</p>
+<?php foreach ((array) $folk['heritages'] as $heritage) :
+    if (! is_array($heritage)) { continue; }
+    $heritageKey = (string) ($heritage['key'] ?? '');
+    $heritageMechanics = is_array($heritage['mechanics'] ?? null) ? $heritage['mechanics'] : [];
+    $heritageAbilities = is_array($heritageMechanics['ability_modifiers'] ?? null) ? $heritageMechanics['ability_modifiers'] : [];
+    $fieldBase = 'heritage_mechanics[' . $heritageKey . ']';
+?>
+<article class="gmrc-canonical-steward__panel gmrc-folk-workshop__heritage-card">
+<h4><?php echo esc_html((string) ($heritage['name'] ?? 'Heritage')); ?></h4>
+<p class="description">Inherited from <?php echo esc_html((string) ($folk['name'] ?? 'parent Folk')); ?> · <code><?php echo esc_html($heritageKey); ?></code></p>
+<div class="gmrc-canonical-steward__fields">
+<?php foreach (['strength'=>'Strength','dexterity'=>'Dexterity','constitution'=>'Constitution','intelligence'=>'Intelligence','wisdom'=>'Wisdom','charisma'=>'Charisma'] as $abilityKey=>$abilityLabel) : ?>
+<label><strong><?php echo esc_html($abilityLabel); ?> addition</strong><select name="<?php echo esc_attr($fieldBase . '[ability_modifiers][' . $abilityKey . ']'); ?>"><?php for ($bonus=0;$bonus<=4;$bonus++) : ?><option value="<?php echo esc_attr((string)$bonus); ?>"<?php selected((int)($heritageAbilities[$abilityKey]??0),$bonus); ?>><?php echo esc_html($bonus===0?'No addition':'+' . $bonus); ?></option><?php endfor; ?></select></label>
+<?php endforeach; ?>
+<label><strong>Additional skill proficiencies</strong><textarea name="<?php echo esc_attr($fieldBase . '[skill_proficiencies]'); ?>" rows="4"><?php echo esc_textarea(implode("\n",(array)($heritageMechanics['skill_proficiencies']??[]))); ?></textarea></label>
+<label><strong>Additional tool proficiencies</strong><textarea name="<?php echo esc_attr($fieldBase . '[tool_proficiencies]'); ?>" rows="4"><?php echo esc_textarea(implode("\n",(array)($heritageMechanics['tool_proficiencies']??[]))); ?></textarea></label>
+<label><strong>Additional automatic languages</strong><textarea name="<?php echo esc_attr($fieldBase . '[automatic_languages]'); ?>" rows="4"><?php echo esc_textarea(implode("\n",(array)($heritageMechanics['automatic_languages']??[]))); ?></textarea></label>
+<label><strong>Additional language choices</strong><input type="number" min="0" max="4" name="<?php echo esc_attr($fieldBase . '[chosen_language_count]'); ?>" value="<?php echo esc_attr((string)($heritageMechanics['chosen_language_count']??0)); ?>"></label>
+<label><strong>Additional damage resistances</strong><textarea name="<?php echo esc_attr($fieldBase . '[resistances]'); ?>" rows="4"><?php echo esc_textarea(implode("\n",(array)($heritageMechanics['resistances']??[]))); ?></textarea></label>
+</div>
+</article>
+<?php endforeach; ?>
+</section>
+<?php endif; ?>
 <label><strong>Private Steward notes</strong><textarea name="steward_notes" rows="4"><?php echo esc_textarea($value('steward_notes')); ?></textarea></label><?php submit_button($isNew ? 'Create Folk' : 'Save Folk'); ?></form></main>
 </div></div>
 <?php $deleteType='folk'; $deleteKey=$isNew?'':(string)($folk['key']??''); $deleteLabel=$isNew?'this Folk':(string)($folk['name']??'this Folk'); require GMRC_PATH . 'app/Modules/Administration/Views/_steward-delete.php'; ?>

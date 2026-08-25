@@ -52,19 +52,21 @@ final class CharacterFactory
         AbilityScores $abilityScores,
         ?Background $background = null,
         ?Languages $selectedLanguages = null,
-        ?ToolProficiencies $selectedToolProficiencies = null
+        ?ToolProficiencies $selectedToolProficiencies = null,
+        ?string $heritage = null
     ): Character {
         $folkMechanics = $this->folkMechanics
             ?? new StewardFolkMechanics();
 
         $abilityScores = $folkMechanics->applyAbilityModifiers(
             $race->value(),
-            $abilityScores
+            $abilityScores,
+            $heritage
         );
         $selectedLanguages = ($selectedLanguages ?? Languages::none())
-            ->merge($folkMechanics->languages($race->value()));
+            ->merge($folkMechanics->languages($race->value(), $heritage));
         $selectedToolProficiencies = ($selectedToolProficiencies ?? ToolProficiencies::none())
-            ->merge($folkMechanics->tools($race->value()));
+            ->merge($folkMechanics->tools($race->value(), $heritage));
 
         $startingHitPoints = $this->rules
             ->startingHitPoints(
@@ -85,7 +87,8 @@ final class CharacterFactory
             $selectedLanguages,
             $selectedToolProficiencies,
             racialSkillProficiencies: $folkMechanics->skills(
-                $race->value()
+                $race->value(),
+                $heritage
             )
         );
     }
@@ -103,7 +106,8 @@ final class CharacterFactory
         ?AbilityScores $abilityScores = null,
         ?Background $background = null,
         ?Languages $selectedLanguages = null,
-        ?ToolProficiencies $selectedToolProficiencies = null
+        ?ToolProficiencies $selectedToolProficiencies = null,
+        ?string $heritage = null
     ): Character {
         return $this->create(
             CharacterName::fromString($name),
@@ -115,7 +119,8 @@ final class CharacterFactory
                 ?? $this->rules->defaultAbilityScores(),
             $background,
             $selectedLanguages,
-            $selectedToolProficiencies
+            $selectedToolProficiencies,
+            $heritage
         );
     }
 }

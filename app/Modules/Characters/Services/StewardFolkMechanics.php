@@ -41,11 +41,48 @@ final class StewardFolkMechanics
             : [];
     }
 
+    /** @return array<string,mixed> */
+    public function resolved(string $race, ?string $heritage = null): array
+    {
+        $base = $this->forRace($race);
+        if ($base === [] || $heritage === null || $heritage === '') {
+            return $base;
+        }
+
+        if (! function_exists('get_option')) {
+            return $base;
+        }
+
+        $records = get_option('gmrc_steward_folk', []);
+        $record = is_array($records) && is_array($records[sanitize_key($race)] ?? null)
+            ? $records[sanitize_key($race)]
+            : [];
+
+        foreach ((array) ($record['heritages'] ?? []) as $candidate) {
+            if (
+                ! is_array($candidate)
+                || ($candidate['key'] ?? '') !== sanitize_key($heritage)
+                || ($candidate['parent'] ?? '') !== sanitize_key($race)
+            ) {
+                continue;
+            }
+
+            $addition = is_array($candidate['mechanics'] ?? null)
+                ? $candidate['mechanics']
+                : [];
+
+            return $this->mergeMechanics($base, $addition);
+        }
+
+        return $base;
+    }
+
     public function applyAbilityModifiers(
         string $race,
-        AbilityScores $scores
+        AbilityScores $scores,
+        ?string $heritage = null
     ): AbilityScores {
-        $modifiers = $this->forRace($race)['ability_modifiers'] ?? [];
+        $modifiers = $this->resolved($race, $heritage)['ability_modifiers'] ?? [];
         $modifiers = is_array($modifiers) ? $modifiers : [];
 
         foreach (['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'] as $ability) {
@@ -63,9 +100,9 @@ final class StewardFolkMechanics
         return $scores;
     }
 
-    public function languages(string $race): Languages
+    public function languages(string $race, ?string $heritage = null): Languages
     {
-        $values = $this->forRace($race)['automatic_languages'] ?? [];
+        $values = $this->resolved($race, $heritage)['automatic_languages'] ?? [];
         $values = is_array($values) ? $values : [];
 
         return Languages::fromStrings(array_values(array_filter(
@@ -74,9 +111,9 @@ final class StewardFolkMechanics
         )));
     }
 
-    public function tools(string $race): ToolProficiencies
+    public function tools(string $race, ?string $heritage = null): ToolProficiencies
     {
-        $values = $this->forRace($race)['tool_proficiencies'] ?? [];
+        $values = $this->resolved($race, $heritage)['tool_proficiencies'] ?? [];
         $values = is_array($values) ? $values : [];
 
         return ToolProficiencies::fromStrings(array_values(array_filter(
@@ -85,12 +122,56 @@ final class StewardFolkMechanics
         )));
     }
 
-    public function skills(string $race): SkillProficiencies
+    public function skills(string $race, ?string $heritage = null): SkillProficiencies
     {
-        $values = $this->forRace($race)['skill_proficiencies'] ?? [];
+        $values = $this->resolved($race, $heritage)['skill_proficiencies'] ?? [];
 
         return SkillProficiencies::proficient(
             is_array($values) ? $values : []
         );
     }
+    /**
+     * Heritage mechanics are additive. Lists are unioned and numeric ability
+     * modifiers are summed so the parent Folk remains the foundation.
+     *
+     * @param array<string,mixed> $base
+     * @param array<string,mixed> $addition
+     * @return array<string,mixed>
+     */
+    private function mergeMechanics(array $base, array $addition): array
+    {
+        $baseAbilities = is_array($base['ability_modifiers'] ?? null)
+            ? $base['ability_modifiers']
+            : [];
+        $additionAbilities = is_array($addition['ability_modifiers'] ?? null)
+            ? $addition['ability_modifiers']
+            : [];
+
+        foreach (['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'] as $ability) {
+            $baseAbilities[$ability] = max(
+                0,
+                min(
+                    8,
+                    (int) ($baseAbilities[$ability] ?? 0)
+                    + (int) ($additionAbilities[$ability] ?? 0)
+                )
+            );
+        }
+
+        $resolved = $base;
+        $resolved['ability_modifiers'] = $baseAbilities;
+
+        foreach (['skill_proficiencies', 'tool_proficiencies', 'automatic_languages', 'resistances'] as $key) {
+            $left = is_array($base[$key] ?? null) ? $base[$key] : [];
+            $right = is_array($addition[$key] ?? null) ? $addition[$key] : [];
+            $resolved[$key] = array_values(array_unique(array_merge($left, $right)));
+        }
+
+        $resolved['chosen_language_count'] =
+            max(0, (int) ($base['chosen_language_count'] ?? 0))
+            + max(0, (int) ($addition['chosen_language_count'] ?? 0));
+
+        return $resolved;
+    }
+
 }
