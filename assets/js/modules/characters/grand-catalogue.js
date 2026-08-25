@@ -74,6 +74,39 @@
                 )?.value || '';
         };
 
+        const refreshHeritagePreview = function () {
+            const selected =
+                heritage instanceof HTMLSelectElement
+                    ? heritage.value
+                    : '';
+            const parent = race();
+            let shown = false;
+
+            document
+                .querySelectorAll('[data-heritage-preview]')
+                .forEach(function (preview) {
+                    if (!(preview instanceof HTMLElement)) {
+                        return;
+                    }
+
+                    const visible =
+                        selected !== ''
+                        && preview.dataset.heritagePreview === selected
+                        && preview.dataset.parent === parent;
+
+                    preview.hidden = !visible;
+                    shown = shown || visible;
+                });
+
+            const empty = document.querySelector(
+                '[data-heritage-preview-empty]'
+            );
+
+            if (empty instanceof HTMLElement) {
+                empty.hidden = shown;
+            }
+        };
+
         const refreshSubclassPreview = function () {
             const selected =
                 subclass instanceof HTMLSelectElement
@@ -124,6 +157,7 @@
             }
 
             refreshSubclassPreview();
+            refreshHeritagePreview();
         };
 
         document.addEventListener(
@@ -161,6 +195,8 @@
                     target === heritage
                     && heritage instanceof HTMLSelectElement
                 ) {
+                    refreshHeritagePreview();
+
                     heritage.dispatchEvent(
                         new CustomEvent(
                             'gmrc:catalogue:heritage-changed',

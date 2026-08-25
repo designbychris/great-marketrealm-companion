@@ -90,6 +90,14 @@ final class CharacterCatalogueRepository
                 }
                 foreach ((array) ($record['heritages'] ?? []) as $heritage) {
                     if (is_array($heritage)) {
+                        $heritage['parent_name'] =
+                            (string) ($record['name'] ?? '');
+                        $heritage['parent_description'] =
+                            (string) ($record['description'] ?? '');
+                        $heritage['parent_mechanics'] =
+                            is_array($record['mechanics'] ?? null)
+                                ? $record['mechanics']
+                                : [];
                         $items[] = $heritage;
                     }
                 }

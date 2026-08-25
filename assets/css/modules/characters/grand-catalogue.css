@@ -108,3 +108,144 @@
         color: CanvasText;
     }
 }
+
+
+.gmrc-heritage-preview {
+    margin-top: .85rem;
+}
+
+.gmrc-heritage-preview__empty {
+    margin: 0;
+    padding: .75rem .85rem;
+    border-left: 3px solid rgba(157, 102, 38, .42);
+    background: rgba(255, 252, 239, .62);
+}
+
+.gmrc-heritage-preview__card {
+    padding: 1rem;
+    border: 1px solid rgba(124, 77, 32, .26);
+    border-radius: .45rem;
+    background: linear-gradient(
+        145deg,
+        rgba(255, 252, 239, .94),
+        rgba(248, 235, 196, .76)
+    );
+    box-shadow: 0 .35rem .9rem rgba(74, 42, 24, .08);
+}
+
+.gmrc-heritage-preview__card[hidden],
+.gmrc-heritage-preview__empty[hidden] {
+    display: none;
+}
+
+.gmrc-heritage-preview__header {
+    padding-bottom: .65rem;
+    border-bottom: 1px solid rgba(74, 42, 24, .13);
+}
+
+.gmrc-heritage-preview__header h3 {
+    margin: .15rem 0 0;
+    color: #4a2a18;
+    font-family: var(--gmrc-font-display, Georgia, serif);
+    font-size: 1.2rem;
+}
+
+.gmrc-heritage-preview__identity {
+    margin: .75rem 0 .35rem;
+    color: #4a2a18;
+    font-family: var(--gmrc-font-display, Georgia, serif);
+    font-size: .98rem;
+    line-height: 1.5;
+}
+
+.gmrc-heritage-preview__description {
+    margin: .4rem 0 .8rem;
+    font-size: .84rem;
+    line-height: 1.55;
+}
+
+.gmrc-heritage-preview__trait,
+.gmrc-heritage-preview__legacy {
+    margin-top: .75rem;
+    padding: .7rem .8rem;
+    border-left: 3px solid rgba(125, 49, 38, .48);
+    background: rgba(255, 249, 228, .66);
+}
+
+.gmrc-heritage-preview__trait p,
+.gmrc-heritage-preview__legacy {
+    font-size: .8rem;
+    line-height: 1.5;
+}
+
+.gmrc-heritage-preview__mechanics {
+    margin-top: .85rem;
+}
+
+.gmrc-heritage-preview__mechanics h4 {
+    margin: 0 0 .5rem;
+    color: #4a2a18;
+    font-family: var(--gmrc-font-display, Georgia, serif);
+}
+
+.gmrc-heritage-preview dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .45rem;
+    margin: 0;
+}
+
+.gmrc-heritage-preview dl > div {
+    padding: .55rem .65rem;
+    border: 1px solid rgba(74, 42, 24, .12);
+    border-radius: .3rem;
+    background: rgba(255, 252, 239, .68);
+}
+
+.gmrc-heritage-preview dt {
+    color: rgba(74, 42, 24, .7);
+    font-size: .66rem;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.gmrc-heritage-preview dd {
+    margin: .15rem 0 0;
+    color: #4a2a18;
+    font-size: .8rem;
+}
+
+.gmrc-heritage-preview__inherited {
+    margin-top: .85rem;
+    padding-top: .7rem;
+    border-top: 1px solid rgba(74, 42, 24, .14);
+}
+
+.gmrc-heritage-preview__inherited summary {
+    cursor: pointer;
+    color: #6e3f24;
+    font-weight: 700;
+}
+
+.gmrc-heritage-preview__inherited dl,
+.gmrc-heritage-preview__inherited p {
+    margin-top: .65rem;
+}
+
+@media (max-width: 720px) {
+    .gmrc-heritage-preview dl {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-heritage-preview__card,
+    .gmrc-heritage-preview__empty,
+    .gmrc-heritage-preview__trait,
+    .gmrc-heritage-preview dl > div {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

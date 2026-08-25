@@ -157,6 +157,56 @@ $languageOptions = Language::all();
 $artisanToolOptions = ToolProficiency::artisansTools();
 $gamingSetOptions = ToolProficiency::gamingSets();
 
+/**
+ * Human-readable summary lines for structured Steward Folk mechanics.
+ *
+ * @param array<string,mixed> $mechanics
+ * @return array<int,array{label:string,value:string}>
+ */
+$heritageMechanicSummary = static function (array $mechanics) use ($identifierLabel): array {
+    $rows = [];
+    $abilities = is_array($mechanics['ability_modifiers'] ?? null)
+        ? $mechanics['ability_modifiers']
+        : [];
+    $abilityParts = [];
+    foreach ($abilities as $ability => $bonus) {
+        $bonus = (int) $bonus;
+        if ($bonus > 0) {
+            $abilityParts[] = '+' . $bonus . ' ' . $identifierLabel((string) $ability);
+        }
+    }
+    if ($abilityParts !== []) {
+        $rows[] = ['label' => 'Ability scores', 'value' => implode(', ', $abilityParts)];
+    }
+
+    foreach ([
+        'skill_proficiencies' => 'Skills',
+        'tool_proficiencies' => 'Tools',
+        'automatic_languages' => 'Languages',
+        'resistances' => 'Resistances',
+    ] as $key => $label) {
+        $values = is_array($mechanics[$key] ?? null)
+            ? array_values(array_filter(array_map('strval', $mechanics[$key])))
+            : [];
+        if ($values !== []) {
+            $rows[] = [
+                'label' => $label,
+                'value' => implode(', ', array_map($identifierLabel, $values)),
+            ];
+        }
+    }
+
+    $languageChoices = max(0, (int) ($mechanics['chosen_language_count'] ?? 0));
+    if ($languageChoices > 0) {
+        $rows[] = [
+            'label' => 'Language choices',
+            'value' => '+' . $languageChoices . ' additional',
+        ];
+    }
+
+    return $rows;
+};
+
 $backgroundValue = isset($old['background'])
     && is_scalar($old['background'])
         ? (string) $old['background']
@@ -709,6 +759,117 @@ $charactersUrl = add_query_arg(
                     <?php endforeach; ?>
                 </select>
                 <p>Subtype choices are drawn from the Registrar’s Grand Catalogue.</p>
+
+                <div
+                    class="gmrc-heritage-preview"
+                    data-heritage-preview-region
+                    aria-live="polite"
+                    aria-atomic="true"
+                >
+                    <p
+                        class="gmrc-heritage-preview__empty"
+                        data-heritage-preview-empty
+                    >
+                        Choose a Heritage to see its identity, inherited Folk
+                        features and mechanical additions before you commit.
+                    </p>
+
+                    <?php foreach ($catalogueHeritages as $heritage) :
+                        if (! is_array($heritage)) {
+                            continue;
+                        }
+
+                        $heritageKey = (string) ($heritage['key'] ?? '');
+                        $heritageParent = (string) ($heritage['parent'] ?? '');
+                        $heritageDescription = trim((string) ($heritage['description'] ?? ''));
+                        $heritageIdentity = trim((string) ($heritage['identity'] ?? ''));
+                        $heritageTraits = trim((string) ($heritage['traits'] ?? ''));
+                        $heritageMechanics = is_array($heritage['mechanics'] ?? null)
+                            ? $heritage['mechanics']
+                            : [];
+                        $parentMechanics = is_array($heritage['parent_mechanics'] ?? null)
+                            ? $heritage['parent_mechanics']
+                            : [];
+                        $mechanicRows = $heritageMechanicSummary($heritageMechanics);
+                        $parentRows = $heritageMechanicSummary($parentMechanics);
+                        $parentName = trim((string) ($heritage['parent_name'] ?? ''));
+                    ?>
+                        <article
+                            class="gmrc-heritage-preview__card"
+                            data-heritage-preview="<?php echo esc_attr($heritageKey); ?>"
+                            data-parent="<?php echo esc_attr($heritageParent); ?>"
+                            hidden
+                        >
+                            <header class="gmrc-heritage-preview__header">
+                                <p class="gmrc-eyebrow">Heritage guidance</p>
+                                <h3><?php echo esc_html((string) ($heritage['name'] ?? 'Heritage')); ?></h3>
+                            </header>
+
+                            <?php if ($heritageIdentity !== '') : ?>
+                                <p class="gmrc-heritage-preview__identity">
+                                    <?php echo esc_html($heritageIdentity); ?>
+                                </p>
+                            <?php endif; ?>
+
+                            <?php if ($heritageDescription !== '') : ?>
+                                <p class="gmrc-heritage-preview__description">
+                                    <?php echo esc_html($heritageDescription); ?>
+                                </p>
+                            <?php endif; ?>
+
+                            <?php if ($heritageTraits !== '') : ?>
+                                <div class="gmrc-heritage-preview__trait">
+                                    <strong>Heritage traits</strong>
+                                    <p><?php echo esc_html($heritageTraits); ?></p>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if ($mechanicRows !== []) : ?>
+                                <div class="gmrc-heritage-preview__mechanics">
+                                    <h4>From your Heritage</h4>
+                                    <dl>
+                                        <?php foreach ($mechanicRows as $row) : ?>
+                                            <div>
+                                                <dt><?php echo esc_html($row['label']); ?></dt>
+                                                <dd><?php echo esc_html($row['value']); ?></dd>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </dl>
+                                </div>
+                            <?php else : ?>
+                                <p class="gmrc-heritage-preview__legacy">
+                                    No additional structured bonuses are recorded
+                                    for this Heritage. Its published description
+                                    remains the Registrar’s guidance.
+                                </p>
+                            <?php endif; ?>
+
+                            <?php if ($parentRows !== [] || $parentName !== '') : ?>
+                                <details class="gmrc-heritage-preview__inherited">
+                                    <summary>
+                                        Inherited from
+                                        <?php echo esc_html($parentName !== '' ? $parentName : 'your Folk'); ?>
+                                    </summary>
+                                    <?php if ($parentRows !== []) : ?>
+                                        <dl>
+                                            <?php foreach ($parentRows as $row) : ?>
+                                                <div>
+                                                    <dt><?php echo esc_html($row['label']); ?></dt>
+                                                    <dd><?php echo esc_html($row['value']); ?></dd>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </dl>
+                                    <?php else : ?>
+                                        <p>
+                                            Your parent Folk’s published identity
+                                            and traits still apply in full.
+                                        </p>
+                                    <?php endif; ?>
+                                </details>
+                            <?php endif; ?>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </section>
 
