@@ -43,21 +43,21 @@ final class StewardEquipmentWorkshopRegressionTest extends TestCase
     public function testPublishedWeaponRequiresMechanicalDamageFields(): void
     {
         $workshop = $this->source('app/Modules/Administration/Workshop/EquipmentWorkshop.php');
-        self::assertStringContainsString("$category === 'weapon'", $workshop);
+        self::assertStringContainsString('$category === \'weapon\'', $workshop);
         self::assertStringContainsString('valid damage die and damage type', $workshop);
     }
 
     public function testPublishedArmourRequiresBodySlotAndArmourBase(): void
     {
         $workshop = $this->source('app/Modules/Administration/Workshop/EquipmentWorkshop.php');
-        self::assertStringContainsString("$category === 'armour'", $workshop);
+        self::assertStringContainsString('$category === \'armour\'', $workshop);
         self::assertStringContainsString('body slot and an armour base', $workshop);
     }
 
     public function testPublishedShieldRequiresOffHandBonus(): void
     {
         $workshop = $this->source('app/Modules/Administration/Workshop/EquipmentWorkshop.php');
-        self::assertStringContainsString("$category === 'shield'", $workshop);
+        self::assertStringContainsString('$category === \'shield\'', $workshop);
         self::assertStringContainsString('off-hand slot and a non-zero armour bonus', $workshop);
     }
 
