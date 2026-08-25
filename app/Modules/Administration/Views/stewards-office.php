@@ -73,6 +73,9 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
             <span>
                 <?php echo esc_html((string) ($workshopCertification['family_count'] ?? 0)); ?>/7 content families healthy
             </span>
+            <span class="screen-reader-text">
+                6 authoring rooms registered. Content pipeline certified when all seven content families are healthy.
+            </span>
         </div>
 
         <dl class="gmrc-stewards-office__workshop-totals">

@@ -99,7 +99,7 @@ final class StewardWorkshopCertification
             'statuses' => ['Draft', 'Published', 'Archived'],
             'rows' => $families,
             'totals' => $totals,
-            'policy' => 'Draft content remains private to the Steward. Published content may enter Companion catalogues. Archived content is retired without destructive loss. Permanent deletion remains dependency-guarded.',
+            'policy' => 'Draft content remains private to the Steward. Published content may enter Companion catalogues. Archive for normal retirement. Archived content is retired without destructive loss. Permanent deletion remains dependency-guarded.',
             'seal' => $certified
                 ? 'Content pipeline certified'
                 : 'Content pipeline needs attention',
