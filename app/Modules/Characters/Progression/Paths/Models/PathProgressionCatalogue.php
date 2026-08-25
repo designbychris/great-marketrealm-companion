@@ -19,6 +19,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\D
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\ClericDomainProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\BardCollegeProgression;
 use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\ArtificerSpecialisationProgression;
+use GreatMarketrealmCompanion\Modules\Characters\Progression\Paths\Definitions\StewardCallingPathProgression;
 
 defined('ABSPATH') || exit;
 
@@ -48,6 +49,7 @@ final class PathProgressionCatalogue
                 new ClericDomainProgression(),
                 new BardCollegeProgression(),
                 new ArtificerSpecialisationProgression(),
+                new StewardCallingPathProgression(),
             ];
     }
 

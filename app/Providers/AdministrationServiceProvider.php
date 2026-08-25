@@ -9,6 +9,7 @@ use GreatMarketrealmCompanion\Modules\Administration\Workshop\MonsterWorkshop;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\SpellWorkshop;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\BackgroundWorkshop;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\EquipmentWorkshop;
+use GreatMarketrealmCompanion\Modules\Administration\Workshop\CallingWorkshop;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Models\CanonicalMonster;
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalCallingRegister;
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalBackgroundRegister;
@@ -41,6 +42,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         $this->app->singleton(SpellWorkshop::class);
         $this->app->singleton(BackgroundWorkshop::class);
         $this->app->singleton(EquipmentWorkshop::class);
+        $this->app->singleton(CallingWorkshop::class);
         $this->app->singleton(CanonicalCallingRegister::class);
         $this->app->singleton(CanonicalBackgroundRegister::class);
         $this->app->singleton(CanonicalSpellRegister::class);
@@ -60,6 +62,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         add_action('admin_post_gmrc_save_steward_spell', [$this, 'saveStewardSpell']);
         add_action('admin_post_gmrc_save_steward_background', [$this, 'saveStewardBackground']);
         add_action('admin_post_gmrc_save_steward_equipment', [$this, 'saveStewardEquipment']);
+        add_action('admin_post_gmrc_save_steward_calling', [$this, 'saveStewardCalling']);
         add_action('admin_post_gmrc_save_canonical_calling', [$this, 'saveCanonicalCalling']);
         add_action('admin_post_gmrc_reset_canonical_calling', [$this, 'resetCanonicalCalling']);
         add_action('admin_post_gmrc_save_canonical_background', [$this, 'saveCanonicalBackground']);
@@ -281,6 +284,21 @@ final class AdministrationServiceProvider extends ServiceProvider
         exit;
     }
 
+    public function saveStewardCalling(): void
+    {
+        $this->guard();
+        $key = sanitize_key(wp_unslash((string) ($_POST['calling_key'] ?? '')));
+        check_admin_referer('gmrc_save_steward_calling_' . ($key !== '' ? $key : 'new'), 'gmrc_steward_calling_nonce');
+        try {
+            $key = $this->app->make(CallingWorkshop::class)->save($key, wp_unslash($_POST));
+            $args = ['gmrc_calling_workshop_saved' => '1'];
+        } catch (RuntimeException $exception) {
+            $args = ['gmrc_calling_workshop_error' => rawurlencode($exception->getMessage())];
+        }
+        wp_safe_redirect($this->callingWorkshopUrl($key, $args));
+        exit;
+    }
+
     public function saveCanonicalCalling(): void
     {
         $this->guard();
@@ -449,6 +467,15 @@ final class AdministrationServiceProvider extends ServiceProvider
             return;
         }
 
+        if ($section === 'calling-workshop') {
+            $workshop = $this->app->make(CallingWorkshop::class);
+            $stewardCallings = $workshop->all();
+            $selectedKey = sanitize_key((string) ($_GET['calling'] ?? ''));
+            $selectedCalling = $selectedKey !== '' ? $workshop->find($selectedKey) : null;
+            require GMRC_PATH . 'app/Modules/Administration/Views/calling-workshop.php';
+            return;
+        }
+
         if ($section === 'canonical-callings') {
             $register = $this->app->make(CanonicalCallingRegister::class);
             $callings = $register->all();
@@ -560,6 +587,14 @@ final class AdministrationServiceProvider extends ServiceProvider
     }
 
     /** @param array<string,string> $extra */
+    /** @param array<string,string> $args */
+    private function callingWorkshopUrl(string $key = '', array $args = []): string
+    {
+        $base = ['page' => self::MENU_SLUG, 'section' => 'calling-workshop'];
+        if ($key !== '') $base['calling'] = $key;
+        return add_query_arg(array_merge($base, $args), admin_url('admin.php'));
+    }
+
     private function callingUrl(string $kind, string $key, array $extra = []): string
     {
         return add_query_arg(array_merge([

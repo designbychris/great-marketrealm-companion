@@ -117,6 +117,12 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
         </section>
 
         <section class="gmrc-stewards-office__card">
+            <span class="dashicons dashicons-groups" aria-hidden="true"></span><h2>Class &amp; Calling Path Workshop</h2>
+            <p>Create new playable Callings with certified hit dice and saving throws, then author their specialist Calling Paths. Published records join future Character inscription without replacing protected Handbook canon.</p>
+            <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'calling-workshop'], admin_url('admin.php'))); ?>">Open Calling Workshop</a>
+        </section>
+
+        <section class="gmrc-stewards-office__card">
             <span class="dashicons dashicons-book-alt" aria-hidden="true"></span><h2>Canonical Records</h2>
             <p>Curate the official Marketrealm Bestiary, including stat lines, traits, actions, and WordPress Media Library artwork.</p>
             <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'canonical-records'], admin_url('admin.php'))); ?>">Open Bestiary Stewardship</a>

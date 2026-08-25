@@ -91,20 +91,11 @@ final class PathCandidateCatalogue
                     )
                 ),
                 'identity' =>
-                    (string) (
-                        $guide['identity']
-                        ?? ''
-                    ),
+                    (string) ($guide['identity'] ?? $subclass['identity'] ?? ''),
                 'playstyle' =>
-                    (string) (
-                        $guide['playstyle']
-                        ?? ''
-                    ),
+                    (string) ($guide['playstyle'] ?? $subclass['playstyle'] ?? ''),
                 'best_for' =>
-                    (string) (
-                        $guide['best_for']
-                        ?? ''
-                    ),
+                    (string) ($guide['best_for'] ?? $subclass['best_for'] ?? ''),
                 'gift_preview' =>
                     array_map(
                         static fn (

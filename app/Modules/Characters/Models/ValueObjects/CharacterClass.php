@@ -216,9 +216,7 @@ final class CharacterClass implements Stringable
      */
     public function label(): string
     {
-        return self::CLASSES[
-            $this->value
-        ]['label'];
+        return self::definition($this->value)['label'];
     }
 
     /**
@@ -226,9 +224,7 @@ final class CharacterClass implements Stringable
      */
     public function hitDie(): int
     {
-        return self::CLASSES[
-            $this->value
-        ]['hit_die'];
+        return self::definition($this->value)['hit_die'];
     }
 
     /**
@@ -238,9 +234,7 @@ final class CharacterClass implements Stringable
      */
     public function savingThrowProficiencies(): array
     {
-        return self::CLASSES[
-            $this->value
-        ]['saving_throws'];
+        return self::definition($this->value)['saving_throws'];
     }
 
     /**
@@ -297,10 +291,7 @@ final class CharacterClass implements Stringable
     public static function supports(
         string $value
     ): bool {
-        return array_key_exists(
-            self::normalise($value),
-            self::CLASSES
-        );
+        return self::definition(self::normalise($value)) !== null;
     }
 
     /**
@@ -314,7 +305,7 @@ final class CharacterClass implements Stringable
             static fn (
                 string $class
             ): self => new self($class),
-            array_keys(self::CLASSES)
+            self::identifiers()
         );
     }
 
@@ -325,9 +316,7 @@ final class CharacterClass implements Stringable
      */
     public static function identifiers(): array
     {
-        return array_keys(
-            self::CLASSES
-        );
+        return array_keys(self::definitions());
     }
     
     /**
@@ -338,12 +327,38 @@ final class CharacterClass implements Stringable
      */
     public static function labels(): array
     {
-        return array_map(
-            static fn (
-                array $class
-            ): string => $class['label'],
-            self::CLASSES
-        );
+        return array_map(static fn (array $class): string => $class['label'], self::definitions());
+    }
+
+
+    /** Canonical-only support check used to protect Steward identities. */
+    public static function canonicalSupports(string $value): bool
+    {
+        return array_key_exists(self::normalise($value), self::CLASSES);
+    }
+
+    /** @return array<string,array{label:string,hit_die:int,saving_throws:array<int,string>}> */
+    private static function definitions(): array
+    {
+        $definitions = self::CLASSES;
+        if (! function_exists('get_option')) return $definitions;
+        $records = get_option('gmrc_steward_callings', []);
+        if (! is_array($records)) return $definitions;
+        foreach ($records as $key => $record) {
+            if (! is_array($record) || ($record['status'] ?? '') !== 'published' || isset($definitions[$key])) continue;
+            $hitDie = (int) ($record['hit_die'] ?? 0);
+            $saves = array_values((array) ($record['saving_throws'] ?? []));
+            $label = trim((string) ($record['name'] ?? ''));
+            if ($label === '' || ! in_array($hitDie, [6,8,10,12], true) || count($saves) !== 2) continue;
+            $definitions[sanitize_key((string) $key)] = ['label'=>$label,'hit_die'=>$hitDie,'saving_throws'=>$saves];
+        }
+        return $definitions;
+    }
+
+    /** @return array{label:string,hit_die:int,saving_throws:array<int,string>}|null */
+    private static function definition(string $value): ?array
+    {
+        return self::definitions()[$value] ?? null;
     }
 
     /**
@@ -381,7 +396,7 @@ final class CharacterClass implements Stringable
             );
         }
 
-        if (! array_key_exists($value, self::CLASSES)) {
+        if (self::definition($value) === null) {
             throw new InvalidArgumentException(
                 sprintf(
                     'The Character class "%s" is not supported.',

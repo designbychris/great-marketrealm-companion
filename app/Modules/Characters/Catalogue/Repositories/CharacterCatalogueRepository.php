@@ -58,6 +58,14 @@ final class CharacterCatalogueRepository
             $options['cleaver-saint']
         );
 
+        if (function_exists('get_option')) {
+            $records = get_option('gmrc_steward_callings', []);
+            foreach (is_array($records) ? $records : [] as $key => $record) {
+                if (is_array($record) && ($record['status'] ?? '') === 'published' && ! isset($options[$key])) {
+                    $options[sanitize_key((string) $key)] = (string) ($record['name'] ?? $key);
+                }
+            }
+        }
         return $options;
     }
 
@@ -70,7 +78,15 @@ final class CharacterCatalogueRepository
     /** @return array<int,array<string,mixed>> */
     public function subclasses(): array
     {
-        return array_values($this->snapshot()['subclasses'] ?? []);
+        $items = array_values($this->snapshot()['subclasses'] ?? []);
+        if (function_exists('get_option')) {
+            $records = get_option('gmrc_steward_callings', []);
+            foreach (is_array($records) ? $records : [] as $record) {
+                if (! is_array($record) || ($record['status'] ?? '') !== 'published') continue;
+                foreach ((array) ($record['paths'] ?? []) as $path) if (is_array($path)) $items[] = $path;
+            }
+        }
+        return $items;
     }
 
     public function heritageBelongsTo(string $heritage, string $race): bool
