@@ -96,6 +96,7 @@ final class StewardWorkshopCertification
             'certified' => $certified,
             'family_count' => count($families),
             'workshop_count' => 6,
+            'legacy_folk_family_label' => 'Folk & Heritages',
             'statuses' => ['Draft', 'Published', 'Archived'],
             'rows' => $families,
             'totals' => $totals,
