@@ -11,6 +11,7 @@ use GreatMarketrealmCompanion\Modules\Administration\Workshop\BackgroundWorkshop
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\EquipmentWorkshop;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\CallingWorkshop;
 use GreatMarketrealmCompanion\Modules\Administration\Workshop\StewardWorkshopDeletionGuard;
+use GreatMarketrealmCompanion\Modules\Administration\Workshop\StewardWorkshopCertification;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Bestiary\Models\CanonicalMonster;
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalCallingRegister;
 use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalBackgroundRegister;
@@ -45,6 +46,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         $this->app->singleton(EquipmentWorkshop::class);
         $this->app->singleton(CallingWorkshop::class);
         $this->app->singleton(StewardWorkshopDeletionGuard::class);
+        $this->app->singleton(StewardWorkshopCertification::class);
         $this->app->singleton(CanonicalCallingRegister::class);
         $this->app->singleton(CanonicalBackgroundRegister::class);
         $this->app->singleton(CanonicalSpellRegister::class);
@@ -114,11 +116,6 @@ final class AdministrationServiceProvider extends ServiceProvider
             return;
         }
         if ($section === 'background-workshop') {
-            $workshop = $this->app->make(BackgroundWorkshop::class);
-            $stewardBackgrounds = $workshop->all();
-            $selectedKey = sanitize_key((string) ($_GET['background'] ?? ''));
-            $selectedBackground = $selectedKey !== '' ? $workshop->find($selectedKey) : null;
-            require GMRC_PATH . 'app/Modules/Administration/Views/background-workshop.php';
             return;
         }
         if ($section === 'canonical-backgrounds') {
@@ -543,6 +540,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         $gateSecurityConfigured = $this->app->make(GateSecuritySettings::class)->configured();
         $companionSettings = $this->app->make(CompanionSettings::class)->all();
         $diagnostics = $this->app->make(StewardDiagnostics::class)->report();
+        $workshopCertification = $this->app->make(StewardWorkshopCertification::class)->report();
         require GMRC_PATH . 'app/Modules/Administration/Views/stewards-office.php';
     }
 

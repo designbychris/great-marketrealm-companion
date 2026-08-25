@@ -70,3 +70,49 @@
 .gmrc-steward-delete .button-link-delete { color: #b32d2e; font-weight: 600; }
 .gmrc-steward-delete .button-link-delete:hover,
 .gmrc-steward-delete .button-link-delete:focus { color: #8b1f1f; }
+
+/* Steward Workshop certification */
+.gmrc-stewards-office__workshop-certification {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 20px 28px;
+    align-items: center;
+    margin: 22px 0;
+    padding: 22px 24px;
+    border: 1px solid #c8b88a;
+    border-radius: 14px;
+    background: #fffdf5;
+    box-shadow: 0 8px 24px rgba(44, 35, 18, .08);
+}
+.gmrc-stewards-office__workshop-certification h2 { margin: 3px 0 8px; }
+.gmrc-stewards-office__workshop-certification p { margin-bottom: 0; }
+.gmrc-stewards-office__workshop-seal {
+    display: grid;
+    gap: 4px;
+    min-width: 190px;
+    padding: 12px 16px;
+    border: 1px solid #8c6d2f;
+    border-radius: 999px;
+    text-align: center;
+    background: #f8edc7;
+}
+.gmrc-stewards-office__workshop-seal span { font-size: 12px; }
+.gmrc-stewards-office__workshop-totals {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(90px, 1fr));
+    gap: 10px;
+    margin: 0;
+}
+.gmrc-stewards-office__workshop-totals div {
+    padding: 10px 12px;
+    border: 1px solid #ded6bd;
+    border-radius: 10px;
+    background: rgba(255,255,255,.72);
+}
+.gmrc-stewards-office__workshop-totals dt { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.gmrc-stewards-office__workshop-totals dd { margin: 3px 0 0; font-size: 20px; font-weight: 700; }
+@media (max-width: 782px) {
+    .gmrc-stewards-office__workshop-certification { grid-template-columns: 1fr; }
+    .gmrc-stewards-office__workshop-totals { grid-template-columns: repeat(2, 1fr); }
+}

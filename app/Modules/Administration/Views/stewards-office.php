@@ -34,6 +34,27 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
         </div>
     </section>
 
+    <?php $workshopCertification = is_array($workshopCertification ?? null) ? $workshopCertification : []; ?>
+    <section class="gmrc-stewards-office__workshop-certification" aria-labelledby="gmrc-workshop-certification-title">
+        <div>
+            <p class="gmrc-stewards-office__eyebrow">Steward-authored content · Integration health</p>
+            <h2 id="gmrc-workshop-certification-title">Workshop Certification</h2>
+            <p>One lifecycle now governs Monsters, Spells, Backgrounds, Equipment, and Callings &amp; Paths: Draft, Published, Archived, with dependency-safe permanent deletion for disposable Steward records.</p>
+        </div>
+        <div class="gmrc-stewards-office__workshop-seal">
+            <strong><?php echo ! empty($workshopCertification['certified']) ? 'Workshop system certified' : 'Workshop system needs attention'; ?></strong>
+            <span><?php echo esc_html((string) ($workshopCertification['workshop_count'] ?? 0)); ?>/5 authoring rooms registered</span>
+        </div>
+        <?php $totals = is_array($workshopCertification['totals'] ?? null) ? $workshopCertification['totals'] : []; ?>
+        <dl class="gmrc-stewards-office__workshop-totals">
+            <div><dt>Records</dt><dd><?php echo esc_html((string) ($totals['records'] ?? 0)); ?></dd></div>
+            <div><dt>Draft</dt><dd><?php echo esc_html((string) ($totals['draft'] ?? 0)); ?></dd></div>
+            <div><dt>Published</dt><dd><?php echo esc_html((string) ($totals['published'] ?? 0)); ?></dd></div>
+            <div><dt>Archived</dt><dd><?php echo esc_html((string) ($totals['archived'] ?? 0)); ?></dd></div>
+        </dl>
+        <p class="description"><?php echo esc_html((string) ($workshopCertification['policy'] ?? '')); ?></p>
+    </section>
+
     <div class="gmrc-stewards-office__grid">
         <section class="gmrc-stewards-office__card gmrc-stewards-office__card--wide" id="diagnostics">
             <span class="dashicons dashicons-heart" aria-hidden="true"></span>
