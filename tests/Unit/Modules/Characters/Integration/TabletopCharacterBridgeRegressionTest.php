@@ -38,4 +38,17 @@ final class TabletopCharacterBridgeRegressionTest extends TestCase
         self::assertStringContainsString('findForOwner($character->id(), $ownerId)', $renderer);
         self::assertStringContainsString("'author' => \$ownerId", $repository);
     }
+
+    public function testBridgeProjectsTheAdventurersTabletopPlaySnapshot(): void
+    {
+        $bridge = file_get_contents($this->root('app/Modules/Characters/Services/TabletopCharacterBridge.php'));
+
+        self::assertStringContainsString("'play' => [", $bridge);
+        self::assertStringContainsString("'armour_class' =>", $bridge);
+        self::assertStringContainsString("'hit_points' => [", $bridge);
+        self::assertStringContainsString("'passive_perception' =>", $bridge);
+        self::assertStringContainsString("'abilities' => \$abilityProjection", $bridge);
+        self::assertStringContainsString("'saving_throws' => \$savingThrowProjection", $bridge);
+        self::assertStringContainsString("'skills' => \$skillProjection", $bridge);
+    }
 }

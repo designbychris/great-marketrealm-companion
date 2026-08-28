@@ -72,12 +72,62 @@ final class TabletopCharacterBridge
             $imageUrl = 'data:image/svg+xml;base64,' . base64_encode((string) $token['portrait_svg']);
         }
 
+        $abilityScores = $character->abilityScores();
+        $savingThrows = $character->savingThrows();
+        $skills = $character->skills();
+
+        $abilityProjection = [];
+        $savingThrowProjection = [];
+        foreach ([
+            'strength' => 'strength',
+            'dexterity' => 'dexterity',
+            'constitution' => 'constitution',
+            'intelligence' => 'intelligence',
+            'wisdom' => 'wisdom',
+            'charisma' => 'charisma',
+        ] as $key => $method) {
+            $score = $abilityScores->{$method}();
+            $save = $savingThrows->{$method}();
+            $abilityProjection[$key] = [
+                'score' => $score->value(),
+                'modifier' => $score->modifier(),
+            ];
+            $savingThrowProjection[$key] = [
+                'modifier' => $save->modifier(),
+                'proficient' => $save->isProficient(),
+            ];
+        }
+
+        $skillProjection = [];
+        foreach ($skills->all() as $key => $skill) {
+            $skillProjection[(string) $key] = [
+                'modifier' => $skill->modifier(),
+                'proficient' => $skill->isProficient(),
+                'expertise' => $skill->hasExpertise(),
+            ];
+        }
+
         return [
             'id' => $character->id()->value(),
             'name' => $character->name()->value(),
             'race' => $character->race()->label(),
             'class' => $character->characterClass()->label(),
             'level' => $character->level()->value(),
+            'play' => [
+                'armour_class' => $character->armourClass()->value(),
+                'hit_points' => [
+                    'current' => $character->hitPoints()->current(),
+                    'maximum' => $character->hitPoints()->maximum(),
+                    'temporary' => $character->hitPoints()->temporary(),
+                ],
+                'speed' => $character->speed()->feet(),
+                'initiative' => $character->initiative()->modifier(),
+                'proficiency_bonus' => $character->proficiencyBonus()->value(),
+                'passive_perception' => $character->passivePerception()->value(),
+                'abilities' => $abilityProjection,
+                'saving_throws' => $savingThrowProjection,
+                'skills' => $skillProjection,
+            ],
             'token' => [
                 'image_url' => $imageUrl,
                 'frame' => (string) ($token['frame'] ?? 'guild-brass'),

@@ -107,3 +107,8 @@ Companion now exposes owner-validated Character identity and forged token projec
 - Makes Companion portrait projection explicitly owner-aware for trusted Tabletop consumers.
 - Prevents a DM viewing another member's character from falling back to a generated portrait when that character has a custom Companion portrait.
 - Preserves the existing current-user boundary for ordinary Companion portrait editing and persistence.
+
+
+### Phase IV.26 — The Adventurer's Satchel (0.3.1-alpha.5)
+- Companion support for the owner-scoped tabletop play projection and pull-out Adventurer's Satchel.
+- Companion remains authoritative for character mechanics; Tabletop consumes the projection without duplicating character persistence.
