@@ -51,4 +51,15 @@ final class TabletopCharacterBridgeRegressionTest extends TestCase
         self::assertStringContainsString("'saving_throws' => \$savingThrowProjection", $bridge);
         self::assertStringContainsString("'skills' => \$skillProjection", $bridge);
     }
+    public function testBridgeProjectsOwnerScopedEquippedWeaponsForTheTabletop(): void
+    {
+        $bridge = file_get_contents($this->root('app/Modules/Characters/Services/TabletopCharacterBridge.php'));
+        $inventory = file_get_contents($this->root('app/Modules/Characters/Inventory/Repositories/CharacterInventoryRepository.php'));
+
+        self::assertStringContainsString('findForOwner(', $bridge);
+        self::assertStringContainsString('new AttackPresenter($catalogue)', $bridge);
+        self::assertStringContainsString("'attacks' => $attackProjection", $bridge);
+        self::assertStringContainsString("'author' => $ownerId", $inventory);
+    }
+
 }

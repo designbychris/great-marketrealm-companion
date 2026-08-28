@@ -17,7 +17,12 @@ final class CharacterInventoryRepository
 
     public function find(CharacterId $characterId): CharacterInventory
     {
-        $post = $this->findPost($characterId);
+        return $this->findForOwner($characterId, get_current_user_id());
+    }
+
+    public function findForOwner(CharacterId $characterId, int $ownerId): CharacterInventory
+    {
+        $post = $this->findPostForOwner($characterId, $ownerId);
         if (! $post instanceof WP_Post) { return CharacterInventory::empty(); }
         $stored = get_post_meta($post->ID, self::META_INVENTORY, true);
         return is_array($stored) ? CharacterInventory::fromArray($stored) : CharacterInventory::empty();
@@ -36,7 +41,12 @@ final class CharacterInventoryRepository
 
     private function findPost(CharacterId $characterId): ?WP_Post
     {
-        if (! function_exists('get_posts')) {
+        return $this->findPostForOwner($characterId, get_current_user_id());
+    }
+
+    private function findPostForOwner(CharacterId $characterId, int $ownerId): ?WP_Post
+    {
+        if (! function_exists('get_posts') || $ownerId < 1) {
             return null;
         }
 
@@ -44,7 +54,7 @@ final class CharacterInventoryRepository
             'post_type' => 'gmrc_character',
             'post_status' => 'publish',
             'posts_per_page' => 1,
-            'author' => get_current_user_id(),
+            'author' => $ownerId,
             'meta_key' => '_gmrc_character_id',
             'meta_value' => $characterId->value(),
         ]);

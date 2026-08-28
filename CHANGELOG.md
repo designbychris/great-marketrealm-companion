@@ -1,3 +1,8 @@
+
+## 0.3.1-alpha.6 — Phase IV.26B: Weapons to Hand
+- Projects the character owner's equipped Companion attacks into the Tabletop play snapshot.
+- Adds owner-aware inventory lookup so a Tabletop projection cannot accidentally inspect the current viewer's inventory.
+- Reuses the canonical AttackPresenter for attack bonus, damage, range and weapon properties.
 # Changelog
 
 All notable changes to this project will be documented here.

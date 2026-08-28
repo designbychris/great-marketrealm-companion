@@ -8,6 +8,9 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Combat\Services\AttackPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Inventory\Models\ItemCatalogue;
+use GreatMarketrealmCompanion\Modules\Characters\Inventory\Repositories\CharacterInventoryRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Tokens\Repositories\CharacterTokenRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Tokens\Services\CharacterTokenPresenter;
 
@@ -107,6 +110,16 @@ final class TabletopCharacterBridge
             ];
         }
 
+        $catalogue = new ItemCatalogue();
+        $inventory = (new CharacterInventoryRepository())->findForOwner(
+            $character->id(),
+            $ownerId
+        );
+        $attackProjection = (new AttackPresenter($catalogue))->present(
+            $character,
+            $inventory
+        );
+
         return [
             'id' => $character->id()->value(),
             'name' => $character->name()->value(),
@@ -127,6 +140,7 @@ final class TabletopCharacterBridge
                 'abilities' => $abilityProjection,
                 'saving_throws' => $savingThrowProjection,
                 'skills' => $skillProjection,
+                'attacks' => $attackProjection,
             ],
             'token' => [
                 'image_url' => $imageUrl,
