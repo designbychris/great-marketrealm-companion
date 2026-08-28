@@ -123,3 +123,10 @@ Fixed
 - Exposes owner-scoped Companion character projections to the Tabletop through filter-based integration seams.
 - Carries the forged Tabletop Token recipe across the boundary without replacing the Character portrait.
 - Adds owner-aware token recipe lookup for trusted cross-account Table presentation.
+
+
+## 0.3.1-alpha.4 — Phase IV.25.2: The Keeper Keeps Pace
+
+- Makes Companion portrait projection explicitly owner-aware for trusted Tabletop consumers.
+- Prevents a DM viewing another member's character from falling back to a generated portrait when that character has a custom Companion portrait.
+- Preserves the existing current-user boundary for ordinary Companion portrait editing and persistence.

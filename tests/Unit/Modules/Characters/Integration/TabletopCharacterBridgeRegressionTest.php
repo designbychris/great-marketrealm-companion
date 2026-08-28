@@ -27,4 +27,15 @@ final class TabletopCharacterBridgeRegressionTest extends TestCase
         self::assertStringContainsString('findForOwner(', $source);
         self::assertStringContainsString("'token' => [", $source);
     }
+
+    public function testBridgePreservesCharacterOwnerWhenResolvingPortraitArtwork(): void
+    {
+        $bridge = file_get_contents($this->root('app/Modules/Characters/Services/TabletopCharacterBridge.php'));
+        $renderer = file_get_contents($this->root('app/Modules/Characters/Portraits/Services/PortraitRenderer.php'));
+        $repository = file_get_contents($this->root('app/Modules/Characters/Portraits/Repositories/CharacterPortraitRepository.php'));
+
+        self::assertStringContainsString('forCharacterForOwner($character, $ownerId)', $bridge);
+        self::assertStringContainsString('findForOwner($character->id(), $ownerId)', $renderer);
+        self::assertStringContainsString("'author' => $ownerId", $repository);
+    }
 }

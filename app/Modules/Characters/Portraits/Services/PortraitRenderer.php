@@ -8,6 +8,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterClass;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Race;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\CharacterPortraitRepositoryInterface;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\OwnerAwareCharacterPortraitRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\PortraitRecipe;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Rendering\PortraitRenderContext;
@@ -63,6 +64,34 @@ final class PortraitRenderer
         $portrait = $this->portraits->find(
             $character->id()
         );
+
+        if (! $portrait instanceof CharacterPortrait) {
+            $portrait = CharacterPortrait::generated(
+                $this->recipes->forCharacter(
+                    $character
+                )
+            );
+        }
+
+        return $this->viewModel(
+            $character,
+            $portrait
+        );
+    }
+
+    /**
+     * Build a portrait for a persisted Character while explicitly preserving
+     * the Character owner's identity. This is used by trusted projections such
+     * as the Tabletop bridge when the current viewer is the DM rather than the
+     * Character owner.
+     */
+    public function forCharacterForOwner(
+        Character $character,
+        int $ownerId
+    ): PortraitViewModel {
+        $portrait = $this->portraits instanceof OwnerAwareCharacterPortraitRepositoryInterface
+            ? $this->portraits->findForOwner($character->id(), $ownerId)
+            : null;
 
         if (! $portrait instanceof CharacterPortrait) {
             $portrait = CharacterPortrait::generated(

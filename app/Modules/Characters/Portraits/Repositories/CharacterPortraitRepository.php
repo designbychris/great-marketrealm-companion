@@ -6,6 +6,7 @@ namespace GreatMarketrealmCompanion\Modules\Characters\Portraits\Repositories;
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\CharacterPortraitRepositoryInterface;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\OwnerAwareCharacterPortraitRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\PortraitRecipe;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\ValueObjects\PortraitAttachmentId;
@@ -21,7 +22,7 @@ defined('ABSPATH') || exit;
  * @package GreatMarketrealmCompanion
  * @since 0.9.0
  */
-final class CharacterPortraitRepository implements CharacterPortraitRepositoryInterface
+final class CharacterPortraitRepository implements CharacterPortraitRepositoryInterface, OwnerAwareCharacterPortraitRepositoryInterface
 {
     private const META_CHARACTER_ID =
         '_gmrc_character_id';
@@ -38,8 +39,19 @@ final class CharacterPortraitRepository implements CharacterPortraitRepositoryIn
     public function find(
         CharacterId $characterId
     ): ?CharacterPortrait {
-        $post = $this->findCharacterPost(
-            $characterId
+        return $this->findForOwner(
+            $characterId,
+            get_current_user_id()
+        );
+    }
+
+    public function findForOwner(
+        CharacterId $characterId,
+        int $ownerId
+    ): ?CharacterPortrait {
+        $post = $this->findCharacterPostForOwner(
+            $characterId,
+            $ownerId
         );
 
         if (! $post instanceof WP_Post) {
@@ -219,11 +231,25 @@ final class CharacterPortraitRepository implements CharacterPortraitRepositoryIn
     private function findCharacterPost(
         CharacterId $characterId
     ): ?WP_Post {
+        return $this->findCharacterPostForOwner(
+            $characterId,
+            get_current_user_id()
+        );
+    }
+
+    private function findCharacterPostForOwner(
+        CharacterId $characterId,
+        int $ownerId
+    ): ?WP_Post {
+        if ($ownerId < 1) {
+            return null;
+        }
+
         $posts = get_posts([
             'post_type' => 'gmrc_character',
             'post_status' => 'publish',
             'posts_per_page' => 1,
-            'author' => get_current_user_id(),
+            'author' => $ownerId,
             'meta_key' => self::META_CHARACTER_ID,
             'meta_value' => $characterId->value(),
         ]);
@@ -234,4 +260,5 @@ final class CharacterPortraitRepository implements CharacterPortraitRepositoryIn
             ? $post
             : null;
     }
+
 }

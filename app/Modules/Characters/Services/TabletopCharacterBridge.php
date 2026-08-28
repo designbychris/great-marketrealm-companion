@@ -56,7 +56,7 @@ final class TabletopCharacterBridge
     /** @return array<string,mixed> */
     private function project(Character $character, int $ownerId): array
     {
-        $portrait = $this->portraits->forCharacter($character);
+        $portrait = $this->portraits->forCharacterForOwner($character, $ownerId);
         $token = (new CharacterTokenPresenter())->present(
             (new CharacterTokenRepository())->findForOwner($character->id(), $ownerId),
             $portrait
