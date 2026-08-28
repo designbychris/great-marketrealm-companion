@@ -140,3 +140,7 @@ Fixed
 ### Phase IV.26 — The Adventurer's Satchel (0.3.1-alpha.5)
 - Companion support for the owner-scoped tabletop play projection and pull-out Adventurer's Satchel.
 - Companion remains authoritative for character mechanics; Tabletop consumes the projection without duplicating character persistence.
+
+## 0.3.1-alpha.7 — IV.26C The Spell Pouch
+- Projects owner-scoped learned cantrips and spells to the Tabletop from the Companion Arcane Pantry.
+- Exposes casting ability, spell attack, save DC and slot maxima without duplicating spell mechanics in the VTT.

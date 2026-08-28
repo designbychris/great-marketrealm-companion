@@ -115,3 +115,5 @@ Companion now exposes owner-validated Character identity and forged token projec
 ### Phase IV.26 — The Adventurer's Satchel (0.3.1-alpha.5)
 - Companion support for the owner-scoped tabletop play projection and pull-out Adventurer's Satchel.
 - Companion remains authoritative for character mechanics; Tabletop consumes the projection without duplicating character persistence.
+
+- [x] IV.26C — The Spell Pouch: unfurled Satchel and Companion-authoritative spell projection.

@@ -9,6 +9,8 @@ use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Combat\Services\AttackPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCatalogue;
+use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\ArcanePantryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Models\ItemCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Repositories\CharacterInventoryRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Tokens\Repositories\CharacterTokenRepository;
@@ -120,6 +122,16 @@ final class TabletopCharacterBridge
             $inventory
         );
 
+        $arcana = (new ArcanePantryPresenter(
+            new ArcaneAbilityCatalogue()
+        ))->present($character);
+        $spellProjection = array_values(array_filter(
+            is_array($arcana['entries'] ?? null) ? $arcana['entries'] : [],
+            static fn (mixed $entry): bool => is_array($entry)
+                && in_array((string) ($entry['kind'] ?? ''), ['cantrip', 'spell'], true)
+                && ! empty($entry['learned'])
+        ));
+
         return [
             'id' => $character->id()->value(),
             'name' => $character->name()->value(),
@@ -141,6 +153,14 @@ final class TabletopCharacterBridge
                 'saving_throws' => $savingThrowProjection,
                 'skills' => $skillProjection,
                 'attacks' => $attackProjection,
+                'spellcasting' => [
+                    'ability' => $arcana['casting_ability'] ?? null,
+                    'modifier' => (int) ($arcana['casting_modifier'] ?? 0),
+                    'spell_attack' => $arcana['spell_attack'] ?? null,
+                    'save_dc' => $arcana['save_dc'] ?? null,
+                    'slots' => is_array($arcana['slots'] ?? null) ? $arcana['slots'] : [],
+                    'spells' => $spellProjection,
+                ],
             ],
             'token' => [
                 'image_url' => $imageUrl,
