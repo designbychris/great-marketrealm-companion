@@ -1,4 +1,10 @@
 
+## 0.3.1-alpha.8 — IV.26D.1 One Measure of the Adventurer
+- Exposes the Companion's existing mutable Adventuring Measures through an owner-scoped Tabletop filter boundary.
+- Reuses `Character::updateVitalMeasures()` and `CharacterRepository::save()`; Maximum HP remains Companion-certified and read-only.
+- Returns a fresh authoritative character projection after each successful Tabletop update.
+
+
 ## 0.3.1-alpha.6 — Phase IV.26B: Weapons to Hand
 - Projects the character owner's equipped Companion attacks into the Tabletop play snapshot.
 - Adds owner-aware inventory lookup so a Tabletop projection cannot accidentally inspect the current viewer's inventory.

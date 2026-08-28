@@ -460,6 +460,7 @@ final class CharactersServiceProvider extends ServiceProvider
         $bridge = $this->app->container()->make(TabletopCharacterBridge::class);
         add_filter('gmrc_tabletop_owned_characters', [$bridge, 'ownedCharacters'], 10, 2);
         add_filter('gmrc_tabletop_owned_character', [$bridge, 'ownedCharacter'], 10, 3);
+        add_filter('gmrc_tabletop_update_vital_measures', [$bridge, 'updateVitalMeasures'], 10, 5);
     }
 
     /** Import the bundled handbook catalogue into WordPress options. */

@@ -117,3 +117,5 @@ Companion now exposes owner-validated Character identity and forged token projec
 - Companion remains authoritative for character mechanics; Tabletop consumes the projection without duplicating character persistence.
 
 - [x] IV.26C — The Spell Pouch: unfurled Satchel and Companion-authoritative spell projection.
+
+- [x] IV.26D.1 — One Measure of the Adventurer: owner-scoped Tabletop writes reuse canonical Companion Adventuring Measures.

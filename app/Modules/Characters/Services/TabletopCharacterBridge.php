@@ -58,6 +58,56 @@ final class TabletopCharacterBridge
             : null;
     }
 
+    /**
+     * Update the mutable Adventuring Measures for an explicitly owned character.
+     *
+     * Maximum HP remains Companion-certified and is never accepted from Tabletop.
+     *
+     * @return array<string,mixed>|null
+     */
+    public function updateVitalMeasures(
+        mixed $value,
+        int $userId,
+        string $characterId,
+        int $currentHp,
+        int $temporaryHp
+    ): ?array {
+        $characterId = trim($characterId);
+
+        if ($userId < 1 || $characterId === '') {
+            return null;
+        }
+
+        try {
+            $character = $this->characters->findForOwner(
+                CharacterId::fromString($characterId),
+                $userId
+            );
+        } catch (\Throwable) {
+            return null;
+        }
+
+        if (! $character instanceof Character) {
+            return null;
+        }
+
+        $maximumHp = $character->hitPoints()->maximum();
+
+        if (
+            $currentHp < 0
+            || $currentHp > $maximumHp
+            || $temporaryHp < 0
+            || $temporaryHp > 999
+        ) {
+            return null;
+        }
+
+        $character->updateVitalMeasures($currentHp, $temporaryHp);
+        $this->characters->save($character);
+
+        return $this->project($character, $userId);
+    }
+
     /** @return array<string,mixed> */
     private function project(Character $character, int $ownerId): array
     {

@@ -51,6 +51,20 @@ final class TabletopCharacterBridgeRegressionTest extends TestCase
         self::assertStringContainsString("'saving_throws' => \$savingThrowProjection", $bridge);
         self::assertStringContainsString("'skills' => \$skillProjection", $bridge);
     }
+    public function testTabletopBridgeUsesCanonicalOwnerScopedVitalMeasuresBoundary(): void
+    {
+        $bridge = file_get_contents($this->root('app/Modules/Characters/Services/TabletopCharacterBridge.php'));
+        $provider = file_get_contents($this->root('app/Modules/Characters/CharactersServiceProvider.php'));
+
+        self::assertStringContainsString('public function updateVitalMeasures(', $bridge);
+        self::assertStringContainsString('findForOwner(', $bridge);
+        self::assertStringContainsString('hitPoints()->maximum()', $bridge);
+        self::assertStringContainsString('$character->updateVitalMeasures($currentHp, $temporaryHp);', $bridge);
+        self::assertStringContainsString('$this->characters->save($character);', $bridge);
+        self::assertStringContainsString('gmrc_tabletop_update_vital_measures', $provider);
+        self::assertStringNotContainsString('int $maximumHp', $bridge);
+    }
+
     public function testBridgeProjectsOwnerScopedEquippedWeaponsForTheTabletop(): void
     {
         $bridge = file_get_contents($this->root('app/Modules/Characters/Services/TabletopCharacterBridge.php'));
