@@ -1396,6 +1396,19 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-ledger-page__number" aria-hidden="true">4</p>
             </section>
         </article>
+
+        <?php
+        if (isset($tabletopToken) && is_array($tabletopToken)) {
+            echo $this->component(
+                'components.media.tabletop-token-forge',
+                [
+                    'characterId' => $characterId,
+                    'portrait' => $portrait,
+                    'tabletopToken' => $tabletopToken,
+                ]
+            );
+        }
+        ?>
     </div>
 
     <div

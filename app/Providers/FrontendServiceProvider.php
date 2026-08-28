@@ -514,6 +514,20 @@ class FrontendServiceProvider extends ServiceProvider
         }
 
         if (
+            in_array($method, ['POST', 'DELETE'], true)
+            && preg_match(
+                '#^characters/([^/]+)/tabletop-token$#',
+                $route,
+                $matches
+            )
+        ) {
+            return 'gmrc_character_tabletop_token_'
+                . sanitize_text_field(
+                    $matches[1]
+                );
+        }
+
+        if (
             in_array(
                 $method,
                 ['POST', 'PUT', 'DELETE'],
@@ -1005,6 +1019,10 @@ class FrontendServiceProvider extends ServiceProvider
             [
                 'handle' => 'gmrc-open-ledger',
                 'path' => 'modules/characters/open-ledger.css',
+            ],
+            [
+                'handle' => 'gmrc-token-forge',
+                'path' => 'modules/characters/token-forge.css',
             ],
             [
                 'handle' => 'gmrc-guild-dice',
@@ -1682,6 +1700,23 @@ class FrontendServiceProvider extends ServiceProvider
                 ? (string) filemtime(
                     $illuminatorWorkbenchPath
                 )
+                : GMRC_VERSION,
+            true
+        );
+
+        $tabletopTokenForgePath =
+            GMRC_PATH
+            . 'assets/js/components/media/'
+            . 'tabletop-token-forge.js';
+
+        wp_enqueue_script(
+            'gmrc-tabletop-token-forge',
+            GMRC_URL
+                . 'assets/js/components/media/'
+                . 'tabletop-token-forge.js',
+            [],
+            file_exists($tabletopTokenForgePath)
+                ? (string) filemtime($tabletopTokenForgePath)
                 : GMRC_VERSION,
             true
         );

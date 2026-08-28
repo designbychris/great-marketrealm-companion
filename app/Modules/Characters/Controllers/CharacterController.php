@@ -90,6 +90,9 @@ use GreatMarketrealmCompanion\Modules\Characters\Portraits\Repositories\Characte
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\ValueObjects\PortraitAttachmentId;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\SubmittedPortraitRecipeFactory;
+use GreatMarketrealmCompanion\Modules\Characters\Tokens\Models\CharacterToken;
+use GreatMarketrealmCompanion\Modules\Characters\Tokens\Repositories\CharacterTokenRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Tokens\Services\CharacterTokenPresenter;
 use GreatMarketrealmCompanion\Services\Auby\Auby;
 use GreatMarketrealmCompanion\Services\Auby\QuoteCategories;
 use GreatMarketrealmCompanion\Services\Characters\ClassRegistry;
@@ -612,6 +615,112 @@ final class CharacterController
     }
 
     /**
+     * Forge or update the Character's dedicated Tabletop token.
+     *
+     * A file upload changes only the Tabletop token source. Without a file,
+     * the request updates the non-destructive crop/frame recipe.
+     */
+    public function saveTabletopToken(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $repository = new CharacterTokenRepository();
+        $token = $repository->find($character->id());
+        $file = $_FILES['gmrc_tabletop_token'] ?? null;
+
+        $frame = isset($_POST['token_frame']) && is_scalar($_POST['token_frame'])
+            ? sanitize_key(wp_unslash((string) $_POST['token_frame']))
+            : $token->frame();
+        $focusX = isset($_POST['token_focus_x']) ? (int) $_POST['token_focus_x'] : $token->focusX();
+        $focusY = isset($_POST['token_focus_y']) ? (int) $_POST['token_focus_y'] : $token->focusY();
+        $zoom = isset($_POST['token_zoom']) ? (int) $_POST['token_zoom'] : $token->zoom();
+
+        try {
+            $token = $token->withDesign($frame, $focusX, $focusY, $zoom);
+        } catch (InvalidArgumentException $exception) {
+            $this->flash->error($exception->getMessage());
+
+            return $this->responses->redirect(
+                $this->characterUrl($character->id())
+            );
+        }
+
+        $hasUpload = is_array($file)
+            && isset($file['tmp_name'], $file['name'])
+            && (int) ($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE;
+
+        if ($hasUpload) {
+            if ((int) ($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+                $this->flash->error('The Token Smith could not receive that image. Please try again.');
+                return $this->responses->redirect($this->characterUrl($character->id()));
+            }
+
+            $checked = wp_check_filetype_and_ext(
+                (string) $file['tmp_name'],
+                (string) $file['name']
+            );
+            $allowed = ['image/jpeg', 'image/png', 'image/webp'];
+
+            if (! isset($checked['type']) || ! in_array($checked['type'], $allowed, true)) {
+                $this->flash->error('Tabletop tokens must be JPG, PNG or WebP images.');
+                return $this->responses->redirect($this->characterUrl($character->id()));
+            }
+
+            if ((int) ($file['size'] ?? 0) > 4 * MB_IN_BYTES) {
+                $this->flash->error('That token is too large. Please keep it below 4 MB.');
+                return $this->responses->redirect($this->characterUrl($character->id()));
+            }
+
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            require_once ABSPATH . 'wp-admin/includes/media.php';
+            require_once ABSPATH . 'wp-admin/includes/image.php';
+
+            $attachmentId = media_handle_upload('gmrc_tabletop_token', 0);
+
+            if (is_wp_error($attachmentId)) {
+                $this->flash->error('The Token Smith could not forge that image. Please try another.');
+                return $this->responses->redirect($this->characterUrl($character->id()));
+            }
+
+            $token = $token->withCustomAttachment((int) $attachmentId);
+        }
+
+        $repository->save($character->id(), $token);
+
+        $this->flash->success(
+            $hasUpload
+                ? 'Your dedicated Tabletop token has been forged.'
+                : 'Your Tabletop token design has been saved.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl($character->id())
+        );
+    }
+
+    /**
+     * Stop using a dedicated token image and return to the Character portrait.
+     */
+    public function resetTabletopToken(
+        string $id
+    ): RedirectResponse {
+        $character = $this->findCharacter($id);
+        $repository = new CharacterTokenRepository();
+        $repository->save(
+            $character->id(),
+            $repository->find($character->id())->usePortrait()
+        );
+
+        $this->flash->success(
+            'Your Tabletop token now follows the Character portrait again.'
+        );
+
+        return $this->responses->redirect(
+            $this->characterUrl($character->id())
+        );
+    }
+
+    /**
      * Display the Final Farewell confirmation.
      */
     public function confirmDelete(
@@ -732,6 +841,11 @@ final class CharacterController
             ->forCharacter(
                 $character
             );
+
+        $tabletopToken = (new CharacterTokenPresenter())->present(
+            (new CharacterTokenRepository())->find($character->id()),
+            $portrait
+        );
 
         $inventoryState = $inventoryPresenter->present(
             $character,
@@ -978,6 +1092,7 @@ final class CharacterController
                     [
                     'character' => $character,
                     'portrait' => $portrait,
+                    'tabletopToken' => $tabletopToken,
                     'sealRegistry' => $this->sealRegistry,
                     'inventory' => $inventoryState,
                     'inventoryArmourClass' =>

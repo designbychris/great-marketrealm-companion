@@ -6,6 +6,21 @@ The format is based on Keep a Changelog.
 
 ---
 
+## [0.3.1-alpha.1] — Phase IV.25A: The Adventurer’s Token Forge
+
+### Added
+- Dedicated per-Character Tabletop token recipe, deliberately separate from the full Companion portrait.
+- Safe portrait fallback when no dedicated token has been forged.
+- JPG, PNG and WebP token uploads capped at 4 MB.
+- Non-destructive token focus, zoom and ring/frame controls with a live Ledger preview.
+- Stable token presenter intended for the forthcoming Great Marketrealm Tabletop character bridge.
+- Owner-bound persistence and a dedicated nonce route for token mutation.
+
+### Quality
+- Added Token Forge regression coverage for persistence separation, upload validation, crop recipe, routes, nonce boundary and Ledger presentation.
+
+---
+
 ## v0.6.0 — Framework Foundation
 
 ### Core

@@ -42,6 +42,11 @@ return static function (
     );
 
     $router->post(
+        '/characters/{id}/tabletop-token',
+        [CharacterController::class, 'saveTabletopToken']
+    );
+
+    $router->post(
         '/characters/{id}/inventory',
         [CharacterController::class, 'addInventoryItem']
     );
@@ -215,6 +220,11 @@ return static function (
     $router->delete(
         '/characters/{id}/portrait',
         [CharacterController::class, 'resetPortrait']
+    );
+
+    $router->delete(
+        '/characters/{id}/tabletop-token',
+        [CharacterController::class, 'resetTabletopToken']
     );
 
     $router->get(
