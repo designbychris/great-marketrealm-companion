@@ -90,3 +90,10 @@ First Public Release
 - [x] Expose a stable token projection for the future Tabletop adapter.
 - [ ] Let the Tabletop consume the selected Character token after Phase IV.25 seat binding.
 - [ ] Add optional pixel-sprite/token variants during the Pixel Chamber phase.
+
+### Phase IV.25A.1 — The Token Forge Folio
+
+- Surface the Adventurer’s Token Forge as a first-class **Tabletop Token** folio in the Character Ledger.
+- Project the Companion Guild Profile portrait into the Tabletop member-avatar integration seam when available.
+- Preserve WordPress avatar fallback and keep the full Character portrait independent from the Tabletop token recipe.
+

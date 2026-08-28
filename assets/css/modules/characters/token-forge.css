@@ -172,3 +172,33 @@
         width: 165px;
     }
 }
+
+/* Phase IV.25A.1 — The Token Forge Folio */
+.gmrc-ledger-book--tabletop-token .gmrc-token-forge {
+    margin-top: 1rem;
+    box-shadow: none;
+}
+
+.gmrc-ledger-page--tabletop-token .gmrc-token-forge__workspace {
+    grid-template-columns: minmax(140px, 185px) minmax(0, 1fr);
+}
+
+.gmrc-token-forge-folio__note {
+    display: grid;
+    gap: .45rem;
+    margin-top: 1.5rem;
+    padding: 1rem 1.1rem;
+    border: 1px solid rgba(84, 58, 32, .25);
+    background: rgba(255, 248, 219, .58);
+    transform: rotate(-.5deg);
+}
+
+.gmrc-token-forge-folio__note strong {
+    color: #5d347f;
+}
+
+@media (max-width: 960px) {
+    .gmrc-ledger-page--tabletop-token .gmrc-token-forge__workspace {
+        grid-template-columns: 1fr;
+    }
+}

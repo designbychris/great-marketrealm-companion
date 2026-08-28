@@ -6,6 +6,13 @@ The format is based on Keep a Changelog.
 
 ---
 
+## [0.3.1-alpha.2] — Phase IV.25A.1: The Token Forge Folio
+
+- Moves the Adventurer’s Token Forge into its own visible **Tabletop Token** Character Ledger tab/folio.
+- Keeps the portrait and Tabletop token as separate visual identities while retaining portrait fallback.
+- Bridges Companion Guild Profile portraits into the Tabletop roster through `gmrt_table_member_avatar_url`, with the existing WordPress avatar retained as fallback.
+- Adds regression coverage for the dedicated Ledger panel and cross-plugin avatar seam.
+
 ## [0.3.1-alpha.1] — Phase IV.25A: The Adventurer’s Token Forge
 
 ### Added

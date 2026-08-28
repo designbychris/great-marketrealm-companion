@@ -5,6 +5,7 @@ namespace GreatMarketrealmCompanion\Providers;
 use GreatMarketrealmCompanion\Http\Controllers\AppController;
 use GreatMarketrealmCompanion\Modules\GuildGate\Controllers\GuildGateController;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildAccessPolicy;
+use GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile;
 use GreatMarketrealmCompanion\Core\Http\Response;
 use GreatMarketrealmCompanion\Core\Routing\Router;
 use WP_Post;
@@ -77,6 +78,44 @@ class FrontendServiceProvider extends ServiceProvider
             [$this, 'captureApplicationRequest'],
             1
         );
+
+        // When the Tabletop plugin is present, let a Companion Guild Profile
+        // portrait become the member avatar shown around the Table.
+        add_filter(
+            'gmrt_table_member_avatar_url',
+            [$this, 'tabletopMemberAvatarUrl'],
+            10,
+            3
+        );
+    }
+
+    /**
+     * Prefer the Companion Guild Profile portrait for a Tabletop member.
+     *
+     * The Tabletop owns its roster projection and exposes this filter as the
+     * integration boundary. Returning the incoming URL keeps the bridge fully
+     * optional when a Guild Profile portrait has not been configured.
+     */
+    public function tabletopMemberAvatarUrl(
+        string $avatarUrl,
+        int $userId,
+        array $identity = []
+    ): string {
+        if ($userId <= 0 || ! function_exists('wp_get_attachment_image_url')) {
+            return $avatarUrl;
+        }
+
+        $portraitId = GuildProfile::portraitAttachmentId($userId);
+
+        if ($portraitId <= 0) {
+            return $avatarUrl;
+        }
+
+        $portraitUrl = wp_get_attachment_image_url($portraitId, [64, 64]);
+
+        return is_string($portraitUrl) && $portraitUrl !== ''
+            ? $portraitUrl
+            : $avatarUrl;
     }
 
     /**

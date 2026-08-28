@@ -677,6 +677,20 @@ $callingPathLabel = $callingPath !== ''
         </button>
 
         <button
+            id="gmrc-ledger-tab-tabletop-token"
+            class="gmrc-ledger-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="gmrc-ledger-panel-tabletop-token"
+            tabindex="-1"
+            data-ledger-tab="tabletop-token"
+        >
+            <span class="gmrc-ledger-tab__icon" aria-hidden="true">◉</span>
+            <span class="gmrc-ledger-tab__label">Tabletop Token</span>
+        </button>
+
+        <button
             id="gmrc-ledger-tab-skills"
             class="gmrc-ledger-tab"
             type="button"
@@ -1240,6 +1254,57 @@ $callingPathLabel = $callingPath !== ''
     </div>
 
     <div
+        id="gmrc-ledger-panel-tabletop-token"
+        class="gmrc-ledger-tabpanel gmrc-ledger-tabpanel--tabletop-token"
+        role="tabpanel"
+        aria-labelledby="gmrc-ledger-tab-tabletop-token"
+        data-ledger-panel="tabletop-token"
+        hidden
+    >
+        <article class="gmrc-ledger-book gmrc-ledger-book--tabletop-token">
+            <span class="gmrc-ledger-book__ribbon" aria-hidden="true"></span>
+            <div class="gmrc-ledger-book__binding" aria-hidden="true"></div>
+
+            <section class="gmrc-ledger-page gmrc-ledger-page--tabletop-token" aria-labelledby="gmrc-tabletop-token-folio-title">
+                <p class="gmrc-ledger-page__kicker">Tabletop Folio · I</p>
+                <h2 id="gmrc-tabletop-token-folio-title">Adventurer’s Token Forge</h2>
+                <p class="gmrc-ledger-copy">
+                    Shape the piece that represents this adventurer upon the Great Marketrealm Tabletop.
+                    The Character portrait remains safely unchanged.
+                </p>
+
+                <?php
+                if (isset($tabletopToken) && is_array($tabletopToken)) {
+                    echo $this->component(
+                        'components.media.tabletop-token-forge',
+                        [
+                            'characterId' => $characterId,
+                            'portrait' => $portrait,
+                            'tabletopToken' => $tabletopToken,
+                        ]
+                    );
+                }
+                ?>
+                <p class="gmrc-ledger-page__number" aria-hidden="true">T1</p>
+            </section>
+
+            <section class="gmrc-ledger-page gmrc-ledger-page--tabletop-token-notes" aria-labelledby="gmrc-tabletop-token-notes-title">
+                <p class="gmrc-ledger-page__kicker">Tabletop Folio · II</p>
+                <h2 id="gmrc-tabletop-token-notes-title">A piece of your own</h2>
+                <p class="gmrc-ledger-copy">
+                    Use the Character portrait as-is, or upload a dedicated token and tune its framing.
+                    Focus, zoom, and ring choices are stored as a non-destructive recipe for the Tabletop bridge.
+                </p>
+                <aside class="gmrc-token-forge-folio__note">
+                    <strong>The portrait and token are separate.</strong>
+                    <span>Your Ledger artwork can stay grand and painterly while your Tabletop piece stays clear at battlemat scale.</span>
+                </aside>
+                <p class="gmrc-ledger-page__number" aria-hidden="true">T2</p>
+            </section>
+        </article>
+    </div>
+
+    <div
         id="gmrc-ledger-panel-skills"
         class="gmrc-ledger-tabpanel"
         role="tabpanel"
@@ -1397,18 +1462,6 @@ $callingPathLabel = $callingPath !== ''
             </section>
         </article>
 
-        <?php
-        if (isset($tabletopToken) && is_array($tabletopToken)) {
-            echo $this->component(
-                'components.media.tabletop-token-forge',
-                [
-                    'characterId' => $characterId,
-                    'portrait' => $portrait,
-                    'tabletopToken' => $tabletopToken,
-                ]
-            );
-        }
-        ?>
     </div>
 
     <div
