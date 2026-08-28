@@ -58,8 +58,8 @@ final class TabletopCharacterBridgeRegressionTest extends TestCase
 
         self::assertStringContainsString('findForOwner(', $bridge);
         self::assertStringContainsString('new AttackPresenter($catalogue)', $bridge);
-        self::assertStringContainsString("'attacks' => $attackProjection", $bridge);
-        self::assertStringContainsString("'author' => $ownerId", $inventory);
+        self::assertStringContainsString("'attacks' => \$attackProjection", $bridge);
+        self::assertStringContainsString("'author' => \$ownerId", $inventory);
     }
 
 }

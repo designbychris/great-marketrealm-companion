@@ -17,7 +17,10 @@ final class CharacterInventoryRepository
 
     public function find(CharacterId $characterId): CharacterInventory
     {
-        return $this->findForOwner($characterId, get_current_user_id());
+        return $this->findForOwner(
+            $characterId,
+            function_exists('get_current_user_id') ? (int) get_current_user_id() : 0
+        );
     }
 
     public function findForOwner(CharacterId $characterId, int $ownerId): CharacterInventory
@@ -41,7 +44,10 @@ final class CharacterInventoryRepository
 
     private function findPost(CharacterId $characterId): ?WP_Post
     {
-        return $this->findPostForOwner($characterId, get_current_user_id());
+        return $this->findPostForOwner(
+            $characterId,
+            function_exists('get_current_user_id') ? (int) get_current_user_id() : 0
+        );
     }
 
     private function findPostForOwner(CharacterId $characterId, int $ownerId): ?WP_Post
