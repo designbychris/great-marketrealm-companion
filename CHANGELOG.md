@@ -118,3 +118,8 @@ Fixed
 - Database creation
 - Dashboard shortcode
 - Admin menu
+
+## Phase IV.25 — The Companion Character Gate
+- Exposes owner-scoped Companion character projections to the Tabletop through filter-based integration seams.
+- Carries the forged Tabletop Token recipe across the boundary without replacing the Character portrait.
+- Adds owner-aware token recipe lookup for trusted cross-account Table presentation.

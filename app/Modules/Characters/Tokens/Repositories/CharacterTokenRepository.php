@@ -24,7 +24,12 @@ final class CharacterTokenRepository
 
     public function find(CharacterId $characterId): CharacterToken
     {
-        $post = $this->findCharacterPost($characterId);
+        return $this->findForOwner($characterId, function_exists('get_current_user_id') ? get_current_user_id() : 0);
+    }
+
+    public function findForOwner(CharacterId $characterId, int $ownerId): CharacterToken
+    {
+        $post = $this->findCharacterPost($characterId, $ownerId);
 
         if (! $post instanceof WP_Post) {
             return CharacterToken::portrait();
@@ -75,14 +80,19 @@ final class CharacterTokenRepository
         }
     }
 
-    private function findCharacterPost(CharacterId $characterId): ?WP_Post
+    private function findCharacterPost(CharacterId $characterId, ?int $ownerId = null): ?WP_Post
     {
         // Controller unit tests deliberately exercise the Ledger without
         // bootstrapping WordPress persistence. In that isolated runtime the
         // safest token projection is the same one used for an unconfigured
         // Character: follow the existing portrait. Production requests always
         // have these WordPress functions available and continue below.
-        if (! function_exists('get_posts') || ! function_exists('get_current_user_id')) {
+        if (! function_exists('get_posts')) {
+            return null;
+        }
+
+        $ownerId = $ownerId ?? (function_exists('get_current_user_id') ? get_current_user_id() : 0);
+        if ($ownerId < 1) {
             return null;
         }
 
@@ -90,7 +100,7 @@ final class CharacterTokenRepository
             'post_type' => 'gmrc_character',
             'post_status' => 'publish',
             'posts_per_page' => 1,
-            'author' => get_current_user_id(),
+            'author' => $ownerId,
             'meta_key' => self::META_CHARACTER_ID,
             'meta_value' => $characterId->value(),
         ]);

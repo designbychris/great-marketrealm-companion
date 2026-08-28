@@ -14,6 +14,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Repositories\CharacterRepositor
 use GreatMarketrealmCompanion\Modules\Characters\Rules\CharacterCreationRules;
 use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterFactory;
 use GreatMarketrealmCompanion\Modules\Characters\Services\CharacterMembershipGuard;
+use GreatMarketrealmCompanion\Modules\Characters\Services\TabletopCharacterBridge;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterCatalogueRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterBuildProfileRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Contracts\CharacterPortraitRepositoryInterface;
@@ -426,6 +427,15 @@ final class CharactersServiceProvider extends ServiceProvider
         /*
          * Controller resolved after its dependencies are registered.
          */
+        $container->singleton(
+            TabletopCharacterBridge::class,
+            static fn (Container $container): TabletopCharacterBridge =>
+                new TabletopCharacterBridge(
+                    $container->make(CharacterRepository::class),
+                    $container->make(PortraitRenderer::class)
+                )
+        );
+
         $container->bind(
             CharacterController::class
         );
@@ -446,6 +456,10 @@ final class CharactersServiceProvider extends ServiceProvider
             [$this, 'seedCharacterCatalogue'],
             20
         );
+
+        $bridge = $this->app->container()->make(TabletopCharacterBridge::class);
+        add_filter('gmrc_tabletop_owned_characters', [$bridge, 'ownedCharacters'], 10, 2);
+        add_filter('gmrc_tabletop_owned_character', [$bridge, 'ownedCharacter'], 10, 3);
     }
 
     /** Import the bundled handbook catalogue into WordPress options. */

@@ -97,3 +97,6 @@ First Public Release
 - Project the Companion Guild Profile portrait into the Tabletop member-avatar integration seam when available.
 - Preserve WordPress avatar fallback and keep the full Character portrait independent from the Tabletop token recipe.
 
+
+### Phase IV.25 — The Companion Character Gate
+Companion now exposes owner-validated Character identity and forged token projections for the Great Marketrealm Tabletop.
