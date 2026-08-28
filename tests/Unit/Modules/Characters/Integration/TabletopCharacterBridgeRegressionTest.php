@@ -36,6 +36,6 @@ final class TabletopCharacterBridgeRegressionTest extends TestCase
 
         self::assertStringContainsString('forCharacterForOwner($character, $ownerId)', $bridge);
         self::assertStringContainsString('findForOwner($character->id(), $ownerId)', $renderer);
-        self::assertStringContainsString("'author' => $ownerId", $repository);
+        self::assertStringContainsString("'author' => \$ownerId", $repository);
     }
 }
