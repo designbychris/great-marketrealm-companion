@@ -23,6 +23,7 @@ final class LivingLedgerTabsRegressionTest extends TestCase
         self::assertStringContainsString('Archive Notes', $view);
         self::assertStringContainsString('Spells & Abilities', $view);
         self::assertStringContainsString('Progression', $view);
+        self::assertStringContainsString('Tabletop Token', $view);
         self::assertStringContainsString(
             'class="gmrc-ledger-index"',
             $view
@@ -36,14 +37,14 @@ final class LivingLedgerTabsRegressionTest extends TestCase
             strpos($view, 'class="gmrc-ledger-index"')
         );
         /*
-         * Count only the seven top-level Living Ledger panels.
+         * Count only the eight top-level Living Ledger panels.
          *
          * The Indexed Arcane Pantry has its own nested ARIA tabpanels, so a
          * global role="tabpanel" count would incorrectly treat those shelves
          * as additional Ledger pages.
          */
         self::assertSame(
-            7,
+            8,
             substr_count($view, 'data-ledger-panel=')
         );
     }
