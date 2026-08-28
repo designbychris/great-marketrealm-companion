@@ -129,7 +129,6 @@ final class TabletopCharacterBridge
             is_array($arcana['entries'] ?? null) ? $arcana['entries'] : [],
             static fn (mixed $entry): bool => is_array($entry)
                 && in_array((string) ($entry['kind'] ?? ''), ['cantrip', 'spell'], true)
-                && ! empty($entry['learned'])
         ));
 
         return [
