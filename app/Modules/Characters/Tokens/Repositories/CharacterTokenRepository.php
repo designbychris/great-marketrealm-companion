@@ -77,6 +77,15 @@ final class CharacterTokenRepository
 
     private function findCharacterPost(CharacterId $characterId): ?WP_Post
     {
+        // Controller unit tests deliberately exercise the Ledger without
+        // bootstrapping WordPress persistence. In that isolated runtime the
+        // safest token projection is the same one used for an unconfigured
+        // Character: follow the existing portrait. Production requests always
+        // have these WordPress functions available and continue below.
+        if (! function_exists('get_posts') || ! function_exists('get_current_user_id')) {
+            return null;
+        }
+
         $posts = get_posts([
             'post_type' => 'gmrc_character',
             'post_status' => 'publish',
