@@ -10,19 +10,19 @@ use PHPUnit\Framework\TestCase;
 
 final class SpellRegisterRegressionTest extends TestCase
 {
-    public function testHandbookImportsSeventyOneCanonicalSpellIdentities(): void
+    public function testHandbookImportsSeventyTwoCanonicalSpellIdentities(): void
     {
         $register = new HandbookSpellRegister();
 
-        self::assertCount(71, $register->all());
-        self::assertSame(73, $register->sourceVariantCount());
+        self::assertCount(72, $register->all());
+        self::assertSame(74, $register->sourceVariantCount());
     }
 
     public function testRegisterDistinguishesRenamedAndOriginalMarketrealmMagic(): void
     {
         $register = new HandbookSpellRegister();
 
-        self::assertCount(29, $register->byKind('renamed'));
+        self::assertCount(30, $register->byKind('renamed'));
         self::assertCount(42, $register->byKind('marketrealm-original'));
 
         self::assertSame(
@@ -124,10 +124,10 @@ final class SpellRegisterRegressionTest extends TestCase
 
         self::assertSame('III.13.1A', $summary['phase']);
         self::assertSame('registered', $summary['status']);
-        self::assertSame(71, $summary['entry_count']);
-        self::assertSame(29, $summary['renamed_count']);
+        self::assertSame(72, $summary['entry_count']);
+        self::assertSame(30, $summary['renamed_count']);
         self::assertSame(42, $summary['marketrealm_original_count']);
-        self::assertSame(73, $summary['source_variant_count']);
+        self::assertSame(74, $summary['source_variant_count']);
     }
 
     public function testSpellRegisterDoesNotReachIntoCharacterPersistence(): void

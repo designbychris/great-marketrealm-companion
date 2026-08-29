@@ -1,3 +1,7 @@
+## IV.27E — Light Wrought by Magic
+
+- Canonised **Shelfshine** as the Great Marketrealm rename of Light and added structured 20 ft bright + 20 ft dim, one-hour magical illumination metadata for Tabletop.
+
 - IV.27A — The Adventurer's Sight: Tabletop character projections now carry Companion-certified darkvision from the canonical race registry, including the Rindrunner Cave Hunter extension.
 
 ## 0.3.1-alpha.8 — IV.26D.1 One Measure of the Adventurer

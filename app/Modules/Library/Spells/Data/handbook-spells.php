@@ -15,6 +15,27 @@ defined('ABSPATH') || exit;
  */
 return [
     [
+        'key' => 'shelfshine',
+        'name' => 'Shelfshine',
+        'kind' => 'renamed',
+        'original_spell' => 'Light',
+        'level' => 0,
+        'school' => 'evocation',
+        'access_labels' => ['artificer', 'bard', 'cleric', 'sorcerer', 'wizard'],
+        'source_issues' => [],
+        'variants' => [
+            [
+                'source_variant' => 1,
+                'level' => 0,
+                'school' => 'evocation',
+                'access_labels' => ['artificer', 'bard', 'cleric', 'sorcerer', 'wizard'],
+                'source_text' => 'Light → Shelfshine
+You touch one object and make it shine with neat enchanted shelf-light for 1 hour.
+Mechanics: The object sheds bright light in a 20-foot radius and dim light for an additional 20 feet. The light may be covered by an opaque object. Casting Shelfshine again ends the previous Shelfshine.',
+            ],
+        ],
+    ],
+    [
         'key' => 'cure-meats',
         'name' => 'Cure Meats',
         'kind' => 'renamed',

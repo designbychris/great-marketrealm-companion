@@ -243,16 +243,15 @@ final class ArcaneAbilityCatalogue
                 spellLevel: 1
             ),
             new ArcaneAbilityDefinition(
-                'stocklight-orb',
-                'Stocklight Orb',
-                'spell',
-                ['wizard'],
-                'A hovering lantern-orb casts clean stockroom light and follows its appointed keeper.',
+                'shelfshine',
+                'Shelfshine',
+                'cantrip',
+                ['wizard', 'sorcerer', 'cleric', 'bard', 'artificer'],
+                'You touch one object and make it shine with neat enchanted shelf-light.',
                 '1 action',
                 'Touch',
                 '1 hour',
-                '1st-level slot',
-                spellLevel: 1
+                'At will'
             ),
             new ArcaneAbilityDefinition(
                 'shelf-alarm',

@@ -1,3 +1,4 @@
+- [x] IV.27E Companion — Shelfshine and server-readable magical illumination metadata.
 - IV.27A — The Adventurer's Sight: Tabletop character projections now carry Companion-certified darkvision from the canonical race registry, including the Rindrunner Cave Hunter extension.
 
 ### Phase IV.26B — Weapons to Hand

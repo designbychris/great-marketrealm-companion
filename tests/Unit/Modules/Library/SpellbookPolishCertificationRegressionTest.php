@@ -10,17 +10,17 @@ use PHPUnit\Framework\TestCase;
 
 final class SpellbookPolishCertificationRegressionTest extends TestCase
 {
-    public function testCertifiedRegisterStillContainsSeventyOneIdentitiesAndSeventyThreeVariants(): void
+    public function testCertifiedRegisterStillContainsSeventyTwoIdentitiesAndSeventyFourVariants(): void
     {
         $register =
             new HandbookSpellRegister();
 
         self::assertCount(
-            71,
+            72,
             $register->all()
         );
         self::assertSame(
-            73,
+            74,
             $register->sourceVariantCount()
         );
     }
@@ -117,7 +117,7 @@ final class SpellbookPolishCertificationRegressionTest extends TestCase
             $spellbook['filters']['kind']
         );
         self::assertSame(
-            71,
+            72,
             $spellbook['result_count']
         );
     }
@@ -135,7 +135,7 @@ final class SpellbookPolishCertificationRegressionTest extends TestCase
             $spellbook['filters']['level']
         );
         self::assertSame(
-            71,
+            72,
             $spellbook['result_count']
         );
     }
@@ -153,7 +153,7 @@ final class SpellbookPolishCertificationRegressionTest extends TestCase
             $spellbook['filters']['school']
         );
         self::assertSame(
-            71,
+            72,
             $spellbook['result_count']
         );
     }
@@ -171,7 +171,7 @@ final class SpellbookPolishCertificationRegressionTest extends TestCase
             $spellbook['filters']['access']
         );
         self::assertSame(
-            71,
+            72,
             $spellbook['result_count']
         );
     }
@@ -379,14 +379,14 @@ final class SpellbookPolishCertificationRegressionTest extends TestCase
         }
     }
 
-    public function testSpellbookCertifiedCountsRemainTwentyNineRenamesAndFortyTwoOriginals(): void
+    public function testSpellbookCertifiedCountsRemainThirtyRenamesAndFortyTwoOriginals(): void
     {
         $spellbook = (
             new SpellbookPresenter()
         )->present();
 
         self::assertSame(
-            29,
+            30,
             $spellbook['renamed_count']
         );
         self::assertSame(
@@ -394,7 +394,7 @@ final class SpellbookPolishCertificationRegressionTest extends TestCase
             $spellbook['original_count']
         );
         self::assertSame(
-            71,
+            72,
             $spellbook['total_count']
         );
     }

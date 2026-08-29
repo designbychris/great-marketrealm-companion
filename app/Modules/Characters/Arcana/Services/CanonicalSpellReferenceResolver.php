@@ -22,6 +22,7 @@ final class CanonicalSpellReferenceResolver
         'market-missile' => 'mystery-mustard-missile',
         'aisle-lightning' => 'lightning-lemonade',
         'stockroom-fireball' => 'flame-grilled-fireball',
+        'stocklight-orb' => 'shelfshine',
     ];
 
     public function __construct(

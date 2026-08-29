@@ -31,17 +31,21 @@ final class ArcanePantryPresenter
         19=>[4,3,3,3,3,2,1,1,1], 20=>[4,3,3,3,3,2,2,1,1],
     ];
     private CanonicalSpellReferenceResolver $references;
+    private SpellIlluminationCatalogue $illumination;
 
     public function __construct(
         private ArcaneAbilityCatalogue $catalogue,
         ?ArcaneRollScalingResolver $rollScaling = null,
-        ?CanonicalSpellReferenceResolver $references = null
+        ?CanonicalSpellReferenceResolver $references = null,
+        ?SpellIlluminationCatalogue $illumination = null
     ) {
         $this->rollScaling =
             $rollScaling ?? new ArcaneRollScalingResolver();
 
         $this->references =
             $references ?? new CanonicalSpellReferenceResolver();
+        $this->illumination =
+            $illumination ?? new SpellIlluminationCatalogue();
     }
 
     /** @return array<string, mixed> */
@@ -201,6 +205,10 @@ final class ArcanePantryPresenter
                     : '',
             'learned' => $learned,
             'spell_level' => $ability->spellLevel(),
+            'illumination' => $this->illumination->forSpell(
+                $reference['canonical_key'] ?? null,
+                $ability->id()
+            ),
         ];
     }
 

@@ -9,22 +9,22 @@ use PHPUnit\Framework\TestCase;
 
 final class SagesSpellbookRegressionTest extends TestCase
 {
-    public function testUnfilteredSpellbookProjectsAllSeventyOneSpells(): void
+    public function testUnfilteredSpellbookProjectsAllSeventyTwoSpells(): void
     {
         $spellbook = (
             new SpellbookPresenter()
         )->present();
 
         self::assertSame(
-            71,
+            72,
             $spellbook['total_count']
         );
         self::assertSame(
-            71,
+            72,
             $spellbook['result_count']
         );
         self::assertCount(
-            71,
+            72,
             $spellbook['results']
         );
     }
@@ -36,7 +36,7 @@ final class SagesSpellbookRegressionTest extends TestCase
         )->present();
 
         self::assertSame(
-            29,
+            30,
             $spellbook['renamed_count']
         );
         self::assertSame(
@@ -99,7 +99,7 @@ final class SagesSpellbookRegressionTest extends TestCase
         ]);
 
         self::assertSame(
-            29,
+            30,
             $renamed['result_count']
         );
         self::assertSame(
@@ -260,7 +260,7 @@ final class SagesSpellbookRegressionTest extends TestCase
             $spellbook['results']
         );
         self::assertSame(
-            71,
+            72,
             $spellbook['total_count']
         );
     }
