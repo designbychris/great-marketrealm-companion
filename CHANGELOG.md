@@ -1,3 +1,4 @@
+- IV.27A — The Adventurer's Sight: Tabletop character projections now carry Companion-certified darkvision from the canonical race registry, including the Rindrunner Cave Hunter extension.
 
 ## 0.3.1-alpha.8 — IV.26D.1 One Measure of the Adventurer
 - Exposes the Companion's existing mutable Adventuring Measures through an owner-scoped Tabletop filter boundary.

@@ -1,3 +1,4 @@
+- IV.27A — The Adventurer's Sight: Tabletop character projections now carry Companion-certified darkvision from the canonical race registry, including the Rindrunner Cave Hunter extension.
 
 ### Phase IV.26B — Weapons to Hand
 The Companion now exposes an owner-scoped equipped-weapon projection for the Adventurer's Satchel. Attack math remains canonical to the Companion Character Ledger.

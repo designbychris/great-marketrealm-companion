@@ -15,12 +15,14 @@ use GreatMarketrealmCompanion\Modules\Characters\Inventory\Models\ItemCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Repositories\CharacterInventoryRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Tokens\Repositories\CharacterTokenRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Tokens\Services\CharacterTokenPresenter;
+use GreatMarketrealmCompanion\Services\Characters\RaceRegistry;
 
 final class TabletopCharacterBridge
 {
     public function __construct(
         private CharacterRepository $characters,
-        private PortraitRenderer $portraits
+        private PortraitRenderer $portraits,
+        private RaceRegistry $races
     ) {}
 
     /** @return array<int,array<string,mixed>> */
@@ -175,6 +177,20 @@ final class TabletopCharacterBridge
         $arcana = (new ArcanePantryPresenter(
             new ArcaneAbilityCatalogue()
         ))->present($character);
+        $raceDefinition = $this->races->get($character->race()->value());
+        $racialDarkvision = $raceDefinition !== null
+            ? max(0, (int) $raceDefinition->get('darkvision', 0))
+            : 0;
+        $darkvision = $racialDarkvision;
+
+        // Rindrunner's certified Cave Hunter gift grants 60 ft., or extends
+        // existing darkvision by 30 ft. The Companion remains authoritative.
+        if ($character->pathGifts()->has('hardened-rind-and-cave-hunter')) {
+            $darkvision = $racialDarkvision > 0
+                ? $racialDarkvision + 30
+                : 60;
+        }
+
         $spellProjection = array_values(array_filter(
             is_array($arcana['entries'] ?? null) ? $arcana['entries'] : [],
             static fn (mixed $entry): bool => is_array($entry)
@@ -198,6 +214,9 @@ final class TabletopCharacterBridge
                 'initiative' => $character->initiative()->modifier(),
                 'proficiency_bonus' => $character->proficiencyBonus()->value(),
                 'passive_perception' => $character->passivePerception()->value(),
+                'senses' => [
+                    'darkvision' => $darkvision,
+                ],
                 'abilities' => $abilityProjection,
                 'saving_throws' => $savingThrowProjection,
                 'skills' => $skillProjection,

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Characters;
 
+use GreatMarketrealmCompanion\Services\Characters\RaceRegistry;
+
 use GreatMarketrealmCompanion\Core\Container;
 use GreatMarketrealmCompanion\Modules\Characters\Actions\CreateCharacterAction;
 use GreatMarketrealmCompanion\Modules\Characters\Actions\DeleteCharacterAction;
@@ -432,7 +434,8 @@ final class CharactersServiceProvider extends ServiceProvider
             static fn (Container $container): TabletopCharacterBridge =>
                 new TabletopCharacterBridge(
                     $container->make(CharacterRepository::class),
-                    $container->make(PortraitRenderer::class)
+                    $container->make(PortraitRenderer::class),
+                    $container->make(RaceRegistry::class)
                 )
         );
 
