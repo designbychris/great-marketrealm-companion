@@ -66,7 +66,7 @@ final class ArcanePantryPresenterTest extends TestCase
             array_column($arcana['shelves'], 'label')
         );
         self::assertSame(
-            ['Produce Spark'],
+            ['Produce Spark', 'Shelfshine'],
             array_column($arcana['shelves'][0]['entries'], 'label')
         );
         self::assertContains(
