@@ -14,8 +14,8 @@ final class AdventurersSightRegressionTest extends TestCase
         self::assertIsString($bridge);
         self::assertStringContainsString("'senses' => [", $bridge);
         self::assertStringContainsString("'darkvision' => \$darkvision", $bridge);
-        self::assertStringContainsString('\$this->races->get(\$character->race()->value())', $bridge);
+        self::assertStringContainsString('$this->races->get($character->race()->value())', $bridge);
         self::assertStringContainsString("hardened-rind-and-cave-hunter", $bridge);
-        self::assertStringContainsString('\$racialDarkvision + 30', $bridge);
+        self::assertStringContainsString('$racialDarkvision + 30', $bridge);
     }
 }
