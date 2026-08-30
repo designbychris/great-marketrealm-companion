@@ -21,9 +21,9 @@ final class TabletopBestiaryBridgeRegressionTest extends TestCase
     {
         $monster=file_get_contents($this->root('app/Modules/DungeonMaster/Bestiary/Models/CanonicalMonster.php'));
         self::assertStringContainsString('tabletopBestiaryRecord', $monster);
-        self::assertStringContainsString("'armor_class' => $this->armorClass()", $monster);
-        self::assertStringContainsString("'hit_points' => $this->maxHp()", $monster);
-        self::assertStringContainsString("'attacks' => $this->tabletopAttacks()", $monster);
+        self::assertStringContainsString("'armor_class' => \$this->armorClass()", $monster);
+        self::assertStringContainsString("'hit_points' => \$this->maxHp()", $monster);
+        self::assertStringContainsString("'attacks' => \$this->tabletopAttacks()", $monster);
         self::assertStringContainsString("'source' => 'gmrc-bestiary:'", $monster);
     }
 
