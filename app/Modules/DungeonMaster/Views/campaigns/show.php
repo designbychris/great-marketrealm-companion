@@ -1,4 +1,6 @@
 <?php
+use GreatMarketrealmCompanion\Core\Support\MarketRealmDate;
+
 defined('ABSPATH') || exit;
 $base = home_url('/companion/');
 $route = static fn (string $path): string => add_query_arg('gmrc_route', $path, $base);
@@ -45,11 +47,11 @@ $registerUrl = $route('dungeon-master/campaigns');
             <h2><?php echo $currentSession ? 'Session in progress' : ($nextSession ? 'Next Session' : 'Session Ledger'); ?></h2>
             <?php if ($currentSession) : ?>
                 <h3><?php echo esc_html('Session ' . $currentSession->number() . ' · ' . $currentSession->title()); ?></h3>
-                <p>Called from the linked Tabletop<?php if ($currentSession->startedAt() !== '') : ?> · <?php echo esc_html(wp_date('j M Y · H:i', strtotime($currentSession->startedAt()))); ?><?php endif; ?></p>
+                <p>Called from the linked Tabletop<?php if ($currentSession->startedAt() !== '') : ?> · <?php echo esc_html(MarketRealmDate::dateTime($currentSession->startedAt())); ?><?php endif; ?></p>
                 <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/sessions/' . $currentSession->id())); ?>">Open live Session record</a>
             <?php elseif ($nextSession) : ?>
                 <h3><?php echo esc_html('Session ' . $nextSession->number() . ' · ' . $nextSession->title()); ?></h3>
-                <p><?php echo esc_html($nextSession->scheduledDate() ?: 'Date not yet set'); ?></p>
+                <p><?php echo esc_html($nextSession->scheduledDate() !== '' ? MarketRealmDate::date($nextSession->scheduledDate()) : 'Date not yet set'); ?></p>
                 <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/sessions/' . $nextSession->id())); ?>">Open session</a>
             <?php elseif ($recentSession) : ?>
                 <p>Your latest played session is <strong><?php echo esc_html($recentSession->title()); ?></strong>. The next page of the chronicle is ready to plan.</p>

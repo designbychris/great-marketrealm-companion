@@ -9,4 +9,25 @@ final class ChronicleOpensPagesRegressionTest extends TestCase
     public function test_full_session_page_shows_recap_contributions_and_player_notes(): void { $s=file_get_contents($this->root('app/Modules/Parties/Views/sessions/show.php')); self::assertStringContainsString('Previously, in the MarketRealm', $s); self::assertStringContainsString('Adventurers at the Table', $s); self::assertStringContainsString('Player notes', $s); }
     public function test_session_notes_are_bound_to_immutable_tabletop_session_id(): void { $s=file_get_contents($this->root('app/Modules/Parties/Models/PartyChronicle.php')); self::assertStringContainsString('tabletop-session-note',$s); self::assertStringContainsString('tabletop_session_id',$s); }
     public function test_marketrealm_dates_use_friendly_ordinal_formatting(): void { $s=file_get_contents($this->root('app/Core/Support/MarketRealmDate.php')); self::assertStringContainsString("'st'",$s); self::assertStringContainsString("'nd'",$s); self::assertStringContainsString("'rd'",$s); self::assertStringContainsString("'th'",$s); }
+
+    public function test_session_ledger_cards_use_marketrealm_date_presenter(): void
+    {
+        $index = file_get_contents($this->root('app/Modules/DungeonMaster/Views/sessions/index.php'));
+        $campaign = file_get_contents($this->root('app/Modules/DungeonMaster/Views/campaigns/show.php'));
+        self::assertStringContainsString('MarketRealmDate::date($entry->scheduledDate())', $index);
+        self::assertStringContainsString('MarketRealmDate::dateTime($entry->startedAt())', $index);
+        self::assertStringContainsString('MarketRealmDate::date($nextSession->scheduledDate())', $campaign);
+        self::assertStringContainsString('MarketRealmDate::dateTime($currentSession->startedAt())', $campaign);
+    }
+
+    public function test_player_note_composer_uses_companion_styled_controls(): void
+    {
+        $view = file_get_contents($this->root('app/Modules/Parties/Views/sessions/show.php'));
+        $css = file_get_contents($this->root('assets/css/modules/dungeon-master/session-ledger.css'));
+        self::assertStringContainsString('gmrc-session-note-form', $view);
+        self::assertStringContainsString('gmrc-fellowship-field', $view);
+        self::assertStringContainsString('gmrc-fellowship-button--primary', $view);
+        self::assertStringContainsString('Player-written notes are Fellowship memories', $view);
+        self::assertStringContainsString('.gmrc-session-note-form', $css);
+    }
 }

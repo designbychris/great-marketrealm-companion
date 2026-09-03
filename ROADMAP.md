@@ -138,3 +138,9 @@ Companion now exposes owner-validated Character identity and forged token projec
 
 ### IV.34.6A — The Chronicle Opens Its Pages ✅
 Promote linked Tabletop Sessions into durable Fellowship history: recap sync, character-attributed deeds, openable Session pages, Session-bound player notes, compact Chronicle previews, and friendly human dates.
+
+
+### IV.34.6A.1 — The Archivist Straightens the Pages ✅
+- Route remaining human-facing Session dates through the shared MarketRealm date presenter while preserving ISO storage/form values.
+- Polish the Fellowship Session player-memory composer with the established Companion field/button language and accessible focus states.
+- Correct the Chronicle privacy regression so it protects the short public preview while allowing recap/contribution provenance on the dedicated Session page.

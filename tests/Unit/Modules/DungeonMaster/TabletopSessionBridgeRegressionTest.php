@@ -73,8 +73,10 @@ final class TabletopSessionBridgeRegressionTest extends TestCase
         $bridge = $this->source('app/Modules/DungeonMaster/Integration/TabletopSessionBridge.php');
         self::assertStringContainsString('The Fellowship gathered for Session %d of %s.', $bridge);
         self::assertStringContainsString("'tabletop_session_id' => \$session->tabletopSessionId()", $bridge);
+        self::assertStringContainsString('$content = $preview;', $bridge);
+        self::assertStringContainsString("'recap' => \$session->recap()", $bridge);
+        self::assertStringContainsString("'contributions' => \$session->contributions()", $bridge);
         self::assertStringNotContainsString('$session->prepNotes()', $bridge);
-        self::assertStringNotContainsString('$session->recap()', $bridge);
     }
 
     public function test_company_chronicle_upserts_by_immutable_tabletop_session_identity(): void

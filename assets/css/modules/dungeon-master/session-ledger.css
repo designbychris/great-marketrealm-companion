@@ -174,3 +174,79 @@
 .gmrc-session-panel--tabletop small {
     opacity: .78;
 }
+
+
+/* IV.34.6A.1 — The Archivist Straightens the Pages. */
+.gmrc-session-note-form {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.35rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(226, 177, 77, .28);
+}
+
+.gmrc-session-note-form__intro {
+    display: grid;
+    gap: .25rem;
+}
+
+.gmrc-session-note-form__intro h3,
+.gmrc-session-note-form__intro p {
+    margin: 0;
+}
+
+.gmrc-session-note-form__field {
+    display: grid;
+    gap: .45rem;
+}
+
+.gmrc-session-note-form__field > span {
+    color: #f2cd74;
+    font-weight: 900;
+}
+
+.gmrc-session-note-form__field textarea {
+    width: 100%;
+    min-height: 8.5rem;
+    box-sizing: border-box;
+    padding: .85rem .95rem;
+    border: 1px solid rgba(226, 177, 77, .42);
+    border-radius: .65rem;
+    background: rgba(255, 247, 226, .96);
+    color: #2b1b14;
+    font: inherit;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.gmrc-session-note-form__field textarea::placeholder {
+    color: rgba(43, 27, 20, .58);
+}
+
+.gmrc-session-note-form__field small {
+    color: #bfae99;
+    line-height: 1.45;
+}
+
+.gmrc-session-note-form__actions {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.gmrc-session-player-note {
+    margin: .75rem 0;
+    padding: .85rem 1rem;
+    border: 1px solid rgba(157, 119, 184, .32);
+    border-radius: .65rem;
+    background: rgba(64, 42, 78, .34);
+}
+
+.gmrc-session-player-note p { margin: 0 0 .35rem; }
+.gmrc-session-player-note small { color: #bfae99; }
+
+@media (max-width: 700px) {
+    .gmrc-session-note-form__actions .gmrc-fellowship-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
