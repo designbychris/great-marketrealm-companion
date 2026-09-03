@@ -81,7 +81,7 @@ final class ChronicleOpensPagesRegressionTest extends TestCase
     {
         $view = file_get_contents($this->root('app/Modules/Parties/Views/sessions/show.php'));
         self::assertStringContainsString('$duration >= 60', $view);
-        self::assertStringNotContainsString("sprintf('%dm', intdiv($duration,60))", $view);
+        self::assertStringNotContainsString("sprintf('%dm', intdiv(\$duration,60))", $view);
     }
 
 }
