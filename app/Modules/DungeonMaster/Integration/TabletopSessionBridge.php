@@ -11,6 +11,9 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignFellows
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignTabletopLinkRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\SessionRepository;
+use GreatMarketrealmCompanion\Modules\Parties\Models\Party;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyChronicleEntryType;
+use GreatMarketrealmCompanion\Modules\Parties\Repositories\PartyRepository;
 use Throwable;
 
 final class TabletopSessionBridge
@@ -19,7 +22,8 @@ final class TabletopSessionBridge
         private CampaignRepository $campaigns,
         private CampaignTabletopLinkRepository $links,
         private CampaignFellowshipRepository $fellowships,
-        private SessionRepository $sessions
+        private SessionRepository $sessions,
+        private PartyRepository $parties
     ) {}
 
     /** @param array<int,array<string,mixed>> $records @return array<int,array<string,mixed>> */
@@ -113,6 +117,10 @@ final class TabletopSessionBridge
             );
             $this->sessions->save($session, $campaign);
 
+            if ($endedAt instanceof DateTimeImmutable) {
+                $this->writeFellowshipChronicle($campaign, $session, $endedAt);
+            }
+
             return [
                 'available' => true,
                 'synchronised' => true,
@@ -123,6 +131,71 @@ final class TabletopSessionBridge
         } catch (Throwable $exception) {
             return ['available' => true, 'synchronised' => false, 'message' => $exception->getMessage()];
         }
+    }
+
+    private function writeFellowshipChronicle(
+        Campaign $campaign,
+        Session $session,
+        DateTimeImmutable $endedAt
+    ): void {
+        $fellowship = $this->fellowships->linked($campaign);
+        if (! $fellowship instanceof Party) {
+            return;
+        }
+
+        $duration = $this->formatDuration($session->durationSeconds());
+        $playedDate = $session->scheduledDate() !== ''
+            ? $session->scheduledDate()
+            : substr($session->startedAt(), 0, 10);
+
+        $defaultTitle = 'Session ' . $session->number();
+        $title = trim($session->title()) === $defaultTitle
+            ? $defaultTitle
+            : sprintf('%s — %s', $defaultTitle, $session->title());
+        try {
+            $playedLabel = (new DateTimeImmutable($playedDate))->format('j F Y');
+        } catch (Throwable) {
+            $playedLabel = $playedDate;
+        }
+        $content = sprintf(
+            'The Fellowship gathered for Session %d of %s. Played %s. The Session concluded after %s.',
+            $session->number(),
+            $campaign->name(),
+            $playedLabel,
+            $duration
+        );
+
+        $fellowship->chronicle()->upsertCertifiedRecord(
+            PartyChronicleEntryType::deed(),
+            $title,
+            $content,
+            $campaign->ownerId(),
+            $endedAt,
+            [
+                'kind' => 'tabletop-session',
+                'campaign_id' => $campaign->id(),
+                'companion_session_id' => $session->id(),
+                'tabletop_table_id' => $session->tabletopTableId(),
+                'tabletop_session_id' => $session->tabletopSessionId(),
+            ]
+        );
+
+        $this->parties->save($fellowship);
+    }
+
+    private function formatDuration(int $seconds): string
+    {
+        $minutes = intdiv(max(0, $seconds), 60);
+        $hours = intdiv($minutes, 60);
+        $minutes %= 60;
+
+        if ($hours < 1) {
+            return sprintf('%dm', $minutes);
+        }
+        if ($minutes < 1) {
+            return sprintf('%dh', $hours);
+        }
+        return sprintf('%dh %dm', $hours, $minutes);
     }
 
     /** @return array<string,mixed> */

@@ -59,6 +59,33 @@ final class TabletopSessionBridgeRegressionTest extends TestCase
         self::assertStringContainsString('Certified automatically from the linked Great MarketRealm Tabletop Session.', $show);
     }
 
+    public function test_completed_tabletop_session_is_projected_to_linked_fellowship_chronicle(): void
+    {
+        $bridge = $this->source('app/Modules/DungeonMaster/Integration/TabletopSessionBridge.php');
+        self::assertStringContainsString('writeFellowshipChronicle', $bridge);
+        self::assertStringContainsString('PartyChronicleEntryType::deed()', $bridge);
+        self::assertStringContainsString('$this->parties->save($fellowship)', $bridge);
+        self::assertStringContainsString('if ($endedAt instanceof DateTimeImmutable)', $bridge);
+    }
+
+    public function test_company_chronicle_projection_contains_only_safe_play_facts(): void
+    {
+        $bridge = $this->source('app/Modules/DungeonMaster/Integration/TabletopSessionBridge.php');
+        self::assertStringContainsString('The Fellowship gathered for Session %d of %s.', $bridge);
+        self::assertStringContainsString("'tabletop_session_id' => $session->tabletopSessionId()", $bridge);
+        self::assertStringNotContainsString('$session->prepNotes()', $bridge);
+        self::assertStringNotContainsString('$session->recap()', $bridge);
+    }
+
+    public function test_company_chronicle_upserts_by_immutable_tabletop_session_identity(): void
+    {
+        $chronicle = $this->source('app/Modules/Parties/Models/PartyChronicle.php');
+        $entry = $this->source('app/Modules/Parties/Models/PartyChronicleEntry.php');
+        self::assertStringContainsString("sourceValue('tabletop_session_id')", $chronicle);
+        self::assertStringContainsString('refreshCertifiedRecord', $chronicle);
+        self::assertStringContainsString("'source' => $this->source", $entry);
+    }
+
     public function test_dungeon_master_provider_registers_cross_plugin_contracts(): void
     {
         $provider = $this->source('app/Modules/DungeonMaster/DungeonMasterServiceProvider.php');

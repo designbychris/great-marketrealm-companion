@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Parties\Models;
 
+use DateTimeImmutable;
+use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyChronicleEntryType;
 use InvalidArgumentException;
 
 defined('ABSPATH') || exit;
@@ -65,6 +67,38 @@ final class PartyChronicle
         }
 
         $this->entries[] = $entry;
+    }
+
+    /** @param array<string,mixed> $source */
+    public function upsertCertifiedRecord(
+        PartyChronicleEntryType $type,
+        string $title,
+        string $content,
+        int $dungeonMasterUserId,
+        DateTimeImmutable $recordedAt,
+        array $source
+    ): PartyChronicleEntry {
+        $sourceId = trim((string) ($source['tabletop_session_id'] ?? ''));
+
+        if ($sourceId !== '') {
+            foreach ($this->entries as $entry) {
+                if ($entry->sourceValue('tabletop_session_id') === $sourceId) {
+                    $entry->refreshCertifiedRecord($title, $content, $recordedAt);
+                    return $entry;
+                }
+            }
+        }
+
+        $entry = PartyChronicleEntry::certifiedRecord(
+            $type,
+            $title,
+            $content,
+            $dungeonMasterUserId,
+            $recordedAt,
+            $source
+        );
+        $this->addCertifiedRecord($entry);
+        return $entry;
     }
 
     /**

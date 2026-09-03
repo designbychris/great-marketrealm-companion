@@ -25,7 +25,8 @@ final class PartyChronicleEntry
         private PartyChronicleProvenance $provenance,
         private int $authorUserId,
         private bool $certified,
-        private DateTimeImmutable $recordedAt
+        private DateTimeImmutable $recordedAt,
+        private array $source = []
     ) {
         $this->guardText(
             $title,
@@ -87,7 +88,8 @@ final class PartyChronicleEntry
             PartyChronicleProvenance::player(),
             $authorUserId,
             false,
-            $recordedAt ?? new DateTimeImmutable('now')
+            $recordedAt ?? new DateTimeImmutable('now'),
+            []
         );
     }
 
@@ -96,7 +98,8 @@ final class PartyChronicleEntry
         string $title,
         string $content,
         int $dungeonMasterUserId,
-        ?DateTimeImmutable $recordedAt = null
+        ?DateTimeImmutable $recordedAt = null,
+        array $source = []
     ): self {
         if (! $type->requiresCertification()) {
             throw new InvalidArgumentException(
@@ -112,8 +115,31 @@ final class PartyChronicleEntry
             PartyChronicleProvenance::dungeonMaster(),
             $dungeonMasterUserId,
             true,
-            $recordedAt ?? new DateTimeImmutable('now')
+            $recordedAt ?? new DateTimeImmutable('now'),
+            $source
         );
+    }
+
+    public function refreshCertifiedRecord(
+        string $title,
+        string $content,
+        DateTimeImmutable $recordedAt
+    ): void {
+        if (! $this->isCertified()) {
+            throw new InvalidArgumentException(
+                'Only certified Chronicle records may be refreshed.'
+            );
+        }
+        $this->guardText($title, self::MAX_TITLE, 'Chronicle title');
+        $this->guardText($content, self::MAX_CONTENT, 'Chronicle content');
+        $this->title = trim($title);
+        $this->content = trim($content);
+        $this->recordedAt = $recordedAt;
+    }
+
+    public function sourceValue(string $key): string
+    {
+        return trim((string) ($this->source[$key] ?? ''));
     }
 
     /**
@@ -137,7 +163,8 @@ final class PartyChronicleEntry
             (bool) ($data['certified'] ?? false),
             new DateTimeImmutable(
                 (string) ($data['recorded_at'] ?? '')
-            )
+            ),
+            is_array($data['source'] ?? null) ? $data['source'] : []
         );
     }
 
@@ -185,7 +212,7 @@ final class PartyChronicleEntry
      * @return array{
      *   id:string,type:string,title:string,content:string,
      *   provenance:string,author_user_id:int,certified:bool,
-     *   recorded_at:string
+     *   recorded_at:string,source:array<string,mixed>
      * }
      */
     public function toArray(): array
@@ -199,6 +226,7 @@ final class PartyChronicleEntry
             'author_user_id' => $this->authorUserId,
             'certified' => $this->certified,
             'recorded_at' => $this->recordedAt->format(DATE_ATOM),
+            'source' => $this->source,
         ];
     }
 

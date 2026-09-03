@@ -164,3 +164,8 @@ Fixed
 ## 0.3.1-alpha.7 — IV.26C The Spell Pouch
 - Projects owner-scoped learned cantrips and spells to the Tabletop from the Companion Arcane Pantry.
 - Exposes casting ability, spell attack, save DC and slot maxima without duplicating spell mechanics in the VTT.
+
+## Phase IV.34.3 — The Fellowship Remembers
+- Ended linked Tabletop Sessions now write a certified Company Deed into the Fellowship Company Chronicle.
+- Chronicle Session records are idempotent by immutable Tabletop Session ID and preserve their original Chronicle identity on re-sync.
+- The shared projection contains only safe play facts; DM prep notes and private recap text remain in the Dungeon Master's Session Ledger.

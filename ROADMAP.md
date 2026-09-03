@@ -129,3 +129,9 @@ Companion now exposes owner-validated Character identity and forged token projec
 - [x] Actual start/end timestamps and duration are preserved as Tabletop-certified Ledger metadata.
 - [x] Existing DM prep notes, recap and attendance survive Tabletop synchronisation.
 - [ ] IV.34.3 publishes the safe shared Session projection to the Fellowship Company Chronicle.
+
+### Phase IV.34.3 — The Fellowship Remembers
+- [x] Publish ended linked Tabletop Sessions into the Fellowship Company Chronicle as certified Company Deeds.
+- [x] Keep active Sessions in the private DM Session Ledger until play concludes.
+- [x] Persist immutable Tabletop Session provenance so backfill/re-sync updates rather than duplicates.
+- [x] Keep DM prep notes and private recap text outside the shared Chronicle boundary.
