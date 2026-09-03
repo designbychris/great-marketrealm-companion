@@ -181,3 +181,10 @@ Fixed
 - Finished the friendly-date sweep on Dungeon Master Session cards and Campaign Session status surfaces.
 - Styled the dedicated Fellowship Session player-memory composer to match the existing Companion UI.
 - Updated the Chronicle privacy regression to distinguish the bounded public Company Deed preview from safe recap/contribution source metadata used by the full Session page.
+
+### Phase IV.34.6A.3 — The Chronicle Knows Who Spoke
+- Attribute Session memories to Guild account and adventurer snapshots.
+- Nest player memories under their certified Session in the Company Chronicle with a native Show/Hide disclosure.
+- Project shared player memories into the DM Session Ledger while keeping DM preparation private.
+- Hide meaningless sub-minute `0m` duration labels.
+- Remove the nonce regression test interpolation warnings.

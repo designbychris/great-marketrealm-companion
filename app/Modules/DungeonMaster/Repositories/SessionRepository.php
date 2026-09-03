@@ -28,6 +28,7 @@ final class SessionRepository
     private const META_ENDED_AT = '_gmrc_session_ended_at';
     private const META_DURATION_SECONDS = '_gmrc_session_duration_seconds';
     private const META_CONTRIBUTIONS = '_gmrc_session_tabletop_contributions';
+    private const META_PLAYER_NOTES = '_gmrc_session_player_notes';
 
     public function __construct(private CampaignRepository $campaigns) {}
 
@@ -124,10 +125,58 @@ final class SessionRepository
             self::META_ENDED_AT => $session->endedAt(),
             self::META_DURATION_SECONDS => $session->durationSeconds(),
             self::META_CONTRIBUTIONS => $session->contributions(),
+            self::META_PLAYER_NOTES => $session->playerNotes(),
         ];
         foreach ($meta as $key => $value) {
             update_post_meta((int) $postId, $key, $value);
         }
+    }
+
+
+    /**
+     * Mirror a Fellowship Session memory into the Dungeon Master's Session Ledger.
+     * The Fellowship Chronicle remains the shared source record; this is a DM-facing projection.
+     *
+     * @param array<string,mixed> $note
+     */
+    public function appendPlayerNoteProjection(string $sessionId, array $note): void
+    {
+        $sessionId = trim($sessionId);
+        if ($sessionId === '') {
+            return;
+        }
+
+        $posts = get_posts([
+            'post_type' => self::POST_TYPE,
+            'post_status' => 'publish',
+            'posts_per_page' => 2,
+            'meta_query' => [[
+                'key' => self::META_ID,
+                'value' => $sessionId,
+            ]],
+        ]);
+
+        if (count($posts) !== 1 || ! $posts[0] instanceof WP_Post) {
+            return;
+        }
+
+        $postId = (int) $posts[0]->ID;
+        $notes = get_post_meta($postId, self::META_PLAYER_NOTES, true);
+        $notes = is_array($notes) ? $notes : [];
+        $noteId = trim((string) ($note['id'] ?? ''));
+
+        if ($noteId !== '') {
+            foreach ($notes as $index => $existing) {
+                if (is_array($existing) && trim((string) ($existing['id'] ?? '')) === $noteId) {
+                    $notes[$index] = $note;
+                    update_post_meta($postId, self::META_PLAYER_NOTES, array_values($notes));
+                    return;
+                }
+            }
+        }
+
+        $notes[] = $note;
+        update_post_meta($postId, self::META_PLAYER_NOTES, array_values($notes));
     }
 
     private function findPost(string $sessionId, Campaign $campaign): ?WP_Post
@@ -153,6 +202,7 @@ final class SessionRepository
     {
         $attendance = get_post_meta($post->ID, self::META_ATTENDANCE, true);
         $contributions = get_post_meta($post->ID, self::META_CONTRIBUTIONS, true);
+        $playerNotes = get_post_meta($post->ID, self::META_PLAYER_NOTES, true);
         return Session::restore(
             (string) get_post_meta($post->ID, self::META_ID, true),
             (string) get_post_meta($post->ID, self::META_CAMPAIGN_ID, true),
@@ -169,7 +219,8 @@ final class SessionRepository
             (string) get_post_meta($post->ID, self::META_STARTED_AT, true),
             (string) get_post_meta($post->ID, self::META_ENDED_AT, true),
             max(0, (int) get_post_meta($post->ID, self::META_DURATION_SECONDS, true)),
-            is_array($contributions) ? $contributions : []
+            is_array($contributions) ? $contributions : [],
+            is_array($playerNotes) ? $playerNotes : []
         );
     }
 }

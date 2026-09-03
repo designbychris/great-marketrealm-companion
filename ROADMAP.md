@@ -144,3 +144,5 @@ Promote linked Tabletop Sessions into durable Fellowship history: recap sync, ch
 - Route remaining human-facing Session dates through the shared MarketRealm date presenter while preserving ISO storage/form values.
 - Polish the Fellowship Session player-memory composer with the established Companion field/button language and accessible focus states.
 - Correct the Chronicle privacy regression so it protects the short public preview while allowing recap/contribution provenance on the dedicated Session page.
+
+- [x] IV.34.6A.3 — The Chronicle Knows Who Spoke: attributed/nested player memories, DM visibility, private Keeper-note boundary, and zero-minute masthead polish.

@@ -33,7 +33,8 @@ final class Session
         private string $startedAt = '',
         private string $endedAt = '',
         private int $durationSeconds = 0,
-        private array $contributions = []
+        private array $contributions = [],
+        private array $playerNotes = []
     ) {
         if (! Ulid::isValid($id) || ! Ulid::isValid($campaignId)) {
             throw new InvalidArgumentException('Invalid Session or Campaign identifier.');
@@ -50,9 +51,9 @@ final class Session
     }
 
     /** @param array<int,array{player_id:int,character_ids:array<int,string>}> $attendance */
-    public static function restore(string $id, string $campaignId, int $ownerId, int $number, string $title, string $scheduledDate, string $status, string $prepNotes, string $recap, array $attendance, string $tabletopTableId = '', string $tabletopSessionId = '', string $startedAt = '', string $endedAt = '', int $durationSeconds = 0, array $contributions = []): self
+    public static function restore(string $id, string $campaignId, int $ownerId, int $number, string $title, string $scheduledDate, string $status, string $prepNotes, string $recap, array $attendance, string $tabletopTableId = '', string $tabletopSessionId = '', string $startedAt = '', string $endedAt = '', int $durationSeconds = 0, array $contributions = [], array $playerNotes = []): self
     {
-        return new self($id, $campaignId, $ownerId, $number, $title, $scheduledDate, self::normaliseStatus($status), $prepNotes, $recap, $attendance, $tabletopTableId, $tabletopSessionId, $startedAt, $endedAt, max(0, $durationSeconds), $contributions);
+        return new self($id, $campaignId, $ownerId, $number, $title, $scheduledDate, self::normaliseStatus($status), $prepNotes, $recap, $attendance, $tabletopTableId, $tabletopSessionId, $startedAt, $endedAt, max(0, $durationSeconds), $contributions, $playerNotes);
     }
 
     /** @param array<int,array{player_id:int,character_ids:array<int,string>}> $attendance */
@@ -103,6 +104,8 @@ final class Session
     public function durationSeconds(): int { return $this->durationSeconds; }
     /** @return array<int,array<string,mixed>> */
     public function contributions(): array { return $this->contributions; }
+    /** @return array<int,array<string,mixed>> */
+    public function playerNotes(): array { return $this->playerNotes; }
     public function isTabletopSession(): bool { return $this->tabletopSessionId !== ''; }
     /** @return array<int,array{player_id:int,character_ids:array<int,string>}> */
     public function attendance(): array { return $this->attendance; }

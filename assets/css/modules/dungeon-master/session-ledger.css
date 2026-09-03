@@ -250,3 +250,102 @@
         justify-content: center;
     }
 }
+
+
+/* IV.34.6A.3 — The Chronicle Knows Who Spoke. */
+.gmrc-session-player-notes { display: grid; gap: .75rem; }
+.gmrc-session-player-note__author { display: flex; align-items: center; gap: .7rem; margin-bottom: .7rem; }
+.gmrc-session-player-note__author img { width: 3rem; height: 3rem; flex: 0 0 3rem; border: 1px solid rgba(226,177,77,.42); border-radius: .5rem; object-fit: cover; background: rgba(0,0,0,.18); }
+.gmrc-session-player-note__author div { display: grid; gap: .1rem; }
+.gmrc-session-player-note__author strong { color: #f2cd74; }
+.gmrc-session-player-note__author small { color: #c9b8d7; }
+.gmrc-session-panel__hint { color: #bfae99; }
+.gmrc-session-note-form__field select { width: 100%; box-sizing: border-box; padding: .75rem .85rem; border: 1px solid rgba(226,177,77,.42); border-radius: .65rem; background: rgba(255,247,226,.96); color: #2b1b14; font: inherit; }
+
+/* Company Chronicle: Session memories remain subordinate to the certified Session deed. */
+.gmrc-fellowship-session-memories {
+    margin-top: 1rem;
+    border-top: 1px solid rgba(96, 55, 115, .18);
+    padding-top: .8rem;
+}
+
+.gmrc-fellowship-session-memories > summary {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    padding: .48rem .7rem;
+    border: 1px solid rgba(96, 55, 115, .24);
+    border-radius: .5rem;
+    background: rgba(96, 55, 115, .07);
+    color: #603773;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.gmrc-fellowship-session-memories > summary:hover {
+    background: rgba(96, 55, 115, .12);
+}
+
+.gmrc-fellowship-session-memories > summary:focus-visible {
+    outline: 3px solid rgba(96, 55, 115, .34);
+    outline-offset: 3px;
+}
+
+.gmrc-fellowship-session-memories__list {
+    display: grid;
+    gap: .7rem;
+    margin-top: .75rem;
+}
+
+.gmrc-fellowship-session-memory {
+    padding: .8rem .9rem;
+    border: 1px solid rgba(96, 55, 115, .16);
+    border-radius: .65rem;
+    background: rgba(255, 255, 255, .3);
+}
+
+.gmrc-fellowship-session-memory > header {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: .65rem;
+    align-items: center;
+    margin-bottom: .55rem;
+}
+
+.gmrc-fellowship-session-memory > header img {
+    width: 2.7rem;
+    height: 2.7rem;
+    border: 1px solid rgba(96, 55, 115, .22);
+    border-radius: .5rem;
+    object-fit: cover;
+}
+
+.gmrc-fellowship-session-memory > header div {
+    display: grid;
+    gap: .08rem;
+}
+
+.gmrc-fellowship-session-memory > header strong {
+    color: #412c22;
+}
+
+.gmrc-fellowship-session-memory > header small,
+.gmrc-fellowship-session-memory > header time {
+    color: rgba(65, 44, 34, .68);
+    font-size: .78rem;
+}
+
+.gmrc-fellowship-session-memory > p {
+    margin: 0;
+    line-height: 1.55;
+}
+
+@media (max-width: 700px) {
+    .gmrc-fellowship-session-memory > header {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .gmrc-fellowship-session-memory > header time {
+        grid-column: 2;
+    }
+}

@@ -44,9 +44,44 @@ final class ChronicleOpensPagesRegressionTest extends TestCase
             $provider
         );
         self::assertStringContainsString(
-            "$matches[2]",
+            '$matches[2]',
             $provider
         );
+    }
+
+
+    public function test_session_memories_keep_author_and_character_identity(): void
+    {
+        $controller = file_get_contents($this->root('app/Modules/Parties/Controllers/PartySessionController.php'));
+        $chronicle = file_get_contents($this->root('app/Modules/Parties/Models/PartyChronicle.php'));
+        self::assertStringContainsString('author_display_name', $controller);
+        self::assertStringContainsString('character_name', $controller);
+        self::assertStringContainsString('character_portrait_url', $controller);
+        self::assertStringContainsString('array_merge', $chronicle);
+    }
+
+    public function test_company_chronicle_nests_session_memories_under_their_session(): void
+    {
+        $view = file_get_contents($this->root('app/Modules/Parties/Views/show.php'));
+        self::assertStringContainsString('topLevelChronicleEntries', $view);
+        self::assertStringContainsString('Player memories ·', $view);
+        self::assertStringContainsString('gmrc-fellowship-session-memories', $view);
+    }
+
+    public function test_dungeon_master_session_ledger_receives_shared_player_memory_projection(): void
+    {
+        $repository = file_get_contents($this->root('app/Modules/DungeonMaster/Repositories/SessionRepository.php'));
+        $view = file_get_contents($this->root('app/Modules/DungeonMaster/Views/sessions/show.php'));
+        self::assertStringContainsString('appendPlayerNoteProjection', $repository);
+        self::assertStringContainsString('Shared player memories', $view);
+        self::assertStringContainsString('Dungeon Master preparation above remains private', $view);
+    }
+
+    public function test_sub_minute_duration_is_not_shown_as_zero_minutes(): void
+    {
+        $view = file_get_contents($this->root('app/Modules/Parties/Views/sessions/show.php'));
+        self::assertStringContainsString('$duration >= 60', $view);
+        self::assertStringNotContainsString("sprintf('%dm', intdiv($duration,60))", $view);
     }
 
 }

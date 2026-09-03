@@ -57,12 +57,27 @@ final class PartyChronicle
         return $entry;
     }
 
-    public function addSessionNote(string $title, string $content, int $authorUserId, string $tabletopSessionId): PartyChronicleEntry
-    {
-        $entry = PartyChronicleEntry::adventureNote($title, $content, $authorUserId, null, [
-            'kind' => 'tabletop-session-note',
-            'tabletop_session_id' => trim($tabletopSessionId),
-        ]);
+    /** @param array<string,mixed> $source */
+    public function addSessionNote(
+        string $title,
+        string $content,
+        int $authorUserId,
+        string $tabletopSessionId,
+        array $source = []
+    ): PartyChronicleEntry {
+        $entry = PartyChronicleEntry::adventureNote(
+            $title,
+            $content,
+            $authorUserId,
+            null,
+            array_merge(
+                $source,
+                [
+                    'kind' => 'tabletop-session-note',
+                    'tabletop_session_id' => trim($tabletopSessionId),
+                ]
+            )
+        );
         $this->entries[] = $entry;
         return $entry;
     }

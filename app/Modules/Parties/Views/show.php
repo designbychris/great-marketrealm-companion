@@ -438,8 +438,23 @@ foreach ($officeHolders as $holder) {
             </p>
         <?php endif; ?>
 
+        <?php
+        $chronicleEntries = $party->chronicle()->newestFirst();
+        $sessionNotesById = [];
+        $topLevelChronicleEntries = [];
+        foreach ($chronicleEntries as $chronicleEntry) {
+            if ($chronicleEntry->sourceValue('kind') === 'tabletop-session-note') {
+                $noteSessionId = $chronicleEntry->sourceValue('tabletop_session_id');
+                if ($noteSessionId !== '') {
+                    $sessionNotesById[$noteSessionId][] = $chronicleEntry;
+                }
+                continue;
+            }
+            $topLevelChronicleEntries[] = $chronicleEntry;
+        }
+        ?>
         <div class="gmrc-fellowship-chronicle__timeline">
-            <?php if ($party->chronicle()->entries() === []) : ?>
+            <?php if ($topLevelChronicleEntries === []) : ?>
                 <div class="gmrc-fellowship-empty gmrc-fellowship-empty--compact">
                     <span aria-hidden="true">✎</span>
                     <h3>The first page is still blank</h3>
@@ -451,10 +466,7 @@ foreach ($officeHolders as $holder) {
                 </div>
             <?php else : ?>
                 <ol>
-                    <?php foreach (
-                        $party->chronicle()->newestFirst()
-                        as $entry
-                    ) : ?>
+                    <?php foreach ($topLevelChronicleEntries as $entry) : ?>
                         <li
                             class="
                                 gmrc-fellowship-chronicle-entry
@@ -513,7 +525,22 @@ foreach ($officeHolders as $holder) {
                                 </div>
 
                                 <?php if ($entry->sourceValue('kind') === 'tabletop-session' && $entry->sourceValue('tabletop_session_id') !== '') : ?>
-                                    <p class="gmrc-fellowship-chronicle-entry__more"><a target="_blank" rel="noopener" href="<?php echo esc_url(add_query_arg('gmrc_route','parties/'.$id.'/sessions/'.$entry->sourceValue('tabletop_session_id'),home_url('/companion/'))); ?>">Read the full Session →</a></p>
+                                    <?php $sessionIdForNotes = $entry->sourceValue('tabletop_session_id'); $sessionNotes = $sessionNotesById[$sessionIdForNotes] ?? []; ?>
+                                    <?php if ($sessionNotes !== []) : ?>
+                                        <details class="gmrc-fellowship-session-memories">
+                                            <summary>Player memories · <?php echo esc_html((string) count($sessionNotes)); ?></summary>
+                                            <div class="gmrc-fellowship-session-memories__list">
+                                            <?php foreach ($sessionNotes as $sessionNote) : ?>
+                                                <?php $noteUser=get_userdata($sessionNote->authorUserId()); $accountName=$sessionNote->sourceValue('author_display_name') ?: ($noteUser !== false ? (string)$noteUser->display_name : 'Fellowship member'); $characterName=$sessionNote->sourceValue('character_name'); $portrait=$sessionNote->sourceValue('character_portrait_url') ?: $sessionNote->sourceValue('author_avatar_url'); if ($portrait === '') { $portrait=(string)get_avatar_url($sessionNote->authorUserId(),['size'=>72]); } ?>
+                                                <article class="gmrc-fellowship-session-memory">
+                                                    <header><?php if ($portrait !== '') : ?><img src="<?php echo esc_url($portrait); ?>" alt=""><?php endif; ?><div><strong><?php echo esc_html($characterName !== '' ? $characterName : $accountName); ?></strong><small><?php echo esc_html($characterName !== '' ? $accountName . ' · Player memory' : 'Player memory'); ?></small></div><time datetime="<?php echo esc_attr($sessionNote->recordedAt()->format(DATE_ATOM)); ?>"><?php echo esc_html(\GreatMarketrealmCompanion\Core\Support\MarketRealmDate::dateTime($sessionNote->recordedAt()->format(DATE_ATOM))); ?></time></header>
+                                                    <p><?php echo nl2br(esc_html($sessionNote->content())); ?></p>
+                                                </article>
+                                            <?php endforeach; ?>
+                                            </div>
+                                        </details>
+                                    <?php endif; ?>
+                                    <p class="gmrc-fellowship-chronicle-entry__more"><a target="_blank" rel="noopener" href="<?php echo esc_url(add_query_arg('gmrc_route','parties/'.$id.'/sessions/'.$sessionIdForNotes,home_url('/companion/'))); ?>">Read the full Session →</a></p>
                                 <?php endif; ?>
 
                                 <footer>
