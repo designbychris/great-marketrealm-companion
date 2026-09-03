@@ -113,7 +113,9 @@ final class TabletopSessionBridge
                 $tableSessionId,
                 $startedAt->format(DATE_ATOM),
                 $endedAt?->format(DATE_ATOM),
-                $endedAt instanceof DateTimeImmutable ? max(0, $endedAt->getTimestamp() - $startedAt->getTimestamp()) : 0
+                $endedAt instanceof DateTimeImmutable ? max(0, $endedAt->getTimestamp() - $startedAt->getTimestamp()) : 0,
+                trim((string) ($record['recap'] ?? '')),
+                is_array($record['contributions'] ?? null) ? $record['contributions'] : []
             );
             $this->sessions->save($session, $campaign);
 
@@ -157,13 +159,12 @@ final class TabletopSessionBridge
         } catch (Throwable) {
             $playedLabel = $playedDate;
         }
-        $content = sprintf(
+        $recap = trim($session->recap());
+        $preview = $recap !== '' ? $this->preview($recap) : sprintf(
             'The Fellowship gathered for Session %d of %s. Played %s. The Session concluded after %s.',
-            $session->number(),
-            $campaign->name(),
-            $playedLabel,
-            $duration
+            $session->number(), $campaign->name(), $playedLabel, $duration
         );
+        $content = $preview;
 
         $fellowship->chronicle()->upsertCertifiedRecord(
             PartyChronicleEntryType::deed(),
@@ -177,10 +178,21 @@ final class TabletopSessionBridge
                 'companion_session_id' => $session->id(),
                 'tabletop_table_id' => $session->tabletopTableId(),
                 'tabletop_session_id' => $session->tabletopSessionId(),
+                'played_date' => $playedDate,
+                'duration_seconds' => $session->durationSeconds(),
+                'recap' => $session->recap(),
+                'contributions' => $session->contributions(),
             ]
         );
 
         $this->parties->save($fellowship);
+    }
+
+    private function preview(string $recap): string
+    {
+        $paragraphs = preg_split('/\R{2,}/', trim($recap)) ?: [];
+        $preview = implode("\n\n", array_slice(array_filter(array_map('trim', $paragraphs)), 0, 2));
+        return mb_strlen($preview) > 700 ? rtrim(mb_substr($preview, 0, 697)) . '…' : $preview;
     }
 
     private function formatDuration(int $seconds): string

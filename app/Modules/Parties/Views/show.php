@@ -497,9 +497,7 @@ foreach ($officeHolders as $holder) {
                                         ); ?>"
                                     >
                                         <?php echo esc_html(
-                                            $entry
-                                                ->recordedAt()
-                                                ->format('j M Y')
+                                            \GreatMarketrealmCompanion\Core\Support\MarketRealmDate::date($entry->recordedAt()->format(DATE_ATOM))
                                         ); ?>
                                     </time>
                                 </header>
@@ -513,6 +511,10 @@ foreach ($officeHolders as $holder) {
                                         )
                                     ); ?>
                                 </div>
+
+                                <?php if ($entry->sourceValue('kind') === 'tabletop-session' && $entry->sourceValue('tabletop_session_id') !== '') : ?>
+                                    <p class="gmrc-fellowship-chronicle-entry__more"><a target="_blank" rel="noopener" href="<?php echo esc_url(add_query_arg('gmrc_route','parties/'.$id.'/sessions/'.$entry->sourceValue('tabletop_session_id'),home_url('/companion/'))); ?>">Read the full Session →</a></p>
+                                <?php endif; ?>
 
                                 <footer>
                                     <?php echo esc_html(

@@ -32,7 +32,8 @@ final class Session
         private string $tabletopSessionId = '',
         private string $startedAt = '',
         private string $endedAt = '',
-        private int $durationSeconds = 0
+        private int $durationSeconds = 0,
+        private array $contributions = []
     ) {
         if (! Ulid::isValid($id) || ! Ulid::isValid($campaignId)) {
             throw new InvalidArgumentException('Invalid Session or Campaign identifier.');
@@ -49,9 +50,9 @@ final class Session
     }
 
     /** @param array<int,array{player_id:int,character_ids:array<int,string>}> $attendance */
-    public static function restore(string $id, string $campaignId, int $ownerId, int $number, string $title, string $scheduledDate, string $status, string $prepNotes, string $recap, array $attendance, string $tabletopTableId = '', string $tabletopSessionId = '', string $startedAt = '', string $endedAt = '', int $durationSeconds = 0): self
+    public static function restore(string $id, string $campaignId, int $ownerId, int $number, string $title, string $scheduledDate, string $status, string $prepNotes, string $recap, array $attendance, string $tabletopTableId = '', string $tabletopSessionId = '', string $startedAt = '', string $endedAt = '', int $durationSeconds = 0, array $contributions = []): self
     {
-        return new self($id, $campaignId, $ownerId, $number, $title, $scheduledDate, self::normaliseStatus($status), $prepNotes, $recap, $attendance, $tabletopTableId, $tabletopSessionId, $startedAt, $endedAt, max(0, $durationSeconds));
+        return new self($id, $campaignId, $ownerId, $number, $title, $scheduledDate, self::normaliseStatus($status), $prepNotes, $recap, $attendance, $tabletopTableId, $tabletopSessionId, $startedAt, $endedAt, max(0, $durationSeconds), $contributions);
     }
 
     /** @param array<int,array{player_id:int,character_ids:array<int,string>}> $attendance */
@@ -71,7 +72,7 @@ final class Session
         return in_array($status, [self::STATUS_PLANNED, self::STATUS_IN_PROGRESS, self::STATUS_PLAYED, self::STATUS_CANCELLED], true) ? $status : self::STATUS_PLANNED;
     }
 
-    public function synchroniseTabletop(int $number, string $title, string $scheduledDate, string $status, string $tabletopTableId, string $tabletopSessionId, string $startedAt, ?string $endedAt, int $durationSeconds): void
+    public function synchroniseTabletop(int $number, string $title, string $scheduledDate, string $status, string $tabletopTableId, string $tabletopSessionId, string $startedAt, ?string $endedAt, int $durationSeconds, string $tabletopRecap = '', array $contributions = []): void
     {
         $this->number = max(1, $number);
         $this->title = $title;
@@ -82,6 +83,8 @@ final class Session
         $this->startedAt = trim($startedAt);
         $this->endedAt = trim((string) $endedAt);
         $this->durationSeconds = max(0, $durationSeconds);
+        if (trim($tabletopRecap) !== '') { $this->recap = trim($tabletopRecap); }
+        $this->contributions = $contributions;
     }
 
     public function id(): string { return $this->id; }
@@ -98,6 +101,8 @@ final class Session
     public function startedAt(): string { return $this->startedAt; }
     public function endedAt(): string { return $this->endedAt; }
     public function durationSeconds(): int { return $this->durationSeconds; }
+    /** @return array<int,array<string,mixed>> */
+    public function contributions(): array { return $this->contributions; }
     public function isTabletopSession(): bool { return $this->tabletopSessionId !== ''; }
     /** @return array<int,array{player_id:int,character_ids:array<int,string>}> */
     public function attendance(): array { return $this->attendance; }

@@ -169,3 +169,9 @@ Fixed
 - Ended linked Tabletop Sessions now write a certified Company Deed into the Fellowship Company Chronicle.
 - Chronicle Session records are idempotent by immutable Tabletop Session ID and preserve their original Chronicle identity on re-sync.
 - The shared projection contains only safe play facts; DM prep notes and private recap text remain in the Dungeon Master's Session Ledger.
+
+### Phase IV.34.6A — The Chronicle Opens Its Pages
+- Tabletop recaps now populate the linked Dungeon Master Session Ledger record.
+- Company Chronicle Session deeds now open a full shared Session page in a new tab.
+- Full Fellowship Session pages show the recap, character-attributed deeds, and Session-bound player notes.
+- Added reusable MarketRealm friendly date presentation (`3rd September 2026`) and applied it to Session/Chronicle surfaces.

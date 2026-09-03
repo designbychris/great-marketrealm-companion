@@ -135,3 +135,6 @@ Companion now exposes owner-validated Character identity and forged token projec
 - [x] Keep active Sessions in the private DM Session Ledger until play concludes.
 - [x] Persist immutable Tabletop Session provenance so backfill/re-sync updates rather than duplicates.
 - [x] Keep DM prep notes and private recap text outside the shared Chronicle boundary.
+
+### IV.34.6A — The Chronicle Opens Its Pages ✅
+Promote linked Tabletop Sessions into durable Fellowship history: recap sync, character-attributed deeds, openable Session pages, Session-bound player notes, compact Chronicle previews, and friendly human dates.

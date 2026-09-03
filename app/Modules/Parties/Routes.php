@@ -5,6 +5,7 @@ declare(strict_types=1);
 use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Modules\Parties\Controllers\PartyController;
 use GreatMarketrealmCompanion\Modules\Parties\Controllers\FellowshipSealController;
+use GreatMarketrealmCompanion\Modules\Parties\Controllers\PartySessionController;
 
 defined('ABSPATH') || exit;
 
@@ -102,6 +103,16 @@ return static function (Router $router): void {
     $router->post(
         '/parties/{id}/chronicle/notes',
         [PartyController::class, 'addChronicleNote']
+    );
+
+    $router->get(
+        '/parties/{id}/sessions/{session}',
+        [PartySessionController::class, 'show']
+    );
+
+    $router->post(
+        '/parties/{id}/sessions/{session}/notes',
+        [PartySessionController::class, 'addNote']
     );
 
     $router->get(

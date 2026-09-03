@@ -57,6 +57,16 @@ final class PartyChronicle
         return $entry;
     }
 
+    public function addSessionNote(string $title, string $content, int $authorUserId, string $tabletopSessionId): PartyChronicleEntry
+    {
+        $entry = PartyChronicleEntry::adventureNote($title, $content, $authorUserId, null, [
+            'kind' => 'tabletop-session-note',
+            'tabletop_session_id' => trim($tabletopSessionId),
+        ]);
+        $this->entries[] = $entry;
+        return $entry;
+    }
+
     public function addCertifiedRecord(
         PartyChronicleEntry $entry
     ): void {

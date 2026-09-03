@@ -27,6 +27,7 @@ final class SessionRepository
     private const META_STARTED_AT = '_gmrc_session_started_at';
     private const META_ENDED_AT = '_gmrc_session_ended_at';
     private const META_DURATION_SECONDS = '_gmrc_session_duration_seconds';
+    private const META_CONTRIBUTIONS = '_gmrc_session_tabletop_contributions';
 
     public function __construct(private CampaignRepository $campaigns) {}
 
@@ -122,6 +123,7 @@ final class SessionRepository
             self::META_STARTED_AT => $session->startedAt(),
             self::META_ENDED_AT => $session->endedAt(),
             self::META_DURATION_SECONDS => $session->durationSeconds(),
+            self::META_CONTRIBUTIONS => $session->contributions(),
         ];
         foreach ($meta as $key => $value) {
             update_post_meta((int) $postId, $key, $value);
@@ -150,6 +152,7 @@ final class SessionRepository
     private function map(WP_Post $post): Session
     {
         $attendance = get_post_meta($post->ID, self::META_ATTENDANCE, true);
+        $contributions = get_post_meta($post->ID, self::META_CONTRIBUTIONS, true);
         return Session::restore(
             (string) get_post_meta($post->ID, self::META_ID, true),
             (string) get_post_meta($post->ID, self::META_CAMPAIGN_ID, true),
@@ -165,7 +168,8 @@ final class SessionRepository
             (string) get_post_meta($post->ID, self::META_TABLETOP_SESSION_ID, true),
             (string) get_post_meta($post->ID, self::META_STARTED_AT, true),
             (string) get_post_meta($post->ID, self::META_ENDED_AT, true),
-            max(0, (int) get_post_meta($post->ID, self::META_DURATION_SECONDS, true))
+            max(0, (int) get_post_meta($post->ID, self::META_DURATION_SECONDS, true)),
+            is_array($contributions) ? $contributions : []
         );
     }
 }

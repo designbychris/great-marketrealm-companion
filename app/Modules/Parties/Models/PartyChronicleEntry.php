@@ -78,7 +78,8 @@ final class PartyChronicleEntry
         string $title,
         string $content,
         int $authorUserId,
-        ?DateTimeImmutable $recordedAt = null
+        ?DateTimeImmutable $recordedAt = null,
+        array $source = []
     ): self {
         return new self(
             PartyChronicleEntryId::generate(),
@@ -89,7 +90,7 @@ final class PartyChronicleEntry
             $authorUserId,
             false,
             $recordedAt ?? new DateTimeImmutable('now'),
-            []
+            $source
         );
     }
 
@@ -136,6 +137,9 @@ final class PartyChronicleEntry
         $this->content = trim($content);
         $this->recordedAt = $recordedAt;
     }
+
+    /** @return mixed */
+    public function sourceData(string $key): mixed { return $this->source[$key] ?? null; }
 
     public function sourceValue(string $key): string
     {
