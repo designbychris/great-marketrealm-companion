@@ -21,7 +21,7 @@ final class TabletopSessionBridgeRegressionTest extends TestCase
         $repository = $this->source('app/Modules/DungeonMaster/Repositories/CampaignTabletopLinkRepository.php');
         self::assertStringContainsString("'_gmrc_campaign_tabletop_id'", $repository);
         self::assertStringContainsString('campaignForTable(string $tableId, int $ownerId)', $repository);
-        self::assertStringContainsString('findForOwner', $repository);
+        self::assertStringContainsString('postIdForOwner', $repository);
         self::assertStringContainsString('allForOwner', $repository);
     }
 
