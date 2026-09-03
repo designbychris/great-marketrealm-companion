@@ -72,7 +72,7 @@ final class TabletopSessionBridgeRegressionTest extends TestCase
     {
         $bridge = $this->source('app/Modules/DungeonMaster/Integration/TabletopSessionBridge.php');
         self::assertStringContainsString('The Fellowship gathered for Session %d of %s.', $bridge);
-        self::assertStringContainsString("'tabletop_session_id' => $session->tabletopSessionId()", $bridge);
+        self::assertStringContainsString("'tabletop_session_id' => \$session->tabletopSessionId()", $bridge);
         self::assertStringNotContainsString('$session->prepNotes()', $bridge);
         self::assertStringNotContainsString('$session->recap()', $bridge);
     }
@@ -83,7 +83,7 @@ final class TabletopSessionBridgeRegressionTest extends TestCase
         $entry = $this->source('app/Modules/Parties/Models/PartyChronicleEntry.php');
         self::assertStringContainsString("sourceValue('tabletop_session_id')", $chronicle);
         self::assertStringContainsString('refreshCertifiedRecord', $chronicle);
-        self::assertStringContainsString("'source' => $this->source", $entry);
+        self::assertStringContainsString("'source' => \$this->source", $entry);
     }
 
     public function test_dungeon_master_provider_registers_cross_plugin_contracts(): void
