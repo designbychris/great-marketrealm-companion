@@ -30,4 +30,23 @@ final class ChronicleOpensPagesRegressionTest extends TestCase
         self::assertStringContainsString('Player-written notes are Fellowship memories', $view);
         self::assertStringContainsString('.gmrc-session-note-form', $css);
     }
+
+    public function testFellowshipSessionNotesUseTheApplicationNonceGateway(): void
+    {
+        $provider = file_get_contents($this->root('app/Providers/FrontendServiceProvider.php'));
+
+        self::assertStringContainsString(
+            "#^parties/([^/]+)/sessions/([^/]+)/notes$#",
+            $provider
+        );
+        self::assertStringContainsString(
+            "return 'gmrc_party_session_note_'",
+            $provider
+        );
+        self::assertStringContainsString(
+            '. sanitize_text_field(\n                    $matches[2]',
+            $provider
+        );
+    }
+
 }
