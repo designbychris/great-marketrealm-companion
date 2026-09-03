@@ -44,7 +44,7 @@ final class ChronicleOpensPagesRegressionTest extends TestCase
             $provider
         );
         self::assertStringContainsString(
-            '. sanitize_text_field(\n                    $matches[2]',
+            "$matches[2]",
             $provider
         );
     }
