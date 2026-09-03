@@ -21,7 +21,7 @@ final class SaveSessionRequest extends FormRequest
             'session_number' => ['required', 'integer', 'min:1', 'max:9999'],
             'title' => ['required', 'string', 'max:120'],
             'scheduled_date' => ['string', 'max:10'],
-            'status' => ['required', 'string', 'in:planned,played,cancelled'],
+            'status' => ['required', 'string', 'in:planned,in-progress,played,cancelled'],
             'prep_notes' => ['string', 'max:5000'],
             'recap' => ['string', 'max:10000'],
             'attendance_player_ids' => ['array'],

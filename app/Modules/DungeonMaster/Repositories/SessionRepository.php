@@ -22,6 +22,11 @@ final class SessionRepository
     private const META_PREP = '_gmrc_session_prep_notes';
     private const META_RECAP = '_gmrc_session_recap';
     private const META_ATTENDANCE = '_gmrc_session_attendance';
+    private const META_TABLETOP_TABLE_ID = '_gmrc_session_tabletop_table_id';
+    private const META_TABLETOP_SESSION_ID = '_gmrc_session_tabletop_session_id';
+    private const META_STARTED_AT = '_gmrc_session_started_at';
+    private const META_ENDED_AT = '_gmrc_session_ended_at';
+    private const META_DURATION_SECONDS = '_gmrc_session_duration_seconds';
 
     public function __construct(private CampaignRepository $campaigns) {}
 
@@ -49,6 +54,29 @@ final class SessionRepository
     {
         $post = $this->findPost($sessionId, $campaign);
         return $post instanceof WP_Post ? $this->map($post) : null;
+    }
+
+    public function findByTabletopSessionId(string $tabletopSessionId, Campaign $campaign): ?Session
+    {
+        if (trim($tabletopSessionId) === '') {
+            return null;
+        }
+        foreach ($this->allForCampaign($campaign) as $session) {
+            if ($session->tabletopSessionId() === $tabletopSessionId) {
+                return $session;
+            }
+        }
+        return null;
+    }
+
+    public function findUnlinkedByNumber(int $number, Campaign $campaign): ?Session
+    {
+        foreach ($this->allForCampaign($campaign) as $session) {
+            if ($session->number() === $number && ! $session->isTabletopSession() && $session->status() !== Session::STATUS_CANCELLED) {
+                return $session;
+            }
+        }
+        return null;
     }
 
     public function save(Session $session, Campaign $campaign): void
@@ -89,6 +117,11 @@ final class SessionRepository
             self::META_PREP => $session->prepNotes(),
             self::META_RECAP => $session->recap(),
             self::META_ATTENDANCE => $session->attendance(),
+            self::META_TABLETOP_TABLE_ID => $session->tabletopTableId(),
+            self::META_TABLETOP_SESSION_ID => $session->tabletopSessionId(),
+            self::META_STARTED_AT => $session->startedAt(),
+            self::META_ENDED_AT => $session->endedAt(),
+            self::META_DURATION_SECONDS => $session->durationSeconds(),
         ];
         foreach ($meta as $key => $value) {
             update_post_meta((int) $postId, $key, $value);
@@ -127,7 +160,12 @@ final class SessionRepository
             (string) get_post_meta($post->ID, self::META_STATUS, true),
             (string) get_post_meta($post->ID, self::META_PREP, true),
             (string) get_post_meta($post->ID, self::META_RECAP, true),
-            is_array($attendance) ? $attendance : []
+            is_array($attendance) ? $attendance : [],
+            (string) get_post_meta($post->ID, self::META_TABLETOP_TABLE_ID, true),
+            (string) get_post_meta($post->ID, self::META_TABLETOP_SESSION_ID, true),
+            (string) get_post_meta($post->ID, self::META_STARTED_AT, true),
+            (string) get_post_meta($post->ID, self::META_ENDED_AT, true),
+            max(0, (int) get_post_meta($post->ID, self::META_DURATION_SECONDS, true))
         );
     }
 }

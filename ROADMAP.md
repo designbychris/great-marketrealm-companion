@@ -121,3 +121,11 @@ Companion now exposes owner-validated Character identity and forged token projec
 - [x] IV.26C — The Spell Pouch: unfurled Satchel and Companion-authoritative spell projection.
 
 - [x] IV.26D.1 — One Measure of the Adventurer: owner-scoped Tabletop writes reuse canonical Companion Adventuring Measures.
+
+### Phase IV.34.2 — The Table Remembers Tonight
+- [x] Companion owns the stable Campaign ↔ Tabletop ID relationship.
+- [x] Active DM Campaigns and their linked Fellowship identity are exposed through an explicit Tabletop integration seam.
+- [x] Existing and future Tabletop Sessions synchronise into the canonical DM Session Ledger.
+- [x] Actual start/end timestamps and duration are preserved as Tabletop-certified Ledger metadata.
+- [x] Existing DM prep notes, recap and attendance survive Tabletop synchronisation.
+- [ ] IV.34.3 publishes the safe shared Session projection to the Fellowship Company Chronicle.

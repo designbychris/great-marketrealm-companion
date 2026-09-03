@@ -3,6 +3,7 @@ defined('ABSPATH') || exit;
 $base = home_url('/companion/');
 $route = static fn (string $path): string => add_query_arg('gmrc_route', $path, $base);
 $campaignPath = 'dungeon-master/campaigns/' . $campaign->id();
+$currentSession = $commandCentre['currentSession'] ?? null;
 $nextSession = $commandCentre['nextSession'];
 $recentSession = $commandCentre['recentSession'];
 $liveEncounter = $commandCentre['liveEncounter'];
@@ -41,8 +42,12 @@ $registerUrl = $route('dungeon-master/campaigns');
     <div class="gmrc-command-centre__grid">
         <article class="gmrc-command-card gmrc-command-card--session">
             <p class="gmrc-dm-desk__eyebrow">At the table</p>
-            <h2><?php echo $nextSession ? 'Next Session' : 'Session Ledger'; ?></h2>
-            <?php if ($nextSession) : ?>
+            <h2><?php echo $currentSession ? 'Session in progress' : ($nextSession ? 'Next Session' : 'Session Ledger'); ?></h2>
+            <?php if ($currentSession) : ?>
+                <h3><?php echo esc_html('Session ' . $currentSession->number() . ' · ' . $currentSession->title()); ?></h3>
+                <p>Called from the linked Tabletop<?php if ($currentSession->startedAt() !== '') : ?> · <?php echo esc_html(wp_date('j M Y · H:i', strtotime($currentSession->startedAt()))); ?><?php endif; ?></p>
+                <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/sessions/' . $currentSession->id())); ?>">Open live Session record</a>
+            <?php elseif ($nextSession) : ?>
                 <h3><?php echo esc_html('Session ' . $nextSession->number() . ' · ' . $nextSession->title()); ?></h3>
                 <p><?php echo esc_html($nextSession->scheduledDate() ?: 'Date not yet set'); ?></p>
                 <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/sessions/' . $nextSession->id())); ?>">Open session</a>
@@ -52,6 +57,16 @@ $registerUrl = $route('dungeon-master/campaigns');
             <?php else : ?>
                 <p>No session has been planned yet.</p>
                 <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/sessions/create')); ?>">Plan first session</a>
+            <?php endif; ?>
+        </article>
+
+        <article class="gmrc-command-card gmrc-command-card--tabletop">
+            <p class="gmrc-dm-desk__eyebrow">Cartographic oversight</p><h2>Great MarketRealm Tabletop</h2>
+            <?php if ((string) ($commandCentre['tabletopTableId'] ?? '') !== '') : ?>
+                <p>This Campaign is linked to its persistent Tabletop. Session starts and endings are written into this Ledger automatically.</p>
+                <strong>Linked · <?php echo esc_html((string) $commandCentre['tabletopTableId']); ?></strong>
+            <?php else : ?>
+                <p>No Tabletop is linked yet. Open Pippin's Table Atlas and link this Campaign from the Keeper's campaign card.</p>
             <?php endif; ?>
         </article>
 

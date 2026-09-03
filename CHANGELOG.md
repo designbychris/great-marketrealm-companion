@@ -1,3 +1,12 @@
+## IV.34.2 — The Table Remembers Tonight
+
+- Adds the Companion-owned persistent Campaign ↔ Tabletop link.
+- Exposes owner-scoped active Campaign choices and linked Fellowship identity to the Tabletop through explicit WordPress filter contracts.
+- Upserts Tabletop play Sessions into the existing DM Session Ledger by immutable Tabletop Session ID, with safe same-number adoption for an existing unlinked Session.
+- Records actual start/end timestamps and calculated duration while preserving DM prep notes, recap and attendance.
+- Adds an `In Progress` Session state and presents the linked Tabletop record in the Campaign Command Centre and Session Ledger.
+- Reserves Company Chronicle publication for IV.34.3 so private DM Ledger data remains private.
+
 ## IV.27E — Light Wrought by Magic
 
 - Canonised **Shelfshine** as the Great Marketrealm rename of Light and added structured 20 ft bright + 20 ft dim, one-hour magical illumination metadata for Tabletop.

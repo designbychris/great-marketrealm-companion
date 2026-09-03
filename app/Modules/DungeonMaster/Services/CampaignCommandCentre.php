@@ -12,6 +12,7 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRosterR
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\EncounterRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\JournalRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\SessionRepository;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignTabletopLinkRepository;
 
 defined('ABSPATH') || exit;
 
@@ -21,7 +22,8 @@ final class CampaignCommandCentre
         private CampaignRosterRepository $roster,
         private SessionRepository $sessions,
         private EncounterRepository $encounters,
-        private JournalRepository $journal
+        private JournalRepository $journal,
+        private CampaignTabletopLinkRepository $tabletopLinks
     ) {}
 
     /** @return array<string,mixed> */
@@ -41,15 +43,28 @@ final class CampaignCommandCentre
             'sessionCount' => count($sessions),
             'encounterCount' => count($encounters),
             'journalCount' => count($journal),
+            'currentSession' => $this->currentSession($sessions),
             'nextSession' => $this->nextSession($sessions),
             'recentSession' => $this->recentSession($sessions),
             'liveEncounter' => $this->firstEncounter($encounters, Encounter::STATUS_RUNNING),
             'preparedEncounter' => $this->firstEncounter($encounters, Encounter::STATUS_PREPARED),
+            'tabletopTableId' => $this->tabletopLinks->tableId($campaign),
             'pinnedJournal' => array_values(array_slice(array_filter(
                 $journal,
                 static fn (JournalEntry $entry): bool => $entry->pinned() && $entry->status() !== 'archived'
             ), 0, 3)),
         ];
+    }
+
+    /** @param Session[] $sessions */
+    private function currentSession(array $sessions): ?Session
+    {
+        foreach ($sessions as $session) {
+            if ($session->status() === Session::STATUS_IN_PROGRESS) {
+                return $session;
+            }
+        }
+        return null;
     }
 
     /** @param Session[] $sessions */

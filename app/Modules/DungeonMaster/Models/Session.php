@@ -12,6 +12,7 @@ defined('ABSPATH') || exit;
 final class Session
 {
     public const STATUS_PLANNED = 'planned';
+    public const STATUS_IN_PROGRESS = 'in-progress';
     public const STATUS_PLAYED = 'played';
     public const STATUS_CANCELLED = 'cancelled';
 
@@ -26,7 +27,12 @@ final class Session
         private string $status,
         private string $prepNotes,
         private string $recap,
-        private array $attendance
+        private array $attendance,
+        private string $tabletopTableId = '',
+        private string $tabletopSessionId = '',
+        private string $startedAt = '',
+        private string $endedAt = '',
+        private int $durationSeconds = 0
     ) {
         if (! Ulid::isValid($id) || ! Ulid::isValid($campaignId)) {
             throw new InvalidArgumentException('Invalid Session or Campaign identifier.');
@@ -43,9 +49,9 @@ final class Session
     }
 
     /** @param array<int,array{player_id:int,character_ids:array<int,string>}> $attendance */
-    public static function restore(string $id, string $campaignId, int $ownerId, int $number, string $title, string $scheduledDate, string $status, string $prepNotes, string $recap, array $attendance): self
+    public static function restore(string $id, string $campaignId, int $ownerId, int $number, string $title, string $scheduledDate, string $status, string $prepNotes, string $recap, array $attendance, string $tabletopTableId = '', string $tabletopSessionId = '', string $startedAt = '', string $endedAt = '', int $durationSeconds = 0): self
     {
-        return new self($id, $campaignId, $ownerId, $number, $title, $scheduledDate, self::normaliseStatus($status), $prepNotes, $recap, $attendance);
+        return new self($id, $campaignId, $ownerId, $number, $title, $scheduledDate, self::normaliseStatus($status), $prepNotes, $recap, $attendance, $tabletopTableId, $tabletopSessionId, $startedAt, $endedAt, max(0, $durationSeconds));
     }
 
     /** @param array<int,array{player_id:int,character_ids:array<int,string>}> $attendance */
@@ -62,7 +68,20 @@ final class Session
 
     private static function normaliseStatus(string $status): string
     {
-        return in_array($status, [self::STATUS_PLANNED, self::STATUS_PLAYED, self::STATUS_CANCELLED], true) ? $status : self::STATUS_PLANNED;
+        return in_array($status, [self::STATUS_PLANNED, self::STATUS_IN_PROGRESS, self::STATUS_PLAYED, self::STATUS_CANCELLED], true) ? $status : self::STATUS_PLANNED;
+    }
+
+    public function synchroniseTabletop(int $number, string $title, string $scheduledDate, string $status, string $tabletopTableId, string $tabletopSessionId, string $startedAt, ?string $endedAt, int $durationSeconds): void
+    {
+        $this->number = max(1, $number);
+        $this->title = $title;
+        $this->scheduledDate = $scheduledDate;
+        $this->status = self::normaliseStatus($status);
+        $this->tabletopTableId = trim($tabletopTableId);
+        $this->tabletopSessionId = trim($tabletopSessionId);
+        $this->startedAt = trim($startedAt);
+        $this->endedAt = trim((string) $endedAt);
+        $this->durationSeconds = max(0, $durationSeconds);
     }
 
     public function id(): string { return $this->id; }
@@ -74,6 +93,12 @@ final class Session
     public function status(): string { return $this->status; }
     public function prepNotes(): string { return $this->prepNotes; }
     public function recap(): string { return $this->recap; }
+    public function tabletopTableId(): string { return $this->tabletopTableId; }
+    public function tabletopSessionId(): string { return $this->tabletopSessionId; }
+    public function startedAt(): string { return $this->startedAt; }
+    public function endedAt(): string { return $this->endedAt; }
+    public function durationSeconds(): int { return $this->durationSeconds; }
+    public function isTabletopSession(): bool { return $this->tabletopSessionId !== ''; }
     /** @return array<int,array{player_id:int,character_ids:array<int,string>}> */
     public function attendance(): array { return $this->attendance; }
 }

@@ -166,3 +166,11 @@
         box-shadow: none;
     }
 }
+
+/* IV.34.2 — Tabletop-certified live Session state. */
+.gmrc-session-card--in-progress {
+    border-left-color: #d5ad52;
+}
+.gmrc-session-panel--tabletop small {
+    opacity: .78;
+}
