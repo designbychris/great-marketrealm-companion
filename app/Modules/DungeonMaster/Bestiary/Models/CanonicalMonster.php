@@ -65,7 +65,7 @@ final class CanonicalMonster
     /** @return array<string,mixed> */
     public function tabletopBestiaryRecord(): array
     {
-        if (! $this->encounterReady() || $this->publicationStatus() !== 'published') return [];
+        if (! $this->tabletopReady() || $this->publicationStatus() !== 'published') return [];
 
         return [
             'id' => $this->id(),
@@ -123,6 +123,13 @@ final class CanonicalMonster
             ];
         }
         return $attacks;
+    }
+
+
+    public function tabletopReady(): bool
+    {
+        return $this->armorClass() !== null
+            && $this->maxHp() !== null;
     }
 
     public function encounterReady(): bool

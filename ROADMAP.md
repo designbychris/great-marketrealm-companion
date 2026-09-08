@@ -146,3 +146,5 @@ Promote linked Tabletop Sessions into durable Fellowship history: recap sync, ch
 - Correct the Chronicle privacy regression so it protects the short public preview while allowing recap/contribution provenance on the dedicated Session page.
 
 - [x] IV.34.6A.3 — The Chronicle Knows Who Spoke: attributed/nested player memories, DM visibility, private Keeper-note boundary, and zero-minute masthead polish.
+
+- [x] IV.35.10B — The Boss Would Like to Participate — Boss Lair catalogue, combat compatibility, and Keeper interaction correction.

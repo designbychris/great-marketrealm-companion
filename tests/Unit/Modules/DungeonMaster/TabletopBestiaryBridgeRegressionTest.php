@@ -27,6 +27,16 @@ final class TabletopBestiaryBridgeRegressionTest extends TestCase
         self::assertStringContainsString("'source' => 'gmrc-bestiary:'", $monster);
     }
 
+
+    public function test_tabletop_projection_does_not_require_companion_initiative_metadata(): void
+    {
+        $monster=file_get_contents($this->root('app/Modules/DungeonMaster/Bestiary/Models/CanonicalMonster.php'));
+        self::assertStringContainsString('public function tabletopReady(): bool', $monster);
+        self::assertStringContainsString('if (! $this->tabletopReady()', $monster);
+        self::assertStringContainsString('return $this->armorClass() !== null', $monster);
+        self::assertStringContainsString('&& $this->maxHp() !== null;', $monster);
+    }
+
     public function test_bridge_does_not_import_tabletop_classes(): void
     {
         foreach (['app/Modules/DungeonMaster/DungeonMasterServiceProvider.php','app/Modules/DungeonMaster/Bestiary/Models/CanonicalMonster.php'] as $file) {

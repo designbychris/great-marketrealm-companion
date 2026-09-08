@@ -188,3 +188,5 @@ Fixed
 - Project shared player memories into the DM Session Ledger while keeping DM preparation private.
 - Hide meaningless sub-minute `0m` duration labels.
 - Remove the nonce regression test interpolation warnings.
+
+- IV.35.10B — The Boss Would Like to Participate: complete the Boss Lair Bestiary bridge, qualified-defense compatibility, and live-created Keeper token interaction path.
