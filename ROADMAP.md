@@ -1,3 +1,16 @@
+## Phase V.11A — The Companion Opens the Book ✅
+
+- [x] Consume GMREXP Active Content API through a read-only Companion adapter.
+- [x] Add active Almanac races, backgrounds and subclasses to existing Character creation seams.
+- [x] Preserve fully-qualified Almanac provenance without copying canonical mechanics.
+- [x] Gracefully degrade when Expansions is missing or incompatible.
+- [x] Keep expansion subclass progression as sourcebook preview rather than pretending it is a native Path Gift.
+- [ ] V.11A.1 — connect sourcebook subclass progression to Companion advancement through an explicit mechanics contract.
+- [ ] V.11A.2 — **The DM Shares the Book**: separate entitlement from Campaign/Fellowship activation so linked players inherit the DM's active Almanacs for that table.
+- [ ] V.11B — let Great Marketrealm Tabletop consume the same campaign-active canonical expansion identities.
+
+Future access model: **Available → Entitled → Campaign Active → Consumable**. Free entitlement may simply resolve true; payment/donation remains an interchangeable policy rather than a content dependency.
+
 - [x] IV.27E Companion — Shelfshine and server-readable magical illumination metadata.
 - IV.27A — The Adventurer's Sight: Tabletop character projections now carry Companion-certified darkvision from the canonical race registry, including the Rindrunner Cave Hunter extension.
 

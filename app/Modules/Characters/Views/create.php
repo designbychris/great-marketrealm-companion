@@ -144,12 +144,14 @@ $raceOptions = $catalogueRaces;
 $classOptions = $catalogueClasses;
 $backgroundOptions = Background::all();
 foreach ((new \GreatMarketrealmCompanion\Modules\Library\Backgrounds\Repositories\BackgroundMechanicsRegister())->all() as $record) {
-    if (str_starts_with($record->key(), 'steward-background-')) {
+    if (! Background::supports($record->key())) {
         $backgroundOptions[] = Background::fromStringWithMechanics(
             $record->key(),
             $record->skills(),
             $record->tools(),
-            $record->name()
+            $record->name(),
+            $record->languageChoices(),
+            $record->fixedLanguages()
         );
     }
 }

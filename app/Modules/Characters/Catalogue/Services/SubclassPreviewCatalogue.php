@@ -73,7 +73,7 @@ final class SubclassPreviewCatalogue
                     0,
                     4
                 )
-                : [];
+                : $this->expansionGiftPreview($subclass);
 
             $previews[$key] = [
                 'key' => $key,
@@ -140,4 +140,58 @@ final class SubclassPreviewCatalogue
 
         return $previews;
     }
+
+    /**
+     * Project sourcebook feature previews without registering them as native
+     * Companion Path Gifts. Mechanical application remains a later bridge.
+     *
+     * @param array<string,mixed> $subclass
+     * @return array<int,array{level:int,label:string,summary:string}>
+     */
+    private function expansionGiftPreview(array $subclass): array
+    {
+        if (($subclass['source_kind'] ?? '') !== 'gmrexp') {
+            return [];
+        }
+
+        $features = [];
+        foreach ((array) ($subclass['features'] ?? []) as $feature) {
+            if (! is_array($feature)) {
+                continue;
+            }
+            $featureKey = (string) ($feature['key'] ?? '');
+            if ($featureKey !== '') {
+                $features[$featureKey] = $feature;
+            }
+        }
+
+        $preview = [];
+        foreach ((array) ($subclass['progression'] ?? []) as $step) {
+            if (! is_array($step)) {
+                continue;
+            }
+            $level = max(0, (int) ($step['level'] ?? 0));
+            foreach ((array) ($step['features'] ?? []) as $featureKey) {
+                $feature = $features[(string) $featureKey] ?? null;
+                if (! is_array($feature)) {
+                    continue;
+                }
+                $label = trim((string) ($feature['name'] ?? ''));
+                if ($label === '') {
+                    continue;
+                }
+                $preview[] = [
+                    'level' => $level,
+                    'label' => $label,
+                    'summary' => trim((string) ($feature['description'] ?? '')),
+                ];
+                if (count($preview) >= 4) {
+                    return $preview;
+                }
+            }
+        }
+
+        return $preview;
+    }
+
 }

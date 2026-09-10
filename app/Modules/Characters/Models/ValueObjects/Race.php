@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects;
 
+use GreatMarketrealmCompanion\Integration\Expansions\ExpansionCharacterCatalogue;
 use InvalidArgumentException;
 use Stringable;
 
@@ -94,7 +95,8 @@ final class Race implements Stringable
      * @throws InvalidArgumentException
      */
     private function __construct(
-        private readonly string $value
+        private readonly string $value,
+        private readonly ?string $labelSnapshot = null
     ) {
         $this->guardAgainstInvalidValue(
             $value
@@ -115,6 +117,22 @@ final class Race implements Stringable
     }
 
     /**
+     * Rebuild an expansion race from its inscription-time identity snapshot.
+     *
+     * This keeps an existing Character readable after an Almanac is later
+     * deactivated, without copying the expansion's mechanics into Companion.
+     */
+    public static function fromStringWithLabel(
+        string $value,
+        string $label
+    ): self {
+        return new self(
+            self::normalise($value),
+            trim($label)
+        );
+    }
+
+    /**
      * Return the canonical race identifier.
      */
     public function value(): string
@@ -127,6 +145,10 @@ final class Race implements Stringable
      */
     public function label(): string
     {
+        if ($this->labelSnapshot !== null && $this->labelSnapshot !== '') {
+            return $this->labelSnapshot;
+        }
+
         return self::definition($this->value)['label'];
     }
 
@@ -212,6 +234,11 @@ final class Race implements Stringable
                 $definitions[$key] = $definition;
             }
         }
+        foreach (self::expansionDefinitions() as $key => $definition) {
+            if (! isset($definitions[$key])) {
+                $definitions[$key] = $definition;
+            }
+        }
         return array_keys($definitions);
     }
 
@@ -224,6 +251,25 @@ final class Race implements Stringable
                 $definitions[$key] = $definition;
             }
         }
+        foreach (self::expansionDefinitions() as $key => $definition) {
+            if (! isset($definitions[$key])) {
+                $definitions[$key] = $definition;
+            }
+        }
+        return $definitions;
+    }
+
+    /** @return array<string,array{label:string}> */
+    private static function expansionDefinitions(): array
+    {
+        $definitions = [];
+        foreach ((new ExpansionCharacterCatalogue())->races() as $key => $race) {
+            $label = trim((string) ($race['name'] ?? ''));
+            if ($label !== '') {
+                $definitions[$key] = ['label' => $label];
+            }
+        }
+
         return $definitions;
     }
 
@@ -295,7 +341,10 @@ final class Race implements Stringable
             );
         }
 
-        if (self::definition($value) === null) {
+        if (
+            self::definition($value) === null
+            && ($this->labelSnapshot === null || $this->labelSnapshot === '')
+        ) {
             throw new InvalidArgumentException(
                 sprintf(
                     'The Character race "%s" is not supported.',

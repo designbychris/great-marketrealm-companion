@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Characters\Requests;
 
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
+use GreatMarketrealmCompanion\Modules\Library\Backgrounds\Repositories\BackgroundMechanicsRegister;
 use GreatMarketrealmCompanion\Core\Http\FormRequest;
 use GreatMarketrealmCompanion\Modules\Characters\Requests\Concerns\ResolvesRegistrationInput;
 
@@ -71,7 +72,7 @@ final class UpdateCharacterRequest extends FormRequest
                 'max:100',
                 'in:' . implode(
                     ',',
-                    Background::identifiers()
+                    $this->backgroundIdentifiers()
                 ),
             ],
         ];
@@ -113,6 +114,21 @@ final class UpdateCharacterRequest extends FormRequest
         ];
     }
 
+
+    /** @return array<int,string> */
+    private function backgroundIdentifiers(): array
+    {
+        $identifiers = Background::identifiers();
+
+        foreach ((new BackgroundMechanicsRegister())->all() as $record) {
+            $key = $record->key();
+            if ($key !== '') {
+                $identifiers[] = $key;
+            }
+        }
+
+        return array_values(array_unique($identifiers));
+    }
 
     /**
      * Return validated Character data.

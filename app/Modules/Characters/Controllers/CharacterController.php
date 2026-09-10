@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Characters\Controllers;
 
 use GreatMarketrealmCompanion\Core\Http\RedirectResponse;
+use GreatMarketrealmCompanion\Integration\Expansions\ExpansionCharacterCatalogue;
 use GreatMarketrealmCompanion\Core\Http\Request;
 use GreatMarketrealmCompanion\Core\Http\ResponseFactory;
 use GreatMarketrealmCompanion\Core\Session\FlashStore;
@@ -360,6 +361,18 @@ final class CharacterController
                 $catalogueData['subclass']
             );
         }
+
+        $expansionContent = new ExpansionCharacterCatalogue();
+        $this->buildProfiles->saveExpansionReferences(
+            $character->id(),
+            [
+                'race' => $expansionContent->canonicalId('race', $data['race']),
+                'background' => $expansionContent->canonicalId('background', $registration['background']),
+                'subclass' => $catalogueData['subclass'] !== ''
+                    ? $expansionContent->canonicalId('subclass', $catalogueData['subclass'])
+                    : null,
+            ]
+        );
     
         $this->flash->success(
             'Your character has entered the Marketrealm!'

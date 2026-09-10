@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Modules\Characters\Services;
 
+use GreatMarketrealmCompanion\Integration\Expansions\ExpansionCharacterCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScore;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\AbilityScores;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Language;
@@ -19,25 +20,33 @@ defined('ABSPATH') || exit;
  */
 final class StewardFolkMechanics
 {
+    public function __construct(
+        private ?ExpansionCharacterCatalogue $expansions = null
+    ) {
+        $this->expansions ??= new ExpansionCharacterCatalogue();
+    }
+
     /** @return array<string,mixed> */
     public function forRace(string $race): array
     {
-        if (! function_exists('get_option')) {
-            return [];
+        $key = $this->normaliseIdentifier($race);
+
+        if (function_exists('get_option')) {
+            $records = get_option('gmrc_steward_folk', []);
+            $record = is_array($records) && is_array($records[$key] ?? null)
+                ? $records[$key]
+                : [];
+
+            if (($record['status'] ?? '') === 'published') {
+                return is_array($record['mechanics'] ?? null)
+                    ? $record['mechanics']
+                    : [];
+            }
         }
 
-        $records = get_option('gmrc_steward_folk', []);
-        $key = sanitize_key($race);
-        $record = is_array($records) && is_array($records[$key] ?? null)
-            ? $records[$key]
-            : [];
-
-        if (($record['status'] ?? '') !== 'published') {
-            return [];
-        }
-
-        return is_array($record['mechanics'] ?? null)
-            ? $record['mechanics']
+        $expansion = $this->expansions->definition('race', $key);
+        return is_array($expansion)
+            ? $this->expansionMechanics($expansion)
             : [];
     }
 
@@ -172,6 +181,86 @@ final class StewardFolkMechanics
             + max(0, (int) ($addition['chosen_language_count'] ?? 0));
 
         return $resolved;
+    }
+
+
+    /** @param array<string,mixed> $definition @return array<string,mixed> */
+    private function expansionMechanics(array $definition): array
+    {
+        $proficiencies = is_array($definition['proficiencies'] ?? null)
+            ? $definition['proficiencies']
+            : [];
+
+        $skills = [];
+        foreach ((array) ($proficiencies['skills'] ?? []) as $skill) {
+            $skill = $this->normaliseIdentifier((string) $skill);
+            if ($skill !== '') {
+                $skills[] = $skill;
+            }
+        }
+
+        $tools = [];
+        foreach ((array) ($proficiencies['tools'] ?? []) as $tool) {
+            $tool = $this->normaliseIdentifier((string) $tool);
+            if ($tool !== '' && ToolProficiency::supports($tool)) {
+                $tools[] = $tool;
+            }
+        }
+
+        $languages = [];
+        foreach ((array) ($definition['languages'] ?? []) as $language) {
+            $language = $this->normaliseIdentifier((string) $language);
+            if ($language !== '' && Language::supports($language)) {
+                $languages[] = $language;
+            }
+        }
+
+        $resistances = [];
+        foreach ((array) ($definition['resistances'] ?? []) as $resistance) {
+            $resistance = $this->normaliseIdentifier((string) $resistance);
+            if ($resistance !== '') {
+                $resistances[] = $resistance;
+            }
+        }
+
+        $abilityModifiers = [];
+        foreach ((array) ($definition['ability_score_rules'] ?? []) as $rule) {
+            if (! is_array($rule)) {
+                continue;
+            }
+            $ability = $this->normaliseIdentifier((string) ($rule['ability'] ?? ''));
+            $amount = (int) ($rule['amount'] ?? 0);
+            if (
+                in_array($ability, ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'], true)
+                && $amount > 0
+            ) {
+                $abilityModifiers[$ability] = ($abilityModifiers[$ability] ?? 0) + $amount;
+            }
+        }
+
+        $languageChoiceCount = 0;
+        foreach ((array) ($definition['language_choices'] ?? []) as $choice) {
+            if (is_array($choice)) {
+                $languageChoiceCount += max(0, (int) ($choice['count'] ?? 0));
+            }
+        }
+
+        return [
+            'ability_modifiers' => $abilityModifiers,
+            'skill_proficiencies' => array_values(array_unique($skills)),
+            'tool_proficiencies' => array_values(array_unique($tools)),
+            'automatic_languages' => array_values(array_unique($languages)),
+            'resistances' => array_values(array_unique($resistances)),
+            'chosen_language_count' => $languageChoiceCount,
+        ];
+    }
+
+    private function normaliseIdentifier(string $value): string
+    {
+        $value = strtolower(trim($value));
+        $value = str_replace(["'", '’'], '', $value);
+        $value = preg_replace('/[^a-z0-9]+/', '-', $value);
+        return is_string($value) ? trim($value, '-') : '';
     }
 
 }

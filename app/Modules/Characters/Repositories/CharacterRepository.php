@@ -40,6 +40,7 @@ final class CharacterRepository implements CharacterRepositoryInterface
 {
     private const META_CHARACTER_ID = '_gmrc_character_id';
     private const META_RACE = '_gmrc_race';
+    private const META_RACE_LABEL = '_gmrc_race_label';
     private const META_CLASS = '_gmrc_class';
     private const META_LEVEL = '_gmrc_level';
     private const META_EXPERIENCE = '_gmrc_experience';
@@ -340,6 +341,12 @@ final class CharacterRepository implements CharacterRepositoryInterface
             $postId,
             self::META_RACE,
             $character->race()->value()
+        );
+
+        update_post_meta(
+            $postId,
+            self::META_RACE_LABEL,
+            $character->race()->label()
         );
 
         update_post_meta(
@@ -750,6 +757,20 @@ final class CharacterRepository implements CharacterRepositoryInterface
         $value = is_string($stored) && $stored !== ''
             ? $stored
             : 'fructan';
+
+        if (Race::supports($value)) {
+            return Race::fromString($value);
+        }
+
+        $label = get_post_meta(
+            $postId,
+            self::META_RACE_LABEL,
+            true
+        );
+
+        if (is_string($label) && trim($label) !== '') {
+            return Race::fromStringWithLabel($value, $label);
+        }
 
         return Race::fromString($value);
     }

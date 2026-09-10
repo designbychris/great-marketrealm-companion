@@ -75,11 +75,13 @@ final class PathCandidateCatalogue
                 $key
             );
 
-            $preview = array_slice(
-                $this->gifts->all($key),
-                0,
-                4
-            );
+            $preview = $this->gifts->supports($key)
+                ? array_slice(
+                    $this->gifts->all($key),
+                    0,
+                    4
+                )
+                : $this->expansionGiftPreview($subclass);
 
             $options[] = [
                 'key' => $key,
@@ -124,4 +126,43 @@ final class PathCandidateCatalogue
 
         return $options;
     }
+
+    /** @param array<string,mixed> $subclass @return array<int,array<string,mixed>> */
+    private function expansionGiftPreview(array $subclass): array
+    {
+        if (($subclass['source_kind'] ?? '') !== 'gmrexp') {
+            return [];
+        }
+
+        $features = [];
+        foreach ((array) ($subclass['features'] ?? []) as $feature) {
+            if (is_array($feature) && is_string($feature['key'] ?? null)) {
+                $features[$feature['key']] = $feature;
+            }
+        }
+
+        $preview = [];
+        foreach ((array) ($subclass['progression'] ?? []) as $step) {
+            if (! is_array($step)) {
+                continue;
+            }
+            foreach ((array) ($step['features'] ?? []) as $featureKey) {
+                $feature = $features[(string) $featureKey] ?? null;
+                if (! is_array($feature) || trim((string) ($feature['name'] ?? '')) === '') {
+                    continue;
+                }
+                $preview[] = [
+                    'level' => max(0, (int) ($step['level'] ?? 0)),
+                    'label' => trim((string) $feature['name']),
+                    'summary' => trim((string) ($feature['description'] ?? '')),
+                ];
+                if (count($preview) >= 4) {
+                    return $preview;
+                }
+            }
+        }
+
+        return $preview;
+    }
+
 }

@@ -1,3 +1,12 @@
+## 0.3.1-alpha.11 — Phase V.11A: The Companion Opens the Book
+
+- Adds a read-only Companion adapter for GMREXP Active Content API 1.0.0.
+- Active Almanac races, backgrounds and subclasses augment existing Character creation choices without duplicating canonical sourcebook definitions.
+- Preserves fully-qualified expansion provenance for newly created Characters and keeps existing expansion race/background identities readable after later Almanac deactivation.
+- Projects only structured mechanics already understood by Companion; expansion subclass progression remains a read-only preview until a dedicated advancement bridge.
+- Fails safely back to native/Steward content when GMREXP is absent or incompatible.
+- Records the future entitlement/campaign model as **Available → Entitled → Campaign Active → Consumable**, keeping payment policy separate from content architecture.
+
 ## IV.34.2 — The Table Remembers Tonight
 
 - Adds the Companion-owned persistent Campaign ↔ Tabletop link.

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GreatMarketrealmCompanion\Services\Characters;
 
+use GreatMarketrealmCompanion\Integration\Expansions\ExpansionCharacterCatalogue;
 use GreatMarketrealmCompanion\Services\Definitions\Definitions;
 use GreatMarketrealmCompanion\Services\Registry\Registry;
 
@@ -20,8 +21,10 @@ final class RaceRegistry extends Registry
      * Create the Race Registry.
      */
     public function __construct(
-        private Definitions $definitions
+        private Definitions $definitions,
+        private ?ExpansionCharacterCatalogue $expansions = null
     ) {
+        $this->expansions ??= new ExpansionCharacterCatalogue();
         parent::__construct();
     }
 
@@ -137,8 +140,84 @@ final class RaceRegistry extends Registry
             }
         }
 
+        foreach ($this->expansions->races() as $key => $record) {
+            if ($scriptorium->has($key)) {
+                continue;
+            }
+
+            $name = trim((string) ($record['name'] ?? ''));
+            $description = trim((string) ($record['description'] ?? ''));
+            $speed = is_array($record['speed'] ?? null)
+                ? max(0, (int) ($record['speed']['walk'] ?? 0))
+                : 0;
+            $size = $this->expansionSize(
+                is_array($record['size'] ?? null) ? $record['size'] : []
+            );
+            $creatureType = trim((string) ($record['creature_type'] ?? ''));
+
+            if ($name === '' || $speed <= 0 || $size === '' || $creatureType === '') {
+                continue;
+            }
+
+            $builder = $scriptorium->race(key: $key, name: $name)
+                ->description($description)
+                ->speed($speed)
+                ->size($size)
+                ->creatureType($creatureType)
+                ->expansion((string) ($record['expansion'] ?? ''))
+                ->tag('gmrexp');
+
+            $senses = is_array($record['senses'] ?? null) ? $record['senses'] : [];
+            if ((int) ($senses['darkvision'] ?? 0) > 0) {
+                $builder->darkvision((int) $senses['darkvision']);
+            }
+
+            foreach ((array) ($record['languages'] ?? []) as $language) {
+                $language = trim((string) $language);
+                if ($language !== '' && $language !== 'source-not-specified') {
+                    $builder->language($language);
+                }
+            }
+
+            foreach ((array) ($record['resistances'] ?? []) as $resistance) {
+                if (is_string($resistance) && trim($resistance) !== '') {
+                    $builder->resistance(trim($resistance));
+                }
+            }
+
+            foreach ((array) ($record['traits'] ?? []) as $trait) {
+                if (! is_array($trait)) {
+                    continue;
+                }
+                $traitName = trim((string) ($trait['name'] ?? ''));
+                if ($traitName !== '') {
+                    $builder->trait($traitName);
+                }
+            }
+
+            $builder->done();
+        }
+
         $this->registerDefinitions(
             $scriptorium->definitions()
         );
+    }
+
+    /** @param array<string,mixed> $size */
+    private function expansionSize(array $size): string
+    {
+        $value = trim((string) ($size['value'] ?? ''));
+        if ($value !== '') {
+            return $value;
+        }
+
+        $options = is_array($size['options'] ?? null)
+            ? array_values(array_filter(
+                array_map(static fn (mixed $item): string => trim((string) $item), $size['options']),
+                static fn (string $item): bool => $item !== ''
+            ))
+            : [];
+
+        return implode(' or ', $options);
     }
 }

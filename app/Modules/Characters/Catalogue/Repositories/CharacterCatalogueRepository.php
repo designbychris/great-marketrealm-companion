@@ -5,11 +5,18 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories;
 
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\HeritageGuidance;
+use GreatMarketrealmCompanion\Integration\Expansions\ExpansionCharacterCatalogue;
 
 defined('ABSPATH') || exit;
 
 final class CharacterCatalogueRepository
 {
+    public function __construct(
+        private ?ExpansionCharacterCatalogue $expansions = null
+    ) {
+        $this->expansions ??= new ExpansionCharacterCatalogue();
+    }
+
     private const OPTION = 'gmrc_character_catalogue';
     private const VERSION = '3.7.6';
 
@@ -50,6 +57,13 @@ final class CharacterCatalogueRepository
                 }
             }
         }
+
+        foreach ($this->expansions->races() as $key => $definition) {
+            if (! isset($options[$key])) {
+                $options[$key] = (string) ($definition['name'] ?? $key);
+            }
+        }
+
         return $options;
     }
 
@@ -141,6 +155,23 @@ final class CharacterCatalogueRepository
                 foreach ((array) ($record['paths'] ?? []) as $path) if (is_array($path)) $items[] = $path;
             }
         }
+
+        $existing = [];
+        foreach ($items as $item) {
+            if (is_array($item) && is_string($item['key'] ?? null)) {
+                $existing[$item['key']] = true;
+            }
+        }
+
+        foreach ($this->expansions->subclasses() as $key => $definition) {
+            if (isset($existing[$key])) {
+                continue;
+            }
+
+            $definition['parent'] = (string) ($definition['parent_class'] ?? '');
+            $items[] = $definition;
+        }
+
         return $items;
     }
 

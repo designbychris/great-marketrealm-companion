@@ -198,7 +198,9 @@ final class Background implements Stringable
         private readonly string $value,
         private readonly ?array $skillSnapshot = null,
         private readonly ?array $toolSnapshot = null,
-        private readonly ?string $labelSnapshot = null
+        private readonly ?string $labelSnapshot = null,
+        private readonly ?int $languageChoiceSnapshot = null,
+        private readonly ?array $fixedLanguageSnapshot = null
     ) {
         $this->guardAgainstInvalidValue(
             $value
@@ -228,7 +230,9 @@ final class Background implements Stringable
         string $value,
         array $skills,
         array $tools,
-        ?string $label = null
+        ?string $label = null,
+        ?int $languageChoices = null,
+        ?array $fixedLanguages = null
     ): self {
         $value = self::normalise($value);
 
@@ -236,7 +240,11 @@ final class Background implements Stringable
             $value,
             SkillProficiencies::proficient($skills)->proficiencies(),
             ToolProficiencies::fromStrings($tools)->values(),
-            $label !== null ? trim($label) : null
+            $label !== null ? trim($label) : null,
+            $languageChoices !== null ? max(0, $languageChoices) : null,
+            $fixedLanguages !== null
+                ? Languages::fromStrings($fixedLanguages)->values()
+                : null
         );
     }
 
@@ -280,6 +288,10 @@ final class Background implements Stringable
      */
     public function languageChoices(): int
     {
+        if ($this->languageChoiceSnapshot !== null) {
+            return $this->languageChoiceSnapshot;
+        }
+
         return self::BACKGROUNDS[
             $this->value
         ]['language_choices'];
@@ -293,6 +305,10 @@ final class Background implements Stringable
      */
     public function fixedLanguageIdentifiers(): array
     {
+        if ($this->fixedLanguageSnapshot !== null) {
+            return $this->fixedLanguageSnapshot;
+        }
+
         return self::BACKGROUNDS[
             $this->value
         ]['fixed_languages'];
