@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Modules\Characters;
 
 use GreatMarketrealmCompanion\Services\Characters\RaceRegistry;
+use GreatMarketrealmCompanion\Integration\Expansions\ExpansionCharacterCatalogue;
 
 use GreatMarketrealmCompanion\Core\Container;
 use GreatMarketrealmCompanion\Modules\Characters\Actions\CreateCharacterAction;
@@ -79,6 +80,19 @@ final class CharactersServiceProvider extends ServiceProvider
          */
         $container->singleton(
             CharacterCreationRules::class
+        );
+
+        /*
+         * The expansion adapter has an optional Closure test seam. The
+         * Companion container eagerly auto-wires class-typed constructor
+         * parameters before considering their default value, so resolving
+         * the adapter implicitly would attempt to instantiate Closure.
+         * Register the production adapter explicitly instead.
+         */
+        $container->singleton(
+            ExpansionCharacterCatalogue::class,
+            static fn (): ExpansionCharacterCatalogue =>
+                new ExpansionCharacterCatalogue()
         );
 
         $container->singleton(CharacterCatalogueRepository::class);

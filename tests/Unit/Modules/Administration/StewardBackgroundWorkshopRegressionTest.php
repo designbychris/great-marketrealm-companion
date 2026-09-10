@@ -74,11 +74,11 @@ final class StewardBackgroundWorkshopRegressionTest extends TestCase
         self::assertStringContainsString('Choose a recognised background from the Guild Register.', $source);
     }
 
-    public function testCharacterCreatorAndEditorExposePublishedStewardBackgrounds(): void
+    public function testCharacterCreatorAndEditorExposeResolvedSharedBackgrounds(): void
     {
         foreach(['app/Modules/Characters/Views/create.php','app/Modules/Characters/Views/edit.php'] as $path){
             $source=$this->source($path);
-            self::assertStringContainsString("str_starts_with(\$record->key(), 'steward-background-')", $source);
+            self::assertStringContainsString("! Background::supports(\$record->key())", $source);
             self::assertStringContainsString('Background::fromStringWithMechanics', $source);
         }
     }

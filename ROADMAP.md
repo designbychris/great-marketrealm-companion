@@ -161,3 +161,9 @@ Promote linked Tabletop Sessions into durable Fellowship history: recap sync, ch
 - [x] IV.34.6A.3 — The Chronicle Knows Who Spoke: attributed/nested player memories, DM visibility, private Keeper-note boundary, and zero-minute masthead polish.
 
 - [x] IV.35.10B — The Boss Would Like to Participate — Boss Lair catalogue, combat compatibility, and Keeper interaction correction.
+
+
+### V.11A.1 — Pippin Discovers That Bridges Need Expansion Joints ✅
+- Explicit Companion container binding for the GMREXP consumer adapter.
+- Cross-plugin boot safety: optional Closure test seams are never auto-wired in production.
+- Shared Background register regression expectations updated for Almanac content.

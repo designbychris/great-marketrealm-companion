@@ -1,5 +1,13 @@
 ## 0.3.1-alpha.11 — Phase V.11A: The Companion Opens the Book
 
+## 0.3.1-alpha.11.1 — Phase V.11A.1: Pippin Discovers That Bridges Need Expansion Joints
+
+- Fixed a WordPress boot fatal when the Companion container attempted to auto-wire the optional `Closure` seam on `ExpansionCharacterCatalogue`.
+- Registered the production expansion adapter explicitly so Companion/Expansions plugin load order cannot make the container instantiate `Closure`.
+- Updated the Background Workshop regression contract to reflect V.11A shared resolved backgrounds rather than Steward-prefix-only rendering.
+- Added a regression assertion protecting the explicit expansion-adapter container binding.
+
+
 - Adds a read-only Companion adapter for GMREXP Active Content API 1.0.0.
 - Active Almanac races, backgrounds and subclasses augment existing Character creation choices without duplicating canonical sourcebook definitions.
 - Preserves fully-qualified expansion provenance for newly created Characters and keeps existing expansion race/background identities readable after later Almanac deactivation.

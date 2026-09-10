@@ -162,6 +162,17 @@ final class ExpansionCharacterCatalogueTest extends TestCase
     }
 
     /** @param array<int,object> $entries */
+    public function testCharactersProviderRegistersExpansionAdapterWithoutAutowiringClosure(): void
+    {
+        $source = file_get_contents(
+            dirname(__DIR__, 4) . '/app/Modules/Characters/CharactersServiceProvider.php'
+        );
+
+        self::assertIsString($source);
+        self::assertStringContainsString('ExpansionCharacterCatalogue::class', $source);
+        self::assertStringContainsString('new ExpansionCharacterCatalogue()', $source);
+    }
+
     private function catalogue(array $entries): ExpansionCharacterCatalogue
     {
         $active = new class($entries) {
