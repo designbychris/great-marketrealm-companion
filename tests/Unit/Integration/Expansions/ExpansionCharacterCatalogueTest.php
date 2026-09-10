@@ -157,8 +157,8 @@ final class ExpansionCharacterCatalogueTest extends TestCase
 
         self::assertIsString($source);
         self::assertStringContainsString('expansionGiftPreview($subclass)', $source);
-        self::assertStringContainsString("(\$subclass[\'source_kind\'] ?? \'\') !== \'gmrexp\'", $source);
-        self::assertStringContainsString("\$subclass[\'progression\']", $source);
+        self::assertStringContainsString("(\$subclass['source_kind'] ?? '') !== 'gmrexp'", $source);
+        self::assertStringContainsString("\$subclass['progression']", $source);
     }
 
     /** @param array<int,object> $entries */
