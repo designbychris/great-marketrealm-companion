@@ -6,7 +6,7 @@
 - [x] Gracefully degrade when Expansions is missing or incompatible.
 - [x] Keep expansion subclass progression as sourcebook preview rather than pretending it is a native Path Gift.
 - [ ] V.11A.1 — connect sourcebook subclass progression to Companion advancement through an explicit mechanics contract.
-- [ ] V.11A.2 — **The DM Shares the Book**: separate entitlement from Campaign/Fellowship activation so linked players inherit the DM's active Almanacs for that table.
+- [x] V.11A.2 — **The DM Shares the Book**: Campaign-scoped Almanac sharing lets linked players inherit the DM's active sourcebooks for that table, with provenance-aware Character Generator presentation.
 - [ ] V.11B — let Great Marketrealm Tabletop consume the same campaign-active canonical expansion identities.
 
 Future access model: **Available → Entitled → Campaign Active → Consumable**. Free entitlement may simply resolve true; payment/donation remains an interchangeable policy rather than a content dependency.

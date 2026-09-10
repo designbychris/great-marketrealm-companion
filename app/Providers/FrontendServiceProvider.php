@@ -455,6 +455,18 @@ class FrontendServiceProvider extends ServiceProvider
         }
 
         if (
+            $method === 'POST'
+            && preg_match(
+                '#^dungeon-master/campaigns/([^/]+)/almanacs$#',
+                $route,
+                $campaignAlmanacMatch
+            )
+        ) {
+            return 'gmrc_dm_campaign_almanacs_'
+                . sanitize_text_field($campaignAlmanacMatch[1]);
+        }
+
+        if (
             in_array($method, ['POST', 'DELETE'], true)
             && preg_match(
                 '#^dungeon-master/campaigns/([^/]+)/market-pass$#',

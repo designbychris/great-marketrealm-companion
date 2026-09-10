@@ -349,3 +349,82 @@
         color: CanvasText;
     }
 }
+
+/* Phase V.11A.2 — The DM Shares the Book */
+.gmrc-command-card--almanacs {
+    grid-column: span 2;
+}
+
+.gmrc-campaign-almanacs__list {
+    display: grid;
+    gap: .7rem;
+    margin: 1rem 0 1.1rem;
+}
+
+.gmrc-campaign-almanacs__book {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    padding: .8rem .9rem;
+    border: 1px solid rgba(241, 201, 109, .24);
+    border-radius: .75rem;
+    background: rgba(255, 255, 255, .025);
+    cursor: pointer;
+}
+
+.gmrc-campaign-almanacs__book.is-shared {
+    border-color: rgba(241, 201, 109, .7);
+    box-shadow: inset 0 0 0 1px rgba(241, 201, 109, .12);
+}
+
+.gmrc-campaign-almanacs__book.is-unavailable {
+    opacity: .64;
+    cursor: default;
+}
+
+.gmrc-campaign-almanacs__book input {
+    inline-size: 1.15rem;
+    block-size: 1.15rem;
+    margin: 0;
+}
+
+.gmrc-campaign-almanacs__book span,
+.gmrc-campaign-almanacs__book strong,
+.gmrc-campaign-almanacs__book small {
+    display: block;
+}
+
+.gmrc-campaign-almanacs__book small,
+.gmrc-campaign-almanacs__boundary,
+.gmrc-campaign-almanacs__empty {
+    color: rgba(255, 244, 218, .72);
+}
+
+.gmrc-campaign-almanacs__book:has(input:focus-visible) {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+}
+
+.gmrc-campaign-almanacs__boundary {
+    margin: 1rem 0 0;
+    font-size: .9rem;
+}
+
+.gmrc-campaign-almanacs__readonly {
+    margin: 1rem 0;
+    padding-left: 1.2rem;
+}
+
+@media (max-width: 760px) {
+    .gmrc-command-card--almanacs {
+        grid-column: auto;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-campaign-almanacs__book,
+    .gmrc-campaign-almanacs__book.is-shared {
+        border: 1px solid CanvasText;
+        box-shadow: none;
+    }
+}

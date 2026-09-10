@@ -234,6 +234,8 @@ final class CharacterController
                     )->all(),
                     'backgroundReferences' =>
                         $this->backgroundReferences(),
+                    'expansionPresentation' =>
+                        (new ExpansionCharacterCatalogue())->presentationMap(),
                     'startingEquipmentPackages' => array_map(
                         static fn ($package): array => [
                             'id' => $package->id(),

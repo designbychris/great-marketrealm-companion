@@ -123,6 +123,7 @@ $catalogueSubclasses = is_array($catalogueSubclasses ?? null) ? $catalogueSubcla
 $subclassPreviews = is_array($subclassPreviews ?? null) ? $subclassPreviews : [];
 $backgroundReferences = is_array($backgroundReferences ?? null) ? $backgroundReferences : [];
 $startingEquipmentPackages = is_array($startingEquipmentPackages ?? null) ? $startingEquipmentPackages : [];
+$expansionPresentation = is_array($expansionPresentation ?? null) ? $expansionPresentation : [];
 $startingEquipmentValue = isset($old['starting_equipment_package']) && is_scalar($old['starting_equipment_package']) ? (string) $old['starting_equipment_package'] : '';
 $startingEquipmentError = $fieldError('starting_equipment_package');
 
@@ -598,6 +599,19 @@ $charactersUrl = add_query_arg(
                         $isSelected =
                             $identifier === $raceValue;
 
+                        $raceExpansion = is_array(
+                            $expansionPresentation['race'][$identifier]
+                            ?? null
+                        )
+                            ? $expansionPresentation['race'][$identifier]
+                            : null;
+                        $raceExpansionKey = is_string($raceExpansion['expansion'] ?? null)
+                            ? sanitize_key($raceExpansion['expansion'])
+                            : '';
+                        $raceExpansionLabel = is_string($raceExpansion['label'] ?? null)
+                            ? trim($raceExpansion['label'])
+                            : '';
+
                         $monogram = function_exists(
                             'mb_substr'
                         )
@@ -626,8 +640,15 @@ $charactersUrl = add_query_arg(
                                 <?php echo $isSelected
                                     ? 'gmrc-choice-card--selected'
                                     : ''; ?>
+                                <?php echo $raceExpansionKey !== ''
+                                    ? 'gmrc-choice-card--expansion gmrc-choice-card--expansion-' . esc_attr($raceExpansionKey)
+                                    : ''; ?>
                             "
                             data-choice-card
+                            <?php if ($raceExpansionKey !== '') : ?>
+                                data-expansion-source="gmrexp"
+                                data-expansion="<?php echo esc_attr($raceExpansionKey); ?>"
+                            <?php endif; ?>
                             aria-current="<?php echo $isSelected
                                 ? 'true'
                                 : 'false'; ?>"
@@ -686,6 +707,13 @@ $charactersUrl = add_query_arg(
                                         aria-hidden="true"
                                     ></span>
                                 </span>
+
+                                <?php if ($raceExpansionKey !== '') : ?>
+                                    <span class="gmrc-expansion-source-badge">
+                                        <span aria-hidden="true">✦</span>
+                                        <?php echo esc_html($raceExpansionLabel !== '' ? $raceExpansionLabel : $raceExpansionKey); ?>
+                                    </span>
+                                <?php endif; ?>
 
                                 <span
                                     class="gmrc-choice-card__summary"
@@ -1228,9 +1256,21 @@ $charactersUrl = add_query_arg(
                         )
                             ? $preview['gift_preview']
                             : [];
+                        $subclassExpansion = is_array(
+                            $expansionPresentation['subclass'][(string) $previewKey]
+                            ?? null
+                        )
+                            ? $expansionPresentation['subclass'][(string) $previewKey]
+                            : null;
+                        $subclassExpansionKey = is_string($subclassExpansion['expansion'] ?? null)
+                            ? sanitize_key($subclassExpansion['expansion'])
+                            : '';
+                        $subclassExpansionLabel = is_string($subclassExpansion['label'] ?? null)
+                            ? trim($subclassExpansion['label'])
+                            : '';
                         ?>
                         <article
-                            class="gmrc-subclass-preview__card"
+                            class="gmrc-subclass-preview__card<?php echo $subclassExpansionKey !== '' ? ' gmrc-subclass-preview__card--expansion gmrc-subclass-preview__card--expansion-' . esc_attr($subclassExpansionKey) : ''; ?>"
                             data-subclass-preview="<?php echo esc_attr(
                                 (string) $previewKey
                             ); ?>"
@@ -1240,6 +1280,10 @@ $charactersUrl = add_query_arg(
                                     ?? ''
                                 )
                             ); ?>"
+                            <?php if ($subclassExpansionKey !== '') : ?>
+                                data-expansion-source="gmrexp"
+                                data-expansion="<?php echo esc_attr($subclassExpansionKey); ?>"
+                            <?php endif; ?>
                             <?php echo $previewSelected
                                 ? ''
                                 : 'hidden'; ?>
@@ -1257,6 +1301,13 @@ $charactersUrl = add_query_arg(
                                     ); ?>
                                 </h3>
                             </header>
+
+                            <?php if ($subclassExpansionKey !== '') : ?>
+                                <span class="gmrc-expansion-source-badge">
+                                    <span aria-hidden="true">✦</span>
+                                    <?php echo esc_html($subclassExpansionLabel !== '' ? $subclassExpansionLabel : $subclassExpansionKey); ?>
+                                </span>
+                            <?php endif; ?>
 
                             <?php if (
                                 trim(
@@ -1397,6 +1448,18 @@ $charactersUrl = add_query_arg(
                         )
                             ? $backgroundReferences[$identifier]
                             : null;
+                        $backgroundExpansion = is_array(
+                            $expansionPresentation['background'][$identifier]
+                            ?? null
+                        )
+                            ? $expansionPresentation['background'][$identifier]
+                            : null;
+                        $backgroundExpansionKey = is_string($backgroundExpansion['expansion'] ?? null)
+                            ? sanitize_key($backgroundExpansion['expansion'])
+                            : '';
+                        $backgroundExpansionLabel = is_string($backgroundExpansion['label'] ?? null)
+                            ? trim($backgroundExpansion['label'])
+                            : '';
                         $resolvedSkills = is_array($backgroundReference['skills'] ?? null)
                             ? $backgroundReference['skills']
                             : $background->skillProficiencies()->proficiencies();
@@ -1419,7 +1482,14 @@ $charactersUrl = add_query_arg(
                             true
                         );
                         ?>
-                        <label class="gmrc-background-option <?php echo $isSelected ? 'gmrc-background-option--selected' : ''; ?>" data-background-option>
+                        <label
+                            class="gmrc-background-option <?php echo $isSelected ? 'gmrc-background-option--selected' : ''; ?><?php echo $backgroundExpansionKey !== '' ? ' gmrc-background-option--expansion gmrc-background-option--expansion-' . esc_attr($backgroundExpansionKey) : ''; ?>"
+                            data-background-option
+                            <?php if ($backgroundExpansionKey !== '') : ?>
+                                data-expansion-source="gmrexp"
+                                data-expansion="<?php echo esc_attr($backgroundExpansionKey); ?>"
+                            <?php endif; ?>
+                        >
                             <input
                                 class="gmrc-background-option__input"
                                 type="radio"
@@ -1439,6 +1509,12 @@ $charactersUrl = add_query_arg(
                                 <strong class="gmrc-background-option__title"><?php echo esc_html($displayLabel); ?></strong>
                                 <span class="gmrc-background-option__control" aria-hidden="true"></span>
                             </span>
+                            <?php if ($backgroundExpansionKey !== '') : ?>
+                                <span class="gmrc-expansion-source-badge">
+                                    <span aria-hidden="true">✦</span>
+                                    <?php echo esc_html($backgroundExpansionLabel !== '' ? $backgroundExpansionLabel : $backgroundExpansionKey); ?>
+                                </span>
+                            <?php endif; ?>
                             <span class="gmrc-background-option__summary"><?php echo esc_html(implode(', ', $skills)); ?></span>
                             <span class="gmrc-background-option__details" data-background-details <?php echo $isSelected ? '' : 'hidden'; ?>>
                                 <span class="gmrc-background-option__detail">

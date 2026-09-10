@@ -1,3 +1,17 @@
+# Changelog
+
+## 0.3.1-alpha.11.2 — Phase V.11A.2: The DM Shares the Book
+
+- Added Campaign-scoped Almanac sharing in the Dungeon Master Command Centre.
+- Added persistent Campaign expansion-key storage without copying canonical expansion definitions into Companion.
+- Added player inheritance of shared Almanacs through active Campaign roster membership.
+- Kept the entitlement seam replaceable: current site-active GMREXP Almanacs use a free-entitlement policy while future payment/donation providers can be introduced independently.
+- Scoped Companion expansion races, backgrounds and subclasses through one `gmrc_expansion_character_scope` filter so UI, validation and provenance use the same access decision.
+- Preserved temporarily unavailable Campaign selections while preventing inactive Almanacs from being consumed.
+- Added expansion presentation metadata and accessible sourcebook badges to Character Generator Race, Background and Subclass cards.
+- Added the first sourcebook-specific visual treatment for The Midnight Menu with a neon-inspired edge/glow plus reduced-motion and forced-colour fallbacks.
+- Added regression coverage for Campaign sharing, player inheritance, canonical key storage, scope filtering, UI provenance and future entitlement separation.
+
 ## 0.3.1-alpha.11 — Phase V.11A: The Companion Opens the Book
 
 ## 0.3.1-alpha.11.1 — Phase V.11A.1: Pippin Discovers That Bridges Need Expansion Joints

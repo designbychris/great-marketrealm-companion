@@ -61,6 +61,72 @@ final class ExpansionCharacterCatalogue
     }
 
     /**
+     * Return the active Almanac keys that currently expose Character-facing
+     * content understood by the Companion. This deliberately bypasses the
+     * current-player sharing scope so a Dungeon Master can choose which books
+     * to place on a Campaign shelf.
+     *
+     * @return string[]
+     */
+    public function activeExpansionKeys(): array
+    {
+        $keys = [];
+
+        foreach (['race', 'background', 'subclass'] as $type) {
+            foreach ($this->unscopedDefinitions($type) as $definition) {
+                $expansion = $this->normaliseKey(
+                    (string) ($definition['expansion'] ?? '')
+                );
+
+                if ($expansion !== '') {
+                    $keys[$expansion] = true;
+                }
+            }
+        }
+
+        $keys = array_keys($keys);
+        sort($keys);
+
+        return $keys;
+    }
+
+    /**
+     * Presentation/provenance map for the currently consumable expansion
+     * choices. Views can identify expansion cards without owning sourcebook
+     * mechanics or hard-coding canonical IDs.
+     *
+     * @return array<string,array<string,array{expansion:string,label:string,canonical_id:string}>>
+     */
+    public function presentationMap(): array
+    {
+        $map = [
+            'race' => [],
+            'background' => [],
+            'subclass' => [],
+        ];
+
+        foreach (array_keys($map) as $type) {
+            foreach ($this->definitions($type) as $key => $definition) {
+                $expansion = $this->normaliseKey(
+                    (string) ($definition['expansion'] ?? '')
+                );
+
+                if ($expansion === '') {
+                    continue;
+                }
+
+                $map[$type][$key] = [
+                    'expansion' => $expansion,
+                    'label' => $this->expansionLabel($expansion),
+                    'canonical_id' => (string) ($definition['canonical_id'] ?? ''),
+                ];
+            }
+        }
+
+        return $map;
+    }
+
+    /**
      * Resolve the fully-qualified GMREXP identity for an unambiguous active
      * definition. Returns null rather than guessing across colliding packs.
      */
@@ -87,6 +153,28 @@ final class ExpansionCharacterCatalogue
      * @return array<string,array<string,mixed>>
      */
     private function definitions(string $type): array
+    {
+        $definitions = $this->unscopedDefinitions($type);
+        $scope = $this->currentExpansionScope();
+
+        if ($scope === null) {
+            return $definitions;
+        }
+
+        return array_filter(
+            $definitions,
+            static fn (array $definition): bool => in_array(
+                (string) ($definition['expansion'] ?? ''),
+                $scope,
+                true
+            )
+        );
+    }
+
+    /**
+     * @return array<string,array<string,mixed>>
+     */
+    private function unscopedDefinitions(string $type): array
     {
         $catalogue = $this->activeCatalogue();
         if ($catalogue === null || ! method_exists($catalogue, 'ofType')) {
@@ -228,6 +316,54 @@ final class ExpansionCharacterCatalogue
         }
 
         return $function();
+    }
+
+
+    /** @return string[]|null */
+    private function currentExpansionScope(): ?array
+    {
+        if (! function_exists('apply_filters')) {
+            return null;
+        }
+
+        try {
+            $scope = apply_filters(
+                'gmrc_expansion_character_scope',
+                null
+            );
+        } catch (Throwable) {
+            return [];
+        }
+
+        if ($scope === null) {
+            return null;
+        }
+
+        if (! is_array($scope)) {
+            return [];
+        }
+
+        $keys = [];
+        foreach ($scope as $key) {
+            if (! is_scalar($key)) {
+                continue;
+            }
+
+            $normalised = $this->normaliseKey((string) $key);
+            if ($normalised !== '') {
+                $keys[$normalised] = true;
+            }
+        }
+
+        $keys = array_keys($keys);
+        sort($keys);
+
+        return $keys;
+    }
+
+    private function expansionLabel(string $key): string
+    {
+        return ucwords(str_replace(['-', '_'], ' ', $key));
     }
 
     private function normaliseKey(string $value): string

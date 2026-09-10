@@ -2,6 +2,7 @@
 use GreatMarketrealmCompanion\Core\Routing\Router;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\DungeonMasterController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\CampaignController;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\CampaignExpansionController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\PlayerRosterController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\SessionController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\EncounterController;
@@ -34,6 +35,7 @@ return static function (Router $router): void {
  $router->get('/dungeon-master/campaigns/{id}/edit',[CampaignController::class,'edit']);
  $router->get('/dungeon-master/campaigns/{id}',[CampaignController::class,'show']);
  $router->put('/dungeon-master/campaigns/{id}',[CampaignController::class,'update']);
+ $router->post('/dungeon-master/campaigns/{id}/almanacs',[CampaignExpansionController::class,'update']);
  $router->post('/dungeon-master/campaigns/{id}/archive',[CampaignController::class,'archive']);
  $router->get('/dungeon-master/campaigns/{id}/players',[PlayerRosterController::class,'index']);
  $router->get('/dungeon-master/campaigns/{id}/characters/{characterId}',[ReadOnlyCharacterController::class,'show']);

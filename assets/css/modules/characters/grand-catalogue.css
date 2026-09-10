@@ -249,3 +249,25 @@
         color: CanvasText;
     }
 }
+
+/* Phase V.11A.2 — expansion subclass preview */
+.gmrc-subclass-preview__card--expansion {
+    --gmrc-expansion-edge: rgba(99, 226, 255, .72);
+    --gmrc-expansion-glow: rgba(172, 80, 255, .30);
+    border-color: var(--gmrc-expansion-edge);
+    box-shadow:
+        0 0 0 1px rgba(99, 226, 255, .12),
+        0 0 1.25rem var(--gmrc-expansion-glow);
+}
+
+.gmrc-subclass-preview__card--expansion-midnight-menu {
+    --gmrc-expansion-edge: rgba(79, 239, 255, .86);
+    --gmrc-expansion-glow: rgba(224, 46, 255, .38);
+}
+
+@media (forced-colors: active) {
+    .gmrc-subclass-preview__card--expansion {
+        border-color: CanvasText;
+        box-shadow: none;
+    }
+}

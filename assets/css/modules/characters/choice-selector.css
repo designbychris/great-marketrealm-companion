@@ -676,3 +676,77 @@
         opacity: 1;
     }
 }
+
+/* Phase V.11A.2 — expansion provenance cards */
+.gmrc-choice-card--expansion {
+    --gmrc-expansion-edge: rgba(99, 226, 255, .72);
+    --gmrc-expansion-glow: rgba(172, 80, 255, .34);
+    border-color: var(--gmrc-expansion-edge);
+    box-shadow:
+        0 0 0 1px rgba(99, 226, 255, .14),
+        0 0 1.15rem var(--gmrc-expansion-glow),
+        0 1rem 2.2rem rgba(0, 0, 0, .28);
+}
+
+.gmrc-choice-card--expansion::before {
+    background:
+        linear-gradient(135deg, rgba(53, 235, 255, .10), transparent 48%),
+        linear-gradient(315deg, rgba(210, 62, 255, .10), transparent 52%);
+}
+
+.gmrc-choice-card--expansion:hover,
+.gmrc-choice-card--expansion.gmrc-choice-card--selected {
+    box-shadow:
+        0 0 0 1px rgba(99, 226, 255, .26),
+        0 0 1.65rem rgba(172, 80, 255, .46),
+        0 1.15rem 2.5rem rgba(0, 0, 0, .32);
+}
+
+.gmrc-choice-card--expansion-midnight-menu {
+    --gmrc-expansion-edge: rgba(79, 239, 255, .86);
+    --gmrc-expansion-glow: rgba(224, 46, 255, .40);
+}
+
+.gmrc-expansion-source-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .36rem;
+    align-self: flex-start;
+    width: fit-content;
+    margin: .15rem 0 .35rem;
+    padding: .24rem .5rem;
+    border: 1px solid rgba(99, 226, 255, .48);
+    border-radius: 999px;
+    background: rgba(20, 13, 36, .72);
+    color: #dffbff;
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.gmrc-choice-card--expansion-midnight-menu .gmrc-expansion-source-badge {
+    border-color: rgba(79, 239, 255, .72);
+    box-shadow: 0 0 .7rem rgba(224, 46, 255, .22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-choice-card--expansion,
+    .gmrc-choice-card--expansion:hover,
+    .gmrc-choice-card--expansion.gmrc-choice-card--selected {
+        transition: none;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-choice-card--expansion,
+    .gmrc-choice-card--expansion:hover,
+    .gmrc-choice-card--expansion.gmrc-choice-card--selected,
+    .gmrc-expansion-source-badge {
+        border-color: CanvasText;
+        box-shadow: none;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

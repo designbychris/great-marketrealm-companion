@@ -60,6 +60,36 @@ final class ExpansionCharacterCatalogueTest extends TestCase
         self::assertSame('midnight-menu:race:pizzakin', $catalogue->canonicalId('race', 'pizzakin'));
     }
 
+    public function test_it_exposes_active_character_facing_expansion_keys_for_campaign_sharing(): void
+    {
+        $catalogue = $this->catalogue([
+            $this->entry('midnight-menu', 'race', 'pizzakin', ['name' => 'Pizzakin']),
+            $this->entry('midnight-menu', 'background', 'former-fry-cook', ['name' => 'Former Fry Cook']),
+            $this->entry('withered-reach', 'subclass', 'grave-path', ['name' => 'Grave Path']),
+        ]);
+
+        self::assertSame(
+            ['midnight-menu', 'withered-reach'],
+            $catalogue->activeExpansionKeys()
+        );
+    }
+
+    public function test_it_builds_a_small_presentation_map_from_existing_provenance(): void
+    {
+        $catalogue = $this->catalogue([
+            $this->entry('midnight-menu', 'race', 'pizzakin', ['name' => 'Pizzakin']),
+        ]);
+
+        $map = $catalogue->presentationMap();
+
+        self::assertSame('midnight-menu', $map['race']['pizzakin']['expansion']);
+        self::assertSame('Midnight Menu', $map['race']['pizzakin']['label']);
+        self::assertSame(
+            'midnight-menu:race:pizzakin',
+            $map['race']['pizzakin']['canonical_id']
+        );
+    }
+
     public function test_it_refuses_to_guess_when_two_active_almanacs_share_a_local_key(): void
     {
         $catalogue = $this->catalogue([

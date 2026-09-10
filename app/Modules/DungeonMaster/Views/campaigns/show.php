@@ -29,6 +29,13 @@ $registerUrl = $route('dungeon-master/campaigns');
         </div>
     </header>
 
+    <?php if (! empty($flash['success'])) : ?>
+        <p class="gmrc-command-centre__notice" role="status"><?php echo esc_html((string) $flash['success']); ?></p>
+    <?php endif; ?>
+    <?php if (! empty($flash['error'])) : ?>
+        <p class="gmrc-command-centre__notice" role="alert"><?php echo esc_html((string) $flash['error']); ?></p>
+    <?php endif; ?>
+
     <?php if ($archived) : ?>
         <p class="gmrc-command-centre__notice" role="status">This campaign is archived. Its Command Centre and campaign ledgers are preserved as read-only history.</p>
     <?php endif; ?>
@@ -107,6 +114,58 @@ $registerUrl = $route('dungeon-master/campaigns');
             <p class="gmrc-dm-desk__eyebrow">Party muster</p><h2>Player Roster</h2>
             <p><strong><?php echo esc_html((string) $commandCentre['playerCount']); ?></strong> players and <strong><?php echo esc_html((string) $commandCentre['characterCount']); ?></strong> attached characters are recorded for this campaign.</p>
             <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/players')); ?>"><?php echo $commandCentre['playerCount'] ? 'Review roster' : 'Add players'; ?></a>
+        </article>
+
+
+        <article class="gmrc-command-card gmrc-command-card--almanacs">
+            <p class="gmrc-dm-desk__eyebrow">Shared sourcebooks</p>
+            <h2>Campaign Almanacs</h2>
+            <p>Choose which active Great MarketRealm expansions this Campaign shares with its linked Players. Shared Character options appear automatically in their Companion generator.</p>
+
+            <?php $expansionShelf = is_array($expansionShelf ?? null) ? $expansionShelf : []; ?>
+            <?php if ($expansionShelf === []) : ?>
+                <p class="gmrc-campaign-almanacs__empty">No Character-facing Almanacs are currently available from the Expansions Library.</p>
+            <?php elseif ($archived) : ?>
+                <ul class="gmrc-campaign-almanacs__readonly">
+                    <?php foreach ($expansionShelf as $book) : ?>
+                        <?php if (! empty($book['enabled'])) : ?>
+                            <li><?php echo esc_html((string) ($book['label'] ?? $book['key'] ?? 'Expansion')); ?></li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else : ?>
+                <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" class="gmrc-campaign-almanacs">
+                    <?php wp_nonce_field('gmrc_dm_campaign_almanacs_' . $campaign->id(), 'gmrc_nonce'); ?>
+                    <input type="hidden" name="action" value="gmrc_app_request">
+                    <input type="hidden" name="gmrc_route" value="<?php echo esc_attr($campaignPath . '/almanacs'); ?>">
+                    <div class="gmrc-campaign-almanacs__list">
+                        <?php foreach ($expansionShelf as $book) : ?>
+                            <?php
+                            $bookKey = (string) ($book['key'] ?? '');
+                            $bookLabel = (string) ($book['label'] ?? $bookKey);
+                            $bookActive = ! empty($book['active']);
+                            $bookEnabled = ! empty($book['enabled']);
+                            ?>
+                            <label class="gmrc-campaign-almanacs__book<?php echo $bookEnabled ? ' is-shared' : ''; ?><?php echo ! $bookActive ? ' is-unavailable' : ''; ?>">
+                                <input
+                                    type="checkbox"
+                                    name="expansions[]"
+                                    value="<?php echo esc_attr($bookKey); ?>"
+                                    <?php checked($bookEnabled); ?>
+                                    <?php disabled(! $bookActive); ?>
+                                >
+                                <span>
+                                    <strong><?php echo esc_html($bookLabel); ?></strong>
+                                    <small><?php echo $bookActive ? 'Available to share' : 'Temporarily unavailable in Expansions'; ?></small>
+                                </span>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <button class="gmrc-campaign-button" type="submit">Share selected Almanacs</button>
+                </form>
+            <?php endif; ?>
+
+            <p class="gmrc-campaign-almanacs__boundary"><strong>Shared ≠ copied.</strong> The Expansions plugin remains the canonical source; this Campaign stores only the Almanac keys it is allowed to use.</p>
         </article>
     </div>
 

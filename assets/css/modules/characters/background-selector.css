@@ -778,3 +778,48 @@
         inline-size: 5rem;
     }
 }
+
+/* Phase V.11A.2 — expansion provenance cards */
+.gmrc-background-option--expansion {
+    --gmrc-expansion-edge: rgba(99, 226, 255, .72);
+    --gmrc-expansion-glow: rgba(172, 80, 255, .34);
+    border-color: var(--gmrc-expansion-edge);
+    box-shadow:
+        0 0 0 1px rgba(99, 226, 255, .14),
+        0 0 1.15rem var(--gmrc-expansion-glow),
+        0 1rem 2.2rem rgba(0, 0, 0, .28);
+}
+
+.gmrc-background-option--expansion-midnight-menu {
+    --gmrc-expansion-edge: rgba(79, 239, 255, .86);
+    --gmrc-expansion-glow: rgba(224, 46, 255, .40);
+}
+
+.gmrc-background-option--expansion:hover,
+.gmrc-background-option--expansion.gmrc-background-option--selected {
+    box-shadow:
+        0 0 0 1px rgba(99, 226, 255, .26),
+        0 0 1.65rem rgba(172, 80, 255, .46),
+        0 1.15rem 2.5rem rgba(0, 0, 0, .32);
+}
+
+.gmrc-background-option--expansion .gmrc-expansion-source-badge {
+    margin-inline: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-background-option--expansion,
+    .gmrc-background-option--expansion:hover,
+    .gmrc-background-option--expansion.gmrc-background-option--selected {
+        transition: none;
+    }
+}
+
+@media (forced-colors: active) {
+    .gmrc-background-option--expansion,
+    .gmrc-background-option--expansion:hover,
+    .gmrc-background-option--expansion.gmrc-background-option--selected {
+        border-color: CanvasText;
+        box-shadow: none;
+    }
+}
