@@ -34,6 +34,14 @@ final class TabletopSessionBridgeRegressionTest extends TestCase
         self::assertStringContainsString('projectCampaign', $bridge);
     }
 
+    public function test_bridge_projects_campaign_active_almanacs_to_tabletop(): void
+    {
+        $bridge = $this->source('app/Modules/DungeonMaster/Integration/TabletopSessionBridge.php');
+        self::assertStringContainsString('CampaignExpansionAccess', $bridge);
+        self::assertStringContainsString("'expansion_keys'", $bridge);
+        self::assertStringContainsString('$this->expansionAccess->activeForCampaign($campaign)', $bridge);
+    }
+
     public function test_tabletop_sessions_are_upserted_without_overwriting_dm_notes(): void
     {
         $bridge = $this->source('app/Modules/DungeonMaster/Integration/TabletopSessionBridge.php');

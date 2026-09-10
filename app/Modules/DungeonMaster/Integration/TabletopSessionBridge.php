@@ -11,6 +11,7 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignFellows
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignTabletopLinkRepository;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\SessionRepository;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\CampaignExpansionAccess;
 use GreatMarketrealmCompanion\Modules\Parties\Models\Party;
 use GreatMarketrealmCompanion\Modules\Parties\Models\ValueObjects\PartyChronicleEntryType;
 use GreatMarketrealmCompanion\Modules\Parties\Repositories\PartyRepository;
@@ -23,7 +24,8 @@ final class TabletopSessionBridge
         private CampaignTabletopLinkRepository $links,
         private CampaignFellowshipRepository $fellowships,
         private SessionRepository $sessions,
-        private PartyRepository $parties
+        private PartyRepository $parties,
+        private CampaignExpansionAccess $expansionAccess
     ) {}
 
     /** @param array<int,array<string,mixed>> $records @return array<int,array<string,mixed>> */
@@ -220,6 +222,7 @@ final class TabletopSessionBridge
             'table_id' => $this->links->tableId($campaign),
             'fellowship_id' => $fellowship?->id()->value() ?? '',
             'fellowship_name' => $fellowship?->name()->value() ?? '',
+            'expansion_keys' => $this->expansionAccess->activeForCampaign($campaign),
         ];
     }
 }

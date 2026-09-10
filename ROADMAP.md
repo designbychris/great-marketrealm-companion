@@ -167,3 +167,9 @@ Promote linked Tabletop Sessions into durable Fellowship history: recap sync, ch
 - Explicit Companion container binding for the GMREXP consumer adapter.
 - Cross-plugin boot safety: optional Closure test seams are never auto-wired in production.
 - Shared Background register regression expectations updated for Almanac content.
+
+### V.11B bridge amendment — The Tabletop Opens the Same Book ✅
+- [x] Linked Tabletop Campaign projection includes the Campaign's currently consumable Almanac keys.
+- [x] Companion remains the Campaign-sharing authority; GMREXP remains the canonical content authority.
+- [x] Tabletop can consume the same shared sourcebook decision without copying definitions or storing a second activation choice.
+

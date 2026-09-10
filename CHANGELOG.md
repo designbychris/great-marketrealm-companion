@@ -1,3 +1,9 @@
+## 0.3.1-alpha.11.3 — Phase V.11B bridge amendment: The Tabletop Opens the Same Book
+
+- Projects the linked Campaign's currently active/shared Almanac keys across the existing Companion → Tabletop campaign bridge.
+- Keeps the Companion as the campaign-sharing authority while GMREXP remains the canonical content owner.
+- Adds no duplicated expansion definitions and no Tabletop-specific activation state.
+
 # Changelog
 
 ## 0.3.1-alpha.11.2 — Phase V.11A.2: The DM Shares the Book
