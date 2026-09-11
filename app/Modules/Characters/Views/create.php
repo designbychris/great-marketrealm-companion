@@ -124,6 +124,7 @@ $subclassPreviews = is_array($subclassPreviews ?? null) ? $subclassPreviews : []
 $backgroundReferences = is_array($backgroundReferences ?? null) ? $backgroundReferences : [];
 $startingEquipmentPackages = is_array($startingEquipmentPackages ?? null) ? $startingEquipmentPackages : [];
 $expansionPresentation = is_array($expansionPresentation ?? null) ? $expansionPresentation : [];
+$cardArtwork = is_array($cardArtwork ?? null) ? $cardArtwork : [];
 $startingEquipmentValue = isset($old['starting_equipment_package']) && is_scalar($old['starting_equipment_package']) ? (string) $old['starting_equipment_package'] : '';
 $startingEquipmentError = $fieldError('starting_equipment_package');
 
@@ -611,6 +612,12 @@ $charactersUrl = add_query_arg(
                         $raceExpansionLabel = is_string($raceExpansion['label'] ?? null)
                             ? trim($raceExpansion['label'])
                             : '';
+                        $raceArtwork = is_array($cardArtwork['race'][$identifier] ?? null)
+                            ? $cardArtwork['race'][$identifier]
+                            : [];
+                        $raceArtworkUrl = is_string($raceArtwork['url'] ?? null)
+                            ? trim($raceArtwork['url'])
+                            : '';
 
                         $monogram = function_exists(
                             'mb_substr'
@@ -674,16 +681,16 @@ $charactersUrl = add_query_arg(
                             >
 
                             <span
-                                class="gmrc-choice-card__image"
+                                class="gmrc-choice-card__image<?php echo $raceArtworkUrl !== '' ? ' gmrc-choice-card__image--illustrated' : ''; ?>"
                                 aria-hidden="true"
                             >
-                                <span
-                                    class="gmrc-choice-card__monogram"
-                                >
-                                    <?php echo esc_html(
-                                        $monogram
-                                    ); ?>
-                                </span>
+                                <?php if ($raceArtworkUrl !== '') : ?>
+                                    <img class="gmrc-choice-card__artwork" src="<?php echo esc_url($raceArtworkUrl); ?>" alt="">
+                                <?php else : ?>
+                                    <span class="gmrc-choice-card__monogram">
+                                        <?php echo esc_html($monogram); ?>
+                                    </span>
+                                <?php endif; ?>
                             </span>
 
                             <span class="gmrc-choice-card__body">
@@ -1042,6 +1049,13 @@ $charactersUrl = add_query_arg(
                                 ->constitution()
                         );
 
+                        $classArtwork = is_array($cardArtwork['class'][$identifier] ?? null)
+                            ? $cardArtwork['class'][$identifier]
+                            : [];
+                        $classArtworkUrl = is_string($classArtwork['url'] ?? null)
+                            ? trim($classArtwork['url'])
+                            : '';
+
                         $monogram = function_exists(
                             'mb_substr'
                         )
@@ -1106,16 +1120,16 @@ $charactersUrl = add_query_arg(
                             >
 
                             <span
-                                class="gmrc-choice-card__image"
+                                class="gmrc-choice-card__image<?php echo $classArtworkUrl !== '' ? ' gmrc-choice-card__image--illustrated' : ''; ?>"
                                 aria-hidden="true"
                             >
-                                <span
-                                    class="gmrc-choice-card__monogram"
-                                >
-                                    <?php echo esc_html(
-                                        $monogram
-                                    ); ?>
-                                </span>
+                                <?php if ($classArtworkUrl !== '') : ?>
+                                    <img class="gmrc-choice-card__artwork" src="<?php echo esc_url($classArtworkUrl); ?>" alt="">
+                                <?php else : ?>
+                                    <span class="gmrc-choice-card__monogram">
+                                        <?php echo esc_html($monogram); ?>
+                                    </span>
+                                <?php endif; ?>
                             </span>
 
                             <span class="gmrc-choice-card__body">
@@ -1471,6 +1485,12 @@ $charactersUrl = add_query_arg(
                                 ? $backgroundReference['name']
                                 : $background->label();
                         $skills = array_map($identifierLabel, $resolvedSkills);
+                        $backgroundArtwork = is_array($cardArtwork['background'][$identifier] ?? null)
+                            ? $cardArtwork['background'][$identifier]
+                            : [];
+                        $backgroundArtworkUrl = is_string($backgroundArtwork['url'] ?? null)
+                            ? trim($backgroundArtwork['url'])
+                            : '';
                         $needsArtisanTools = in_array(
                             ToolProficiency::CATEGORY_ARTISANS_TOOLS,
                             $tools,
@@ -1502,8 +1522,12 @@ $charactersUrl = add_query_arg(
                                 <?php checked($isSelected); ?>
                                 required
                             >
-                            <span class="gmrc-background-option__image" aria-hidden="true">
-                                <span class="gmrc-background-option__monogram"><?php echo esc_html(strtoupper(substr($displayLabel, 0, 1))); ?></span>
+                            <span class="gmrc-background-option__image<?php echo $backgroundArtworkUrl !== '' ? ' gmrc-background-option__image--illustrated' : ''; ?>" aria-hidden="true">
+                                <?php if ($backgroundArtworkUrl !== '') : ?>
+                                    <img class="gmrc-background-option__artwork" src="<?php echo esc_url($backgroundArtworkUrl); ?>" alt="">
+                                <?php else : ?>
+                                    <span class="gmrc-background-option__monogram"><?php echo esc_html(strtoupper(substr($displayLabel, 0, 1))); ?></span>
+                                <?php endif; ?>
                             </span>
                             <span class="gmrc-background-option__heading">
                                 <strong class="gmrc-background-option__title"><?php echo esc_html($displayLabel); ?></strong>

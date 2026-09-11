@@ -750,3 +750,47 @@
         color: CanvasText;
     }
 }
+
+/* Character Creation card illustrations — Steward-curated Media Library artwork. */
+.gmrc-choice-card__image {
+    min-height: 14rem;
+    overflow: hidden;
+}
+
+.gmrc-choice-card__image--illustrated {
+    position: relative;
+    padding: 0;
+    background: #d8c69e;
+}
+
+.gmrc-choice-card__artwork {
+    width: 100%;
+    height: 100%;
+    min-height: 14rem;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1);
+    transition: transform 320ms ease, filter 320ms ease;
+}
+
+.gmrc-choice-card:hover .gmrc-choice-card__artwork,
+.gmrc-choice-card--selected .gmrc-choice-card__artwork {
+    transform: scale(1.055);
+}
+
+.gmrc-choice-card--selected .gmrc-choice-card__artwork {
+    filter: saturate(1.04) contrast(1.02);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-choice-card__artwork,
+    .gmrc-choice-card:hover .gmrc-choice-card__artwork,
+    .gmrc-choice-card--selected .gmrc-choice-card__artwork {
+        transform: none;
+        transition: none;
+    }
+}
+.gmrc-choice-card__image--illustrated,
+.gmrc-choice-card__artwork {
+    height: 14rem;
+}

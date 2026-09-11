@@ -173,3 +173,14 @@ Promote linked Tabletop Sessions into durable Fellowship history: recap sync, ch
 - [x] Companion remains the Campaign-sharing authority; GMREXP remains the canonical content authority.
 - [x] Tabletop can consume the same shared sourcebook decision without copying definitions or storing a second activation choice.
 
+
+## Character Creation presentation amendment — Illustrated Choice Cards ✅
+
+- [x] Steward-controlled artwork for Race cards.
+- [x] Steward-controlled artwork for Class cards.
+- [x] Steward-controlled artwork for Background cards.
+- [x] WordPress Media Library selection and removal.
+- [x] Monogram fallback for unillustrated records.
+- [x] Taller artwork panels with centre-crop presentation.
+- [x] Gentle hover/selected zoom with reduced-motion fallback.
+- [x] Expansion-aware Race catalogue remains compatible with artwork keys.

@@ -242,6 +242,12 @@ $counts = is_array($diagnostics['counts'] ?? null) ? $diagnostics['counts'] : ['
         </section>
 
         <section class="gmrc-stewards-office__card">
+            <span class="dashicons dashicons-format-image" aria-hidden="true"></span><h2>Character Card Artwork</h2>
+            <p>Assign Media Library illustrations to Character Creation Race, Class and Background cards while keeping monograms as a safe fallback.</p>
+            <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'character-card-artwork'], admin_url('admin.php'))); ?>">Open Card Artwork</a>
+        </section>
+
+        <section class="gmrc-stewards-office__card">
             <span class="dashicons dashicons-book-alt" aria-hidden="true"></span><h2>Canonical Records</h2>
             <p>Curate the official Marketrealm Bestiary, including stat lines, traits, actions, and WordPress Media Library artwork.</p>
             <a class="button button-primary" href="<?php echo esc_url(add_query_arg(['page' => 'gmrc-stewards-office', 'section' => 'canonical-records'], admin_url('admin.php'))); ?>">Open Bestiary Stewardship</a>

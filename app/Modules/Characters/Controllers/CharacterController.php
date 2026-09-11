@@ -86,6 +86,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Progression\Repositories\Advanc
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterCatalogueRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Services\SubclassPreviewCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterBuildProfileRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterCardArtworkRegister;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Repositories\CharacterPortraitRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Models\CharacterPortrait;
@@ -236,6 +237,8 @@ final class CharacterController
                         $this->backgroundReferences(),
                     'expansionPresentation' =>
                         (new ExpansionCharacterCatalogue())->presentationMap(),
+                    'cardArtwork' =>
+                        (new CharacterCardArtworkRegister())->presentationMap(),
                     'startingEquipmentPackages' => array_map(
                         static fn ($package): array => [
                             'id' => $package->id(),

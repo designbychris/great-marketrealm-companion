@@ -227,3 +227,11 @@ Fixed
 - Remove the nonce regression test interpolation warnings.
 
 - IV.35.10B — The Boss Would Like to Participate: complete the Boss Lair Bestiary bridge, qualified-defense compatibility, and live-created Keeper token interaction path.
+
+## Character Creation presentation amendment — Illustrated Choice Cards
+
+- Added Steward-controlled Media Library artwork for Character Creation Race, Class and Background cards.
+- Added a dedicated **Character Card Artwork** desk in the Steward's Office with Race, Class and Background registers, preview, replace and remove controls.
+- Kept monograms as the automatic fallback whenever a card has no assigned illustration.
+- Increased card illustration height and added a restrained image zoom on hover/selection, with reduced-motion support.
+- Kept card artwork presentation-only: no Race, Class, Background or Expansion mechanics are changed.

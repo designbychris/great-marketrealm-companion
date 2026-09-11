@@ -19,6 +19,10 @@ use GreatMarketrealmCompanion\Modules\Administration\CanonicalRecords\CanonicalB
 use GreatMarketrealmCompanion\Modules\Administration\Diagnostics\StewardDiagnostics;
 use GreatMarketrealmCompanion\Modules\Administration\Security\GateSecuritySettings;
 use GreatMarketrealmCompanion\Modules\Administration\Settings\CompanionSettings;
+use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterCardArtworkRegister;
+use GreatMarketrealmCompanion\Modules\Characters\Catalogue\Repositories\CharacterCatalogueRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\Background;
+use GreatMarketrealmCompanion\Modules\Library\Backgrounds\Repositories\BackgroundMechanicsRegister;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Repositories\StartingEquipmentPackageRegister;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Services\StartingEquipmentCoverage;
 use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\CanonicalSpellRegister;
@@ -51,6 +55,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         $this->app->singleton(StewardWorkshopCertification::class);
         $this->app->singleton(CanonicalCallingRegister::class);
         $this->app->singleton(CanonicalBackgroundRegister::class);
+        $this->app->singleton(CharacterCardArtworkRegister::class);
         $this->app->singleton(CanonicalSpellRegister::class);
         $this->app->singleton(StartingEquipmentPackageRegister::class);
         $this->app->singleton(StartingEquipmentCoverage::class);
@@ -75,6 +80,7 @@ final class AdministrationServiceProvider extends ServiceProvider
         add_action('admin_post_gmrc_reset_canonical_calling', [$this, 'resetCanonicalCalling']);
         add_action('admin_post_gmrc_save_canonical_background', [$this, 'saveCanonicalBackground']);
         add_action('admin_post_gmrc_reset_canonical_background', [$this, 'resetCanonicalBackground']);
+        add_action('admin_post_gmrc_save_character_card_artwork', [$this, 'saveCharacterCardArtwork']);
         add_action('admin_post_gmrc_save_canonical_spell', [$this, 'saveCanonicalSpell']);
         add_action('admin_post_gmrc_reset_canonical_spell', [$this, 'resetCanonicalSpell']);
         add_action('admin_post_gmrc_save_starting_equipment_package', [$this, 'saveStartingEquipmentPackage']);
@@ -137,6 +143,18 @@ final class AdministrationServiceProvider extends ServiceProvider
                 'gmrc-canonical-calling-steward',
                 GMRC_URL . 'assets/js/admin/canonical-callings.js',
                 [],
+                GMRC_VERSION,
+                true
+            );
+            return;
+        }
+
+        if ($section === 'character-card-artwork') {
+            wp_enqueue_media();
+            wp_enqueue_script(
+                'gmrc-character-card-artwork',
+                GMRC_URL . 'assets/js/admin/character-card-artwork.js',
+                ['jquery'],
                 GMRC_VERSION,
                 true
             );
@@ -456,11 +474,82 @@ final class AdministrationServiceProvider extends ServiceProvider
         exit;
     }
 
+    public function saveCharacterCardArtwork(): void
+    {
+        $this->guard();
+
+        $kind = sanitize_key(wp_unslash((string) ($_POST['artwork_kind'] ?? '')));
+        $key = sanitize_key(wp_unslash((string) ($_POST['record_key'] ?? '')));
+        check_admin_referer(
+            'gmrc_save_character_card_artwork_' . $kind . '_' . $key,
+            'gmrc_character_card_artwork_nonce'
+        );
+
+        try {
+            $this->app->make(CharacterCardArtworkRegister::class)->save(
+                $kind,
+                $key,
+                absint($_POST['image_attachment_id'] ?? 0)
+            );
+            $args = ['gmrc_card_artwork_saved' => '1'];
+        } catch (RuntimeException $exception) {
+            $args = ['gmrc_card_artwork_error' => rawurlencode($exception->getMessage())];
+        }
+
+        wp_safe_redirect(add_query_arg(array_merge([
+            'page' => self::MENU_SLUG,
+            'section' => 'character-card-artwork',
+            'kind' => $kind,
+            'record' => $key,
+        ], $args), admin_url('admin.php')));
+        exit;
+    }
+
     public function renderOffice(): void
     {
         $this->guard(true);
 
         $section = sanitize_key((string) ($_GET['section'] ?? ''));
+        if ($section === 'character-card-artwork') {
+            $catalogue = new CharacterCatalogueRepository();
+            $artworkRegister = $this->app->make(CharacterCardArtworkRegister::class);
+            $artworkRecords = [
+                'race' => $catalogue->raceOptions(),
+                'class' => $catalogue->classOptions(),
+                'background' => [],
+            ];
+
+            foreach (Background::all() as $background) {
+                $artworkRecords['background'][$background->value()] = $background->label();
+            }
+            foreach ((new BackgroundMechanicsRegister())->all() as $background) {
+                $artworkRecords['background'][$background->key()] = $background->name();
+            }
+
+            foreach ($artworkRecords as &$records) {
+                natcasesort($records);
+            }
+            unset($records);
+
+            $selectedArtworkKind = sanitize_key((string) ($_GET['kind'] ?? 'race'));
+            if (! isset($artworkRecords[$selectedArtworkKind])) {
+                $selectedArtworkKind = 'race';
+            }
+            $selectedArtworkKey = sanitize_key((string) ($_GET['record'] ?? ''));
+            if ($selectedArtworkKey === '' || ! isset($artworkRecords[$selectedArtworkKind][$selectedArtworkKey])) {
+                $selectedArtworkKey = (string) array_key_first($artworkRecords[$selectedArtworkKind]);
+            }
+            $selectedArtworkLabel = (string) ($artworkRecords[$selectedArtworkKind][$selectedArtworkKey] ?? 'Character card');
+            $selectedArtworkId = $selectedArtworkKey !== ''
+                ? $artworkRegister->attachmentId($selectedArtworkKind, $selectedArtworkKey)
+                : 0;
+            $selectedArtworkUrl = $selectedArtworkId > 0
+                ? wp_get_attachment_image_url($selectedArtworkId, 'large')
+                : false;
+
+            require GMRC_PATH . 'app/Modules/Administration/Views/character-card-artwork.php';
+            return;
+        }
         if ($section === 'equipment-workshop') {
             $workshop = $this->app->make(EquipmentWorkshop::class);
             $stewardEquipment = $workshop->all();

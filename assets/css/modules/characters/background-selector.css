@@ -823,3 +823,47 @@
         box-shadow: none;
     }
 }
+
+/* Character Creation background illustrations — Steward-curated artwork. */
+.gmrc-background-option__image {
+    min-height: 14rem;
+    overflow: hidden;
+}
+
+.gmrc-background-option__image--illustrated {
+    position: relative;
+    padding: 0;
+    background: #d8c69e;
+}
+
+.gmrc-background-option__artwork {
+    width: 100%;
+    height: 100%;
+    min-height: 14rem;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1);
+    transition: transform 320ms ease, filter 320ms ease;
+}
+
+.gmrc-background-option:hover .gmrc-background-option__artwork,
+.gmrc-background-option--selected .gmrc-background-option__artwork {
+    transform: scale(1.055);
+}
+
+.gmrc-background-option--selected .gmrc-background-option__artwork {
+    filter: saturate(1.04) contrast(1.02);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gmrc-background-option__artwork,
+    .gmrc-background-option:hover .gmrc-background-option__artwork,
+    .gmrc-background-option--selected .gmrc-background-option__artwork {
+        transform: none;
+        transition: none;
+    }
+}
+.gmrc-background-option__image--illustrated,
+.gmrc-background-option__artwork {
+    height: 14rem;
+}
