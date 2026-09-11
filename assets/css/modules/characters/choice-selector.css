@@ -794,3 +794,38 @@
 .gmrc-choice-card__artwork {
     height: 14rem;
 }
+
+
+/* Character Creation illustrated cards — browser/theme reset and edge-to-edge crop. */
+.gmrc-choice-card__image.gmrc-choice-card__image--illustrated {
+    inline-size: 100%;
+    min-height: 15.5rem;
+    height: 15.5rem;
+    margin: 0;
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+.gmrc-choice-card__image--illustrated .gmrc-choice-card__artwork {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    max-width: none;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    object-fit: cover;
+    object-position: center;
+}
+
+@media (max-width: 640px) {
+    .gmrc-choice-card__image.gmrc-choice-card__image--illustrated {
+        min-height: 13rem;
+        height: 13rem;
+    }
+}

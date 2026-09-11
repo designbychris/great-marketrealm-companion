@@ -261,3 +261,83 @@
     font-size: 4rem;
     font-weight: 700;
 }
+
+
+/* Character Card Artwork — practical Steward layout polish. */
+.gmrc-character-card-artwork-admin .gmrc-card-artwork-admin__layout {
+    grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+    gap: 24px;
+}
+
+.gmrc-character-card-artwork-admin .gmrc-canonical-steward__editor {
+    min-width: 0;
+}
+
+.gmrc-character-card-artwork-admin .gmrc-canonical-steward__form {
+    overflow: hidden;
+}
+
+.gmrc-character-card-artwork-admin .gmrc-card-artwork-admin__editor-artwork {
+    grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+}
+
+.gmrc-character-card-artwork-admin .gmrc-card-artwork-admin__preview-frame {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 300px;
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+    padding: 0;
+    overflow: hidden;
+    clip-path: none;
+    border: 1px solid #c8b88a;
+    border-radius: 8px;
+    background: #f6edd4;
+    box-shadow: inset 0 0 0 3px rgba(255,255,255,.45);
+}
+
+.gmrc-character-card-artwork-admin .gmrc-card-artwork-admin__preview-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    object-fit: cover;
+    object-position: center;
+}
+
+.gmrc-character-card-artwork-admin .gmrc-card-artwork-admin__preview-frame > span {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    padding: 0;
+    place-items: center;
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+}
+
+.gmrc-character-card-artwork-admin .gmrc-card-artwork-admin__editor-artwork > div:last-child {
+    min-width: 0;
+    padding-top: 4px;
+}
+
+.gmrc-character-card-artwork-admin .gmrc-card-artwork-admin__editor-artwork h3 {
+    margin-top: 0;
+}
+
+.gmrc-character-card-artwork-admin .gmrc-card-artwork-admin__editor-artwork .button-link-delete {
+    margin-left: 10px;
+}
+
+@media (max-width: 960px) {
+    .gmrc-character-card-artwork-admin .gmrc-card-artwork-admin__layout,
+    .gmrc-character-card-artwork-admin .gmrc-card-artwork-admin__editor-artwork {
+        grid-template-columns: 1fr;
+    }
+
+    .gmrc-character-card-artwork-admin .gmrc-card-artwork-admin__preview-frame {
+        max-width: 360px;
+    }
+}

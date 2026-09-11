@@ -1,3 +1,10 @@
+## Character Creation Card Artwork — layout polish
+
+- Removes stray front-end image padding so Race, Class and Background artwork fills the card artwork stage edge-to-edge.
+- Increases illustrated card artwork height to 15.5rem on desktop for a more inviting character-selection view.
+- Keeps the hover/selected zoom treatment while resetting theme-level image margins, padding and max-width rules.
+- Reworks the Steward artwork editor preview into a compact responsive 4:3 media frame.
+
 ## 0.3.1-alpha.11.3 — Phase V.11B bridge amendment: The Tabletop Opens the Same Book
 
 - Projects the linked Campaign's currently active/shared Almanac keys across the existing Companion → Tabletop campaign bridge.
