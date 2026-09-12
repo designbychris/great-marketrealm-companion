@@ -233,6 +233,11 @@ return static function (
     );
 
     $router->get(
+        '/characters/{id}/printable-sheet',
+        [CharacterController::class, 'printableSheet']
+    );
+
+    $router->get(
         '/characters/{id}',
         [CharacterController::class, 'show']
     );

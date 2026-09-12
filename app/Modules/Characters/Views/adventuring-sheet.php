@@ -5,7 +5,7 @@ declare(strict_types=1);
 use GreatMarketrealmCompanion\Modules\Characters\Models\Character;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\ViewModels\PortraitViewModel;
 
- defined('ABSPATH') || exit;
+defined('ABSPATH') || exit;
 
 if (! isset($character) || ! $character instanceof Character || ! isset($portrait) || ! $portrait instanceof PortraitViewModel) {
     return;
@@ -25,6 +25,7 @@ $abilities = [
     'CON' => $abilityScores->constitution(), 'INT' => $abilityScores->intelligence(),
     'WIS' => $abilityScores->wisdom(), 'CHA' => $abilityScores->charisma(),
 ];
+$abilityNames = ['STR'=>'Strength','DEX'=>'Dexterity','CON'=>'Constitution','INT'=>'Intelligence','WIS'=>'Wisdom','CHA'=>'Charisma'];
 $saves = $character->savingThrows();
 $skills = $character->skills();
 $hp = $character->hitPoints();
@@ -35,9 +36,12 @@ $pathGifts = isset($pathGifts) && is_array($pathGifts) ? $pathGifts : ['gifts'=>
 $armourClass = isset($inventoryArmourClass) ? (int) $inventoryArmourClass : $character->armourClass()->value();
 $companionUrl = home_url('/companion/');
 $ledgerUrl = add_query_arg('gmrc_route', 'characters/' . rawurlencode($characterId), $companionUrl);
+$printUrl = add_query_arg('gmrc_route', 'characters/' . rawurlencode($characterId) . '/printable-sheet', $companionUrl);
 $appRequestUrl = admin_url('admin-post.php');
 $skillLabels = [
 'acrobatics'=>'Acrobatics','animal-handling'=>'Animal Handling','arcana'=>'Arcana','athletics'=>'Athletics','deception'=>'Deception','history'=>'History','insight'=>'Insight','intimidation'=>'Intimidation','investigation'=>'Investigation','medicine'=>'Medicine','nature'=>'Nature','perception'=>'Perception','performance'=>'Performance','persuasion'=>'Persuasion','religion'=>'Religion','sleight-of-hand'=>'Sleight of Hand','stealth'=>'Stealth','survival'=>'Survival'];
+$skillAbilities = [
+'acrobatics'=>'DEX','animal-handling'=>'WIS','arcana'=>'INT','athletics'=>'STR','deception'=>'CHA','history'=>'INT','insight'=>'WIS','intimidation'=>'CHA','investigation'=>'INT','medicine'=>'WIS','nature'=>'INT','perception'=>'WIS','performance'=>'CHA','persuasion'=>'CHA','religion'=>'INT','sleight-of-hand'=>'DEX','stealth'=>'DEX','survival'=>'WIS'];
 $saveLabels = ['strength'=>'STR','dexterity'=>'DEX','constitution'=>'CON','intelligence'=>'INT','wisdom'=>'WIS','charisma'=>'CHA'];
 $featureEntries = array_values(array_filter($arcana['entries'] ?? [], static fn(array $entry): bool => ($entry['kind'] ?? '') === 'feature'));
 $purse = $character->purse()->formatted();
@@ -46,30 +50,25 @@ $isCustomPortrait = $portrait->isCustom()
     && is_string($customPortraitUrl)
     && $customPortraitUrl !== '';
 $generatedPortraitSvg = trim($portrait->svg());
-$portraitInitial = function_exists('mb_substr')
-    ? mb_substr($name, 0, 1)
-    : substr($name, 0, 1);
-$portraitInitial = function_exists('mb_strtoupper')
-    ? mb_strtoupper($portraitInitial)
-    : strtoupper($portraitInitial);
+$portraitInitial = function_exists('mb_substr') ? mb_substr($name, 0, 1) : substr($name, 0, 1);
+$portraitInitial = function_exists('mb_strtoupper') ? mb_strtoupper($portraitInitial) : strtoupper($portraitInitial);
 ?>
-<section class="gmrc-adventuring-sheet" data-adventuring-sheet>
+<section
+    class="gmrc-adventuring-sheet"
+    data-adventuring-sheet
+    data-guild-dice-surface
+    data-guild-dice-enabled="false"
+>
     <header class="gmrc-adventuring-sheet__masthead">
         <div class="gmrc-adventuring-sheet__portrait" aria-label="<?php echo esc_attr($name . ' portrait'); ?>">
             <?php if ($isCustomPortrait): ?>
-                <img
-                    src="<?php echo esc_url((string) $customPortraitUrl); ?>"
-                    alt=""
-                    loading="eager"
-                >
+                <img src="<?php echo esc_url((string) $customPortraitUrl); ?>" alt="" loading="eager">
             <?php elseif ($generatedPortraitSvg !== ''): ?>
                 <div class="gmrc-adventuring-sheet__portrait-svg" aria-hidden="true">
                     <?php echo $generatedPortraitSvg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                 </div>
             <?php else: ?>
-                <span class="gmrc-adventuring-sheet__portrait-fallback" aria-hidden="true">
-                    <?php echo esc_html($portraitInitial); ?>
-                </span>
+                <span class="gmrc-adventuring-sheet__portrait-fallback" aria-hidden="true"><?php echo esc_html($portraitInitial); ?></span>
             <?php endif; ?>
         </div>
         <div class="gmrc-adventuring-sheet__identity">
@@ -79,14 +78,26 @@ $portraitInitial = function_exists('mb_strtoupper')
             <p class="gmrc-adventuring-sheet__background"><?php echo esc_html($background); ?></p>
         </div>
         <div class="gmrc-adventuring-sheet__actions">
+            <button
+                type="button"
+                class="gmrc-adventuring-sheet__dice-toggle"
+                data-adventuring-dice-toggle
+                role="switch"
+                aria-checked="false"
+            >
+                <span aria-hidden="true">🎲</span>
+                <span>Guild Dice</span>
+                <strong data-adventuring-dice-state>Off</strong>
+            </button>
+            <a class="gmrc-button gmrc-button--secondary" href="<?php echo esc_url($printUrl); ?>">Printable / PDF Sheet</a>
             <a class="gmrc-button gmrc-button--secondary" href="<?php echo esc_url($ledgerUrl); ?>">Open Full Ledger</a>
-            <span class="gmrc-adventuring-sheet__mode">Advancement and archival detail stay in the Ledger.</span>
+            <span class="gmrc-adventuring-sheet__mode">Dice are optional. Advancement and archival detail stay in the Ledger.</span>
         </div>
     </header>
 
     <section class="gmrc-adventuring-sheet__measures" aria-label="Core adventuring measures">
         <div><span>AC</span><strong><?php echo esc_html((string)$armourClass); ?></strong></div>
-        <div><span>Initiative</span><strong><?php echo esc_html($character->initiative()->signed()); ?></strong></div>
+        <div><span>Initiative</span><button type="button" class="gmrc-adventure-roll" data-guild-roll="d20" data-roll-kind="initiative" data-roll-source="Initiative" data-roll-ability="DEX" data-roll-proficiency="none" data-roll-label="Initiative" data-roll-modifier="<?php echo esc_attr((string)$character->initiative()->modifier()); ?>"><?php echo esc_html($character->initiative()->signed()); ?></button></div>
         <div><span>Speed</span><strong><?php echo esc_html($character->speed()->formatted()); ?></strong></div>
         <div><span>Proficiency</span><strong><?php echo esc_html($character->proficiencyBonus()->signed()); ?></strong></div>
         <div><span>Passive Perception</span><strong><?php echo esc_html((string)$character->passivePerception()->value()); ?></strong></div>
@@ -96,10 +107,14 @@ $portraitInitial = function_exists('mb_strtoupper')
     <div class="gmrc-adventuring-sheet__grid">
         <main class="gmrc-adventuring-sheet__main">
             <section class="gmrc-play-card gmrc-play-card--abilities">
-                <header><h2>Abilities</h2></header>
+                <header><h2>Abilities</h2><span class="gmrc-dice-enabled-note">Click a modifier to roll</span></header>
                 <div class="gmrc-adventuring-sheet__abilities">
                     <?php foreach ($abilities as $label => $score): ?>
-                        <div class="gmrc-ability-tile"><span><?php echo esc_html($label); ?></span><strong><?php echo esc_html((string)$score->value()); ?></strong><em><?php echo esc_html(sprintf('%+d', $score->modifier())); ?></em></div>
+                        <div class="gmrc-ability-tile">
+                            <span><?php echo esc_html($label); ?></span>
+                            <strong><?php echo esc_html((string)$score->value()); ?></strong>
+                            <button type="button" class="gmrc-adventure-roll" data-guild-roll="d20" data-roll-kind="ability" data-roll-source="<?php echo esc_attr($abilityNames[$label]); ?>" data-roll-ability="<?php echo esc_attr($label); ?>" data-roll-proficiency="none" data-roll-label="<?php echo esc_attr($abilityNames[$label] . ' Check'); ?>" data-roll-modifier="<?php echo esc_attr((string)$score->modifier()); ?>"><?php echo esc_html(sprintf('%+d', $score->modifier())); ?></button>
+                        </div>
                     <?php endforeach; ?>
                 </div>
             </section>
@@ -119,40 +134,45 @@ $portraitInitial = function_exists('mb_strtoupper')
             </section>
 
             <section class="gmrc-play-card">
-                <header><h2>Attacks</h2></header>
+                <header><h2>Attacks</h2><span class="gmrc-dice-enabled-note">Attack and damage become rollable</span></header>
                 <?php if ($attacks === []): ?><p class="gmrc-play-card__empty">No equipped weapon attacks.</p><?php else: ?>
                 <div class="gmrc-adventuring-sheet__attack-list">
-                    <?php foreach ($attacks as $attack): ?><article><div><strong><?php echo esc_html((string)$attack['label']); ?></strong><small><?php echo esc_html((string)$attack['range']); ?></small></div><b><?php echo esc_html(sprintf('%+d', (int)$attack['attack_bonus'])); ?> to hit</b><span><?php echo esc_html((string)$attack['damage_die']); ?><?php $dm=(int)$attack['damage_modifier']; echo $dm!==0 ? esc_html(sprintf(' %+d',$dm)) : ''; ?> <?php echo esc_html((string)$attack['damage_type']); ?></span></article><?php endforeach; ?>
+                    <?php foreach ($attacks as $attack): ?>
+                    <article>
+                        <div><strong><?php echo esc_html((string)$attack['label']); ?></strong><small><?php echo esc_html((string)$attack['range']); ?></small></div>
+                        <button type="button" class="gmrc-adventure-roll gmrc-adventure-roll--attack" data-guild-roll="d20" data-roll-kind="attack" data-roll-source="<?php echo esc_attr((string)$attack['label']); ?>" data-roll-ability="<?php echo esc_attr((string)($attack['ability'] ?? '')); ?>" data-roll-proficiency="proficient" data-roll-label="<?php echo esc_attr((string)$attack['label'] . ' — Attack'); ?>" data-roll-modifier="<?php echo esc_attr((string)$attack['attack_bonus']); ?>" data-roll-result-suffix="to hit" data-roll-critical-formula="<?php echo esc_attr((string)($attack['critical_damage_die'] ?? $attack['damage_die'])); ?>" data-roll-critical-modifier="<?php echo esc_attr((string)$attack['damage_modifier']); ?>" data-roll-critical-damage-type="<?php echo esc_attr((string)$attack['damage_type']); ?>"><?php echo esc_html(sprintf('%+d', (int)$attack['attack_bonus'])); ?> to hit</button>
+                        <button type="button" class="gmrc-adventure-roll gmrc-adventure-roll--damage" data-guild-roll="damage" data-roll-kind="damage" data-roll-source="<?php echo esc_attr((string)$attack['label']); ?>" data-roll-ability="<?php echo esc_attr((string)($attack['ability'] ?? '')); ?>" data-roll-proficiency="proficient" data-roll-label="<?php echo esc_attr((string)$attack['label'] . ' — Damage'); ?>" data-roll-formula="<?php echo esc_attr((string)$attack['damage_die']); ?>" data-roll-modifier="<?php echo esc_attr((string)$attack['damage_modifier']); ?>" data-roll-damage-type="<?php echo esc_attr((string)$attack['damage_type']); ?>"><?php echo esc_html((string)$attack['damage_die']); ?><?php $dm=(int)$attack['damage_modifier']; echo $dm!==0 ? esc_html(sprintf(' %+d',$dm)) : ''; ?> <?php echo esc_html((string)$attack['damage_type']); ?></button>
+                    </article>
+                    <?php endforeach; ?>
                 </div><?php endif; ?>
             </section>
 
             <?php if (! empty($arcana['has_spells'])): ?>
             <section class="gmrc-play-card gmrc-play-card--spells">
-                <header><h2>Spellcasting</h2><span><?php echo esc_html((string)($arcana['casting_ability'] ?? '')); ?> · DC <?php echo esc_html((string)($arcana['save_dc'] ?? '—')); ?> · Attack <?php echo esc_html(isset($arcana['spell_attack']) ? sprintf('%+d',(int)$arcana['spell_attack']) : '—'); ?></span></header>
+                <header>
+                    <h2>Spellcasting</h2>
+                    <span><?php echo esc_html((string)($arcana['casting_ability'] ?? '')); ?> · DC <?php echo esc_html((string)($arcana['save_dc'] ?? '—')); ?> · <?php if (isset($arcana['spell_attack'])): ?><button type="button" class="gmrc-adventure-roll gmrc-adventure-roll--inline" data-guild-roll="d20" data-roll-kind="spell-attack" data-roll-source="Spellcasting" data-roll-ability="<?php echo esc_attr((string)($arcana['casting_ability'] ?? '')); ?>" data-roll-proficiency="proficient" data-roll-label="Spell Attack" data-roll-modifier="<?php echo esc_attr((string)$arcana['spell_attack']); ?>">Attack <?php echo esc_html(sprintf('%+d',(int)$arcana['spell_attack'])); ?></button><?php else: ?>Attack —<?php endif; ?></span>
+                </header>
                 <?php if (! empty($arcana['slots'])): ?><div class="gmrc-adventuring-sheet__slots"><?php foreach ($arcana['slots'] as $slot): ?><span>Lv <?php echo esc_html((string)($slot['level']??'')); ?> <strong><?php echo esc_html((string)($slot['remaining'] ?? $slot['total'] ?? 0)); ?>/<?php echo esc_html((string)($slot['total']??0)); ?></strong></span><?php endforeach; ?></div><?php endif; ?>
                 <?php foreach (($arcana['shelves'] ?? []) as $shelf): if (($shelf['kind'] ?? '') === 'feature') continue; ?><div class="gmrc-adventuring-sheet__spell-shelf"><h3><?php echo esc_html((string)$shelf['label']); ?></h3><div><?php foreach ($shelf['entries'] as $spell): ?><article><strong><?php echo esc_html((string)$spell['label']); ?></strong><small><?php echo esc_html((string)$spell['activation']); ?> · <?php echo esc_html((string)$spell['range']); ?> · <?php echo esc_html((string)$spell['duration']); ?></small><p><?php echo esc_html((string)$spell['description']); ?></p></article><?php endforeach; ?></div></div><?php endforeach; ?>
             </section>
             <?php endif; ?>
 
-            <section class="gmrc-play-card">
-                <header><h2>Features & Gifts</h2></header>
-                <div class="gmrc-adventuring-sheet__feature-list">
+            <section class="gmrc-play-card"><header><h2>Features & Gifts</h2></header><div class="gmrc-adventuring-sheet__feature-list">
                 <?php foreach (($pathGifts['gifts'] ?? []) as $gift): ?><article><strong><?php echo esc_html((string)($gift['label'] ?? $gift['name'] ?? 'Path Gift')); ?></strong><p><?php echo esc_html((string)($gift['detail'] ?? $gift['description'] ?? '')); ?></p></article><?php endforeach; ?>
                 <?php foreach ($featureEntries as $feature): ?><article><strong><?php echo esc_html((string)$feature['label']); ?></strong><p><?php echo esc_html((string)$feature['description']); ?></p></article><?php endforeach; ?>
                 <?php if (($pathGifts['gifts'] ?? []) === [] && $featureEntries === []): ?><p class="gmrc-play-card__empty">No additional active-play features are indexed here yet; the full Ledger retains all advancement records.</p><?php endif; ?>
-                </div>
-            </section>
+            </div></section>
 
-            <section class="gmrc-play-card">
-                <header><h2>Equipment</h2><span><?php echo esc_html((string)($inventory['total_weight'] ?? 0)); ?> / <?php echo esc_html((string)($inventory['capacity'] ?? 0)); ?> lb</span></header>
-                <div class="gmrc-adventuring-sheet__equipment"><?php foreach (($inventory['rows'] ?? []) as $item): ?><article class="<?php echo !empty($item['equipped']) ? 'is-equipped' : ''; ?>"><strong><?php echo esc_html((string)$item['label']); ?></strong><span>×<?php echo esc_html((string)$item['quantity']); ?></span><small><?php echo !empty($item['equipped']) ? 'Equipped · ' : ''; ?><?php echo esc_html((string)$item['category']); ?></small></article><?php endforeach; ?><?php if (($inventory['rows'] ?? [])===[]): ?><p class="gmrc-play-card__empty">The Adventurer’s Pack is empty.</p><?php endif; ?></div>
-            </section>
+            <section class="gmrc-play-card"><header><h2>Equipment</h2><span><?php echo esc_html((string)($inventory['total_weight'] ?? 0)); ?> / <?php echo esc_html((string)($inventory['capacity'] ?? 0)); ?> lb</span></header><div class="gmrc-adventuring-sheet__equipment"><?php foreach (($inventory['rows'] ?? []) as $item): ?><article class="<?php echo !empty($item['equipped']) ? 'is-equipped' : ''; ?>"><strong><?php echo esc_html((string)$item['label']); ?></strong><span>×<?php echo esc_html((string)$item['quantity']); ?></span><small><?php echo !empty($item['equipped']) ? 'Equipped · ' : ''; ?><?php echo esc_html((string)$item['category']); ?></small></article><?php endforeach; ?><?php if (($inventory['rows'] ?? [])===[]): ?><p class="gmrc-play-card__empty">The Adventurer’s Pack is empty.</p><?php endif; ?></div></section>
         </main>
 
         <aside class="gmrc-adventuring-sheet__sidebar">
-            <section class="gmrc-play-card"><header><h2>Saving Throws</h2></header><ul class="gmrc-adventuring-sheet__compact-list"><?php foreach ($saveLabels as $key=>$label): $save=$saves->get($key); ?><li class="<?php echo $save->isProficient()?'is-proficient':''; ?>"><span><?php echo $save->isProficient()?'●':'○'; ?> <?php echo esc_html($label); ?></span><strong><?php echo esc_html($save->signed()); ?></strong></li><?php endforeach; ?></ul></section>
-            <section class="gmrc-play-card"><header><h2>Skills</h2></header><ul class="gmrc-adventuring-sheet__compact-list"><?php foreach ($skillLabels as $key=>$label): $skill=$skills->get($key); ?><li class="<?php echo $skill->isProficient()?'is-proficient':''; ?>"><span><?php echo $skill->hasExpertise()?'◆':($skill->isProficient()?'●':'○'); ?> <?php echo esc_html($label); ?></span><strong><?php echo esc_html($skill->signed()); ?></strong></li><?php endforeach; ?></ul></section>
+            <section class="gmrc-play-card"><header><h2>Saving Throws</h2><span class="gmrc-dice-enabled-note">Roll when enabled</span></header><ul class="gmrc-adventuring-sheet__compact-list"><?php foreach ($saveLabels as $key=>$label): $save=$saves->get($key); ?><li class="<?php echo $save->isProficient()?'is-proficient':''; ?>"><span><?php echo $save->isProficient()?'●':'○'; ?> <?php echo esc_html($label); ?></span><button type="button" class="gmrc-adventure-roll" data-guild-roll="d20" data-roll-kind="saving-throw" data-roll-source="<?php echo esc_attr($label . ' Saving Throw'); ?>" data-roll-ability="<?php echo esc_attr($label); ?>" data-roll-proficiency="<?php echo $save->isProficient() ? 'proficient' : 'none'; ?>" data-roll-label="<?php echo esc_attr($label . ' Saving Throw'); ?>" data-roll-modifier="<?php echo esc_attr((string)$save->modifier()); ?>"><?php echo esc_html($save->signed()); ?></button></li><?php endforeach; ?></ul></section>
+            <section class="gmrc-play-card"><header><h2>Skills</h2><span class="gmrc-dice-enabled-note">Roll when enabled</span></header><ul class="gmrc-adventuring-sheet__compact-list"><?php foreach ($skillLabels as $key=>$label): $skill=$skills->get($key); ?><li class="<?php echo $skill->isProficient()?'is-proficient':''; ?>"><span><?php echo $skill->hasExpertise()?'◆':($skill->isProficient()?'●':'○'); ?> <?php echo esc_html($label); ?></span><button type="button" class="gmrc-adventure-roll" data-guild-roll="d20" data-roll-kind="skill" data-roll-source="<?php echo esc_attr($label); ?>" data-roll-ability="<?php echo esc_attr($skillAbilities[$key] ?? ''); ?>" data-roll-proficiency="<?php echo $skill->hasExpertise() ? 'expertise' : ($skill->isProficient() ? 'proficient' : 'none'); ?>" data-roll-label="<?php echo esc_attr($label . ' Check'); ?>" data-roll-modifier="<?php echo esc_attr((string)$skill->modifier()); ?>"><?php echo esc_html($skill->signed()); ?></button></li><?php endforeach; ?></ul></section>
             <section class="gmrc-play-card"><header><h2>Proficiencies</h2></header><p><strong>Languages:</strong> <?php echo esc_html(implode(', ', array_map(static fn($l)=> (string)$l, $character->languages()->all()))); ?></p><p><strong>Tools:</strong> <?php echo esc_html(implode(', ', array_map(static fn($t)=> (string)$t, $character->toolProficiencies()->all()))); ?></p></section>
         </aside>
     </div>
+
+    <?php require __DIR__ . '/partials/guild-dice-tray.php'; ?>
 </section>

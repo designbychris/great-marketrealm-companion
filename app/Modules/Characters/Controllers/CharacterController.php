@@ -826,6 +826,19 @@ final class CharacterController
     }
 
     /**
+     * Display the print-first offline Character Sheet.
+     */
+    public function printableSheet(
+        string $id
+    ): string {
+        return $this->renderLedger(
+            $this->findCharacter($id),
+            'characters.printable-sheet',
+            true
+        );
+    }
+
+    /**
      * Render a trusted cross-account Character projection without mutation
      * controls. The caller must establish its own authorization boundary.
      */

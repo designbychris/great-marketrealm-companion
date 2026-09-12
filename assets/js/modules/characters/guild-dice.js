@@ -2332,7 +2332,7 @@
     };
 
     const boot = function () {
-        document.querySelectorAll('[data-living-ledger]').forEach(initialise);
+        document.querySelectorAll('[data-living-ledger], [data-guild-dice-surface]').forEach(initialise);
     };
 
     if (document.readyState === 'loading') {

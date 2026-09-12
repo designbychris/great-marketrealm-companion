@@ -1094,6 +1094,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/characters/adventuring-sheet.css',
             ],
             [
+                'handle' => 'gmrc-printable-sheet',
+                'path' => 'modules/characters/printable-sheet.css',
+            ],
+            [
                 'handle' => 'gmrc-token-forge',
                 'path' => 'modules/characters/token-forge.css',
             ],
@@ -1386,6 +1390,40 @@ class FrontendServiceProvider extends ServiceProvider
             [],
             file_exists($arcanePantryScriptPath)
                 ? (string) filemtime($arcanePantryScriptPath)
+                : GMRC_VERSION,
+            true
+        );
+
+        $adventuringSheetScriptPath =
+            GMRC_PATH
+            . 'assets/js/modules/characters/'
+            . 'adventuring-sheet.js';
+
+        wp_enqueue_script(
+            'gmrc-adventuring-sheet',
+            GMRC_URL
+                . 'assets/js/modules/characters/'
+                . 'adventuring-sheet.js',
+            [],
+            file_exists($adventuringSheetScriptPath)
+                ? (string) filemtime($adventuringSheetScriptPath)
+                : GMRC_VERSION,
+            true
+        );
+
+        $printableSheetScriptPath =
+            GMRC_PATH
+            . 'assets/js/modules/characters/'
+            . 'printable-sheet.js';
+
+        wp_enqueue_script(
+            'gmrc-printable-sheet',
+            GMRC_URL
+                . 'assets/js/modules/characters/'
+                . 'printable-sheet.js',
+            [],
+            file_exists($printableSheetScriptPath)
+                ? (string) filemtime($printableSheetScriptPath)
                 : GMRC_VERSION,
             true
         );
