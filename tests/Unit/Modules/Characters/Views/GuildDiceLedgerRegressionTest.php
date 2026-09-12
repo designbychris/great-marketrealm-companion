@@ -97,7 +97,7 @@ final class GuildDiceLedgerRegressionTest extends TestCase
             $script
         );
         self::assertStringContainsString(
-            "live.textContent = 'The Dice Ledger has been cleared.';",
+            "live.textContent = (i18n.ledgerCleared || 'The Dice Ledger has been cleared.');",
             $script
         );
         self::assertStringContainsString(
