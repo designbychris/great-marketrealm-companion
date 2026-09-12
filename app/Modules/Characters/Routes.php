@@ -228,6 +228,11 @@ return static function (
     );
 
     $router->get(
+        '/characters/{id}/adventuring-sheet',
+        [CharacterController::class, 'adventuringSheet']
+    );
+
+    $router->get(
         '/characters/{id}',
         [CharacterController::class, 'show']
     );

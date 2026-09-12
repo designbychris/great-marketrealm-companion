@@ -813,6 +813,19 @@ final class CharacterController
     }
 
     /**
+     * Display the focused one-page Adventuring Sheet for live play.
+     */
+    public function adventuringSheet(
+        string $id
+    ): string {
+        return $this->renderLedger(
+            $this->findCharacter($id),
+            'characters.adventuring-sheet',
+            true
+        );
+    }
+
+    /**
      * Render a trusted cross-account Character projection without mutation
      * controls. The caller must establish its own authorization boundary.
      */

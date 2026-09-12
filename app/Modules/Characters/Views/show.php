@@ -177,6 +177,14 @@ $deleteUrl = add_query_arg(
     $companionUrl
 );
 
+$adventuringSheetUrl = add_query_arg(
+    'gmrc_route',
+    'characters/'
+        . rawurlencode($characterId)
+        . '/adventuring-sheet',
+    $companionUrl
+);
+
 $advancementUrl = add_query_arg(
     'gmrc_route',
     'characters/'
@@ -452,6 +460,17 @@ $callingPathLabel = $callingPath !== ''
                     'label' => 'Return to Register',
                     'href' => $charactersUrl,
                     'symbol' => '‹',
+                    'variant' => 'parchment',
+                    'size' => 'medium',
+                ]
+            );
+
+            echo $this->component(
+                'components.controls.paper-button',
+                [
+                    'label' => 'Adventuring Sheet',
+                    'href' => $adventuringSheetUrl,
+                    'symbol' => '⚔',
                     'variant' => 'parchment',
                     'size' => 'medium',
                 ]

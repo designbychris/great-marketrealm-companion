@@ -1090,6 +1090,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/characters/open-ledger.css',
             ],
             [
+                'handle' => 'gmrc-adventuring-sheet',
+                'path' => 'modules/characters/adventuring-sheet.css',
+            ],
+            [
                 'handle' => 'gmrc-token-forge',
                 'path' => 'modules/characters/token-forge.css',
             ],
