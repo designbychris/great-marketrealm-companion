@@ -31,6 +31,11 @@ $name = $portraitModel instanceof PortraitViewModel
             : ''
     );
 
+$portraitNameLength = mb_strlen($name);
+$portraitNameClass = $portraitNameLength > 42
+    ? 'gmrc-illuminated-portrait__name--long gmrc-illuminated-portrait__name--wrap'
+    : ($portraitNameLength > 28 ? 'gmrc-illuminated-portrait__name--long' : '');
+
 /*
  * Resolve the canonical Race identifier.
  */
@@ -432,7 +437,10 @@ if ($isCustom) {
                 The Guild Illuminator
             </p>
 
-            <strong data-portrait-name>
+            <strong
+                data-portrait-name
+                class="<?php echo esc_attr($portraitNameClass); ?>"
+            >
                 <?php echo esc_html(
                     $displayName
                 ); ?>

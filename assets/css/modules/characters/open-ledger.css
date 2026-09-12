@@ -474,6 +474,12 @@
 .gmrc-ledger-identity h2 {
     margin: 0;
 
+    max-width: 100%;
+    margin-inline: auto;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    text-wrap: balance;
+
     color:
         var(
             --gmrc-ink-strong,
@@ -493,6 +499,17 @@
     font-weight: 600;
 
     line-height: 0.9;
+}
+
+
+.gmrc-ledger-identity .gmrc-character-name--long {
+    font-size: clamp(2rem, 4vw, 3.35rem);
+    line-height: 0.98;
+}
+
+.gmrc-ledger-identity .gmrc-character-name--wrap {
+    width: min(100%, 18ch);
+    max-width: 18ch;
 }
 
 .gmrc-ledger-identity__calling {

@@ -854,7 +854,10 @@ $callingPathLabel = $callingPath !== ''
                     Registered Adventurer
                 </p>
 
-                <h2 id="gmrc-ledger-identity-title">
+                <h2
+                    id="gmrc-ledger-identity-title"
+                    class="gmrc-ledger-identity__name <?php echo esc_attr($nameDisplayClass); ?>"
+                >
                     <?php echo esc_html($name); ?>
                 </h2>
 

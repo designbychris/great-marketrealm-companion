@@ -28,6 +28,21 @@ final class CharacterNameDisplayHardeningRegressionTest extends TestCase
         self::assertStringContainsString('$nameLength > 42', $view);
         self::assertStringContainsString('gmrc-character-name--wrap', $view);
         self::assertStringContainsString('overflow-wrap: anywhere;', $css);
+        self::assertStringContainsString('gmrc-ledger-identity__name', $view);
         self::assertStringContainsString('max-width: 22ch;', $css);
+    }
+
+    public function test_portrait_caption_names_receive_the_same_long_name_protection(): void
+    {
+        $root = dirname(__DIR__, 6);
+        $view = file_get_contents($root . '/app/Views/components/media/illuminated-portrait.php');
+        $css = file_get_contents($root . '/assets/css/components/media/illuminated-portrait.css');
+
+        self::assertIsString($view);
+        self::assertIsString($css);
+        self::assertStringContainsString('$portraitNameLength > 42', $view);
+        self::assertStringContainsString('gmrc-illuminated-portrait__name--wrap', $view);
+        self::assertStringContainsString('overflow-wrap: anywhere;', $css);
+        self::assertStringContainsString('max-width: 16ch;', $css);
     }
 }

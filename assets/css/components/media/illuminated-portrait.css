@@ -424,6 +424,12 @@
 .gmrc-illuminated-portrait__caption > strong {
     display: block;
 
+    max-width: 100%;
+    margin-inline: auto;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    text-wrap: balance;
+
     font-family:
         "Caveat",
         var(--gmrc-font-book, Georgia, serif);
@@ -432,6 +438,19 @@
         clamp(1.8rem, 5vw, 2.6rem);
 
     line-height: 1.05;
+}
+
+
+.gmrc-illuminated-portrait__caption
+> strong.gmrc-illuminated-portrait__name--long {
+    font-size: clamp(1.35rem, 3.6vw, 2rem);
+    line-height: 1;
+}
+
+.gmrc-illuminated-portrait__caption
+> strong.gmrc-illuminated-portrait__name--wrap {
+    width: min(100%, 16ch);
+    max-width: 16ch;
 }
 
 .gmrc-illuminated-portrait__identity {
