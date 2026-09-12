@@ -638,9 +638,12 @@ a.gmrc-navigation__item:hover {
 
 .gmrc-character-card__name {
     margin: 0;
+    max-width: 100%;
     color: #201b52;
     font-size: clamp(28px, 4vw, 36px);
     line-height: 1.05;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .gmrc-character-card__summary {

@@ -1747,3 +1747,36 @@
 	opacity: 0.72;
 	animation: none !important;
 }
+
+
+/* III feedback hardening — long names and legibility. */
+.gmrc-character-name {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    text-wrap: balance;
+}
+
+.gmrc-character-name--long {
+    font-size: clamp(1.85rem, 4.35vw, 3.15rem) !important;
+    line-height: 1.02;
+}
+
+.gmrc-character-name--wrap {
+    max-width: 22ch;
+}
+
+.guild-ledger,
+.gmrc-open-ledger {
+    font-size: 1rem;
+    line-height: 1.55;
+}
+
+.guild-ledger p,
+.guild-ledger li,
+.guild-ledger label,
+.gmrc-open-ledger p,
+.gmrc-open-ledger li,
+.gmrc-open-ledger label {
+    font-weight: 500;
+}

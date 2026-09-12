@@ -557,6 +557,7 @@ $charactersUrl = add_query_arg(
                         'value' => $nameValue,
                         'required' => true,
                         'autocomplete' => 'off',
+                        'maxlength' => '80',
                         'placeholder' =>
                             'Record the adventurer\'s name',
                         'error' => $nameError,

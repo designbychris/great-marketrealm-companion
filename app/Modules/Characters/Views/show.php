@@ -386,6 +386,11 @@ $callingPath = $character
     ->callingPath()
     ->value();
 
+$nameLength = mb_strlen($name);
+$nameDisplayClass = $nameLength > 42
+    ? 'gmrc-character-name--long gmrc-character-name--wrap'
+    : ($nameLength > 28 ? 'gmrc-character-name--long' : '');
+
 $callingPathLabel = $callingPath !== ''
     ? ucwords(
         str_replace(
@@ -411,7 +416,10 @@ $callingPathLabel = $callingPath !== ''
                 The Open Ledger
             </p>
 
-            <h1 id="gmrc-open-ledger-title">
+            <h1
+                id="gmrc-open-ledger-title"
+                class="gmrc-character-name <?php echo esc_attr($nameDisplayClass); ?>"
+            >
                 <?php echo esc_html($name); ?>
             </h1>
 

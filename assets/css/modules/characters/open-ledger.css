@@ -57,6 +57,25 @@
     line-height: 0.95;
 }
 
+
+
+/* User-testing hardening: long registered names must never cross the Ledger gutter. */
+.gmrc-open-ledger .gmrc-character-name {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    text-wrap: balance;
+}
+
+.gmrc-open-ledger .gmrc-character-name--long {
+    font-size: clamp(1.85rem, 4.35vw, 3.15rem);
+    line-height: 1.02;
+}
+
+.gmrc-open-ledger .gmrc-character-name--wrap {
+    max-width: 22ch;
+}
+
 .gmrc-open-ledger__toolbar-copy > p:last-child {
     margin: 0;
 

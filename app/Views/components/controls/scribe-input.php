@@ -22,6 +22,7 @@ defined('ABSPATH') || exit;
  * @var string $min
  * @var string $max
  * @var string $step
+ * @var string $maxlength
  * @var bool   $required
  * @var bool   $disabled
  * @var bool   $readonly
@@ -43,6 +44,7 @@ $class    = isset($class) ? trim((string) $class) : '';
 $min      = isset($min) ? trim((string) $min) : '';
 $max      = isset($max) ? trim((string) $max) : '';
 $step     = isset($step) ? trim((string) $step) : '';
+$maxlength = isset($maxlength) ? trim((string) $maxlength) : '';
 $required = isset($required) && (bool) $required;
 $disabled = isset($disabled) && (bool) $disabled;
 $readonly = isset($readonly) && (bool) $readonly;
@@ -136,6 +138,10 @@ $classes = array_filter([
 
             <?php if ($step !== '') : ?>
                 step="<?php echo esc_attr($step); ?>"
+            <?php endif; ?>
+
+            <?php if ($maxlength !== '') : ?>
+                maxlength="<?php echo esc_attr($maxlength); ?>"
             <?php endif; ?>
 
             <?php if ($required) : ?>
