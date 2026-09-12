@@ -860,3 +860,63 @@ a.gmrc-navigation__item:hover {
         font-size: 42px;
     }
 }
+
+/* III.USER.2 — The Registrar Enlarges the Fine Print.
+ * Shared readability floor for the Companion shell. Decorative display type
+ * keeps its own scale; navigation, supporting copy and ordinary controls get
+ * a stronger baseline for sustained play at desktop and tablet distances.
+ */
+.gmrc-app-shell {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.gmrc-brand__text strong {
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.gmrc-brand__text small,
+.gmrc-sidebar__footer small {
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.gmrc-navigation__item {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.gmrc-navigation__item small,
+.gmrc-topbar__eyebrow {
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.gmrc-sidebar__footer span {
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.gmrc-app-shell :where(label) {
+    font-weight: 650;
+}
+
+.gmrc-app-shell :where(input, select, textarea) {
+    font-size: 15px;
+    line-height: 1.45;
+}
+
+.gmrc-app-shell :where(button) {
+    font-weight: 700;
+}
+
+@media (max-width: 720px) {
+    .gmrc-app-shell {
+        font-size: 16px;
+    }
+
+    .gmrc-navigation__item {
+        font-size: 15px;
+    }
+}
