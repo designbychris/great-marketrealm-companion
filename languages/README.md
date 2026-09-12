@@ -32,3 +32,7 @@ wp i18n make-pot . languages/great-marketrealm-companion.pot --domain=great-mark
 ```
 
 Do not hand-edit generated POT files. Translators work from PO files and compiled MO files.
+
+## Available packs
+
+- `nl_NL` — Dutch (Netherlands), first proof-of-concept production pack. See `docs/Dutch-Language-Pack.md`.

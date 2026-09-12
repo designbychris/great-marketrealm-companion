@@ -1,0 +1,908 @@
+msgid ""
+msgstr "Project-Id-Version: The Great MarketRealm\\nReport-Msgid-Bugs-To: \\nPOT-Creation-Date: 2026-09-12 20:21+0000\\nPO-Revision-Date: 2026-09-12 20:21+0000\\nLast-Translator: Great MarketRealm Translation Team\\nLanguage-Team: Dutch\\nLanguage: nl_NL\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\nPlural-Forms: nplurals=2; plural=(n != 1);\\nX-Domain: great-marketrealm-companion\\n"
+
+msgid "%s - Great MarketRealm Character Sheet"
+msgstr "%s - Great MarketRealm-personageblad"
+
+msgid "%s portrait"
+msgstr "Portret van %s"
+
+msgid "Abilities"
+msgstr "Eigenschappen"
+
+msgid "Ability Check"
+msgstr "Eigenschapsproef"
+
+msgid "Ability Scores"
+msgstr "Eigenschapsscores"
+
+msgid "Access denied"
+msgstr "Toegang geweigerd"
+
+msgid "Access denied."
+msgstr "Toegang geweigerd."
+
+msgid "Acrobatics"
+msgstr "Acrobatiek"
+
+msgid "Add to Quick Rolls"
+msgstr "Aan snelle worpen toevoegen"
+
+msgid "Advantage"
+msgstr "Voordeel"
+
+msgid "Adventurer"
+msgstr "Avonturier"
+
+msgid "Adventurer Record · Core Play Sheet"
+msgstr "Avonturiersdossier · Kernspelblad"
+
+msgid "Adventurer Record · Equipment, Features & Arcana"
+msgstr "Avonturiersdossier · Uitrusting, kenmerken en arcana"
+
+msgid "Adventuring Measures"
+msgstr "Avonturenwaarden"
+
+msgid "Adventuring Sheet · Live Play"
+msgstr "Avonturenblad · Live spelen"
+
+msgid "All six abilities have been rolled."
+msgstr "Alle zes eigenschappen zijn gerold."
+
+msgid "Ally"
+msgstr "Bondgenoot"
+
+msgid "Animal Handling"
+msgstr "Omgang met dieren"
+
+msgid "Apply Damage"
+msgstr "Schade toepassen"
+
+msgid "Apply Healing"
+msgstr "Genezing toepassen"
+
+msgid "Arcana"
+msgstr "Arcana"
+
+msgid "Archive Note"
+msgstr "Archiefnotitie"
+
+msgid "Archive Notes"
+msgstr "Archiefnotities"
+
+msgid "Armour"
+msgstr "Pantser"
+
+msgid "Artisan’s Tool"
+msgstr "Ambachtsgereedschap"
+
+msgid "Assign 15, 14, 13, 12, 10 and 8 exactly once."
+msgstr "Wijs 15, 14, 13, 12, 10 en 8 elk precies één keer toe."
+
+msgid "Athletics"
+msgstr "Atletiek"
+
+msgid "Attack"
+msgstr "Aanval"
+
+msgid "Attack and damage become rollable"
+msgstr "Aanval en schade worden rolbaar"
+
+msgid "Attacks"
+msgstr "Aanvallen"
+
+msgid "Attacks & Weapons"
+msgstr "Aanvallen en wapens"
+
+msgid "Auby Seal of Approval"
+msgstr "Auby’s keurmerk"
+
+msgid "Auby appears to be thinking very hard about something. Possibly cake."
+msgstr "Auby lijkt heel diep na te denken. Mogelijk over taart."
+
+msgid "Auby has checked the ink. The Registrar is waiting for your seal."
+msgstr "Auby heeft de inkt gecontroleerd. De Registrar wacht op je zegel."
+
+msgid "Auby left a note"
+msgstr "Auby liet een briefje achter"
+
+msgid "Auby left this here"
+msgstr "Auby liet dit hier achter"
+
+msgid "Auby's Desk"
+msgstr "Auby’s bureau"
+
+msgid "Auby’s Packing Register"
+msgstr "Auby’s pakregister"
+
+msgid "Auby’s Questionable Mathematics"
+msgstr "Auby’s twijfelachtige wiskunde"
+
+msgid "Awaiting assignment"
+msgstr "Wacht op toewijzing"
+
+msgid "Awaiting background"
+msgstr "Wacht op achtergrond"
+
+msgid "Awaiting fate"
+msgstr "Wacht op het lot"
+
+msgid "Awaiting inscription"
+msgstr "Wacht op inschrijving"
+
+msgid "Awaiting selection"
+msgstr "Wacht op selectie"
+
+msgid "Back to Live Play"
+msgstr "Terug naar live spelen"
+
+msgid "Background"
+msgstr "Achtergrond"
+
+msgid "Best for"
+msgstr "Het beste voor"
+
+msgid "Calling"
+msgstr "Roeping"
+
+msgid "Campaigns"
+msgstr "Campagnes"
+
+msgid "Character background"
+msgstr "Personageachtergrond"
+
+msgid "Character details"
+msgstr "Personagegegevens"
+
+msgid "Characters"
+msgstr "Personages"
+
+msgid "Charisma"
+msgstr "Charisma"
+
+msgid "Check"
+msgstr "Proef"
+
+msgid "Choices"
+msgstr "Keuzes"
+
+msgid "Choose a Calling first"
+msgstr "Kies eerst een roeping"
+
+msgid "Choose a Guild Hall room"
+msgstr "Kies een kamer in de Gildehal"
+
+msgid "Choose a background"
+msgstr "Kies een achtergrond"
+
+msgid "Choose a class"
+msgstr "Kies een klasse"
+
+msgid "Choose a different language"
+msgstr "Kies een andere taal"
+
+msgid "Choose a gaming set"
+msgstr "Kies een spelset"
+
+msgid "Choose a heritage / subtype"
+msgstr "Kies een afkomst / subtype"
+
+msgid "Choose a language"
+msgstr "Kies een taal"
+
+msgid "Choose a race"
+msgstr "Kies een ras"
+
+msgid "Choose an artisan’s tool"
+msgstr "Kies een ambachtsgereedschap"
+
+msgid "Choose an item…"
+msgstr "Kies een voorwerp…"
+
+msgid "Choose how fate measures your adventurer"
+msgstr "Kies hoe het lot je avonturier bepaalt"
+
+msgid "Choose later / no subclass yet"
+msgstr "Later kiezen / nog geen subklasse"
+
+msgid "Choose your starting equipment package"
+msgstr "Kies je startuitrustingspakket"
+
+msgid "Class"
+msgstr "Klasse"
+
+msgid "Click a modifier to roll"
+msgstr "Klik op een modifier om te rollen"
+
+msgid "Coin"
+msgstr "Munten"
+
+msgid "Coin Purse"
+msgstr "Geldbuidel"
+
+msgid "Coming Soon"
+msgstr "Binnenkort"
+
+msgid "Companion navigation"
+msgstr "Companion-navigatie"
+
+msgid "Compendium"
+msgstr "Compendium"
+
+msgid "Complete background choices"
+msgstr "Voltooi de achtergrondkeuzes"
+
+msgid "Complete your proficiencies"
+msgstr "Voltooi je vaardigheden"
+
+msgid "Composer dependencies are missing. Run"
+msgstr "Composer-afhankelijkheden ontbreken. Voer uit"
+
+msgid "Conscious"
+msgstr "Bij bewustzijn"
+
+msgid "Constitution"
+msgstr "Constitutie"
+
+msgid "Core adventuring measures"
+msgstr "Kernwaarden voor avontuur"
+
+msgid "Core traits"
+msgstr "Kernkenmerken"
+
+msgid "Create Character"
+msgstr "Personage maken"
+
+msgid "Create an adventurer"
+msgstr "Maak een avonturier"
+
+msgid "Critical Damage"
+msgstr "Kritieke schade"
+
+msgid "Current HP"
+msgstr "Huidige HP"
+
+msgid "Current adventuring record"
+msgstr "Huidig avonturiersdossier"
+
+msgid "Current and Temporary HP boxes are intentionally spacious for pencil updates during offline play."
+msgstr "De vakken voor Huidige en Tijdelijke HP zijn bewust ruim voor potloodaanpassingen tijdens offline spel."
+
+msgid "Current background"
+msgstr "Huidige achtergrond"
+
+msgid "Custom uploaded portraits stay untouched."
+msgstr "Zelf geüploade portretten blijven ongewijzigd."
+
+msgid "D20 Check"
+msgstr "D20-proef"
+
+msgid "D20 Roll"
+msgstr "D20-worp"
+
+msgid "Damage"
+msgstr "Schade"
+
+msgid "Damage Roll"
+msgstr "Schadeworp"
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Deception"
+msgstr "Misleiding"
+
+msgid "Dexterity"
+msgstr "Behendigheid"
+
+msgid "Dice Roller"
+msgstr "Dobbelsteenroller"
+
+msgid "Dice are optional. Advancement and archival detail stay in the Ledger."
+msgstr "Dobbelstenen zijn optioneel. Voortgang en archiefdetails blijven in het Grootboek."
+
+msgid "Dice of Destiny selected. Roll 3d6 for each ability."
+msgstr "Dobbelstenen van het Lot geselecteerd. Rol 3d6 voor elke eigenschap."
+
+msgid "Disadvantage"
+msgstr "Nadeel"
+
+msgid "Equip a weapon in the Adventurer’s Pack and its attack will appear here."
+msgstr "Rust een wapen uit in het Avonturierspakket en de aanval verschijnt hier."
+
+msgid "Equipment"
+msgstr "Uitrusting"
+
+msgid "Equipment & Inventory"
+msgstr "Uitrusting en inventaris"
+
+msgid "Equipped"
+msgstr "Uitgerust"
+
+msgid "Equipped weapons are copied here automatically by the Guild Quartermaster."
+msgstr "Uitgeruste wapens worden hier automatisch gekopieerd door de Gildekwartiermeester."
+
+msgid "Experience"
+msgstr "Ervaring"
+
+msgid "Expertise"
+msgstr "Expertise"
+
+msgid "Features & Gifts"
+msgstr "Kenmerken en gaven"
+
+msgid "Final Registrar Review"
+msgstr "Laatste controle van de Registrar"
+
+msgid "First language"
+msgstr "Eerste taal"
+
+msgid "Free Roll"
+msgstr "Vrije worp"
+
+msgid "From your Heritage"
+msgstr "Van je afkomst"
+
+msgid "Full Ledger"
+msgstr "Volledig grootboek"
+
+msgid "Future gifts"
+msgstr "Toekomstige gaven"
+
+msgid "Future path / subclass"
+msgstr "Toekomstig pad / subklasse"
+
+msgid "Gaming Set"
+msgstr "Spelset"
+
+msgid "Great MarketRealm Character Sheet"
+msgstr "Great MarketRealm-personageblad"
+
+msgid "Great Marketrealm Companion"
+msgstr "Great Marketrealm Companion"
+
+msgid "Guild Array"
+msgstr "Gildereeks"
+
+msgid "Guild Certified"
+msgstr "Door het Gilde gecertificeerd"
+
+msgid "Guild Dice"
+msgstr "Gildedobbelstenen"
+
+msgid "Guild Free Roll"
+msgstr "Vrije Gildeworp"
+
+msgid "Guild Hall directory"
+msgstr "Gildehalregister"
+
+msgid "Guild Illuminator"
+msgstr "Gilde-Illuminator"
+
+msgid "Guild Ledger Index"
+msgstr "Index van het Gildegrootboek"
+
+msgid "Guild Roll"
+msgstr "Gildeworp"
+
+msgid "Guild certified"
+msgstr "Door het Gilde gecertificeerd"
+
+msgid "Guild stores catalogue"
+msgstr "Catalogus van de Gildewinkels"
+
+msgid "Handbook feature"
+msgstr "Handboekkenmerk"
+
+msgid "Healing"
+msgstr "Genezing"
+
+msgid "Healing Roll"
+msgstr "Genezingsworp"
+
+msgid "Heritage"
+msgstr "Afkomst"
+
+msgid "Heritage guidance"
+msgstr "Richtlijnen voor afkomst"
+
+msgid "Heritage traits"
+msgstr "Afkomstkenmerken"
+
+msgid "Hide Audit"
+msgstr "Controle verbergen"
+
+msgid "History"
+msgstr "Geschiedenis"
+
+msgid "Hit Die"
+msgstr "Hit Die"
+
+msgid "Hit Points"
+msgstr "Hit Points"
+
+msgid "Hostile Creature"
+msgstr "Vijandig wezen"
+
+msgid "How it plays"
+msgstr "Hoe het speelt"
+
+msgid "I left your Guild Journal open for you. '\n            . 'I was absolutely not reading it."
+msgstr "Ik heb je Gildejournaal voor je opengelaten. Ik was het absoluut niet aan het lezen."
+
+msgid "Initiative"
+msgstr "Initiatief"
+
+msgid "Insight"
+msgstr "Inzicht"
+
+msgid "Intelligence"
+msgstr "Intelligentie"
+
+msgid "Intimidation"
+msgstr "Intimidatie"
+
+msgid "Invalid request"
+msgstr "Ongeldig verzoek"
+
+msgid "Inventory"
+msgstr "Inventaris"
+
+msgid "Investigation"
+msgstr "Onderzoek"
+
+msgid "Journal"
+msgstr "Journaal"
+
+msgid "Language choices"
+msgstr "Taalkeuzes"
+
+msgid "Languages"
+msgstr "Talen"
+
+msgid "Languages:"
+msgstr "Talen:"
+
+msgid "Level"
+msgstr "Niveau"
+
+msgid "Logout"
+msgstr "Uitloggen"
+
+msgid "Marketrealm Companion:"
+msgstr "Marketrealm Companion:"
+
+msgid "Maximum"
+msgstr "Maximum"
+
+msgid "Maximum HP"
+msgstr "Maximale HP"
+
+msgid "Medicine"
+msgstr "Geneeskunde"
+
+msgid "NPC"
+msgstr "NPC"
+
+msgid "Name your adventurer"
+msgstr "Geef je avonturier een naam"
+
+msgid "Natural 1 — Oh dear."
+msgstr "Natuurlijke 1 — O jee."
+
+msgid "Natural 1."
+msgstr "Natuurlijke 1."
+
+msgid "Natural 20 — Critical Hit!"
+msgstr "Natuurlijke 20 — Kritieke treffer!"
+
+msgid "Natural 20!"
+msgstr "Natuurlijke 20!"
+
+msgid "Natural 20."
+msgstr "Natuurlijke 20."
+
+msgid "Natural 20. Critical hit."
+msgstr "Natuurlijke 20. Kritieke treffer."
+
+msgid "Nature"
+msgstr "Natuur"
+
+msgid "Next roll only"
+msgstr "Alleen de volgende worp"
+
+msgid "No Characters Yet"
+msgstr "Nog geen personages"
+
+msgid "No additional active-play features are indexed here yet; the full Ledger retains all advancement records."
+msgstr "Hier zijn nog geen extra actieve spelkenmerken geïndexeerd; het volledige Grootboek bewaart alle voortgangsgegevens."
+
+msgid "No additional choices"
+msgstr "Geen extra keuzes"
+
+msgid "No additional subtype"
+msgstr "Geen extra subtype"
+
+msgid "No equipped weapon attacks."
+msgstr "Geen aanvallen met uitgeruste wapens."
+
+msgid "No languages are currently recorded."
+msgstr "Er zijn momenteel geen talen vastgelegd."
+
+msgid "No target selected"
+msgstr "Geen doel geselecteerd"
+
+msgid "No tool proficiencies are recorded."
+msgstr "Er zijn geen gereedschapsvaardigheden vastgelegd."
+
+msgid "No weapon is readied."
+msgstr "Er is geen wapen gereed."
+
+msgid "Normal Roll"
+msgstr "Normale worp"
+
+msgid "Not Found"
+msgstr "Niet gevonden"
+
+msgid "Off"
+msgstr "Uit"
+
+msgid "Offline Adventurer Record"
+msgstr "Offline avonturiersdossier"
+
+msgid "Offline Character Sheet"
+msgstr "Offline personageblad"
+
+msgid "Offline Notes"
+msgstr "Offline notities"
+
+msgid "On"
+msgstr "Aan"
+
+msgid "Only choices required by the selected background are revealed here."
+msgstr "Alleen keuzes die voor de geselecteerde achtergrond nodig zijn, worden hier getoond."
+
+msgid "Open Full Ledger"
+msgstr "Volledig grootboek openen"
+
+msgid "Overview"
+msgstr "Overzicht"
+
+msgid "Pack Another Item"
+msgstr "Nog een voorwerp inpakken"
+
+msgid "Passive"
+msgstr "Passief"
+
+msgid "Passive Perception"
+msgstr "Passieve Waarneming"
+
+msgid "Path Gift"
+msgstr "Padgave"
+
+msgid "Perception"
+msgstr "Waarneming"
+
+msgid "Performance"
+msgstr "Optreden"
+
+msgid "Personal History"
+msgstr "Persoonlijke geschiedenis"
+
+msgid "Persuasion"
+msgstr "Overtuiging"
+
+msgid "Pick up the copper coin"
+msgstr "Pak de koperen munt op"
+
+msgid "Planned feature"
+msgstr "Gepland kenmerk"
+
+msgid "Player Character"
+msgstr "Spelerspersonage"
+
+msgid "Practical training"
+msgstr "Praktische training"
+
+msgid "Print / Save PDF"
+msgstr "Afdrukken / PDF opslaan"
+
+msgid "Print this sheet, or choose “Save as PDF” in your browser’s print dialog."
+msgstr "Druk dit blad af of kies “Opslaan als PDF” in het afdrukvenster van je browser."
+
+msgid "Printable / PDF Sheet"
+msgstr "Afdrukbaar / PDF-blad"
+
+msgid "Prof."
+msgstr "Vaard."
+
+msgid "Proficiencies"
+msgstr "Vaardigheden"
+
+msgid "Proficiency"
+msgstr "Vaardigheid"
+
+msgid "Proficient"
+msgstr "Vaardig"
+
+msgid "Progression"
+msgstr "Voortgang"
+
+msgid "Quantity"
+msgstr "Aantal"
+
+msgid "Quartermaster’s Counter"
+msgstr "Balie van de kwartiermeester"
+
+msgid "Quests"
+msgstr "Queesten"
+
+msgid "Quick Roll"
+msgstr "Snelle worp"
+
+msgid "Quick Rolls"
+msgstr "Snelle worpen"
+
+msgid "Quick amount"
+msgstr "Snel bedrag"
+
+msgid "Race"
+msgstr "Ras"
+
+msgid "Range"
+msgstr "Bereik"
+
+msgid "Ready for the Guild seal."
+msgstr "Klaar voor het Gildezegel."
+
+msgid "Record the skills, languages and practical training gained before adventuring."
+msgstr "Leg de vaardigheden, talen en praktische training vast die vóór het avontuur zijn opgedaan."
+
+msgid "Recorded Training"
+msgstr "Vastgelegde training"
+
+msgid "Register mark"
+msgstr "Registerteken"
+
+msgid "Registrar choices"
+msgstr "Keuzes van de Registrar"
+
+msgid "Registrar’s Choices"
+msgstr "Keuzes van de Registrar"
+
+msgid "Registrar’s Final Audit"
+msgstr "Laatste controle van de Registrar"
+
+msgid "Religion"
+msgstr "Religie"
+
+msgid "Remove"
+msgstr "Verwijderen"
+
+msgid "Remove from Quick Rolls"
+msgstr "Uit snelle worpen verwijderen"
+
+msgid "Resolve languages or generic tool categories granted by the amended background."
+msgstr "Werk talen of algemene gereedschapscategorieën uit die door de aangepaste achtergrond worden toegekend."
+
+msgid "Review the Guild Record"
+msgstr "Gildedossier controleren"
+
+msgid "Roll all six abilities"
+msgstr "Rol alle zes eigenschappen"
+
+msgid "Roll all six abilities before continuing."
+msgstr "Rol alle zes eigenschappen voordat je verdergaat."
+
+msgid "Roll three six-sided dice and keep their total for each ability."
+msgstr "Rol drie zeszijdige dobbelstenen en gebruik hun totaal voor elke eigenschap."
+
+msgid "Roll when enabled"
+msgstr "Rol wanneer ingeschakeld"
+
+msgid "Save DC"
+msgstr "Reddingsworp-DC"
+
+msgid "Save HP"
+msgstr "HP opslaan"
+
+msgid "Saving Throw"
+msgstr "Reddingsworp"
+
+msgid "Saving Throws"
+msgstr "Reddingsworpen"
+
+msgid "Second language"
+msgstr "Tweede taal"
+
+msgid "Selected background benefits"
+msgstr "Voordelen van geselecteerde achtergrond"
+
+msgid "Self"
+msgstr "Zelf"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Shared Folk traits"
+msgstr "Gedeelde Folk-kenmerken"
+
+msgid "Six sets of 3d6. No rerolling the Registrar when he writes down a 5."
+msgstr "Zes reeksen van 3d6. Geen nieuwe worp omdat de Registrar een 5 opschrijft."
+
+msgid "Skill Check"
+msgstr "Vaardigheidsproef"
+
+msgid "Skill proficiencies"
+msgstr "Vaardigheidsproficienties"
+
+msgid "Skills"
+msgstr "Vaardigheden"
+
+msgid "Skills & Training"
+msgstr "Vaardigheden en training"
+
+msgid "Sleight of Hand"
+msgstr "Vingervlugheid"
+
+msgid "Someone has been busy."
+msgstr "Iemand is druk bezig geweest."
+
+msgid "Speed"
+msgstr "Snelheid"
+
+msgid "Spell Attack"
+msgstr "Spreukaanval"
+
+msgid "Spellcasting"
+msgstr "Spreuken gebruiken"
+
+msgid "Spells & Abilities"
+msgstr "Spreuken en eigenschappen"
+
+msgid "Standard Guild Array"
+msgstr "Standaard Gildereeks"
+
+msgid "Standard Guild Array selected. Assign each score exactly once."
+msgstr "Standaard Gildereeks geselecteerd. Wijs elke score precies één keer toe."
+
+msgid "Starting Hit Points"
+msgstr "Start-Hit Points"
+
+msgid "Starting experience"
+msgstr "Startervaring"
+
+msgid "Starting level"
+msgstr "Startniveau"
+
+msgid "Stealth"
+msgstr "Sluipen"
+
+msgid "Strength"
+msgstr "Kracht"
+
+msgid "Subtype choices are drawn from the Registrar’s Grand Catalogue."
+msgstr "Subtypekeuzes komen uit de Grote Catalogus van de Registrar."
+
+msgid "Survival"
+msgstr "Overleven"
+
+msgid "Tabletop Token"
+msgstr "Tabletop-token"
+
+msgid "Target"
+msgstr "Doel"
+
+msgid "Target is linked."
+msgstr "Doel is gekoppeld."
+
+msgid "Target is reference only."
+msgstr "Doel is alleen ter referentie."
+
+msgid "Tea is still warm. Probably."
+msgstr "De thee is nog warm. Waarschijnlijk."
+
+msgid "Temporary HP"
+msgstr "Tijdelijke HP"
+
+msgid "The Clash of the Ledger"
+msgstr "De Botsing van het Grootboek"
+
+msgid "The Dice Ledger has been cleared."
+msgstr "Het dobbelgrootboek is gewist."
+
+msgid "The Dice of Destiny"
+msgstr "De Dobbelstenen van het Lot"
+
+msgid "The Great MarketRealm Companion"
+msgstr "The Great MarketRealm Companion"
+
+msgid "The Great MarketRealm · Adventurer Record"
+msgstr "The Great MarketRealm · Avonturiersdossier"
+
+msgid "The Illuminator’s Private Studio"
+msgstr "De privéstudio van de Illuminator"
+
+msgid "The first page of the adventure"
+msgstr "De eerste pagina van het avontuur"
+
+msgid "The form request could not be verified."
+msgstr "Het formulierverzoek kon niet worden geverifieerd."
+
+msgid "This session"
+msgstr "Deze sessie"
+
+msgid "To Hit"
+msgstr "Te raken"
+
+msgid "Tool Proficiencies"
+msgstr "Gereedschapsvaardigheden"
+
+msgid "Tool proficiencies"
+msgstr "Gereedschapsvaardigheden"
+
+msgid "Tools:"
+msgstr "Gereedschap:"
+
+msgid "Trained Talents"
+msgstr "Getrainde talenten"
+
+msgid "Unconscious"
+msgstr "Bewusteloos"
+
+msgid "Untrained"
+msgstr "Ongetraind"
+
+msgid "Update"
+msgstr "Bijwerken"
+
+msgid "Weapon Attack"
+msgstr "Wapenaanval"
+
+msgid "Welcome back, %s!"
+msgstr "Welkom terug, %s!"
+
+msgid "Wisdom"
+msgstr "Wijsheid"
+
+msgid "You do not have permission to enter the Steward's Office."
+msgstr "Je hebt geen toestemming om het kantoor van de Steward te betreden."
+
+msgid "Your Characters"
+msgstr "Jouw personages"
+
+msgid "Your Companion map"
+msgstr "Jouw Companion-kaart"
+
+msgid "Your adventure begins here. Create your first Great Marketrealm hero!"
+msgstr "Je avontuur begint hier. Maak je eerste Great Marketrealm-held!"
+
+msgid "Your parent Folk’s published identity and traits still apply in full."
+msgstr "De gepubliceerde identiteit en kenmerken van je bovenliggende Folk blijven volledig van toepassing."
+
+msgid "Your selected kit is copied into the Character Inventory when the adventurer is certified. Later Steward changes do not rewrite existing inventories."
+msgstr "Je gekozen uitrustingsset wordt naar de personage-inventaris gekopieerd wanneer de avonturier wordt gecertificeerd. Latere wijzigingen door de Steward herschrijven bestaande inventarissen niet."
+
+msgid "for a total of"
+msgstr "voor een totaal van"
+
+msgid "inside the plugin directory."
+msgstr "in de pluginmap."
+
+msgid "rolled"
+msgstr "gerold"
+
+msgid "“Critical hit! Double the weapon dice!” — Auby"
+msgstr "“Kritieke treffer! Verdubbel de wapendobbelstenen!” — Auby"
+
+msgid "“I definitely witnessed that.” — Auby"
+msgstr "“Dat heb ik absoluut gezien.” — Auby"
+
+msgid "“The Guild has elected not to record that one.” — Auby"
+msgstr "“Het Gilde heeft besloten die niet vast te leggen.” — Auby"
+
+msgid "◆ expertise"
+msgstr "◆ expertise"
+
+msgid "● proficient"
+msgstr "● vaardig"
