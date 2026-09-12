@@ -25,7 +25,7 @@ final class CharacterNameDisplayHardeningRegressionTest extends TestCase
         $css = (string) file_get_contents(dirname(__DIR__, 5) . '/assets/css/modules/characters/open-ledger.css');
 
         self::assertStringContainsString('$nameLength = mb_strlen($name);', $view);
-        self::assertStringContainsString("$nameLength > 42", $view);
+        self::assertStringContainsString('$nameLength > 42', $view);
         self::assertStringContainsString('gmrc-character-name--wrap', $view);
         self::assertStringContainsString('overflow-wrap: anywhere;', $css);
         self::assertStringContainsString('max-width: 22ch;', $css);
