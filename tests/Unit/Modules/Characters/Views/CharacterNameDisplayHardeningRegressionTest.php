@@ -34,7 +34,7 @@ final class CharacterNameDisplayHardeningRegressionTest extends TestCase
 
     public function test_portrait_caption_names_receive_the_same_long_name_protection(): void
     {
-        $root = dirname(__DIR__, 6);
+        $root = dirname(__DIR__, 5);
         $view = file_get_contents($root . '/app/Views/components/media/illuminated-portrait.php');
         $css = file_get_contents($root . '/assets/css/components/media/illuminated-portrait.css');
 
