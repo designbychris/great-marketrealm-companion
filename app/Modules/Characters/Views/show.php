@@ -527,7 +527,7 @@ $callingPathLabel = $callingPath !== ''
         >
             <header class="gmrc-complete-adventurer__header">
                 <div>
-                    <p class="gmrc-eyebrow">Registrar’s Final Audit</p>
+                    <p class="gmrc-eyebrow"><?php esc_html_e('Registrar’s Final Audit', 'great-marketrealm-companion'); ?></p>
                     <h2 id="gmrc-complete-adventurer-title">
                         <?php echo esc_html(
                             (string) ($completeAdventurer['label'] ?? '')
@@ -564,7 +564,7 @@ $callingPathLabel = $callingPath !== ''
                             $characterId
                         ); ?>"
                     >
-                        <span data-registrar-audit-toggle-label>Hide Audit</span>
+                        <span data-registrar-audit-toggle-label><?php esc_html_e('Hide Audit', 'great-marketrealm-companion'); ?></span>
                         <span
                             class="gmrc-complete-adventurer__toggle-symbol"
                             data-registrar-audit-toggle-symbol
@@ -602,7 +602,7 @@ $callingPathLabel = $callingPath !== ''
                     </div>
 
                     <div class="gmrc-adventurers-seal__copy">
-                        <p class="gmrc-eyebrow">Guild Certified</p>
+                        <p class="gmrc-eyebrow"><?php esc_html_e('Guild Certified', 'great-marketrealm-companion'); ?></p>
 
                         <h3 id="gmrc-adventurers-seal-title">
                             <?php echo esc_html(
@@ -683,7 +683,7 @@ $callingPathLabel = $callingPath !== ''
         class="gmrc-ledger-index"
         aria-label="Character Ledger index"
     >
-        <p class="gmrc-ledger-index__label">Guild Ledger Index</p>
+        <p class="gmrc-ledger-index__label"><?php esc_html_e('Guild Ledger Index', 'great-marketrealm-companion'); ?></p>
     <div
         class="gmrc-ledger-tabs"
         role="tablist"
@@ -700,7 +700,7 @@ $callingPathLabel = $callingPath !== ''
             data-ledger-tab="overview"
         >
             <span class="gmrc-ledger-tab__icon" aria-hidden="true">▣</span>
-            <span class="gmrc-ledger-tab__label">Overview</span>
+            <span class="gmrc-ledger-tab__label"><?php esc_html_e('Overview', 'great-marketrealm-companion'); ?></span>
         </button>
 
         <button
@@ -714,7 +714,7 @@ $callingPathLabel = $callingPath !== ''
             data-ledger-tab="tabletop-token"
         >
             <span class="gmrc-ledger-tab__icon" aria-hidden="true">◉</span>
-            <span class="gmrc-ledger-tab__label">Tabletop Token</span>
+            <span class="gmrc-ledger-tab__label"><?php esc_html_e('Tabletop Token', 'great-marketrealm-companion'); ?></span>
         </button>
 
         <button
@@ -728,7 +728,7 @@ $callingPathLabel = $callingPath !== ''
             data-ledger-tab="skills"
         >
             <span class="gmrc-ledger-tab__icon" aria-hidden="true">✦</span>
-            <span class="gmrc-ledger-tab__label">Skills & Training</span>
+            <span class="gmrc-ledger-tab__label"><?php esc_html_e('Skills & Training', 'great-marketrealm-companion'); ?></span>
         </button>
 
         <button
@@ -742,7 +742,7 @@ $callingPathLabel = $callingPath !== ''
             data-ledger-tab="equipment"
         >
             <span class="gmrc-ledger-tab__icon" aria-hidden="true">🎒</span>
-            <span class="gmrc-ledger-tab__label">Equipment</span>
+            <span class="gmrc-ledger-tab__label"><?php esc_html_e('Equipment', 'great-marketrealm-companion'); ?></span>
         </button>
 
         <button
@@ -756,7 +756,7 @@ $callingPathLabel = $callingPath !== ''
             data-ledger-tab="attacks"
         >
             <span class="gmrc-ledger-tab__icon" aria-hidden="true">⚔</span>
-            <span class="gmrc-ledger-tab__label">Attacks</span>
+            <span class="gmrc-ledger-tab__label"><?php esc_html_e('Attacks', 'great-marketrealm-companion'); ?></span>
         </button>
 
 <button
@@ -770,7 +770,7 @@ $callingPathLabel = $callingPath !== ''
     data-ledger-tab="arcana"
 >
     <span class="gmrc-ledger-tab__icon" aria-hidden="true">✧</span>
-    <span class="gmrc-ledger-tab__label">Spells & Abilities</span>
+    <span class="gmrc-ledger-tab__label"><?php esc_html_e('Spells & Abilities', 'great-marketrealm-companion'); ?></span>
 </button>
 
 
@@ -785,7 +785,7 @@ $callingPathLabel = $callingPath !== ''
     data-ledger-tab="progression"
 >
     <span class="gmrc-ledger-tab__icon" aria-hidden="true">↑</span>
-    <span class="gmrc-ledger-tab__label">Progression</span>
+    <span class="gmrc-ledger-tab__label"><?php esc_html_e('Progression', 'great-marketrealm-companion'); ?></span>
 </button>
 
         <button
@@ -799,7 +799,7 @@ $callingPathLabel = $callingPath !== ''
             data-ledger-tab="notes"
         >
             <span class="gmrc-ledger-tab__icon" aria-hidden="true">✎</span>
-            <span class="gmrc-ledger-tab__label">Archive Notes</span>
+            <span class="gmrc-ledger-tab__label"><?php esc_html_e('Archive Notes', 'great-marketrealm-companion'); ?></span>
         </button>
     </div>
 
@@ -897,7 +897,7 @@ $callingPathLabel = $callingPath !== ''
 
             <dl class="gmrc-ledger-inscription">
                 <div>
-                    <dt>Experience</dt>
+                    <dt><?php esc_html_e('Experience', 'great-marketrealm-companion'); ?></dt>
                     <dd>
                         <?php echo esc_html(
                             (string) $experience
@@ -906,7 +906,7 @@ $callingPathLabel = $callingPath !== ''
                 </div>
 
                 <div>
-                    <dt>Register mark</dt>
+                    <dt><?php esc_html_e('Register mark', 'great-marketrealm-companion'); ?></dt>
                     <dd>
                         <?php echo esc_html(
                             $entryReference
@@ -953,7 +953,7 @@ $callingPathLabel = $callingPath !== ''
 
             <dl class="gmrc-ledger-vitals">
                 <div>
-                    <dt>Armour</dt>
+                    <dt><?php esc_html_e('Armour', 'great-marketrealm-companion'); ?></dt>
                     <dd>
                         <?php echo esc_html(
                             (string) $armourClass
@@ -962,7 +962,7 @@ $callingPathLabel = $callingPath !== ''
                 </div>
 
                 <div>
-                    <dt>Initiative</dt>
+                    <dt><?php esc_html_e('Initiative', 'great-marketrealm-companion'); ?></dt>
                     <dd>
                         <?php
                         echo $this->component(
@@ -983,7 +983,7 @@ $callingPathLabel = $callingPath !== ''
                 </div>
 
                 <div>
-                    <dt>Speed</dt>
+                    <dt><?php esc_html_e('Speed', 'great-marketrealm-companion'); ?></dt>
                     <dd>
                         <?php echo esc_html(
                             $speed
@@ -992,7 +992,7 @@ $callingPathLabel = $callingPath !== ''
                 </div>
 
                 <div>
-                    <dt>Proficiency</dt>
+                    <dt><?php esc_html_e('Proficiency', 'great-marketrealm-companion'); ?></dt>
                     <dd>
                         <?php echo esc_html(
                             $proficiencyBonus
@@ -1001,7 +1001,7 @@ $callingPathLabel = $callingPath !== ''
                 </div>
 
                 <div>
-                    <dt>Perception</dt>
+                    <dt><?php esc_html_e('Perception', 'great-marketrealm-companion'); ?></dt>
                     <dd>
                         <?php echo esc_html(
                             (string) $passivePerception
@@ -1012,7 +1012,7 @@ $callingPathLabel = $callingPath !== ''
 
             <section class="gmrc-ledger-section">
                 <header class="gmrc-ledger-section__heading">
-                    <h3>Ability Scores</h3>
+                    <h3><?php esc_html_e('Ability Scores', 'great-marketrealm-companion'); ?></h3>
                 </header>
 
                 <dl class="gmrc-ledger-abilities">
@@ -1064,7 +1064,7 @@ $callingPathLabel = $callingPath !== ''
                 ); ?>"
             >
                 <header class="gmrc-ledger-section__heading">
-                    <h3>Hit Points</h3>
+                    <h3><?php esc_html_e('Hit Points', 'great-marketrealm-companion'); ?></h3>
 
                     <span data-vital-consciousness>
                         <?php echo esc_html(
@@ -1099,7 +1099,7 @@ $callingPathLabel = $callingPath !== ''
 
                     <div class="gmrc-vital-measures__grid">
                         <fieldset>
-                            <legend>Current HP</legend>
+                            <legend><?php esc_html_e('Current HP', 'great-marketrealm-companion'); ?></legend>
                             <div class="gmrc-vital-measures__stepper">
                                 <button
                                     type="button"
@@ -1132,15 +1132,15 @@ $callingPathLabel = $callingPath !== ''
                         </fieldset>
 
                         <div class="gmrc-vital-measures__maximum">
-                            <span>Maximum HP</span>
+                            <span><?php esc_html_e('Maximum HP', 'great-marketrealm-companion'); ?></span>
                             <strong><?php echo esc_html(
                                 (string) $hitPoints->maximum()
                             ); ?></strong>
-                            <small>Guild certified</small>
+                            <small><?php esc_html_e('Guild certified', 'great-marketrealm-companion'); ?></small>
                         </div>
 
                         <fieldset>
-                            <legend>Temporary HP</legend>
+                            <legend><?php esc_html_e('Temporary HP', 'great-marketrealm-companion'); ?></legend>
                             <div class="gmrc-vital-measures__stepper">
                                 <button
                                     type="button"
@@ -1173,7 +1173,7 @@ $callingPathLabel = $callingPath !== ''
 
                     <div class="gmrc-vital-measures__quick">
                         <label>
-                            <span>Quick amount</span>
+                            <span><?php esc_html_e('Quick amount', 'great-marketrealm-companion'); ?></span>
                             <input
                                 type="number"
                                 min="1"
@@ -1187,12 +1187,12 @@ $callingPathLabel = $callingPath !== ''
                             type="button"
                             class="gmrc-vital-measures__damage"
                             data-vital-action="damage"
-                        >Apply Damage</button>
+                        ><?php esc_html_e('Apply Damage', 'great-marketrealm-companion'); ?></button>
                         <button
                             type="button"
                             class="gmrc-vital-measures__heal"
                             data-vital-action="heal"
-                        >Apply Healing</button>
+                        ><?php esc_html_e('Apply Healing', 'great-marketrealm-companion'); ?></button>
                     </div>
 
                     <p class="gmrc-vital-measures__note">
@@ -1212,7 +1212,7 @@ $callingPathLabel = $callingPath !== ''
 
             <section class="gmrc-ledger-section">
                 <header class="gmrc-ledger-section__heading">
-                    <h3>Saving Throws</h3>
+                    <h3><?php esc_html_e('Saving Throws', 'great-marketrealm-companion'); ?></h3>
                 </header>
 
                 <dl class="gmrc-ledger-saves">
@@ -1359,8 +1359,8 @@ $callingPathLabel = $callingPath !== ''
                 </p>
 
                 <header class="gmrc-ledger-page__heading">
-                    <p class="gmrc-eyebrow">Trained Talents</p>
-                    <h2 id="gmrc-ledger-skills-title">Skills</h2>
+                    <p class="gmrc-eyebrow"><?php esc_html_e('Trained Talents', 'great-marketrealm-companion'); ?></p>
+                    <h2 id="gmrc-ledger-skills-title"><?php esc_html_e('Skills', 'great-marketrealm-companion'); ?></h2>
                 </header>
 
                 <dl class="gmrc-ledger-skill-list">
@@ -1417,8 +1417,8 @@ $callingPathLabel = $callingPath !== ''
                 </dl>
 
                 <p class="gmrc-ledger-legend">
-                    <span>● proficient</span>
-                    <span>◆ expertise</span>
+                    <span><?php esc_html_e('● proficient', 'great-marketrealm-companion'); ?></span>
+                    <span><?php esc_html_e('◆ expertise', 'great-marketrealm-companion'); ?></span>
                 </p>
 
                 <p class="gmrc-ledger-page__number" aria-hidden="true">3</p>
@@ -1431,8 +1431,8 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-ledger-page__folio">Guild Training · IV</p>
 
                 <header class="gmrc-ledger-page__heading">
-                    <p class="gmrc-eyebrow">Recorded Training</p>
-                    <h2 id="gmrc-ledger-training-title">Proficiencies</h2>
+                    <p class="gmrc-eyebrow"><?php esc_html_e('Recorded Training', 'great-marketrealm-companion'); ?></p>
+                    <h2 id="gmrc-ledger-training-title"><?php esc_html_e('Proficiencies', 'great-marketrealm-companion'); ?></h2>
                 </header>
 
                 <section class="gmrc-ledger-section">
@@ -1460,10 +1460,10 @@ $callingPathLabel = $callingPath !== ''
 
                 <section class="gmrc-ledger-section">
                     <header class="gmrc-ledger-section__heading">
-                        <h3>Languages</h3>
+                        <h3><?php esc_html_e('Languages', 'great-marketrealm-companion'); ?></h3>
                     </header>
                     <?php if ($languages->isEmpty()) : ?>
-                        <p class="gmrc-ledger-copy">No languages are currently recorded.</p>
+                        <p class="gmrc-ledger-copy"><?php esc_html_e('No languages are currently recorded.', 'great-marketrealm-companion'); ?></p>
                     <?php else : ?>
                         <ul class="gmrc-ledger-tags">
                             <?php foreach ($languages->all() as $language) : ?>
@@ -1475,10 +1475,10 @@ $callingPathLabel = $callingPath !== ''
 
                 <section class="gmrc-ledger-section">
                     <header class="gmrc-ledger-section__heading">
-                        <h3>Tool Proficiencies</h3>
+                        <h3><?php esc_html_e('Tool Proficiencies', 'great-marketrealm-companion'); ?></h3>
                     </header>
                     <?php if ($toolProficiencies->isEmpty()) : ?>
-                        <p class="gmrc-ledger-copy">No tool proficiencies are recorded.</p>
+                        <p class="gmrc-ledger-copy"><?php esc_html_e('No tool proficiencies are recorded.', 'great-marketrealm-companion'); ?></p>
                     <?php else : ?>
                         <ul class="gmrc-ledger-tags">
                             <?php foreach ($toolProficiencies->all() as $tool) : ?>
@@ -1522,8 +1522,8 @@ $callingPathLabel = $callingPath !== ''
                 </p>
 
                 <header class="gmrc-ledger-page__heading">
-                    <p class="gmrc-eyebrow">Auby’s Packing Register</p>
-                    <h2 id="gmrc-ledger-pack-title">Equipment & Inventory</h2>
+                    <p class="gmrc-eyebrow"><?php esc_html_e('Auby’s Packing Register', 'great-marketrealm-companion'); ?></p>
+                    <h2 id="gmrc-ledger-pack-title"><?php esc_html_e('Equipment & Inventory', 'great-marketrealm-companion'); ?></h2>
                     <p>
                         Everything currently entrusted to this adventurer,
                         from trusty steel to emergency biscuits.
@@ -1721,7 +1721,7 @@ $callingPathLabel = $callingPath !== ''
 
                                 <div class="gmrc-pack-item__meta">
                                     <?php if ($item['equipped']) : ?>
-                                        <span class="gmrc-equipped-seal">Equipped</span>
+                                        <span class="gmrc-equipped-seal"><?php esc_html_e('Equipped', 'great-marketrealm-companion'); ?></span>
                                     <?php endif; ?>
                                     <span>Qty <?php echo esc_html((string) $item['quantity']); ?></span>
                                     <span><?php echo esc_html((string) $item['total_weight']); ?> lb</span>
@@ -1747,7 +1747,7 @@ $callingPathLabel = $callingPath !== ''
                                             <span class="screen-reader-text">Quantity for <?php echo esc_html($item['label']); ?></span>
                                             <input type="number" name="quantity" min="0" max="99" value="<?php echo esc_attr((string) $item['quantity']); ?>">
                                         </label>
-                                        <button type="submit">Update</button>
+                                        <button type="submit"><?php esc_html_e('Update', 'great-marketrealm-companion'); ?></button>
                                     </form>
 
                                     <?php if ($item['equippable']) : ?>
@@ -1766,7 +1766,7 @@ $callingPathLabel = $callingPath !== ''
                                         <input type="hidden" name="gmrc_route" value="<?php echo esc_attr($itemRoute); ?>">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <?php wp_nonce_field('gmrc_character_inventory_' . $characterId, 'gmrc_nonce'); ?>
-                                        <button type="submit" class="gmrc-pack-remove">Remove</button>
+                                        <button type="submit" class="gmrc-pack-remove"><?php esc_html_e('Remove', 'great-marketrealm-companion'); ?></button>
                                     </form>
                                 </div>
                             </article>
@@ -1786,8 +1786,8 @@ $callingPathLabel = $callingPath !== ''
                 </p>
 
                 <header class="gmrc-ledger-page__heading">
-                    <p class="gmrc-eyebrow">Quartermaster’s Counter</p>
-                    <h2 id="gmrc-guild-stores-title">Pack Another Item</h2>
+                    <p class="gmrc-eyebrow"><?php esc_html_e('Quartermaster’s Counter', 'great-marketrealm-companion'); ?></p>
+                    <h2 id="gmrc-guild-stores-title"><?php esc_html_e('Pack Another Item', 'great-marketrealm-companion'); ?></h2>
                     <p>
                         Add a catalogue item to the adventurer’s record.
                         More exotic Marketrealm gear will join these shelves later.
@@ -1806,9 +1806,9 @@ $callingPathLabel = $callingPath !== ''
                     <?php wp_nonce_field('gmrc_character_inventory_' . $characterId, 'gmrc_nonce'); ?>
 
                     <label>
-                        <span>Guild stores catalogue</span>
+                        <span><?php esc_html_e('Guild stores catalogue', 'great-marketrealm-companion'); ?></span>
                         <select name="item_id" required>
-                            <option value="">Choose an item…</option>
+                            <option value=""><?php esc_html_e('Choose an item…', 'great-marketrealm-companion'); ?></option>
                             <?php foreach ($inventory['catalogue'] as $catalogueItem) : ?>
                                 <option value="<?php echo esc_attr($catalogueItem->id()); ?>">
                                     <?php echo esc_html($catalogueItem->label()); ?>
@@ -1819,7 +1819,7 @@ $callingPathLabel = $callingPath !== ''
                     </label>
 
                     <label class="gmrc-guild-stores-form__quantity">
-                        <span>Quantity</span>
+                        <span><?php esc_html_e('Quantity', 'great-marketrealm-companion'); ?></span>
                         <input type="number" name="quantity" value="1" min="1" max="99">
                     </label>
 
@@ -1866,16 +1866,16 @@ $callingPathLabel = $callingPath !== ''
             <section class="gmrc-ledger-page gmrc-ledger-page--attacks" aria-labelledby="gmrc-ledger-attacks-title">
                 <p class="gmrc-ledger-page__folio">Clash Register · VII</p>
                 <header class="gmrc-ledger-page__heading">
-                    <p class="gmrc-eyebrow">The Clash of the Ledger</p>
-                    <h2 id="gmrc-ledger-attacks-title">Attacks & Weapons</h2>
-                    <p>Equipped weapons are copied here automatically by the Guild Quartermaster.</p>
+                    <p class="gmrc-eyebrow"><?php esc_html_e('The Clash of the Ledger', 'great-marketrealm-companion'); ?></p>
+                    <h2 id="gmrc-ledger-attacks-title"><?php esc_html_e('Attacks & Weapons', 'great-marketrealm-companion'); ?></h2>
+                    <p><?php esc_html_e('Equipped weapons are copied here automatically by the Guild Quartermaster.', 'great-marketrealm-companion'); ?></p>
                 </header>
 
                 <?php if ($attacks === []) : ?>
                     <div class="gmrc-combat-empty">
                         <span aria-hidden="true">⚔</span>
-                        <h3>No weapon is readied.</h3>
-                        <p>Equip a weapon in the Adventurer’s Pack and its attack will appear here.</p>
+                        <h3><?php esc_html_e('No weapon is readied.', 'great-marketrealm-companion'); ?></h3>
+                        <p><?php esc_html_e('Equip a weapon in the Adventurer’s Pack and its attack will appear here.', 'great-marketrealm-companion'); ?></p>
                     </div>
                 <?php else : ?>
                     <div class="gmrc-attack-list">
@@ -11102,7 +11102,7 @@ $callingPathLabel = $callingPath !== ''
                 <div><dt>Certified Level</dt><dd><?php echo esc_html((string) $livingRegister['level']); ?></dd></div>
                 <div><dt>Calling</dt><dd><?php echo esc_html((string) $livingRegister['calling']); ?></dd></div>
                 <div><dt>Path</dt><dd><?php echo esc_html((string) ($livingRegister['path_label'] !== '' ? $livingRegister['path_label'] : 'Not yet certified')); ?></dd></div>
-                <div><dt>Proficiency</dt><dd><?php echo esc_html((string) $livingRegister['proficiency']); ?></dd></div>
+                <div><dt><?php esc_html_e('Proficiency', 'great-marketrealm-companion'); ?></dt><dd><?php echo esc_html((string) $livingRegister['proficiency']); ?></dd></div>
                 <div><dt>Vitality</dt><dd><?php echo esc_html((string) $livingRegister['current_hp']); ?> / <?php echo esc_html((string) $livingRegister['maximum_hp']); ?> HP</dd></div>
                 <div><dt>Path Gifts</dt><dd><?php echo esc_html((string) $livingRegister['path_gift_count']); ?></dd></div>
                 <div><dt>Learned Arcana</dt><dd><?php echo esc_html((string) $livingRegister['arcana_known']); ?></dd></div>
@@ -11837,7 +11837,7 @@ $callingPathLabel = $callingPath !== ''
             <summary>Guild Free Roll</summary>
             <div class="gmrc-guild-free-roll__controls">
                 <label>
-                    <span>Quantity</span>
+                    <span><?php esc_html_e('Quantity', 'great-marketrealm-companion'); ?></span>
                     <input
                         type="number"
                         min="1"

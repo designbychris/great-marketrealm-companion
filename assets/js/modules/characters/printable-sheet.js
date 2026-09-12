@@ -2,6 +2,7 @@
     'use strict';
 
     const PRINT_EXCLUDED_CLASS = 'gmrc-print-excluded';
+    const i18n = window.gmrcPrintableSheetI18n || {};
     const PRINT_MODE_CLASS = 'gmrc-print-mode';
     let originalTitle = document.title;
     let excludedNodes = [];
@@ -14,9 +15,12 @@
     const suggestedTitle = function () {
         const root = sheet();
         const characterName = root ? (root.getAttribute('data-print-character-name') || '').trim() : '';
-        return characterName !== ''
-            ? characterName + ' - Great MarketRealm Character Sheet'
-            : 'Great MarketRealm Character Sheet';
+        if (characterName !== '') {
+            return String(i18n.namedSheetTitle || '%s - Great MarketRealm Character Sheet')
+                .replace('%s', characterName);
+        }
+
+        return i18n.sheetTitle || 'Great MarketRealm Character Sheet';
     };
 
     const preparePrint = function () {

@@ -35,3 +35,7 @@ New JavaScript-facing copy should be structured so it can move to `wp.i18n`. Exi
 ## Translation extraction
 
 See `languages/README.md` for the WP-CLI extraction command and file naming conventions.
+
+## JavaScript interface strings
+
+Browser-generated copy must not be added as English-only literals. Current Character surfaces receive translated dictionaries with `wp_localize_script()` (`gmrcAdventuringSheetI18n`, `gmrcPrintableSheetI18n`, `gmrcGuildDiceI18n`, `gmrcRegistrationI18n`, and `gmrcDiceOfDestinyI18n`). A later migration to `wp.i18n` is compatible with this contract.

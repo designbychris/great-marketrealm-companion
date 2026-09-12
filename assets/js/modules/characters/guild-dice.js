@@ -1,6 +1,8 @@
 (function (window, document) {
     'use strict';
 
+    const i18n = window.gmrcGuildDiceI18n || {};
+
     const MAX_HISTORY = 12;
     const MAX_FAVOURITES = 8;
     const MAX_FREE_DICE = 20;
@@ -282,7 +284,7 @@
             '(prefers-reduced-motion: reduce)'
         );
         const characterId = ledger.dataset.characterId || 'unknown';
-        const characterName = ledger.dataset.characterName || 'Adventurer';
+        const characterName = ledger.dataset.characterName || (i18n.adventurer || 'Adventurer');
         const historyKey = 'gmrc:guild-dice:history:' + characterId;
         const favouritesKey = 'gmrc:guild-dice:favourites:' + characterId;
         const recent = [];
@@ -416,7 +418,7 @@
             }
 
             return {
-                label: activeTrigger.dataset.rollLabel || 'D20 Roll',
+                label: activeTrigger.dataset.rollLabel || (i18n.d20Roll || 'D20 Roll'),
                 modifier: Number(activeTrigger.dataset.rollModifier) || 0,
                 kind: activeTrigger.dataset.rollKind || 'check',
                 source: activeTrigger.dataset.rollSource || '',
@@ -474,7 +476,7 @@
             const fallbackLabel =
                 option.dataset.targetLabel
                 || option.textContent
-                || 'Target';
+                || (i18n.target || 'Target');
 
             return {
                 kind: kind,
@@ -504,14 +506,14 @@
 
         const targetKindLabel = function (kind) {
             const labels = {
-                self: 'Self',
-                ally: 'Ally',
-                'player-character': 'Player Character',
-                npc: 'NPC',
-                'hostile-creature': 'Hostile Creature'
+                self: (i18n.self || 'Self'),
+                ally: (i18n.ally || 'Ally'),
+                'player-character': (i18n.playerCharacter || 'Player Character'),
+                npc: (i18n.npc || 'NPC'),
+                'hostile-creature': (i18n.hostileCreature || 'Hostile Creature')
             };
 
-            return labels[kind] || 'Target';
+            return labels[kind] || (i18n.target || 'Target');
         };
 
         const targetText = function (target) {
@@ -599,7 +601,7 @@
             if (targetStatus instanceof HTMLElement) {
                 targetStatus.textContent = target
                     ? targetKindLabel(target.kind)
-                    : 'No target selected';
+                    : (i18n.noTargetSelected || 'No target selected');
             }
 
             if (targetNote instanceof HTMLElement) {
@@ -670,8 +672,8 @@
                 ? 'heal'
                 : 'damage';
             const noun = kind === 'healing'
-                ? 'Healing'
-                : 'Damage';
+                ? (i18n.healing || 'Healing')
+                : (i18n.damage || 'Damage');
 
             vitalApplication.hidden = false;
 
@@ -815,8 +817,8 @@
             );
             favouriteSymbol.textContent = pinned ? '★' : '☆';
             favouriteLabel.textContent = pinned
-                ? 'Remove from Quick Rolls'
-                : 'Add to Quick Rolls';
+                ? (i18n.removeQuickRoll || 'Remove from Quick Rolls')
+                : (i18n.addQuickRoll || 'Add to Quick Rolls');
         };
 
         const removeFavourite = function (key) {
@@ -835,7 +837,7 @@
 
             if (live instanceof HTMLElement) {
                 live.textContent = 'Removed '
-                    + (removed.label || 'Quick Roll')
+                    + (removed.label || (i18n.quickRoll || 'Quick Roll'))
                     + ' from Quick Rolls.';
             }
         };
@@ -859,7 +861,7 @@
             favourites.push({
                 type: 'character',
                 key: key,
-                label: trigger.dataset.rollLabel || 'Guild Roll'
+                label: trigger.dataset.rollLabel || (i18n.guildRoll || 'Guild Roll')
             });
 
             persistFavourites();
@@ -868,7 +870,7 @@
 
             if (live instanceof HTMLElement) {
                 live.textContent = 'Added '
-                    + (trigger.dataset.rollLabel || 'Guild Roll')
+                    + (trigger.dataset.rollLabel || (i18n.guildRoll || 'Guild Roll'))
                     + ' to Quick Rolls.';
             }
         };
@@ -997,16 +999,16 @@
                         const modifier = Number(
                             trigger.dataset.rollModifier
                         ) || 0;
-                        roll.textContent = (entry.label || 'Guild Roll')
+                        roll.textContent = (entry.label || (i18n.guildRoll || 'Guild Roll'))
                             + ' '
                             + signed(modifier);
                     } else {
-                        roll.textContent = (entry.label || 'Guild Roll')
+                        roll.textContent = (entry.label || (i18n.guildRoll || 'Guild Roll'))
                             + ' — unavailable';
                         roll.disabled = true;
                     }
                 } else {
-                    roll.textContent = entry.label || 'Free Roll';
+                    roll.textContent = entry.label || (i18n.freeRoll || 'Free Roll');
                 }
 
                 roll.addEventListener('click', function () {
@@ -1017,7 +1019,7 @@
                 remove.className = 'gmrc-guild-quick-roll__remove';
                 remove.setAttribute(
                     'aria-label',
-                    'Remove ' + (entry.label || 'Quick Roll')
+                    'Remove ' + (entry.label || (i18n.quickRoll || 'Quick Roll'))
                 );
                 remove.textContent = '×';
                 remove.addEventListener('click', function () {
@@ -1124,7 +1126,7 @@
 
             situationalSummary.textContent = parts.length > 0
                 ? parts.join(' ') + ' · next roll only'
-                : 'Next roll only';
+                : (i18n.nextRollOnly || 'Next roll only');
         };
 
         const resetSituational = function () {
@@ -1145,31 +1147,31 @@
 
         const readableKind = function (kind) {
             const labels = {
-                'ability-check': 'Ability Check',
-                'skill-check': 'Skill Check',
-                'saving-throw': 'Saving Throw',
-                'initiative': 'Initiative',
-                'attack': 'Weapon Attack',
-                'spell-attack': 'Spell Attack',
-                'damage': 'Damage',
-                'healing': 'Healing',
-                'check': 'D20 Check',
-                'free-roll': 'Free Roll'
+                'ability-check': (i18n.abilityCheck || 'Ability Check'),
+                'skill-check': (i18n.skillCheck || 'Skill Check'),
+                'saving-throw': (i18n.savingThrow || 'Saving Throw'),
+                'initiative': (i18n.initiative || 'Initiative'),
+                'attack': (i18n.weaponAttack || 'Weapon Attack'),
+                'spell-attack': (i18n.spellAttack || 'Spell Attack'),
+                'damage': (i18n.damage || 'Damage'),
+                'healing': (i18n.healing || 'Healing'),
+                'check': (i18n.d20Check || 'D20 Check'),
+                'free-roll': (i18n.freeRoll || 'Free Roll')
             };
 
-            return labels[kind] || 'Guild Roll';
+            return labels[kind] || (i18n.guildRoll || 'Guild Roll');
         };
 
         const readableProficiency = function (proficiency) {
             if (proficiency === 'expertise') {
-                return 'Expertise';
+                return (i18n.expertise || 'Expertise');
             }
 
             if (proficiency === 'proficient') {
-                return 'Proficient';
+                return (i18n.proficient || 'Proficient');
             }
 
-            return 'Untrained';
+            return (i18n.untrained || 'Untrained');
         };
 
         const contextSummary = function (selection) {
@@ -1240,7 +1242,7 @@
                 const meta = document.createElement('small');
 
                 copy.textContent = entry.text;
-                meta.textContent = entry.time || 'This session';
+                meta.textContent = entry.time || (i18n.thisSession || 'This session');
 
                 item.dataset.rollKind = entry.kind || 'roll';
                 item.append(copy, meta);
@@ -1260,7 +1262,7 @@
                 parts.push(
                     recorded.kind === 'attack'
                         ? 'Natural 20. Critical hit. A critical damage action is available.'
-                        : 'Natural 20.'
+                        : (i18n.natural20 || 'Natural 20.')
                 );
             } else if (recorded.reaction === 'natural-1') {
                 parts.push(
@@ -1271,8 +1273,8 @@
             if (recorded.target) {
                 parts.push(
                     recorded.target.resolved
-                        ? 'Target is linked.'
-                        : 'Target is reference only.'
+                        ? (i18n.targetLinked || 'Target is linked.')
+                        : (i18n.targetReferenceOnly || 'Target is reference only.')
                 );
             }
 
@@ -1327,7 +1329,7 @@
             paintHistory();
 
             if (live instanceof HTMLElement) {
-                live.textContent = 'The Dice Ledger has been cleared.';
+                live.textContent = (i18n.ledgerCleared || 'The Dice Ledger has been cleared.');
             }
         };
 
@@ -1419,8 +1421,8 @@
             if (state === 'natural-20') {
                 if (reactionBanner instanceof HTMLElement) {
                     reactionBanner.textContent = kind === 'attack'
-                        ? 'Natural 20 — Critical Hit!'
-                        : 'Natural 20!';
+                        ? (i18n.natural20CriticalBanner || 'Natural 20 — Critical Hit!')
+                        : (i18n.natural20Banner || 'Natural 20!');
                 }
 
                 for (let index = 0; index < 28; index += 1) {
@@ -1428,18 +1430,18 @@
                 }
 
                 return kind === 'attack'
-                    ? 'Natural 20. Critical hit.'
-                    : 'Natural 20.';
+                    ? (i18n.natural20Critical || 'Natural 20. Critical hit.')
+                    : (i18n.natural20 || 'Natural 20.');
             }
 
             if (reactionBanner instanceof HTMLElement) {
-                reactionBanner.textContent = 'Natural 1 — Oh dear.';
+                reactionBanner.textContent = (i18n.natural1Banner || 'Natural 1 — Oh dear.');
             }
 
             // One. Lonely. Piece. Of. Confetti.
             addConfettiPiece(0, true);
 
-            return 'Natural 1.';
+            return (i18n.natural1 || 'Natural 1.');
         };
 
         const makeDie = function (value, sides, kept) {
@@ -1615,7 +1617,7 @@
             tray.classList.add('is-open');
 
             if (label instanceof HTMLElement) {
-                label.textContent = 'Quick Rolls';
+                label.textContent = (i18n.quickRolls || 'Quick Rolls');
             }
 
             if (modifierNode instanceof HTMLElement) {
@@ -1702,8 +1704,8 @@
 
             if (modeNode instanceof HTMLElement) {
                 modeNode.textContent = isHealing
-                    ? 'Healing Roll'
-                    : 'Damage Roll';
+                    ? (i18n.healingRoll || 'Healing Roll')
+                    : (i18n.damageRoll || 'Damage Roll');
             }
 
             if (mathNode instanceof HTMLElement) {
@@ -1776,10 +1778,10 @@
                 + adjustment.total;
             const adjustmentText = situationalText(adjustment);
             const modeLabel = mode === 'advantage'
-                ? 'Advantage'
+                ? (i18n.advantage || 'Advantage')
                 : mode === 'disadvantage'
-                    ? 'Disadvantage'
-                    : 'Normal Roll';
+                    ? (i18n.disadvantage || 'Disadvantage')
+                    : (i18n.normalRoll || 'Normal Roll');
 
             paintDice(rolled.dice, 20, rolled.keptIndex);
             paintSituationalDie(adjustment);
@@ -1821,8 +1823,8 @@
             if (aubyNode instanceof HTMLElement) {
                 if (rolled.natural === 20) {
                     aubyNode.textContent = selection.kind === 'attack'
-                        ? '“Critical hit! Double the weapon dice!” — Auby'
-                        : '“I definitely witnessed that.” — Auby';
+                        ? (i18n.criticalAuby || '“Critical hit! Double the weapon dice!” — Auby')
+                        : (i18n.witnessedAuby || '“I definitely witnessed that.” — Auby');
                     aubyNode.hidden = false;
 
                     if (selection.kind === 'attack') {
@@ -1832,7 +1834,7 @@
                         );
                     }
                 } else if (rolled.natural === 1) {
-                    aubyNode.textContent = '“The Guild has elected not to record that one.” — Auby';
+                    aubyNode.textContent = (i18n.naturalOneAuby || '“The Guild has elected not to record that one.” — Auby');
                     aubyNode.hidden = false;
                 } else {
                     hideAuby();
@@ -1915,7 +1917,7 @@
             }
 
             if (modeNode instanceof HTMLElement) {
-                modeNode.textContent = 'Critical Damage';
+                modeNode.textContent = (i18n.criticalDamage || 'Critical Damage');
             }
 
             if (mathNode instanceof HTMLElement) {
@@ -2065,7 +2067,7 @@
                 : '';
 
             if (label instanceof HTMLElement) {
-                label.textContent = 'Guild Free Roll';
+                label.textContent = (i18n.guildFreeRoll || 'Guild Free Roll');
             }
 
             paintContext({
@@ -2106,10 +2108,10 @@
                 && aubyNode instanceof HTMLElement
             ) {
                 if (values[0] === 20) {
-                    aubyNode.textContent = '“I definitely witnessed that.” — Auby';
+                    aubyNode.textContent = (i18n.witnessedAuby || '“I definitely witnessed that.” — Auby');
                     aubyNode.hidden = false;
                 } else if (values[0] === 1) {
-                    aubyNode.textContent = '“The Guild has elected not to record that one.” — Auby';
+                    aubyNode.textContent = (i18n.naturalOneAuby || '“The Guild has elected not to record that one.” — Auby');
                     aubyNode.hidden = false;
                 }
             }

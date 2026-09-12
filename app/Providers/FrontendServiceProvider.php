@@ -1377,6 +1377,19 @@ class FrontendServiceProvider extends ServiceProvider
             true
         );
 
+        wp_localize_script(
+            'gmrc-dice-of-destiny',
+            'gmrcDiceOfDestinyI18n',
+            [
+                'rolled' => __('rolled', 'great-marketrealm-companion'),
+                'forATotalOf' => __('for a total of', 'great-marketrealm-companion'),
+                'selected' => __('Dice of Destiny selected. Roll 3d6 for each ability.', 'great-marketrealm-companion'),
+                'standardArraySelected' => __('Standard Guild Array selected. Assign each score exactly once.', 'great-marketrealm-companion'),
+                'allAbilitiesRolled' => __('All six abilities have been rolled.', 'great-marketrealm-companion'),
+                'rollAllFirst' => __('Roll all six abilities before continuing.', 'great-marketrealm-companion'),
+            ]
+        );
+
         $arcanePantryScriptPath =
             GMRC_PATH
             . 'assets/js/modules/characters/'
@@ -1411,6 +1424,15 @@ class FrontendServiceProvider extends ServiceProvider
             true
         );
 
+        wp_localize_script(
+            'gmrc-adventuring-sheet',
+            'gmrcAdventuringSheetI18n',
+            [
+                'on' => __('On', 'great-marketrealm-companion'),
+                'off' => __('Off', 'great-marketrealm-companion'),
+            ]
+        );
+
         $printableSheetScriptPath =
             GMRC_PATH
             . 'assets/js/modules/characters/'
@@ -1428,6 +1450,16 @@ class FrontendServiceProvider extends ServiceProvider
             true
         );
 
+        wp_localize_script(
+            'gmrc-printable-sheet',
+            'gmrcPrintableSheetI18n',
+            [
+                'sheetTitle' => __('Great MarketRealm Character Sheet', 'great-marketrealm-companion'),
+                /* translators: %s: character name. */
+                'namedSheetTitle' => __('%s - Great MarketRealm Character Sheet', 'great-marketrealm-companion'),
+            ]
+        );
+
         $guildDiceScriptPath =
             GMRC_PATH
             . 'assets/js/modules/characters/'
@@ -1443,6 +1475,61 @@ class FrontendServiceProvider extends ServiceProvider
                 ? (string) filemtime($guildDiceScriptPath)
                 : GMRC_VERSION,
             true
+        );
+
+        wp_localize_script(
+            'gmrc-guild-dice',
+            'gmrcGuildDiceI18n',
+            [
+                'adventurer' => __('Adventurer', 'great-marketrealm-companion'),
+                'd20Roll' => __('D20 Roll', 'great-marketrealm-companion'),
+                'guildRoll' => __('Guild Roll', 'great-marketrealm-companion'),
+                'freeRoll' => __('Free Roll', 'great-marketrealm-companion'),
+                'target' => __('Target', 'great-marketrealm-companion'),
+                'self' => __('Self', 'great-marketrealm-companion'),
+                'ally' => __('Ally', 'great-marketrealm-companion'),
+                'playerCharacter' => __('Player Character', 'great-marketrealm-companion'),
+                'npc' => __('NPC', 'great-marketrealm-companion'),
+                'hostileCreature' => __('Hostile Creature', 'great-marketrealm-companion'),
+                'noTargetSelected' => __('No target selected', 'great-marketrealm-companion'),
+                'healing' => __('Healing', 'great-marketrealm-companion'),
+                'damage' => __('Damage', 'great-marketrealm-companion'),
+                'removeQuickRoll' => __('Remove from Quick Rolls', 'great-marketrealm-companion'),
+                'addQuickRoll' => __('Add to Quick Rolls', 'great-marketrealm-companion'),
+                'quickRoll' => __('Quick Roll', 'great-marketrealm-companion'),
+                'quickRolls' => __('Quick Rolls', 'great-marketrealm-companion'),
+                'abilityCheck' => __('Ability Check', 'great-marketrealm-companion'),
+                'skillCheck' => __('Skill Check', 'great-marketrealm-companion'),
+                'savingThrow' => __('Saving Throw', 'great-marketrealm-companion'),
+                'initiative' => __('Initiative', 'great-marketrealm-companion'),
+                'weaponAttack' => __('Weapon Attack', 'great-marketrealm-companion'),
+                'spellAttack' => __('Spell Attack', 'great-marketrealm-companion'),
+                'healingRoll' => __('Healing Roll', 'great-marketrealm-companion'),
+                'damageRoll' => __('Damage Roll', 'great-marketrealm-companion'),
+                'd20Check' => __('D20 Check', 'great-marketrealm-companion'),
+                'expertise' => __('Expertise', 'great-marketrealm-companion'),
+                'proficient' => __('Proficient', 'great-marketrealm-companion'),
+                'untrained' => __('Untrained', 'great-marketrealm-companion'),
+                'thisSession' => __('This session', 'great-marketrealm-companion'),
+                'advantage' => __('Advantage', 'great-marketrealm-companion'),
+                'disadvantage' => __('Disadvantage', 'great-marketrealm-companion'),
+                'normalRoll' => __('Normal Roll', 'great-marketrealm-companion'),
+                'criticalDamage' => __('Critical Damage', 'great-marketrealm-companion'),
+                'guildFreeRoll' => __('Guild Free Roll', 'great-marketrealm-companion'),
+                'natural20' => __('Natural 20.', 'great-marketrealm-companion'),
+                'natural20Critical' => __('Natural 20. Critical hit.', 'great-marketrealm-companion'),
+                'natural20Banner' => __('Natural 20!', 'great-marketrealm-companion'),
+                'natural20CriticalBanner' => __('Natural 20 — Critical Hit!', 'great-marketrealm-companion'),
+                'natural1' => __('Natural 1.', 'great-marketrealm-companion'),
+                'natural1Banner' => __('Natural 1 — Oh dear.', 'great-marketrealm-companion'),
+                'ledgerCleared' => __('The Dice Ledger has been cleared.', 'great-marketrealm-companion'),
+                'targetLinked' => __('Target is linked.', 'great-marketrealm-companion'),
+                'targetReferenceOnly' => __('Target is reference only.', 'great-marketrealm-companion'),
+                'nextRollOnly' => __('Next roll only', 'great-marketrealm-companion'),
+                'criticalAuby' => __('“Critical hit! Double the weapon dice!” — Auby', 'great-marketrealm-companion'),
+                'witnessedAuby' => __('“I definitely witnessed that.” — Auby', 'great-marketrealm-companion'),
+                'naturalOneAuby' => __('“The Guild has elected not to record that one.” — Auby', 'great-marketrealm-companion'),
+            ]
         );
 
         $rogueCunningActionsScriptPath =
@@ -1502,6 +1589,18 @@ class FrontendServiceProvider extends ServiceProvider
                 )
                 : GMRC_VERSION,
             true
+        );
+
+        wp_localize_script(
+            'gmrc-complete-registration',
+            'gmrcRegistrationI18n',
+            [
+                'awaitingInscription' => __('Awaiting inscription', 'great-marketrealm-companion'),
+                'awaitingSelection' => __('Awaiting selection', 'great-marketrealm-companion'),
+                'awaitingAssignment' => __('Awaiting assignment', 'great-marketrealm-companion'),
+                'noAdditionalChoices' => __('No additional choices', 'great-marketrealm-companion'),
+                'awaitingBackground' => __('Awaiting background', 'great-marketrealm-companion'),
+            ]
         );
 
         $registrarScriptPath =

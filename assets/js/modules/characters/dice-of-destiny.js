@@ -1,6 +1,8 @@
 (function (window, document) {
     'use strict';
 
+    const i18n = window.gmrcDiceOfDestinyI18n || {};
+
     const STANDARD = [15, 14, 13, 12, 10, 8];
 
     const secureD6 = function () {
@@ -142,7 +144,7 @@
 
             if (live instanceof HTMLElement) {
                 live.textContent = rolled
-                    ? 'Dice of Destiny selected. Roll 3d6 for each ability.'
+                    ? (i18n.selected || 'Dice of Destiny selected. Roll 3d6 for each ability.')
                     : 'Standard Guild Array selected.';
             }
         };

@@ -373,7 +373,7 @@ $charactersUrl = add_query_arg(
                 Characters Kingdom
             </p>
 
-            <h1>Create an adventurer</h1>
+            <h1><?php esc_html_e('Create an adventurer', 'great-marketrealm-companion'); ?></h1>
 
             <p>
                 Begin a new tale by registering an adventurer of the
@@ -539,7 +539,7 @@ $charactersUrl = add_query_arg(
                     First Inscription
                 </p>
 
-                <h2>Name your adventurer</h2>
+                <h2><?php esc_html_e('Name your adventurer', 'great-marketrealm-companion'); ?></h2>
 
                 <p>
                     Every legend begins with a name recorded in the
@@ -573,7 +573,7 @@ $charactersUrl = add_query_arg(
                     Marketrealm Heritage
                 </p>
 
-                <h2>Choose a race</h2>
+                <h2><?php esc_html_e('Choose a race', 'great-marketrealm-companion'); ?></h2>
 
                 <p>
                     Select the people and heritage from which this
@@ -742,7 +742,7 @@ $charactersUrl = add_query_arg(
                                             gmrc-choice-card__detail
                                         "
                                     >
-                                        <strong>Heritage</strong>
+                                        <strong><?php esc_html_e('Heritage', 'great-marketrealm-companion'); ?></strong>
 
                                         <span>
                                             <?php echo esc_html(
@@ -803,16 +803,16 @@ $charactersUrl = add_query_arg(
             <?php endif; ?>
 
             <div class="gmrc-catalogue-dependent" data-catalogue-dependent="heritage" data-heritage-selector>
-                <label for="character-heritage"><strong>Choose a heritage / subtype</strong></label>
+                <label for="character-heritage"><strong><?php esc_html_e('Choose a heritage / subtype', 'great-marketrealm-companion'); ?></strong></label>
                 <select id="character-heritage" name="heritage" data-catalogue-child="heritage">
-                    <option value="">No additional subtype</option>
+                    <option value=""><?php esc_html_e('No additional subtype', 'great-marketrealm-companion'); ?></option>
                     <?php foreach ($catalogueHeritages as $heritage) : ?>
                         <option value="<?php echo esc_attr((string) ($heritage['key'] ?? '')); ?>" data-parent="<?php echo esc_attr((string) ($heritage['parent'] ?? '')); ?>" <?php selected($heritageValue, (string) ($heritage['key'] ?? '')); ?>>
                             <?php echo esc_html((string) ($heritage['name'] ?? '')); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
-                <p>Subtype choices are drawn from the Registrar’s Grand Catalogue.</p>
+                <p><?php esc_html_e('Subtype choices are drawn from the Registrar’s Grand Catalogue.', 'great-marketrealm-companion'); ?></p>
 
                 <div
                     class="gmrc-heritage-preview"
@@ -871,7 +871,7 @@ $charactersUrl = add_query_arg(
                             hidden
                         >
                             <header class="gmrc-heritage-preview__header">
-                                <p class="gmrc-eyebrow">Heritage guidance</p>
+                                <p class="gmrc-eyebrow"><?php esc_html_e('Heritage guidance', 'great-marketrealm-companion'); ?></p>
                                 <h3><?php echo esc_html((string) ($heritage['name'] ?? 'Heritage')); ?></h3>
                             </header>
 
@@ -889,7 +889,7 @@ $charactersUrl = add_query_arg(
 
                             <?php if ($heritageTraits !== []) : ?>
                                 <div class="gmrc-heritage-preview__trait">
-                                    <strong>Heritage traits</strong>
+                                    <strong><?php esc_html_e('Heritage traits', 'great-marketrealm-companion'); ?></strong>
                                     <ul>
                                         <?php foreach ($heritageTraits as $trait) : ?>
                                             <li><?php echo esc_html($trait); ?></li>
@@ -900,7 +900,7 @@ $charactersUrl = add_query_arg(
 
                             <?php if ($mechanicRows !== []) : ?>
                                 <div class="gmrc-heritage-preview__mechanics">
-                                    <h4>From your Heritage</h4>
+                                    <h4><?php esc_html_e('From your Heritage', 'great-marketrealm-companion'); ?></h4>
                                     <dl>
                                         <?php foreach ($mechanicRows as $row) : ?>
                                             <div>
@@ -914,7 +914,7 @@ $charactersUrl = add_query_arg(
 
                             <?php if ($heritageFeatures !== []) : ?>
                                 <div class="gmrc-heritage-preview__features">
-                                    <h4>Core traits</h4>
+                                    <h4><?php esc_html_e('Core traits', 'great-marketrealm-companion'); ?></h4>
                                     <?php foreach ($heritageFeatures as $feature) :
                                         if (! is_array($feature)) { continue; }
                                         $featureName = is_scalar($feature['name'] ?? null) ? trim((string) $feature['name']) : '';
@@ -931,7 +931,7 @@ $charactersUrl = add_query_arg(
 
                             <?php if ($heritageChoices !== []) : ?>
                                 <div class="gmrc-heritage-preview__choices">
-                                    <h4>Choices</h4>
+                                    <h4><?php esc_html_e('Choices', 'great-marketrealm-companion'); ?></h4>
                                     <?php foreach ($heritageChoices as $choice) :
                                         if (! is_array($choice)) { continue; }
                                         $choiceName = is_scalar($choice['name'] ?? null) ? trim((string) $choice['name']) : 'Proficiency choice';
@@ -973,7 +973,7 @@ $charactersUrl = add_query_arg(
                                     <?php endif; ?>
                                     <?php if ($parentTraits !== []) : ?>
                                         <div class="gmrc-heritage-preview__trait">
-                                            <strong>Shared Folk traits</strong>
+                                            <strong><?php esc_html_e('Shared Folk traits', 'great-marketrealm-companion'); ?></strong>
                                             <ul>
                                                 <?php foreach ($parentTraits as $trait) : ?>
                                                     <li><?php echo esc_html($trait); ?></li>
@@ -993,7 +993,7 @@ $charactersUrl = add_query_arg(
                                         </div>
                                     <?php endforeach; ?>
                                     <?php if ($parentRows === [] && $parentTraits === [] && $parentFeatures === []) : ?>
-                                        <p>Your parent Folk’s published identity and traits still apply in full.</p>
+                                        <p><?php esc_html_e('Your parent Folk’s published identity and traits still apply in full.', 'great-marketrealm-companion'); ?></p>
                                     <?php endif; ?>
                                 </details>
                             <?php endif; ?>
@@ -1009,7 +1009,7 @@ $charactersUrl = add_query_arg(
                     Guild Calling
                 </p>
 
-                <h2>Choose a class</h2>
+                <h2><?php esc_html_e('Choose a class', 'great-marketrealm-companion'); ?></h2>
 
                 <p>
                     Choose the training, calling and adventuring path
@@ -1176,7 +1176,7 @@ $charactersUrl = add_query_arg(
                                             gmrc-choice-card__detail
                                         "
                                     >
-                                        <strong>Hit Die</strong>
+                                        <strong><?php esc_html_e('Hit Die', 'great-marketrealm-companion'); ?></strong>
 
                                         <span>
                                             d<?php echo esc_html(
@@ -1222,23 +1222,23 @@ $charactersUrl = add_query_arg(
             <?php endif; ?>
 
             <div class="gmrc-catalogue-dependent" data-catalogue-dependent="starting-equipment">
-                <label for="character-starting-equipment"><strong>Choose your starting equipment package</strong></label>
+                <label for="character-starting-equipment"><strong><?php esc_html_e('Choose your starting equipment package', 'great-marketrealm-companion'); ?></strong></label>
                 <select id="character-starting-equipment" name="starting_equipment_package" data-catalogue-child="starting-equipment" required>
-                    <option value="">Choose a Calling first</option>
+                    <option value=""><?php esc_html_e('Choose a Calling first', 'great-marketrealm-companion'); ?></option>
                     <?php foreach ($startingEquipmentPackages as $package) : ?>
                         <option value="<?php echo esc_attr((string) ($package['id'] ?? '')); ?>" data-parent="<?php echo esc_attr((string) ($package['class'] ?? '')); ?>" <?php selected($startingEquipmentValue, (string) ($package['id'] ?? '')); ?>>
                             <?php echo esc_html((string) ($package['label'] ?? 'Starting kit')); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
-                <p>Your selected kit is copied into the Character Inventory when the adventurer is certified. Later Steward changes do not rewrite existing inventories.</p>
+                <p><?php esc_html_e('Your selected kit is copied into the Character Inventory when the adventurer is certified. Later Steward changes do not rewrite existing inventories.', 'great-marketrealm-companion'); ?></p>
                 <?php if ($startingEquipmentError !== null) : ?><p class="gmrc-form-error" role="alert"><?php echo esc_html($startingEquipmentError); ?></p><?php endif; ?>
             </div>
 
             <div class="gmrc-catalogue-dependent" data-catalogue-dependent="subclass">
-                <label for="character-subclass"><strong>Future path / subclass</strong></label>
+                <label for="character-subclass"><strong><?php esc_html_e('Future path / subclass', 'great-marketrealm-companion'); ?></strong></label>
                 <select id="character-subclass" name="subclass" data-catalogue-child="subclass">
-                    <option value="">Choose later / no subclass yet</option>
+                    <option value=""><?php esc_html_e('Choose later / no subclass yet', 'great-marketrealm-companion'); ?></option>
                     <?php foreach ($catalogueSubclasses as $subclass) : ?>
                         <option value="<?php echo esc_attr((string) ($subclass['key'] ?? '')); ?>" data-parent="<?php echo esc_attr((string) ($subclass['parent'] ?? '')); ?>" <?php selected($subclassValue, (string) ($subclass['key'] ?? '')); ?>>
                             <?php echo esc_html((string) ($subclass['name'] ?? '')); ?>
@@ -1362,7 +1362,7 @@ $charactersUrl = add_query_arg(
                                     ) !== ''
                                 ) : ?>
                                     <div>
-                                        <strong>How it plays</strong>
+                                        <strong><?php esc_html_e('How it plays', 'great-marketrealm-companion'); ?></strong>
                                         <p>
                                             <?php echo esc_html(
                                                 (string) $preview['playstyle']
@@ -1380,7 +1380,7 @@ $charactersUrl = add_query_arg(
                                     ) !== ''
                                 ) : ?>
                                     <div>
-                                        <strong>Best for</strong>
+                                        <strong><?php esc_html_e('Best for', 'great-marketrealm-companion'); ?></strong>
                                         <p>
                                             <?php echo esc_html(
                                                 (string) $preview['best_for']
@@ -1392,7 +1392,7 @@ $charactersUrl = add_query_arg(
 
                             <?php if ($giftPreview !== []) : ?>
                                 <div class="gmrc-subclass-preview__gifts">
-                                    <strong>Future gifts</strong>
+                                    <strong><?php esc_html_e('Future gifts', 'great-marketrealm-companion'); ?></strong>
                                     <ul>
                                         <?php foreach (
                                             $giftPreview
@@ -1446,12 +1446,12 @@ $charactersUrl = add_query_arg(
 
         <section class="gmrc-form-section gmrc-registration-stage" data-registration-stage="history">
             <header class="gmrc-form-section__header">
-                <p class="gmrc-eyebrow">Personal History</p>
-                <h2>Choose a background</h2>
-                <p>Record the skills, languages and practical training gained before adventuring.</p>
+                <p class="gmrc-eyebrow"><?php esc_html_e('Personal History', 'great-marketrealm-companion'); ?></p>
+                <h2><?php esc_html_e('Choose a background', 'great-marketrealm-companion'); ?></h2>
+                <p><?php esc_html_e('Record the skills, languages and practical training gained before adventuring.', 'great-marketrealm-companion'); ?></p>
             </header>
             <fieldset class="gmrc-background-selector" data-registration-backgrounds>
-                <legend class="screen-reader-text">Character background</legend>
+                <legend class="screen-reader-text"><?php esc_html_e('Character background', 'great-marketrealm-companion'); ?></legend>
                 <div class="gmrc-background-grid">
                     <?php foreach ($backgroundOptions as $background) : ?>
                         <?php
@@ -1543,11 +1543,11 @@ $charactersUrl = add_query_arg(
                             <span class="gmrc-background-option__summary"><?php echo esc_html(implode(', ', $skills)); ?></span>
                             <span class="gmrc-background-option__details" data-background-details <?php echo $isSelected ? '' : 'hidden'; ?>>
                                 <span class="gmrc-background-option__detail">
-                                    <strong>Language choices</strong>
+                                    <strong><?php esc_html_e('Language choices', 'great-marketrealm-companion'); ?></strong>
                                     <span><?php echo esc_html((string) $background->languageChoices()); ?></span>
                                 </span>
                                 <span class="gmrc-background-option__detail">
-                                    <strong>Practical training</strong>
+                                    <strong><?php esc_html_e('Practical training', 'great-marketrealm-companion'); ?></strong>
                                     <span>
                                         <?php
                                         $toolLabels = [];
@@ -1578,8 +1578,8 @@ $charactersUrl = add_query_arg(
     data-ability-method="<?php echo esc_attr($abilityMethodValue); ?>"
 >
     <header class="gmrc-form-section__header">
-        <p class="gmrc-eyebrow">Adventuring Measures</p>
-        <h2>Choose how fate measures your adventurer</h2>
+        <p class="gmrc-eyebrow"><?php esc_html_e('Adventuring Measures', 'great-marketrealm-companion'); ?></p>
+        <h2><?php esc_html_e('Choose how fate measures your adventurer', 'great-marketrealm-companion'); ?></h2>
         <p>
             Assign the reliable Standard Guild Array or let the
             Guild Dice decide each ability with 3d6.
@@ -1597,8 +1597,8 @@ $charactersUrl = add_query_arg(
                 <?php checked($abilityMethodValue, 'standard'); ?>>
             <span class="gmrc-destiny-method__seal" aria-hidden="true">✦</span>
             <span>
-                <strong>Standard Guild Array</strong>
-                <small>Assign 15, 14, 13, 12, 10 and 8 exactly once.</small>
+                <strong><?php esc_html_e('Standard Guild Array', 'great-marketrealm-companion'); ?></strong>
+                <small><?php esc_html_e('Assign 15, 14, 13, 12, 10 and 8 exactly once.', 'great-marketrealm-companion'); ?></small>
             </span>
         </label>
 
@@ -1608,8 +1608,8 @@ $charactersUrl = add_query_arg(
                 <?php checked($abilityMethodValue, 'rolled'); ?>>
             <span class="gmrc-destiny-method__seal" aria-hidden="true">🎲</span>
             <span>
-                <strong>The Dice of Destiny</strong>
-                <small>Roll three six-sided dice and keep their total for each ability.</small>
+                <strong><?php esc_html_e('The Dice of Destiny', 'great-marketrealm-companion'); ?></strong>
+                <small><?php esc_html_e('Roll three six-sided dice and keep their total for each ability.', 'great-marketrealm-companion'); ?></small>
             </span>
         </label>
     </fieldset>
@@ -1617,9 +1617,9 @@ $charactersUrl = add_query_arg(
     <div class="gmrc-destiny-toolbar" data-destiny-toolbar
         <?php echo $abilityMethodValue === 'rolled' ? '' : 'hidden'; ?>>
         <div>
-            <p class="gmrc-eyebrow">Auby’s Questionable Mathematics</p>
-            <strong>Roll all six abilities</strong>
-            <small>Six sets of 3d6. No rerolling the Registrar when he writes down a 5.</small>
+            <p class="gmrc-eyebrow"><?php esc_html_e('Auby’s Questionable Mathematics', 'great-marketrealm-companion'); ?></p>
+            <strong><?php esc_html_e('Roll all six abilities', 'great-marketrealm-companion'); ?></strong>
+            <small><?php esc_html_e('Six sets of 3d6. No rerolling the Registrar when he writes down a 5.', 'great-marketrealm-companion'); ?></small>
         </div>
         <button class="gmrc-destiny-roll-all" type="button" data-destiny-roll-all>
             <span aria-hidden="true">🎲</span>
@@ -1679,7 +1679,7 @@ $charactersUrl = add_query_arg(
                     <button class="gmrc-destiny-roll-button" type="button" data-destiny-roll>
                         Roll 3d6
                     </button>
-                    <p class="gmrc-destiny-math" data-destiny-math>Awaiting fate</p>
+                    <p class="gmrc-destiny-math" data-destiny-math><?php esc_html_e('Awaiting fate', 'great-marketrealm-companion'); ?></p>
                 </div>
             </article>
         <?php endforeach; ?>
@@ -1695,14 +1695,14 @@ $charactersUrl = add_query_arg(
 
         <section class="gmrc-form-section gmrc-registration-stage" data-registration-stage="proficiencies" data-registration-choices>
             <header class="gmrc-form-section__header">
-                <p class="gmrc-eyebrow">Registrar’s Choices</p>
-                <h2>Complete your proficiencies</h2>
-                <p>Only choices required by the selected background are revealed here.</p>
+                <p class="gmrc-eyebrow"><?php esc_html_e('Registrar’s Choices', 'great-marketrealm-companion'); ?></p>
+                <h2><?php esc_html_e('Complete your proficiencies', 'great-marketrealm-companion'); ?></h2>
+                <p><?php esc_html_e('Only choices required by the selected background are revealed here.', 'great-marketrealm-companion'); ?></p>
             </header>
             <div class="gmrc-registration-choice" data-language-slot="1" hidden>
-                <label for="registration-language-1">First language</label>
+                <label for="registration-language-1"><?php esc_html_e('First language', 'great-marketrealm-companion'); ?></label>
                 <select id="registration-language-1" name="language_1">
-                    <option value="">Choose a language</option>
+                    <option value=""><?php esc_html_e('Choose a language', 'great-marketrealm-companion'); ?></option>
                     <?php foreach ($languageOptions as $language) : ?>
                         <option value="<?php echo esc_attr($language->value()); ?>" <?php selected($languageOneValue, $language->value()); ?>>
                             <?php echo esc_html($language->label()); ?>
@@ -1712,9 +1712,9 @@ $charactersUrl = add_query_arg(
                 <?php if ($languageOneError !== null) : ?><p class="gmrc-form-error" role="alert"><?php echo esc_html($languageOneError); ?></p><?php endif; ?>
             </div>
             <div class="gmrc-registration-choice" data-language-slot="2" hidden>
-                <label for="registration-language-2">Second language</label>
+                <label for="registration-language-2"><?php esc_html_e('Second language', 'great-marketrealm-companion'); ?></label>
                 <select id="registration-language-2" name="language_2">
-                    <option value="">Choose a different language</option>
+                    <option value=""><?php esc_html_e('Choose a different language', 'great-marketrealm-companion'); ?></option>
                     <?php foreach ($languageOptions as $language) : ?>
                         <option value="<?php echo esc_attr($language->value()); ?>" <?php selected($languageTwoValue, $language->value()); ?>>
                             <?php echo esc_html($language->label()); ?>
@@ -1724,9 +1724,9 @@ $charactersUrl = add_query_arg(
                 <?php if ($languageTwoError !== null) : ?><p class="gmrc-form-error" role="alert"><?php echo esc_html($languageTwoError); ?></p><?php endif; ?>
             </div>
             <div class="gmrc-registration-choice" data-tool-choice="artisan" hidden>
-                <label for="registration-artisan-tool">Artisan’s Tool</label>
+                <label for="registration-artisan-tool"><?php esc_html_e('Artisan’s Tool', 'great-marketrealm-companion'); ?></label>
                 <select id="registration-artisan-tool" name="artisan_tool">
-                    <option value="">Choose an artisan’s tool</option>
+                    <option value=""><?php esc_html_e('Choose an artisan’s tool', 'great-marketrealm-companion'); ?></option>
                     <?php foreach ($artisanToolOptions as $tool) : ?>
                         <option value="<?php echo esc_attr($tool->value()); ?>" <?php selected($artisanToolValue, $tool->value()); ?>>
                             <?php echo esc_html($tool->label()); ?>
@@ -1736,9 +1736,9 @@ $charactersUrl = add_query_arg(
                 <?php if ($artisanToolError !== null) : ?><p class="gmrc-form-error" role="alert"><?php echo esc_html($artisanToolError); ?></p><?php endif; ?>
             </div>
             <div class="gmrc-registration-choice" data-tool-choice="gaming" hidden>
-                <label for="registration-gaming-set">Gaming Set</label>
+                <label for="registration-gaming-set"><?php esc_html_e('Gaming Set', 'great-marketrealm-companion'); ?></label>
                 <select id="registration-gaming-set" name="gaming_set">
-                    <option value="">Choose a gaming set</option>
+                    <option value=""><?php esc_html_e('Choose a gaming set', 'great-marketrealm-companion'); ?></option>
                     <?php foreach ($gamingSetOptions as $tool) : ?>
                         <option value="<?php echo esc_attr($tool->value()); ?>" <?php selected($gamingSetValue, $tool->value()); ?>>
                             <?php echo esc_html($tool->label()); ?>
@@ -1796,7 +1796,7 @@ $charactersUrl = add_query_arg(
             The Registrar’s Desk
         </p>
 
-        <h2>The first page of the adventure</h2>
+        <h2><?php esc_html_e('The first page of the adventure', 'great-marketrealm-companion'); ?></h2>
 
         <p>
             New adventurers begin at Level 1 with no experience.
@@ -1919,7 +1919,7 @@ $charactersUrl = add_query_arg(
 
                     <dl class="gmrc-creation-preview__statistics">
                         <div>
-                            <dt>Starting level</dt>
+                            <dt><?php esc_html_e('Starting level', 'great-marketrealm-companion'); ?></dt>
 
                             <dd>
                                 <span class="gmrc-preview-ink">
@@ -1929,7 +1929,7 @@ $charactersUrl = add_query_arg(
                         </div>
 
                         <div>
-                            <dt>Starting experience</dt>
+                            <dt><?php esc_html_e('Starting experience', 'great-marketrealm-companion'); ?></dt>
 
                             <dd>
                                 <span class="gmrc-preview-ink">
@@ -1952,7 +1952,7 @@ $charactersUrl = add_query_arg(
                         </div>
 
                         <div>
-                            <dt>Starting Hit Points</dt>
+                            <dt><?php esc_html_e('Starting Hit Points', 'great-marketrealm-companion'); ?></dt>
 
                             <dd>
                                 <span
@@ -1982,7 +1982,7 @@ $charactersUrl = add_query_arg(
                     </section>
 
                     <section class="gmrc-creation-preview__entry">
-                        <h3>Archive Note</h3>
+                        <h3><?php esc_html_e('Archive Note', 'great-marketrealm-companion'); ?></h3>
 
                         <p
                             class="gmrc-preview-ink"
@@ -2020,18 +2020,18 @@ $charactersUrl = add_query_arg(
 
         <section class="gmrc-registration-review" aria-labelledby="gmrc-registration-review-title" data-registration-review>
             <span class="gmrc-registration-review__tape" aria-hidden="true"></span>
-            <p class="gmrc-eyebrow">Final Registrar Review</p>
-            <h2 id="gmrc-registration-review-title">Review the Guild Record</h2>
-            <p>Auby has checked the ink. The Registrar is waiting for your seal.</p>
+            <p class="gmrc-eyebrow"><?php esc_html_e('Final Registrar Review', 'great-marketrealm-companion'); ?></p>
+            <h2 id="gmrc-registration-review-title"><?php esc_html_e('Review the Guild Record', 'great-marketrealm-companion'); ?></h2>
+            <p><?php esc_html_e('Auby has checked the ink. The Registrar is waiting for your seal.', 'great-marketrealm-companion'); ?></p>
             <dl class="gmrc-registration-review__record">
-                <div><dt>Adventurer</dt><dd data-registration-review-name>Awaiting inscription</dd></div>
-                <div><dt>Heritage</dt><dd data-registration-review-race>Awaiting selection</dd></div>
-                <div><dt>Calling</dt><dd data-registration-review-class>Awaiting selection</dd></div>
-                <div><dt>Background</dt><dd data-registration-review-background>Awaiting selection</dd></div>
-                <div><dt>Guild Array</dt><dd data-registration-review-abilities>Awaiting assignment</dd></div>
-                <div><dt>Registrar choices</dt><dd data-registration-review-choices>Awaiting background</dd></div>
+                <div><dt><?php esc_html_e('Adventurer', 'great-marketrealm-companion'); ?></dt><dd data-registration-review-name><?php esc_html_e('Awaiting inscription', 'great-marketrealm-companion'); ?></dd></div>
+                <div><dt><?php esc_html_e('Heritage', 'great-marketrealm-companion'); ?></dt><dd data-registration-review-race><?php esc_html_e('Awaiting selection', 'great-marketrealm-companion'); ?></dd></div>
+                <div><dt><?php esc_html_e('Calling', 'great-marketrealm-companion'); ?></dt><dd data-registration-review-class><?php esc_html_e('Awaiting selection', 'great-marketrealm-companion'); ?></dd></div>
+                <div><dt><?php esc_html_e('Background', 'great-marketrealm-companion'); ?></dt><dd data-registration-review-background><?php esc_html_e('Awaiting selection', 'great-marketrealm-companion'); ?></dd></div>
+                <div><dt><?php esc_html_e('Guild Array', 'great-marketrealm-companion'); ?></dt><dd data-registration-review-abilities><?php esc_html_e('Awaiting assignment', 'great-marketrealm-companion'); ?></dd></div>
+                <div><dt><?php esc_html_e('Registrar choices', 'great-marketrealm-companion'); ?></dt><dd data-registration-review-choices><?php esc_html_e('Awaiting background', 'great-marketrealm-companion'); ?></dd></div>
             </dl>
-            <p class="gmrc-registration-review__signature">Ready for the Guild seal.<span>— Auby</span></p>
+            <p class="gmrc-registration-review__signature"><?php esc_html_e('Ready for the Guild seal.', 'great-marketrealm-companion'); ?><span>— Auby</span></p>
         </section>
 
         <div class="gmrc-form-actions">

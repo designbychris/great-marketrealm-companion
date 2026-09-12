@@ -1,6 +1,8 @@
 (function (window, document) {
     'use strict';
 
+    const i18n = window.gmrcRegistrationI18n || {};
+
     const labels = {
         strength: 'STR',
         dexterity: 'DEX',
@@ -143,28 +145,28 @@
                 '[data-registration-review-name]',
                 name instanceof HTMLInputElement && name.value.trim()
                     ? name.value.trim()
-                    : 'Awaiting inscription'
+                    : (i18n.awaitingInscription || 'Awaiting inscription')
             );
 
             set(
                 '[data-registration-review-race]',
                 race instanceof HTMLInputElement
                     ? (race.dataset.raceLabel || race.value)
-                    : 'Awaiting selection'
+                    : (i18n.awaitingSelection || 'Awaiting selection')
             );
 
             set(
                 '[data-registration-review-class]',
                 characterClass instanceof HTMLInputElement
                     ? (characterClass.dataset.classLabel || characterClass.value)
-                    : 'Awaiting selection'
+                    : (i18n.awaitingSelection || 'Awaiting selection')
             );
 
             set(
                 '[data-registration-review-background]',
                 background
                     ? (background.dataset.backgroundLabel || background.value)
-                    : 'Awaiting selection'
+                    : (i18n.awaitingSelection || 'Awaiting selection')
             );
 
             const abilities = Array.from(
@@ -183,7 +185,7 @@
                 '[data-registration-review-abilities]',
                 abilities.length
                     ? abilities.join(' · ')
-                    : 'Awaiting assignment'
+                    : (i18n.awaitingAssignment || 'Awaiting assignment')
             );
 
             const choices = [];
@@ -227,8 +229,8 @@
                     ? choices.join(' · ')
                     : (
                         background
-                            ? 'No additional choices'
-                            : 'Awaiting background'
+                            ? (i18n.noAdditionalChoices || 'No additional choices')
+                            : (i18n.awaitingBackground || 'Awaiting background')
                     )
             );
         };

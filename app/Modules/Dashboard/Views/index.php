@@ -63,15 +63,15 @@ $rooms = is_array($rooms ?? null) ? $rooms : [];
         aria-labelledby="gmrc-guild-hall-directory-title"
     >
         <header class="gmrc-guild-hall-directory__heading">
-            <p class="gmrc-guild-hall-room__eyebrow">Your Companion map</p>
-            <h2 id="gmrc-guild-hall-directory-title">Choose a Guild Hall room</h2>
+            <p class="gmrc-guild-hall-room__eyebrow"><?php esc_html_e('Your Companion map', 'great-marketrealm-companion'); ?></p>
+            <h2 id="gmrc-guild-hall-directory-title"><?php esc_html_e('Choose a Guild Hall room', 'great-marketrealm-companion'); ?></h2>
             <p>
                 Open the records available to your Guild calling. Every room on
                 this directory now leads to a working Companion record.
             </p>
         </header>
 
-        <nav class="gmrc-guild-hall__rooms" aria-label="Guild Hall directory">
+        <nav class="gmrc-guild-hall__rooms" aria-label="<?php echo esc_attr__('Guild Hall directory', 'great-marketrealm-companion'); ?>">
             <?php foreach ($rooms as $room) : ?>
                 <?php
                 $planned = ! empty($room['planned']);
@@ -95,7 +95,7 @@ $rooms = is_array($rooms ?? null) ? $rooms : [];
                     <p><?php echo esc_html((string) ($room['description'] ?? '')); ?></p>
 
                     <?php if ($planned) : ?>
-                        <span class="gmrc-guild-hall-room__planned" aria-label="Planned feature">
+                        <span class="gmrc-guild-hall-room__planned" aria-label="<?php echo esc_attr__('Planned feature', 'great-marketrealm-companion'); ?>">
                             Planned
                         </span>
                     <?php elseif ($actions !== []) : ?>

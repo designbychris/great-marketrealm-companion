@@ -337,7 +337,7 @@ foreach ($selectedTools as $selectedTool) {
                     Registered Identity
                 </p>
 
-                <h2>Character details</h2>
+                <h2><?php esc_html_e('Character details', 'great-marketrealm-companion'); ?></h2>
             </header>
 
             <div class="gmrc-form-field">
@@ -412,8 +412,8 @@ foreach ($selectedTools as $selectedTool) {
 
         <section class="gmrc-form-section gmrc-private-studio" aria-labelledby="gmrc-private-studio-title">
             <header class="gmrc-private-studio__header">
-                <p class="gmrc-eyebrow">Guild Illuminator</p>
-                <h2 id="gmrc-private-studio-title">The Illuminator’s Private Studio</h2>
+                <p class="gmrc-eyebrow"><?php esc_html_e('Guild Illuminator', 'great-marketrealm-companion'); ?></p>
+                <h2 id="gmrc-private-studio-title"><?php esc_html_e('The Illuminator’s Private Studio', 'great-marketrealm-companion'); ?></h2>
                 <p>
                     Adjust the generated Guild portrait beneath this
                     adventurer’s record, then save the page when it is ready.
@@ -444,7 +444,7 @@ foreach ($selectedTools as $selectedTool) {
             <aside class="gmrc-private-studio__note">
                 <span aria-hidden="true">✦</span>
                 <p>
-                    <strong>Custom uploaded portraits stay untouched.</strong>
+                    <strong><?php esc_html_e('Custom uploaded portraits stay untouched.', 'great-marketrealm-companion'); ?></strong>
                     These controls amend the generated Guild illustration
                     underneath, ready for whenever it is restored.
                 </p>
@@ -457,7 +457,7 @@ foreach ($selectedTools as $selectedTool) {
                     Personal History
                 </p>
 
-                <h2>Choose a background</h2>
+                <h2><?php esc_html_e('Choose a background', 'great-marketrealm-companion'); ?></h2>
 
                 <p>
                     A background determines skill proficiencies,
@@ -620,7 +620,7 @@ foreach ($selectedTools as $selectedTool) {
                                         gmrc-background-option__detail
                                     "
                                 >
-                                    <strong>Skill proficiencies</strong>
+                                    <strong><?php esc_html_e('Skill proficiencies', 'great-marketrealm-companion'); ?></strong>
 
                                     <span>
                                         <?php echo esc_html(
@@ -639,7 +639,7 @@ foreach ($selectedTools as $selectedTool) {
                                         gmrc-background-option__detail
                                     "
                                 >
-                                    <strong>Language choices</strong>
+                                    <strong><?php esc_html_e('Language choices', 'great-marketrealm-companion'); ?></strong>
 
                                     <span>
                                         <?php echo esc_html(
@@ -654,7 +654,7 @@ foreach ($selectedTools as $selectedTool) {
                                         gmrc-background-option__detail
                                     "
                                 >
-                                    <strong>Tool proficiencies</strong>
+                                    <strong><?php esc_html_e('Tool proficiencies', 'great-marketrealm-companion'); ?></strong>
 
                                     <span>
                                         <?php echo esc_html(
@@ -696,7 +696,7 @@ foreach ($selectedTools as $selectedTool) {
             class="gmrc-form-notice"
             data-background-preview
         >
-            <h2>Selected background benefits</h2>
+            <h2><?php esc_html_e('Selected background benefits', 'great-marketrealm-companion'); ?></h2>
 
             <?php foreach ($backgroundOptions as $background) : ?>
                 <?php
@@ -750,7 +750,7 @@ foreach ($selectedTools as $selectedTool) {
 
                     <dl class="gmrc-definition-list">
                         <div>
-                            <dt>Skill proficiencies</dt>
+                            <dt><?php esc_html_e('Skill proficiencies', 'great-marketrealm-companion'); ?></dt>
 
                             <dd>
                                 <?php echo esc_html(
@@ -762,7 +762,7 @@ foreach ($selectedTools as $selectedTool) {
                         </div>
 
                         <div>
-                            <dt>Language choices</dt>
+                            <dt><?php esc_html_e('Language choices', 'great-marketrealm-companion'); ?></dt>
 
                             <dd>
                                 <?php echo esc_html(
@@ -773,7 +773,7 @@ foreach ($selectedTools as $selectedTool) {
                         </div>
 
                         <div>
-                            <dt>Tool proficiencies</dt>
+                            <dt><?php esc_html_e('Tool proficiencies', 'great-marketrealm-companion'); ?></dt>
 
                             <dd>
                                 <?php echo esc_html(
@@ -785,7 +785,7 @@ foreach ($selectedTools as $selectedTool) {
                         </div>
                         <?php if ($backgroundReference !== null) : ?>
                             <div>
-                                <dt>Handbook feature</dt>
+                                <dt><?php esc_html_e('Handbook feature', 'great-marketrealm-companion'); ?></dt>
                                 <dd>
                                     <strong>
                                         <?php echo esc_html(
@@ -811,15 +811,15 @@ foreach ($selectedTools as $selectedTool) {
 
         <section class="gmrc-form-section gmrc-registration-stage" data-registration-choices>
             <header class="gmrc-form-section__header">
-                <p class="gmrc-eyebrow">Registrar’s Choices</p>
-                <h2>Complete background choices</h2>
-                <p>Resolve languages or generic tool categories granted by the amended background.</p>
+                <p class="gmrc-eyebrow"><?php esc_html_e('Registrar’s Choices', 'great-marketrealm-companion'); ?></p>
+                <h2><?php esc_html_e('Complete background choices', 'great-marketrealm-companion'); ?></h2>
+                <p><?php esc_html_e('Resolve languages or generic tool categories granted by the amended background.', 'great-marketrealm-companion'); ?></p>
             </header>
 
             <div class="gmrc-registration-choice" data-language-slot="1" hidden>
-                <label for="edit-registration-language-1">First language</label>
+                <label for="edit-registration-language-1"><?php esc_html_e('First language', 'great-marketrealm-companion'); ?></label>
                 <select id="edit-registration-language-1" name="language_1">
-                    <option value="">Choose a language</option>
+                    <option value=""><?php esc_html_e('Choose a language', 'great-marketrealm-companion'); ?></option>
                     <?php foreach ($languageOptions as $language) : ?>
                         <option value="<?php echo esc_attr($language->value()); ?>" <?php selected($languageOneValue, $language->value()); ?>>
                             <?php echo esc_html($language->label()); ?>
@@ -829,9 +829,9 @@ foreach ($selectedTools as $selectedTool) {
             </div>
 
             <div class="gmrc-registration-choice" data-language-slot="2" hidden>
-                <label for="edit-registration-language-2">Second language</label>
+                <label for="edit-registration-language-2"><?php esc_html_e('Second language', 'great-marketrealm-companion'); ?></label>
                 <select id="edit-registration-language-2" name="language_2">
-                    <option value="">Choose a different language</option>
+                    <option value=""><?php esc_html_e('Choose a different language', 'great-marketrealm-companion'); ?></option>
                     <?php foreach ($languageOptions as $language) : ?>
                         <option value="<?php echo esc_attr($language->value()); ?>" <?php selected($languageTwoValue, $language->value()); ?>>
                             <?php echo esc_html($language->label()); ?>
@@ -841,9 +841,9 @@ foreach ($selectedTools as $selectedTool) {
             </div>
 
             <div class="gmrc-registration-choice" data-tool-choice="artisan" hidden>
-                <label for="edit-registration-artisan-tool">Artisan’s Tool</label>
+                <label for="edit-registration-artisan-tool"><?php esc_html_e('Artisan’s Tool', 'great-marketrealm-companion'); ?></label>
                 <select id="edit-registration-artisan-tool" name="artisan_tool">
-                    <option value="">Choose an artisan’s tool</option>
+                    <option value=""><?php esc_html_e('Choose an artisan’s tool', 'great-marketrealm-companion'); ?></option>
                     <?php foreach ($artisanToolOptions as $tool) : ?>
                         <option value="<?php echo esc_attr($tool->value()); ?>" <?php selected($artisanToolValue, $tool->value()); ?>>
                             <?php echo esc_html($tool->label()); ?>
@@ -853,9 +853,9 @@ foreach ($selectedTools as $selectedTool) {
             </div>
 
             <div class="gmrc-registration-choice" data-tool-choice="gaming" hidden>
-                <label for="edit-registration-gaming-set">Gaming Set</label>
+                <label for="edit-registration-gaming-set"><?php esc_html_e('Gaming Set', 'great-marketrealm-companion'); ?></label>
                 <select id="edit-registration-gaming-set" name="gaming_set">
-                    <option value="">Choose a gaming set</option>
+                    <option value=""><?php esc_html_e('Choose a gaming set', 'great-marketrealm-companion'); ?></option>
                     <?php foreach ($gamingSetOptions as $tool) : ?>
                         <option value="<?php echo esc_attr($tool->value()); ?>" <?php selected($gamingSetValue, $tool->value()); ?>>
                             <?php echo esc_html($tool->label()); ?>
@@ -870,11 +870,11 @@ foreach ($selectedTools as $selectedTool) {
         </section>
 
         <aside class="gmrc-form-notice">
-            <h2>Current adventuring record</h2>
+            <h2><?php esc_html_e('Current adventuring record', 'great-marketrealm-companion'); ?></h2>
 
             <dl class="gmrc-definition-list">
                 <div>
-                    <dt>Level</dt>
+                    <dt><?php esc_html_e('Level', 'great-marketrealm-companion'); ?></dt>
 
                     <dd>
                         <?php echo esc_html(
@@ -886,7 +886,7 @@ foreach ($selectedTools as $selectedTool) {
                 </div>
 
                 <div>
-                    <dt>Experience</dt>
+                    <dt><?php esc_html_e('Experience', 'great-marketrealm-companion'); ?></dt>
 
                     <dd>
                         <?php echo esc_html(
@@ -898,7 +898,7 @@ foreach ($selectedTools as $selectedTool) {
                 </div>
 
                 <div>
-                    <dt>Race</dt>
+                    <dt><?php esc_html_e('Race', 'great-marketrealm-companion'); ?></dt>
 
                     <dd>
                         <?php echo esc_html(
@@ -908,7 +908,7 @@ foreach ($selectedTools as $selectedTool) {
                 </div>
 
                 <div>
-                    <dt>Class</dt>
+                    <dt><?php esc_html_e('Class', 'great-marketrealm-companion'); ?></dt>
 
                     <dd>
                         <?php echo esc_html(
@@ -918,7 +918,7 @@ foreach ($selectedTools as $selectedTool) {
                 </div>
 
                 <div>
-                    <dt>Current background</dt>
+                    <dt><?php esc_html_e('Current background', 'great-marketrealm-companion'); ?></dt>
 
                     <dd>
                         <?php echo esc_html(

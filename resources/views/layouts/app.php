@@ -12,7 +12,7 @@ $currentUser = wp_get_current_user();
 
         <nav
             class="gmrc-navigation"
-            aria-label="Companion navigation"
+            aria-label="<?php echo esc_attr__('Companion navigation', 'great-marketrealm-companion'); ?>"
         >
 
             <?php foreach ($navigation ?? [] as $item) : ?>

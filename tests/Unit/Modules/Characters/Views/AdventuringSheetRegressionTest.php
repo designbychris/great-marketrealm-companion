@@ -42,11 +42,11 @@ final class AdventuringSheetRegressionTest extends TestCase
         self::assertStringContainsString('gmrc-adventuring-sheet__portrait-fallback', $view);
         self::assertStringContainsString('Core adventuring measures', $view);
         self::assertStringContainsString('data-vital-measures-form', $view);
-        self::assertStringContainsString('<h2>Attacks</h2>', $view);
-        self::assertStringContainsString('<h2>Spellcasting</h2>', $view);
-        self::assertStringContainsString('<h2>Equipment</h2>', $view);
-        self::assertStringContainsString('<h2>Saving Throws</h2>', $view);
-        self::assertStringContainsString('<h2>Skills</h2>', $view);
+        self::assertStringContainsString("esc_html_e('Attacks', 'great-marketrealm-companion')", $view);
+        self::assertStringContainsString("esc_html_e('Spellcasting', 'great-marketrealm-companion')", $view);
+        self::assertStringContainsString("esc_html_e('Equipment', 'great-marketrealm-companion')", $view);
+        self::assertStringContainsString("esc_html_e('Saving Throws', 'great-marketrealm-companion')", $view);
+        self::assertStringContainsString("esc_html_e('Skills', 'great-marketrealm-companion')", $view);
         self::assertStringContainsString("'gmrc-adventuring-sheet'", $frontend);
         self::assertStringContainsString('grid-template-columns:132px minmax(0,1fr) auto', $css);
         self::assertStringContainsString('@media(max-width:760px)', $css);

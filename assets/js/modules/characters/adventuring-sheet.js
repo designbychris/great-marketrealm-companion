@@ -2,6 +2,7 @@
     'use strict';
 
     const STORAGE_KEY = 'gmrc.adventuringSheet.guildDiceEnabled';
+    const i18n = window.gmrcAdventuringSheetI18n || {};
 
     const readPreference = function () {
         try {
@@ -37,7 +38,7 @@
             toggle.setAttribute('aria-checked', enabled ? 'true' : 'false');
 
             if (state instanceof HTMLElement) {
-                state.textContent = enabled ? 'On' : 'Off';
+                state.textContent = enabled ? (i18n.on || 'On') : (i18n.off || 'Off');
             }
 
             rollButtons.forEach(function (button) {
