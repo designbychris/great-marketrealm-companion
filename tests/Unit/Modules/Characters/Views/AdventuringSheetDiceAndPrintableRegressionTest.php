@@ -60,5 +60,13 @@ final class AdventuringSheetDiceAndPrintableRegressionTest extends TestCase
         self::assertStringContainsString('@page{size:A4 portrait', $css);
         self::assertStringContainsString('@media print', $css);
         self::assertStringContainsString('window.print()', $script);
+        self::assertStringContainsString('data-print-character-name', $view);
+        self::assertStringContainsString('gmrc-printable-sheet__print-brand', $view);
+        self::assertStringContainsString('gmrc-printable-sheet__page-footer', $view);
+        self::assertStringContainsString('document.title = suggestedTitle()', $script);
+        self::assertStringContainsString('gmrc-print-excluded', $script);
+        self::assertStringContainsString('.gmrc-print-mode .gmrc-print-excluded', $css);
+        self::assertStringContainsString('.gmrc-print-block--skills', $css);
+        self::assertStringContainsString('grid-row: auto !important', $css);
     }
 }

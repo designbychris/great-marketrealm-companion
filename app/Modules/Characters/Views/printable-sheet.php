@@ -44,7 +44,14 @@ $customPortraitUrl = $portrait->attachmentUrl();
 $isCustomPortrait = $portrait->isCustom() && is_string($customPortraitUrl) && $customPortraitUrl !== '';
 $generatedPortraitSvg = trim($portrait->svg());
 ?>
-<section class="gmrc-printable-sheet" data-printable-sheet>
+<section class="gmrc-printable-sheet" data-printable-sheet data-print-character-name="<?php echo esc_attr($name); ?>">
+    <header class="gmrc-printable-sheet__print-brand" aria-hidden="true">
+        <div>
+            <strong>The Great MarketRealm Companion</strong>
+            <span>Offline Adventurer Record</span>
+        </div>
+        <img src="<?php echo esc_url(GMRC_URL . 'assets/images/auby/seals/seal-of-approval-one-colour.svg'); ?>" alt="">
+    </header>
     <div class="gmrc-printable-sheet__toolbar" data-print-toolbar>
         <div>
             <p class="gmrc-eyebrow">Offline Character Sheet</p>
@@ -96,6 +103,7 @@ $generatedPortraitSvg = trim($portrait->svg());
             <section class="gmrc-print-block gmrc-print-block--skills"><h2>Skills</h2><ul class="gmrc-print-list"><?php foreach ($skillLabels as $key=>$label): $skill=$skills->get($key); ?><li><span><?php echo $skill->hasExpertise()?'◆':($skill->isProficient()?'●':'○'); ?> <?php echo esc_html($label); ?></span><strong><?php echo esc_html($skill->signed()); ?></strong></li><?php endforeach; ?></ul></section>
             <section class="gmrc-print-block gmrc-print-block--attacks"><h2>Attacks</h2><?php if ($attacks === []): ?><p>—</p><?php else: ?><table><thead><tr><th>Attack</th><th>To Hit</th><th>Damage</th><th>Range</th></tr></thead><tbody><?php foreach ($attacks as $attack): ?><tr><td><?php echo esc_html((string)$attack['label']); ?></td><td><?php echo esc_html(sprintf('%+d',(int)$attack['attack_bonus'])); ?></td><td><?php echo esc_html((string)$attack['damage_die']); ?><?php $dm=(int)$attack['damage_modifier']; echo $dm!==0 ? esc_html(sprintf(' %+d',$dm)) : ''; ?> <?php echo esc_html((string)$attack['damage_type']); ?></td><td><?php echo esc_html((string)$attack['range']); ?></td></tr><?php endforeach; ?></tbody></table><?php endif; ?></section>
         </div>
+        <footer class="gmrc-printable-sheet__page-footer"><span><?php echo esc_html($name); ?></span><span>Adventurer Record · Core Play Sheet</span></footer>
     </article>
 
     <article class="gmrc-print-page gmrc-print-page--details">
@@ -106,5 +114,6 @@ $generatedPortraitSvg = trim($portrait->svg());
             <?php if (! empty($arcana['has_spells'])): ?><section class="gmrc-print-block gmrc-print-block--spells"><h2>Spellcasting</h2><p><strong><?php echo esc_html((string)($arcana['casting_ability'] ?? '')); ?></strong> · Save DC <?php echo esc_html((string)($arcana['save_dc'] ?? '—')); ?> · Attack <?php echo esc_html(isset($arcana['spell_attack']) ? sprintf('%+d',(int)$arcana['spell_attack']) : '—'); ?></p><?php if (! empty($arcana['slots'])): ?><p class="gmrc-printable-sheet__slots"><?php foreach ($arcana['slots'] as $slot): ?>Lv <?php echo esc_html((string)($slot['level']??'')); ?> <?php echo esc_html((string)($slot['remaining'] ?? $slot['total'] ?? 0)); ?>/<?php echo esc_html((string)($slot['total']??0)); ?>&nbsp;&nbsp;<?php endforeach; ?></p><?php endif; ?><?php foreach (($arcana['shelves'] ?? []) as $shelf): if (($shelf['kind'] ?? '') === 'feature') continue; ?><div class="gmrc-printable-sheet__spell-group"><h3><?php echo esc_html((string)$shelf['label']); ?></h3><?php foreach ($shelf['entries'] as $spell): ?><p><strong><?php echo esc_html((string)$spell['label']); ?></strong> — <?php echo esc_html((string)$spell['activation']); ?> · <?php echo esc_html((string)$spell['range']); ?> · <?php echo esc_html((string)$spell['duration']); ?></p><?php endforeach; ?></div><?php endforeach; ?></section><?php endif; ?>
             <section class="gmrc-print-block gmrc-print-block--notes"><h2>Offline Notes</h2><div></div><div></div><div></div><div></div><div></div></section>
         </div>
+        <footer class="gmrc-printable-sheet__page-footer"><span><?php echo esc_html($name); ?></span><span>Adventurer Record · Equipment, Features & Arcana</span></footer>
     </article>
 </section>
