@@ -41,11 +41,36 @@ $skillLabels = [
 $saveLabels = ['strength'=>'STR','dexterity'=>'DEX','constitution'=>'CON','intelligence'=>'INT','wisdom'=>'WIS','charisma'=>'CHA'];
 $featureEntries = array_values(array_filter($arcana['entries'] ?? [], static fn(array $entry): bool => ($entry['kind'] ?? '') === 'feature'));
 $purse = $character->purse()->formatted();
+$customPortraitUrl = $portrait->attachmentUrl();
+$isCustomPortrait = $portrait->isCustom()
+    && is_string($customPortraitUrl)
+    && $customPortraitUrl !== '';
+$generatedPortraitSvg = trim($portrait->svg());
+$portraitInitial = function_exists('mb_substr')
+    ? mb_substr($name, 0, 1)
+    : substr($name, 0, 1);
+$portraitInitial = function_exists('mb_strtoupper')
+    ? mb_strtoupper($portraitInitial)
+    : strtoupper($portraitInitial);
 ?>
 <section class="gmrc-adventuring-sheet" data-adventuring-sheet>
     <header class="gmrc-adventuring-sheet__masthead">
-        <div class="gmrc-adventuring-sheet__portrait">
-            <?php echo $this->component('components.media.illuminated-portrait', ['portrait'=>$portrait,'portraitPersisted'=>true,'controlsEnabled'=>false]); ?>
+        <div class="gmrc-adventuring-sheet__portrait" aria-label="<?php echo esc_attr($name . ' portrait'); ?>">
+            <?php if ($isCustomPortrait): ?>
+                <img
+                    src="<?php echo esc_url((string) $customPortraitUrl); ?>"
+                    alt=""
+                    loading="eager"
+                >
+            <?php elseif ($generatedPortraitSvg !== ''): ?>
+                <div class="gmrc-adventuring-sheet__portrait-svg" aria-hidden="true">
+                    <?php echo $generatedPortraitSvg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                </div>
+            <?php else: ?>
+                <span class="gmrc-adventuring-sheet__portrait-fallback" aria-hidden="true">
+                    <?php echo esc_html($portraitInitial); ?>
+                </span>
+            <?php endif; ?>
         </div>
         <div class="gmrc-adventuring-sheet__identity">
             <p class="gmrc-eyebrow">Adventuring Sheet · Live Play</p>

@@ -37,6 +37,9 @@ final class AdventuringSheetRegressionTest extends TestCase
         $frontend = (string) file_get_contents($root . '/app/Providers/FrontendServiceProvider.php');
 
         self::assertStringContainsString('data-adventuring-sheet', $view);
+        self::assertStringNotContainsString('components.media.illuminated-portrait', $view);
+        self::assertStringContainsString('gmrc-adventuring-sheet__portrait-svg', $view);
+        self::assertStringContainsString('gmrc-adventuring-sheet__portrait-fallback', $view);
         self::assertStringContainsString('Core adventuring measures', $view);
         self::assertStringContainsString('data-vital-measures-form', $view);
         self::assertStringContainsString('<h2>Attacks</h2>', $view);
@@ -45,6 +48,7 @@ final class AdventuringSheetRegressionTest extends TestCase
         self::assertStringContainsString('<h2>Saving Throws</h2>', $view);
         self::assertStringContainsString('<h2>Skills</h2>', $view);
         self::assertStringContainsString("'gmrc-adventuring-sheet'", $frontend);
+        self::assertStringContainsString('grid-template-columns:132px minmax(0,1fr) auto', $css);
         self::assertStringContainsString('@media(max-width:760px)', $css);
     }
 }
