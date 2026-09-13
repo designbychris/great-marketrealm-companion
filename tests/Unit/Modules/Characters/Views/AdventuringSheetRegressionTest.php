@@ -26,7 +26,7 @@ final class AdventuringSheetRegressionTest extends TestCase
         $ledger = (string) file_get_contents($root . '/app/Modules/Characters/Views/show.php');
 
         self::assertStringContainsString(". '/adventuring-sheet'", $ledger);
-        self::assertStringContainsString("'label' => 'Adventuring Sheet'", $ledger);
+        self::assertStringContainsString("'label' => __('Adventuring Sheet', 'great-marketrealm-companion')", $ledger);
     }
 
     public function test_sheet_keeps_live_play_information_on_one_responsive_surface(): void
