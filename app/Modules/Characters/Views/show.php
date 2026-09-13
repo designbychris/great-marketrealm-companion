@@ -457,7 +457,7 @@ $callingPathLabel = $callingPath !== ''
             echo $this->component(
                 'components.controls.paper-button',
                 [
-                    'label' => 'Return to Register',
+                    'label' => __('Return to Register', 'great-marketrealm-companion'),
                     'href' => $charactersUrl,
                     'symbol' => '‹',
                     'variant' => 'parchment',
@@ -468,7 +468,7 @@ $callingPathLabel = $callingPath !== ''
             echo $this->component(
                 'components.controls.paper-button',
                 [
-                    'label' => 'Adventuring Sheet',
+                    'label' => __('Adventuring Sheet', 'great-marketrealm-companion'),
                     'href' => $adventuringSheetUrl,
                     'symbol' => '⚔',
                     'variant' => 'parchment',
@@ -479,7 +479,7 @@ $callingPathLabel = $callingPath !== ''
             echo $this->component(
                 'components.controls.wax-button',
                 [
-                    'label' => 'Edit Adventurer',
+                    'label' => __('Edit Adventurer', 'great-marketrealm-companion'),
                     'href' => $editUrl,
                     'symbol' => '✎',
                     'variant' => 'wax',
@@ -490,13 +490,12 @@ $callingPathLabel = $callingPath !== ''
             echo $this->component(
                 'components.controls.paper-button',
                 [
-                    'label' => 'Delete Adventurer',
+                    'label' => __('Delete Adventurer', 'great-marketrealm-companion'),
                     'href' => $deleteUrl,
                     'symbol' => '×',
                     'variant' => 'danger',
                     'size' => 'medium',
-                    'ariaLabel' =>
-                        'Delete ' . $name,
+                    'ariaLabel' => sprintf(__('Delete %s', 'great-marketrealm-companion'), $name),
                 ]
             );
             ?>
@@ -507,7 +506,7 @@ $callingPathLabel = $callingPath !== ''
                 data-guild-dice-launcher
             >
                 <span aria-hidden="true">★</span>
-                Quick Rolls
+                <?php esc_html_e('Quick Rolls', 'great-marketrealm-companion'); ?>
             </button>
         </div>
     </header>
@@ -1296,8 +1295,8 @@ $callingPathLabel = $callingPath !== ''
             <div class="gmrc-ledger-book__binding" aria-hidden="true"></div>
 
             <section class="gmrc-ledger-page gmrc-ledger-page--tabletop-token" aria-labelledby="gmrc-tabletop-token-folio-title">
-                <p class="gmrc-ledger-page__kicker">Tabletop Folio · I</p>
-                <h2 id="gmrc-tabletop-token-folio-title">Adventurer’s Token Forge</h2>
+                <p class="gmrc-ledger-page__kicker"><?php esc_html_e('Tabletop Folio · I', 'great-marketrealm-companion'); ?></p>
+                <h2 id="gmrc-tabletop-token-folio-title"><?php esc_html_e('Adventurer’s Token Forge', 'great-marketrealm-companion'); ?></h2>
                 <p class="gmrc-ledger-copy">
                     Shape the piece that represents this adventurer upon the Great Marketrealm Tabletop.
                     The Character portrait remains safely unchanged.
@@ -1319,14 +1318,14 @@ $callingPathLabel = $callingPath !== ''
             </section>
 
             <section class="gmrc-ledger-page gmrc-ledger-page--tabletop-token-notes" aria-labelledby="gmrc-tabletop-token-notes-title">
-                <p class="gmrc-ledger-page__kicker">Tabletop Folio · II</p>
-                <h2 id="gmrc-tabletop-token-notes-title">A piece of your own</h2>
+                <p class="gmrc-ledger-page__kicker"><?php esc_html_e('Tabletop Folio · II', 'great-marketrealm-companion'); ?></p>
+                <h2 id="gmrc-tabletop-token-notes-title"><?php esc_html_e('A piece of your own', 'great-marketrealm-companion'); ?></h2>
                 <p class="gmrc-ledger-copy">
                     Use the Character portrait as-is, or upload a dedicated token and tune its framing.
                     Focus, zoom, and ring choices are stored as a non-destructive recipe for the Tabletop bridge.
                 </p>
                 <aside class="gmrc-token-forge-folio__note">
-                    <strong>The portrait and token are separate.</strong>
+                    <strong><?php esc_html_e('The portrait and token are separate.', 'great-marketrealm-companion'); ?></strong>
                     <span>Your Ledger artwork can stay grand and painterly while your Tabletop piece stays clear at battlemat scale.</span>
                 </aside>
                 <p class="gmrc-ledger-page__number" aria-hidden="true">T2</p>
@@ -1428,7 +1427,7 @@ $callingPathLabel = $callingPath !== ''
                 class="gmrc-ledger-page gmrc-ledger-page--training"
                 aria-labelledby="gmrc-ledger-training-title"
             >
-                <p class="gmrc-ledger-page__folio">Guild Training · IV</p>
+                <p class="gmrc-ledger-page__folio"><?php esc_html_e('Guild Training · IV', 'great-marketrealm-companion'); ?></p>
 
                 <header class="gmrc-ledger-page__heading">
                     <p class="gmrc-eyebrow"><?php esc_html_e('Recorded Training', 'great-marketrealm-companion'); ?></p>
@@ -1437,16 +1436,16 @@ $callingPathLabel = $callingPath !== ''
 
                 <section class="gmrc-ledger-section">
                     <header class="gmrc-ledger-section__heading">
-                        <h3>Background</h3>
+                        <h3><?php esc_html_e('Background', 'great-marketrealm-companion'); ?></h3>
                     </header>
 
                     <dl class="gmrc-ledger-background">
                         <div>
-                            <dt>History</dt>
+                            <dt><?php esc_html_e('History', 'great-marketrealm-companion'); ?></dt>
                             <dd><?php echo esc_html($background); ?></dd>
                         </div>
                         <div>
-                            <dt>Background talents</dt>
+                            <dt><?php esc_html_e('Background talents', 'great-marketrealm-companion'); ?></dt>
                             <dd>
                                 <?php echo esc_html(
                                     $backgroundSkills !== []
@@ -1693,7 +1692,7 @@ $callingPathLabel = $callingPath !== ''
                 <?php if ($inventory['rows'] === []) : ?>
                     <div class="gmrc-pack-empty">
                         <span aria-hidden="true">🧺</span>
-                        <h3>The satchel is suspiciously light.</h3>
+                        <h3><?php esc_html_e('The satchel is suspiciously light.', 'great-marketrealm-companion'); ?></h3>
                         <p>
                             Nothing has been entered into the Packing Register yet.
                             The Guild stores are open on the opposite page.
@@ -1890,8 +1889,8 @@ $callingPathLabel = $callingPath !== ''
                                 </header>
                                 <p><?php echo esc_html($attack['description']); ?></p>
                                 <dl class="gmrc-attack-card__facts">
-                                    <div><dt>Attack ability</dt><dd><?php echo esc_html($attack['ability']); ?></dd></div>
-                                    <div><dt>Damage</dt><dd><?php echo esc_html($attack['damage_die'] . ($attack['damage_modifier'] >= 0 ? ' +' : ' ') . (string) $attack['damage_modifier'] . ' ' . $attack['damage_type']); ?></dd></div>
+                                    <div><dt><?php esc_html_e('Attack ability', 'great-marketrealm-companion'); ?></dt><dd><?php echo esc_html($attack['ability']); ?></dd></div>
+                                    <div><dt><?php esc_html_e('Damage', 'great-marketrealm-companion'); ?></dt><dd><?php echo esc_html($attack['damage_die'] . ($attack['damage_modifier'] >= 0 ? ' +' : ' ') . (string) $attack['damage_modifier'] . ' ' . $attack['damage_type']); ?></dd></div>
                                 </dl>
                                 <?php if ($attack['properties'] !== []) : ?>
                                     <ul class="gmrc-attack-properties" aria-label="Weapon properties">
@@ -1914,17 +1913,17 @@ $callingPathLabel = $callingPath !== ''
             </section>
 
             <section class="gmrc-ledger-page gmrc-ledger-page--combat-notes" aria-labelledby="gmrc-combat-notes-title">
-                <p class="gmrc-ledger-page__folio">Combat Notes · VIII</p>
+                <p class="gmrc-ledger-page__folio"><?php esc_html_e('Combat Notes · VIII', 'great-marketrealm-companion'); ?></p>
                 <header class="gmrc-ledger-page__heading">
-                    <p class="gmrc-eyebrow">Registrar’s Combat Notes</p>
-                    <h2 id="gmrc-combat-notes-title">How the Guild Counts</h2>
+                    <p class="gmrc-eyebrow"><?php esc_html_e('Registrar’s Combat Notes', 'great-marketrealm-companion'); ?></p>
+                    <h2 id="gmrc-combat-notes-title"><?php esc_html_e('How the Guild Counts', 'great-marketrealm-companion'); ?></h2>
                 </header>
                 <div class="gmrc-combat-rules">
-                    <article><strong>d20 + modifier</strong><span>Attack roll</span></article>
-                    <article><strong>Natural 20</strong><span>Critical hit — double the weapon dice</span></article>
-                    <article><strong>Natural 1</strong><span>The Guild records an especially unfortunate attempt</span></article>
+                    <article><strong><?php esc_html_e('d20 + modifier', 'great-marketrealm-companion'); ?></strong><span><?php esc_html_e('Attack roll', 'great-marketrealm-companion'); ?></span></article>
+                    <article><strong><?php esc_html_e('Natural 20', 'great-marketrealm-companion'); ?></strong><span><?php esc_html_e('Critical hit — double the weapon dice', 'great-marketrealm-companion'); ?></span></article>
+                    <article><strong><?php esc_html_e('Natural 1', 'great-marketrealm-companion'); ?></strong><span><?php esc_html_e('The Guild records an especially unfortunate attempt', 'great-marketrealm-companion'); ?></span></article>
                 </div>
-                <blockquote class="gmrc-ledger-auby-note gmrc-ledger-auby-note--archive"><p>“Point the sharp end away from the paperwork.”</p><footer>— Auby</footer></blockquote>
+                <blockquote class="gmrc-ledger-auby-note gmrc-ledger-auby-note--archive"><p><?php esc_html_e('“Point the sharp end away from the paperwork.”', 'great-marketrealm-companion'); ?></p><footer>— Auby</footer></blockquote>
                 <p class="gmrc-ledger-page__number" aria-hidden="true">8</p>
             </section>
         </article>
@@ -1946,11 +1945,11 @@ $callingPathLabel = $callingPath !== ''
             class="gmrc-ledger-page gmrc-ledger-page--arcane-pantry"
             aria-labelledby="gmrc-arcane-pantry-title"
         >
-            <p class="gmrc-ledger-page__folio">Arcane Pantry · IX</p>
+            <p class="gmrc-ledger-page__folio"><?php esc_html_e('Arcane Pantry · IX', 'great-marketrealm-companion'); ?></p>
 
             <header class="gmrc-ledger-page__heading">
-                <p class="gmrc-eyebrow">Dangerously Magical</p>
-                <h2 id="gmrc-arcane-pantry-title">The Arcane Pantry</h2>
+                <p class="gmrc-eyebrow"><?php esc_html_e('Dangerously Magical', 'great-marketrealm-companion'); ?></p>
+                <h2 id="gmrc-arcane-pantry-title"><?php esc_html_e('The Arcane Pantry', 'great-marketrealm-companion'); ?></h2>
             </header>
 
             <?php if (
@@ -2037,7 +2036,7 @@ $callingPathLabel = $callingPath !== ''
                         </article>
 
                         <article>
-                            <small>Prepared Magic</small>
+                            <small><?php esc_html_e('Prepared Magic', 'great-marketrealm-companion'); ?></small>
                             <strong>
                                 <?php echo esc_html(
                                     (string) (
@@ -2053,7 +2052,7 @@ $callingPathLabel = $callingPath !== ''
                         </article>
 
                         <article>
-                            <small>Highest Spell Circle</small>
+                            <small><?php esc_html_e('Highest Spell Circle', 'great-marketrealm-companion'); ?></small>
                             <strong>
                                 <?php echo esc_html(
                                     (string) (
@@ -2526,7 +2525,7 @@ $callingPathLabel = $callingPath !== ''
                         </article>
 
                         <article>
-                            <small>Spell Save DC</small>
+                            <small><?php esc_html_e('Spell Save DC', 'great-marketrealm-companion'); ?></small>
                             <strong>
                                 <?php echo esc_html(
                                     (string) (
@@ -2541,7 +2540,7 @@ $callingPathLabel = $callingPath !== ''
                         </article>
 
                         <article>
-                            <small>Spell Attack</small>
+                            <small><?php esc_html_e('Spell Attack', 'great-marketrealm-companion'); ?></small>
                             <strong>
                                 <?php echo esc_html(
                                     sprintf(
@@ -3004,7 +3003,7 @@ $callingPathLabel = $callingPath !== ''
                         </article>
 
                         <article>
-                            <small>Spell Save DC</small>
+                            <small><?php esc_html_e('Spell Save DC', 'great-marketrealm-companion'); ?></small>
                             <strong>
                                 <?php echo esc_html(
                                     (string) (
@@ -3019,7 +3018,7 @@ $callingPathLabel = $callingPath !== ''
                         </article>
 
                         <article>
-                            <small>Spell Attack</small>
+                            <small><?php esc_html_e('Spell Attack', 'great-marketrealm-companion'); ?></small>
                             <strong>
                                 <?php echo esc_html(
                                     sprintf(
@@ -3561,7 +3560,7 @@ $callingPathLabel = $callingPath !== ''
                         </article>
 
                         <article>
-                            <small>Spell Save DC</small>
+                            <small><?php esc_html_e('Spell Save DC', 'great-marketrealm-companion'); ?></small>
                             <strong>
                                 <?php echo esc_html(
                                     (string) (
@@ -3576,7 +3575,7 @@ $callingPathLabel = $callingPath !== ''
                         </article>
 
                         <article>
-                            <small>Spell Attack</small>
+                            <small><?php esc_html_e('Spell Attack', 'great-marketrealm-companion'); ?></small>
                             <strong>
                                 <?php echo esc_html(
                                     sprintf(
@@ -4098,7 +4097,7 @@ $callingPathLabel = $callingPath !== ''
                         </article>
 
                         <article>
-                            <small>Spell Save DC</small>
+                            <small><?php esc_html_e('Spell Save DC', 'great-marketrealm-companion'); ?></small>
                             <strong>
                                 <?php echo esc_html(
                                     (string) (
@@ -4113,7 +4112,7 @@ $callingPathLabel = $callingPath !== ''
                         </article>
 
                         <article>
-                            <small>Spell Attack</small>
+                            <small><?php esc_html_e('Spell Attack', 'great-marketrealm-companion'); ?></small>
                             <strong>
                                 <?php echo esc_html(
                                     sprintf(
@@ -5841,7 +5840,7 @@ $callingPathLabel = $callingPath !== ''
                         </article>
 
                         <article>
-                            <small>Spell Save DC</small>
+                            <small><?php esc_html_e('Spell Save DC', 'great-marketrealm-companion'); ?></small>
                             <strong>
                                 <?php echo esc_html(
                                     (string) (
@@ -5856,7 +5855,7 @@ $callingPathLabel = $callingPath !== ''
                         </article>
 
                         <article>
-                            <small>Spell Attack</small>
+                            <small><?php esc_html_e('Spell Attack', 'great-marketrealm-companion'); ?></small>
                             <strong>
                                 <?php echo esc_html(
                                     sprintf(

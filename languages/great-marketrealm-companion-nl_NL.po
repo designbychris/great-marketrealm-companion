@@ -915,3 +915,118 @@ msgstr "Interfacetaal"
 
 msgid "Choose the language used by Companion and Tabletop controls. Character names, campaign names and canonical MarketRealm content are not translated."
 msgstr "Kies de taal voor de bediening van Companion en Tabletop. Namen van personages en campagnes en canonieke MarketRealm-inhoud worden niet vertaald."
+
+msgid "Return to Register"
+msgstr "Terug naar register"
+
+msgid "Adventuring Sheet"
+msgstr "Avonturenblad"
+
+msgid "Edit Adventurer"
+msgstr "Avonturier bewerken"
+
+msgid "Delete Adventurer"
+msgstr "Avonturier verwijderen"
+
+msgid "Delete %s"
+msgstr "%s verwijderen"
+
+msgid "Complete Adventurer"
+msgstr "Volledige avonturier"
+
+msgid "Guild Record Review"
+msgstr "Controle van het gildedossier"
+
+msgid "Every major Guild folio is connected to this adventurer."
+msgstr "Elk belangrijk gildefolio is aan deze avonturier gekoppeld."
+
+msgid "One or more Guild folios need the Registrar’s attention."
+msgstr "Een of meer gildefolio’s vereisen aandacht van de Registrator."
+
+msgid "The Adventurer’s Seal"
+msgstr "Het zegel van de avonturier"
+
+msgid "Awaiting Guild Certification"
+msgstr "Wacht op gildecertificering"
+
+msgid "Guild Record Complete"
+msgstr "Gildedossier compleet"
+
+msgid "Registrar Review Required"
+msgstr "Controle door Registrator vereist"
+
+msgid "Combat Notes · VIII"
+msgstr "Gevechtsnotities · VIII"
+
+msgid "Registrar’s Combat Notes"
+msgstr "Gevechtsnotities van de Registrator"
+
+msgid "How the Guild Counts"
+msgstr "Hoe het Gilde telt"
+
+msgid "d20 + modifier"
+msgstr "d20 + modificator"
+
+msgid "Attack roll"
+msgstr "Aanvalsworp"
+
+msgid "Natural 20"
+msgstr "Natuurlijke 20"
+
+msgid "Critical hit — double the weapon dice"
+msgstr "Kritieke treffer — verdubbel de wapendobbelstenen"
+
+msgid "Natural 1"
+msgstr "Natuurlijke 1"
+
+msgid "The Guild records an especially unfortunate attempt"
+msgstr "Het Gilde noteert een bijzonder ongelukkige poging"
+
+msgid "“Point the sharp end away from the paperwork.”"
+msgstr "“Richt het scherpe uiteinde weg van het papierwerk.”"
+
+msgid "Tabletop Folio · I"
+msgstr "Tabletopfolio · I"
+
+msgid "Adventurer’s Token Forge"
+msgstr "Tokenwerkplaats van de avonturier"
+
+msgid "Tabletop Folio · II"
+msgstr "Tabletopfolio · II"
+
+msgid "A piece of your own"
+msgstr "Een stukje van jezelf"
+
+msgid "The portrait and token are separate."
+msgstr "Het portret en de token zijn afzonderlijk."
+
+msgid "Guild Training · IV"
+msgstr "Gildetraining · IV"
+
+msgid "Background talents"
+msgstr "Achtergrondtalenten"
+
+msgid "The satchel is suspiciously light."
+msgstr "De tas is verdacht licht."
+
+msgid "Attack ability"
+msgstr "Aanvalseigenschap"
+
+msgid "Arcane Pantry · IX"
+msgstr "Arcane voorraadkast · IX"
+
+msgid "Dangerously Magical"
+msgstr "Gevaarlijk magisch"
+
+msgid "The Arcane Pantry"
+msgstr "De arcane voorraadkast"
+
+msgid "Prepared Magic"
+msgstr "Voorbereide magie"
+
+msgid "Highest Spell Circle"
+msgstr "Hoogste spreukencirkel"
+
+msgid "Spell Save DC"
+msgstr "Spreukreddings-DC"
+

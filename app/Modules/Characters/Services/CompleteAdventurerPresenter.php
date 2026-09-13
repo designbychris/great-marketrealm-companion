@@ -151,17 +151,17 @@ final class CompleteAdventurerPresenter
             'ready_count' => $readyCount,
             'total' => $total,
             'label' => $complete
-                ? 'Complete Adventurer'
-                : 'Guild Record Review',
+                ? __('Complete Adventurer', 'great-marketrealm-companion')
+                : __('Guild Record Review', 'great-marketrealm-companion'),
             'summary' => $complete
-                ? 'Every major Guild folio is connected to this adventurer.'
-                : 'One or more Guild folios need the Registrar’s attention.',
+                ? __('Every major Guild folio is connected to this adventurer.', 'great-marketrealm-companion')
+                : __('One or more Guild folios need the Registrar’s attention.', 'great-marketrealm-companion'),
             'seal_title' => $complete
-                ? 'The Adventurer’s Seal'
-                : 'Awaiting Guild Certification',
+                ? __('The Adventurer’s Seal', 'great-marketrealm-companion')
+                : __('Awaiting Guild Certification', 'great-marketrealm-companion'),
             'seal_status' => $complete
-                ? 'Guild Record Complete'
-                : 'Registrar Review Required',
+                ? __('Guild Record Complete', 'great-marketrealm-companion')
+                : __('Registrar Review Required', 'great-marketrealm-companion'),
             'seal_copy' => $complete
                 ? 'All seven folios have been inspected and entered into the Great Marketrealm Register.'
                 : 'The Guild Seal will be granted when every required folio is ready.',
