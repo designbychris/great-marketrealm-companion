@@ -15,6 +15,34 @@ define('GMRC_PATH', plugin_dir_path(__FILE__));
 define('GMRC_URL', plugin_dir_url(__FILE__));
 define('GMRC_PLUGIN_FILE', __FILE__);
 
+
+/**
+ * Resolve the logged-in Guild member's preferred interface language before
+ * plugin text domains are loaded. The preference is shared with Tabletop via
+ * the same user-meta key so every player may use their own UI language.
+ */
+add_filter(
+    'determine_locale',
+    static function (string $locale): string {
+        if (! function_exists('get_current_user_id') || ! function_exists('get_user_meta')) {
+            return $locale;
+        }
+
+        $userId = get_current_user_id();
+        if ($userId < 1) {
+            return $locale;
+        }
+
+        $preferred = (string) get_user_meta($userId, 'gmrc_interface_locale', true);
+        if (in_array($preferred, ['en_GB', 'nl_NL'], true)) {
+            return $preferred;
+        }
+
+        return $locale;
+    },
+    1
+);
+
 /**
  * Load Companion interface translations from the bundled language-pack directory.
  *

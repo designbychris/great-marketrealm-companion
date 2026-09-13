@@ -80,6 +80,8 @@ final class GuildGateController
                 'accountTypeLabel' => AccountType::label($accountType),
                 'portraitId' => $portraitId,
                 'profileBio' => GuildProfile::bio((int) $user->ID),
+                'interfaceLocale' => GuildProfile::interfaceLocale((int) $user->ID),
+                'interfaceLocales' => GuildProfile::supportedInterfaceLocales(),
                 'membershipSummary' => $this->memberships->forAccount(
                     (int) $user->ID,
                     $accountType
@@ -99,7 +101,8 @@ final class GuildGateController
                 $userId,
                 $this->request->string('display_name'),
                 $this->request->string('email'),
-                $this->request->string('profile_bio')
+                $this->request->string('profile_bio'),
+                $this->request->string('interface_locale')
             );
             $this->flash->success('Your Guild profile has been updated.');
         } catch (Throwable $exception) {
@@ -107,6 +110,7 @@ final class GuildGateController
                 'display_name' => $this->request->string('display_name'),
                 'email' => $this->request->string('email'),
                 'profile_bio' => $this->request->string('profile_bio'),
+                'interface_locale' => $this->request->string('interface_locale'),
             ]);
             $this->flash->error($exception->getMessage());
         }

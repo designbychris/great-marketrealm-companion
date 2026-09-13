@@ -12,6 +12,24 @@ final class GuildProfile
 {
     public const ACCOUNT_TYPE_META = 'gmrc_account_type';
     public const PORTRAIT_ATTACHMENT_META = 'gmrc_profile_portrait_attachment_id';
+    public const INTERFACE_LOCALE_META = 'gmrc_interface_locale';
+
+    /** @return array<string,string> */
+    public static function supportedInterfaceLocales(): array
+    {
+        return [
+            '' => __('System / Site Default', 'great-marketrealm-companion'),
+            'en_GB' => 'English (UK)',
+            'nl_NL' => 'Nederlands',
+        ];
+    }
+
+    public static function interfaceLocale(int $userId): string
+    {
+        $locale = (string) get_user_meta($userId, self::INTERFACE_LOCALE_META, true);
+
+        return array_key_exists($locale, self::supportedInterfaceLocales()) ? $locale : '';
+    }
 
     public static function accountType(int $userId): string
     {

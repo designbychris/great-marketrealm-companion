@@ -906,3 +906,12 @@ msgstr "◆ expertise"
 
 msgid "● proficient"
 msgstr "● vaardig"
+
+msgid "System / Site Default"
+msgstr "Systeem / standaard van de site"
+
+msgid "Interface language"
+msgstr "Interfacetaal"
+
+msgid "Choose the language used by Companion and Tabletop controls. Character names, campaign names and canonical MarketRealm content are not translated."
+msgstr "Kies de taal voor de bediening van Companion en Tabletop. Namen van personages en campagnes en canonieke MarketRealm-inhoud worden niet vertaald."

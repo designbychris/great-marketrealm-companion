@@ -9,6 +9,7 @@ use RuntimeException;
 use function sanitize_email;
 use function sanitize_text_field;
 use function update_user_meta;
+use function delete_user_meta;
 use function wp_update_user;
 use function is_email;
 use function email_exists;
@@ -24,11 +25,17 @@ final class UpdateGuildProfile
         int $userId,
         string $displayName,
         string $email,
-        string $bio
+        string $bio,
+        string $interfaceLocale = ''
     ): void {
         $displayName = sanitize_text_field($displayName);
         $email = sanitize_email($email);
         $bio = sanitize_textarea_field($bio);
+        $interfaceLocale = sanitize_text_field($interfaceLocale);
+
+        if (! in_array($interfaceLocale, ['', 'en_GB', 'nl_NL'], true)) {
+            $interfaceLocale = '';
+        }
 
         if ($userId < 1 || $displayName === '') {
             throw new RuntimeException('Enter the name you want shown around the Guild.');
@@ -62,5 +69,15 @@ final class UpdateGuildProfile
             self::BIO_META,
             mb_substr($bio, 0, 500)
         );
+
+        if ($interfaceLocale === '') {
+            delete_user_meta($userId, \GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile::INTERFACE_LOCALE_META);
+        } else {
+            update_user_meta(
+                $userId,
+                \GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile::INTERFACE_LOCALE_META,
+                $interfaceLocale
+            );
+        }
     }
 }

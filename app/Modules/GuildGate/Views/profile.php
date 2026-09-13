@@ -10,6 +10,8 @@ $userId = (int) ($guildUser->ID ?? 0);
 $displayName = (string) ($old['display_name'] ?? ($guildUser->display_name ?? ''));
 $email = (string) ($old['email'] ?? ($guildUser->user_email ?? ''));
 $bio = (string) ($old['profile_bio'] ?? ($profileBio ?? ''));
+$interfaceLocales = is_array($interfaceLocales ?? null) ? $interfaceLocales : ['' => 'System / Site Default'];
+$interfaceLocale = (string) ($old['interface_locale'] ?? ($interfaceLocale ?? ''));
 $portraitId = (int) ($portraitId ?? 0);
 $portrait = $portraitId > 0
     ? wp_get_attachment_image($portraitId, 'medium', false, ['class' => 'gmrc-guild-profile__portrait-image', 'alt' => ''])
@@ -88,6 +90,14 @@ $fellowshipsUrl = add_query_arg('gmrc_route', 'parties', home_url('/companion/')
                 <label for="gmrc-profile-bio">About your Guild self</label>
                 <textarea id="gmrc-profile-bio" name="profile_bio" rows="6" maxlength="500" aria-describedby="gmrc-profile-bio-help"><?php echo esc_textarea($bio); ?></textarea>
                 <small id="gmrc-profile-bio-help">Optional. Up to 500 characters.</small>
+
+                <label for="gmrc-profile-interface-locale"><?php esc_html_e('Interface language', 'great-marketrealm-companion'); ?></label>
+                <select id="gmrc-profile-interface-locale" name="interface_locale" aria-describedby="gmrc-profile-interface-locale-help">
+                    <?php foreach ($interfaceLocales as $localeCode => $localeLabel) : ?>
+                        <option value="<?php echo esc_attr((string) $localeCode); ?>" <?php selected($interfaceLocale, (string) $localeCode); ?>><?php echo esc_html((string) $localeLabel); ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <small id="gmrc-profile-interface-locale-help"><?php esc_html_e('Choose the language used by Companion and Tabletop controls. Character names, campaign names and canonical MarketRealm content are not translated.', 'great-marketrealm-companion'); ?></small>
 
                 <div class="gmrc-guild-profile__identity">
                     <span>Guild username</span><strong><?php echo esc_html((string) ($guildUser->user_login ?? '')); ?></strong>
