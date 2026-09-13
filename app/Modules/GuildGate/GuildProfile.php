@@ -21,6 +21,7 @@ final class GuildProfile
             '' => __('System / Site Default', 'great-marketrealm-companion'),
             'en_GB' => 'English (UK)',
             'nl_NL' => 'Nederlands',
+            'de_DE' => 'Deutsch',
         ];
     }
 
