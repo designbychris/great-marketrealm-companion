@@ -24,6 +24,7 @@ final class GuildProfile
             'de_DE' => 'Deutsch',
             'es_ES' => 'Español',
             'pt_PT' => 'Português (Portugal)',
+            'pt_BR' => 'Português (Brasil) — Beta',
         ];
     }
 

@@ -15,6 +15,7 @@ Compiled locale packs should follow WordPress conventions, for example:
 - `great-marketrealm-companion-fr_FR.po` / `.mo`
 - `great-marketrealm-companion-es_ES.po` / `.mo`
 - `great-marketrealm-companion-pt_PT.po` / `.mo`
+- `great-marketrealm-companion-pt_BR.po` / `.mo`
 
 JavaScript catalogues may be added later using WordPress JSON translation files when a script has been migrated to `wp.i18n`.
 
@@ -40,3 +41,4 @@ Do not hand-edit generated POT files. Translators work from PO files and compile
 - `de_DE` — German (Germany).
 - `es_ES` — Spanish (Spain).
 - `pt_PT` — Portuguese (Portugal), first Portuguese production/test pack.
+- `pt_BR` — Portuguese (Brazil), beta pack awaiting native-speaker review.
