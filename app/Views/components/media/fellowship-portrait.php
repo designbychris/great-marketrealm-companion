@@ -54,7 +54,7 @@ $overflow = max(
         <div class="gmrc-fellowship-portrait__empty">
             <span aria-hidden="true">✦</span>
             <strong>Awaiting adventurers</strong>
-            <small>The Guild Illuminator has prepared the frame.</small>
+            <small><?php esc_html_e('The Guild Illuminator has prepared the frame.', 'great-marketrealm-companion'); ?></small>
         </div>
     <?php else : ?>
         <div

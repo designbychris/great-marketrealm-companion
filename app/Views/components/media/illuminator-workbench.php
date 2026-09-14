@@ -27,14 +27,12 @@ $portraitRoute = 'characters/'
     <div class="gmrc-illuminator-workbench__pin" aria-hidden="true"></div>
 
     <header class="gmrc-illuminator-workbench__header">
-        <p class="gmrc-eyebrow">Illuminator’s Toolkit</p>
+        <p class="gmrc-eyebrow"><?php esc_html_e('Illuminator’s Toolkit', 'great-marketrealm-companion'); ?></p>
         <h3 id="gmrc-illuminator-workbench-title">
-            Bring your own portrait
+            <?php esc_html_e('Bring your own portrait', 'great-marketrealm-companion'); ?>
         </h3>
         <p>
-            Prefer your own artwork? Ask the Guild Illuminator to frame
-            a JPG, PNG or WebP image instead. Your generated portrait is
-            kept safely underneath so it can be restored later.
+            <?php esc_html_e('Prefer your own artwork? Ask the Guild Illuminator to frame a JPG, PNG or WebP image instead. Your generated portrait is kept safely underneath so it can be restored later.', 'great-marketrealm-companion'); ?>
         </p>
     </header>
 

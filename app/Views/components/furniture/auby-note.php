@@ -45,7 +45,7 @@ $rotation = $quote->rotation();
             . $rotation
             . 'deg;'
     ); ?>"
-    aria-label="A note from Auby"
+    aria-label="<?php echo esc_attr__('A note from Auby', 'great-marketrealm-companion'); ?>"
     data-auby-note
 >
     <span

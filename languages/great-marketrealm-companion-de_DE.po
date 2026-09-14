@@ -1074,3 +1074,57 @@ msgstr "◆ Expertise"
 
 msgid "● proficient"
 msgstr "● geübt"
+
+msgid "A note from Auby"
+msgstr "Eine Notiz von Auby"
+
+msgid "Awaiting subject"
+msgstr "Motiv wird erwartet"
+
+msgid "Choose a heritage and Guild calling to awaken the Illuminator’s canvas."
+msgstr "Wähle eine Herkunft und eine Gildenberufung, um die Leinwand des Illuminators zu erwecken."
+
+msgid "The Guild Illuminator"
+msgstr "Der Gilden-Illuminator"
+
+msgid "Illuminator’s Toolkit"
+msgstr "Werkzeug des Illuminators"
+
+msgid "Bring your own portrait"
+msgstr "Eigenes Porträt verwenden"
+
+msgid "Prefer your own artwork? Ask the Guild Illuminator to frame a JPG, PNG or WebP image instead. Your generated portrait is kept safely underneath so it can be restored later."
+msgstr "Lieber ein eigenes Bild? Bitte den Gilden-Illuminator, stattdessen eine JPG-, PNG- oder WebP-Datei zu rahmen. Dein erzeugtes Porträt bleibt sicher darunter erhalten und kann später wiederhergestellt werden."
+
+msgid "The Guild Illuminator has prepared the frame."
+msgstr "Der Gilden-Illuminator hat den Rahmen vorbereitet."
+
+msgid "Every page begins empty. That is what makes it full of possibility."
+msgstr "Jede Seite beginnt leer. Gerade deshalb steckt sie voller Möglichkeiten."
+
+msgid "The Guild Ledger remembers what hurried minds often forget."
+msgstr "Das Gildenbuch erinnert sich an das, was eilige Köpfe oft vergessen."
+
+msgid "There is always room in the margin for one more story."
+msgstr "Am Rand ist immer Platz für eine weitere Geschichte."
+
+msgid "A well-kept record is a kindness to those who come after us."
+msgstr "Eine sorgfältige Aufzeichnung ist eine Freundlichkeit gegenüber denen, die nach uns kommen."
+
+msgid "Every hero begins with a name, and every legend begins with a page."
+msgstr "Jeder Held beginnt mit einem Namen, und jede Legende beginnt mit einer Seite."
+
+msgid "A fresh name in the Register. Let us hope they remember to pack rope."
+msgstr "Ein neuer Name im Register. Hoffen wir, dass sie an ein Seil gedacht haben."
+
+msgid "The Guild remembers its heroes, even when the heroes misplace their maps."
+msgstr "Die Gilde erinnert sich an ihre Helden, selbst wenn die Helden ihre Karten verlegen."
+
+msgid "A character is measured by their choices, not merely by their level."
+msgstr "Ein Charakter wird an seinen Entscheidungen gemessen, nicht nur an seiner Stufe."
+
+msgid "The finest adventures often begin with someone writing down a very bad idea."
+msgstr "Die besten Abenteuer beginnen oft damit, dass jemand eine ausgesprochen schlechte Idee aufschreibt."
+
+msgid "Names have power. Titles mostly have paperwork."
+msgstr "Namen haben Macht. Titel haben hauptsächlich Papierkram."

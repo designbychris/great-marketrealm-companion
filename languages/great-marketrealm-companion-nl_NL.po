@@ -1074,3 +1074,57 @@ msgstr "◆ expertise"
 
 msgid "● proficient"
 msgstr "● vaardig"
+
+msgid "A note from Auby"
+msgstr "Een briefje van Auby"
+
+msgid "Awaiting subject"
+msgstr "Wachten op onderwerp"
+
+msgid "Choose a heritage and Guild calling to awaken the Illuminator’s canvas."
+msgstr "Kies een afkomst en Gilde-roeping om het doek van de Illuminator tot leven te wekken."
+
+msgid "The Guild Illuminator"
+msgstr "De Gilde-Illuminator"
+
+msgid "Illuminator’s Toolkit"
+msgstr "Gereedschap van de Illuminator"
+
+msgid "Bring your own portrait"
+msgstr "Gebruik je eigen portret"
+
+msgid "Prefer your own artwork? Ask the Guild Illuminator to frame a JPG, PNG or WebP image instead. Your generated portrait is kept safely underneath so it can be restored later."
+msgstr "Liever je eigen kunstwerk? Laat de Gilde-Illuminator een JPG-, PNG- of WebP-afbeelding inlijsten. Je gegenereerde portret blijft veilig bewaard, zodat je het later kunt herstellen."
+
+msgid "The Guild Illuminator has prepared the frame."
+msgstr "De Gilde-Illuminator heeft de lijst voorbereid."
+
+msgid "Every page begins empty. That is what makes it full of possibility."
+msgstr "Elke pagina begint leeg. Juist daardoor zit ze vol mogelijkheden."
+
+msgid "The Guild Ledger remembers what hurried minds often forget."
+msgstr "Het Gildeboek onthoudt wat gehaaste geesten vaak vergeten."
+
+msgid "There is always room in the margin for one more story."
+msgstr "In de kantlijn is altijd plaats voor nog één verhaal."
+
+msgid "A well-kept record is a kindness to those who come after us."
+msgstr "Een zorgvuldig bijgehouden verslag is een vriendelijkheid voor wie na ons komt."
+
+msgid "Every hero begins with a name, and every legend begins with a page."
+msgstr "Elke held begint met een naam, en elke legende begint met een pagina."
+
+msgid "A fresh name in the Register. Let us hope they remember to pack rope."
+msgstr "Een nieuwe naam in het Register. Laten we hopen dat ze touw hebben ingepakt."
+
+msgid "The Guild remembers its heroes, even when the heroes misplace their maps."
+msgstr "Het Gilde herinnert zijn helden, zelfs wanneer die helden hun kaarten kwijtraken."
+
+msgid "A character is measured by their choices, not merely by their level."
+msgstr "Een personage wordt gemeten aan zijn keuzes, niet alleen aan zijn niveau."
+
+msgid "The finest adventures often begin with someone writing down a very bad idea."
+msgstr "De beste avonturen beginnen vaak wanneer iemand een bijzonder slecht idee opschrijft."
+
+msgid "Names have power. Titles mostly have paperwork."
+msgstr "Namen hebben macht. Titels hebben vooral papierwerk."

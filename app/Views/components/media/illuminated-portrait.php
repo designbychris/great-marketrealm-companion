@@ -406,12 +406,11 @@ if ($isCustom) {
                     </span>
 
                     <strong>
-                        Awaiting subject
+                        <?php esc_html_e('Awaiting subject', 'great-marketrealm-companion'); ?>
                     </strong>
 
                     <small>
-                        Choose a heritage and Guild calling to
-                        awaken the Illuminator’s canvas.
+                        <?php esc_html_e('Choose a heritage and Guild calling to awaken the Illuminator’s canvas.', 'great-marketrealm-companion'); ?>
                     </small>
                 </div>
             <?php endif; ?>
@@ -434,7 +433,7 @@ if ($isCustom) {
             "
         >
             <p class="gmrc-eyebrow">
-                The Guild Illuminator
+                <?php esc_html_e('The Guild Illuminator', 'great-marketrealm-companion'); ?>
             </p>
 
             <strong

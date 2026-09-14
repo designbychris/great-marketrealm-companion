@@ -112,139 +112,139 @@ final class QuoteRepository
     {
         $quotes = [
             new Quote(
-                'Every page begins empty. That is what makes it full of possibility.',
+                __('Every page begins empty. That is what makes it full of possibility.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::GENERAL
             ),
 
             new Quote(
-                'The Guild Ledger remembers what hurried minds often forget.',
+                __('The Guild Ledger remembers what hurried minds often forget.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::GENERAL
             ),
 
             new Quote(
-                'There is always room in the margin for one more story.',
+                __('There is always room in the margin for one more story.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::GENERAL
             ),
 
             new Quote(
-                'A well-kept record is a kindness to those who come after us.',
+                __('A well-kept record is a kindness to those who come after us.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::GENERAL
             ),
 
             new Quote(
-                'Every hero begins with a name, and every legend begins with a page.',
+                __('Every hero begins with a name, and every legend begins with a page.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::REGISTER
             ),
 
             new Quote(
-                'A fresh name in the Register. Let us hope they remember to pack rope.',
+                __('A fresh name in the Register. Let us hope they remember to pack rope.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::REGISTER
             ),
 
             new Quote(
-                'The Guild remembers its heroes, even when the heroes misplace their maps.',
+                __('The Guild remembers its heroes, even when the heroes misplace their maps.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::REGISTER
             ),
 
             new Quote(
-                'A character is measured by their choices, not merely by their level.',
+                __('A character is measured by their choices, not merely by their level.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::REGISTER
             ),
 
             new Quote(
-                'The finest adventures often begin with someone writing down a very bad idea.',
+                __('The finest adventures often begin with someone writing down a very bad idea.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::REGISTER
             ),
 
             new Quote(
-                'Names have power. Titles mostly have paperwork.',
+                __('Names have power. Titles mostly have paperwork.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::REGISTER
             ),
 
             new Quote(
-                'Half of cooking is confidence. The other half is butter.',
+                __('Half of cooking is confidence. The other half is butter.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::RECIPES
             ),
 
             new Quote(
-                'A recipe is simply a spell with clearer instructions.',
+                __('A recipe is simply a spell with clearer instructions.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::RECIPES
             ),
 
             new Quote(
-                'Never underestimate rosemary, patience, or a sufficiently large spoon.',
+                __('Never underestimate rosemary, patience, or a sufficiently large spoon.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::RECIPES
             ),
 
             new Quote(
-                'Measure carefully. Improvise confidently. Blame the oven sparingly.',
+                __('Measure carefully. Improvise confidently. Blame the oven sparingly.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::RECIPES
             ),
 
             new Quote(
-                'Some recipes nourish the body. The best ones become stories.',
+                __('Some recipes nourish the body. The best ones become stories.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::RECIPES
             ),
 
             new Quote(
-                'You will swear you packed rope. The Pantry suggests otherwise.',
+                __('You will swear you packed rope. The Pantry suggests otherwise.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::PANTRY
             ),
 
             new Quote(
-                'An organised Pantry is the first defence against unexpected turnips.',
+                __('An organised Pantry is the first defence against unexpected turnips.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::PANTRY
             ),
 
             new Quote(
-                'If you cannot find it, look behind the cabbage.',
+                __('If you cannot find it, look behind the cabbage.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::PANTRY
             ),
 
             new Quote(
-                'A full Pantry encourages bravery. An empty one encourages creativity.',
+                __('A full Pantry encourages bravery. An empty one encourages creativity.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::PANTRY
             ),
 
             new Quote(
-                'Never stand behind an angry Broccolop.',
+                __('Never stand behind an angry Broccolop.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::BESTIARY
             ),
 
             new Quote(
-                'A monster properly recorded is slightly less alarming the second time.',
+                __('A monster properly recorded is slightly less alarming the second time.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::BESTIARY
             ),
 
             new Quote(
-                'Never judge a tomato by its skin, particularly when it has teeth.',
+                __('Never judge a tomato by its skin, particularly when it has teeth.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::BESTIARY
             ),
 
             new Quote(
-                'The Broccolop is perfectly harmless.',
+                __('The Broccolop is perfectly harmless.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::BESTIARY,
                 true,
@@ -254,67 +254,67 @@ final class QuoteRepository
             ),
 
             new Quote(
-                'Most creatures prefer not to be catalogued while they are eating.',
+                __('Most creatures prefer not to be catalogued while they are eating.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::BESTIARY
             ),
 
             new Quote(
-                'Every campaign begins with a destination and immediately wanders elsewhere.',
+                __('Every campaign begins with a destination and immediately wanders elsewhere.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CAMPAIGNS
             ),
 
             new Quote(
-                'Plans are useful. Adventurers are inventive.',
+                __('Plans are useful. Adventurers are inventive.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CAMPAIGNS
             ),
 
             new Quote(
-                'A good map shows where you meant to go. A good story records where you ended up.',
+                __('A good map shows where you meant to go. A good story records where you ended up.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CAMPAIGNS
             ),
 
             new Quote(
-                'The Guild notices courage. It also notices kindness.',
+                __('The Guild notices courage. It also notices kindness.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::ACHIEVEMENTS
             ),
 
             new Quote(
-                'Some victories deserve trumpets. Others deserve a quiet line of ink.',
+                __('Some victories deserve trumpets. Others deserve a quiet line of ink.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::ACHIEVEMENTS
             ),
 
             new Quote(
-                'I have been waiting a very long time to write this entry.',
+                __('I have been waiting a very long time to write this entry.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::ACHIEVEMENTS
             ),
 
             new Quote(
-                'Even enchanted Ledgers require the occasional adjustment.',
+                __('Even enchanted Ledgers require the occasional adjustment.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::SETTINGS
             ),
 
             new Quote(
-                'Arrange the Ledger however you please. I shall try not to move anything.',
+                __('Arrange the Ledger however you please. I shall try not to move anything.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::SETTINGS
             ),
 
             new Quote(
-                'A little organisation now prevents considerable muttering later.',
+                __('A little organisation now prevents considerable muttering later.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::SETTINGS
             ),
             
             new Quote(
-                'Ah! A fresh page. I was wondering who we would be writing about today.',
+                __('Ah! A fresh page. I was wondering who we would be writing about today.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CHARACTER_CREATOR,
                 false,
@@ -322,13 +322,13 @@ final class QuoteRepository
             ),
             
             new Quote(
-                'Every adventurer begins as an empty page. Fortunately, I have plenty of ink.',
+                __('Every adventurer begins as an empty page. Fortunately, I have plenty of ink.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CHARACTER_CREATOR
             ),
             
             new Quote(
-                'Choose carefully. The Ledger remembers everything. Except where I left my spectacles.',
+                __('Choose carefully. The Ledger remembers everything. Except where I left my spectacles.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CHARACTER_CREATOR,
                 true,
@@ -338,61 +338,61 @@ final class QuoteRepository
             ),
             
             new Quote(
-                'Now that is a proper adventurer’s name.',
+                __('Now that is a proper adventurer’s name.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CHARACTER_NAME
             ),
             
             new Quote(
-                'Names have power. They also make filing considerably easier.',
+                __('Names have power. They also make filing considerably easier.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CHARACTER_NAME
             ),
             
             new Quote(
-                'Excellent. I shall write that in my neatest handwriting.',
+                __('Excellent. I shall write that in my neatest handwriting.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CHARACTER_NAME
             ),
             
             new Quote(
-                'A fine heritage. The Archive has many stories about their people.',
+                __('A fine heritage. The Archive has many stories about their people.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CHARACTER_RACE
             ),
             
             new Quote(
-                'An excellent choice. Every corner of the Marketrealm brings something special.',
+                __('An excellent choice. Every corner of the Marketrealm brings something special.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CHARACTER_RACE
             ),
             
             new Quote(
-                'Heritage recorded! I knew there was a reason I sharpened this quill.',
+                __('Heritage recorded! I knew there was a reason I sharpened this quill.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CHARACTER_RACE
             ),
             
             new Quote(
-                'A noble calling. Or at least a very interesting one.',
+                __('A noble calling. Or at least a very interesting one.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CHARACTER_CLASS
             ),
             
             new Quote(
-                'That path should produce plenty of stories for the Ledger.',
+                __('That path should produce plenty of stories for the Ledger.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CHARACTER_CLASS
             ),
             
             new Quote(
-                'Class recorded. I shall leave room for heroic deeds and minor administrative mishaps.',
+                __('Class recorded. I shall leave room for heroic deeds and minor administrative mishaps.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CHARACTER_CLASS
             ),
             
             new Quote(
-                'Wonderful! The Guild Ledger is ready to receive its newest adventurer.',
+                __('Wonderful! The Guild Ledger is ready to receive its newest adventurer.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CHARACTER_READY,
                 false,
@@ -400,13 +400,13 @@ final class QuoteRepository
             ),
             
             new Quote(
-                'Everything appears to be in order. That is unusually encouraging.',
+                __('Everything appears to be in order. That is unusually encouraging.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CHARACTER_READY
             ),
             
             new Quote(
-                'Name, heritage and calling—all recorded. The first page of the adventure awaits.',
+                __('Name, heritage and calling—all recorded. The first page of the adventure awaits.', 'great-marketrealm-companion'),
                 'Auby',
                 QuoteCategories::CHARACTER_READY
             ),
