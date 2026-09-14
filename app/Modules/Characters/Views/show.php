@@ -834,7 +834,7 @@ $callingPathLabel = $callingPath !== ''
             ></span>
 
             <p class="gmrc-ledger-page__folio">
-                Guild Record · I
+                <?php esc_html_e('Guild Record · I', 'great-marketrealm-companion'); ?>
             </p>
 
             <div class="gmrc-ledger-page__portrait">
@@ -869,7 +869,7 @@ $callingPathLabel = $callingPath !== ''
 
             <header class="gmrc-ledger-identity">
                 <p class="gmrc-ledger-identity__eyebrow">
-                    Registered Adventurer
+                    <?php esc_html_e('Registered Adventurer', 'great-marketrealm-companion'); ?>
                 </p>
 
                 <h2
@@ -880,7 +880,7 @@ $callingPathLabel = $callingPath !== ''
                 </h2>
 
                 <p class="gmrc-ledger-identity__calling">
-                    Level <?php echo esc_html(
+                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                         (string) $level
                     ); ?>
                     <?php echo esc_html($race); ?>
@@ -937,16 +937,16 @@ $callingPathLabel = $callingPath !== ''
             aria-labelledby="gmrc-ledger-measures-title"
         >
             <p class="gmrc-ledger-page__folio">
-                Adventuring Measures · II
+                <?php esc_html_e('Adventuring Measures · II', 'great-marketrealm-companion'); ?>
             </p>
 
             <header class="gmrc-ledger-page__heading">
                 <p class="gmrc-eyebrow">
-                    Field Record
+                    <?php esc_html_e('Field Record', 'great-marketrealm-companion'); ?>
                 </p>
 
                 <h2 id="gmrc-ledger-measures-title">
-                    Adventuring Measures
+                    <?php esc_html_e('Adventuring Measures', 'great-marketrealm-companion'); ?>
                 </h2>
             </header>
 
@@ -1197,7 +1197,7 @@ $callingPathLabel = $callingPath !== ''
                     <p class="gmrc-vital-measures__note">
                         Damage uses temporary HP first. Healing cannot exceed
                         maximum HP. Save to enter the changes into the live
-                        Adventuring Measures.
+                        <?php esc_html_e('Adventuring Measures', 'great-marketrealm-companion'); ?>.
                     </p>
 
                     <button
@@ -1321,12 +1321,11 @@ $callingPathLabel = $callingPath !== ''
                 <p class="gmrc-ledger-page__kicker"><?php esc_html_e('Tabletop Folio · II', 'great-marketrealm-companion'); ?></p>
                 <h2 id="gmrc-tabletop-token-notes-title"><?php esc_html_e('A piece of your own', 'great-marketrealm-companion'); ?></h2>
                 <p class="gmrc-ledger-copy">
-                    Use the Character portrait as-is, or upload a dedicated token and tune its framing.
-                    Focus, zoom, and ring choices are stored as a non-destructive recipe for the Tabletop bridge.
+                    <?php esc_html_e('Use the Character portrait as-is, or upload a dedicated token and tune its framing. Focus, zoom, and ring choices are stored as a non-destructive recipe for the Tabletop bridge.', 'great-marketrealm-companion'); ?>
                 </p>
                 <aside class="gmrc-token-forge-folio__note">
                     <strong><?php esc_html_e('The portrait and token are separate.', 'great-marketrealm-companion'); ?></strong>
-                    <span>Your Ledger artwork can stay grand and painterly while your Tabletop piece stays clear at battlemat scale.</span>
+                    <span><?php esc_html_e('Your Ledger artwork can stay grand and painterly while your Tabletop piece stays clear at battlemat scale.', 'great-marketrealm-companion'); ?></span>
                 </aside>
                 <p class="gmrc-ledger-page__number" aria-hidden="true">T2</p>
             </section>
@@ -1354,7 +1353,7 @@ $callingPathLabel = $callingPath !== ''
                 aria-labelledby="gmrc-ledger-skills-title"
             >
                 <p class="gmrc-ledger-page__folio">
-                    Training & Knowledge · III
+                    <?php esc_html_e('Training & Knowledge · III', 'great-marketrealm-companion'); ?>
                 </p>
 
                 <header class="gmrc-ledger-page__heading">
@@ -1378,9 +1377,9 @@ $callingPathLabel = $callingPath !== ''
                         <div class="<?php echo esc_attr($skillClass); ?>">
                             <dt>
                                 <?php if ($skill->hasExpertise()) : ?>
-                                    <span aria-label="Expertise" title="Expertise">◆</span>
+                                    <span aria-label="<?php echo esc_attr__('Expertise', 'great-marketrealm-companion'); ?>" title="<?php echo esc_attr__('Expertise', 'great-marketrealm-companion'); ?>">◆</span>
                                 <?php elseif ($skill->isProficient()) : ?>
-                                    <span aria-label="Proficient" title="Proficient">●</span>
+                                    <span aria-label="<?php echo esc_attr__('Proficient', 'great-marketrealm-companion'); ?>" title="<?php echo esc_attr__('Proficient', 'great-marketrealm-companion'); ?>">●</span>
                                 <?php endif; ?>
 
                                 <?php echo esc_html($label); ?>
@@ -1517,37 +1516,36 @@ $callingPathLabel = $callingPath !== ''
                 aria-labelledby="gmrc-ledger-pack-title"
             >
                 <p class="gmrc-ledger-page__folio">
-                    Adventurer’s Pack · V
+                    <?php esc_html_e('Adventurer’s Pack · V', 'great-marketrealm-companion'); ?>
                 </p>
 
                 <header class="gmrc-ledger-page__heading">
                     <p class="gmrc-eyebrow"><?php esc_html_e('Auby’s Packing Register', 'great-marketrealm-companion'); ?></p>
                     <h2 id="gmrc-ledger-pack-title"><?php esc_html_e('Equipment & Inventory', 'great-marketrealm-companion'); ?></h2>
                     <p>
-                        Everything currently entrusted to this adventurer,
-                        from trusty steel to emergency biscuits.
+                        <?php esc_html_e('Everything currently entrusted to this adventurer, from trusty steel to emergency biscuits.', 'great-marketrealm-companion'); ?>
                     </p>
                 </header>
 
-                <section class="gmrc-pack-summary" aria-label="Pack load summary">
+                <section class="gmrc-pack-summary" aria-label="<?php echo esc_attr__('Pack load summary', 'great-marketrealm-companion'); ?>">
                     <div>
                         <span class="gmrc-pack-summary__icon" aria-hidden="true">🎒</span>
-                        <p><strong><?php echo esc_html((string) count($inventory['rows'])); ?></strong> kinds of item</p>
+                        <p><strong><?php echo esc_html((string) count($inventory['rows'])); ?></strong> <?php esc_html_e('kinds of item', 'great-marketrealm-companion'); ?></p>
                     </div>
                     <div>
                         <span class="gmrc-pack-summary__icon" aria-hidden="true">⚖</span>
                         <p>
                             <strong><?php echo esc_html((string) $inventory['total_weight']); ?> lb</strong>
-                            of <?php echo esc_html((string) $inventory['capacity']); ?> lb
+                            <?php esc_html_e('of', 'great-marketrealm-companion'); ?> <?php echo esc_html((string) $inventory['capacity']); ?> lb
                         </p>
                     </div>
                     <div>
                         <span class="gmrc-pack-summary__icon" aria-hidden="true">✦</span>
-                        <p><strong><?php echo esc_html((string) $inventory['equipped_count']); ?></strong> equipped</p>
+                        <p><strong><?php echo esc_html((string) $inventory['equipped_count']); ?></strong> <?php esc_html_e('equipped', 'great-marketrealm-companion'); ?></p>
                     </div>
                 </section>
 
-                <div class="gmrc-pack-load" aria-label="Pack load <?php echo esc_attr((string) $inventory['load_percent']); ?> percent">
+                <div class="gmrc-pack-load" aria-label="<?php echo esc_attr(sprintf(__('Pack load %s percent', 'great-marketrealm-companion'), (string) $inventory['load_percent'])); ?>">
                     <span style="width:<?php echo esc_attr((string) $inventory['load_percent']); ?>%"></span>
                 </div>
 
@@ -2111,7 +2109,7 @@ $callingPathLabel = $callingPath !== ''
                             ) : ?>
                                 <span>
                                     <small>
-                                        Level <?php echo esc_html(
+                                        <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                             (string) (
                                                 $slot['level']
                                                 ?? ''
@@ -2191,7 +2189,7 @@ $callingPathLabel = $callingPath !== ''
                                     ) : ?>
                                         <article>
                                             <small>
-                                                Level <?php echo esc_html(
+                                                <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                                     (string) (
                                                         $gift['level']
                                                         ?? ''
@@ -2233,7 +2231,7 @@ $callingPathLabel = $callingPath !== ''
                                 <aside class="gmrc-artificer-gifts__next">
                                     <small>Next Specialisation milestone</small>
                                     <strong>
-                                        Level <?php echo esc_html(
+                                        <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                             (string) $artificerGifts[
                                                 'next_level'
                                             ]
@@ -2308,7 +2306,7 @@ $callingPathLabel = $callingPath !== ''
                             <div>
                                 <span>Next workshop milestone</span>
                                 <strong>
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $artificerRegister[
                                                 'next_milestone'
@@ -2613,7 +2611,7 @@ $callingPathLabel = $callingPath !== ''
                                         ); ?>
                                     </strong>
                                     <small>
-                                        Level <?php echo esc_html(
+                                        <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                             (string) (
                                                 $slot['level']
                                                 ?? ''
@@ -2680,7 +2678,7 @@ $callingPathLabel = $callingPath !== ''
                                     ) : ?>
                                         <article>
                                             <small>
-                                                Level <?php echo esc_html(
+                                                <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                                     (string) (
                                                         $gift['level']
                                                         ?? ''
@@ -2730,7 +2728,7 @@ $callingPathLabel = $callingPath !== ''
                                 <aside class="gmrc-college-gifts__next">
                                     <small>Next College milestone</small>
                                     <strong>
-                                        Level <?php echo esc_html(
+                                        <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                             (string) $collegeGifts[
                                                 'next_level'
                                             ]
@@ -2805,7 +2803,7 @@ $callingPathLabel = $callingPath !== ''
                             <div>
                                 <span>Next performance milestone</span>
                                 <strong>
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $collegeRegister[
                                                 'next_milestone'
@@ -2874,7 +2872,7 @@ $callingPathLabel = $callingPath !== ''
                             </h3>
                             <p>
                                 Sacred duties and prepared miracles at Cleric
-                                Level <?php echo esc_html(
+                                <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                     (string) (
                                         $domainRegister['level']
                                         ?? $level
@@ -2952,7 +2950,7 @@ $callingPathLabel = $callingPath !== ''
                                     )
                                 ) : ?>
                                     Next sacred threshold:
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $domainRegister[
                                                 'channel_divinity'
@@ -3114,7 +3112,7 @@ $callingPathLabel = $callingPath !== ''
                                         ); ?>
                                     </strong>
                                     <small>
-                                        Level <?php echo esc_html(
+                                        <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                             (string) (
                                                 $slot['level']
                                                 ?? ''
@@ -3360,7 +3358,7 @@ $callingPathLabel = $callingPath !== ''
                             <div>
                                 <span>Next sacred milestone</span>
                                 <strong>
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $domainRegister[
                                                 'next_milestone'
@@ -3509,7 +3507,7 @@ $callingPathLabel = $callingPath !== ''
                                     )
                                 ) : ?>
                                     Next transformation threshold:
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $groveRegister[
                                                 'wild_shape'
@@ -3624,7 +3622,7 @@ $callingPathLabel = $callingPath !== ''
                                         ); ?>
                                     </strong>
                                     <small>
-                                        Level <?php echo esc_html(
+                                        <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                             (string) (
                                                 $slot['level']
                                                 ?? ''
@@ -3882,7 +3880,7 @@ $callingPathLabel = $callingPath !== ''
                             <div>
                                 <span>Next grove milestone</span>
                                 <strong>
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $groveRegister[
                                                 'next_milestone'
@@ -4078,7 +4076,7 @@ $callingPathLabel = $callingPath !== ''
                                 </strong>
                                 <span>
                                     Wisdom ·
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $fieldRegister[
                                                 'spellcasting'
@@ -4161,7 +4159,7 @@ $callingPathLabel = $callingPath !== ''
                                         ); ?>
                                     </strong>
                                     <small>
-                                        Level <?php echo esc_html(
+                                        <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                             (string) (
                                                 $slot['level']
                                                 ?? ''
@@ -4385,7 +4383,7 @@ $callingPathLabel = $callingPath !== ''
                             <div>
                                 <span>Next field milestone</span>
                                 <strong>
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $fieldRegister[
                                                 'next_milestone'
@@ -4511,7 +4509,7 @@ $callingPathLabel = $callingPath !== ''
                                 <header>
                                     <div>
                                         <small>
-                                            Level <?php echo esc_html(
+                                            <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                                 (string) (
                                                     $art['level']
                                                     ?? ''
@@ -4937,7 +4935,7 @@ $callingPathLabel = $callingPath !== ''
                                 <header>
                                     <div>
                                         <small>
-                                            Level <?php echo esc_html(
+                                            <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                                 (string) (
                                                     $art['level']
                                                     ?? ''
@@ -5447,7 +5445,7 @@ $callingPathLabel = $callingPath !== ''
                                 <header>
                                     <div>
                                         <small>
-                                            Level <?php echo esc_html(
+                                            <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                                 (string) (
                                                     $art['level']
                                                     ?? ''
@@ -6033,7 +6031,7 @@ $callingPathLabel = $callingPath !== ''
                                                         )
                                                     ); ?>"
                                                 >
-                                                    Level <?php echo esc_html(
+                                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                                         (string) (
                                                             $cost['level']
                                                             ?? ''
@@ -6119,7 +6117,7 @@ $callingPathLabel = $callingPath !== ''
                                                         ) < 1
                                                     ) ? 'disabled' : ''; ?>
                                                 >
-                                                    Level <?php echo esc_html(
+                                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                                         (string) (
                                                             $slot['level']
                                                             ?? ''
@@ -6511,7 +6509,7 @@ $callingPathLabel = $callingPath !== ''
                                                                         (string) $spellLevel
                                                                     ); ?>"
                                                                 >
-                                                                    Level <?php echo esc_html(
+                                                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                                                         (string) $spellLevel
                                                                     ); ?>
                                                                     —
@@ -6573,7 +6571,7 @@ $callingPathLabel = $callingPath !== ''
                         <div>
                             <span>Highest spell circle</span>
                             <strong>
-                                Level <?php echo esc_html(
+                                <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                     (string) (
                                         $originRegister[
                                             'spellcasting'
@@ -6595,7 +6593,7 @@ $callingPathLabel = $callingPath !== ''
                             <div>
                                 <span>Next Origin milestone</span>
                                 <strong>
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $originRegister[
                                                 'next_milestone'
@@ -6939,7 +6937,7 @@ $callingPathLabel = $callingPath !== ''
                                 ) : ?>
                                     <article>
                                         <small>
-                                            Level <?php echo esc_html(
+                                            <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                                 (string) (
                                                     $patronGift['level']
                                                     ?? 1
@@ -6994,7 +6992,7 @@ $callingPathLabel = $callingPath !== ''
                             <div>
                                 <span>Next contract milestone</span>
                                 <strong>
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $patronRegister[
                                                 'next_milestone'
@@ -7648,7 +7646,7 @@ $callingPathLabel = $callingPath !== ''
                                     : 'is-locked'
                             ); ?>">
                                 <small>
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $feature['level']
                                             ?? ''
@@ -7713,7 +7711,7 @@ $callingPathLabel = $callingPath !== ''
                                     Next sacred milestone
                                 </span>
                                 <strong>
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $sacredRegister[
                                                 'next_milestone'
@@ -7971,7 +7969,7 @@ $callingPathLabel = $callingPath !== ''
                                     ); ?>">
                                         <div class="gmrc-monk-techniques__title">
                                             <small>
-                                                Level <?php echo esc_html(
+                                                <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                                     (string) (
                                                         $technique['level']
                                                         ?? ''
@@ -8235,7 +8233,7 @@ $callingPathLabel = $callingPath !== ''
                                     : 'is-locked'
                             ); ?>">
                                 <small>
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) ($feature['level'] ?? '')
                                     ); ?>
                                     ·
@@ -8280,7 +8278,7 @@ $callingPathLabel = $callingPath !== ''
                             <div>
                                 <span>Next discipline milestone</span>
                                 <strong>
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $disciplineRegister[
                                                 'next_milestone'
@@ -8980,7 +8978,7 @@ $callingPathLabel = $callingPath !== ''
                                 </span>
                                 <div>
                                     <small>
-                                        Level <?php echo esc_html(
+                                        <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                             (string) (
                                                 $feature['level']
                                                 ?? ''
@@ -9038,7 +9036,7 @@ $callingPathLabel = $callingPath !== ''
                                 ) : ?>
                                     <article>
                                         <small>
-                                            Level <?php echo esc_html(
+                                            <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                                 (string) (
                                                     $gift['level']
                                                     ?? ''
@@ -9106,7 +9104,7 @@ $callingPathLabel = $callingPath !== ''
                             <div>
                                 <span>Next cunning milestone</span>
                                 <strong>
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $cunningRegister[
                                                 'next_milestone'
@@ -9163,7 +9161,7 @@ $callingPathLabel = $callingPath !== ''
                             </h3>
                             <p>
                                 Certified primal capability at Barbarian
-                                Level <?php echo esc_html(
+                                <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                     (string) (
                                         $rageRegister['level']
                                         ?? $level
@@ -9552,7 +9550,7 @@ $callingPathLabel = $callingPath !== ''
                                             </span>
                                             <div>
                                                 <small>
-                                                    Level <?php echo esc_html(
+                                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                                         (string) (
                                                             $primalAction[
                                                                 'level'
@@ -9714,7 +9712,7 @@ $callingPathLabel = $callingPath !== ''
                                 </span>
                                 <div>
                                     <small>
-                                        Level <?php echo esc_html(
+                                        <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                             (string) (
                                                 $feature['level']
                                                 ?? ''
@@ -9777,7 +9775,7 @@ $callingPathLabel = $callingPath !== ''
                                         <span aria-hidden="true">🔥</span>
                                         <div>
                                             <small>
-                                                Level <?php echo esc_html(
+                                                <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                                     (string) ($gift['level'] ?? '')
                                                 ); ?> Gift
                                             </small>
@@ -9823,7 +9821,7 @@ $callingPathLabel = $callingPath !== ''
                             <div>
                                 <span>Next primal milestone</span>
                                 <strong>
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $rageRegister[
                                                 'next_milestone'
@@ -9880,7 +9878,7 @@ $callingPathLabel = $callingPath !== ''
                             </h3>
                             <p>
                                 Certified martial capability at Fighter
-                                Level <?php echo esc_html(
+                                <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                     (string) (
                                         $martialRegister['level']
                                         ?? $level
@@ -10408,7 +10406,7 @@ $callingPathLabel = $callingPath !== ''
                                         <span aria-hidden="true">✦</span>
                                         <div>
                                             <small>
-                                                Level <?php echo esc_html(
+                                                <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                                     (string) (
                                                         $gift['level']
                                                         ?? ''
@@ -10463,7 +10461,7 @@ $callingPathLabel = $callingPath !== ''
                             <div>
                                 <span>Next martial milestone</span>
                                 <strong>
-                                    Level <?php echo esc_html(
+                                    <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                         (string) (
                                             $martialRegister[
                                                 'next_milestone'
@@ -10723,7 +10721,7 @@ $callingPathLabel = $callingPath !== ''
                                         )
                                     )
                                 ); ?></strong>
-                                Level <?php echo esc_html(
+                                <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                     (string) $slot['level']
                                 ); ?> slots
                             </span>
@@ -11062,7 +11060,7 @@ $callingPathLabel = $callingPath !== ''
                     <p>Maximum level certified. The Guild has run out of larger numbers.</p>
                 <?php elseif ($progression['can_level_up']) : ?>
                     <p>
-                        Level <?php echo esc_html((string) $progression['next_level']); ?>
+                        <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html((string) $progression['next_level']); ?>
                         is ready for Guild advancement.
                         <?php if ((int) $progression['pending_levels'] > 1) : ?>
                             <?php echo esc_html(
@@ -11252,7 +11250,7 @@ $callingPathLabel = $callingPath !== ''
                                 <span aria-hidden="true">✦</span>
                                 <div>
                                     <small>
-                                        Level <?php echo esc_html((string) ($gift['level'] ?? '')); ?> Gift
+                                        <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html((string) ($gift['level'] ?? '')); ?> Gift
                                     </small>
                                     <h4><?php echo esc_html((string) ($gift['label'] ?? '')); ?></h4>
                                     <p><?php echo esc_html((string) ($gift['summary'] ?? '')); ?></p>
