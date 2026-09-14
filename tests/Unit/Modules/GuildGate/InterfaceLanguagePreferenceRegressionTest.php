@@ -23,6 +23,7 @@ final class InterfaceLanguagePreferenceRegressionTest extends TestCase
         self::assertStringContainsString("'nl_NL' => 'Nederlands'", $profile);
         self::assertStringContainsString("'de_DE' => 'Deutsch'", $profile);
         self::assertStringContainsString("'es_ES' => 'Español'", $profile);
+        self::assertStringContainsString("'pt_PT' => 'Português (Portugal)'", $profile);
         self::assertStringContainsString('name="interface_locale"', $view);
     }
 
@@ -33,7 +34,7 @@ final class InterfaceLanguagePreferenceRegressionTest extends TestCase
 
         self::assertIsString($service);
         self::assertStringContainsString("INTERFACE_LOCALE_META = 'gmrc_interface_locale'", $profile);
-        self::assertStringContainsString("['', 'en_GB', 'nl_NL', 'de_DE', 'es_ES']", $service);
+        self::assertStringContainsString("['', 'en_GB', 'nl_NL', 'de_DE', 'es_ES', 'pt_PT']", $service);
         self::assertStringContainsString('delete_user_meta', $service);
         self::assertStringContainsString('update_user_meta', $service);
     }
@@ -45,6 +46,6 @@ final class InterfaceLanguagePreferenceRegressionTest extends TestCase
         self::assertIsString($plugin);
         self::assertStringContainsString("add_filter(\n    'determine_locale'", $plugin);
         self::assertStringContainsString("get_user_meta(\$userId, 'gmrc_interface_locale', true)", $plugin);
-        self::assertStringContainsString("['en_GB', 'nl_NL', 'de_DE', 'es_ES']", $plugin);
+        self::assertStringContainsString("['en_GB', 'nl_NL', 'de_DE', 'es_ES', 'pt_PT']", $plugin);
     }
 }

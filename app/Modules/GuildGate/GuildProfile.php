@@ -23,6 +23,7 @@ final class GuildProfile
             'nl_NL' => 'Nederlands',
             'de_DE' => 'Deutsch',
             'es_ES' => 'Español',
+            'pt_PT' => 'Português (Portugal)',
         ];
     }
 

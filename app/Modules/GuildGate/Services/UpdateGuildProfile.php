@@ -33,7 +33,7 @@ final class UpdateGuildProfile
         $bio = sanitize_textarea_field($bio);
         $interfaceLocale = sanitize_text_field($interfaceLocale);
 
-        if (! in_array($interfaceLocale, ['', 'en_GB', 'nl_NL', 'de_DE', 'es_ES'], true)) {
+        if (! in_array($interfaceLocale, ['', 'en_GB', 'nl_NL', 'de_DE', 'es_ES', 'pt_PT'], true)) {
             $interfaceLocale = '';
         }
 
