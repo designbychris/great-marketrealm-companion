@@ -29,5 +29,8 @@ final class PortuguesePortugalLanguagePackRegressionTest extends TestCase
         self::assertStringContainsString("msgid \"Adventuring Sheet\"\nmsgstr \"Ficha de Aventura\"", $po);
         self::assertStringContainsString("msgid \"Interface language\"\nmsgstr \"Idioma da interface\"", $po);
         self::assertStringContainsString("msgid \"Return to Register\"\nmsgstr \"Voltar ao Registo\"", $po);
+        self::assertStringContainsString("msgid \"Dice are optional. Advancement and archival detail stay in the Ledger.\"\nmsgstr \"Os dados são opcionais. A progressão e os detalhes de arquivo permanecem no Livro.\"", $po);
+        self::assertStringContainsString("msgid \"NPC\"\nmsgstr \"PNJ\"", $po);
+        self::assertStringContainsString("msgid \"A note from Auby\"\nmsgstr \"Uma nota de Auby\"", $po);
     }
 }
