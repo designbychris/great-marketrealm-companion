@@ -13,7 +13,7 @@ final class InterfaceLanguagePreferenceRegressionTest extends TestCase
         return dirname(__DIR__, 4);
     }
 
-    public function test_profile_exposes_system_english_dutch_and_german_language_choices(): void
+    public function test_profile_exposes_system_english_dutch_german_and_spanish_language_choices(): void
     {
         $profile = file_get_contents($this->root() . '/app/Modules/GuildGate/GuildProfile.php');
         $view = file_get_contents($this->root() . '/app/Modules/GuildGate/Views/profile.php');
@@ -22,6 +22,7 @@ final class InterfaceLanguagePreferenceRegressionTest extends TestCase
         self::assertStringContainsString("'en_GB' => 'English (UK)'", $profile);
         self::assertStringContainsString("'nl_NL' => 'Nederlands'", $profile);
         self::assertStringContainsString("'de_DE' => 'Deutsch'", $profile);
+        self::assertStringContainsString("'es_ES' => 'Español'", $profile);
         self::assertStringContainsString('name="interface_locale"', $view);
     }
 
@@ -32,7 +33,7 @@ final class InterfaceLanguagePreferenceRegressionTest extends TestCase
 
         self::assertIsString($service);
         self::assertStringContainsString("INTERFACE_LOCALE_META = 'gmrc_interface_locale'", $profile);
-        self::assertStringContainsString("['', 'en_GB', 'nl_NL', 'de_DE']", $service);
+        self::assertStringContainsString("['', 'en_GB', 'nl_NL', 'de_DE', 'es_ES']", $service);
         self::assertStringContainsString('delete_user_meta', $service);
         self::assertStringContainsString('update_user_meta', $service);
     }
@@ -44,6 +45,6 @@ final class InterfaceLanguagePreferenceRegressionTest extends TestCase
         self::assertIsString($plugin);
         self::assertStringContainsString("add_filter(\n    'determine_locale'", $plugin);
         self::assertStringContainsString("get_user_meta(\$userId, 'gmrc_interface_locale', true)", $plugin);
-        self::assertStringContainsString("['en_GB', 'nl_NL', 'de_DE']", $plugin);
+        self::assertStringContainsString("['en_GB', 'nl_NL', 'de_DE', 'es_ES']", $plugin);
     }
 }

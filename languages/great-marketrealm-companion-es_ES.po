@@ -1,0 +1,1130 @@
+msgid ""
+msgstr "Project-Id-Version: The Great MarketRealm\nLanguage-Team: Spanish\nLanguage: es_ES\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=(n != 1);\nX-Domain: great-marketrealm-companion\n"
+
+msgid "%s - Great MarketRealm Character Sheet"
+msgstr "%s - Hoja de personaje de Great MarketRealm"
+
+msgid "%s portrait"
+msgstr "Retrato de %s"
+
+msgid "A piece of your own"
+msgstr "Una pieza propia"
+
+msgid "Abilities"
+msgstr "Características"
+
+msgid "Ability Check"
+msgstr "Prueba de característica"
+
+msgid "Ability Scores"
+msgstr "Puntuaciones de característica"
+
+msgid "Access denied"
+msgstr "Acceso denegado"
+
+msgid "Access denied."
+msgstr "Acceso denegado."
+
+msgid "Acrobatics"
+msgstr "Acrobacias"
+
+msgid "Add to Quick Rolls"
+msgstr "Añadir a Tiradas rápidas"
+
+msgid "Advantage"
+msgstr "Ventaja"
+
+msgid "Adventurer"
+msgstr "Aventurero"
+
+msgid "Adventurer Record · Core Play Sheet"
+msgstr "Registro del aventurero · Hoja de juego principal"
+
+msgid "Adventurer Record · Equipment, Features & Arcana"
+msgstr "Registro del aventurero · Equipo, rasgos y arcanos"
+
+msgid "Adventurer’s Pack · V"
+msgstr "Mochila del aventurero · V"
+
+msgid "Adventurer’s Token Forge"
+msgstr "Forja de ficha del aventurero"
+
+msgid "Adventuring Measures"
+msgstr "Medidas de aventura"
+
+msgid "Adventuring Measures · II"
+msgstr "Medidas de aventura · II"
+
+msgid "Adventuring Sheet"
+msgstr "Hoja de aventura"
+
+msgid "Adventuring Sheet · Live Play"
+msgstr "Hoja de aventura · Juego en vivo"
+
+msgid "All six abilities have been rolled."
+msgstr "Se han tirado las seis características."
+
+msgid "Ally"
+msgstr "Aliado"
+
+msgid "Animal Handling"
+msgstr "Trato con animales"
+
+msgid "Apply Damage"
+msgstr "Aplicar daño"
+
+msgid "Apply Healing"
+msgstr "Aplicar curación"
+
+msgid "Arcana"
+msgstr "Arcanos"
+
+msgid "Arcane Pantry · IX"
+msgstr "Despensa Arcana · IX"
+
+msgid "Archive Note"
+msgstr "Nota de archivo"
+
+msgid "Archive Notes"
+msgstr "Notas de archivo"
+
+msgid "Armour"
+msgstr "Armadura"
+
+msgid "Artisan’s Tool"
+msgstr "Herramienta de artesano"
+
+msgid "Assign 15, 14, 13, 12, 10 and 8 exactly once."
+msgstr "Asigna 15, 14, 13, 12, 10 y 8 exactamente una vez."
+
+msgid "Athletics"
+msgstr "Atletismo"
+
+msgid "Attack"
+msgstr "Ataque"
+
+msgid "Attack ability"
+msgstr "Característica de ataque"
+
+msgid "Attack and damage become rollable"
+msgstr "El ataque y el daño se pueden tirar"
+
+msgid "Attack roll"
+msgstr "Tirada de ataque"
+
+msgid "Attacks"
+msgstr "Ataques"
+
+msgid "Attacks & Weapons"
+msgstr "Ataques y armas"
+
+msgid "Auby appears to be thinking very hard about something. Possibly cake."
+msgstr "Auby parece estar pensando muy intensamente en algo. Posiblemente pastel."
+
+msgid "Auby has checked the ink. The Registrar is waiting for your seal."
+msgstr "Auby ha revisado la tinta. El Registrador espera tu sello."
+
+msgid "Auby left a note"
+msgstr "Auby dejó una nota"
+
+msgid "Auby left this here"
+msgstr "Auby dejó esto aquí"
+
+msgid "Auby Seal of Approval"
+msgstr "Sello de aprobación de Auby"
+
+msgid "Auby's Desk"
+msgstr "Escritorio de Auby"
+
+msgid "Auby’s Packing Register"
+msgstr "Registro de equipaje de Auby"
+
+msgid "Auby’s Questionable Mathematics"
+msgstr "Las matemáticas cuestionables de Auby"
+
+msgid "Awaiting assignment"
+msgstr "Pendiente de asignación"
+
+msgid "Awaiting background"
+msgstr "Pendiente de trasfondo"
+
+msgid "Awaiting fate"
+msgstr "Pendiente del destino"
+
+msgid "Awaiting Guild Certification"
+msgstr "Pendiente de certificación del Gremio"
+
+msgid "Awaiting inscription"
+msgstr "Pendiente de inscripción"
+
+msgid "Awaiting selection"
+msgstr "Pendiente de selección"
+
+msgid "Back to Live Play"
+msgstr "Volver al juego en vivo"
+
+msgid "Background"
+msgstr "Trasfondo"
+
+msgid "Background talents"
+msgstr "Talentos del trasfondo"
+
+msgid "Best for"
+msgstr "Ideal para"
+
+msgid "Calling"
+msgstr "Vocación"
+
+msgid "Campaigns"
+msgstr "Campañas"
+
+msgid "Character background"
+msgstr "Trasfondo del personaje"
+
+msgid "Character details"
+msgstr "Detalles del personaje"
+
+msgid "Characters"
+msgstr "Personajes"
+
+msgid "Charisma"
+msgstr "Carisma"
+
+msgid "Check"
+msgstr "Prueba"
+
+msgid "Choices"
+msgstr "Opciones"
+
+msgid "Choose a background"
+msgstr "Elige un trasfondo"
+
+msgid "Choose a Calling first"
+msgstr "Elige primero una Vocación"
+
+msgid "Choose a class"
+msgstr "Elige una clase"
+
+msgid "Choose a different language"
+msgstr "Elige un idioma diferente"
+
+msgid "Choose a gaming set"
+msgstr "Elige un juego"
+
+msgid "Choose a Guild Hall room"
+msgstr "Elige una sala del Salón del Gremio"
+
+msgid "Choose a heritage / subtype"
+msgstr "Elige una herencia / subtipo"
+
+msgid "Choose a language"
+msgstr "Elige un idioma"
+
+msgid "Choose a race"
+msgstr "Elige una raza"
+
+msgid "Choose an artisan’s tool"
+msgstr "Elige una herramienta de artesano"
+
+msgid "Choose an item…"
+msgstr "Elige un objeto…"
+
+msgid "Choose how fate measures your adventurer"
+msgstr "Elige cómo mide el destino a tu aventurero"
+
+msgid "Choose later / no subclass yet"
+msgstr "Elegir más tarde / todavía sin subclase"
+
+msgid "Choose the language used by Companion and Tabletop controls. Character names, campaign names and canonical MarketRealm content are not translated."
+msgstr "Elige el idioma usado por los controles de Companion y Tabletop. Los nombres de personajes y campañas y el contenido canónico de MarketRealm no se traducen."
+
+msgid "Choose your starting equipment package"
+msgstr "Elige tu paquete de equipo inicial"
+
+msgid "Class"
+msgstr "Clase"
+
+msgid "Click a modifier to roll"
+msgstr "Haz clic en un modificador para tirar"
+
+msgid "Coin"
+msgstr "Moneda"
+
+msgid "Coin Purse"
+msgstr "Monedero"
+
+msgid "Combat Notes · VIII"
+msgstr "Notas de combate · VIII"
+
+msgid "Coming Soon"
+msgstr "Próximamente"
+
+msgid "Companion navigation"
+msgstr "Navegación de Companion"
+
+msgid "Compendium"
+msgstr "Compendio"
+
+msgid "Complete Adventurer"
+msgstr "Aventurero completo"
+
+msgid "Complete background choices"
+msgstr "Completa las opciones del trasfondo"
+
+msgid "Complete your proficiencies"
+msgstr "Completa tus competencias"
+
+msgid "Composer dependencies are missing. Run"
+msgstr "Faltan dependencias de Composer. Ejecuta"
+
+msgid "Conscious"
+msgstr "Consciente"
+
+msgid "Constitution"
+msgstr "Constitución"
+
+msgid "Core adventuring measures"
+msgstr "Medidas básicas de aventura"
+
+msgid "Core traits"
+msgstr "Rasgos principales"
+
+msgid "Create an adventurer"
+msgstr "Crear un aventurero"
+
+msgid "Create Character"
+msgstr "Crear personaje"
+
+msgid "Critical Damage"
+msgstr "Daño crítico"
+
+msgid "Critical hit — double the weapon dice"
+msgstr "Golpe crítico — duplica los dados del arma"
+
+msgid "Current adventuring record"
+msgstr "Registro actual de aventura"
+
+msgid "Current and Temporary HP boxes are intentionally spacious for pencil updates during offline play."
+msgstr "Las casillas de PG actuales y temporales son deliberadamente amplias para poder actualizarlas a lápiz durante el juego sin conexión."
+
+msgid "Current background"
+msgstr "Trasfondo actual"
+
+msgid "Current HP"
+msgstr "PG actuales"
+
+msgid "Custom uploaded portraits stay untouched."
+msgstr "Los retratos personalizados subidos se conservan sin cambios."
+
+msgid "d20 + modifier"
+msgstr "d20 + modificador"
+
+msgid "D20 Check"
+msgstr "Prueba de D20"
+
+msgid "D20 Roll"
+msgstr "Tirada de D20"
+
+msgid "Damage"
+msgstr "Daño"
+
+msgid "Damage Roll"
+msgstr "Tirada de daño"
+
+msgid "Dangerously Magical"
+msgstr "Peligrosamente mágico"
+
+msgid "Dashboard"
+msgstr "Panel"
+
+msgid "Deception"
+msgstr "Engaño"
+
+msgid "Delete %s"
+msgstr "Eliminar %s"
+
+msgid "Delete Adventurer"
+msgstr "Eliminar aventurero"
+
+msgid "Dexterity"
+msgstr "Destreza"
+
+msgid "Dice are optional. Advancement and archival detail stay in the Ledger."
+msgstr "Los dados son opcionales. El avance y los detalles archivados permanecen en el Libro Mayor."
+
+msgid "Dice of Destiny selected. Roll 3d6 for each ability."
+msgstr "Dados del Destino seleccionados. Tira 3d6 para cada característica."
+
+msgid "Dice Roller"
+msgstr "Lanzador de dados"
+
+msgid "Disadvantage"
+msgstr "Desventaja"
+
+msgid "Edit Adventurer"
+msgstr "Editar aventurero"
+
+msgid "Equip a weapon in the Adventurer’s Pack and its attack will appear here."
+msgstr "Equipa un arma en la Mochila del aventurero y su ataque aparecerá aquí."
+
+msgid "Equipment"
+msgstr "Equipo"
+
+msgid "Equipment & Inventory"
+msgstr "Equipo e inventario"
+
+msgid "Equipped"
+msgstr "Equipado"
+
+msgid "equipped"
+msgstr "equipado"
+
+msgid "Equipped weapons are copied here automatically by the Guild Quartermaster."
+msgstr "Las armas equipadas se copian aquí automáticamente por el Intendente del Gremio."
+
+msgid "Every major Guild folio is connected to this adventurer."
+msgstr "Todos los folios principales del Gremio están conectados con este aventurero."
+
+msgid "Everything currently entrusted to this adventurer, from trusty steel to emergency biscuits."
+msgstr "Todo lo confiado actualmente a este aventurero, desde acero fiable hasta galletas de emergencia."
+
+msgid "Experience"
+msgstr "Experiencia"
+
+msgid "Expertise"
+msgstr "Pericia"
+
+msgid "Features & Gifts"
+msgstr "Rasgos y dones"
+
+msgid "Field Record"
+msgstr "Registro de campo"
+
+msgid "Final Registrar Review"
+msgstr "Revisión final del Registrador"
+
+msgid "First language"
+msgstr "Primer idioma"
+
+msgid "for a total of"
+msgstr "para un total de"
+
+msgid "Free Roll"
+msgstr "Tirada libre"
+
+msgid "From your Heritage"
+msgstr "De tu Herencia"
+
+msgid "Full Ledger"
+msgstr "Libro Mayor completo"
+
+msgid "Future gifts"
+msgstr "Dones futuros"
+
+msgid "Future path / subclass"
+msgstr "Senda futura / subclase"
+
+msgid "Gaming Set"
+msgstr "Juego"
+
+msgid "Great MarketRealm Character Sheet"
+msgstr "Hoja de personaje de Great MarketRealm"
+
+msgid "Great Marketrealm Companion"
+msgstr "Great Marketrealm Companion"
+
+msgid "Guild Array"
+msgstr "Matriz del Gremio"
+
+msgid "Guild Certified"
+msgstr "Certificado por el Gremio"
+
+msgid "Guild certified"
+msgstr "certificado por el Gremio"
+
+msgid "Guild Dice"
+msgstr "Dados del Gremio"
+
+msgid "Guild Free Roll"
+msgstr "Tirada libre del Gremio"
+
+msgid "Guild Hall directory"
+msgstr "Directorio del Salón del Gremio"
+
+msgid "Guild Illuminator"
+msgstr "Iluminador del Gremio"
+
+msgid "Guild Ledger Index"
+msgstr "Índice del Libro Mayor del Gremio"
+
+msgid "Guild Record Complete"
+msgstr "Registro del Gremio completo"
+
+msgid "Guild Record Review"
+msgstr "Revisión del Registro del Gremio"
+
+msgid "Guild Record · I"
+msgstr "Registro del Gremio · I"
+
+msgid "Guild Roll"
+msgstr "Tirada del Gremio"
+
+msgid "Guild stores catalogue"
+msgstr "Catálogo de almacenes del Gremio"
+
+msgid "Guild Training · IV"
+msgstr "Entrenamiento del Gremio · IV"
+
+msgid "Handbook feature"
+msgstr "Rasgo del manual"
+
+msgid "Healing"
+msgstr "Curación"
+
+msgid "Healing Roll"
+msgstr "Tirada de curación"
+
+msgid "Heritage"
+msgstr "Herencia"
+
+msgid "Heritage guidance"
+msgstr "Orientación de herencia"
+
+msgid "Heritage traits"
+msgstr "Rasgos de herencia"
+
+msgid "Hide Audit"
+msgstr "Ocultar auditoría"
+
+msgid "Highest Spell Circle"
+msgstr "Círculo de conjuros más alto"
+
+msgid "History"
+msgstr "Historia"
+
+msgid "Hit Die"
+msgstr "Dado de golpe"
+
+msgid "Hit Points"
+msgstr "Puntos de golpe"
+
+msgid "Hostile Creature"
+msgstr "Criatura hostil"
+
+msgid "How it plays"
+msgstr "Cómo se juega"
+
+msgid "How the Guild Counts"
+msgstr "Cómo cuenta el Gremio"
+
+msgid "I left your Guild Journal open for you. '\n            . 'I was absolutely not reading it."
+msgstr "Dejé tu Diario del Gremio abierto para ti. No estaba leyéndolo. En absoluto."
+
+msgid "Initiative"
+msgstr "Iniciativa"
+
+msgid "inside the plugin directory."
+msgstr "dentro del directorio del plugin."
+
+msgid "Insight"
+msgstr "Perspicacia"
+
+msgid "Intelligence"
+msgstr "Inteligencia"
+
+msgid "Interface language"
+msgstr "Idioma de la interfaz"
+
+msgid "Intimidation"
+msgstr "Intimidación"
+
+msgid "Invalid request"
+msgstr "Solicitud no válida"
+
+msgid "Inventory"
+msgstr "Inventario"
+
+msgid "Investigation"
+msgstr "Investigación"
+
+msgid "Journal"
+msgstr "Diario"
+
+msgid "kinds of item"
+msgstr "tipos de objeto"
+
+msgid "Language choices"
+msgstr "Opciones de idioma"
+
+msgid "Languages"
+msgstr "Idiomas"
+
+msgid "Languages:"
+msgstr "Idiomas:"
+
+msgid "Level"
+msgstr "Nivel"
+
+msgid "Logout"
+msgstr "Cerrar sesión"
+
+msgid "Marketrealm Companion:"
+msgstr "Marketrealm Companion:"
+
+msgid "Maximum"
+msgstr "Máximo"
+
+msgid "Maximum HP"
+msgstr "PG máximos"
+
+msgid "Medicine"
+msgstr "Medicina"
+
+msgid "Name your adventurer"
+msgstr "Pon nombre a tu aventurero"
+
+msgid "Natural 1"
+msgstr "1 natural"
+
+msgid "Natural 1 — Oh dear."
+msgstr "1 natural — Vaya."
+
+msgid "Natural 1."
+msgstr "1 natural."
+
+msgid "Natural 20"
+msgstr "20 natural"
+
+msgid "Natural 20 — Critical Hit!"
+msgstr "20 natural — ¡Golpe crítico!"
+
+msgid "Natural 20!"
+msgstr "¡20 natural!"
+
+msgid "Natural 20."
+msgstr "20 natural."
+
+msgid "Natural 20. Critical hit."
+msgstr "20 natural. Golpe crítico."
+
+msgid "Nature"
+msgstr "Naturaleza"
+
+msgid "Next roll only"
+msgstr "Solo la siguiente tirada"
+
+msgid "No additional active-play features are indexed here yet; the full Ledger retains all advancement records."
+msgstr "Todavía no hay rasgos adicionales de juego activo indexados aquí; el Libro Mayor completo conserva todos los registros de avance."
+
+msgid "No additional choices"
+msgstr "Sin opciones adicionales"
+
+msgid "No additional subtype"
+msgstr "Sin subtipo adicional"
+
+msgid "No Characters Yet"
+msgstr "Aún no hay personajes"
+
+msgid "No equipped weapon attacks."
+msgstr "No hay ataques de armas equipadas."
+
+msgid "No languages are currently recorded."
+msgstr "Actualmente no hay idiomas registrados."
+
+msgid "No target selected"
+msgstr "Ningún objetivo seleccionado"
+
+msgid "No tool proficiencies are recorded."
+msgstr "No hay competencias con herramientas registradas."
+
+msgid "No weapon is readied."
+msgstr "No hay ningún arma preparada."
+
+msgid "Normal Roll"
+msgstr "Tirada normal"
+
+msgid "Not Found"
+msgstr "No encontrado"
+
+msgid "NPC"
+msgstr "PNJ"
+
+msgid "of"
+msgstr "de"
+
+msgid "Off"
+msgstr "Desactivado"
+
+msgid "Offline Adventurer Record"
+msgstr "Registro de aventurero sin conexión"
+
+msgid "Offline Character Sheet"
+msgstr "Hoja de personaje sin conexión"
+
+msgid "Offline Notes"
+msgstr "Notas sin conexión"
+
+msgid "On"
+msgstr "Activado"
+
+msgid "One or more Guild folios need the Registrar’s attention."
+msgstr "Uno o más folios del Gremio requieren la atención del Registrador."
+
+msgid "Only choices required by the selected background are revealed here."
+msgstr "Aquí solo se muestran las opciones exigidas por el trasfondo seleccionado."
+
+msgid "Open Full Ledger"
+msgstr "Abrir Libro Mayor completo"
+
+msgid "Overview"
+msgstr "Resumen"
+
+msgid "Pack Another Item"
+msgstr "Guardar otro objeto"
+
+msgid "Pack load %s percent"
+msgstr "Carga de la mochila: %s por ciento"
+
+msgid "Pack load summary"
+msgstr "Resumen de carga de la mochila"
+
+msgid "Passive"
+msgstr "Pasiva"
+
+msgid "Passive Perception"
+msgstr "Percepción pasiva"
+
+msgid "Path Gift"
+msgstr "Don de la senda"
+
+msgid "Perception"
+msgstr "Percepción"
+
+msgid "Performance"
+msgstr "Interpretación"
+
+msgid "Personal History"
+msgstr "Historia personal"
+
+msgid "Persuasion"
+msgstr "Persuasión"
+
+msgid "Pick up the copper coin"
+msgstr "Recoger la moneda de cobre"
+
+msgid "Planned feature"
+msgstr "Rasgo planificado"
+
+msgid "Player Character"
+msgstr "Personaje jugador"
+
+msgid "Practical training"
+msgstr "Entrenamiento práctico"
+
+msgid "Prepared Magic"
+msgstr "Magia preparada"
+
+msgid "Print / Save PDF"
+msgstr "Imprimir / Guardar PDF"
+
+msgid "Print this sheet, or choose “Save as PDF” in your browser’s print dialog."
+msgstr "Imprime esta hoja o elige «Guardar como PDF» en el cuadro de impresión de tu navegador."
+
+msgid "Printable / PDF Sheet"
+msgstr "Hoja imprimible / PDF"
+
+msgid "Prof."
+msgstr "Comp."
+
+msgid "Proficiencies"
+msgstr "Competencias"
+
+msgid "Proficiency"
+msgstr "Competencia"
+
+msgid "Proficient"
+msgstr "Competente"
+
+msgid "Progression"
+msgstr "Progresión"
+
+msgid "Quantity"
+msgstr "Cantidad"
+
+msgid "Quartermaster’s Counter"
+msgstr "Mostrador del Intendente"
+
+msgid "Quests"
+msgstr "Misiones"
+
+msgid "Quick amount"
+msgstr "Cantidad rápida"
+
+msgid "Quick Roll"
+msgstr "Tirada rápida"
+
+msgid "Quick Rolls"
+msgstr "Tiradas rápidas"
+
+msgid "Race"
+msgstr "Raza"
+
+msgid "Range"
+msgstr "Alcance"
+
+msgid "Ready for the Guild seal."
+msgstr "Listo para el sello del Gremio."
+
+msgid "Record the skills, languages and practical training gained before adventuring."
+msgstr "Registra las habilidades, idiomas y entrenamiento práctico adquiridos antes de aventurarte."
+
+msgid "Recorded Training"
+msgstr "Entrenamiento registrado"
+
+msgid "Register mark"
+msgstr "Marca del registro"
+
+msgid "Registered Adventurer"
+msgstr "Aventurero registrado"
+
+msgid "Registrar choices"
+msgstr "Opciones del Registrador"
+
+msgid "Registrar Review Required"
+msgstr "Se requiere revisión del Registrador"
+
+msgid "Registrar’s Choices"
+msgstr "Elecciones del Registrador"
+
+msgid "Registrar’s Combat Notes"
+msgstr "Notas de combate del Registrador"
+
+msgid "Registrar’s Final Audit"
+msgstr "Auditoría final del Registrador"
+
+msgid "Religion"
+msgstr "Religión"
+
+msgid "Remove"
+msgstr "Eliminar"
+
+msgid "Remove from Quick Rolls"
+msgstr "Quitar de Tiradas rápidas"
+
+msgid "Resolve languages or generic tool categories granted by the amended background."
+msgstr "Resuelve los idiomas o categorías genéricas de herramientas otorgados por el trasfondo modificado."
+
+msgid "Return to Register"
+msgstr "Volver al Registro"
+
+msgid "Review the Guild Record"
+msgstr "Revisar el Registro del Gremio"
+
+msgid "Roll all six abilities"
+msgstr "Tirar las seis características"
+
+msgid "Roll all six abilities before continuing."
+msgstr "Tira las seis características antes de continuar."
+
+msgid "Roll three six-sided dice and keep their total for each ability."
+msgstr "Tira tres dados de seis caras y conserva el total para cada característica."
+
+msgid "Roll when enabled"
+msgstr "Tirar cuando esté activado"
+
+msgid "rolled"
+msgstr "tirado"
+
+msgid "Save DC"
+msgstr "CD de salvación"
+
+msgid "Save HP"
+msgstr "Guardar PG"
+
+msgid "Saving Throw"
+msgstr "Tirada de salvación"
+
+msgid "Saving Throws"
+msgstr "Tiradas de salvación"
+
+msgid "Second language"
+msgstr "Segundo idioma"
+
+msgid "Selected background benefits"
+msgstr "Beneficios del trasfondo seleccionado"
+
+msgid "Self"
+msgstr "Uno mismo"
+
+msgid "Settings"
+msgstr "Ajustes"
+
+msgid "Shared Folk traits"
+msgstr "Rasgos compartidos del Folk"
+
+msgid "Six sets of 3d6. No rerolling the Registrar when he writes down a 5."
+msgstr "Seis series de 3d6. No se repite la tirada cuando el Registrador anota un 5."
+
+msgid "Skill Check"
+msgstr "Prueba de habilidad"
+
+msgid "Skill proficiencies"
+msgstr "Competencias en habilidades"
+
+msgid "Skills"
+msgstr "Habilidades"
+
+msgid "Skills & Training"
+msgstr "Habilidades y entrenamiento"
+
+msgid "Sleight of Hand"
+msgstr "Juego de manos"
+
+msgid "Someone has been busy."
+msgstr "Alguien ha estado ocupado."
+
+msgid "Speed"
+msgstr "Velocidad"
+
+msgid "Spell Attack"
+msgstr "Ataque de conjuro"
+
+msgid "Spell Save DC"
+msgstr "CD de salvación de conjuro"
+
+msgid "Spellcasting"
+msgstr "Lanzamiento de conjuros"
+
+msgid "Spells & Abilities"
+msgstr "Conjuros y habilidades"
+
+msgid "Standard Guild Array"
+msgstr "Matriz estándar del Gremio"
+
+msgid "Standard Guild Array selected. Assign each score exactly once."
+msgstr "Matriz estándar del Gremio seleccionada. Asigna cada puntuación exactamente una vez."
+
+msgid "Starting experience"
+msgstr "Experiencia inicial"
+
+msgid "Starting Hit Points"
+msgstr "Puntos de golpe iniciales"
+
+msgid "Starting level"
+msgstr "Nivel inicial"
+
+msgid "Stealth"
+msgstr "Sigilo"
+
+msgid "Strength"
+msgstr "Fuerza"
+
+msgid "Subtype choices are drawn from the Registrar’s Grand Catalogue."
+msgstr "Las opciones de subtipo se obtienen del Gran Catálogo del Registrador."
+
+msgid "Survival"
+msgstr "Supervivencia"
+
+msgid "System / Site Default"
+msgstr "Sistema / Valor predeterminado del sitio"
+
+msgid "Tabletop Folio · I"
+msgstr "Folio de Tabletop · I"
+
+msgid "Tabletop Folio · II"
+msgstr "Folio de Tabletop · II"
+
+msgid "Tabletop Token"
+msgstr "Ficha de Tabletop"
+
+msgid "Target"
+msgstr "Objetivo"
+
+msgid "Target is linked."
+msgstr "El objetivo está vinculado."
+
+msgid "Target is reference only."
+msgstr "El objetivo es solo de referencia."
+
+msgid "Tea is still warm. Probably."
+msgstr "El té aún está caliente. Probablemente."
+
+msgid "Temporary HP"
+msgstr "PG temporales"
+
+msgid "The Adventurer’s Pack is empty."
+msgstr "La Mochila del aventurero está vacía."
+
+msgid "The Adventurer’s Seal"
+msgstr "El sello del aventurero"
+
+msgid "The Arcane Pantry"
+msgstr "La Despensa Arcana"
+
+msgid "The Clash of the Ledger"
+msgstr "El choque del Libro Mayor"
+
+msgid "The Dice Ledger has been cleared."
+msgstr "El Libro de Dados se ha vaciado."
+
+msgid "The Dice of Destiny"
+msgstr "Los Dados del Destino"
+
+msgid "The first page of the adventure"
+msgstr "La primera página de la aventura"
+
+msgid "The form request could not be verified."
+msgstr "No se pudo verificar la solicitud del formulario."
+
+msgid "The Great MarketRealm Companion"
+msgstr "The Great MarketRealm Companion"
+
+msgid "The Great MarketRealm · Adventurer Record"
+msgstr "The Great MarketRealm · Registro del aventurero"
+
+msgid "The Guild records an especially unfortunate attempt"
+msgstr "El Gremio registra un intento especialmente desafortunado"
+
+msgid "The Illuminator’s Private Studio"
+msgstr "El Estudio Privado del Iluminador"
+
+msgid "The portrait and token are separate."
+msgstr "El retrato y la ficha son independientes."
+
+msgid "The satchel is suspiciously light."
+msgstr "La bolsa está sospechosamente ligera."
+
+msgid "This session"
+msgstr "Esta sesión"
+
+msgid "To Hit"
+msgstr "Para impactar"
+
+msgid "Tool Proficiencies"
+msgstr "Competencias con herramientas"
+
+msgid "Tool proficiencies"
+msgstr "Competencias con herramientas"
+
+msgid "Tools:"
+msgstr "Herramientas:"
+
+msgid "Trained Talents"
+msgstr "Talentos entrenados"
+
+msgid "Training & Knowledge · III"
+msgstr "Entrenamiento y conocimiento · III"
+
+msgid "Unconscious"
+msgstr "Inconsciente"
+
+msgid "Untrained"
+msgstr "Sin entrenamiento"
+
+msgid "Update"
+msgstr "Actualizar"
+
+msgid "Use the Character portrait as-is, or upload a dedicated token and tune its framing. Focus, zoom, and ring choices are stored as a non-destructive recipe for the Tabletop bridge."
+msgstr "Usa el retrato del personaje tal cual o sube una ficha específica y ajusta su encuadre. El enfoque, zoom y anillo se guardan como una receta no destructiva para el puente con Tabletop."
+
+msgid "Weapon Attack"
+msgstr "Ataque con arma"
+
+msgid "Welcome back, %s!"
+msgstr "¡Bienvenido de nuevo, %s!"
+
+msgid "Wisdom"
+msgstr "Sabiduría"
+
+msgid "You do not have permission to enter the Steward's Office."
+msgstr "No tienes permiso para entrar en la Oficina del Administrador."
+
+msgid "Your adventure begins here. Create your first Great Marketrealm hero!"
+msgstr "Tu aventura empieza aquí. ¡Crea tu primer héroe de Great Marketrealm!"
+
+msgid "Your Characters"
+msgstr "Tus personajes"
+
+msgid "Your Companion map"
+msgstr "Tu mapa de Companion"
+
+msgid "Your Ledger artwork can stay grand and painterly while your Tabletop piece stays clear at battlemat scale."
+msgstr "La ilustración de tu Libro Mayor puede seguir siendo grandiosa y pictórica mientras tu pieza de Tabletop permanece clara a escala de mapa de batalla."
+
+msgid "Your parent Folk’s published identity and traits still apply in full."
+msgstr "La identidad publicada y los rasgos de tu Folk de origen siguen aplicándose por completo."
+
+msgid "Your selected kit is copied into the Character Inventory when the adventurer is certified. Later Steward changes do not rewrite existing inventories."
+msgstr "Tu equipo seleccionado se copia al Inventario del personaje cuando el aventurero queda certificado. Los cambios posteriores del Administrador no reescriben inventarios existentes."
+
+msgid "“Critical hit! Double the weapon dice!” — Auby"
+msgstr "«¡Golpe crítico! ¡Duplica los dados del arma!» — Auby"
+
+msgid "“I definitely witnessed that.” — Auby"
+msgstr "«Definitivamente fui testigo de eso.» — Auby"
+
+msgid "“Point the sharp end away from the paperwork.”"
+msgstr "«Apunta el extremo afilado lejos del papeleo.»"
+
+msgid "“The Guild has elected not to record that one.” — Auby"
+msgstr "«El Gremio ha decidido no registrar eso.» — Auby"
+
+msgid "◆ expertise"
+msgstr "◆ pericia"
+
+msgid "● proficient"
+msgstr "● competente"
+
+msgid "A note from Auby"
+msgstr "Una nota de Auby"
+
+msgid "Awaiting subject"
+msgstr "Pendiente de sujeto"
+
+msgid "Choose a heritage and Guild calling to awaken the Illuminator’s canvas."
+msgstr "Elige una herencia y una vocación del Gremio para despertar el lienzo del Iluminador."
+
+msgid "The Guild Illuminator"
+msgstr "El Iluminador del Gremio"
+
+msgid "Illuminator’s Toolkit"
+msgstr "Kit de herramientas del Iluminador"
+
+msgid "Bring your own portrait"
+msgstr "Trae tu propio retrato"
+
+msgid "Prefer your own artwork? Ask the Guild Illuminator to frame a JPG, PNG or WebP image instead. Your generated portrait is kept safely underneath so it can be restored later."
+msgstr "¿Prefieres tu propia ilustración? Pide al Iluminador del Gremio que enmarque una imagen JPG, PNG o WebP. Tu retrato generado se conserva debajo para poder restaurarlo después."
+
+msgid "The Guild Illuminator has prepared the frame."
+msgstr "El Iluminador del Gremio ha preparado el marco."
+
+msgid "Every page begins empty. That is what makes it full of possibility."
+msgstr "Cada página comienza vacía. Eso es lo que la llena de posibilidades."
+
+msgid "The Guild Ledger remembers what hurried minds often forget."
+msgstr "El Libro Mayor del Gremio recuerda lo que las mentes apresuradas suelen olvidar."
+
+msgid "There is always room in the margin for one more story."
+msgstr "Siempre hay sitio en el margen para una historia más."
+
+msgid "A well-kept record is a kindness to those who come after us."
+msgstr "Un registro bien cuidado es una bondad para quienes vienen después."
+
+msgid "Every hero begins with a name, and every legend begins with a page."
+msgstr "Todo héroe comienza con un nombre y toda leyenda comienza con una página."
+
+msgid "A fresh name in the Register. Let us hope they remember to pack rope."
+msgstr "Un nombre nuevo en el Registro. Esperemos que recuerde llevar cuerda."
+
+msgid "The Guild remembers its heroes, even when the heroes misplace their maps."
+msgstr "El Gremio recuerda a sus héroes, incluso cuando ellos pierden sus mapas."
+
+msgid "A character is measured by their choices, not merely by their level."
+msgstr "A un personaje lo miden sus decisiones, no solo su nivel."
+
+msgid "The finest adventures often begin with someone writing down a very bad idea."
+msgstr "Las mejores aventuras suelen empezar cuando alguien anota una idea muy mala."
+
+msgid "Names have power. Titles mostly have paperwork."
+msgstr "Los nombres tienen poder. Los títulos, sobre todo, tienen papeleo."
