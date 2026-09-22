@@ -1,0 +1,1 @@
+Phase III.M.3A: read-only character sheet. Apply on top of III.M.3. Verify owner-scoped REST data and mobile display. No portrait or HP editing in this phase. Run php vendor/bin/phpunit --display-warnings and test on a non-production environment first.

@@ -55,6 +55,20 @@ final class PocketApi
             $result[] = [
                 'id' => $character->id()->value(),
                 'name' => $character->name()->value(),
+                'race' => $character->race()->label(),
+                'class' => $character->characterClass()->label(),
+                'level' => $character->level()->value(),
+                'armour_class' => $character->armourClass()->value(),
+                'initiative' => $character->initiative()->signed(),
+                'speed_feet' => $character->speed()->feet(),
+                'abilities' => [
+                    'STR' => $character->abilityScores()->strength()->value(),
+                    'DEX' => $character->abilityScores()->dexterity()->value(),
+                    'CON' => $character->abilityScores()->constitution()->value(),
+                    'INT' => $character->abilityScores()->intelligence()->value(),
+                    'WIS' => $character->abilityScores()->wisdom()->value(),
+                    'CHA' => $character->abilityScores()->charisma()->value(),
+                ],
                 'hp' => [
                     'current' => $hp->current(),
                     'maximum' => $hp->maximum(),
