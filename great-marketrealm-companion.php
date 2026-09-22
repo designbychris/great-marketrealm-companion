@@ -99,3 +99,6 @@ add_action('rest_api_init', static function () use ($app): void {
     );
     $api->register();
 });
+
+/** Phase III.M.2A: authenticated browser-only Pocket character ledger. */
+add_action('init', [\GreatMarketrealmCompanion\Mobile\PocketPage::class, 'register']);
