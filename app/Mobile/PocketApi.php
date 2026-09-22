@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GreatMarketrealmCompanion\Mobile;
 
 use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
+use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -13,7 +14,7 @@ use WP_REST_Response;
 /** Read-only first mobile contract. Authentication uses WordPress REST authentication. */
 final class PocketApi
 {
-    public function __construct(private CharacterRepositoryInterface $characters)
+    public function __construct(private CharacterRepositoryInterface $characters, private ?PortraitRenderer $portraits = null)
     {
     }
 
@@ -52,7 +53,14 @@ final class PocketApi
         // Repository::all() is explicitly scoped to the authenticated WP user.
         foreach ($this->characters->all() as $character) {
             $hp = $character->hitPoints();
+            $portrait = $this->portraits?->forCharacter($character);
+            $portraitUrl = $portrait?->attachmentUrl();
+            $portraitSvg = $portrait?->svg() ?? '';
+            $portraitData = $portraitUrl ? ['kind' => 'image', 'url' => esc_url_raw($portraitUrl)]
+                : ($portraitSvg !== '' ? ['kind' => 'svg', 'url' => 'data:image/svg+xml;base64,' . base64_encode($portraitSvg)]
+                : ['kind' => 'none', 'url' => null]);
             $result[] = [
+                'portrait' => $portraitData,
                 'id' => $character->id()->value(),
                 'name' => $character->name()->value(),
                 'race' => $character->race()->label(),

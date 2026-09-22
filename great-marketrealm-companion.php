@@ -95,7 +95,8 @@ $app->boot();
 /** Phase III.M.1: owner-scoped, read-only Pocket Companion API. */
 add_action('rest_api_init', static function () use ($app): void {
     $api = new \GreatMarketrealmCompanion\Mobile\PocketApi(
-        $app->make(\GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface::class)
+        $app->make(\GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface::class),
+        $app->make(\GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer::class)
     );
     $api->register();
 });
