@@ -19,11 +19,31 @@ final class PocketApi
 
     public function register(): void
     {
+        register_rest_route('gmrc-pocket/v1', '/session', [
+            'methods' => 'GET',
+            'permission_callback' => static fn (): bool => is_user_logged_in() && get_current_user_id() > 0,
+            'callback' => [$this, 'session'],
+        ]);
+
         register_rest_route('gmrc-pocket/v1', '/characters', [
             'methods' => 'GET',
             'permission_callback' => static fn (): bool => is_user_logged_in() && get_current_user_id() > 0,
             'callback' => [$this, 'characters'],
         ]);
+    }
+
+    /** A minimal identity check for authenticated clients; never exposes credentials. */
+    public function session(WP_REST_Request $request): WP_REST_Response
+    {
+        $user = wp_get_current_user();
+
+        return new WP_REST_Response([
+            'authenticated' => true,
+            'user' => [
+                'id' => (int) $user->ID,
+                'display_name' => (string) $user->display_name,
+            ],
+        ], 200, ['Cache-Control' => 'private, no-store']);
     }
 
     public function characters(WP_REST_Request $request): WP_REST_Response
