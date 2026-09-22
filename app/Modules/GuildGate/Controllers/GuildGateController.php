@@ -257,6 +257,10 @@ final class GuildGateController
             '/'
         );
 
+        if ($route === 'pocket') {
+            return 'pocket';
+        }
+
         return $route !== '' && $this->router->has('GET', '/' . $route)
             ? $route
             : 'dashboard';
@@ -266,6 +270,16 @@ final class GuildGateController
     {
         $route = $this->returnRoute();
         $url = $this->gateUrl();
+
+        if ($route === 'pocket') {
+            $pages = get_posts(['post_type' => 'page', 'post_status' => 'publish', 'numberposts' => 1, 's' => 'Pocket Companion']);
+            foreach ($pages as $page) {
+                if (has_shortcode((string) $page->post_content, 'gmrc_pocket_companion')) {
+                    return get_permalink($page);
+                }
+            }
+            return home_url('/pocket-companion/');
+        }
 
         return $route === 'dashboard'
             ? $url

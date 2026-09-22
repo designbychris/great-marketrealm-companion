@@ -18,11 +18,22 @@ final class PocketPage
     {
         $pageUrl = get_permalink() ?: home_url('/');
         if (! is_user_logged_in()) {
-            return '<section class="gmrc-pocket gmrc-pocket-gate"><h2>'
-                . esc_html__('The Pocket Companion', 'great-marketrealm-companion')
-                . '</h2><p>' . esc_html__('Sign in to see your adventurers.', 'great-marketrealm-companion')
-                . '</p><a class="gmrc-pocket-button" href="' . esc_url(wp_login_url($pageUrl)) . '">'
-                . esc_html__('Enter the Guild Gate', 'great-marketrealm-companion') . '</a></section>';
+            // Reuse the existing front-end Guild Gate and all its security checks,
+            // including any configured bot protection; never submit passwords to a new handler.
+            $gateUrl = add_query_arg(
+                ['gate' => 'login', 'return_route' => 'pocket'],
+                home_url('/companion/')
+            );
+            $logo = plugins_url('assets/images/pocket/greatmarketrealmlogo.png', GMRC_PATH . 'great-marketrealm-companion.php');
+            return '<section class="gmrc-pocket-entry" aria-labelledby="gmrc-pocket-entry-title">'
+                . '<div class="gmrc-pocket-entry__panel">'
+                . '<img class="gmrc-pocket-entry__logo" src="' . esc_url($logo) . '" alt="The Great Marketrealm" loading="eager">'
+                . '<p class="gmrc-pocket-entry__eyebrow">THE POCKET COMPANION</p>'
+                . '<h2 id="gmrc-pocket-entry-title">Welcome, adventurer</h2>'
+                . '<p>Enter the Guild Gate with your existing Great Marketrealm account to open your character ledger.</p>'
+                . '<a class="gmrc-pocket-entry__button" href="' . esc_url($gateUrl) . '">Sign in at the Guild Gate</a>'
+                . '</div></section>'
+                . '<style>.gmrc-pocket-entry{min-height:70svh;display:grid;place-items:center;padding:clamp(1rem,4vw,3rem);background:linear-gradient(145deg,#233b29e8,#4b5832dd),radial-gradient(circle at 50% 20%,#b89b55,#34452e);color:#322b1e}.gmrc-pocket-entry *{box-sizing:border-box}.gmrc-pocket-entry__panel{width:min(100%,440px);padding:clamp(1.2rem,5vw,2.5rem);text-align:center;border:3px solid #b68b44;border-radius:18px;background:#fff4d9;box-shadow:0 16px 50px #0005}.gmrc-pocket-entry__logo{display:block;width:min(100%,340px);height:auto;max-height:190px;object-fit:contain;margin:0 auto 1rem}.gmrc-pocket-entry__eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.14em;color:#52683d}.gmrc-pocket-entry h2{font-size:clamp(1.6rem,6vw,2.2rem);color:#354a32;margin:.5rem 0}.gmrc-pocket-entry p{line-height:1.55}.gmrc-pocket-entry__button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin-top:1rem;padding:.8rem 1.2rem;border-radius:9px;background:#354a32;color:#fff!important;font-weight:700;text-decoration:none}.gmrc-pocket-entry__button:focus-visible{outline:3px solid #ad6b14;outline-offset:4px}@media(prefers-reduced-motion:reduce){.gmrc-pocket-entry *{scroll-behavior:auto}}</style>';
         }
 
         $id = 'gmrc-pocket-' . wp_unique_id();
