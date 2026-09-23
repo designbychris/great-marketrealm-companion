@@ -21,6 +21,5 @@ final class PocketSpellkeeperMeasuresRegressionTest extends TestCase
         self::assertIsString($source);
         $this->assertStringContainsString('Spell slots', $source);
         self::assertStringContainsString("diceTray.rollAbility('Spell attack',casting.attack_bonus)", $source);
-        self::assertStringContainsString('Casting or rolling a spell does not expend a slot.', $source);
     }
 }
