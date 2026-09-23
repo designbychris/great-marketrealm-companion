@@ -193,3 +193,36 @@
         color: ButtonText;
     }
 }
+
+/* Phase III.M.4A.1 — Pocket Guild Gate: readable text on parchment.
+ * Keep this scoped to the Pocket route; the standard Guild Gate is unchanged.
+ * Explicit colours prevent the dark app shell's inherited light text from
+ * disappearing against the pale folio, including on mobile browsers.
+ */
+.gmrc-guild-gate--pocket .gmrc-guild-gate__folio {
+    color: #304a35;
+}
+.gmrc-guild-gate--pocket .gmrc-guild-gate__folio label,
+.gmrc-guild-gate--pocket .gmrc-guild-gate__folio .gmrc-guild-gate__remember,
+.gmrc-guild-gate--pocket .gmrc-guild-gate__folio .gmrc-guild-gate__remember span,
+.gmrc-guild-gate--pocket .gmrc-guild-gate__folio .gmrc-guild-gate__calling legend {
+    color: #304a35;
+}
+.gmrc-guild-gate--pocket .gmrc-guild-gate__folio input[type="text"],
+.gmrc-guild-gate--pocket .gmrc-guild-gate__folio input[type="email"],
+.gmrc-guild-gate--pocket .gmrc-guild-gate__folio input[type="password"] {
+    color: #2d1d32;
+    background-color: #fffdf5;
+}
+.gmrc-guild-gate--pocket .gmrc-guild-gate__folio .gmrc-guild-gate__login-options > a {
+    color: #693b50;
+}
+@media (forced-colors: active) {
+    .gmrc-guild-gate--pocket .gmrc-guild-gate__folio,
+    .gmrc-guild-gate--pocket .gmrc-guild-gate__folio label,
+    .gmrc-guild-gate--pocket .gmrc-guild-gate__folio .gmrc-guild-gate__remember,
+    .gmrc-guild-gate--pocket .gmrc-guild-gate__folio .gmrc-guild-gate__remember span,
+    .gmrc-guild-gate--pocket .gmrc-guild-gate__folio .gmrc-guild-gate__calling legend {
+        color: CanvasText;
+    }
+}
