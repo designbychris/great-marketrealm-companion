@@ -36,6 +36,13 @@ final class SharedSpellSlotReserveService
         );
     }
 
+    /** Recover exactly one expended slot; never perform a full rest here. */
+    public function recover(Character $character, ActiveClassResourceState $state, int $slotLevel): ActiveClassResourceState
+    {
+        $this->maximum($character, $slotLevel);
+        return $state->recover($this->resource($slotLevel));
+    }
+
     public function longRest(
         Character $character,
         ActiveClassResourceState $state

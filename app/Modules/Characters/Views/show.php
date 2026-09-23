@@ -10704,10 +10704,10 @@ $callingPathLabel = $callingPath !== ''
                 </dl>
 
                 <?php if ($arcana['slots'] !== []) : ?>
-                    <div class="gmrc-spell-slots" aria-label="Spell slots">
+                    <div class="gmrc-spell-slots" aria-label="Spell slots" data-gmrc-slot-base="<?php echo esc_url(rest_url('gmrc-pocket/v1/characters/' . rawurlencode($characterId) . '/spell-slots')); ?>" data-gmrc-slot-nonce="<?php echo esc_attr(wp_create_nonce('wp_rest')); ?>">
                         <?php foreach ($arcana['slots'] as $slot) : ?>
-                            <span>
-                                <strong><?php echo esc_html(
+                            <span class="gmrc-spell-slot-row" data-slot-level="<?php echo esc_attr((string) $slot['level']); ?>" data-slot-remaining="<?php echo esc_attr((string) ($slot['remaining'] ?? $slot['total'] ?? 0)); ?>" data-slot-total="<?php echo esc_attr((string) ($slot['total'] ?? 0)); ?>">
+                                <strong class="gmrc-spell-slot-balance"><?php echo esc_html(
                                     sprintf(
                                         '%d/%d',
                                         (int) (
@@ -10724,9 +10724,35 @@ $callingPathLabel = $callingPath !== ''
                                 <?php esc_html_e('Level', 'great-marketrealm-companion'); ?> <?php echo esc_html(
                                     (string) $slot['level']
                                 ); ?> slots
+                                <?php if ($character->characterClass()->value() !== 'warlock') : ?>
+                                    <button type="button" class="gmrc-spell-slot-use" <?php disabled((int) ($slot['remaining'] ?? $slot['total'] ?? 0) < 1); ?>>Use slot</button>
+                                    <button type="button" class="gmrc-spell-slot-restore" <?php disabled((int) ($slot['expended'] ?? 0) < 1); ?>>Restore slot</button>
+                                    <small class="gmrc-spell-slot-status" role="status" aria-live="polite"></small>
+                                <?php endif; ?>
                             </span>
                         <?php endforeach; ?>
                     </div>
+                    <script>
+                    (() => {
+                      const ledger=document.currentScript.previousElementSibling;
+                      if(!ledger || !ledger.matches('.gmrc-spell-slots'))return;
+                      ledger.querySelectorAll('.gmrc-spell-slot-row').forEach(row=>{
+                        const use=row.querySelector('.gmrc-spell-slot-use'),restore=row.querySelector('.gmrc-spell-slot-restore');
+                        if(!use||!restore)return;
+                        const balance=row.querySelector('.gmrc-spell-slot-balance'),message=row.querySelector('.gmrc-spell-slot-status');
+                        const level=Number(row.dataset.slotLevel),total=Number(row.dataset.slotTotal);
+                        let remaining=Number(row.dataset.slotRemaining),busy=false,stale=false;
+                        function buttons(){use.disabled=busy||stale||remaining<=0;restore.disabled=busy||stale||remaining>=total;}
+                        async function update(action){if(busy||stale)return;busy=true;buttons();message.textContent='Saving…';
+                          try{const response=await fetch(ledger.dataset.gmrcSlotBase,{method:'POST',credentials:'same-origin',cache:'no-store',headers:{'X-WP-Nonce':ledger.dataset.gmrcSlotNonce,'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({level,action,expected_remaining:remaining})});
+                            const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.message||'Unable to save spell slots.');
+                            const slot=data.slots.find(item=>item.level===level);if(!slot)throw new Error('Updated balance not returned. Refresh the page.');
+                            remaining=slot.remaining;balance.textContent=remaining+'/'+slot.total;message.textContent='Saved.';
+                          }catch(error){stale=true;message.textContent=error.message+' Refresh this page before retrying.';}finally{busy=false;buttons();}}
+                        use.addEventListener('click',()=>update('spend'));restore.addEventListener('click',()=>update('recover'));buttons();
+                      });
+                    })();
+                    </script>
                 <?php endif; ?>
             <?php else : ?>
                 <div class="gmrc-arcane-summary gmrc-arcane-summary--features">

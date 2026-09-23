@@ -43,6 +43,12 @@ final class PocketApi
             'callback' => [$this, 'updateVitality'],
         ]);
 
+        register_rest_route('gmrc-pocket/v1', '/characters/(?P<id>[A-Za-z0-9]{26})/spell-slots', [
+            'methods' => 'POST',
+            'permission_callback' => static fn (): bool => is_user_logged_in() && get_current_user_id() > 0,
+            'callback' => [$this, 'updateSpellSlot'],
+        ]);
+
         register_rest_route('gmrc-pocket/v1', '/characters', [
             'methods' => 'GET',
             'permission_callback' => static fn (): bool => is_user_logged_in() && get_current_user_id() > 0,
@@ -104,6 +110,71 @@ final class PocketApi
         ]], 200, ['Cache-Control' => 'private, no-store']);
     }
 
+    /** Explicit, owner-scoped slot adjustment with serialized read/check/write. */
+    public function updateSpellSlot(WP_REST_Request $request): WP_REST_Response|WP_Error
+    {
+        try {
+            $id = CharacterId::fromString((string) $request->get_param('id'));
+        } catch (\InvalidArgumentException $exception) {
+            return new WP_Error('gmrc_slot_id', 'Invalid character identifier.', ['status' => 400]);
+        }
+        // CharacterRepositoryInterface::find() is owner-scoped.
+        $character = $this->characters->find($id);
+        if ($character === null) {
+            return new WP_Error('gmrc_slot_not_found', 'Character not found.', ['status' => 404]);
+        }
+        // Pact Magic has a separate reserve; do not mutate it using standard slot rules.
+        if ($character->characterClass()->value() === 'warlock') {
+            return new WP_Error('gmrc_slot_pact', 'Pact Magic requires its own resource controls.', ['status' => 400]);
+        }
+        $body = $request->get_json_params();
+        if (! is_array($body) || ! isset($body['level'], $body['action'], $body['expected_remaining'])
+            || ! is_int($body['level']) || ! is_int($body['expected_remaining'])
+            || ! in_array($body['action'], ['spend', 'recover'], true)) {
+            return new WP_Error('gmrc_slot_body', 'A valid level, action and expected remaining balance are required.', ['status' => 400]);
+        }
+        $service = new SharedSpellSlotReserveService();
+        try {
+            $maximum = $service->maximum($character, $body['level']);
+        } catch (\InvalidArgumentException $exception) {
+            return new WP_Error('gmrc_slot_level', $exception->getMessage(), ['status' => 400]);
+        }
+        if ($body['expected_remaining'] < 0 || $body['expected_remaining'] > $maximum) {
+            return new WP_Error('gmrc_slot_expected', 'Invalid expected spell-slot balance.', ['status' => 400]);
+        }
+        global $wpdb;
+        // Serialize this endpoint's read/check/write for one character. Never fall back
+        // to an unlocked update if the database cannot acquire the advisory lock.
+        $lock = 'gmrc_slot_' . hash('sha256', (string) $id->value());
+        if (! isset($wpdb) || (int) $wpdb->get_var($wpdb->prepare('SELECT GET_LOCK(%s, 5)', $lock)) !== 1) {
+            return new WP_Error('gmrc_slot_busy', 'The spell-slot ledger is busy. Please try again.', ['status' => 503]);
+        }
+        try {
+            $repository = new ActiveClassResourceRepository();
+            $state = $repository->find($id);
+            $remaining = $service->remaining($character, $state, $body['level']);
+            if ($remaining !== $body['expected_remaining']) {
+                return new WP_Error('gmrc_slot_stale', 'Spell slots changed elsewhere. Refresh your character before trying again.', ['status' => 409]);
+            }
+            try {
+                $next = $body['action'] === 'spend'
+                    ? $service->spend($character, $state, $body['level'])
+                    : $service->recover($character, $state, $body['level']);
+            } catch (\InvalidArgumentException $exception) {
+                return new WP_Error('gmrc_slot_limit', $exception->getMessage(), ['status' => 400]);
+            }
+            $repository->save($id, $next);
+            // Verify persistence; never report a successful update on a failed write.
+            $saved = $repository->find($id);
+            if ($saved->toArray() !== $next->toArray()) {
+                return new WP_Error('gmrc_slot_save', 'Could not save the spell-slot balance.', ['status' => 500]);
+            }
+            return new WP_REST_Response(['slots' => $service->present($character, $saved)], 200, ['Cache-Control' => 'private, no-store']);
+        } finally {
+            $wpdb->get_var($wpdb->prepare('SELECT RELEASE_LOCK(%s)', $lock));
+        }
+    }
+
     public function characters(WP_REST_Request $request): WP_REST_Response
     {
         $result = [];
@@ -157,7 +228,7 @@ final class PocketApi
                 'ability' => $casting['casting_ability'],
                 'attack_bonus' => $casting['spell_attack'],
                 'save_dc' => $casting['save_dc'],
-                'slots' => (new SharedSpellSlotReserveService())->present($character, $slotState),
+                'slots' => $character->characterClass()->value() === 'warlock' ? [] : (new SharedSpellSlotReserveService())->present($character, $slotState),
             ];
             $spellbook = $character->spellbook();
             $spellRows = [];

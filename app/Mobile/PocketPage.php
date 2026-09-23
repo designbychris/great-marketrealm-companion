@@ -41,6 +41,7 @@ final class PocketPage
             'session' => esc_url_raw(rest_url('gmrc-pocket/v1/session')),
             'characters' => esc_url_raw(rest_url('gmrc-pocket/v1/characters')),
             'vitalityBase' => esc_url_raw(rest_url('gmrc-pocket/v1/characters/')),
+            'spellSlotBase' => esc_url_raw(rest_url('gmrc-pocket/v1/characters/')),
             'nonce' => wp_create_nonce('wp_rest'),
         ];
         $json = wp_json_encode($config, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
@@ -69,6 +70,15 @@ let currentCharacters=[];const status=root.querySelector('.gmrc-pocket-status'),
 function el(tag,className,value){const node=document.createElement(tag);if(className)node.className=className;if(value!==undefined)node.textContent=String(value);return node;}
 async function request(url){const response=await fetch(url,{credentials:'same-origin',headers:{'X-WP-Nonce':config.nonce,'Accept':'application/json'},cache:'no-store'});if(!response.ok)throw new Error(response.status===401||response.status===403?'Your session has expired. Please sign in again.':'Could not reach the character ledger. Please try again.');return response.json();}
 async function saveVitality(character,current,temporary){const hp=character.hp||{};const response=await fetch(config.vitalityBase+encodeURIComponent(character.id)+'/vitality',{method:'POST',credentials:'same-origin',cache:'no-store',headers:{'X-WP-Nonce':config.nonce,'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify({current,temporary,expected_current:hp.current,expected_temporary:hp.temporary})});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.message||'Unable to save HP. Please refresh and try again.');character.hp=data.hp;return data.hp;}
+async function changeSpellSlot(character,slot,action){
+ const response=await fetch(config.spellSlotBase+encodeURIComponent(character.id)+'/spell-slots',{
+  method:'POST',credentials:'same-origin',cache:'no-store',headers:{'X-WP-Nonce':config.nonce,'Accept':'application/json','Content-Type':'application/json'},
+  body:JSON.stringify({level:slot.level,action,expected_remaining:slot.remaining})
+ });
+ const data=await response.json().catch(()=>({}));
+ if(!response.ok)throw new Error(data.message||'Unable to update spell slots. Refresh and try again.');
+ character.spellcasting.slots=data.slots;return data.slots;
+}
 function vitalityControls(character){
  const hp=character.hp||{};const form=el('form','gmrc-pocket-vitality');form.append(el('h4','','Adventuring Measures'));
  const fields=[];
@@ -190,9 +200,14 @@ function pocketSpellbook(character,diceTray){
  }
  const slots=Array.isArray(casting.slots)?casting.slots:[];
  if(slots.length){
-  const heading=el('h4','','Spell slots · read only');body.append(heading);
+  const heading=el('h4','','Spell slots');body.append(heading);
   for(const slot of slots){
-   body.append(el('p','', 'Level '+slot.level+': '+slot.remaining+' / '+slot.total+' remaining ('+slot.expended+' expended)'));
+   const row=el('div','gmrc-pocket-training__row'),balance=el('span','', 'Level '+slot.level+': '+slot.remaining+' / '+slot.total+' remaining ('+slot.expended+' expended)');
+   const use=el('button','gmrc-pocket-training__roll','Use slot'),restore=el('button','gmrc-pocket-training__roll','Restore slot'),message=el('small');
+   use.type=restore.type='button';use.disabled=slot.remaining<=0;restore.disabled=slot.expended<=0;
+   async function update(action){use.disabled=restore.disabled=true;message.textContent='Saving…';try{await changeSpellSlot(character,slot,action);const updated=character.spellcasting.slots.find(entry=>entry.level===slot.level);Object.assign(slot,updated);balance.textContent='Level '+slot.level+': '+slot.remaining+' / '+slot.total+' remaining ('+slot.expended+' expended)';message.textContent='Saved.';use.disabled=slot.remaining<=0;restore.disabled=slot.expended<=0;}catch(error){message.textContent=error.message+' Refresh characters to retry.';}}
+   use.addEventListener('click',()=>update('spend'));restore.addEventListener('click',()=>update('recover'));
+   row.append(balance,use,restore,message);body.append(row);
   }
  }
  const spells=Array.isArray(character.spellbook)?character.spellbook:[];
@@ -215,7 +230,7 @@ function pocketSpellbook(character,diceTray){
   }else if(spell.formula)content.append(el('p','','Automatic rolling is not available for this spell formula. Use Guild Diceworks manually as directed by your GM.'));
   body.append(entry);
  }
- body.append(el('p','','Spell slots are read-only here. Casting or rolling a spell does not expend a slot.')); 
+ body.append(el('p','','Use or restore slots explicitly. Casting or rolling a spell does not automatically expend a slot.')); 
  return panel;
 }
 function card(character){const article=el('article','gmrc-pocket-character');const head=el('div','gmrc-pocket-character__head');head.append(el('span','gmrc-pocket-character__label','Adventurer'),el('h3','',character.name||'Unnamed adventurer'));article.append(head);const body=el('div','gmrc-pocket-character__body');const hp=character.hp||{};const current=Number(hp.current),maximum=Number(hp.maximum),temporary=Number(hp.temporary);const safeMax=Number.isFinite(maximum)&&maximum>0?maximum:0;const safeCurrent=Number.isFinite(current)?current:0;const safeTemp=Number.isFinite(temporary)?temporary:0;const tiles=el('div','gmrc-pocket-hp');for(const [label,value] of [['Hit points',String(safeCurrent)+' / '+String(safeMax||'—')],['Temporary HP',String(safeTemp)]]){const tile=el('div','gmrc-pocket-hp__tile');tile.append(el('span','gmrc-pocket-character__label',label),el('strong','gmrc-pocket-hp__value',value));tiles.append(tile);}body.append(tiles);const meter=el('div','gmrc-pocket-hp__meter');meter.setAttribute('role','progressbar');meter.setAttribute('aria-label','Current hit points');meter.setAttribute('aria-valuemin','0');meter.setAttribute('aria-valuemax',String(safeMax));meter.setAttribute('aria-valuenow',String(Math.max(0,Math.min(safeMax,safeCurrent))));const fill=el('span','gmrc-pocket-hp__fill');fill.style.width=(safeMax?Math.max(0,Math.min(100,safeCurrent/safeMax*100)):0)+'%';meter.append(fill);body.append(meter);const open=el('button','gmrc-pocket-button gmrc-pocket-character__open','Open character sheet');open.type='button';open.addEventListener('click',()=>showDetail(character));body.append(open);article.append(body);return article;}
