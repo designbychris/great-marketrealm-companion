@@ -10,6 +10,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Inventory\Repositories\Characte
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Models\ItemCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Services\InventoryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Combat\Services\AttackPresenter;
+use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\SharedSpellRegister;
 use WP_REST_Request;
 use WP_Error;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
@@ -103,6 +104,7 @@ final class PocketApi
     {
         $result = [];
         // Repository::all() is explicitly scoped to the authenticated WP user.
+        $spellRegister = new SharedSpellRegister();
         foreach ($this->characters->all() as $character) {
             $hp = $character->hitPoints();
             $portrait = $this->portraits?->forCharacter($character);
@@ -131,6 +133,34 @@ final class PocketApi
             $catalogue = new ItemCatalogue();
             $attacks = (new AttackPresenter($catalogue))->present($character, $inventory);
             $inventoryRows = (new InventoryPresenter($catalogue))->present($character, $inventory)['rows'];
+            // Read-only: resolve only this character's learned spell identities against the shared register.
+            // Unknown identities remain visible without fabricated mechanics.
+            $spellbook = $character->spellbook();
+            $spellRows = [];
+            foreach (['cantrips' => $spellbook->cantrips(), 'spells' => $spellbook->spells()] as $group => $identifiers) {
+                foreach ($identifiers as $identifier) {
+                    $record = $spellRegister->find($identifier);
+                    $spellRows[] = [
+                        'id' => $identifier,
+                        'name' => $record?->name() ?? ucwords(str_replace('-', ' ', $identifier)),
+                        'group' => $group,
+                        'level' => $record?->level(),
+                        'school' => $record?->school(),
+                        'casting_time' => $record?->castingTime() ?? '',
+                        'range' => $record?->range() ?? '',
+                        'components' => $record?->components() ?? '',
+                        'duration' => $record?->duration() ?? '',
+                        'rules_text' => $record?->rulesText() ?? '',
+                        'higher_levels' => $record?->higherLevels() ?? '',
+                        'roll_kind' => $record?->rollKind(),
+                        'formula' => $record?->formula(),
+                        'damage_type' => $record?->damageType(),
+                        'spell_attack' => $record?->spellAttack() ?? false,
+                        'add_casting_modifier' => $record?->addCastingModifier() ?? false,
+                        'resolved' => $record !== null,
+                    ];
+                }
+            }
             $result[] = [
                 'portrait' => $portraitData,
                 'id' => $character->id()->value(),
@@ -153,6 +183,7 @@ final class PocketApi
                 'skills' => $skillData,
                 'attacks' => $attacks,
                 'equipment' => $inventoryRows,
+                'spellbook' => $spellRows,
                 'proficiency_bonus' => $character->proficiencyBonus()->value(),
                 'hp' => [
                     'current' => $hp->current(),
