@@ -11,6 +11,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Inventory\Models\ItemCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Services\InventoryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Combat\Services\AttackPresenter;
 use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\SharedSpellRegister;
+use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCatalogue;
 use WP_REST_Request;
 use WP_Error;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
@@ -105,6 +106,16 @@ final class PocketApi
         $result = [];
         // Repository::all() is explicitly scoped to the authenticated WP user.
         $spellRegister = new SharedSpellRegister();
+        $arcaneCatalogue = new ArcaneAbilityCatalogue();
+        // Existing character IDs can predate the shared Handbook register.
+        // These aliases are the same explicit bridge used by the main Arcana resolver.
+        $legacySpellAliases = [
+            'restorative-preserve' => 'cure-meats',
+            'market-missile' => 'mystery-mustard-missile',
+            'aisle-lightning' => 'lightning-lemonade',
+            'stockroom-fireball' => 'flame-grilled-fireball',
+            'stocklight-orb' => 'shelfshine',
+        ];
         foreach ($this->characters->all() as $character) {
             $hp = $character->hitPoints();
             $portrait = $this->portraits?->forCharacter($character);
@@ -140,24 +151,42 @@ final class PocketApi
             foreach (['cantrips' => $spellbook->cantrips(), 'spells' => $spellbook->spells()] as $group => $identifiers) {
                 foreach ($identifiers as $identifier) {
                     $record = $spellRegister->find($identifier);
+                    if ($record === null && isset($legacySpellAliases[$identifier])) {
+                        $record = $spellRegister->find($legacySpellAliases[$identifier]);
+                    }
+                    // Some valid Arcane Pantry spells (e.g. Shelf Alarm) have no
+                    // Handbook record. Preserve their real definitions, not guessed rules.
+                    $arcane = null;
+                    foreach ($arcaneCatalogue->forClass(strtolower($character->characterClass()->label())) as $ability) {
+                        if ($ability->id() === $identifier && $ability->kind() === ($group === 'cantrips' ? 'cantrip' : 'spell')) {
+                            $arcane = $ability;
+                            break;
+                        }
+                    }
+                    $arcaneDescription = $arcane?->description() ?? '';
+                    $recordDescription = $record?->rulesText() ?? '';
+                    // A canonical Handbook entry may have no structured mechanics.
+                    // In that case the Arcane Pantry's explicit fields are usable.
+                    $formula = $record?->formula() ?? $arcane?->formula();
+                    $scales = $arcane !== null && ($arcane->slotLevelScaling() !== [] || $arcane->characterLevelScaling() !== []);
                     $spellRows[] = [
                         'id' => $identifier,
-                        'name' => $record?->name() ?? ucwords(str_replace('-', ' ', $identifier)),
+                        'name' => $arcane?->label() ?? $record?->name() ?? ucwords(str_replace('-', ' ', $identifier)),
                         'group' => $group,
-                        'level' => $record?->level(),
+                        'level' => $record?->level() ?? $arcane?->spellLevel(),
                         'school' => $record?->school(),
-                        'casting_time' => $record?->castingTime() ?? '',
-                        'range' => $record?->range() ?? '',
+                        'casting_time' => $record?->castingTime() ?: ($arcane?->activation() ?? ''),
+                        'range' => $record?->range() ?: ($arcane?->range() ?? ''),
                         'components' => $record?->components() ?? '',
-                        'duration' => $record?->duration() ?? '',
-                        'rules_text' => $record?->rulesText() ?? '',
+                        'duration' => $record?->duration() ?: ($arcane?->duration() ?? ''),
+                        'rules_text' => $recordDescription !== '' ? $recordDescription : $arcaneDescription,
                         'higher_levels' => $record?->higherLevels() ?? '',
-                        'roll_kind' => $record?->rollKind(),
-                        'formula' => $record?->formula(),
-                        'damage_type' => $record?->damageType(),
-                        'spell_attack' => $record?->spellAttack() ?? false,
-                        'add_casting_modifier' => $record?->addCastingModifier() ?? false,
-                        'resolved' => $record !== null,
+                        'roll_kind' => $scales ? null : ($record?->rollKind() ?? $arcane?->rollKind()),
+                        'formula' => $scales ? null : $formula,
+                        'damage_type' => $record?->damageType() ?? $arcane?->damageType(),
+                        'spell_attack' => ($record?->spellAttack() ?? false) || ($arcane?->isSpellAttack() ?? false),
+                        'add_casting_modifier' => ($record?->addCastingModifier() ?? false) || ($arcane?->addCastingModifier() ?? false),
+                        'resolved' => $record !== null || $arcane !== null,
                     ];
                 }
             }
