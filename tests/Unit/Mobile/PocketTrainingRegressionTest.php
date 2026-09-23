@@ -12,9 +12,9 @@ final class PocketTrainingRegressionTest extends TestCase
         self::assertIsString($source);
         self::assertStringContainsString('$character->savingThrows()', $source);
         self::assertStringContainsString('$character->skills()->all()', $source);
-        self::assertStringContainsString("'saving_throws' => $savingThrowData", $source);
-        self::assertStringContainsString("'skills' => $skillData", $source);
-        self::assertStringContainsString("'expertise' => $skill->hasExpertise()", $source);
+        self::assertStringContainsString("'saving_throws' => \$savingThrowData", $source);
+        self::assertStringContainsString("'skills' => \$skillData", $source);
+        self::assertStringContainsString("'expertise' => \$skill->hasExpertise()", $source);
     }
 
     public function testQuickChecksUseSharedDiceworks(): void
