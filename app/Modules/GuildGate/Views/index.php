@@ -23,7 +23,7 @@ $turnstileConfigured = ! empty($turnstileConfigured);
 $siteKey = (string) ($turnstile['site_key'] ?? '');
 ?>
 <section
-    class="gmrc-guild-gate"
+    class="gmrc-guild-gate<?php echo $returnRoute === 'pocket' ? ' gmrc-guild-gate--pocket' : ''; ?>"
     aria-labelledby="gmrc-guild-gate-title"
     data-guild-gate
     data-guild-gate-active="<?php echo esc_attr($intent); ?>"
@@ -32,8 +32,11 @@ $siteKey = (string) ($turnstile['site_key'] ?? '');
 
     <div class="gmrc-guild-gate__welcome">
         <span class="gmrc-guild-gate__seal" aria-hidden="true">✦</span>
-        <p class="gmrc-guild-gate__eyebrow">The Great Marketrealm Companion</p>
-        <h1 id="gmrc-guild-gate-title">The Guild Gate</h1>
+        <?php if ($returnRoute === 'pocket'): ?>
+        <img class="gmrc-pocket-gate-logo" src="<?php echo esc_url(plugins_url('assets/images/pocket/greatmarketrealmlogo.png', GMRC_PATH . 'great-marketrealm-companion.php')); ?>" alt="The Great Marketrealm" loading="eager">
+        <?php endif; ?>
+        <p class="gmrc-guild-gate__eyebrow"><?php echo $returnRoute === 'pocket' ? 'The Great Marketrealm Pocket Companion' : 'The Great Marketrealm Companion'; ?></p>
+        <h1 id="gmrc-guild-gate-title"><?php echo $returnRoute === 'pocket' ? 'The Pocket Guild Gate' : 'The Guild Gate'; ?></h1>
         <p class="gmrc-guild-gate__lead">
             Present your Guild papers, or register a new name with the
             gatekeeper, before entering the Companion.
@@ -180,3 +183,17 @@ $siteKey = (string) ($turnstile['site_key'] ?? '');
         </div>
     </div>
 </section>
+
+<?php if ($returnRoute === 'pocket'): ?>
+<style>
+/* Pocket-only visual treatment; existing Guild Gate forms, nonce and anti-bot checks remain unchanged. */
+.gmrc-guild-gate--pocket{--pocket-forest:#17291f;--pocket-gold:#e2c17c;min-height:85svh;border-radius:22px;overflow:hidden;background:linear-gradient(150deg,#17291f,#304a35 55%,#192e22);color:#f5e8cb}
+.gmrc-guild-gate--pocket .gmrc-guild-gate__welcome{text-align:center}
+.gmrc-guild-gate--pocket .gmrc-guild-gate__eyebrow{color:#e2c17c;letter-spacing:.12em}
+.gmrc-guild-gate--pocket .gmrc-pocket-gate-logo{display:block;max-width:min(80%,300px);max-height:160px;object-fit:contain;margin:0 auto 1rem}
+.gmrc-guild-gate--pocket .gmrc-guild-gate__desk{max-width:560px;margin-inline:auto}
+.gmrc-guild-gate--pocket input,.gmrc-guild-gate--pocket button{min-height:44px}
+@media(max-width:600px){.gmrc-guild-gate--pocket{border-radius:0;min-height:100svh;padding-bottom:env(safe-area-inset-bottom,0px)}}
+@media(prefers-reduced-motion:reduce){.gmrc-guild-gate--pocket *{transition-duration:0s!important;animation-duration:0s!important}}
+</style>
+<?php endif; ?>
