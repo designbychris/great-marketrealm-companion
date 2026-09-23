@@ -1,6 +1,5 @@
-Phase III.M.3C — Adventurer's Vitality (initial implementation)
-Apply to the current deployed GMRC plugin, preserving paths.
-POST /wp-json/gmrc-pocket/v1/characters/{ULID}/vitality accepts JSON integer fields current, temporary, expected_current, expected_temporary.
-Uses WordPress REST cookie authentication + X-WP-Nonce, owner-scoped repository find, and existing Character::updateVitalMeasures/save.
-Stale expected HP returns 409. Maximum HP is never writable. Temporary HP range 0–999.
-IMPORTANT: PHP and JavaScript syntax checks only; no full PHPUnit run or live write test performed. Test on staging before production. Dedicated endpoint integration tests are still required.
+GMRC Phase III.M.3F — The Adventurer's Arsenal
+Apply the three files to the same relative paths in the CURRENT deployed GMRC plugin. Do not replace the whole plugin with this partial patch. Back up first and test on staging.
+The Pocket character endpoint now returns owner-scoped inventory rows and canonical equipped-weapon attack presentations. The mobile sheet adds a collapsible Arsenal with attack, damage and critical damage buttons sharing the existing six-entry Diceworks history, plus a read-only equipment list.
+Damage supports the existing simple Nd4/d6/d8/d10/d12/d20/d100 weapon formulas up to 20 dice. Unsupported formulas are not silently rolled. Critical damage uses the canonical critical_damage_die, doubling dice but not the flat modifier. This is a dice result only, not a VTT action or automatic HP change.
+Run php vendor/bin/phpunit --display-warnings and test on a character with equipped weapons, a character without them, and a character with inventory. Check manual dice, ability/skill/save rolls, HP and portrait still work. This patch has syntax checks only; the full suite and live WordPress testing remain for the server.

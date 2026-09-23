@@ -6,6 +6,10 @@ namespace GreatMarketrealmCompanion\Mobile;
 
 use GreatMarketrealmCompanion\Modules\Characters\Contracts\CharacterRepositoryInterface;
 use GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer;
+use GreatMarketrealmCompanion\Modules\Characters\Inventory\Repositories\CharacterInventoryRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Inventory\Models\ItemCatalogue;
+use GreatMarketrealmCompanion\Modules\Characters\Inventory\Services\InventoryPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\Combat\Services\AttackPresenter;
 use WP_REST_Request;
 use WP_Error;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
@@ -122,6 +126,11 @@ final class PocketApi
                     'expertise' => $skill->hasExpertise(),
                 ];
             }
+            // Inventory lookup is owner-scoped; present the same equipped attacks as the Ledger.
+            $inventory = (new CharacterInventoryRepository())->find($character->id());
+            $catalogue = new ItemCatalogue();
+            $attacks = (new AttackPresenter($catalogue))->present($character, $inventory);
+            $inventoryRows = (new InventoryPresenter($catalogue))->present($character, $inventory)['rows'];
             $result[] = [
                 'portrait' => $portraitData,
                 'id' => $character->id()->value(),
@@ -142,6 +151,8 @@ final class PocketApi
                 ],
                 'saving_throws' => $savingThrowData,
                 'skills' => $skillData,
+                'attacks' => $attacks,
+                'equipment' => $inventoryRows,
                 'proficiency_bonus' => $character->proficiencyBonus()->value(),
                 'hp' => [
                     'current' => $hp->current(),
