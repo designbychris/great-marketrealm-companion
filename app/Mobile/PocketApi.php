@@ -107,6 +107,21 @@ final class PocketApi
             $portraitData = $portraitUrl ? ['kind' => 'image', 'url' => esc_url_raw($portraitUrl)]
                 : ($portraitSvg !== '' ? ['kind' => 'svg', 'url' => 'data:image/svg+xml;base64,' . base64_encode($portraitSvg)]
                 : ['kind' => 'none', 'url' => null]);
+            // Use the canonical Character value objects, never a second mobile rules engine.
+            $savingThrows = $character->savingThrows();
+            $savingThrowData = [];
+            foreach (['STR' => 'strength', 'DEX' => 'dexterity', 'CON' => 'constitution', 'INT' => 'intelligence', 'WIS' => 'wisdom', 'CHA' => 'charisma'] as $short => $ability) {
+                $save = $savingThrows->get($ability);
+                $savingThrowData[$short] = ['modifier' => $save->modifier(), 'proficient' => $save->isProficient()];
+            }
+            $skillData = [];
+            foreach ($character->skills()->all() as $identifier => $skill) {
+                $skillData[$identifier] = [
+                    'modifier' => $skill->modifier(),
+                    'proficient' => $skill->isProficient(),
+                    'expertise' => $skill->hasExpertise(),
+                ];
+            }
             $result[] = [
                 'portrait' => $portraitData,
                 'id' => $character->id()->value(),
@@ -125,6 +140,9 @@ final class PocketApi
                     'WIS' => $character->abilityScores()->wisdom()->value(),
                     'CHA' => $character->abilityScores()->charisma()->value(),
                 ],
+                'saving_throws' => $savingThrowData,
+                'skills' => $skillData,
+                'proficiency_bonus' => $character->proficiencyBonus()->value(),
                 'hp' => [
                     'current' => $hp->current(),
                     'maximum' => $hp->maximum(),
