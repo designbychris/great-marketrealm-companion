@@ -12,6 +12,9 @@ use GreatMarketrealmCompanion\Modules\Characters\Inventory\Services\InventoryPre
 use GreatMarketrealmCompanion\Modules\Characters\Combat\Services\AttackPresenter;
 use GreatMarketrealmCompanion\Modules\Library\Spells\Repositories\SharedSpellRegister;
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCatalogue;
+use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\ArcanePantryPresenter;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Repositories\ActiveClassResourceRepository;
+use GreatMarketrealmCompanion\Modules\Characters\ActivePlay\Services\SharedSpellSlotReserveService;
 use WP_REST_Request;
 use WP_Error;
 use GreatMarketrealmCompanion\Modules\Characters\Models\ValueObjects\CharacterId;
@@ -146,6 +149,16 @@ final class PocketApi
             $inventoryRows = (new InventoryPresenter($catalogue))->present($character, $inventory)['rows'];
             // Read-only: resolve only this character's learned spell identities against the shared register.
             // Unknown identities remain visible without fabricated mechanics.
+            // Canonical desktop presenter and owner-scoped active resource ledger.
+            // This phase is read-only: no spell-slot mutations or inferred resource state.
+            $casting = (new ArcanePantryPresenter($arcaneCatalogue))->present($character);
+            $slotState = (new ActiveClassResourceRepository())->find($character->id());
+            $castingMeasures = [
+                'ability' => $casting['casting_ability'],
+                'attack_bonus' => $casting['spell_attack'],
+                'save_dc' => $casting['save_dc'],
+                'slots' => (new SharedSpellSlotReserveService())->present($character, $slotState),
+            ];
             $spellbook = $character->spellbook();
             $spellRows = [];
             foreach (['cantrips' => $spellbook->cantrips(), 'spells' => $spellbook->spells()] as $group => $identifiers) {
@@ -213,6 +226,7 @@ final class PocketApi
                 'attacks' => $attacks,
                 'equipment' => $inventoryRows,
                 'spellbook' => $spellRows,
+                'spellcasting' => $castingMeasures,
                 'proficiency_bonus' => $character->proficiencyBonus()->value(),
                 'hp' => [
                     'current' => $hp->current(),

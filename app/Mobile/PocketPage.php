@@ -176,6 +176,25 @@ function pocketArsenal(character,diceTray){
 }
 function pocketSpellbook(character,diceTray){
  const panel=el('details','gmrc-pocket-training'),summary=el('summary','','The Pocket Spellbook'),body=el('div','gmrc-pocket-training__list');panel.append(summary,body);
+ const casting=character.spellcasting||{};
+ if(casting.ability){
+  const measures=el('div','gmrc-pocket-training__list');
+  for(const [label,value] of [['Spellcasting ability',casting.ability],['Spell attack bonus',casting.attack_bonus==null?null:(Number(casting.attack_bonus)>=0?'+':'')+casting.attack_bonus],['Spell save DC',casting.save_dc]]){
+   if(value!==null&&value!==undefined)measures.append(el('p','',label+': '+String(value)));
+  }
+  if(Number.isSafeInteger(casting.attack_bonus)){
+   const attack=el('button','gmrc-pocket-training__roll','Roll spell attack');attack.type='button';
+   attack.addEventListener('click',()=>diceTray.rollAbility('Spell attack',casting.attack_bonus));measures.append(attack);
+  }
+  body.append(measures);
+ }
+ const slots=Array.isArray(casting.slots)?casting.slots:[];
+ if(slots.length){
+  const heading=el('h4','','Spell slots · read only');body.append(heading);
+  for(const slot of slots){
+   body.append(el('p','', 'Level '+slot.level+': '+slot.remaining+' / '+slot.total+' remaining ('+slot.expended+' expended)'));
+  }
+ }
  const spells=Array.isArray(character.spellbook)?character.spellbook:[];
  if(!spells.length){body.append(el('p','','No spells recorded for this adventurer.'));return panel;}
  const ordered=[...spells].sort((a,b)=>(a.level??(a.group==='cantrips'?0:99))-(b.level??(b.group==='cantrips'?0:99))||String(a.name).localeCompare(String(b.name)));
@@ -196,7 +215,7 @@ function pocketSpellbook(character,diceTray){
   }else if(spell.formula)content.append(el('p','','Automatic rolling is not available for this spell formula. Use Guild Diceworks manually as directed by your GM.'));
   body.append(entry);
  }
- body.append(el('p','','Spell slots and spell attack modifiers are not changed or inferred by this read-only spellbook.'));
+ body.append(el('p','','Spell slots are read-only here. Casting or rolling a spell does not expend a slot.')); 
  return panel;
 }
 function card(character){const article=el('article','gmrc-pocket-character');const head=el('div','gmrc-pocket-character__head');head.append(el('span','gmrc-pocket-character__label','Adventurer'),el('h3','',character.name||'Unnamed adventurer'));article.append(head);const body=el('div','gmrc-pocket-character__body');const hp=character.hp||{};const current=Number(hp.current),maximum=Number(hp.maximum),temporary=Number(hp.temporary);const safeMax=Number.isFinite(maximum)&&maximum>0?maximum:0;const safeCurrent=Number.isFinite(current)?current:0;const safeTemp=Number.isFinite(temporary)?temporary:0;const tiles=el('div','gmrc-pocket-hp');for(const [label,value] of [['Hit points',String(safeCurrent)+' / '+String(safeMax||'—')],['Temporary HP',String(safeTemp)]]){const tile=el('div','gmrc-pocket-hp__tile');tile.append(el('span','gmrc-pocket-character__label',label),el('strong','gmrc-pocket-hp__value',value));tiles.append(tile);}body.append(tiles);const meter=el('div','gmrc-pocket-hp__meter');meter.setAttribute('role','progressbar');meter.setAttribute('aria-label','Current hit points');meter.setAttribute('aria-valuemin','0');meter.setAttribute('aria-valuemax',String(safeMax));meter.setAttribute('aria-valuenow',String(Math.max(0,Math.min(safeMax,safeCurrent))));const fill=el('span','gmrc-pocket-hp__fill');fill.style.width=(safeMax?Math.max(0,Math.min(100,safeCurrent/safeMax*100)):0)+'%';meter.append(fill);body.append(meter);const open=el('button','gmrc-pocket-button gmrc-pocket-character__open','Open character sheet');open.type='button';open.addEventListener('click',()=>showDetail(character));body.append(open);article.append(body);return article;}
