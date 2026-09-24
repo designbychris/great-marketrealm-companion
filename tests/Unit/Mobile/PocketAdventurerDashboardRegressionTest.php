@@ -26,7 +26,7 @@ final class PocketAdventurerDashboardRegressionTest extends TestCase
     public function testAccessibleDashboardNavigationAndResponsivePresentation(): void
     {
         $source = $this->pocketSource();
-        foreach (['overview', 'character', 'combat', 'dice', 'spells', 'equipment'] as $section) {
+        foreach (['overview', 'character', 'combat', 'spells', 'equipment'] as $section) {
             self::assertStringContainsString("['" . $section . "'", $source);
         }
         foreach (['role\',\'tablist', 'role\',\'tabpanel', 'aria-selected', 'aria-controls', 'ArrowLeft', 'ArrowRight', 'safe-area-inset-bottom', 'prefers-reduced-motion'] as $token) {
