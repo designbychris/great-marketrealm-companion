@@ -18,8 +18,8 @@ final class PocketNavigationDockRegressionTest extends TestCase
     public function testDiceTrayAndNavigationHaveSeparateMobileSafeAreaPositions(): void
     {
         $source = (string) file_get_contents(__DIR__ . '/../../../app/Mobile/PocketPage.php');
-        self::assertStringContainsString('gmrc-pocket-dice-dock{bottom:calc(66px + env(safe-area-inset-bottom,0px))', $source);
-        self::assertStringContainsString('gmrc-pocket-dashboard__tabs{position:fixed', $source);
+        self::assertStringContainsString("bottomDock.append(dock,moreMenu,tabs)", $source);
+        self::assertStringContainsString('gmrc-pocket-bottom-dock{position:fixed', $source);
         self::assertStringContainsString("dock.append(diceTray)", $source);
     }
 }
