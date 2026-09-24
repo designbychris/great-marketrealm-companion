@@ -11,7 +11,8 @@ final class PocketPersistentDiceworksRegressionTest extends TestCase
         $source = (string) file_get_contents(__DIR__ . '/../../../app/Mobile/PocketPage.php');
         self::assertStringContainsString("const dock=el('aside','gmrc-pocket-dice-dock')", $source);
         self::assertStringContainsString('dock.append(diceTray)', $source);
-        self::assertStringContainsString('shell.append(hero,tabs,...panels.values(),dock)', $source);
+        self::assertStringContainsString('shell.append(hero,tabs,moreMenu,...panels.values(),dock)', $source);
+        self::assertStringContainsString("moreMenu.hidden=true", $source);
         self::assertStringNotContainsString("['dice','Diceworks',[diceTray]]", $source);
         self::assertStringNotContainsString("activate('dice')", $source);
     }
