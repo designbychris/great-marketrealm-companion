@@ -17,7 +17,13 @@ final class PocketAdventurerDashboardRegressionTest extends TestCase
         self::assertStringContainsString('function pocketDashboard(detail,character,back,diceTray)', $source);
         self::assertStringContainsString('pocketDashboard(detail,character,back,diceTray);', $source);
         self::assertStringContainsString('panel.append(node)', $source);
-        self::assertStringContainsString('detail.replaceChildren(back,shell)', $source);
+        // III.M.4C.3 mounts the Back control and existing character panels in
+        // the scrollable viewport, then mounts that viewport alongside the
+        // shared bottom dock. The old back,shell mounting order no longer applies.
+        self::assertStringContainsString("const viewport=el('div','gmrc-pocket-dashboard__viewport')", $source);
+        self::assertStringContainsString('viewport.append(back,hero,...panels.values())', $source);
+        self::assertStringContainsString('shell.append(viewport,bottomDock)', $source);
+        self::assertStringContainsString('detail.replaceChildren(shell)', $source);
         self::assertStringContainsString('vitalityControls(character)', $source);
         self::assertStringContainsString('pocketSpellbook(character,diceTray)', $source);
         self::assertStringContainsString('changeSpellSlot(character,slot,action)', $source);
