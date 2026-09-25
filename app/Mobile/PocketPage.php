@@ -125,6 +125,30 @@ final class PocketPage
  .gmrc-pocket--character-open .gmrc-pocket-bottom-dock .gmrc-pocket-dashboard__more-menu[hidden]{display:none!important}
  .gmrc-pocket--character-open .gmrc-pocket-bottom-dock .gmrc-pocket-dashboard__tab{min-width:0!important;min-height:44px!important;padding:.3rem 0!important;font-size:clamp(.61rem,2.5vw,.85rem)!important;overflow-wrap:anywhere!important}
 }
+/* III.M.4C.4: presentation-only Pocket polish; viewport/dock ownership stays in III.M.4C.3. */
+@media(max-width:649px){
+ .gmrc-pocket--character-open>.gmrc-pocket__header{padding:.45rem 1rem!important;background:#192d22!important;color:#fff!important;border-bottom:1px solid #c5a66c!important}
+ .gmrc-pocket--character-open>.gmrc-pocket__header h2{margin:.12rem 0!important;color:#fff!important;font-size:1.05rem!important}
+ .gmrc-pocket--character-open>.gmrc-pocket__header .gmrc-pocket-kicker{color:#efd69e!important;letter-spacing:.12em}
+ .gmrc-pocket--character-open .gmrc-pocket-dashboard__viewport{padding:.65rem .75rem 1.25rem!important;scrollbar-gutter:stable}
+ .gmrc-pocket--character-open .gmrc-pocket-dashboard__hero{gap:.55rem!important;padding:.7rem!important;margin:0 0 .8rem!important;border-radius:12px!important}
+ .gmrc-pocket--character-open .gmrc-pocket-dashboard__hero .gmrc-pocket-detail__portrait{width:min(100%,112px)!important;max-height:130px!important;object-fit:contain!important}
+ .gmrc-pocket--character-open .gmrc-pocket-dashboard__hero .gmrc-pocket-detail__heading{font-size:clamp(1.25rem,5vw,1.7rem)!important;line-height:1.2!important;overflow-wrap:anywhere}
+ .gmrc-pocket--character-open .gmrc-pocket-dashboard__hero .gmrc-pocket-detail__stats{gap:.4rem!important}
+ .gmrc-pocket--character-open .gmrc-pocket-detail__stat{padding:.55rem .2rem!important;min-width:0!important}
+ .gmrc-pocket--character-open .gmrc-pocket-detail__stat strong{font-size:clamp(1rem,4.3vw,1.25rem)!important;font-variant-numeric:tabular-nums}
+ .gmrc-pocket--character-open .gmrc-pocket-bottom-dock{gap:.15rem!important;padding:.2rem .3rem calc(.2rem + env(safe-area-inset-bottom,0px))!important}
+ .gmrc-pocket--character-open .gmrc-pocket-bottom-dock .gmrc-pocket-dice>summary{line-height:1.25!important;min-height:48px!important;padding:.4rem .6rem!important}
+ .gmrc-pocket--character-open .gmrc-pocket-bottom-dock .gmrc-pocket-dice__latest{font-size:.76rem!important;line-height:1.3!important}
+ .gmrc-pocket--character-open .gmrc-pocket-bottom-dock .gmrc-pocket-dice__body{padding:.45rem!important}
+ .gmrc-pocket--character-open .gmrc-pocket-bottom-dock .gmrc-pocket-dashboard__tab{min-height:48px!important;line-height:1.15!important}
+ .gmrc-pocket--character-open .gmrc-pocket-bottom-dock :is(button,summary):focus-visible{outline:3px solid #b47a1c!important;outline-offset:-3px!important}
+}
+@media(max-width:380px){
+ .gmrc-pocket--character-open .gmrc-pocket-dice__fields{grid-template-columns:minmax(0,1fr)!important}
+ .gmrc-pocket--character-open .gmrc-pocket-dashboard__hero .gmrc-pocket-detail__stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(prefers-reduced-motion:reduce){.gmrc-pocket--character-open *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 CSS;
         $html .= <<<'JS'
