@@ -12,6 +12,7 @@ final class PocketPage
     public static function register(): void
     {
         add_shortcode('gmrc_pocket_companion', [self::class, 'render']);
+        PocketAppFoundation::register();
     }
 
     public static function render(): string
@@ -63,6 +64,7 @@ final class PocketPage
             'vitalityBase' => esc_url_raw(rest_url('gmrc-pocket/v1/characters/')),
             'spellSlotBase' => esc_url_raw(rest_url('gmrc-pocket/v1/characters/')),
             'nonce' => wp_create_nonce('wp_rest'),
+            'serviceWorker' => PocketAppFoundation::serviceWorkerUrl(),
         ];
         $json = wp_json_encode($config, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
         $html = '<section class="gmrc-pocket" id="' . esc_attr($id) . '" aria-label="Pocket character sheet">'
@@ -156,6 +158,7 @@ CSS;
 (function(){"use strict";
 const root=document.getElementById(POCKET_ROOT_ID);if(!root)return;
 const config=POCKET_CONFIG;
+if('serviceWorker' in navigator&&config.serviceWorker){window.addEventListener('load',()=>{navigator.serviceWorker.register(config.serviceWorker,{scope:'/'}).catch(()=>{});},{once:true});}
 const homeNav=root.querySelector('[data-pocket-nav="home"]'),characterNav=root.querySelector('[data-pocket-nav="character"]');
 let selectedCharacter=null;function setPocketView(view){homeNav.setAttribute('aria-current',view==='home'?'page':'false');characterNav.setAttribute('aria-current',view==='character'?'page':'false');}
 let currentCharacters=[];const status=root.querySelector('.gmrc-pocket-status'),welcome=root.querySelector('.gmrc-pocket-welcome'),list=root.querySelector('.gmrc-pocket-characters'),refresh=root.querySelector('.gmrc-pocket-refresh'),detail=root.querySelector('.gmrc-pocket-detail');
