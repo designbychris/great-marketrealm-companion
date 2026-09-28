@@ -59,6 +59,9 @@ final class PocketAppFoundation
         if ($asset === 'service-worker') {
             self::serveServiceWorker();
         }
+        if ($asset === 'offline') {
+            self::serveOfflinePage();
+        }
     }
 
     private static function serveManifest(): void
@@ -96,25 +99,48 @@ final class PocketAppFoundation
         exit;
     }
 
+    private static function offlineUrl(): string
+    {
+        return add_query_arg(self::ASSET_QUERY, 'offline', home_url('/'));
+    }
+
+    private static function offlineMarkup(): string
+    {
+        return '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#192d22"><title>MarketRealm Pocket — Offline</title><style>html,body{margin:0;min-height:100%;background:#192d22}body{min-height:100vh;display:grid;place-items:center;padding:24px;box-sizing:border-box;color:#30291d;font:16px system-ui,sans-serif}.card{max-width:430px;padding:28px;border:3px solid #b68b44;border-radius:18px;background:#fff4d9;text-align:center;box-shadow:0 12px 40px #0005}.kicker{font-size:.75rem;letter-spacing:.14em;font-weight:800;color:#52683d}h1{margin:.35rem 0 1rem;color:#354a32;font-size:1.7rem}button{min-height:48px;padding:.75rem 1rem;border:0;border-radius:9px;background:#354a32;color:white;font:inherit;font-weight:700;cursor:pointer}</style></head><body><main class="card"><p class="kicker">THE GREAT MARKETREALM</p><h1>Pocket Companion</h1><p><strong>The Guild is out of reach.</strong></p><p>Your character data has not been cached. Reconnect to continue safely.</p><button type="button" onclick="location.reload()">Try again</button></main></body></html>';
+    }
+
+    private static function serveOfflinePage(): void
+    {
+        status_header(200);
+        header('Content-Type: text/html; charset=utf-8');
+        header('Cache-Control: public, max-age=86400');
+        echo self::offlineMarkup();
+        exit;
+    }
+
     private static function serveServiceWorker(): void
     {
         $logo = plugins_url('assets/images/pocket/greatmarketrealmlogo.png', GMRC_PLUGIN_FILE);
         $icon192 = plugins_url('assets/images/pocket/app-icon-192.png', GMRC_PLUGIN_FILE);
         $icon512 = plugins_url('assets/images/pocket/app-icon-512.png', GMRC_PLUGIN_FILE);
-        $assets = wp_json_encode([$logo, $icon192, $icon512], JSON_UNESCAPED_SLASHES);
+        $offline = self::offlineUrl();
+        $assets = wp_json_encode([$logo, $icon192, $icon512, $offline], JSON_UNESCAPED_SLASHES);
+        $offlineJson = wp_json_encode($offline, JSON_UNESCAPED_SLASHES);
 
         status_header(200);
         nocache_headers();
         header('Content-Type: application/javascript; charset=utf-8');
         header('Service-Worker-Allowed: /');
-        echo "const CACHE='gmrc-pocket-static-v1';\n";
+        // Bump the cache name so installed copies immediately replace the M.5B static cache.
+        echo "const CACHE='gmrc-pocket-static-v2';\n";
         echo 'const STATIC=' . $assets . ";\n";
+        echo 'const OFFLINE_URL=' . $offlineJson . ";\n";
         echo "self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(STATIC)).then(()=>self.skipWaiting()));});\n";
         echo "self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('gmrc-pocket-static-')&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim()));});\n";
-        // Private pages, REST responses and gameplay actions remain network-only. Only bundled public artwork is cached.
-        // Navigations receive a generated, non-cached connection guard if the network is unavailable.
-        echo "const OFFLINE='<!doctype html><html><head><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"theme-color\" content=\"#192d22\"><title>MarketRealm Pocket — Offline</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;box-sizing:border-box;background:#192d22;color:#30291d;font:16px system-ui,sans-serif}.card{max-width:430px;padding:28px;border:3px solid #b68b44;border-radius:18px;background:#fff4d9;text-align:center}h1{color:#354a32;font-size:1.7rem}button{min-height:48px;padding:.75rem 1rem;border:0;border-radius:9px;background:#354a32;color:white;font:inherit;font-weight:700}</style></head><body><main class=\"card\"><p>THE GREAT MARKETREALM</p><h1>Pocket Companion</h1><p><strong>The Guild is out of reach.</strong></p><p>Your character data has not been cached. Reconnect to continue safely.</p><button onclick=\"location.reload()\">Try again</button></main></body></html>';\n";
-        echo "self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;const url=new URL(event.request.url);if(url.origin!==self.location.origin)return;if(event.request.mode==='navigate'){event.respondWith(fetch(event.request).catch(()=>new Response(OFFLINE,{status:503,headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'}})));return;}if(STATIC.includes(url.href)){event.respondWith(caches.match(event.request).then(hit=>hit||fetch(event.request)));}});\n";
+        // Private pages, REST responses and gameplay actions remain network-only. The only HTML
+        // cached by the worker is the generic public offline guard above; it contains no user data.
+        echo "self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;const url=new URL(event.request.url);if(url.origin!==self.location.origin)return;if(event.request.mode==='navigate'){event.respondWith(fetch(event.request,{cache:'no-store'}).catch(()=>caches.match(OFFLINE_URL).then(fallback=>fallback||new Response('Pocket Companion is offline.',{status:200,headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'no-store'}}))));return;}if(STATIC.includes(url.href)){event.respondWith(caches.match(event.request).then(hit=>hit||fetch(event.request)));}});\n";
         exit;
     }
+
 }
