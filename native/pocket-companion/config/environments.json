@@ -1,0 +1,15 @@
+{
+  "contractVersion": "1.0",
+  "production": {
+    "origin": "https://greatmarketrealm.co.uk",
+    "bridgePath": "/wp-json/gmrc-pocket/v1/bridge",
+    "pocketPath": "/pocket/"
+  },
+  "rules": {
+    "gmrcIsAuthoritative": true,
+    "nativeCharacterDatabase": false,
+    "offlineCharacterWrites": false,
+    "remoteWebAppAsProductionBundle": false,
+    "authenticationPhase": "III.M.6B"
+  }
+}
