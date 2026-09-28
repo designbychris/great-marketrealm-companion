@@ -59,6 +59,7 @@ final class PocketPage
 
         $id = 'gmrc-pocket-' . wp_unique_id();
         $config = [
+            'bridge' => esc_url_raw(rest_url('gmrc-pocket/v1/bridge')),
             'session' => esc_url_raw(rest_url('gmrc-pocket/v1/session')),
             'characters' => esc_url_raw(rest_url('gmrc-pocket/v1/characters')),
             'vitalityBase' => esc_url_raw(rest_url('gmrc-pocket/v1/characters/')),

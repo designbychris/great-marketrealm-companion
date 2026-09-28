@@ -31,6 +31,12 @@ final class PocketApi
 
     public function register(): void
     {
+        register_rest_route('gmrc-pocket/v1', '/bridge', [
+            'methods' => 'GET',
+            'permission_callback' => static fn (): bool => is_user_logged_in() && get_current_user_id() > 0,
+            'callback' => [$this, 'bridge'],
+        ]);
+
         register_rest_route('gmrc-pocket/v1', '/session', [
             'methods' => 'GET',
             'permission_callback' => static fn (): bool => is_user_logged_in() && get_current_user_id() > 0,
@@ -54,6 +60,16 @@ final class PocketApi
             'permission_callback' => static fn (): bool => is_user_logged_in() && get_current_user_id() > 0,
             'callback' => [$this, 'characters'],
         ]);
+    }
+
+    /** Advertise the stable Pocket/native boundary without duplicating character data. */
+    public function bridge(WP_REST_Request $request): WP_REST_Response
+    {
+        return new WP_REST_Response(
+            PocketNativeBridge::contract(),
+            200,
+            ['Cache-Control' => 'private, no-store']
+        );
     }
 
     /** A minimal identity check for authenticated clients; never exposes credentials. */
