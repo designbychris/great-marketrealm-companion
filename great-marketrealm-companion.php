@@ -92,6 +92,10 @@ $app = new GreatMarketrealmCompanion\Core\Application(
 
 $app->boot();
 
+/** Phase III.M.6B: native bearer authentication is isolated to Pocket REST routes. */
+\GreatMarketrealmCompanion\Mobile\PocketNativeAuth::register();
+add_action('template_redirect', [\GreatMarketrealmCompanion\Mobile\PocketNativeAuth::class, 'handleBrowserCompletion'], 1);
+
 /** Phase III.M.1: owner-scoped, read-only Pocket Companion API. */
 add_action('rest_api_init', static function () use ($app): void {
     $api = new \GreatMarketrealmCompanion\Mobile\PocketApi(
@@ -99,6 +103,7 @@ add_action('rest_api_init', static function () use ($app): void {
         $app->make(\GreatMarketrealmCompanion\Modules\Characters\Portraits\Services\PortraitRenderer::class)
     );
     $api->register();
+    \GreatMarketrealmCompanion\Mobile\PocketNativeAuth::registerRoutes();
 });
 
 /** Phase III.M.2A: authenticated browser-only Pocket character ledger. */

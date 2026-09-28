@@ -24,7 +24,7 @@ final class PocketNativeWorkshopRegressionTest extends TestCase
         self::assertStringContainsString('"offlineCharacterWrites": false', $environment);
         self::assertStringContainsString('"authenticationPhase": "III.M.6B"', $environment);
         self::assertStringContainsString('Native authentication', $workshop);
-        self::assertStringContainsString("CONTRACT_VERSION = '1.0'", $bridge);
-        self::assertStringContainsString("'same_origin_required' => true", $bridge);
+        self::assertStringContainsString("CONTRACT_VERSION = '1.1'", $bridge);
+        self::assertStringContainsString("'same_origin_required' => false", $bridge);
     }
 }

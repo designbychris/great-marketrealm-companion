@@ -1,15 +1,21 @@
 {
-  "contractVersion": "1.0",
+  "contractVersion": "1.1",
   "production": {
     "origin": "https://greatmarketrealm.co.uk",
     "bridgePath": "/wp-json/gmrc-pocket/v1/bridge",
-    "pocketPath": "/pocket/"
+    "pocketPath": "/pocket/",
+    "nativeBeginPath": "/wp-json/gmrc-pocket/v1/native/begin",
+    "nativeTokenPath": "/wp-json/gmrc-pocket/v1/native/token",
+    "nativeRevokePath": "/wp-json/gmrc-pocket/v1/native/revoke",
+    "callbackUri": "uk.co.greatmarketrealm.pocket://auth/callback"
   },
   "rules": {
     "gmrcIsAuthoritative": true,
     "nativeCharacterDatabase": false,
     "offlineCharacterWrites": false,
     "remoteWebAppAsProductionBundle": false,
-    "authenticationPhase": "III.M.6B"
+    "authenticationPhase": "III.M.6B",
+    "nativeAuthentication": "system-browser-pkce-bearer",
+    "wordpressPasswordInNativeApp": false
   }
 }

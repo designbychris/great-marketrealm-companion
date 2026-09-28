@@ -261,6 +261,10 @@ final class GuildGateController
             return 'pocket';
         }
 
+        if (\GreatMarketrealmCompanion\Mobile\PocketNativeAuth::isNativeReturnRoute($route)) {
+            return $route;
+        }
+
         return $route !== '' && $this->router->has('GET', '/' . $route)
             ? $route
             : 'dashboard';
@@ -270,6 +274,13 @@ final class GuildGateController
     {
         $route = $this->returnRoute();
         $url = $this->gateUrl();
+
+        if (\GreatMarketrealmCompanion\Mobile\PocketNativeAuth::isNativeReturnRoute($route)) {
+            $requestId = \GreatMarketrealmCompanion\Mobile\PocketNativeAuth::requestIdFromReturnRoute($route);
+            return $requestId !== null
+                ? \GreatMarketrealmCompanion\Mobile\PocketNativeAuth::browserCompletionUrl($requestId)
+                : $url;
+        }
 
         if ($route === 'pocket') {
             $pages = get_posts(['post_type' => 'page', 'post_status' => 'publish', 'numberposts' => 1, 's' => 'Pocket Companion']);

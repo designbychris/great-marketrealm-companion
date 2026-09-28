@@ -12,9 +12,9 @@ final class PocketNativeAppBridgeRegressionTest extends TestCase
         $api = file_get_contents(__DIR__ . '/../../../app/Mobile/PocketApi.php');
         $page = file_get_contents(__DIR__ . '/../../../app/Mobile/PocketPage.php');
 
-        self::assertStringContainsString("CONTRACT_VERSION = '1.0'", $bridge);
-        self::assertStringContainsString("'authentication' => 'wordpress-cookie-rest-nonce'", $bridge);
-        self::assertStringContainsString("'same_origin_required' => true", $bridge);
+        self::assertStringContainsString("CONTRACT_VERSION = '1.1'", $bridge);
+        self::assertStringContainsString("'browser' => 'wordpress-cookie-rest-nonce'", $bridge);
+        self::assertStringContainsString("'same_origin_required' => false", $bridge);
         self::assertStringContainsString("'offline_character_writes' => false", $bridge);
         self::assertStringContainsString("'character_cache' => 'none'", $bridge);
         self::assertStringContainsString("'/bridge'", $api);

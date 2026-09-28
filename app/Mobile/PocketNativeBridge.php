@@ -14,7 +14,7 @@ defined('ABSPATH') || exit;
  */
 final class PocketNativeBridge
 {
-    public const CONTRACT_VERSION = '1.0';
+    public const CONTRACT_VERSION = '1.1';
 
     /** @return array<string,mixed> */
     public static function contract(): array
@@ -25,12 +25,18 @@ final class PocketNativeBridge
             'transport' => [
                 'origin' => home_url('/'),
                 'rest_root' => rest_url('gmrc-pocket/v1/'),
-                'authentication' => 'wordpress-cookie-rest-nonce',
-                'same_origin_required' => true,
+                'authentication' => [
+                    'browser' => 'wordpress-cookie-rest-nonce',
+                    'native' => 'system-browser-pkce-bearer',
+                ],
+                'same_origin_required' => false,
                 'offline_character_writes' => false,
             ],
             'endpoints' => [
                 'bridge' => rest_url('gmrc-pocket/v1/bridge'),
+                'native_begin' => rest_url('gmrc-pocket/v1/native/begin'),
+                'native_token' => rest_url('gmrc-pocket/v1/native/token'),
+                'native_revoke' => rest_url('gmrc-pocket/v1/native/revoke'),
                 'session' => rest_url('gmrc-pocket/v1/session'),
                 'characters' => rest_url('gmrc-pocket/v1/characters'),
                 'vitality' => rest_url('gmrc-pocket/v1/characters/{id}/vitality'),
@@ -45,6 +51,8 @@ final class PocketNativeBridge
                 'character_cache' => 'none',
                 'rest_cache' => 'none',
                 'credentials_in_payload' => false,
+                'wordpress_password_in_native_app' => false,
+                'native_token_storage' => 'platform-secure-storage-required',
             ],
         ];
     }
