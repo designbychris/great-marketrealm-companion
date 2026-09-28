@@ -10,7 +10,7 @@ final class PocketColdOfflineLaunchRegressionTest extends TestCase
     {
         $foundation = file_get_contents(__DIR__ . '/../../../app/Mobile/PocketAppFoundation.php');
 
-        self::assertStringContainsString("$asset === 'offline'", $foundation);
+        self::assertStringContainsString("\$asset === 'offline'", $foundation);
         self::assertStringContainsString("const CACHE='gmrc-pocket-static-v2'", $foundation);
         self::assertStringContainsString('const OFFLINE_URL=', $foundation);
         self::assertStringContainsString('caches.match(OFFLINE_URL)', $foundation);
