@@ -70,18 +70,21 @@ ob_start();
         </a>
     </div>
 
-    <aside class="gmrc-fellowship-auby-note">
-        <span class="gmrc-fellowship-auby-note__seal" aria-hidden="true">
-            <img src="<?php echo esc_url(GMRC_URL . 'assets/images/auby/auby-note-face.svg'); ?>" alt="">
-        </span>
-        <div>
-            <strong>Auby, Keeper of the Kingdoms</strong>
-            <p>
-                “One adventurer is a record. Several adventurers with snacks
-                are a Fellowship.”
-            </p>
-        </div>
-    </aside>
+    <?php
+        $fellowshipAubyQuote = new \GreatMarketrealmCompanion\Services\Auby\Quote(
+            __(
+                'One adventurer is a record. Several adventurers with snacks are a Fellowship.',
+                'great-marketrealm-companion'
+            )
+        );
+
+        echo $this->component(
+            'components.furniture.auby-note',
+            [
+                'quote' => $fellowshipAubyQuote,
+            ]
+        );
+        ?>
 
     <?php if ($fellowships === []) : ?>
         <section class="gmrc-fellowship-empty">

@@ -255,21 +255,21 @@ foreach ($officeHolders as $holder) {
         </div>
     </header>
 
-    <aside class="gmrc-fellowship-auby-note">
-        <span
-            class="gmrc-fellowship-auby-note__seal"
-            aria-hidden="true"
-        >
-            <img src="<?php echo esc_url(GMRC_URL . 'assets/images/auby/auby-note-face.svg'); ?>" alt="">
-        </span>
-        <div>
-            <strong>Auby’s company note</strong>
-            <p>
-                “A Fellowship is strongest when everybody knows their role.
-                It also helps if somebody remembers where the map went.”
-            </p>
-        </div>
-    </aside>
+    <?php
+        $fellowshipAubyQuote = new \GreatMarketrealmCompanion\Services\Auby\Quote(
+            __(
+                'A Fellowship is strongest when everybody knows their role. It also helps if somebody remembers where the map went.',
+                'great-marketrealm-companion'
+            )
+        );
+
+        echo $this->component(
+            'components.furniture.auby-note',
+            [
+                'quote' => $fellowshipAubyQuote,
+            ]
+        );
+        ?>
 
     <?php if (! $party->charter()->isBlank()) : ?>
         <section
@@ -343,21 +343,21 @@ foreach ($officeHolders as $holder) {
             </span>
         </header>
 
-        <aside class="gmrc-fellowship-auby-note">
-            <span
-                class="gmrc-fellowship-auby-note__seal"
-                aria-hidden="true"
-            >
-                <img src="<?php echo esc_url(GMRC_URL . 'assets/images/auby/auby-note-face.svg'); ?>" alt="">
-            </span>
-            <div>
-                <strong>Auby, Acting Guild Historian</strong>
-                <p>
-                    “If nobody writes down what happened, in six months
-                    everyone will insist they defeated the dragon.”
-                </p>
-            </div>
-        </aside>
+        <?php
+        $fellowshipAubyQuote = new \GreatMarketrealmCompanion\Services\Auby\Quote(
+            __(
+                'If nobody writes down what happened, in six months everyone will insist they defeated the dragon.',
+                'great-marketrealm-companion'
+            )
+        );
+
+        echo $this->component(
+            'components.furniture.auby-note',
+            [
+                'quote' => $fellowshipAubyQuote,
+            ]
+        );
+        ?>
 
         <?php if ($canManage) : ?>
         <form
@@ -586,21 +586,21 @@ foreach ($officeHolders as $holder) {
             <?php endif; ?>
         </header>
 
-        <aside class="gmrc-fellowship-auby-note">
-            <span
-                class="gmrc-fellowship-auby-note__seal"
-                aria-hidden="true"
-            >
-                <img src="<?php echo esc_url(GMRC_URL . 'assets/images/auby/auby-note-face.svg'); ?>" alt="">
-            </span>
-            <div>
-                <strong>Auby’s Treasury Note</strong>
-                <p>
-                    “A shared purse requires trust, accurate records,
-                    and at least one adventurer who can count past twelve.”
-                </p>
-            </div>
-        </aside>
+        <?php
+        $fellowshipAubyQuote = new \GreatMarketrealmCompanion\Services\Auby\Quote(
+            __(
+                'A shared purse requires trust, accurate records, and at least one adventurer who can count past twelve.',
+                'great-marketrealm-companion'
+            )
+        );
+
+        echo $this->component(
+            'components.furniture.auby-note',
+            [
+                'quote' => $fellowshipAubyQuote,
+            ]
+        );
+        ?>
 
         <div class="gmrc-fellowship-treasury__balance">
             <span>Current company purse</span>

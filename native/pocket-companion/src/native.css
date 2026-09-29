@@ -71,3 +71,24 @@ button:disabled { opacity: .55; cursor: wait; }
 .native-dashboard-dock button { min-height:48px; padding:6px 2px; border:0; border-radius:10px; background:transparent; color:#cfc5aa; font-size:10px; }
 .native-dashboard-dock button[aria-current="page"] { background:rgba(230,197,111,.16); color:#f4d985; }
 @media (max-width:390px){.vitality-fields{grid-template-columns:1fr 1fr}.certified-measure{grid-column:1/-1}.native-dashboard-dock button{font-size:9px}}
+
+/* Phase III.M.6F.1 — The Field Fits the Pocket */
+.native-shell[data-view="register"],
+.native-shell[data-view="character"] { display:block; padding:0; }
+.native-shell[data-view="character"] .character-view,
+.native-shell[data-view="register"] .register-view { width:100%; max-width:none; margin:0; }
+.native-shell[data-view="character"] .character-view {
+ padding:calc(14px + env(safe-area-inset-top)) max(10px,env(safe-area-inset-right))
+ calc(92px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));
+}
+.native-shell[data-view="register"] .register-view {
+ padding:calc(14px + env(safe-area-inset-top)) max(12px,env(safe-area-inset-right))
+ calc(24px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
+}
+.native-character-hero,.native-panel { width:100%; }
+@media (min-width:520px){
+ .native-shell[data-view="character"] .character-view { padding-inline:max(16px,env(safe-area-inset-left)); }
+ .native-dashboard-panel { display:grid; grid-template-columns:minmax(0,1fr); }
+ .vitality-fields { gap:12px; }
+ .measure-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
+}

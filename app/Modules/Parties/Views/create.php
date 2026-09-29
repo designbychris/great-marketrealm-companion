@@ -27,16 +27,21 @@ $flash = is_array($flash ?? null)
         </p>
     </header>
 
-    <aside class="gmrc-fellowship-auby-note">
-        <span class="gmrc-fellowship-auby-note__seal" aria-hidden="true"><img src="<?php echo esc_url(GMRC_URL . 'assets/images/auby/auby-note-face.svg'); ?>" alt=""></span>
-        <div>
-            <strong>Auby advises</strong>
-            <p>
-                “Choose something heroic. ‘People Who Happened To Be Nearby’
-                tested poorly with the Registrar.”
-            </p>
-        </div>
-    </aside>
+    <?php
+        $fellowshipAubyQuote = new \GreatMarketrealmCompanion\Services\Auby\Quote(
+            __(
+                'Choose something heroic. ‘People Who Happened To Be Nearby’ tested poorly with the Registrar.',
+                'great-marketrealm-companion'
+            )
+        );
+
+        echo $this->component(
+            'components.furniture.auby-note',
+            [
+                'quote' => $fellowshipAubyQuote,
+            ]
+        );
+        ?>
 
     <?php if (! empty($flash['error'])) : ?>
         <div class="gmrc-register-notice gmrc-register-notice--error" role="alert">

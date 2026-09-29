@@ -17,6 +17,7 @@ const enter = document.querySelector('#enter-guild');
 const leave = document.querySelector('#leave-guild');
 const status = document.querySelector('#native-status');
 const auby = document.querySelector('#auby-state');
+const nativeShell = document.querySelector('.native-shell');
 const gateView = document.querySelector('#gate-view');
 const registerView = document.querySelector('#register-view');
 const characterView = document.querySelector('#character-view');
@@ -47,6 +48,7 @@ const setAuby = state => {
 };
 
 const showView = view => {
+  nativeShell.dataset.view = view;
   gateView.hidden = view !== 'gate';
   registerView.hidden = view !== 'register';
   characterView.hidden = view !== 'character';

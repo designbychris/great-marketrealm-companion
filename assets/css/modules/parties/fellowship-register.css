@@ -12,57 +12,6 @@
     --gmrc-fellowship-red: #8d4c40;
 }
 
-.gmrc-fellowship-auby-note {
-    display: flex;
-    gap: 0.9rem;
-    align-items: flex-start;
-    margin: 1rem 0 1.35rem;
-    padding: 0.9rem 1rem;
-    border: 1px solid rgba(108, 83, 48, 0.28);
-    border-radius: 0.55rem;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 248, 215, 0.82),
-            rgba(239, 229, 190, 0.48)
-        );
-    box-shadow:
-        0 0.35rem 0.9rem rgba(75, 52, 33, 0.06);
-}
-
-.gmrc-fellowship-auby-note__seal {
-    display: grid;
-    place-items: center;
-    flex: 0 0 2.75rem;
-    width: 2.75rem;
-    height: 2.75rem;
-    border: 1px solid rgba(104, 76, 38, 0.3);
-    border-radius: 50%;
-    background: rgba(255, 252, 230, 0.82);
-    font-size: 1.35rem;
-    overflow: hidden;
-}
-
-.gmrc-fellowship-auby-note__seal img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.gmrc-fellowship-auby-note strong {
-    display: block;
-    margin-bottom: 0.2rem;
-    color: var(--gmrc-fellowship-ink);
-}
-
-.gmrc-fellowship-auby-note p {
-    margin: 0;
-    color: var(--gmrc-fellowship-muted);
-    font-family: "Caveat", cursive;
-    font-size: 1.08rem;
-    line-height: 1.45;
-}
 
 /* Register ----------------------------------------------------- */
 
@@ -740,12 +689,6 @@
     .gmrc-fellowship-member,
     .gmrc-fellowship-form,
     .gmrc-fellowship-recruit__form,
-    .gmrc-fellowship-auby-note {
-        border: 1px solid CanvasText;
-        background: Canvas;
-        color: CanvasText;
-        box-shadow: none;
-    }
 
     .gmrc-fellowship-button:focus-visible,
     .gmrc-fellowship-field input:focus-visible,
