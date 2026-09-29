@@ -12,7 +12,7 @@ final class PocketNativeAdventurersRegisterRegressionTest extends TestCase
         $client = file_get_contents($root . '/native/pocket-companion/src/main.js');
         $api = file_get_contents($root . '/app/Mobile/PocketApi.php');
 
-        self::assertStringContainsString("const CHARACTERS = `${ORIGIN}/wp-json/gmrc-pocket/v1/characters`;", $client);
+        self::assertStringContainsString('const CHARACTERS = `${ORIGIN}/wp-json/gmrc-pocket/v1/characters`;', $client);
         self::assertStringContainsString('Authorization: `Bearer ${accessToken}`', $client);
         self::assertStringContainsString("cache: 'no-store'", $client);
         self::assertStringContainsString('Repository::all() is explicitly scoped to the authenticated WP user.', $api);
@@ -26,7 +26,7 @@ final class PocketNativeAdventurersRegisterRegressionTest extends TestCase
         $html = file_get_contents($root . '/native/pocket-companion/index.html');
 
         self::assertStringContainsString('Adventurers&#039; Register', str_replace("'", '&#039;', $html));
-        self::assertStringContainsString('character.portrait', $client);
+        self::assertStringContainsString('character?.portrait', $client);
         self::assertStringContainsString('character.name', $client);
         self::assertStringContainsString('character.race', $client);
         self::assertStringContainsString('character.class', $client);
