@@ -27,5 +27,8 @@ final class PocketFirstNativeExpeditionRegressionTest extends TestCase
         self::assertStringContainsString('android:scheme="uk.co.greatmarketrealm.pocket"', $prepare);
         self::assertStringContainsString('android:host="auth"', $prepare);
         self::assertStringContainsString('android:path="/callback"', $prepare);
+        self::assertStringContainsString('execFileSync(process.execPath', $prepare);
+        self::assertStringContainsString('@capacitor/cli/bin/capacitor', $prepare);
+        self::assertStringNotContainsString('npx.cmd', $prepare);
     }
 }
