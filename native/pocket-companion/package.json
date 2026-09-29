@@ -1,6 +1,6 @@
 {
   "name": "great-marketrealm-pocket-companion-native",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "Native client workshop for The Great MarketRealm Pocket Companion.",
   "type": "module",
@@ -17,7 +17,8 @@
   "dependencies": {
     "@capacitor/app": "^8.0.0",
     "@capacitor/browser": "^8.0.0",
-    "@capacitor/core": "^8.0.0"
+    "@capacitor/core": "^8.0.0",
+    "@aparajita/capacitor-secure-storage": "^8.0.1"
   },
   "devDependencies": {
     "@capacitor/android": "^8.0.0",
@@ -25,5 +26,7 @@
     "@capacitor/ios": "^8.0.0",
     "vite": "^7.0.0"
   },
-  "engines": { "node": ">=22" }
+  "engines": {
+    "node": ">=22"
+  }
 }
