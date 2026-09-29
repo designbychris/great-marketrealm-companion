@@ -366,7 +366,11 @@ final class CompanyChronicleRegressionTest extends TestCase
             $show
         );
         self::assertStringContainsString(
-            'Auby, Acting Guild Historian',
+            "'components.furniture.auby-note'",
+            $show
+        );
+        self::assertStringContainsString(
+            'If nobody writes down what happened, in six months everyone will insist they defeated the dragon.',
             $show
         );
     }

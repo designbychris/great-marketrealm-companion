@@ -61,10 +61,17 @@ final class PocketNativeFieldVitalityRegressionTest extends TestCase
         $root = dirname(__DIR__, 3);
         foreach (['index.php', 'create.php', 'show.php'] as $view) {
             $source = file_get_contents($root . '/app/Modules/Parties/Views/' . $view);
+            self::assertIsString($source);
             self::assertStringNotContainsString('🍆', $source);
-            self::assertStringContainsString('assets/images/auby/auby-note-face.svg', $source);
+            self::assertStringContainsString(
+                "'components.furniture.auby-note'",
+                $source
+            );
+            self::assertStringContainsString(
+                'GreatMarketrealmCompanion\\Services\\Auby\\Quote',
+                $source
+            );
+            self::assertStringNotContainsString('auby-note-face.svg', $source);
         }
-        $css = file_get_contents($root . '/assets/css/modules/parties/fellowship-register.css');
-        self::assertStringContainsString('.gmrc-fellowship-auby-note__seal img', $css);
     }
 }

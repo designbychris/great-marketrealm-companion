@@ -260,7 +260,14 @@ final class FellowshipTreasuryRegressionTest extends TestCase
         self::assertStringContainsString('Record Company Expense', $show);
         self::assertStringContainsString('Recent Treasury Ledger', $show);
         self::assertStringContainsString('$quartermasterName', $show);
-        self::assertStringContainsString('Auby’s Treasury Note', $show);
+        self::assertStringContainsString(
+            "'components.furniture.auby-note'",
+            $show
+        );
+        self::assertStringContainsString(
+            'A shared purse requires trust, accurate records, and at least one adventurer who can count past twelve.',
+            $show
+        );
     }
 
     private function party(): Party
