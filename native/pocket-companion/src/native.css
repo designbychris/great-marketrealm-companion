@@ -92,3 +92,24 @@ button:disabled { opacity: .55; cursor: wait; }
  .vitality-fields { gap:12px; }
  .measure-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
 }
+
+
+/* Phase III.M.6G — The Adventurer Knows Their Training */
+.native-training { margin-top:10px; }
+.training-section + .training-section { margin-top:18px; padding-top:16px; border-top:1px solid rgba(230,197,111,.18); }
+.training-section h3 { margin:0 0 9px; color:#f1dfaa; font-size:15px; }
+.training-list { display:grid; gap:6px; margin:0; padding:0; list-style:none; }
+.training-row { display:grid; grid-template-columns:18px minmax(0,1fr) auto 42px; gap:8px; align-items:center; min-height:48px; padding:8px 9px; border:1px solid rgba(230,197,111,.18); border-radius:12px; background:rgba(255,255,255,.035); }
+.training-row.is-proficient { border-color:rgba(230,197,111,.4); background:rgba(230,197,111,.07); }
+.training-row.has-expertise { border-color:rgba(244,217,133,.58); }
+.training-mark { color:#8f8979; text-align:center; }
+.training-row.is-proficient .training-mark { color:#e6c56f; }
+.training-name { min-width:0; display:grid; gap:2px; }
+.training-name strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px; }
+.training-name small { color:#aaa28f; font-size:10px; text-transform:uppercase; letter-spacing:.08em; }
+.training-state { display:flex; justify-content:flex-end; }
+.training-badge { display:inline-block; padding:3px 6px; border:1px solid rgba(230,197,111,.38); border-radius:999px; color:#f1dfaa; font-size:9px; line-height:1.2; text-transform:uppercase; letter-spacing:.04em; }
+.training-badge--quiet { border-color:rgba(207,197,170,.18); color:#918b7b; }
+.training-badge--expertise { border-color:rgba(244,217,133,.65); color:#f4d985; }
+.training-modifier { color:#f4d985; font-size:17px; text-align:right; font-variant-numeric:tabular-nums; }
+@media (max-width:360px){.training-row{grid-template-columns:16px minmax(0,1fr) 40px}.training-state{grid-column:2}.training-modifier{grid-column:3;grid-row:1/3}.training-badge{font-size:8px}}

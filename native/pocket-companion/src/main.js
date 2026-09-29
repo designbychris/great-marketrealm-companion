@@ -220,6 +220,27 @@ function vitalityPanel(character) {
   return panel;
 }
 
+function trainingPanel(character) {
+  const panel = document.createElement('section');
+  panel.className = 'native-panel native-training';
+  const saves = Object.entries(character.saving_throws || {});
+  const skills = Object.entries(character.skills || {});
+  const saveRows = saves.map(([ability, save]) => {
+    const trained = save?.proficient ? '<span class="training-badge">Proficient</span>' : '<span class="training-badge training-badge--quiet">Untrained</span>';
+    return `<li class="training-row${save?.proficient ? ' is-proficient' : ''}"><span class="training-mark" aria-hidden="true">${save?.proficient ? '●' : '○'}</span><span class="training-name"><strong>${escapeText(ability)}</strong><small>Saving throw</small></span><span class="training-state">${trained}</span><strong class="training-modifier">${escapeText(signedModifier(save?.modifier ?? 0))}</strong></li>`;
+  }).join('');
+  const skillRows = skills.map(([identifier, skill]) => {
+    const label = skill?.label || String(identifier).replaceAll('-', ' ').replace(/\b\w/g, letter => letter.toUpperCase());
+    const mastery = skill?.expertise ? 'Expertise' : (skill?.proficient ? 'Proficient' : 'Untrained');
+    const badgeClass = skill?.expertise ? ' training-badge--expertise' : (skill?.proficient ? '' : ' training-badge--quiet');
+    return `<li class="training-row${skill?.proficient ? ' is-proficient' : ''}${skill?.expertise ? ' has-expertise' : ''}"><span class="training-mark" aria-hidden="true">${skill?.expertise ? '◆' : (skill?.proficient ? '●' : '○')}</span><span class="training-name"><strong>${escapeText(label)}</strong><small>${escapeText(skill?.ability || '—')}</small></span><span class="training-state"><span class="training-badge${badgeClass}">${mastery}</span></span><strong class="training-modifier">${escapeText(signedModifier(skill?.modifier ?? 0))}</strong></li>`;
+  }).join('');
+  panel.innerHTML = `<div class="panel-heading"><p class="eyebrow">Adventurer's Training</p><h2>Skills &amp; Saving Throws</h2><p>These modifiers and proficiencies come from the authoritative Companion ledger.</p></div>
+    <section class="training-section" aria-labelledby="native-saving-throws-title"><h3 id="native-saving-throws-title">Saving Throws</h3><ul class="training-list">${saveRows}</ul></section>
+    <section class="training-section" aria-labelledby="native-skills-title"><h3 id="native-skills-title">Skills</h3><ul class="training-list">${skillRows}</ul></section>`;
+  return panel;
+}
+
 function placeholderPanel(title, copy) {
   const panel = document.createElement('section');
   panel.className = 'native-panel native-coming-soon';
@@ -250,6 +271,7 @@ function openCharacter(id) {
   const characterPanel = document.createElement('section');
   characterPanel.className = 'native-dashboard-panel'; characterPanel.dataset.nativePanel = 'character'; characterPanel.hidden = true;
   characterPanel.innerHTML = `<div class="ability-grid">${Object.entries(character.abilities || {}).map(([ability, score]) => `<div><span>${escapeText(ability)}</span><strong>${escapeText(score)}</strong></div>`).join('')}</div>`;
+  characterPanel.append(trainingPanel(character));
 
   const combat = placeholderPanel('Combat', 'The native combat ledger will join the field in the next expedition.'); combat.classList.add('native-dashboard-panel'); combat.dataset.nativePanel = 'combat'; combat.hidden = true;
   const spells = placeholderPanel('Spellbook', 'The Pocket Spellbook remains safely in the Companion until its native phase.'); spells.classList.add('native-dashboard-panel'); spells.dataset.nativePanel = 'spells'; spells.hidden = true;
