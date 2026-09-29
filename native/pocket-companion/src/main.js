@@ -142,26 +142,128 @@ async function openAdventurersRegister() {
   }
 }
 
+async function persistVitality(character, body) {
+  const hp = character.hp || {};
+  const response = await fetch(`${CHARACTERS}/${encodeURIComponent(character.id)}/vitality`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    },
+    cache: 'no-store',
+    body: JSON.stringify({
+      ...body,
+      expected_current: hp.current,
+      expected_temporary: hp.temporary
+    })
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (response.status === 401 || response.status === 403) {
+    await forgetStoredToken();
+    showSignedOut('Your Guild key needs renewing.');
+    throw new Error('Your Guild key needs renewing.');
+  }
+  if (!response.ok) throw new Error(payload.message || 'Adventuring Measures could not be updated.');
+  character.hp = payload.hp;
+  return payload.hp;
+}
+
+function vitalityPanel(character) {
+  const panel = document.createElement('section');
+  panel.className = 'native-panel vitality-panel';
+  panel.innerHTML = `<div class="panel-heading"><p class="eyebrow">Adventurer's Vitality</p><h2>Adventuring Measures</h2><p>Current and temporary HP are live. Maximum HP remains Guild-certified.</p></div>
+    <form id="native-vitality-form">
+      <div class="vitality-fields">
+        <label>Current HP<input id="native-current-hp" type="number" inputmode="numeric" min="0" max="${escapeText(character.hp?.maximum)}" step="1" required value="${escapeText(character.hp?.current)}"></label>
+        <label>Temporary HP<input id="native-temp-hp" type="number" inputmode="numeric" min="0" max="999" step="1" required value="${escapeText(character.hp?.temporary)}"></label>
+        <div class="certified-measure"><span>Maximum HP</span><strong>${escapeText(character.hp?.maximum)}</strong><small>Read-only</small></div>
+      </div>
+      <button class="native-action" type="submit">Save HP</button>
+      <div class="vitality-adjust"><label>Damage or healing<input id="native-vitality-amount" type="number" inputmode="numeric" min="1" max="9999" step="1" value="5" required></label><div><button type="button" data-vitality-action="damage">− Damage</button><button type="button" data-vitality-action="heal">+ Healing</button></div></div>
+      <p id="vitality-message" class="vitality-message" role="status" aria-live="polite"></p>
+    </form>`;
+  const form = panel.querySelector('#native-vitality-form');
+  const current = panel.querySelector('#native-current-hp');
+  const temporary = panel.querySelector('#native-temp-hp');
+  const amount = panel.querySelector('#native-vitality-amount');
+  const message = panel.querySelector('#vitality-message');
+  const controls = [...panel.querySelectorAll('input, button')];
+  let busy = false;
+  const setBusy = value => { busy = value; controls.forEach(control => { control.disabled = value; }); };
+  const sync = hp => { current.value = hp.current; temporary.value = hp.temporary; };
+  const perform = async body => {
+    if (busy) return;
+    setBusy(true); message.textContent = 'Updating the live ledger…';
+    try {
+      const hp = await persistVitality(character, body);
+      sync(hp); message.textContent = 'Adventuring Measures updated.';
+    } catch (error) {
+      message.textContent = error instanceof Error ? error.message : 'Adventuring Measures could not be updated.';
+    } finally { setBusy(false); }
+  };
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const nextCurrent = Number(current.value), nextTemporary = Number(temporary.value);
+    if (!current.validity.valid || !temporary.validity.valid || !Number.isSafeInteger(nextCurrent) || !Number.isSafeInteger(nextTemporary)) {
+      message.textContent = 'Enter valid whole-number HP values.'; return;
+    }
+    perform({ current: nextCurrent, temporary: nextTemporary });
+  });
+  panel.querySelectorAll('[data-vitality-action]').forEach(button => button.addEventListener('click', () => {
+    const n = Number(amount.value);
+    if (!amount.validity.valid || !Number.isSafeInteger(n)) { message.textContent = 'Enter a damage or healing amount between 1 and 9999.'; return; }
+    perform({ action: button.dataset.vitalityAction, amount: n });
+  }));
+  return panel;
+}
+
+function placeholderPanel(title, copy) {
+  const panel = document.createElement('section');
+  panel.className = 'native-panel native-coming-soon';
+  panel.innerHTML = `<p class="eyebrow">Native Pocket</p><h2>${escapeText(title)}</h2><p>${escapeText(copy)}</p>`;
+  return panel;
+}
+
 function openCharacter(id) {
   const character = liveCharacters.find(candidate => candidate.id === id);
   if (!character) return;
   characterTitle.textContent = character.name;
-  characterLedger.innerHTML = `<div class="hero-portrait">${portraitMarkup(character)}</div>
-    <p class="character-subtitle">Level ${escapeText(character.level)} ${escapeText(character.race)} ${escapeText(character.class)}</p>
-    <div class="vital-row">
-      <div><span>Current HP</span><strong>${escapeText(character.hp?.current)}</strong></div>
-      <div><span>Maximum HP</span><strong>${escapeText(character.hp?.maximum)}</strong></div>
-      <div><span>Temp HP</span><strong>${escapeText(character.hp?.temporary)}</strong></div>
-    </div>
-    <div class="measure-grid">
-      <div><span>Armour Class</span><strong>${escapeText(character.armour_class)}</strong></div>
-      <div><span>Initiative</span><strong>${escapeText(character.initiative)}</strong></div>
-      <div><span>Speed</span><strong>${escapeText(character.speed_feet)} ft</strong></div>
-      <div><span>Proficiency</span><strong>${signedModifier(character.proficiency_bonus)}</strong></div>
-    </div>
-    <div class="ability-grid">${Object.entries(character.abilities || {}).map(([ability, score]) =>
-      `<div><span>${escapeText(ability)}</span><strong>${escapeText(score)}</strong></div>`).join('')}</div>
-    <p class="ledger-note">This first native ledger is read-only. Its values come directly from the authoritative Companion Pocket API.</p>`;
+  characterLedger.replaceChildren();
+
+  const hero = document.createElement('section');
+  hero.className = 'native-character-hero';
+  hero.innerHTML = `<div class="hero-portrait">${portraitMarkup(character)}</div>
+    <div><p class="eyebrow">Adventurer Overview</p><h2>${escapeText(character.name)}</h2><p>Level ${escapeText(character.level)} ${escapeText(character.race)} ${escapeText(character.class)}</p></div>`;
+
+  const overview = document.createElement('section');
+  overview.className = 'native-dashboard-panel';
+  overview.dataset.nativePanel = 'overview';
+  overview.append(vitalityPanel(character));
+  const measures = document.createElement('div');
+  measures.className = 'measure-grid';
+  measures.innerHTML = `<div><span>Armour Class</span><strong>${escapeText(character.armour_class)}</strong></div><div><span>Initiative</span><strong>${escapeText(character.initiative)}</strong></div><div><span>Speed</span><strong>${escapeText(character.speed_feet)} ft</strong></div><div><span>Proficiency</span><strong>${signedModifier(character.proficiency_bonus)}</strong></div>`;
+  overview.append(measures);
+
+  const characterPanel = document.createElement('section');
+  characterPanel.className = 'native-dashboard-panel'; characterPanel.dataset.nativePanel = 'character'; characterPanel.hidden = true;
+  characterPanel.innerHTML = `<div class="ability-grid">${Object.entries(character.abilities || {}).map(([ability, score]) => `<div><span>${escapeText(ability)}</span><strong>${escapeText(score)}</strong></div>`).join('')}</div>`;
+
+  const combat = placeholderPanel('Combat', 'The native combat ledger will join the field in the next expedition.'); combat.classList.add('native-dashboard-panel'); combat.dataset.nativePanel = 'combat'; combat.hidden = true;
+  const spells = placeholderPanel('Spellbook', 'The Pocket Spellbook remains safely in the Companion until its native phase.'); spells.classList.add('native-dashboard-panel'); spells.dataset.nativePanel = 'spells'; spells.hidden = true;
+  const more = placeholderPanel('More', 'Equipment and further adventuring tools will gather here as the native dashboard grows.'); more.classList.add('native-dashboard-panel'); more.dataset.nativePanel = 'more'; more.hidden = true;
+
+  const dock = document.createElement('nav');
+  dock.className = 'native-dashboard-dock'; dock.setAttribute('aria-label', 'Pocket character navigation');
+  for (const [key, label] of [['overview','Overview'],['character','Character'],['combat','Combat'],['spells','Spellbook'],['more','More']]) {
+    const button = document.createElement('button'); button.type = 'button'; button.textContent = label; button.dataset.nativeTab = key; button.setAttribute('aria-current', key === 'overview' ? 'page' : 'false');
+    button.addEventListener('click', () => {
+      characterLedger.querySelectorAll('[data-native-panel]').forEach(panel => { panel.hidden = panel.dataset.nativePanel !== key; });
+      dock.querySelectorAll('[data-native-tab]').forEach(tab => tab.setAttribute('aria-current', tab.dataset.nativeTab === key ? 'page' : 'false'));
+    });
+    dock.append(button);
+  }
+  characterLedger.append(hero, overview, characterPanel, combat, spells, more, dock);
   showView('character');
 }
 

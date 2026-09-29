@@ -260,7 +260,7 @@ foreach ($officeHolders as $holder) {
             class="gmrc-fellowship-auby-note__seal"
             aria-hidden="true"
         >
-            🍆
+            <img src="<?php echo esc_url(GMRC_URL . 'assets/images/auby/auby-note-face.svg'); ?>" alt="">
         </span>
         <div>
             <strong>Auby’s company note</strong>
@@ -348,7 +348,7 @@ foreach ($officeHolders as $holder) {
                 class="gmrc-fellowship-auby-note__seal"
                 aria-hidden="true"
             >
-                🍆
+                <img src="<?php echo esc_url(GMRC_URL . 'assets/images/auby/auby-note-face.svg'); ?>" alt="">
             </span>
             <div>
                 <strong>Auby, Acting Guild Historian</strong>
@@ -591,7 +591,7 @@ foreach ($officeHolders as $holder) {
                 class="gmrc-fellowship-auby-note__seal"
                 aria-hidden="true"
             >
-                🍆
+                <img src="<?php echo esc_url(GMRC_URL . 'assets/images/auby/auby-note-face.svg'); ?>" alt="">
             </span>
             <div>
                 <strong>Auby’s Treasury Note</strong>

@@ -72,7 +72,7 @@ ob_start();
 
     <aside class="gmrc-fellowship-auby-note">
         <span class="gmrc-fellowship-auby-note__seal" aria-hidden="true">
-            🍆
+            <img src="<?php echo esc_url(GMRC_URL . 'assets/images/auby/auby-note-face.svg'); ?>" alt="">
         </span>
         <div>
             <strong>Auby, Keeper of the Kingdoms</strong>

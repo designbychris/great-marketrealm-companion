@@ -106,7 +106,7 @@ final class PocketApi
             return new WP_Error('gmrc_pocket_invalid_body', 'A JSON body is required.', ['status' => 400]);
         }
         $hp = $character->hitPoints();
-        foreach (['current', 'temporary', 'expected_current', 'expected_temporary'] as $field) {
+        foreach (['expected_current', 'expected_temporary'] as $field) {
             if (!array_key_exists($field, $input) || !is_int($input[$field])) {
                 return new WP_Error('gmrc_pocket_invalid_hp', 'HP values must be whole numbers.', ['status' => 400]);
             }
@@ -114,8 +114,32 @@ final class PocketApi
         if ($input['expected_current'] !== $hp->current() || $input['expected_temporary'] !== $hp->temporary()) {
             return new WP_Error('gmrc_pocket_stale_hp', 'HP changed elsewhere. Refresh and try again.', ['status' => 409]);
         }
-        $current = $input['current'];
-        $temporary = $input['temporary'];
+
+        // Damage/healing is resolved here so native clients never become a second rules engine.
+        // Direct current/temporary writes remain the established PWA contract.
+        if (isset($input['action'])) {
+            if (!is_string($input['action']) || !in_array($input['action'], ['damage', 'heal'], true)
+                || !isset($input['amount']) || !is_int($input['amount']) || $input['amount'] < 1 || $input['amount'] > 9999) {
+                return new WP_Error('gmrc_pocket_invalid_vitality_action', 'A valid damage or healing amount is required.', ['status' => 400]);
+            }
+            $current = $hp->current();
+            $temporary = $hp->temporary();
+            if ($input['action'] === 'damage') {
+                $absorbed = min($temporary, $input['amount']);
+                $temporary -= $absorbed;
+                $current = max(0, $current - ($input['amount'] - $absorbed));
+            } else {
+                $current = min($hp->maximum(), $current + $input['amount']);
+            }
+        } else {
+            foreach (['current', 'temporary'] as $field) {
+                if (!array_key_exists($field, $input) || !is_int($input[$field])) {
+                    return new WP_Error('gmrc_pocket_invalid_hp', 'HP values must be whole numbers.', ['status' => 400]);
+                }
+            }
+            $current = $input['current'];
+            $temporary = $input['temporary'];
+        }
         if ($current < 0 || $current > $hp->maximum() || $temporary < 0 || $temporary > 999) {
             return new WP_Error('gmrc_pocket_invalid_hp', 'Current HP must be between 0 and maximum HP; temporary HP between 0 and 999.', ['status' => 400]);
         }

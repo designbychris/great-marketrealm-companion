@@ -36,7 +36,7 @@ final class PocketNativeAdventurersRegisterRegressionTest extends TestCase
         self::assertStringContainsString('character.abilities', $client);
     }
 
-    public function testFirstNativeLedgerRemainsReadOnlyAndDoesNotPersistCharacterData(): void
+    public function testNativeLedgerDoesNotPersistCharacterData(): void
     {
         $root = dirname(__DIR__, 3);
         $client = file_get_contents($root . '/native/pocket-companion/src/main.js');
@@ -45,7 +45,6 @@ final class PocketNativeAdventurersRegisterRegressionTest extends TestCase
         self::assertStringNotContainsString("SecureStorage.set('character", $client);
         self::assertStringNotContainsString('localStorage', $client);
         self::assertStringNotContainsString('sessionStorage', $client);
-        self::assertStringContainsString('This first native ledger is read-only.', $client);
         self::assertStringContainsString('platform-secure storage', $html);
     }
 }

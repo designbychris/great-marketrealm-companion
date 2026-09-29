@@ -47,3 +47,27 @@ button:disabled { opacity: .55; cursor: wait; }
 .ability-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
 .ability-grid strong { font-size: 20px; }
 .ledger-note { margin: 18px 6px 0; color: #bdb59f; font-size: 12px; line-height: 1.5; text-align: center; }
+.native-character-hero { display:grid; grid-template-columns:88px minmax(0,1fr); gap:14px; align-items:center; margin:0 0 14px; padding:12px; border:1px solid rgba(230,197,111,.34); border-radius:18px; background:rgba(16,41,31,.92); }
+.native-character-hero .hero-portrait { width:88px; margin:0; border-radius:18px; }
+.native-character-hero h2 { margin:.1rem 0 .25rem; font-size:22px; }
+.native-character-hero p:last-child { margin:0; color:#cfc5aa; font-size:12px; }
+.native-dashboard-panel { padding-bottom:92px; }
+.native-panel { padding:16px; border:1px solid rgba(230,197,111,.3); border-radius:18px; background:rgba(255,255,255,.055); }
+.panel-heading h2,.native-coming-soon h2 { margin:.15rem 0 .35rem; font-size:22px; }
+.panel-heading>p:last-child,.native-coming-soon>p:last-child { margin:.2rem 0 14px; color:#cfc5aa; font-size:12px; line-height:1.5; }
+.vitality-fields { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.vitality-fields label,.certified-measure { display:grid; gap:5px; align-content:start; padding:10px 8px; border:1px solid rgba(230,197,111,.25); border-radius:13px; color:#cfc5aa; font-size:10px; text-transform:uppercase; letter-spacing:.05em; }
+.vitality-fields input,.vitality-adjust input { width:100%; min-width:0; box-sizing:border-box; border:1px solid rgba(230,197,111,.45); border-radius:9px; background:#f7efd8; color:#173f2c; font:inherit; font-size:18px; font-weight:800; padding:8px; text-align:center; }
+.certified-measure strong { color:#e6c56f; font-size:24px; text-align:center; }
+.certified-measure small { color:#9f9783; text-align:center; text-transform:none; }
+.native-action { width:100%; margin-top:10px; }
+.vitality-adjust { display:grid; gap:8px; margin-top:14px; padding-top:14px; border-top:1px solid rgba(230,197,111,.18); }
+.vitality-adjust label { display:grid; grid-template-columns:1fr 92px; gap:10px; align-items:center; color:#d8cfb7; font-size:12px; }
+.vitality-adjust>div { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.vitality-adjust button { min-height:44px; padding:8px; }
+.vitality-message { min-height:1.4em; margin:10px 0 0; color:#e6c56f; font-size:12px; text-align:center; }
+.native-coming-soon { margin-top:10px; text-align:center; }
+.native-dashboard-dock { position:fixed; z-index:10; right:0; bottom:0; left:0; display:grid; grid-template-columns:repeat(5,1fr); gap:2px; padding:8px max(8px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left)); border-top:1px solid rgba(230,197,111,.35); background:rgba(12,33,25,.97); box-shadow:0 -8px 28px rgba(0,0,0,.28); }
+.native-dashboard-dock button { min-height:48px; padding:6px 2px; border:0; border-radius:10px; background:transparent; color:#cfc5aa; font-size:10px; }
+.native-dashboard-dock button[aria-current="page"] { background:rgba(230,197,111,.16); color:#f4d985; }
+@media (max-width:390px){.vitality-fields{grid-template-columns:1fr 1fr}.certified-measure{grid-column:1/-1}.native-dashboard-dock button{font-size:9px}}
