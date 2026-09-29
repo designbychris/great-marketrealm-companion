@@ -113,3 +113,48 @@ button:disabled { opacity: .55; cursor: wait; }
 .training-badge--expertise { border-color:rgba(244,217,133,.65); color:#f4d985; }
 .training-modifier { color:#f4d985; font-size:17px; text-align:right; font-variant-numeric:tabular-nums; }
 @media (max-width:360px){.training-row{grid-template-columns:16px minmax(0,1fr) 40px}.training-state{grid-column:2}.training-modifier{grid-column:3;grid-row:1/3}.training-badge{font-size:8px}}
+
+/* Phase III.M.6G.1 — The Adventurer Rolls Their Training */
+/* Field polish: give the certified measures room to breathe below Vitality. */
+.native-dashboard-panel > .measure-grid { margin-top:14px; }
+
+/* Training rows become touch targets without inheriting the gold global button skin. */
+.training-list > li { margin:0; padding:0; }
+.training-row { width:100%; color:#f6edd3; font:inherit; text-align:left; cursor:pointer; }
+.training-row:active { transform:translateY(1px); }
+.training-row:focus-visible,.ability-grid button:focus-visible,.diceworks-toggle:focus-visible,.dice-mode button:focus-visible { outline:2px solid #f4d985; outline-offset:2px; }
+
+.ability-grid button { width:100%; min-height:74px; display:grid; gap:3px; padding:10px 8px; border:1px solid rgba(230,197,111,.28); border-radius:14px; background:rgba(255,255,255,.06); color:#f6edd3; text-align:center; }
+.ability-grid button span { color:#cfc5aa; font-size:10px; text-transform:uppercase; letter-spacing:.06em; }
+.ability-grid button strong { font-size:20px; }
+.ability-grid button small { color:#f4d985; font-size:11px; }
+
+/* One shared native Diceworks, persistent while moving between dashboard tabs. */
+.native-diceworks { position:fixed; z-index:11; right:max(8px,env(safe-area-inset-right)); bottom:calc(64px + env(safe-area-inset-bottom)); left:max(8px,env(safe-area-inset-left)); border:1px solid rgba(230,197,111,.48); border-radius:16px; background:rgba(12,33,25,.985); box-shadow:0 -6px 28px rgba(0,0,0,.34); overflow:hidden; }
+.diceworks-toggle { min-height:48px; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:8px 12px; border-radius:0; background:transparent; color:#f6edd3; text-align:left; }
+.diceworks-toggle span:first-child { min-width:0; display:grid; gap:2px; }
+.diceworks-toggle small { color:#e6c56f; font-size:9px; text-transform:uppercase; letter-spacing:.08em; }
+.diceworks-toggle strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; }
+.diceworks-body { max-height:min(48vh,360px); overflow:auto; padding:0 12px 12px; border-top:1px solid rgba(230,197,111,.18); }
+.dice-mode { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; padding:10px 0; }
+.dice-mode button { min-height:38px; padding:6px 4px; border:1px solid rgba(230,197,111,.22); border-radius:10px; background:rgba(255,255,255,.045); color:#cfc5aa; font-size:10px; }
+.dice-mode button[aria-pressed="true"] { border-color:rgba(230,197,111,.62); background:rgba(230,197,111,.16); color:#f4d985; }
+.dice-result { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2px 12px; align-items:center; padding:10px; border:1px solid rgba(230,197,111,.2); border-radius:12px; background:rgba(255,255,255,.045); }
+.dice-result > span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; }
+.dice-result > strong { grid-row:1/3; grid-column:2; color:#f4d985; font-size:30px; font-variant-numeric:tabular-nums; }
+.dice-result > small { color:#aaa28f; font-size:10px; }
+.dice-reaction { min-height:0; margin-top:7px; color:#f4d985; font-size:12px; font-weight:800; text-align:center; }
+.dice-reaction:empty { display:none; }
+.dice-confetti { position:relative; height:0; pointer-events:none; }
+.dice-confetti i { position:absolute; left:calc(var(--dice-piece) * 3.4%); bottom:0; width:5px; height:9px; border-radius:2px; background:#e6c56f; animation:native-confetti 900ms ease-out forwards; transform:translateY(0) rotate(calc(var(--dice-piece) * 29deg)); }
+.dice-confetti i.is-lonely { left:50%; animation-duration:1100ms; }
+@keyframes native-confetti { to { transform:translateY(-70px) rotate(calc(var(--dice-piece) * 29deg + 180deg)); opacity:0; } }
+.dice-history { display:grid; gap:5px; margin:10px 0 0; padding:0; list-style:none; }
+.dice-history li { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; padding:6px 8px; border-radius:9px; background:rgba(255,255,255,.035); font-size:10px; }
+.dice-history strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.dice-history span { color:#cfc5aa; font-variant-numeric:tabular-nums; }
+.sr-only { position:absolute!important; width:1px!important; height:1px!important; padding:0!important; margin:-1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; white-space:nowrap!important; border:0!important; }
+
+/* Diceworks occupies the strip immediately above the dock, so content can scroll clear. */
+.native-dashboard-panel { padding-bottom:150px; }
+@media (prefers-reduced-motion:reduce){.dice-confetti i{animation:none;display:none}.training-row:active{transform:none}}

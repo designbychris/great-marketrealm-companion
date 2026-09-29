@@ -356,6 +356,17 @@ final class PocketApi
                     'WIS' => $character->abilityScores()->wisdom()->value(),
                     'CHA' => $character->abilityScores()->charisma()->value(),
                 ],
+                // Native Diceworks consumes resolved modifiers from the canonical
+                // AbilityScore value objects. The app must never reimplement the
+                // score-to-modifier rule.
+                'ability_modifiers' => [
+                    'STR' => $character->abilityScores()->strength()->modifier(),
+                    'DEX' => $character->abilityScores()->dexterity()->modifier(),
+                    'CON' => $character->abilityScores()->constitution()->modifier(),
+                    'INT' => $character->abilityScores()->intelligence()->modifier(),
+                    'WIS' => $character->abilityScores()->wisdom()->modifier(),
+                    'CHA' => $character->abilityScores()->charisma()->modifier(),
+                ],
                 'saving_throws' => $savingThrowData,
                 'skills' => $skillData,
                 'attacks' => $attacks,

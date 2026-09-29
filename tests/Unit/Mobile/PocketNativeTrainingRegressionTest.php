@@ -19,7 +19,7 @@ final class PocketNativeTrainingRegressionTest extends TestCase
         self::assertStringContainsString('characterPanel.append(trainingPanel(character));', $client);
     }
 
-    public function testTrainingPresentationDistinguishesProficiencyAndExpertiseWithoutRolling(): void
+    public function testTrainingPresentationDistinguishesProficiencyAndExpertiseAndExposesRollTargets(): void
     {
         $root = dirname(__DIR__, 3);
         $client = file_get_contents($root . '/native/pocket-companion/src/main.js');
@@ -29,7 +29,8 @@ final class PocketNativeTrainingRegressionTest extends TestCase
         self::assertStringContainsString("skill?.proficient ? 'Proficient' : 'Untrained'", $client);
         self::assertStringContainsString('training-badge--expertise', $client);
         self::assertStringContainsString('.training-row.is-proficient', $css);
-        self::assertStringNotContainsString('data-training-roll', $client);
+        self::assertStringContainsString('data-training-roll', $client);
+        self::assertStringContainsString('data-roll-modifier', $client);
     }
 
     public function testPocketApiSuppliesSkillLabelsAbilitiesAndResolvedModifiers(): void
