@@ -10,17 +10,35 @@
 </head>
 <body>
   <main class="native-shell">
-    <section class="gate-card" aria-labelledby="native-title">
-      <div class="crest">
-        <img id="auby-state" src="/auby-pocket.png" alt="Auby, Keeper of the Kingdoms" />
-      </div>
+    <section id="gate-view" class="gate-card" aria-labelledby="native-title">
+      <div class="crest"><img id="auby-state" src="/auby-pocket.png" alt="Auby, Keeper of the Kingdoms" /></div>
       <p class="eyebrow">The Great MarketRealm</p>
       <h1 id="native-title">Pocket Companion</h1>
-      <p id="native-copy" class="copy">Auby is ready to guide this Pocket Companion through the Guild Gate.</p>
+      <p class="copy">Auby is ready to guide this Pocket Companion through the Guild Gate.</p>
       <div id="native-status" class="status" role="status" aria-live="polite">Not connected to the Guild.</div>
       <button id="enter-guild" type="button">Enter the Guild</button>
+      <button id="open-register" type="button" hidden>Open Adventurers' Register</button>
       <button id="leave-guild" class="secondary" type="button" hidden>Leave the Guild</button>
-      <p class="privacy">Your WordPress password is entered only at the existing Guild Gate in your system browser. This first expedition keeps the returned access token in memory only; closing the app requires a fresh sign-in.</p>
+      <p class="privacy">Your WordPress password is entered only at the existing Guild Gate in your system browser. Pocket stores only its access token in platform-secure storage and revalidates it when the app returns.</p>
+    </section>
+
+    <section id="register-view" class="register-view" aria-labelledby="register-title" hidden>
+      <header class="pocket-header">
+        <button id="register-back" class="icon-button" type="button" aria-label="Back to Auby">‹</button>
+        <div><p class="eyebrow">The Great MarketRealm</p><h1 id="register-title">Adventurers' Register</h1></div>
+        <button id="register-refresh" class="icon-button" type="button" aria-label="Refresh adventurers">↻</button>
+      </header>
+      <p id="register-status" class="register-status" role="status" aria-live="polite">Opening the Register…</p>
+      <div id="character-list" class="character-list"></div>
+    </section>
+
+    <section id="character-view" class="character-view" aria-labelledby="character-title" hidden>
+      <header class="pocket-header">
+        <button id="character-back" class="icon-button" type="button" aria-label="Back to Adventurers' Register">‹</button>
+        <div><p class="eyebrow">Pocket Adventurer</p><h1 id="character-title">Character</h1></div>
+        <span class="header-spacer" aria-hidden="true"></span>
+      </header>
+      <div id="character-ledger" class="character-ledger"></div>
     </section>
   </main>
   <script type="module" src="/src/main.js"></script>

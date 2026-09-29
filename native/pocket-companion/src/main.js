@@ -8,6 +8,7 @@ const BEGIN = `${ORIGIN}/wp-json/gmrc-pocket/v1/native/begin`;
 const TOKEN = `${ORIGIN}/wp-json/gmrc-pocket/v1/native/token`;
 const SESSION = `${ORIGIN}/wp-json/gmrc-pocket/v1/session`;
 const REVOKE = `${ORIGIN}/wp-json/gmrc-pocket/v1/native/revoke`;
+const CHARACTERS = `${ORIGIN}/wp-json/gmrc-pocket/v1/characters`;
 const CALLBACK = 'uk.co.greatmarketrealm.pocket://auth/callback';
 const TOKEN_KEY = 'access-token';
 const STORAGE_PREFIX = 'gmrc_pocket_';
@@ -16,9 +17,21 @@ const enter = document.querySelector('#enter-guild');
 const leave = document.querySelector('#leave-guild');
 const status = document.querySelector('#native-status');
 const auby = document.querySelector('#auby-state');
+const gateView = document.querySelector('#gate-view');
+const registerView = document.querySelector('#register-view');
+const characterView = document.querySelector('#character-view');
+const openRegister = document.querySelector('#open-register');
+const registerBack = document.querySelector('#register-back');
+const registerRefresh = document.querySelector('#register-refresh');
+const registerStatus = document.querySelector('#register-status');
+const characterList = document.querySelector('#character-list');
+const characterBack = document.querySelector('#character-back');
+const characterTitle = document.querySelector('#character-title');
+const characterLedger = document.querySelector('#character-ledger');
 
 let pending = null;
 let accessToken = null;
+let liveCharacters = [];
 
 const setStatus = (message, kind = '') => {
   status.textContent = message;
@@ -33,24 +46,124 @@ const setAuby = state => {
     : 'Auby, Keeper of the Kingdoms';
 };
 
+const showView = view => {
+  gateView.hidden = view !== 'gate';
+  registerView.hidden = view !== 'register';
+  characterView.hidden = view !== 'character';
+};
+
+const escapeText = value => String(value ?? '')
+  .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+  .replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+
+const signedModifier = value => Number(value) >= 0 ? `+${Number(value)}` : String(Number(value));
+
 const showSignedOut = (message = 'Not connected to the Guild.') => {
   accessToken = null;
   pending = null;
   setAuby('gate');
   enter.hidden = false;
+  openRegister.hidden = true;
   leave.hidden = true;
+  liveCharacters = [];
+  showView('gate');
   setStatus(message);
 };
 
 const showSignedIn = session => {
   setAuby('success');
   enter.hidden = true;
+  openRegister.hidden = false;
   leave.hidden = false;
   setStatus(
     `The Keeper remembers your key. Welcome, ${session.user?.display_name || 'adventurer'}!`,
     'success'
   );
 };
+
+async function fetchCharacters() {
+  if (!accessToken) throw new Error('The Guild key is not available.');
+  const response = await fetch(CHARACTERS, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+    cache: 'no-store'
+  });
+  if (response.status === 401 || response.status === 403) {
+    await forgetStoredToken();
+    showSignedOut('Your Guild key needs renewing.');
+    throw new Error('Your Guild key needs renewing.');
+  }
+  if (!response.ok) throw new Error('The Adventurers\' Register could not be opened.');
+  const payload = await response.json();
+  return Array.isArray(payload.characters) ? payload.characters : [];
+}
+
+function portraitMarkup(character) {
+  const portrait = character?.portrait;
+  if (portrait?.url && (portrait.kind === 'image' || portrait.kind === 'svg')) {
+    return `<img src="${escapeText(portrait.url)}" alt="Portrait of ${escapeText(character.name)}" />`;
+  }
+  return '<span class="portrait-fallback" aria-hidden="true">✦</span>';
+}
+
+function renderRegister(characters) {
+  liveCharacters = characters;
+  characterList.replaceChildren();
+  if (!characters.length) {
+    characterList.innerHTML = '<div class="empty-register"><strong>No adventurers are registered yet.</strong><span>Create a character in the Companion and Auby will find them here.</span></div>';
+    return;
+  }
+  for (const character of characters) {
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'character-card';
+    card.dataset.characterId = character.id;
+    card.innerHTML = `<span class="character-portrait">${portraitMarkup(character)}</span>
+      <span class="character-identity"><strong>${escapeText(character.name)}</strong>
+      <span>Level ${escapeText(character.level)} ${escapeText(character.race)} ${escapeText(character.class)}</span></span>
+      <span class="character-hp"><strong>${escapeText(character.hp?.current)}/${escapeText(character.hp?.maximum)}</strong><span>HP</span></span>
+      <span class="chevron" aria-hidden="true">›</span>`;
+    card.addEventListener('click', () => openCharacter(character.id));
+    characterList.append(card);
+  }
+}
+
+async function openAdventurersRegister() {
+  showView('register');
+  registerStatus.hidden = false;
+  registerStatus.textContent = 'Auby is opening the Adventurers\' Register…';
+  characterList.replaceChildren();
+  try {
+    const characters = await fetchCharacters();
+    renderRegister(characters);
+    registerStatus.textContent = `${characters.length} adventurer${characters.length === 1 ? '' : 's'} registered.`;
+  } catch (error) {
+    if (!accessToken) return;
+    registerStatus.textContent = error instanceof Error ? error.message : 'The Register could not be opened.';
+  }
+}
+
+function openCharacter(id) {
+  const character = liveCharacters.find(candidate => candidate.id === id);
+  if (!character) return;
+  characterTitle.textContent = character.name;
+  characterLedger.innerHTML = `<div class="hero-portrait">${portraitMarkup(character)}</div>
+    <p class="character-subtitle">Level ${escapeText(character.level)} ${escapeText(character.race)} ${escapeText(character.class)}</p>
+    <div class="vital-row">
+      <div><span>Current HP</span><strong>${escapeText(character.hp?.current)}</strong></div>
+      <div><span>Maximum HP</span><strong>${escapeText(character.hp?.maximum)}</strong></div>
+      <div><span>Temp HP</span><strong>${escapeText(character.hp?.temporary)}</strong></div>
+    </div>
+    <div class="measure-grid">
+      <div><span>Armour Class</span><strong>${escapeText(character.armour_class)}</strong></div>
+      <div><span>Initiative</span><strong>${escapeText(character.initiative)}</strong></div>
+      <div><span>Speed</span><strong>${escapeText(character.speed_feet)} ft</strong></div>
+      <div><span>Proficiency</span><strong>${signedModifier(character.proficiency_bonus)}</strong></div>
+    </div>
+    <div class="ability-grid">${Object.entries(character.abilities || {}).map(([ability, score]) =>
+      `<div><span>${escapeText(ability)}</span><strong>${escapeText(score)}</strong></div>`).join('')}</div>
+    <p class="ledger-note">This first native ledger is read-only. Its values come directly from the authoritative Companion Pocket API.</p>`;
+  showView('character');
+}
 
 const base64url = bytes => btoa(String.fromCharCode(...bytes))
   .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
@@ -204,6 +317,10 @@ async function signOut() {
 }
 
 enter.addEventListener('click', beginSignIn);
+openRegister.addEventListener('click', openAdventurersRegister);
+registerBack.addEventListener('click', () => showView('gate'));
+registerRefresh.addEventListener('click', openAdventurersRegister);
+characterBack.addEventListener('click', () => showView('register'));
 leave.addEventListener('click', signOut);
 App.addListener('appUrlOpen', event => completeSignIn(event.url));
 
