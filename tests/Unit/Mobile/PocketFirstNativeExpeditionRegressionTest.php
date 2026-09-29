@@ -13,6 +13,7 @@ final class PocketFirstNativeExpeditionRegressionTest extends TestCase
         $client = file_get_contents($root . 'native/pocket-companion/src/main.js');
         $prepare = file_get_contents($root . 'native/pocket-companion/scripts/prepare-android.mjs');
         $config = file_get_contents($root . 'native/pocket-companion/capacitor.config.json');
+        $nativeGate = file_get_contents($root . 'native/pocket-companion/index.html');
 
         self::assertStringContainsString('"@capacitor/app": "^8.0.0"', $package);
         self::assertStringContainsString('"@capacitor/browser": "^8.0.0"', $package);
@@ -30,5 +31,15 @@ final class PocketFirstNativeExpeditionRegressionTest extends TestCase
         self::assertStringContainsString('execFileSync(process.execPath', $prepare);
         self::assertStringContainsString('@capacitor/cli/bin/capacitor', $prepare);
         self::assertStringNotContainsString('npx.cmd', $prepare);
+
+        self::assertStringContainsString('/auby-pocket.png', $nativeGate);
+        self::assertStringContainsString('Auby, Keeper of the Kingdoms', $nativeGate);
+        self::assertStringNotContainsString('🍆', $nativeGate);
+        self::assertStringContainsString("resources/android/", $prepare);
+        self::assertFileExists($root . 'native/pocket-companion/public/auby-pocket.png');
+        self::assertFileExists($root . 'native/pocket-companion/resources/android/mipmap-xxxhdpi/ic_launcher.png');
+        self::assertFileExists($root . 'assets/images/pocket/auby-pocket-master.png');
+        self::assertFileExists($root . 'assets/images/pocket/app-icon-192.png');
+        self::assertFileExists($root . 'assets/images/pocket/app-icon-512.png');
     }
 }

@@ -1,4 +1,4 @@
-import { access, readFile, writeFile } from 'node:fs/promises';
+import { access, cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
@@ -25,4 +25,23 @@ if (!manifest.includes(marker)) {
 }
 
 runCapacitor('sync', 'android');
-console.log('MarketRealm Pocket Android expedition is prepared.');
+
+// III.M.6C.2: install the canonical Auby launcher artwork after Capacitor sync.
+// Generated Android projects are disposable; the source-controlled resources below are authoritative.
+const launcherSource = new URL('../resources/android/', import.meta.url);
+const launcherTarget = new URL('../android/app/src/main/res/', import.meta.url);
+for (const entry of await readdir(launcherSource, { withFileTypes: true })) {
+  if (!entry.isDirectory() || !entry.name.startsWith('mipmap-')) continue;
+  const targetDir = new URL(`${entry.name}/`, launcherTarget);
+  await mkdir(targetDir, { recursive: true });
+  for (const oldName of ['ic_launcher.webp', 'ic_launcher_round.webp', 'ic_launcher_foreground.webp']) {
+    await rm(new URL(oldName, targetDir), { force: true });
+  }
+  for (const name of ['ic_launcher.png', 'ic_launcher_round.png', 'ic_launcher_foreground.png']) {
+    const source = new URL(`${entry.name}/${name}`, launcherSource);
+    try { await access(source); } catch { continue; }
+    await cp(source, new URL(name, targetDir));
+  }
+}
+
+console.log('MarketRealm Pocket Android expedition is prepared with Auby at the Gate.');
