@@ -1,10 +1,18 @@
 import { access, readFile, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 const androidDir = new URL('../android/', import.meta.url);
-try { await access(androidDir); } catch {
-  execFileSync(process.platform === 'win32' ? 'npx.cmd' : 'npx', ['cap', 'add', 'android'], { stdio: 'inherit' });
+const capacitorCli = fileURLToPath(new URL('../node_modules/@capacitor/cli/bin/capacitor', import.meta.url));
+
+function runCapacitor(...args) {
+  execFileSync(process.execPath, [capacitorCli, ...args], { stdio: 'inherit' });
 }
+
+try { await access(androidDir); } catch {
+  runCapacitor('add', 'android');
+}
+
 const manifestUrl = new URL('../android/app/src/main/AndroidManifest.xml', import.meta.url);
 let manifest = await readFile(manifestUrl, 'utf8');
 const marker = '<!-- GMRC_NATIVE_CALLBACK -->';
@@ -15,5 +23,6 @@ if (!manifest.includes(marker)) {
   manifest = manifest.slice(0, activityEnd) + intent + '\n        ' + manifest.slice(activityEnd);
   await writeFile(manifestUrl, manifest);
 }
-execFileSync(process.platform === 'win32' ? 'npx.cmd' : 'npx', ['cap', 'sync', 'android'], { stdio: 'inherit' });
+
+runCapacitor('sync', 'android');
 console.log('MarketRealm Pocket Android expedition is prepared.');
