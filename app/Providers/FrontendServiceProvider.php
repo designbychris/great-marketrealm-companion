@@ -267,11 +267,31 @@ class FrontendServiceProvider extends ServiceProvider
                 $nonceAction
             )
         ) {
+            $returnRoute = isset($_POST['return_route']) && is_scalar($_POST['return_route'])
+                ? sanitize_text_field(wp_unslash((string) $_POST['return_route']))
+                : '';
+            $nativeGuildGate = $publicGuildGateRoute
+                && \GreatMarketrealmCompanion\Mobile\PocketNativeAuth::isNativeReturnRoute($returnRoute);
+
             $this->auditGuildGateGateway('application_gateway_nonce_rejected', [
                 'route' => trim($route, '/'),
                 'nonce_action_resolved' => $nonceAction !== null ? 'yes' : 'no',
                 'nonce_present' => $submittedNonce !== '' ? 'yes' : 'no',
+                'native_handoff' => $nativeGuildGate ? 'yes' : 'no',
             ]);
+
+            if ($nativeGuildGate) {
+                // Do not strand a Pocket tester on WordPress' raw 403 page if a
+                // cached/stale Gate nonce slips through. Return to a fresh, unique
+                // Gate URL while preserving the native PKCE handoff route.
+                $freshGate = add_query_arg([
+                    'gate' => trim($route, '/') === 'guild-gate/register' ? 'register' : 'login',
+                    'return_route' => $returnRoute,
+                    'gmrc_native_retry' => wp_generate_password(12, false, false),
+                ], home_url('/companion/'));
+                wp_safe_redirect($freshGate);
+                exit;
+            }
 
             wp_die(
                 esc_html__(

@@ -27,6 +27,7 @@ final class PocketNativeAuth
     public static function register(): void
     {
         add_filter('determine_current_user', [self::class, 'authenticateBearer'], 25);
+        add_action('template_redirect', [self::class, 'protectNativeGuildGateFromCache'], 0);
     }
 
     public static function registerRoutes(): void
@@ -200,6 +201,31 @@ final class PocketNativeAuth
     public static function browserCompletionUrl(string $requestId): string
     {
         return add_query_arg('gmrc_native_handoff', $requestId, home_url('/'));
+    }
+
+    /**
+     * Native Guild Gate pages contain a WordPress nonce and must never be served
+     * from a page cache. A stale cached Gate was the source of intermittent
+     * "form request could not be verified" failures during real-device sign-in.
+     */
+    public static function protectNativeGuildGateFromCache(): void
+    {
+        $route = isset($_GET['return_route']) && is_scalar($_GET['return_route'])
+            ? sanitize_text_field(wp_unslash((string) $_GET['return_route']))
+            : '';
+
+        if (! self::isNativeReturnRoute($route)) {
+            return;
+        }
+
+        if (! defined('DONOTCACHEPAGE')) {
+            define('DONOTCACHEPAGE', true);
+        }
+        if (! defined('DONOTCACHEDB')) {
+            define('DONOTCACHEDB', true);
+        }
+
+        nocache_headers();
     }
 
     public static function handleBrowserCompletion(): void
