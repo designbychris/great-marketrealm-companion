@@ -20,7 +20,7 @@ final class PocketNativeCombatEquipmentRegressionTest extends TestCase
         self::assertStringContainsString('Array.isArray(character.attacks)', $client);
         self::assertStringContainsString('attack.attack_bonus', $client);
         self::assertStringContainsString('attack.damage_die', $client);
-        self::assertStringContainsString('attack.critical_damage_die', $client);
+        self::assertStringContainsString('attack?.critical_damage_die', $client);
     }
 
     public function testWeaponAttackDamageAndCriticalDamageUseSharedSecureDiceworks(): void
@@ -45,7 +45,7 @@ final class PocketNativeCombatEquipmentRegressionTest extends TestCase
         $client = file_get_contents($root . '/native/pocket-companion/src/main.js');
 
         self::assertStringContainsString('const rolled = rollD20Mode(diceMode);', $client);
-        self::assertStringContainsString("showDiceResult(`${attack.label} — Attack`", $client);
+        self::assertStringContainsString('showDiceResult(`${attack.label} — Attack`', $client);
         self::assertStringContainsString("natural === 20 ? '. Natural 20. Critical hit.'", $client);
         self::assertStringContainsString("natural === 1 ? '. Natural 1. Auby says: The Guild has elected not to record that one.'", $client);
         self::assertStringContainsString('const pieces = natural20 ? 28 : 1;', $client);
