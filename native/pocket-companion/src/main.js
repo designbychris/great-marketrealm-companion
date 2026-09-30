@@ -472,6 +472,10 @@ const showSignedOut = (message = 'Not connected to the Guild.') => {
 };
 
 const showSignedIn = session => {
+  // A restored secure session can complete before any navigation occurs. Keep the
+  // cold-launch shell explicitly in Gate layout so it receives the same edge-to-edge
+  // viewport treatment as a Gate reached via Back navigation.
+  showView('gate');
   setAuby('success');
   enter.hidden = true;
   openRegister.hidden = false;
