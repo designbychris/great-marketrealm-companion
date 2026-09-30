@@ -62,3 +62,9 @@ node_modules/
 .vscode/
 
 .DS_Store
+
+# Great MarketRealm Pocket release signing — never commit private signing material.
+*.jks
+*.keystore
+native/pocket-companion/release-signing.properties
+native/pocket-companion/android/
