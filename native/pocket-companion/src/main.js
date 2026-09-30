@@ -9,6 +9,7 @@ const TOKEN = `${ORIGIN}/wp-json/gmrc-pocket/v1/native/token`;
 const SESSION = `${ORIGIN}/wp-json/gmrc-pocket/v1/session`;
 const REVOKE = `${ORIGIN}/wp-json/gmrc-pocket/v1/native/revoke`;
 const CHARACTERS = `${ORIGIN}/wp-json/gmrc-pocket/v1/characters`;
+const SPELL_SLOTS = characterId => `${CHARACTERS}/${encodeURIComponent(characterId)}/spell-slots`;
 const CALLBACK = 'uk.co.greatmarketrealm.pocket://auth/callback';
 const TOKEN_KEY = 'access-token';
 const STORAGE_PREFIX = 'gmrc_pocket_';
@@ -237,6 +238,115 @@ function combatPanel(character) {
       else performDamageRoll(attack, button.dataset.combatRoll === 'critical');
     }));
   });
+  return panel;
+}
+
+async function persistSpellSlot(character, slot, action) {
+  if (!accessToken) throw new Error('The Guild key is not available.');
+  const response = await fetch(SPELL_SLOTS(character.id), {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    },
+    cache: 'no-store',
+    body: JSON.stringify({ level: slot.level, action, expected_remaining: slot.remaining })
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (response.status === 401 || response.status === 403) {
+    await forgetStoredToken();
+    showSignedOut('Your Guild key needs renewing.');
+    throw new Error('Your Guild key needs renewing.');
+  }
+  if (!response.ok) throw new Error(payload.message || 'The spell-slot ledger could not be updated.');
+  character.spellcasting.slots = Array.isArray(payload.slots) ? payload.slots : [];
+  return character.spellcasting.slots;
+}
+
+function spellbookPanel(character) {
+  const panel = document.createElement('section');
+  panel.className = 'native-dashboard-panel native-spellbook';
+  panel.dataset.nativePanel = 'spells';
+  panel.hidden = true;
+  const casting = character.spellcasting || {};
+  const spells = Array.isArray(character.spellbook) ? [...character.spellbook] : [];
+  spells.sort((left, right) => (Number(left.level ?? (left.group === 'cantrips' ? 0 : 99)) - Number(right.level ?? (right.group === 'cantrips' ? 0 : 99))) || String(left.name || '').localeCompare(String(right.name || '')));
+
+  const measures = casting.ability ? `<div class="spellcasting-measures"><div><span>Spellcasting</span><strong>${escapeText(casting.ability)}</strong></div>${casting.attack_bonus !== null && casting.attack_bonus !== undefined ? `<div><span>Spell Attack</span><strong>${escapeText(signedModifier(casting.attack_bonus))}</strong></div>` : ''}${casting.save_dc !== null && casting.save_dc !== undefined ? `<div><span>Save DC</span><strong>${escapeText(casting.save_dc)}</strong></div>` : ''}</div>` : '';
+  panel.innerHTML = `<section class="native-panel"><div class="panel-heading"><p class="eyebrow">The Pocket Spellbook</p><h2>Spellkeeper's Register</h2><p>Your known magic and reserves come directly from the authoritative Companion ledger.</p></div>${measures}<div data-spell-reserves></div><div data-spell-register></div></section>`;
+
+  if (Number.isFinite(Number(casting.attack_bonus))) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'spell-attack-roll';
+    button.textContent = '✦ Roll Spell Attack';
+    button.addEventListener('click', () => performTrainingRoll('Spell Attack', Number(casting.attack_bonus), 'spell-attack'));
+    panel.querySelector('.spellcasting-measures')?.after(button);
+  }
+
+  const reserveHost = panel.querySelector('[data-spell-reserves]');
+  const slots = Array.isArray(casting.slots) ? casting.slots : [];
+  if (slots.length) {
+    const section = document.createElement('section');
+    section.className = 'spell-reserves';
+    section.innerHTML = '<h3>Spell Reserves</h3><p>Use and restore slots against the shared live ledger.</p>';
+    const list = document.createElement('div');
+    list.className = 'spell-slot-list';
+    for (const slot of slots) {
+      const row = document.createElement('article');
+      row.className = 'spell-slot-row';
+      const draw = () => {
+        row.innerHTML = `<div><span>Level ${escapeText(slot.level)}</span><strong>${escapeText(slot.remaining)} / ${escapeText(slot.total)}</strong><small>${escapeText(slot.expended)} expended</small></div><div class="spell-slot-actions"><button type="button" data-slot-action="spend" ${Number(slot.remaining) <= 0 ? 'disabled' : ''}>Use Slot</button><button type="button" data-slot-action="recover" ${Number(slot.expended) <= 0 ? 'disabled' : ''}>Restore Slot</button></div><small class="spell-slot-message" role="status" aria-live="polite"></small>`;
+        row.querySelectorAll('[data-slot-action]').forEach(button => button.addEventListener('click', async () => {
+          const message = row.querySelector('.spell-slot-message');
+          row.querySelectorAll('button').forEach(control => { control.disabled = true; });
+          message.textContent = 'Updating the live ledger…';
+          try {
+            const updated = await persistSpellSlot(character, slot, button.dataset.slotAction);
+            const next = updated.find(candidate => Number(candidate.level) === Number(slot.level));
+            if (next) Object.assign(slot, next);
+            draw();
+          } catch (error) {
+            draw();
+            row.querySelector('.spell-slot-message').textContent = error instanceof Error ? error.message : 'The spell-slot ledger could not be updated.';
+          }
+        }));
+      };
+      draw();
+      list.append(row);
+    }
+    section.append(list);
+    reserveHost.append(section);
+  } else if (casting.ability) {
+    reserveHost.innerHTML = '<div class="native-empty"><strong>No standard spell-slot reserve is recorded.</strong><p>Special casting resources remain governed by their own Companion ledger.</p></div>';
+  }
+
+  const register = panel.querySelector('[data-spell-register]');
+  if (!spells.length) {
+    register.innerHTML = '<div class="native-empty"><strong>No spells are recorded.</strong><p>The Pocket will reflect the Companion spellbook after Refresh.</p></div>';
+    return panel;
+  }
+  const grouped = new Map();
+  for (const spell of spells) {
+    const level = Number.isInteger(spell.level) ? Number(spell.level) : (spell.group === 'cantrips' ? 0 : null);
+    const key = level === 0 ? 'Cantrips' : (level === null ? 'Other Spells' : `Level ${level}`);
+    if (!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key).push(spell);
+  }
+  for (const [heading, entries] of grouped) {
+    const section = document.createElement('section');
+    section.className = 'spell-level-group';
+    section.innerHTML = `<h3>${escapeText(heading)}</h3>`;
+    for (const spell of entries) {
+      const entry = document.createElement('details');
+      entry.className = 'spell-entry';
+      const unresolved = spell.resolved === false ? '<span class="spell-unresolved">Reference only</span>' : '';
+      entry.innerHTML = `<summary><span><strong>${escapeText(spell.name || 'Unknown Spell')}</strong><small>${escapeText(spell.school || (spell.group === 'cantrips' ? 'Cantrip' : 'Spell'))}</small></span>${unresolved}</summary><div class="spell-detail"><dl><div><dt>Casting time</dt><dd>${escapeText(spell.casting_time || '—')}</dd></div><div><dt>Range</dt><dd>${escapeText(spell.range || '—')}</dd></div><div><dt>Components</dt><dd>${escapeText(spell.components || '—')}</dd></div><div><dt>Duration</dt><dd>${escapeText(spell.duration || '—')}</dd></div></dl>${spell.rules_text ? `<p>${escapeText(spell.rules_text)}</p>` : ''}${spell.higher_levels ? `<p><strong>At higher levels.</strong> ${escapeText(spell.higher_levels)}</p>` : ''}</div>`;
+      section.append(entry);
+    }
+    register.append(section);
+  }
   return panel;
 }
 
@@ -498,7 +608,7 @@ function openCharacter(id) {
   characterPanel.append(trainingPanel(character));
 
   const combat = combatPanel(character);
-  const spells = placeholderPanel('Spellbook', 'The Pocket Spellbook remains safely in the Companion until its native phase.'); spells.classList.add('native-dashboard-panel'); spells.dataset.nativePanel = 'spells'; spells.hidden = true;
+  const spells = spellbookPanel(character);
   const more = equipmentPanel(character);
 
   const dock = document.createElement('nav');

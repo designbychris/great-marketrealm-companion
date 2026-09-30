@@ -186,3 +186,37 @@ button:disabled { opacity: .55; cursor: wait; }
 .native-empty strong { color:#f1dfaa; }
 .native-empty p { margin:5px 0 0; font-size:11px; }
 @media (max-width:360px){.native-attack-card dl{grid-template-columns:1fr}.combat-rolls{grid-template-columns:1fr}.combat-rolls .critical-roll{grid-column:auto}.equipment-row{grid-template-columns:minmax(0,1fr) auto}.equipment-row>small{grid-column:2}}
+
+/* Phase III.M.6I — The Pocket Spellbook */
+.native-spellbook { gap:10px; }
+.spellcasting-measures { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; margin:10px 0; }
+.spellcasting-measures>div { display:grid; gap:3px; padding:9px; border:1px solid rgba(230,197,111,.2); border-radius:11px; background:rgba(255,255,255,.035); text-align:center; }
+.spellcasting-measures span { color:#9f9783; font-size:9px; text-transform:uppercase; letter-spacing:.06em; }
+.spellcasting-measures strong { color:#f4d985; font-size:17px; }
+.spell-attack-roll { width:100%; min-height:44px; margin:0 0 12px; }
+.spell-reserves { margin:14px 0; padding-top:12px; border-top:1px solid rgba(230,197,111,.18); }
+.spell-reserves h3,.spell-level-group h3 { margin:0 0 5px; color:#f1dfaa; font-size:14px; }
+.spell-reserves>p { margin:0 0 9px; color:#aaa28f; font-size:10px; }
+.spell-slot-list { display:grid; gap:7px; }
+.spell-slot-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; align-items:center; padding:9px; border:1px solid rgba(230,197,111,.2); border-radius:12px; background:rgba(255,255,255,.035); }
+.spell-slot-row>div:first-child { display:grid; gap:2px; }
+.spell-slot-row span { color:#cfc5aa; font-size:10px; }
+.spell-slot-row strong { color:#f4d985; font-size:16px; }
+.spell-slot-row small { color:#928b7a; font-size:9px; }
+.spell-slot-actions { display:flex; gap:5px; }
+.spell-slot-actions button { min-height:38px; padding:6px 8px; font-size:9px; }
+.spell-slot-message { grid-column:1/-1; min-height:11px; }
+.spell-level-group { margin-top:16px; }
+.spell-entry { margin-top:6px; border:1px solid rgba(230,197,111,.17); border-radius:12px; background:rgba(255,255,255,.03); overflow:hidden; }
+.spell-entry summary { display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:48px; padding:9px 11px; cursor:pointer; }
+.spell-entry summary>span:first-child { min-width:0; display:grid; gap:2px; }
+.spell-entry summary strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#f1dfaa; font-size:12px; }
+.spell-entry summary small { color:#9f9783; font-size:9px; }
+.spell-unresolved { padding:3px 6px; border:1px solid rgba(207,197,170,.18); border-radius:999px; color:#918b7b; font-size:8px; text-transform:uppercase; }
+.spell-detail { padding:0 11px 11px; color:#cfc5aa; font-size:10px; line-height:1.45; }
+.spell-detail dl { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:0 0 9px; }
+.spell-detail dl div { padding:6px; border-radius:8px; background:rgba(255,255,255,.03); }
+.spell-detail dt { color:#8f8979; font-size:8px; text-transform:uppercase; }
+.spell-detail dd { margin:2px 0 0; color:#e8dfc8; }
+.spell-detail p { margin:7px 0 0; }
+@media(max-width:360px){.spellcasting-measures{grid-template-columns:1fr 1fr}.spellcasting-measures>div:first-child{grid-column:1/-1}.spell-slot-row{grid-template-columns:1fr}.spell-slot-actions{width:100%}.spell-slot-actions button{flex:1}.spell-detail dl{grid-template-columns:1fr}}
