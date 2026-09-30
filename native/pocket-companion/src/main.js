@@ -81,6 +81,29 @@ function secureD20() {
   return (value % 20) + 1;
 }
 
+function secureDie(sides) {
+  const size = Number(sides);
+  if (!Number.isSafeInteger(size) || size < 2 || size > 100) throw new Error('That die is not supported by the Guild Diceworks.');
+  if (!crypto || typeof crypto.getRandomValues !== 'function') throw new Error('Secure dice are unavailable on this device.');
+  const range = 0x100000000;
+  const limit = range - (range % size);
+  const values = new Uint32Array(1);
+  let value = limit;
+  while (value >= limit) { crypto.getRandomValues(values); value = values[0]; }
+  return (value % size) + 1;
+}
+
+function rollFormula(formula, modifier = 0) {
+  const match = String(formula || '').trim().match(/^(\d+)d(4|6|8|10|12|20|100)$/i);
+  if (!match) throw new Error('The Guild cannot read that damage formula.');
+  const count = Number(match[1]);
+  const sides = Number(match[2]);
+  if (!Number.isSafeInteger(count) || count < 1 || count > 100) throw new Error('That many dice will not fit on the Guild desk.');
+  const dice = Array.from({ length: count }, () => secureDie(sides));
+  const diceTotal = dice.reduce((sum, die) => sum + die, 0);
+  return { dice, total: diceTotal + Number(modifier || 0), formula: `${count}d${sides}` };
+}
+
 function rollD20Mode(mode) {
   const first = secureD20();
   if (mode === 'normal') return { dice: [first], natural: first };
@@ -149,6 +172,83 @@ function performTrainingRoll(label, modifier, kind = 'check') {
   } catch (error) {
     diceworks.querySelector('[data-dice-live]').textContent = error instanceof Error ? error.message : 'The dice could not be rolled.';
   }
+}
+
+function showDiceResult(label, total, summary, kind = 'roll', natural = null) {
+  if (!diceworks) return;
+  const resultLabel = diceworks.querySelector('[data-dice-label]');
+  const resultTotal = diceworks.querySelector('[data-dice-total]');
+  const resultMath = diceworks.querySelector('[data-dice-math]');
+  resultLabel.textContent = label;
+  resultTotal.textContent = String(total);
+  resultMath.textContent = summary;
+  diceworks.querySelector('[data-dice-peek]').textContent = `${label}: ${total}`;
+  diceworks.dataset.kind = kind;
+  diceworks.classList.add('has-result');
+  celebrateNatural(natural);
+  diceHistory.unshift({ label, summary });
+  diceHistory.splice(DICE_HISTORY_LIMIT);
+  renderDiceHistory();
+  diceworks.querySelector('[data-dice-live]').textContent = `${label}: ${summary}${natural === 20 ? '. Natural 20. Critical hit.' : (natural === 1 ? '. Natural 1. Auby says: The Guild has elected not to record that one.' : '.')}`;
+}
+
+function performAttackRoll(attack) {
+  if (!diceworks) return;
+  try {
+    const rolled = rollD20Mode(diceMode);
+    const modifier = Number(attack?.attack_bonus || 0);
+    const total = rolled.natural + modifier;
+    showDiceResult(`${attack.label} — Attack`, total, `${rolled.dice.join(' / ')} ${signedModifier(modifier)} = ${total} · ${diceModeLabel(diceMode)} · to hit`, 'attack', rolled.natural);
+  } catch (error) {
+    diceworks.querySelector('[data-dice-live]').textContent = error instanceof Error ? error.message : 'The attack roll could not be made.';
+  }
+}
+
+function performDamageRoll(attack, critical = false) {
+  if (!diceworks) return;
+  try {
+    const formula = critical ? attack?.critical_damage_die : attack?.damage_die;
+    const modifier = Number(attack?.damage_modifier || 0);
+    const rolled = rollFormula(formula, modifier);
+    const label = `${attack.label} — ${critical ? 'Critical Damage' : 'Damage'}`;
+    const diceText = rolled.dice.join(' + ');
+    const summary = `${rolled.formula}: ${diceText} ${signedModifier(modifier)} = ${rolled.total} ${attack?.damage_type || 'damage'}`;
+    showDiceResult(label, rolled.total, summary, critical ? 'critical-damage' : 'damage');
+  } catch (error) {
+    diceworks.querySelector('[data-dice-live]').textContent = error instanceof Error ? error.message : 'The damage roll could not be made.';
+  }
+}
+
+function combatPanel(character) {
+  const panel = document.createElement('section');
+  panel.className = 'native-dashboard-panel native-combat';
+  panel.dataset.nativePanel = 'combat';
+  panel.hidden = true;
+  const attacks = Array.isArray(character.attacks) ? character.attacks : [];
+  const cards = attacks.map((attack, index) => {
+    const properties = Array.isArray(attack.properties) && attack.properties.length ? `<ul class="combat-properties">${attack.properties.map(property => `<li>${escapeText(String(property).replace(/^./, letter => letter.toUpperCase()))}</li>`).join('')}</ul>` : '';
+    return `<article class="native-attack-card" data-attack-index="${index}"><header><div><p class="eyebrow">${escapeText(attack.range || 'Weapon attack')}</p><h3>${escapeText(attack.label)}</h3></div><strong>${escapeText(signedModifier(attack.attack_bonus))}</strong></header><p>${escapeText(attack.description || '')}</p><dl><div><dt>Attack ability</dt><dd>${escapeText(attack.ability || '—')}</dd></div><div><dt>Damage</dt><dd>${escapeText(`${attack.damage_die || '—'} ${signedModifier(attack.damage_modifier)} ${attack.damage_type || 'damage'}`)}</dd></div></dl>${properties}<div class="combat-rolls"><button type="button" data-combat-roll="attack">⚔ Roll Attack</button><button type="button" data-combat-roll="damage">✹ Roll Damage</button><button type="button" class="critical-roll" data-combat-roll="critical">★ Critical Damage</button></div></article>`;
+  }).join('');
+  panel.innerHTML = `<section class="native-panel"><div class="panel-heading"><p class="eyebrow">The Clash of the Ledger</p><h2>Attacks &amp; Weapons</h2><p>Equipped weapons come directly from the authoritative Companion ledger. Attack, damage and critical damage use the shared Guild Diceworks.</p></div>${cards || '<div class="native-empty"><strong>No weapon is readied.</strong><p>Equip a weapon in the Companion and refresh the Pocket.</p></div>'}</section>`;
+  panel.querySelectorAll('[data-attack-index]').forEach(card => {
+    const attack = attacks[Number(card.dataset.attackIndex)];
+    card.querySelectorAll('[data-combat-roll]').forEach(button => button.addEventListener('click', () => {
+      if (button.dataset.combatRoll === 'attack') performAttackRoll(attack);
+      else performDamageRoll(attack, button.dataset.combatRoll === 'critical');
+    }));
+  });
+  return panel;
+}
+
+function equipmentPanel(character) {
+  const panel = document.createElement('section');
+  panel.className = 'native-dashboard-panel native-equipment';
+  panel.dataset.nativePanel = 'more';
+  panel.hidden = true;
+  const equipment = Array.isArray(character.equipment) ? character.equipment : [];
+  const rows = equipment.map(item => `<li class="equipment-row"><div><strong>${escapeText(item.label)}</strong><small>${escapeText(item.category || 'Equipment')}${item.equipped ? ' · Equipped' : ''}</small></div><span>×${escapeText(item.quantity ?? 1)}</span>${Number(item.total_weight || 0) > 0 ? `<small>${escapeText(item.total_weight)} lb</small>` : '<small>—</small>'}</li>`).join('');
+  panel.innerHTML = `<section class="native-panel"><div class="panel-heading"><p class="eyebrow">Adventurer's Pack</p><h2>Equipment</h2><p>Your pack is read-only in the native Pocket. Equipment changes remain certified in the Companion.</p></div>${rows ? `<ul class="equipment-list">${rows}</ul>` : '<div class="native-empty"><strong>The pack is empty.</strong><p>Add equipment in the Companion and refresh the Pocket.</p></div>'}</section>`;
+  return panel;
 }
 
 function createDiceworks() {
@@ -397,9 +497,9 @@ function openCharacter(id) {
   characterPanel.querySelectorAll('[data-ability-roll]').forEach(button => button.addEventListener('click', () => performTrainingRoll(button.dataset.rollLabel, Number(button.dataset.rollModifier), 'ability')));
   characterPanel.append(trainingPanel(character));
 
-  const combat = placeholderPanel('Combat', 'The native combat ledger will join the field in the next expedition.'); combat.classList.add('native-dashboard-panel'); combat.dataset.nativePanel = 'combat'; combat.hidden = true;
+  const combat = combatPanel(character);
   const spells = placeholderPanel('Spellbook', 'The Pocket Spellbook remains safely in the Companion until its native phase.'); spells.classList.add('native-dashboard-panel'); spells.dataset.nativePanel = 'spells'; spells.hidden = true;
-  const more = placeholderPanel('More', 'Equipment and further adventuring tools will gather here as the native dashboard grows.'); more.classList.add('native-dashboard-panel'); more.dataset.nativePanel = 'more'; more.hidden = true;
+  const more = equipmentPanel(character);
 
   const dock = document.createElement('nav');
   dock.className = 'native-dashboard-dock'; dock.setAttribute('aria-label', 'Pocket character navigation');
