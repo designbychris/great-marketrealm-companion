@@ -148,6 +148,25 @@ function celebrateNatural(natural) {
   }
 }
 
+function performManualRoll(sides, count, modifier) {
+  if (!diceworks) return;
+  try {
+    const die = Number(sides);
+    const diceCount = Number(count);
+    const bonus = Number(modifier);
+    if (![4, 6, 8, 10, 12, 20, 100].includes(die)) throw new Error('That die is not kept in the Guild drawer.');
+    if (!Number.isSafeInteger(diceCount) || diceCount < 1 || diceCount > 20) throw new Error('Choose between 1 and 20 dice.');
+    if (!Number.isSafeInteger(bonus) || bonus < -99 || bonus > 99) throw new Error('Choose a modifier between -99 and +99.');
+    const rolled = rollFormula(`${diceCount}d${die}`, bonus);
+    const diceText = rolled.dice.join(' + ');
+    const summary = `${rolled.formula}: ${diceText} ${signedModifier(bonus)} = ${rolled.total}`;
+    const natural = die === 20 && diceCount === 1 ? rolled.dice[0] : null;
+    showDiceResult(`Manual ${rolled.formula}`, rolled.total, summary, 'manual', natural);
+  } catch (error) {
+    diceworks.querySelector('[data-dice-live]').textContent = error instanceof Error ? error.message : 'The manual dice could not be rolled.';
+  }
+}
+
 function performTrainingRoll(label, modifier, kind = 'check') {
   if (!diceworks) return;
   try {
@@ -371,7 +390,18 @@ function createDiceworks() {
         <button type="button" data-dice-mode="advantage" aria-pressed="false">Advantage</button>
         <button type="button" data-dice-mode="disadvantage" aria-pressed="false">Disadvantage</button>
       </div>
-      <div class="dice-result" aria-live="off"><span data-dice-label>Choose a trained roll</span><strong data-dice-total>—</strong><small data-dice-math>Tap an ability, saving throw or skill.</small></div>
+      <section class="dice-drawer" aria-label="Manual dice drawer">
+        <div class="dice-drawer-heading"><strong>Dice Drawer</strong><small>Manual rolls share this session's history.</small></div>
+        <div class="dice-types" role="group" aria-label="Choose a die">
+          ${[4,6,8,10,12,20,100].map((sides, index) => `<button type="button" data-manual-die="${sides}" aria-pressed="${index === 0 ? 'true' : 'false'}">d${sides}</button>`).join('')}
+        </div>
+        <div class="dice-manual-controls">
+          <label>Dice<input type="number" inputmode="numeric" min="1" max="20" step="1" value="1" data-manual-count></label>
+          <label>Modifier<input type="number" inputmode="numeric" min="-99" max="99" step="1" value="0" data-manual-modifier></label>
+          <button type="button" data-manual-roll>Roll</button>
+        </div>
+      </section>
+      <div class="dice-result" aria-live="off"><span data-dice-label>Choose a roll</span><strong data-dice-total>—</strong><small data-dice-math>Use an adventurer action or open the Dice Drawer.</small></div>
       <div class="dice-reaction" data-dice-reaction="none" data-dice-reaction></div><div class="dice-confetti" data-dice-confetti></div>
       <ol class="dice-history" data-dice-history hidden></ol>
       <p class="dice-live sr-only" data-dice-live aria-live="polite"></p>
@@ -387,6 +417,16 @@ function createDiceworks() {
     diceMode = button.dataset.diceMode;
     tray.querySelectorAll('[data-dice-mode]').forEach(option => option.setAttribute('aria-pressed', String(option === button)));
   }));
+  let manualDie = 4;
+  tray.querySelectorAll('[data-manual-die]').forEach(button => button.addEventListener('click', () => {
+    manualDie = Number(button.dataset.manualDie);
+    tray.querySelectorAll('[data-manual-die]').forEach(option => option.setAttribute('aria-pressed', String(option === button)));
+  }));
+  tray.querySelector('[data-manual-roll]').addEventListener('click', () => {
+    const count = tray.querySelector('[data-manual-count]');
+    const modifier = tray.querySelector('[data-manual-modifier]');
+    performManualRoll(manualDie, Number(count.value), Number(modifier.value));
+  });
   return tray;
 }
 
