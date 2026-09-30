@@ -12,7 +12,7 @@ final class PocketGuildGateViewInitiativeRegressionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->root = dirname(__DIR__, 4);
+        $this->root = dirname(__DIR__, 3);
     }
 
     public function testNativeGuildGateUsesCanonicalMarketrealmArtworkAndReadableCard(): void
