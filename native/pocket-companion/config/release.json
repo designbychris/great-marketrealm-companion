@@ -1,0 +1,8 @@
+{
+  "phase": "III.M.7A",
+  "applicationId": "uk.co.greatmarketrealm.pocket",
+  "versionCode": 1,
+  "versionName": "1.0.0",
+  "artifact": "app-release.aab",
+  "playAppSigning": true
+}

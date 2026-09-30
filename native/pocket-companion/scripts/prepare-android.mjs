@@ -26,6 +26,9 @@ if (!manifest.includes(marker)) {
 
 runCapacitor('sync', 'android');
 
+// III.M.7A: version and signing policy are source-controlled; secrets remain outside Git.
+execFileSync(process.execPath, [fileURLToPath(new URL('./configure-android-release.mjs', import.meta.url))], { stdio: 'inherit' });
+
 // III.M.6C.2: install the canonical Auby launcher artwork after Capacitor sync.
 // Generated Android projects are disposable; the source-controlled resources below are authoritative.
 const launcherSource = new URL('../resources/android/', import.meta.url);

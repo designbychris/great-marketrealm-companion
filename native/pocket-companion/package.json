@@ -1,6 +1,6 @@
 {
   "name": "great-marketrealm-pocket-companion-native",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Native client workshop for The Great MarketRealm Pocket Companion.",
   "type": "module",
@@ -12,7 +12,8 @@
     "cap:open:android": "npx cap open android",
     "cap:open:ios": "npx cap open ios",
     "android:prepare": "node scripts/prepare-android.mjs",
-    "android:open": "npm run build && npx cap sync android && npx cap open android"
+    "android:open": "npm run build && npx cap sync android && npx cap open android",
+    "android:bundle": "node scripts/build-android-release.mjs"
   },
   "dependencies": {
     "@capacitor/app": "^8.0.0",

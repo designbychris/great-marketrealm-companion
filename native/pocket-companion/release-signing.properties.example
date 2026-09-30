@@ -1,0 +1,7 @@
+# III.M.7A — local release signing template.
+# Copy this file OUTSIDE source control if you prefer properties to environment variables.
+# Never commit the real keystore, aliases or passwords.
+GMRC_UPLOAD_STORE_FILE=C:/secure/path/great-marketrealm-pocket-upload.jks
+GMRC_UPLOAD_STORE_PASSWORD=replace-me
+GMRC_UPLOAD_KEY_ALIAS=great-marketrealm-pocket-upload
+GMRC_UPLOAD_KEY_PASSWORD=replace-me
