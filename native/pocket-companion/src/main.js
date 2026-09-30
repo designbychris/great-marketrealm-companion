@@ -38,6 +38,7 @@ let liveCharacters = [];
 let selectedCharacterId = null;
 let lastSessionValidation = 0;
 let resumeValidationInFlight = false;
+let registerLoading = false;
 const RESUME_REVALIDATE_AFTER_MS = 60 * 1000;
 
 const setStatus = (message, kind = '') => {
@@ -506,7 +507,7 @@ async function fetchCharacters() {
 function portraitMarkup(character) {
   const portrait = character?.portrait;
   if (portrait?.url && (portrait.kind === 'image' || portrait.kind === 'svg')) {
-    return `<img src="${escapeText(portrait.url)}" alt="Portrait of ${escapeText(character.name)}" />`;
+    return `<img src="${escapeText(portrait.url)}" alt="Portrait of ${escapeText(character.name)}" loading="lazy" decoding="async" data-portrait-image />`;
   }
   return '<span class="portrait-fallback" aria-hidden="true">✦</span>';
 }
@@ -528,23 +529,34 @@ function renderRegister(characters) {
       <span>Level ${escapeText(character.level)} ${escapeText(character.race)} ${escapeText(character.class)}</span></span>
       <span class="character-hp"><strong>${escapeText(character.hp?.current)}/${escapeText(character.hp?.maximum)}</strong><span>HP</span></span>
       <span class="chevron" aria-hidden="true">›</span>`;
+    card.querySelector('[data-portrait-image]')?.addEventListener('error', event => {
+      event.currentTarget.replaceWith(Object.assign(document.createElement('span'), { className: 'portrait-fallback', textContent: '✦' }));
+    }, { once: true });
     card.addEventListener('click', () => openCharacter(character.id));
     characterList.append(card);
   }
 }
 
 async function openAdventurersRegister() {
+  if (registerLoading) return;
+  registerLoading = true;
   showView('register');
   registerStatus.hidden = false;
   registerStatus.textContent = 'Auby is opening the Adventurers\' Register…';
-  characterList.replaceChildren();
+  registerRefresh.disabled = true;
+  registerRefresh.setAttribute('aria-busy', 'true');
+  if (!liveCharacters.length) characterList.replaceChildren();
   try {
     const characters = await fetchCharacters();
     renderRegister(characters);
     registerStatus.textContent = `${characters.length} adventurer${characters.length === 1 ? '' : 's'} registered.`;
   } catch (error) {
     if (!accessToken) return;
-    registerStatus.textContent = error instanceof Error ? error.message : 'The Register could not be opened.';
+    registerStatus.textContent = liveActionError(error, 'The Adventurers\' Register');
+  } finally {
+    registerLoading = false;
+    registerRefresh.disabled = false;
+    registerRefresh.removeAttribute('aria-busy');
   }
 }
 

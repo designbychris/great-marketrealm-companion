@@ -247,3 +247,19 @@ html[data-connection="offline"] .native-action, html[data-connection="offline"] 
 .measure-grid button.initiative-roll span { color:#cfc5aa; font-size:10px; text-transform:uppercase; letter-spacing:.06em; }
 .measure-grid button.initiative-roll strong { color:#e6c56f; font-size:19px; }
 .measure-grid button.initiative-roll small { color:#d8cfb7; font-size:10px; }
+
+
+/* Phase III.M.6K.2 — The Pocket Tidies Its Satchel */
+:where(button,input,summary){-webkit-tap-highlight-color:transparent;}
+button:disabled{cursor:not-allowed;opacity:.52;}
+button[aria-busy="true"]{cursor:progress;}
+button[aria-busy="true"]::after{content:"";display:inline-block;width:.75em;height:.75em;margin-left:.45em;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;vertical-align:-.08em;animation:pocket-spin .7s linear infinite;}
+@keyframes pocket-spin{to{transform:rotate(360deg)}}
+.character-identity,.panel-heading,.native-empty,.spell-detail,.status,.register-status{overflow-wrap:anywhere;}
+.character-identity strong,.pocket-header h1{overflow-wrap:anywhere;}
+.character-card:active,.combat-rolls button:active,.spell-slot-actions button:active,.spell-attack-roll:active,.measure-grid button.initiative-roll:active,.ability-grid button:active{transform:translateY(1px);}
+.character-portrait img{object-fit:cover;}
+input{font-size:16px;} /* prevents mobile webview zoom while editing live measures */
+@media (max-width:340px){.pocket-header{gap:7px}.pocket-header h1{font-size:18px}.character-card{grid-template-columns:48px minmax(0,1fr) auto}.character-hp{grid-column:2}.chevron{grid-column:3;grid-row:1/3}.dice-types{grid-template-columns:repeat(4,1fr)}.dice-manual-controls{grid-template-columns:1fr 1fr}.dice-manual-controls button{grid-column:1/-1}.native-dashboard-dock button{font-size:8px}.spellcasting-measures{grid-template-columns:1fr}}
+@media (min-width:700px){.native-shell[data-view="register"] .register-view,.native-shell[data-view="character"] .character-view{max-width:920px;margin-inline:auto}.character-list{grid-template-columns:repeat(2,minmax(0,1fr))}.native-dashboard-panel{max-width:860px;margin-inline:auto}.native-diceworks{right:max(calc((100vw - 900px)/2),env(safe-area-inset-right),12px);left:max(calc((100vw - 900px)/2),env(safe-area-inset-left),12px)}}
+@media (prefers-reduced-motion:reduce){button[aria-busy="true"]::after{animation:none}.character-card:active,.combat-rolls button:active,.spell-slot-actions button:active,.spell-attack-roll:active,.measure-grid button.initiative-roll:active,.ability-grid button:active{transform:none}}
