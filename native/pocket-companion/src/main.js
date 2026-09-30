@@ -30,10 +30,15 @@ const characterList = document.querySelector('#character-list');
 const characterBack = document.querySelector('#character-back');
 const characterTitle = document.querySelector('#character-title');
 const characterLedger = document.querySelector('#character-ledger');
+const connectionBanner = document.querySelector('#connection-banner');
 
 let pending = null;
 let accessToken = null;
 let liveCharacters = [];
+let selectedCharacterId = null;
+let lastSessionValidation = 0;
+let resumeValidationInFlight = false;
+const RESUME_REVALIDATE_AFTER_MS = 60 * 1000;
 
 const setStatus = (message, kind = '') => {
   status.textContent = message;
@@ -60,6 +65,24 @@ const escapeText = value => String(value ?? '')
   .replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 
 const signedModifier = value => Number(value) >= 0 ? `+${Number(value)}` : String(Number(value));
+
+const isOnline = () => navigator.onLine !== false;
+
+function updateConnectionState() {
+  const online = isOnline();
+  connectionBanner.hidden = online;
+  document.documentElement.dataset.connection = online ? 'online' : 'offline';
+  return online;
+}
+
+function requireOnline(action = 'That live Guild action') {
+  if (updateConnectionState()) return;
+  throw new Error(`${action} needs a connection. Nothing has been changed.`);
+}
+
+function networkMessage(action) {
+  return `${action} could not reach the Guild. Nothing has been changed; try again when the road is clear.`;
+}
 
 
 const DICE_HISTORY_LIMIT = 6;
@@ -261,6 +284,7 @@ function combatPanel(character) {
 }
 
 async function persistSpellSlot(character, slot, action) {
+  requireOnline('Changing a spell reserve');
   if (!accessToken) throw new Error('The Guild key is not available.');
   const response = await fetch(SPELL_SLOTS(character.id), {
     method: 'POST',
@@ -454,6 +478,7 @@ const showSignedIn = session => {
 };
 
 async function fetchCharacters() {
+  requireOnline('Refreshing the Adventurers’ Register');
   if (!accessToken) throw new Error('The Guild key is not available.');
   const response = await fetch(CHARACTERS, {
     headers: { Authorization: `Bearer ${accessToken}` },
@@ -515,6 +540,7 @@ async function openAdventurersRegister() {
 }
 
 async function persistVitality(character, body) {
+  requireOnline('Updating Adventuring Measures');
   const hp = character.hp || {};
   const response = await fetch(`${CHARACTERS}/${encodeURIComponent(character.id)}/vitality`, {
     method: 'POST',
@@ -624,6 +650,7 @@ function placeholderPanel(title, copy) {
 function openCharacter(id) {
   const character = liveCharacters.find(candidate => candidate.id === id);
   if (!character) return;
+  selectedCharacterId = id;
   characterTitle.textContent = character.name;
   characterLedger.replaceChildren();
 
@@ -693,11 +720,35 @@ async function forgetStoredToken() {
 }
 
 async function verifySession(token) {
+  requireOnline('Checking the Guild key');
   const response = await fetch(SESSION, {
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${token}` },
+    cache: 'no-store'
   });
-  if (!response.ok) return null;
+  if (response.status === 401 || response.status === 403) return null;
+  if (!response.ok) throw new Error('The Guild could not verify the key just now.');
+  lastSessionValidation = Date.now();
   return response.json();
+}
+
+async function revalidateOnResume() {
+  if (!accessToken || resumeValidationInFlight || !isOnline()) return;
+  if (Date.now() - lastSessionValidation < RESUME_REVALIDATE_AFTER_MS) return;
+  resumeValidationInFlight = true;
+  try {
+    const session = await verifySession(accessToken);
+    if (!session) {
+      await forgetStoredToken();
+      showSignedOut('Your Guild key needs renewing.');
+      return;
+    }
+    if (nativeShell.dataset.view === 'gate') showSignedIn(session);
+  } catch {
+    // A temporary road failure must never discard a valid stored key or open character.
+    updateConnectionState();
+  } finally {
+    resumeValidationInFlight = false;
+  }
 }
 
 async function restoreSession() {
@@ -722,13 +773,18 @@ async function restoreSession() {
     accessToken = stored;
     showSignedIn(session);
   } catch {
-    showSignedOut('Auby could not read the secure Guild key. Please enter the Guild again.');
+    if (!isOnline()) {
+      showSignedOut('The road to the Guild is offline. Your secure key has not been discarded.');
+    } else {
+      showSignedOut('Auby could not verify the secure Guild key. Please try again.');
+    }
   } finally {
     enter.disabled = false;
   }
 }
 
 async function beginSignIn() {
+  if (!isOnline()) { setStatus('The Guild Gate needs a connection.', 'error'); return; }
   enter.disabled = true;
   try {
     const verifier = randomValue(48);
@@ -826,5 +882,9 @@ registerRefresh.addEventListener('click', openAdventurersRegister);
 characterBack.addEventListener('click', () => showView('register'));
 leave.addEventListener('click', signOut);
 App.addListener('appUrlOpen', event => completeSignIn(event.url));
+App.addListener('appStateChange', ({ isActive }) => { if (isActive) revalidateOnResume(); });
+window.addEventListener('offline', () => updateConnectionState());
+window.addEventListener('online', () => { updateConnectionState(); revalidateOnResume(); });
+updateConnectionState();
 
 restoreSession();

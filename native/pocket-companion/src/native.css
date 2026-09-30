@@ -231,3 +231,8 @@ button:disabled { opacity: .55; cursor: wait; }
 .spell-detail dd { margin:2px 0 0; color:#e8dfc8; }
 .spell-detail p { margin:7px 0 0; }
 @media(max-width:360px){.spellcasting-measures{grid-template-columns:1fr 1fr}.spellcasting-measures>div:first-child{grid-column:1/-1}.spell-slot-row{grid-template-columns:1fr}.spell-slot-actions{width:100%}.spell-slot-actions button{flex:1}.spell-detail dl{grid-template-columns:1fr}}
+
+
+/* Phase III.M.6K — The Pocket Weathers the Road */
+.connection-banner { position:fixed; z-index:40; top:calc(8px + env(safe-area-inset-top)); right:max(10px,env(safe-area-inset-right)); left:max(10px,env(safe-area-inset-left)); padding:9px 12px; border:1px solid rgba(230,197,111,.55); border-radius:12px; background:rgba(73,49,24,.97); box-shadow:0 8px 24px rgba(0,0,0,.28); color:#f6edd3; font-size:12px; line-height:1.35; text-align:center; }
+html[data-connection="offline"] .native-action, html[data-connection="offline"] [data-vitality-action], html[data-connection="offline"] [data-slot-action], html[data-connection="offline"] #register-refresh { opacity:.55; }
