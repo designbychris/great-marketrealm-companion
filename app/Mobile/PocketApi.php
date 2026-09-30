@@ -347,6 +347,7 @@ final class PocketApi
                 'level' => $character->level()->value(),
                 'armour_class' => $character->armourClass()->value(),
                 'initiative' => $character->initiative()->signed(),
+                'initiative_modifier' => $character->initiative()->modifier(),
                 'speed_feet' => $character->speed()->feet(),
                 'abilities' => [
                     'STR' => $character->abilityScores()->strength()->value(),

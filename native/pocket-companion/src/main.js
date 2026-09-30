@@ -84,6 +84,11 @@ function networkMessage(action) {
   return `${action} could not reach the Guild. Nothing has been changed; try again when the road is clear.`;
 }
 
+function liveActionError(error, action) {
+  if (!isOnline() || (error instanceof TypeError && /fetch/i.test(error.message))) return networkMessage(action);
+  return error instanceof Error ? error.message : `${action} could not be completed.`;
+}
+
 
 const DICE_HISTORY_LIMIT = 6;
 let diceMode = 'normal';
@@ -352,7 +357,7 @@ function spellbookPanel(character) {
             draw();
           } catch (error) {
             draw();
-            row.querySelector('.spell-slot-message').textContent = error instanceof Error ? error.message : 'The spell-slot ledger could not be updated.';
+            row.querySelector('.spell-slot-message').textContent = liveActionError(error, 'The spell-slot ledger');
           }
         }));
       };
@@ -597,7 +602,7 @@ function vitalityPanel(character) {
       const hp = await persistVitality(character, body);
       sync(hp); message.textContent = 'Adventuring Measures updated.';
     } catch (error) {
-      message.textContent = error instanceof Error ? error.message : 'Adventuring Measures could not be updated.';
+      message.textContent = liveActionError(error, 'Adventuring Measures');
     } finally { setBusy(false); }
   };
   form.addEventListener('submit', event => {
@@ -665,7 +670,8 @@ function openCharacter(id) {
   overview.append(vitalityPanel(character));
   const measures = document.createElement('div');
   measures.className = 'measure-grid';
-  measures.innerHTML = `<div><span>Armour Class</span><strong>${escapeText(character.armour_class)}</strong></div><div><span>Initiative</span><strong>${escapeText(character.initiative)}</strong></div><div><span>Speed</span><strong>${escapeText(character.speed_feet)} ft</strong></div><div><span>Proficiency</span><strong>${signedModifier(character.proficiency_bonus)}</strong></div>`;
+  measures.innerHTML = `<div><span>Armour Class</span><strong>${escapeText(character.armour_class)}</strong></div><button type="button" class="initiative-roll" data-initiative-roll aria-label="Roll initiative with modifier ${escapeText(signedModifier(character.initiative_modifier ?? 0))}"><span>Initiative</span><strong>${escapeText(character.initiative)}</strong><small>Roll d20 ${escapeText(signedModifier(character.initiative_modifier ?? 0))}</small></button><div><span>Speed</span><strong>${escapeText(character.speed_feet)} ft</strong></div><div><span>Proficiency</span><strong>${signedModifier(character.proficiency_bonus)}</strong></div>`;
+  measures.querySelector('[data-initiative-roll]')?.addEventListener('click', () => performTrainingRoll('Initiative', Number(character.initiative_modifier ?? 0), 'initiative'));
   overview.append(measures);
 
   const characterPanel = document.createElement('section');

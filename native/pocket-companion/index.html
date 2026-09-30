@@ -11,7 +11,8 @@
 <body>
   <div id="connection-banner" class="connection-banner" role="status" aria-live="polite" hidden>Offline — live Guild actions are paused. Your open character remains available.</div>
   <main class="native-shell">
-    <section id="gate-view" class="gate-card" aria-labelledby="native-title">
+    <section id="gate-view" class="gate-scene" aria-label="The Great MarketRealm Guild Gate">
+      <div class="gate-card" aria-labelledby="native-title">
       <div class="crest"><img id="auby-state" src="/auby-pocket.png" alt="Auby, Keeper of the Kingdoms" /></div>
       <p class="eyebrow">The Great MarketRealm</p>
       <h1 id="native-title">Pocket Companion</h1>
@@ -21,6 +22,8 @@
       <button id="open-register" type="button" hidden>Open Adventurers' Register</button>
       <button id="leave-guild" class="secondary" type="button" hidden>Leave the Guild</button>
       <p class="privacy">Your WordPress password is entered only at the existing Guild Gate in your system browser. Pocket stores only its access token in platform-secure storage and revalidates it when the app returns.</p>
+      </div>
+      <p class="gate-scene__caption">Beyond the Gate, the Guild keeps your adventurer’s ledger ready for the road.</p>
     </section>
 
     <section id="register-view" class="register-view" aria-labelledby="register-title" hidden>
