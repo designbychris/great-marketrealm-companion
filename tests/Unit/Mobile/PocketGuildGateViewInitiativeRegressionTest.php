@@ -32,7 +32,7 @@ final class PocketGuildGateViewInitiativeRegressionTest extends TestCase
     {
         $api = file_get_contents($this->root . '/app/Mobile/PocketApi.php');
         self::assertIsString($api);
-        self::assertStringContainsString("'initiative_modifier' => $character->initiative()->modifier()", $api);
+        self::assertStringContainsString("'initiative_modifier' => \$character->initiative()->modifier()", $api);
     }
 
     public function testNativeInitiativeRollUsesSharedDiceworksAndProjectedModifier(): void
@@ -66,7 +66,7 @@ final class PocketGuildGateViewInitiativeRegressionTest extends TestCase
         $view = file_get_contents($this->root . '/app/Modules/Characters/Views/show.php');
         self::assertIsString($view);
         self::assertStringContainsString("'label' => 'Initiative'", $view);
-        self::assertStringContainsString("'modifier' => $initiativeValue->modifier()", $view);
+        self::assertStringContainsString("'modifier' => \$initiativeValue->modifier()", $view);
         self::assertStringContainsString("'kind' => 'initiative'", $view);
     }
 }
