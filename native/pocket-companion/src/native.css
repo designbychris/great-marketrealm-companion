@@ -267,3 +267,18 @@ input{font-size:16px;} /* prevents mobile webview zoom while editing live measur
 /* Phase III.M.6K.2A — The Refresh Wheel Finds Its Axle */
 #register-refresh[aria-busy="true"] { font-size:0; }
 #register-refresh[aria-busy="true"]::after { width:18px; height:18px; margin:0; border-width:2px; vertical-align:middle; }
+
+
+/* Phase III.M.7C.4 — The Registrar's Privacy Ledger / The Ledger Pulls Fresh */
+.pull-refresh { height:0; overflow:hidden; opacity:0; display:grid; place-items:center; color:#e6c56f; font-size:11px; font-weight:700; letter-spacing:.03em; text-align:center; transition:height .16s ease,opacity .16s ease; }
+.pull-refresh.is-visible { height:max(28px,min(var(--pull-distance,42px),54px)); opacity:1; }
+.pull-refresh.is-refreshing { height:36px; }
+.native-privacy-support { margin-top:10px; margin-bottom:8px; }
+.privacy-support-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.privacy-support-actions button { min-height:44px; }
+.privacy-support-actions button.secondary { margin-top:0; }
+@media (max-width:360px){.privacy-support-actions{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.pull-refresh{transition:none}}
+
+.gate-public-links { display:flex; justify-content:center; align-items:center; gap:8px; margin-top:10px; color:#9f9783; }
+.gate-public-links button { width:auto; min-height:34px; padding:4px 2px; border:0; background:transparent; color:#d7cfba; font-size:11px; text-decoration:underline; text-underline-offset:3px; }

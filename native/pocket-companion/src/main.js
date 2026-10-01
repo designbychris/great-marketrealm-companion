@@ -11,6 +11,8 @@ const REVOKE = `${ORIGIN}/wp-json/gmrc-pocket/v1/native/revoke`;
 const CHARACTERS = `${ORIGIN}/wp-json/gmrc-pocket/v1/characters`;
 const SPELL_SLOTS = characterId => `${CHARACTERS}/${encodeURIComponent(characterId)}/spell-slots`;
 const CALLBACK = 'uk.co.greatmarketrealm.pocket://auth/callback';
+const PRIVACY_URL = 'https://greatmarketrealm.co.uk/the-pocket-companion/privacy/';
+const SUPPORT_URL = 'https://greatmarketrealm.co.uk/support/';
 const TOKEN_KEY = 'access-token';
 const STORAGE_PREFIX = 'gmrc_pocket_';
 
@@ -31,6 +33,8 @@ const characterBack = document.querySelector('#character-back');
 const characterTitle = document.querySelector('#character-title');
 const characterLedger = document.querySelector('#character-ledger');
 const connectionBanner = document.querySelector('#connection-banner');
+const gatePrivacy = document.querySelector('#gate-privacy');
+const gateSupport = document.querySelector('#gate-support');
 
 let pending = null;
 let accessToken = null;
@@ -39,6 +43,7 @@ let selectedCharacterId = null;
 let lastSessionValidation = 0;
 let resumeValidationInFlight = false;
 let registerLoading = false;
+let characterRefreshLoading = false;
 const RESUME_REVALIDATE_AFTER_MS = 60 * 1000;
 
 const setStatus = (message, kind = '') => {
@@ -401,9 +406,7 @@ function spellbookPanel(character) {
 
 function equipmentPanel(character) {
   const panel = document.createElement('section');
-  panel.className = 'native-dashboard-panel native-equipment';
-  panel.dataset.nativePanel = 'more';
-  panel.hidden = true;
+  panel.className = 'native-equipment';
   const equipment = Array.isArray(character.equipment) ? character.equipment : [];
   const rows = equipment.map(item => `<li class="equipment-row"><div><strong>${escapeText(item.label)}</strong><small>${escapeText(item.category || 'Equipment')}${item.equipped ? ' · Equipped' : ''}</small></div><span>×${escapeText(item.quantity ?? 1)}</span>${Number(item.total_weight || 0) > 0 ? `<small>${escapeText(item.total_weight)} lb</small>` : '<small>—</small>'}</li>`).join('');
   panel.innerHTML = `<section class="native-panel"><div class="panel-heading"><p class="eyebrow">Adventurer's Pack</p><h2>Equipment</h2><p>Your pack is read-only in the native Pocket. Equipment changes remain certified in the Companion.</p></div>${rows ? `<ul class="equipment-list">${rows}</ul>` : '<div class="native-empty"><strong>The pack is empty.</strong><p>Add equipment in the Companion and refresh the Pocket.</p></div>'}</section>`;
@@ -550,9 +553,11 @@ async function openAdventurersRegister() {
     const characters = await fetchCharacters();
     renderRegister(characters);
     registerStatus.textContent = `${characters.length} adventurer${characters.length === 1 ? '' : 's'} registered.`;
+    return true;
   } catch (error) {
     if (!accessToken) return;
     registerStatus.textContent = liveActionError(error, 'The Adventurers\' Register');
+    return false;
   } finally {
     registerLoading = false;
     registerRefresh.disabled = false;
@@ -661,6 +666,26 @@ function trainingPanel(character) {
   return panel;
 }
 
+async function openExternalPage(url) {
+  try {
+    await Browser.open({ url });
+  } catch {
+    window.location.href = url;
+  }
+}
+
+function privacySupportPanel() {
+  const panel = document.createElement('section');
+  panel.className = 'native-panel native-privacy-support';
+  panel.innerHTML = `<div class="panel-heading"><p class="eyebrow">The Registrar's Desk</p><h2>Privacy &amp; Support</h2><p>The Guild keeps its public privacy charter and support desk on the Great MarketRealm website.</p></div>
+    <div class="privacy-support-actions">
+      <button type="button" data-external-url="${PRIVACY_URL}">Privacy Policy</button>
+      <button type="button" class="secondary" data-external-url="${SUPPORT_URL}">Support</button>
+    </div>`;
+  panel.querySelectorAll('[data-external-url]').forEach(button => button.addEventListener('click', () => openExternalPage(button.dataset.externalUrl)));
+  return panel;
+}
+
 function placeholderPanel(title, copy) {
   const panel = document.createElement('section');
   panel.className = 'native-panel native-coming-soon';
@@ -668,7 +693,7 @@ function placeholderPanel(title, copy) {
   return panel;
 }
 
-function openCharacter(id) {
+function openCharacter(id, initialTab = 'overview') {
   const character = liveCharacters.find(candidate => candidate.id === id);
   if (!character) return;
   selectedCharacterId = id;
@@ -683,6 +708,7 @@ function openCharacter(id) {
   const overview = document.createElement('section');
   overview.className = 'native-dashboard-panel';
   overview.dataset.nativePanel = 'overview';
+  overview.hidden = initialTab !== 'overview';
   overview.append(vitalityPanel(character));
   const measures = document.createElement('div');
   measures.className = 'measure-grid';
@@ -691,19 +717,25 @@ function openCharacter(id) {
   overview.append(measures);
 
   const characterPanel = document.createElement('section');
-  characterPanel.className = 'native-dashboard-panel'; characterPanel.dataset.nativePanel = 'character'; characterPanel.hidden = true;
+  characterPanel.className = 'native-dashboard-panel'; characterPanel.dataset.nativePanel = 'character'; characterPanel.hidden = initialTab !== 'character';
   characterPanel.innerHTML = `<div class="ability-grid">${Object.entries(character.abilities || {}).map(([ability, score]) => { const modifier = character.ability_modifiers?.[ability] ?? 0; return `<button type="button" data-ability-roll data-roll-label="${escapeText(ability)} Ability Check" data-roll-modifier="${escapeText(modifier)}"><span>${escapeText(ability)}</span><strong>${escapeText(score)}</strong><small>${escapeText(signedModifier(modifier))}</small></button>`; }).join('')}</div>`;
   characterPanel.querySelectorAll('[data-ability-roll]').forEach(button => button.addEventListener('click', () => performTrainingRoll(button.dataset.rollLabel, Number(button.dataset.rollModifier), 'ability')));
   characterPanel.append(trainingPanel(character));
 
   const combat = combatPanel(character);
+  combat.hidden = initialTab !== 'combat';
   const spells = spellbookPanel(character);
-  const more = equipmentPanel(character);
+  spells.hidden = initialTab !== 'spells';
+  const more = document.createElement('section');
+  more.className = 'native-dashboard-panel';
+  more.dataset.nativePanel = 'more';
+  more.hidden = initialTab !== 'more';
+  more.append(equipmentPanel(character), privacySupportPanel());
 
   const dock = document.createElement('nav');
   dock.className = 'native-dashboard-dock'; dock.setAttribute('aria-label', 'Pocket character navigation');
   for (const [key, label] of [['overview','Overview'],['character','Character'],['combat','Combat'],['spells','Spellbook'],['more','More']]) {
-    const button = document.createElement('button'); button.type = 'button'; button.textContent = label; button.dataset.nativeTab = key; button.setAttribute('aria-current', key === 'overview' ? 'page' : 'false');
+    const button = document.createElement('button'); button.type = 'button'; button.textContent = label; button.dataset.nativeTab = key; button.setAttribute('aria-current', key === initialTab ? 'page' : 'false');
     button.addEventListener('click', () => {
       characterLedger.querySelectorAll('[data-native-panel]').forEach(panel => { panel.hidden = panel.dataset.nativePanel !== key; });
       dock.querySelectorAll('[data-native-tab]').forEach(tab => tab.setAttribute('aria-current', tab.dataset.nativeTab === key ? 'page' : 'false'));
@@ -715,6 +747,111 @@ function openCharacter(id) {
   diceworks = createDiceworks();
   characterLedger.append(hero, overview, characterPanel, combat, spells, more, diceworks, dock);
   showView('character');
+}
+
+function activeCharacterTab() {
+  return characterLedger.querySelector('[data-native-tab][aria-current="page"]')?.dataset.nativeTab || 'overview';
+}
+
+async function refreshOpenCharacter() {
+  if (characterRefreshLoading || !selectedCharacterId) return;
+  characterRefreshLoading = true;
+  const id = selectedCharacterId;
+  const tab = activeCharacterTab();
+  const rememberedHistory = [...diceHistory];
+  const rememberedMode = diceMode;
+  try {
+    const characters = await fetchCharacters();
+    renderRegister(characters);
+    const refreshed = characters.find(character => character.id === id);
+    if (!refreshed) {
+      showView('register');
+      registerStatus.hidden = false;
+      registerStatus.textContent = 'That adventurer is no longer in this Register.';
+      return false;
+    }
+    openCharacter(id, tab);
+    diceHistory = rememberedHistory;
+    diceMode = rememberedMode;
+    if (diceworks) {
+      diceworks.querySelectorAll('[data-dice-mode]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.diceMode === diceMode)));
+      renderDiceHistory();
+    }
+    return true;
+  } catch (error) {
+    if (!accessToken) return;
+    showPullMessage(characterView, liveActionError(error, 'Refreshing this adventurer'));
+    return false;
+  } finally {
+    characterRefreshLoading = false;
+  }
+}
+
+function pullIndicator(view) {
+  let indicator = view.querySelector('[data-pull-refresh]');
+  if (indicator) return indicator;
+  indicator = document.createElement('div');
+  indicator.className = 'pull-refresh';
+  indicator.dataset.pullRefresh = '';
+  indicator.setAttribute('role', 'status');
+  indicator.setAttribute('aria-live', 'polite');
+  indicator.textContent = '↓ Pull to refresh';
+  view.prepend(indicator);
+  return indicator;
+}
+
+function showPullMessage(view, message, timeout = 1800) {
+  const indicator = pullIndicator(view);
+  indicator.textContent = message;
+  indicator.classList.add('is-visible');
+  window.setTimeout(() => indicator.classList.remove('is-visible'), timeout);
+}
+
+function installPullToRefresh(view, refresh) {
+  const indicator = pullIndicator(view);
+  let startY = null;
+  let distance = 0;
+  const threshold = 72;
+  view.addEventListener('touchstart', event => {
+    if (window.scrollY > 0 || event.touches.length !== 1) { startY = null; return; }
+    startY = event.touches[0].clientY;
+    distance = 0;
+  }, { passive: true });
+  view.addEventListener('touchmove', event => {
+    if (startY === null || window.scrollY > 0 || event.touches.length !== 1) return;
+    distance = Math.max(0, Math.min(110, event.touches[0].clientY - startY));
+    if (distance <= 0) return;
+    event.preventDefault();
+    indicator.classList.add('is-visible');
+    indicator.style.setProperty('--pull-distance', `${distance}px`);
+    indicator.textContent = distance >= threshold ? '↻ Release to refresh' : '↓ Pull to refresh';
+  }, { passive: false });
+  view.addEventListener('touchend', async () => {
+    if (startY === null) return;
+    const shouldRefresh = distance >= threshold;
+    startY = null;
+    indicator.style.removeProperty('--pull-distance');
+    if (!shouldRefresh) { indicator.classList.remove('is-visible'); return; }
+    if (!isOnline()) {
+      indicator.textContent = 'Offline — the Ledger has not changed.';
+      window.setTimeout(() => indicator.classList.remove('is-visible'), 1800);
+      return;
+    }
+    indicator.textContent = 'Auby is checking the Ledger…';
+    indicator.classList.add('is-refreshing');
+    try {
+      const refreshed = await refresh();
+      if (refreshed !== false && accessToken && isOnline()) indicator.textContent = '✓ Ledger refreshed';
+    } finally {
+      indicator.classList.remove('is-refreshing');
+      window.setTimeout(() => indicator.classList.remove('is-visible'), 1200);
+    }
+  }, { passive: true });
+  view.addEventListener('touchcancel', () => {
+    startY = null; distance = 0;
+    indicator.style.removeProperty('--pull-distance');
+    indicator.classList.remove('is-visible');
+  }, { passive: true });
 }
 
 const base64url = bytes => btoa(String.fromCharCode(...bytes))
@@ -903,10 +1040,14 @@ registerBack.addEventListener('click', () => showView('gate'));
 registerRefresh.addEventListener('click', openAdventurersRegister);
 characterBack.addEventListener('click', () => showView('register'));
 leave.addEventListener('click', signOut);
+gatePrivacy.addEventListener('click', () => openExternalPage(PRIVACY_URL));
+gateSupport.addEventListener('click', () => openExternalPage(SUPPORT_URL));
 App.addListener('appUrlOpen', event => completeSignIn(event.url));
 App.addListener('appStateChange', ({ isActive }) => { if (isActive) revalidateOnResume(); });
 window.addEventListener('offline', () => updateConnectionState());
 window.addEventListener('online', () => { updateConnectionState(); revalidateOnResume(); });
 updateConnectionState();
+installPullToRefresh(registerView, openAdventurersRegister);
+installPullToRefresh(characterView, refreshOpenCharacter);
 
 restoreSession();
