@@ -12,6 +12,7 @@ use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildAdminBarVisibility
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildAccessPolicy;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildPortraitManager;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildMembershipSummary;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\RequestAccountDeletion;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildGateAudit;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildRoleRegistrar;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\RegisterGuildMember;
@@ -47,6 +48,7 @@ final class GuildGateServiceProvider extends ServiceProvider
                 )
         );
         $this->app->singleton(GuildGateAudit::class);
+        $this->app->singleton(RequestAccountDeletion::class);
         $this->app->singleton(TurnstileVerifier::class);
         $this->app->bind(
             GuildGateController::class,
@@ -62,6 +64,7 @@ final class GuildGateServiceProvider extends ServiceProvider
                     $container->make(UpdateGuildProfile::class),
                     $container->make(GuildPortraitManager::class),
                     $container->make(GuildMembershipSummary::class),
+                    $container->make(RequestAccountDeletion::class),
                     $container->make(GateSecuritySettings::class),
                     $container->make(TurnstileVerifier::class),
                     $container->make(GuildGateAudit::class)

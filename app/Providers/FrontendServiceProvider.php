@@ -47,6 +47,9 @@ class FrontendServiceProvider extends ServiceProvider
             [$this, 'renderApp']
         );
 
+        add_action('init', [$this, 'registerAccountDeletionRewrite'], 20);
+        add_filter('query_vars', [$this, 'registerAccountDeletionQueryVar']);
+
         add_action(
             'admin_post_gmrc_app_request',
             [$this, 'handleApplicationRequest']
@@ -392,10 +395,14 @@ class FrontendServiceProvider extends ServiceProvider
             in_array($method, ['POST', 'DELETE'], true)
             && in_array(
                 $route,
-                ['guild-profile', 'guild-profile/portrait'],
+                ['guild-profile', 'guild-profile/portrait', 'delete-account'],
                 true
             )
         ) {
+            if ($route === 'delete-account') {
+                return 'gmrc_account_deletion_request';
+            }
+
             return $route === 'guild-profile'
                 ? 'gmrc_guild_profile_update'
                 : 'gmrc_guild_profile_portrait';
@@ -940,6 +947,40 @@ class FrontendServiceProvider extends ServiceProvider
         return null;
     }
     
+    /** Phase III.M.7C.5A: expose a stable public Play-facing deletion URL. */
+    public function registerAccountDeletionRewrite(): void
+    {
+        add_rewrite_rule(
+            '^companion/delete-account/?$',
+            'index.php?pagename=companion&gmrc_route=delete-account',
+            'top'
+        );
+
+        if (get_option('gmrc_account_deletion_rewrite_v1') !== '1') {
+            flush_rewrite_rules(false);
+            update_option('gmrc_account_deletion_rewrite_v1', '1', false);
+        }
+    }
+
+    /** @param string[] $vars @return string[] */
+    public function registerAccountDeletionQueryVar(array $vars): array
+    {
+        if (! in_array('gmrc_route', $vars, true)) {
+            $vars[] = 'gmrc_route';
+        }
+
+        return $vars;
+    }
+
+    private function isAccountDeletionRequest(): bool
+    {
+        $route = isset($_GET['gmrc_route']) && is_scalar($_GET['gmrc_route'])
+            ? sanitize_text_field(wp_unslash((string) $_GET['gmrc_route']))
+            : (string) get_query_var('gmrc_route', '');
+
+        return trim($route, '/') === 'delete-account';
+    }
+
     /**
      * Load the Companion application assets.
      */
@@ -951,6 +992,11 @@ class FrontendServiceProvider extends ServiceProvider
     
         $this->enqueueFoundation();
         $this->enqueueFonts();
+
+        if ($this->isAccountDeletionRequest()) {
+            $this->enqueueGuildProfile();
+            return;
+        }
 
         if (! $this->app->make(GuildAccessPolicy::class)->allowsCurrentUser()) {
             $this->enqueueGuildGate();
@@ -2005,6 +2051,10 @@ class FrontendServiceProvider extends ServiceProvider
         unset($attributes, $content);
 
         $gate = $this->app->make(GuildGateController::class);
+
+        if ($this->isAccountDeletionRequest()) {
+            return $gate->deleteAccount();
+        }
 
         if (! is_user_logged_in()) {
             return $gate->show();

@@ -29,6 +29,8 @@ final class RouteResolver implements RouteResolverInterface
             $route = sanitize_text_field(
                 wp_unslash($_GET['gmrc_route'])
             );
+        } elseif (function_exists('get_query_var')) {
+            $route = sanitize_text_field((string) get_query_var('gmrc_route', ''));
         } else {
             $route = 'dashboard';
         }

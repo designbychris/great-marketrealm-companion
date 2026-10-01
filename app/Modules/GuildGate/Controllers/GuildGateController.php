@@ -17,6 +17,7 @@ use GreatMarketrealmCompanion\Modules\GuildGate\GuildProfile;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\AuthenticateGuildMember;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildPortraitManager;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildMembershipSummary;
+use GreatMarketrealmCompanion\Modules\GuildGate\Services\RequestAccountDeletion;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\GuildGateAudit;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\RegisterGuildMember;
 use GreatMarketrealmCompanion\Modules\GuildGate\Services\UpdateGuildProfile;
@@ -38,6 +39,7 @@ final class GuildGateController
         private UpdateGuildProfile $updateProfile,
         private GuildPortraitManager $portraits,
         private GuildMembershipSummary $memberships,
+        private RequestAccountDeletion $accountDeletion,
         private GateSecuritySettings $gateSecurity,
         private TurnstileVerifier $turnstile,
         private GuildGateAudit $audit
@@ -90,6 +92,65 @@ final class GuildGateController
                 'logoutUrl' => wp_logout_url($this->gateUrl()),
             ])
         );
+    }
+
+    /**
+     * Display the public account-deletion charter and, for signed-in Guild
+     * members, the authenticated deletion-request form.
+     */
+    public function deleteAccount(): string
+    {
+        $user = is_user_logged_in() ? wp_get_current_user() : null;
+        $userId = $user !== null ? (int) $user->ID : 0;
+
+        return $this->views->render(
+            View::make('guildgate.delete-account', [
+                'guildUser' => $user,
+                'isSignedIn' => $userId > 0,
+                'membershipSummary' => $userId > 0
+                    ? $this->memberships->forAccount(
+                        $userId,
+                        GuildProfile::accountType($userId)
+                    )
+                    : [],
+                'requestedAt' => $userId > 0
+                    ? $this->accountDeletion->requestedAt($userId)
+                    : '',
+                'gateUrl' => add_query_arg(
+                    ['gate' => 'login', 'return_route' => 'delete-account'],
+                    $this->gateUrl()
+                ),
+                'profileUrl' => $this->profileUrl(),
+            ])
+        );
+    }
+
+    /**
+     * Record an authenticated request to delete the Guild account and its
+     * associated personal Companion data. Destructive erasure is deliberately
+     * completed by the Registrar so shared Campaign/Fellowship records can be
+     * detached or anonymised without damaging another member's history.
+     */
+    public function requestAccountDeletion(): RedirectResponse
+    {
+        if (! is_user_logged_in() || get_current_user_id() < 1) {
+            return $this->responses->redirect($this->deleteAccountUrl());
+        }
+
+        try {
+            $this->accountDeletion->handle(
+                get_current_user_id(),
+                (string) $this->request->input('current_password', ''),
+                $this->request->string('confirmation_phrase')
+            );
+            $this->flash->success(
+                'Your account deletion request has been sealed with the Registrar.'
+            );
+        } catch (Throwable $exception) {
+            $this->flash->error($exception->getMessage());
+        }
+
+        return $this->responses->redirect($this->deleteAccountUrl());
     }
 
     public function updateProfile(): RedirectResponse
@@ -257,8 +318,8 @@ final class GuildGateController
             '/'
         );
 
-        if ($route === 'pocket') {
-            return 'pocket';
+        if (in_array($route, ['pocket', 'delete-account'], true)) {
+            return $route;
         }
 
         if (\GreatMarketrealmCompanion\Mobile\PocketNativeAuth::isNativeReturnRoute($route)) {
@@ -280,6 +341,10 @@ final class GuildGateController
             return $requestId !== null
                 ? \GreatMarketrealmCompanion\Mobile\PocketNativeAuth::browserCompletionUrl($requestId)
                 : $url;
+        }
+
+        if ($route === 'delete-account') {
+            return $this->deleteAccountUrl();
         }
 
         if ($route === 'pocket') {
@@ -306,6 +371,11 @@ final class GuildGateController
             ],
             $this->gateUrl()
         );
+    }
+
+    private function deleteAccountUrl(): string
+    {
+        return home_url('/companion/delete-account/');
     }
 
     private function profileUrl(): string

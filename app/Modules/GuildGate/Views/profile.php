@@ -28,6 +28,7 @@ $campaignsUrl = add_query_arg(
     home_url('/companion/')
 );
 $fellowshipsUrl = add_query_arg('gmrc_route', 'parties', home_url('/companion/'));
+$deleteAccountUrl = home_url('/companion/delete-account/');
 ?>
 <section class="gmrc-guild-profile" aria-labelledby="gmrc-guild-profile-title">
     <header class="gmrc-guild-profile__hero">
@@ -165,5 +166,14 @@ $fellowshipsUrl = add_query_arg('gmrc_route', 'parties', home_url('/companion/')
             <a class="gmrc-guild-profile__action gmrc-guild-profile__action--secondary" href="<?php echo esc_url($logoutUrl); ?>">Sign out of the Companion</a>
         </div>
         <p class="gmrc-guild-profile__role-note">Guild calling is capability-protected. Changing profile details never changes Player or Dungeon Master permissions.</p>
+
+        <div class="gmrc-guild-profile__danger-zone">
+            <div>
+                <p class="gmrc-guild-profile__kicker">Account &amp; data</p>
+                <h3>Leaving the Guild</h3>
+                <p>Request permanent deletion of your Guild account and associated personal Companion data.</p>
+            </div>
+            <a class="gmrc-guild-profile__action gmrc-guild-profile__action--danger" href="<?php echo esc_url($deleteAccountUrl); ?>">Delete Account and Data</a>
+        </div>
     </section>
 </section>

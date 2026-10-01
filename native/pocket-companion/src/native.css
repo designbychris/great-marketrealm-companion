@@ -282,3 +282,5 @@ input{font-size:16px;} /* prevents mobile webview zoom while editing live measur
 
 .gate-public-links { display:flex; justify-content:center; align-items:center; gap:8px; margin-top:10px; color:#9f9783; }
 .gate-public-links button { width:auto; min-height:34px; padding:4px 2px; border:0; background:transparent; color:#d7cfba; font-size:11px; text-decoration:underline; text-underline-offset:3px; }
+/* III.M.7C.5A — account lifecycle remains web-authoritative; Pocket only links to it. */
+@media (min-width:520px){.privacy-support-actions{grid-template-columns:repeat(3,1fr)}}

@@ -12,6 +12,7 @@ const CHARACTERS = `${ORIGIN}/wp-json/gmrc-pocket/v1/characters`;
 const SPELL_SLOTS = characterId => `${CHARACTERS}/${encodeURIComponent(characterId)}/spell-slots`;
 const CALLBACK = 'uk.co.greatmarketrealm.pocket://auth/callback';
 const PRIVACY_URL = 'https://greatmarketrealm.co.uk/the-pocket-companion/privacy/';
+const DELETE_ACCOUNT_URL = 'https://greatmarketrealm.co.uk/companion/delete-account/';
 const SUPPORT_URL = 'https://greatmarketrealm.co.uk/support/';
 const TOKEN_KEY = 'access-token';
 const STORAGE_PREFIX = 'gmrc_pocket_';
@@ -681,6 +682,7 @@ function privacySupportPanel() {
     <div class="privacy-support-actions">
       <button type="button" data-external-url="${PRIVACY_URL}">Privacy Policy</button>
       <button type="button" class="secondary" data-external-url="${SUPPORT_URL}">Support</button>
+      <button type="button" class="secondary" data-external-url="${DELETE_ACCOUNT_URL}">Delete Account &amp; Data</button>
     </div>`;
   panel.querySelectorAll('[data-external-url]').forEach(button => button.addEventListener('click', () => openExternalPage(button.dataset.externalUrl)));
   return panel;
