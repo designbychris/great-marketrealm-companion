@@ -1208,6 +1208,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/dungeon-master/campaign-journal.css',
             ],
             [
+                'handle' => 'gmrc-keeper-gazetteer',
+                'path' => 'modules/dungeon-master/keeper-gazetteer.css',
+            ],
+            [
                 'handle' => 'gmrc-command-centre',
                 'path' => 'modules/dungeon-master/command-centre.css',
             ],

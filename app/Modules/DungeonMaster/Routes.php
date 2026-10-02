@@ -12,6 +12,7 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\JournalControlle
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\MarketPassController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\ActiveCampaignController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\ReadOnlyCharacterController;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\LocationController;
 defined('ABSPATH') || exit;
 return static function (Router $router): void {
  $router->get('/dungeon-master',[DungeonMasterController::class,'index']);
@@ -54,6 +55,13 @@ return static function (Router $router): void {
  $router->get('/dungeon-master/campaigns/{id}/sessions/{sessionId}/edit',[SessionController::class,'edit']);
  $router->get('/dungeon-master/campaigns/{id}/sessions/{sessionId}',[SessionController::class,'show']);
  $router->put('/dungeon-master/campaigns/{id}/sessions/{sessionId}',[SessionController::class,'update']);
+ $router->get('/dungeon-master/campaigns/{id}/locations',[LocationController::class,'index']);
+ $router->get('/dungeon-master/campaigns/{id}/locations/create',[LocationController::class,'create']);
+ $router->post('/dungeon-master/campaigns/{id}/locations',[LocationController::class,'store']);
+ $router->get('/dungeon-master/campaigns/{id}/locations/{locationId}/edit',[LocationController::class,'edit']);
+ $router->get('/dungeon-master/campaigns/{id}/locations/{locationId}',[LocationController::class,'show']);
+ $router->put('/dungeon-master/campaigns/{id}/locations/{locationId}',[LocationController::class,'update']);
+ $router->post('/dungeon-master/campaigns/{id}/locations/{locationId}/archive',[LocationController::class,'archive']);
  $router->get('/dungeon-master/campaigns/{id}/journal',[JournalController::class,'index']);
  $router->get('/dungeon-master/campaigns/{id}/journal/create',[JournalController::class,'create']);
  $router->post('/dungeon-master/campaigns/{id}/journal',[JournalController::class,'store']);

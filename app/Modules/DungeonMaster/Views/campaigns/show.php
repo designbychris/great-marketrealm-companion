@@ -174,6 +174,7 @@ $registerUrl = $route('dungeon-master/campaigns');
         <a href="<?php echo esc_url($route($campaignPath . '/sessions')); ?>">Open Session Ledger</a>
         <a href="<?php echo esc_url($route($campaignPath . '/encounters')); ?>">Open Encounter Board</a>
         <a href="<?php echo esc_url($route($campaignPath . '/journal')); ?>">Open Campaign Journal</a>
+        <a href="<?php echo esc_url($route($campaignPath . '/locations')); ?>">Open Keeper’s Gazetteer</a>
         <a href="<?php echo esc_url($route('dungeon-master/monsters')); ?>">Bestiary</a>
     </nav>
 

@@ -120,11 +120,11 @@ $monsterUrl = add_query_arg(
                 <article class="gmrc-dm-workshop-card" data-workspace-tool="<?php echo esc_attr((string) $tool['key']); ?>">
                     <div class="gmrc-dm-workshop-card__icon" aria-hidden="true"><?php echo esc_html((string) $tool['icon']); ?></div>
                     <div class="gmrc-dm-workshop-card__copy">
-                        <p class="gmrc-dm-workshop-card__phase"><?php echo esc_html((string) $tool['next_phase']); ?> · Planned</p>
+                        <p class="gmrc-dm-workshop-card__phase"><?php echo esc_html((string) $tool['next_phase']); ?> · <?php echo (($tool['status'] ?? 'planned') === 'open') ? 'Open' : 'Planned'; ?></p>
                         <h3><?php echo esc_html((string) $tool['label']); ?></h3>
                         <p><?php echo esc_html((string) $tool['description']); ?></p>
                     </div>
-                    <span class="gmrc-dm-workshop-card__status">On the Desk</span>
+                    <?php if (($tool['status'] ?? 'planned') === 'open') : ?><a class="gmrc-dm-workshop-card__status" href="<?php echo esc_url(add_query_arg('gmrc_route',(string) $tool['route'],$baseUrl)); ?>">Choose Campaign →</a><?php else: ?><span class="gmrc-dm-workshop-card__status">On the Desk</span><?php endif; ?>
                 </article>
             <?php endforeach; ?>
         </div>

@@ -17,7 +17,7 @@ defined('ABSPATH') || exit;
  */
 final class KeeperWorkspace
 {
-    /** @return list<array{key:string,label:string,icon:string,description:string,next_phase:string,record_types:list<string>}> */
+    /** @return list<array{key:string,label:string,icon:string,description:string,next_phase:string,status?:string,route?:string,record_types:list<string>}> */
     public function forthcomingTools(): array
     {
         return [
@@ -27,6 +27,8 @@ final class KeeperWorkspace
                 'icon' => '🗺️',
                 'description' => 'Give campaign locations a permanent home before they become maps on the Tabletop.',
                 'next_phase' => 'III.17.2',
+                'status' => 'open',
+                'route' => 'dungeon-master/campaigns',
                 'record_types' => [PlanningRecordType::LOCATION],
             ],
             [
