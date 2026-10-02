@@ -13,6 +13,7 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\MarketPassContro
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\ActiveCampaignController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\ReadOnlyCharacterController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\LocationController;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\PersonaController;
 defined('ABSPATH') || exit;
 return static function (Router $router): void {
  $router->get('/dungeon-master',[DungeonMasterController::class,'index']);
@@ -62,6 +63,13 @@ return static function (Router $router): void {
  $router->get('/dungeon-master/campaigns/{id}/locations/{locationId}',[LocationController::class,'show']);
  $router->put('/dungeon-master/campaigns/{id}/locations/{locationId}',[LocationController::class,'update']);
  $router->post('/dungeon-master/campaigns/{id}/locations/{locationId}/archive',[LocationController::class,'archive']);
+ $router->get('/dungeon-master/campaigns/{id}/personae',[PersonaController::class,'index']);
+ $router->get('/dungeon-master/campaigns/{id}/personae/create',[PersonaController::class,'create']);
+ $router->post('/dungeon-master/campaigns/{id}/personae',[PersonaController::class,'store']);
+ $router->get('/dungeon-master/campaigns/{id}/personae/{personaId}/edit',[PersonaController::class,'edit']);
+ $router->get('/dungeon-master/campaigns/{id}/personae/{personaId}',[PersonaController::class,'show']);
+ $router->put('/dungeon-master/campaigns/{id}/personae/{personaId}',[PersonaController::class,'update']);
+ $router->post('/dungeon-master/campaigns/{id}/personae/{personaId}/archive',[PersonaController::class,'archive']);
  $router->get('/dungeon-master/campaigns/{id}/journal',[JournalController::class,'index']);
  $router->get('/dungeon-master/campaigns/{id}/journal/create',[JournalController::class,'create']);
  $router->post('/dungeon-master/campaigns/{id}/journal',[JournalController::class,'store']);

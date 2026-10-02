@@ -1212,6 +1212,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/dungeon-master/keeper-gazetteer.css',
             ],
             [
+                'handle' => 'gmrc-dramatis-personae',
+                'path' => 'modules/dungeon-master/dramatis-personae.css',
+            ],
+            [
                 'handle' => 'gmrc-command-centre',
                 'path' => 'modules/dungeon-master/command-centre.css',
             ],

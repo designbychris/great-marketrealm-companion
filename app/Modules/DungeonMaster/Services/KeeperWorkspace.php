@@ -37,6 +37,8 @@ final class KeeperWorkspace
                 'icon' => '🎭',
                 'description' => 'Keep the people and factions behind the adventure close to the campaign that owns them.',
                 'next_phase' => 'III.17.3',
+                'status' => 'open',
+                'route' => 'dungeon-master/campaigns',
                 'record_types' => [PlanningRecordType::PERSON, PlanningRecordType::FACTION],
             ],
             [
