@@ -109,7 +109,7 @@ $monsterUrl = add_query_arg(
     <section class="gmrc-dm-desk__workshop" aria-labelledby="gmrc-dm-workshop-title">
         <div class="gmrc-dm-desk__section-heading">
             <div>
-                <p class="gmrc-dm-desk__eyebrow">Phase III.17 · The Keeper’s Workshop</p>
+                <p class="gmrc-dm-desk__eyebrow">The Keeper’s Workshop</p>
                 <h2 id="gmrc-dm-workshop-title">The Desk Grows</h2>
             </div>
             <p class="gmrc-dm-desk__workshop-intro">The existing ledgers remain your working records. These new instruments will turn them into a connected campaign-planning workspace, one careful register at a time.</p>
@@ -120,7 +120,7 @@ $monsterUrl = add_query_arg(
                 <article class="gmrc-dm-workshop-card" data-workspace-tool="<?php echo esc_attr((string) $tool['key']); ?>">
                     <div class="gmrc-dm-workshop-card__icon" aria-hidden="true"><?php echo esc_html((string) $tool['icon']); ?></div>
                     <div class="gmrc-dm-workshop-card__copy">
-                        <p class="gmrc-dm-workshop-card__phase"><?php echo esc_html((string) $tool['next_phase']); ?> · <?php echo (($tool['status'] ?? 'planned') === 'open') ? 'Open' : 'Planned'; ?></p>
+                        <p class="gmrc-dm-workshop-card__phase"><?php echo (($tool['status'] ?? 'planned') === 'open') ? 'Open' : 'Planned'; ?></p>
                         <h3><?php echo esc_html((string) $tool['label']); ?></h3>
                         <p><?php echo esc_html((string) $tool['description']); ?></p>
                     </div>

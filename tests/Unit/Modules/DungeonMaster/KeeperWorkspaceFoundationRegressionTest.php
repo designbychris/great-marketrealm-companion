@@ -16,7 +16,8 @@ final class KeeperWorkspaceFoundationRegressionTest extends TestCase
             self::assertStringContainsString($ledger, $view);
         }
 
-        self::assertStringContainsString('Phase III.17 · The Keeper’s Workshop', $view);
+        self::assertStringContainsString('The Keeper’s Workshop', $view);
+        self::assertDoesNotMatchRegularExpression('/(?:Phase\s+)?(?:III|IV)\.\d+(?:\.\d+)*(?:[A-Z])?/i', $view);
         self::assertStringContainsString('The Desk Grows', $view);
         self::assertStringContainsString('campaign records remain the source of truth', $view);
     }
@@ -28,6 +29,9 @@ final class KeeperWorkspaceFoundationRegressionTest extends TestCase
         foreach (['Keeper’s Gazetteer', 'Dramatis Personae', 'Evidence Register', 'Conspiracy Board', 'Cartographer’s Bench'] as $tool) {
             self::assertStringContainsString($tool, $catalogue);
         }
+
+        self::assertStringContainsString("'key' => 'evidence-register'", $catalogue);
+        self::assertMatchesRegularExpression("/'key' => 'evidence-register'.*?'status' => 'open'.*?'route' => 'dungeon-master\/campaigns'/s", $catalogue);
 
         foreach (['III.17.2', 'III.17.3', 'III.17.4', 'III.17.5', 'IV.36'] as $phase) {
             self::assertStringContainsString($phase, $catalogue);
