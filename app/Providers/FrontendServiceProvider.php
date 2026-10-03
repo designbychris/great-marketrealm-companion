@@ -461,6 +461,47 @@ class FrontendServiceProvider extends ServiceProvider
                 . sanitize_text_field($sessionMatch[1]);
         }
 
+        /*
+         * Keeper's Workshop registers share the campaign-scoped command
+         * gateway. Keep their nonce contract here so create, update and
+         * archive requests are verified before Router dispatch.
+         */
+        if (
+            in_array($method, ['POST', 'PUT'], true)
+            && preg_match(
+                '#^dungeon-master/campaigns/([^/]+)/locations(?:/[^/]+(?:/archive)?)?$#',
+                $route,
+                $gazetteerMatch
+            )
+        ) {
+            return 'gmrc_dm_gazetteer_'
+                . sanitize_text_field($gazetteerMatch[1]);
+        }
+
+        if (
+            in_array($method, ['POST', 'PUT'], true)
+            && preg_match(
+                '#^dungeon-master/campaigns/([^/]+)/personae(?:/[^/]+(?:/archive)?)?$#',
+                $route,
+                $personaeMatch
+            )
+        ) {
+            return 'gmrc_dm_personae_'
+                . sanitize_text_field($personaeMatch[1]);
+        }
+
+        if (
+            in_array($method, ['POST', 'PUT'], true)
+            && preg_match(
+                '#^dungeon-master/campaigns/([^/]+)/evidence(?:/[^/]+(?:/archive)?)?$#',
+                $route,
+                $evidenceMatch
+            )
+        ) {
+            return 'gmrc_dm_evidence_'
+                . sanitize_text_field($evidenceMatch[1]);
+        }
+
         if ($method === 'POST' && $route === 'market-pass') {
             return 'gmrc_market_pass_redeem';
         }
