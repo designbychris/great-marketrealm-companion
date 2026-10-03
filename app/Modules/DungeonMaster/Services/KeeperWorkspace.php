@@ -47,6 +47,8 @@ final class KeeperWorkspace
                 'icon' => '🔎',
                 'description' => 'Preserve clues, secrets and plot threads as records that can later be pinned and connected.',
                 'next_phase' => 'III.17.4',
+                'status' => 'open',
+                'route' => 'dungeon-master/campaigns',
                 'record_types' => [PlanningRecordType::EVIDENCE, PlanningRecordType::THREAD],
             ],
             [
