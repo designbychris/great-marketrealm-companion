@@ -51,6 +51,16 @@ final class TabletopCharacterBridgeRegressionTest extends TestCase
         self::assertStringContainsString("'saving_throws' => \$savingThrowProjection", $bridge);
         self::assertStringContainsString("'skills' => \$skillProjection", $bridge);
     }
+    public function testBridgeProjectsTheLedgersEquipmentAwareArmourClass(): void
+    {
+        $bridge = file_get_contents($this->root('app/Modules/Characters/Services/TabletopCharacterBridge.php'));
+
+        self::assertStringContainsString('new InventoryPresenter($catalogue)', $bridge);
+        self::assertStringContainsString('->armourClass(', $bridge);
+        self::assertStringContainsString("'armour_class' => \$armourClass", $bridge);
+        self::assertStringNotContainsString("'armour_class' => \$character->armourClass()->value()", $bridge);
+    }
+
     public function testTabletopBridgeUsesCanonicalOwnerScopedVitalMeasuresBoundary(): void
     {
         $bridge = file_get_contents($this->root('app/Modules/Characters/Services/TabletopCharacterBridge.php'));

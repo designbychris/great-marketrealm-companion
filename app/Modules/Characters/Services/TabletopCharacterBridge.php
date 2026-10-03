@@ -13,6 +13,7 @@ use GreatMarketrealmCompanion\Modules\Characters\Arcana\Models\ArcaneAbilityCata
 use GreatMarketrealmCompanion\Modules\Characters\Arcana\Services\ArcanePantryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Models\ItemCatalogue;
 use GreatMarketrealmCompanion\Modules\Characters\Inventory\Repositories\CharacterInventoryRepository;
+use GreatMarketrealmCompanion\Modules\Characters\Inventory\Services\InventoryPresenter;
 use GreatMarketrealmCompanion\Modules\Characters\Tokens\Repositories\CharacterTokenRepository;
 use GreatMarketrealmCompanion\Modules\Characters\Tokens\Services\CharacterTokenPresenter;
 use GreatMarketrealmCompanion\Services\Characters\RaceRegistry;
@@ -173,6 +174,11 @@ final class TabletopCharacterBridge
             $character,
             $inventory
         );
+        // Keep every client on the Ledger's equipment-aware AC calculation.
+        $armourClass = (new InventoryPresenter($catalogue))->armourClass(
+            $character,
+            $inventory
+        );
 
         $arcana = (new ArcanePantryPresenter(
             new ArcaneAbilityCatalogue()
@@ -204,7 +210,7 @@ final class TabletopCharacterBridge
             'class' => $character->characterClass()->label(),
             'level' => $character->level()->value(),
             'play' => [
-                'armour_class' => $character->armourClass()->value(),
+                'armour_class' => $armourClass,
                 'hit_points' => [
                     'current' => $character->hitPoints()->current(),
                     'maximum' => $character->hitPoints()->maximum(),

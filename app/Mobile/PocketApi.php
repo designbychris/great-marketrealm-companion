@@ -281,7 +281,11 @@ final class PocketApi
             $inventory = (new CharacterInventoryRepository())->find($character->id());
             $catalogue = new ItemCatalogue();
             $attacks = (new AttackPresenter($catalogue))->present($character, $inventory);
-            $inventoryRows = (new InventoryPresenter($catalogue))->present($character, $inventory)['rows'];
+            $inventoryPresenter = new InventoryPresenter($catalogue);
+            $inventoryRows = $inventoryPresenter->present($character, $inventory)['rows'];
+            // AC is equipment-aware and must match the desktop Ledger: armour base,
+            // armour Dexterity cap, and equipped shield bonuses remain server-authoritative.
+            $armourClass = $inventoryPresenter->armourClass($character, $inventory);
             // Read-only: resolve only this character's learned spell identities against the shared register.
             // Unknown identities remain visible without fabricated mechanics.
             // Canonical desktop presenter and owner-scoped active resource ledger.
@@ -345,7 +349,7 @@ final class PocketApi
                 'race' => $character->race()->label(),
                 'class' => $character->characterClass()->label(),
                 'level' => $character->level()->value(),
-                'armour_class' => $character->armourClass()->value(),
+                'armour_class' => $armourClass,
                 'initiative' => $character->initiative()->signed(),
                 'initiative_modifier' => $character->initiative()->modifier(),
                 'speed_feet' => $character->speed()->feet(),
