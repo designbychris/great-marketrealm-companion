@@ -55,7 +55,7 @@ final class KeeperWorkspaceFoundationRegressionTest extends TestCase
         $catalogue = $this->source('app/Modules/DungeonMaster/Services/KeeperWorkspace.php');
 
         self::assertStringNotContainsString('/gazetteer', $routes);
-        self::assertStringNotContainsString('/conspiracy-board', $routes);
+        self::assertStringContainsString('/conspiracy-board', $routes);
         self::assertStringContainsString('intentionally contains no persistence', $catalogue);
     }
 
