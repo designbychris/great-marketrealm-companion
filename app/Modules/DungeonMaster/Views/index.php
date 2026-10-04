@@ -5,16 +5,11 @@ declare(strict_types=1);
 defined('ABSPATH') || exit;
 
 $baseUrl = home_url('/companion/');
-$campaignUrl = add_query_arg(
-    'gmrc_route',
-    'dungeon-master/campaigns',
-    $baseUrl
-);
-$monsterUrl = add_query_arg(
-    'gmrc_route',
-    'dungeon-master/monsters',
-    $baseUrl
-);
+$route = static fn (string $path): string => add_query_arg('gmrc_route', $path, $baseUrl);
+$campaignUrl = $route('dungeon-master/campaigns');
+$campaigns = array_values($campaigns ?? []);
+$activeCampaigns = array_values(array_filter($campaigns, static fn ($campaign): bool => ! $campaign->isArchived()));
+$archivedCampaigns = array_values(array_filter($campaigns, static fn ($campaign): bool => $campaign->isArchived()));
 ?>
 
 <section class="gmrc-dm-desk" aria-labelledby="gmrc-dm-desk-title">
@@ -22,142 +17,47 @@ $monsterUrl = add_query_arg(
         <div class="gmrc-dm-desk__hero-copy">
             <p class="gmrc-dm-desk__eyebrow">The Dungeon Master’s private workspace</p>
             <h1 id="gmrc-dm-desk-title">Dungeon Master’s Desk</h1>
-            <p class="gmrc-dm-desk__tagline">Plan adventures. Guide legends. Shape the Marketrealm.</p>
-            <p class="gmrc-dm-desk__welcome">
-                Welcome, <?php echo esc_html($displayName ?? 'Dungeon Master'); ?>.
-                Your command centre for campaigns, sessions, encounters and the heroes
-                who will shape the stories yet to be told.
-            </p>
-            <a class="gmrc-dm-desk__primary-action" href="<?php echo esc_url($campaignUrl); ?>">
-                Open Campaign Register <span aria-hidden="true">→</span>
-            </a>
+            <p class="gmrc-dm-desk__tagline">Choose the campaign. Then take the chair.</p>
+            <p class="gmrc-dm-desk__welcome">Welcome, <?php echo esc_html($displayName ?? 'Dungeon Master'); ?>. Start a new campaign or open one of your existing Campaign Command Centres.</p>
+            <div class="gmrc-dm-desk__hero-actions">
+                <a class="gmrc-dm-desk__primary-action" href="<?php echo esc_url($route('dungeon-master/campaigns/create')); ?>">Start New Campaign <span aria-hidden="true">→</span></a>
+                <a class="gmrc-dm-desk__secondary-action" href="<?php echo esc_url($campaignUrl); ?>">Open Campaign Register</a>
+            </div>
         </div>
     </header>
 
-    <section class="gmrc-dm-desk__workspace" aria-labelledby="gmrc-dm-workspace-title">
-        <div class="gmrc-dm-desk__ornament-heading">
-            <span aria-hidden="true">◆</span>
-            <h2 id="gmrc-dm-workspace-title">DM Workspace</h2>
-            <span aria-hidden="true">◆</span>
-        </div>
-
-        <div class="gmrc-dm-desk__grid" aria-label="Dungeon Master ledgers">
-            <article class="gmrc-dm-ledger gmrc-dm-ledger--campaign">
-                <div class="gmrc-dm-ledger__icon" aria-hidden="true">📜</div>
-                <div>
-                    <p class="gmrc-dm-ledger__status">Ledger I · Open</p>
-                    <h3>Campaign Register</h3>
-                    <p>Create and manage your campaigns. Build worlds worth remembering.</p>
-                </div>
-                <a class="gmrc-dm-ledger__action" href="<?php echo esc_url($campaignUrl); ?>">
-                    Open Register <span aria-hidden="true">→</span>
-                </a>
-            </article>
-
-            <article class="gmrc-dm-ledger gmrc-dm-ledger--session">
-                <div class="gmrc-dm-ledger__icon" aria-hidden="true">📖</div>
-                <div>
-                    <p class="gmrc-dm-ledger__status">Ledger II · Open</p>
-                    <h3>Session Ledger</h3>
-                    <p>Plan, run and record your sessions. Track milestones and memorable moments.</p>
-                </div>
-                <a class="gmrc-dm-ledger__action" href="<?php echo esc_url($campaignUrl); ?>">Choose Campaign <span aria-hidden="true">→</span></a>
-            </article>
-
-            <article class="gmrc-dm-ledger gmrc-dm-ledger--encounter">
-                <div class="gmrc-dm-ledger__icon" aria-hidden="true">⚔️</div>
-                <div>
-                    <p class="gmrc-dm-ledger__status">Ledger III · Open</p>
-                    <h3>Encounter Board</h3>
-                    <p>Design encounters, marshal adversaries and prepare the challenges ahead.</p>
-                </div>
-                <a class="gmrc-dm-ledger__action" href="<?php echo esc_url($campaignUrl); ?>">Choose Campaign <span aria-hidden="true">→</span></a>
-            </article>
-
-            <article class="gmrc-dm-ledger gmrc-dm-ledger--roster">
-                <div class="gmrc-dm-ledger__icon" aria-hidden="true">👥</div>
-                <div>
-                    <p class="gmrc-dm-ledger__status">Ledger IV · Open</p>
-                    <h3>Player Roster</h3>
-                    <p>Gather registered Guild Players and attach their adventurers inside each campaign.</p>
-                </div>
-                <a class="gmrc-dm-ledger__action" href="<?php echo esc_url($campaignUrl); ?>">Choose Campaign <span aria-hidden="true">→</span></a>
-            </article>
-
-            <article class="gmrc-dm-ledger gmrc-dm-ledger--monster">
-                <div class="gmrc-dm-ledger__icon" aria-hidden="true">🐉</div>
-                <div>
-                    <p class="gmrc-dm-ledger__status">Ledger V · Open</p>
-                    <h3>Monster Ledger</h3>
-                    <p>Keep reusable creature stat blocks ready for encounters and live initiative.</p>
-                </div>
-                <a class="gmrc-dm-ledger__action" href="<?php echo esc_url($monsterUrl); ?>">Open Bestiary <span aria-hidden="true">→</span></a>
-            </article>
-
-            <article class="gmrc-dm-ledger gmrc-dm-ledger--journal">
-                <div class="gmrc-dm-ledger__icon" aria-hidden="true">📔</div>
-                <div>
-                    <p class="gmrc-dm-ledger__status">Ledger VI · Open</p>
-                    <h3>Campaign Journal</h3>
-                    <p>Keep private NPCs, locations, secrets, lore and plot threads beside each campaign.</p>
-                </div>
-                <a class="gmrc-dm-ledger__action" href="<?php echo esc_url($campaignUrl); ?>">Choose Campaign <span aria-hidden="true">→</span></a>
-            </article>
-        </div>
-    </section>
-
-    <section class="gmrc-dm-desk__workshop" aria-labelledby="gmrc-dm-workshop-title">
+    <section class="gmrc-dm-desk__workspace" aria-labelledby="gmrc-dm-campaigns-title">
         <div class="gmrc-dm-desk__section-heading">
-            <div>
-                <p class="gmrc-dm-desk__eyebrow">The Keeper’s Workshop</p>
-                <h2 id="gmrc-dm-workshop-title">The Desk Grows</h2>
+            <div><p class="gmrc-dm-desk__eyebrow">Campaign Register</p><h2 id="gmrc-dm-campaigns-title">Your Campaigns</h2></div>
+            <p class="gmrc-dm-desk__workshop-intro">Every working ledger and Keeper instrument now lives inside the campaign that owns it.</p>
+        </div>
+
+        <?php if ($activeCampaigns === []) : ?>
+            <article class="gmrc-dm-campaign-empty"><div aria-hidden="true">📜</div><h3>The first page is waiting</h3><p>Create a campaign to open its Command Centre, player roster, sessions, encounters and Keeper records.</p><a class="gmrc-dm-ledger__action" href="<?php echo esc_url($route('dungeon-master/campaigns/create')); ?>">Start New Campaign →</a></article>
+        <?php else : ?>
+            <div class="gmrc-dm-campaign-grid" aria-label="Active campaigns">
+                <?php foreach ($activeCampaigns as $campaign) : ?>
+                    <article class="gmrc-dm-campaign-card">
+                        <div class="gmrc-dm-campaign-card__seal" aria-hidden="true">📜</div>
+                        <div><p class="gmrc-dm-ledger__status">Campaign · Active</p><h3><?php echo esc_html($campaign->name()); ?></h3><p><?php echo esc_html($campaign->description() !== '' ? $campaign->description() : 'No campaign summary has been written yet.'); ?></p></div>
+                        <a class="gmrc-dm-ledger__action" href="<?php echo esc_url($route('dungeon-master/campaigns/' . $campaign->id())); ?>">Open Campaign <span aria-hidden="true">→</span></a>
+                    </article>
+                <?php endforeach; ?>
             </div>
-            <p class="gmrc-dm-desk__workshop-intro">The existing ledgers remain your working records. These new instruments will turn them into a connected campaign-planning workspace, one careful register at a time.</p>
+        <?php endif; ?>
+
+        <div class="gmrc-dm-register-row">
+            <a class="gmrc-dm-register-card" href="<?php echo esc_url($campaignUrl); ?>"><span aria-hidden="true">📚</span><span><strong>Campaign Register</strong><small>Manage active and archived campaigns.</small></span><span aria-hidden="true">→</span></a>
+            <a class="gmrc-dm-register-card" href="<?php echo esc_url($route('dungeon-master/campaigns/create')); ?>"><span aria-hidden="true">✦</span><span><strong>Start New Campaign</strong><small>Open a fresh chronicle in the Register.</small></span><span aria-hidden="true">→</span></a>
         </div>
 
-        <div class="gmrc-dm-workshop-grid" aria-label="Forthcoming Keeper planning tools">
-            <?php foreach (($forthcomingTools ?? []) as $tool) : ?>
-                <article class="gmrc-dm-workshop-card" data-workspace-tool="<?php echo esc_attr((string) $tool['key']); ?>">
-                    <div class="gmrc-dm-workshop-card__icon" aria-hidden="true"><?php echo esc_html((string) $tool['icon']); ?></div>
-                    <div class="gmrc-dm-workshop-card__copy">
-                        <p class="gmrc-dm-workshop-card__phase"><?php echo (($tool['status'] ?? 'planned') === 'open') ? 'Open' : 'Planned'; ?></p>
-                        <h3><?php echo esc_html((string) $tool['label']); ?></h3>
-                        <p><?php echo esc_html((string) $tool['description']); ?></p>
-                    </div>
-                    <?php if (($tool['status'] ?? 'planned') === 'open') : ?><a class="gmrc-dm-workshop-card__status" href="<?php echo esc_url(add_query_arg('gmrc_route',(string) $tool['route'],$baseUrl)); ?>">Choose Campaign →</a><?php else: ?><span class="gmrc-dm-workshop-card__status">On the Desk</span><?php endif; ?>
-                </article>
-            <?php endforeach; ?>
-        </div>
-
-        <p class="gmrc-dm-desk__workshop-note"><strong>Workshop rule:</strong> campaign records remain the source of truth. Boards and future Tabletop scenes will reference those records rather than duplicate them.</p>
+        <?php if ($archivedCampaigns !== []) : ?><p class="gmrc-dm-desk__archive-note"><?php echo esc_html((string) count($archivedCampaigns)); ?> archived campaign<?php echo count($archivedCampaigns) === 1 ? '' : 's'; ?> remain preserved in the Campaign Register.</p><?php endif; ?>
     </section>
 
     <section class="gmrc-dm-desk__quick" aria-labelledby="gmrc-dm-quick-title">
-        <div class="gmrc-dm-desk__section-heading">
-            <p class="gmrc-dm-desk__eyebrow">Quick Access</p>
-            <h2 id="gmrc-dm-quick-title">Open existing Guild records</h2>
-        </div>
-
+        <div class="gmrc-dm-desk__section-heading"><p class="gmrc-dm-desk__eyebrow">Guild Records</p><h2 id="gmrc-dm-quick-title">Outside the campaign</h2></div>
         <nav class="gmrc-dm-quick-links" aria-label="Dungeon Master quick links">
-            <?php foreach (($quickLinks ?? []) as $link) : ?>
-                <a
-                    class="gmrc-dm-quick-link"
-                    href="<?php echo esc_url(
-                        add_query_arg(
-                            'gmrc_route',
-                            (string) $link['route'],
-                            $baseUrl
-                        )
-                    ); ?>"
-                >
-                    <span class="gmrc-dm-quick-link__mark" aria-hidden="true">✦</span>
-                    <span class="gmrc-dm-quick-link__copy">
-                        <strong><?php echo esc_html((string) $link['label']); ?></strong>
-                        <small><?php echo esc_html((string) $link['description']); ?></small>
-                    </span>
-                    <span class="gmrc-dm-quick-link__arrow" aria-hidden="true">→</span>
-                </a>
-            <?php endforeach; ?>
+            <?php foreach (($quickLinks ?? []) as $link) : ?><a class="gmrc-dm-quick-link" href="<?php echo esc_url($route((string) $link['route'])); ?>"><span class="gmrc-dm-quick-link__mark" aria-hidden="true">✦</span><span class="gmrc-dm-quick-link__copy"><strong><?php echo esc_html((string) $link['label']); ?></strong><small><?php echo esc_html((string) $link['description']); ?></small></span><span class="gmrc-dm-quick-link__arrow" aria-hidden="true">→</span></a><?php endforeach; ?>
         </nav>
     </section>
 </section>
