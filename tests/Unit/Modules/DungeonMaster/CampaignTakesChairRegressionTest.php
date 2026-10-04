@@ -30,7 +30,7 @@ final class CampaignTakesChairRegressionTest extends TestCase
             'Open Encounter Board',
             'Open Player Roster',
             'Open Campaign Journal',
-            'Open Gazetteer',
+            'Open Keeper’s Gazetteer',
             'Open Dramatis Personae',
             'Open Evidence Register',
         ] as $label) {
