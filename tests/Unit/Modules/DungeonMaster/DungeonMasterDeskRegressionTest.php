@@ -97,10 +97,10 @@ final class DungeonMasterDeskRegressionTest extends TestCase
         $view = $this->source('app/Modules/DungeonMaster/Views/index.php');
 
         self::assertStringContainsString('Campaign Register', $view);
-        self::assertStringContainsString('Your Campaigns', $view);
-        self::assertStringContainsString('Start New Campaign', $view);
-        self::assertStringContainsString('Outside the campaign', $view);
-        self::assertStringNotContainsString('Choose Campaign', $view);
+        self::assertStringContainsString('Session Ledger', $view);
+        self::assertStringContainsString('Encounter Board', $view);
+        self::assertStringContainsString('Player Roster', $view);
+        self::assertStringContainsString('Open existing Guild records', $view);
     }
 
     public function testDeskCssIncludesResponsiveAndAccessibilityCoverage(): void
