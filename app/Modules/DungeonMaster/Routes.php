@@ -15,6 +15,7 @@ use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\ReadOnlyCharacte
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\LocationController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\PersonaController;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\EvidenceController;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Controllers\ConspiracyBoardController;
 defined('ABSPATH') || exit;
 return static function (Router $router): void {
  $router->get('/dungeon-master',[DungeonMasterController::class,'index']);
@@ -78,6 +79,8 @@ return static function (Router $router): void {
  $router->get('/dungeon-master/campaigns/{id}/evidence/{evidenceId}',[EvidenceController::class,'show']);
  $router->put('/dungeon-master/campaigns/{id}/evidence/{evidenceId}',[EvidenceController::class,'update']);
  $router->post('/dungeon-master/campaigns/{id}/evidence/{evidenceId}/archive',[EvidenceController::class,'archive']);
+ $router->get('/dungeon-master/campaigns/{id}/conspiracy-board',[ConspiracyBoardController::class,'index']);
+ $router->post('/dungeon-master/campaigns/{id}/conspiracy-board',[ConspiracyBoardController::class,'save']);
  $router->get('/dungeon-master/campaigns/{id}/journal',[JournalController::class,'index']);
  $router->get('/dungeon-master/campaigns/{id}/journal/create',[JournalController::class,'create']);
  $router->post('/dungeon-master/campaigns/{id}/journal',[JournalController::class,'store']);

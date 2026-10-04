@@ -182,7 +182,7 @@ $registerUrl = $route('dungeon-master/campaigns');
                 ['🗺️','Keeper’s Gazetteer','Record the places, regions, buildings and rooms of this campaign.',$campaignPath . '/locations','Open Keeper’s Gazetteer','open'],
                 ['🎭','Dramatis Personae','Keep the people and factions behind this campaign.',$campaignPath . '/personae','Open Dramatis Personae','open'],
                 ['🔎','Evidence Register','Connect clues, secrets and plot threads to campaign records.',$campaignPath . '/evidence','Open Evidence Register','open'],
-                ['🧷','Conspiracy Board','Arrange the campaign’s canonical records on the Keeper’s planning board.','','On the Desk','planned'],
+                ['🧷','Conspiracy Board','Arrange the campaign’s canonical records on the Keeper’s planning board.',$campaignPath . '/conspiracy-board','Open Conspiracy Board','open'],
                 ['🏘️','Cartographer’s Bench','Build playable scenes from campaign locations when the Tabletop workshop is ready.','','On the Desk','planned'],
             ];
             foreach ($instruments as [$icon,$label,$description,$instrumentRoute,$action,$status]) : ?>

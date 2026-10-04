@@ -57,6 +57,8 @@ final class KeeperWorkspace
                 'icon' => '🧷',
                 'description' => 'Arrange campaign records on a tactile planning board without making the board their source of truth.',
                 'next_phase' => 'III.17.5',
+                'status' => 'open',
+                'route' => 'dungeon-master/campaigns',
                 'record_types' => PlanningRecordType::all(),
             ],
             [

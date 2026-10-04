@@ -502,6 +502,19 @@ class FrontendServiceProvider extends ServiceProvider
                 . sanitize_text_field($evidenceMatch[1]);
         }
 
+
+        if (
+            $method === 'POST'
+            && preg_match(
+                '#^dungeon-master/campaigns/([^/]+)/conspiracy-board$#',
+                $route,
+                $boardMatch
+            )
+        ) {
+            return 'gmrc_dm_conspiracy_board_'
+                . sanitize_text_field($boardMatch[1]);
+        }
+
         if ($method === 'POST' && $route === 'market-pass') {
             return 'gmrc_market_pass_redeem';
         }
@@ -1261,6 +1274,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/dungeon-master/evidence-register.css',
             ],
             [
+                'handle' => 'gmrc-conspiracy-board',
+                'path' => 'modules/dungeon-master/conspiracy-board.css',
+            ],
+            [
                 'handle' => 'gmrc-command-centre',
                 'path' => 'modules/dungeon-master/command-centre.css',
             ],
@@ -1423,6 +1440,16 @@ class FrontendServiceProvider extends ServiceProvider
             GMRC_URL . 'assets/js/modules/dungeon-master/initiative-table.js',
             [],
             file_exists($initiativeScriptPath) ? (string) filemtime($initiativeScriptPath) : GMRC_VERSION,
+            true
+        );
+
+
+        $conspiracyBoardScriptPath = GMRC_PATH . 'assets/js/modules/dungeon-master/conspiracy-board.js';
+        wp_enqueue_script(
+            'gmrc-conspiracy-board',
+            GMRC_URL . 'assets/js/modules/dungeon-master/conspiracy-board.js',
+            [],
+            file_exists($conspiracyBoardScriptPath) ? (string) filemtime($conspiracyBoardScriptPath) : GMRC_VERSION,
             true
         );
 
