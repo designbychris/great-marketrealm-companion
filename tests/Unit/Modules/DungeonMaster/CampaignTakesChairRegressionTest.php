@@ -8,45 +8,34 @@ use PHPUnit\Framework\TestCase;
 
 final class CampaignTakesChairRegressionTest extends TestCase
 {
-    public function testDeskKeepsCertifiedLedgerGatewaysWhileWorkshopGrows(): void
+    public function testDeskIsCampaignFirstAndControllerLoadsOwnedCampaigns(): void
     {
         $view = $this->source('app/Modules/DungeonMaster/Views/index.php');
-
-        self::assertStringContainsString('Plan adventures. Guide legends. Shape the Marketrealm.', $view);
-        self::assertStringContainsString('Session Ledger', $view);
-        self::assertStringContainsString('Encounter Board', $view);
-        self::assertStringContainsString('Player Roster', $view);
-        self::assertStringContainsString('Monster Ledger', $view);
-        self::assertStringContainsString('Campaign Journal', $view);
-        self::assertStringContainsString('Choose Campaign', $view);
+        $controller = $this->source('app/Modules/DungeonMaster/Controllers/DungeonMasterController.php');
+        $provider = $this->source('app/Modules/DungeonMaster/DungeonMasterServiceProvider.php');
+        self::assertStringContainsString('Your Campaigns', $view);
+        self::assertStringContainsString('Start New Campaign', $view);
+        self::assertStringNotContainsString('Choose Campaign', $view);
+        self::assertStringContainsString("'campaigns' => \$this->campaigns->allForOwner(get_current_user_id())", $controller);
+        self::assertStringContainsString('$c->make(CampaignRepository::class)', $provider);
     }
 
-    public function testCampaignCommandCentreKeepsDirectEvidenceAndPlanningLinks(): void
+    public function testCommandCentreOwnsCampaignScopedInstruments(): void
     {
         $view = $this->source('app/Modules/DungeonMaster/Views/campaigns/show.php');
-
-        foreach ([
-            'Open Session Ledger',
-            'Open Encounter Board',
-            'Open Player Roster',
-            'Open Campaign Journal',
-            'Open Keeper’s Gazetteer',
-            'Open Dramatis Personae',
-            'Open Evidence Register',
-        ] as $label) {
+        foreach (['Session Ledger','Encounter Board','Player Roster','Monster Ledger','Campaign Journal','Keeper’s Gazetteer','Dramatis Personae','Evidence Register','Conspiracy Board','Cartographer’s Bench'] as $label) {
             self::assertStringContainsString($label, $view);
         }
-
         self::assertStringContainsString("\$campaignPath . '/locations'", $view);
         self::assertStringContainsString("\$campaignPath . '/personae'", $view);
         self::assertStringContainsString("\$campaignPath . '/evidence'", $view);
+        self::assertStringContainsString('No campaign selection required.', $view);
     }
 
     private function source(string $path): string
     {
         $source = file_get_contents(dirname(__DIR__, 4) . '/' . $path);
         self::assertIsString($source);
-
         return $source;
     }
 }

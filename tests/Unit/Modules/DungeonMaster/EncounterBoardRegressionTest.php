@@ -65,11 +65,11 @@ final class EncounterBoardRegressionTest extends TestCase
         self::assertStringContainsString("if(!\$campaign->isArchived())",str_replace(' ','',$show));
     }
 
-    public function testCampaignAndDeskOpenEncounterBoard(): void
+    public function testCampaignCommandCentreOpenEncounterBoard(): void
     {
         $campaign=$this->source('app/Modules/DungeonMaster/Views/campaigns/show.php'); $desk=$this->source('app/Modules/DungeonMaster/Views/index.php');
         self::assertStringContainsString('Open Encounter Board',$campaign); self::assertStringContainsString('/encounters',$campaign);
-        self::assertStringContainsString('Ledger III · Open',$desk); self::assertStringContainsString('Choose Campaign',$desk);
+        self::assertStringContainsString('Your Campaigns',$desk); self::assertStringContainsString('Open Campaign',$desk);
     }
 
     public function testEncounterBoardUsesSafeDmWorkspaceAndAccessibilityFallbacks(): void

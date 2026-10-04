@@ -106,13 +106,14 @@ final class MonsterLedgerRegressionTest extends TestCase
         self::assertStringNotContainsString('wp_delete_post', $controller);
     }
 
-    public function testDmDeskAndAssetsOpenMonsterLedger(): void
+    public function testCampaignCommandCentreAndAssetsOpenMonsterLedger(): void
     {
+        $campaign = $this->source('app/Modules/DungeonMaster/Views/campaigns/show.php');
         $desk = $this->source('app/Modules/DungeonMaster/Views/index.php');
         $frontend = $this->source('app/Providers/FrontendServiceProvider.php');
-        self::assertStringContainsString('Ledger V · Open', $desk);
-        self::assertStringContainsString('Monster Ledger', $desk);
-        self::assertStringContainsString('Open Bestiary', $desk);
+        self::assertStringContainsString('Monster Ledger', $campaign);
+        self::assertStringContainsString('Open Monster Ledger', $campaign);
+        self::assertStringContainsString('Your Campaigns', $desk);
         self::assertStringContainsString('gmrc-monster-ledger', $frontend);
         self::assertStringContainsString('dungeon-master/monster-ledger.css', $frontend);
     }

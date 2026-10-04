@@ -46,21 +46,18 @@ final class DungeonMasterVisualTreatmentRegressionTest extends TestCase
         );
     }
 
-    public function testDeskUsesArtworkFirstHeroAndFourWorkspaceLedgers(): void
+    public function testDeskUsesArtworkFirstCampaignLauncher(): void
     {
         $view = $this->source(
             'app/Modules/DungeonMaster/Views/index.php'
         );
 
-        self::assertStringContainsString(
-            'Plan adventures. Guide legends. Shape the Marketrealm.',
-            $view
-        );
+        self::assertStringContainsString('Choose the campaign. Then take the chair.', $view);
         self::assertStringContainsString('gmrc-dm-desk__hero-copy', $view);
-        self::assertStringContainsString('gmrc-dm-ledger--campaign', $view);
-        self::assertStringContainsString('gmrc-dm-ledger--session', $view);
-        self::assertStringContainsString('gmrc-dm-ledger--encounter', $view);
-        self::assertStringContainsString('gmrc-dm-ledger--roster', $view);
+        self::assertStringContainsString('gmrc-dm-campaign-grid', $view);
+        self::assertStringContainsString('gmrc-dm-campaign-card', $view);
+        self::assertStringContainsString('Start New Campaign', $view);
+        self::assertStringContainsString('Open Campaign Register', $view);
     }
 
     public function testCampaignRegisterSharesImmersiveDmTreatment(): void

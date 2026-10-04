@@ -169,16 +169,32 @@ $registerUrl = $route('dungeon-master/campaigns');
         </article>
     </div>
 
-    <nav class="gmrc-command-centre__tools" aria-label="Campaign ledgers">
-        <a href="<?php echo esc_url($route($campaignPath . '/players')); ?>">Open Player Roster</a>
-        <a href="<?php echo esc_url($route($campaignPath . '/sessions')); ?>">Open Session Ledger</a>
-        <a href="<?php echo esc_url($route($campaignPath . '/encounters')); ?>">Open Encounter Board</a>
-        <a href="<?php echo esc_url($route($campaignPath . '/journal')); ?>">Open Campaign Journal</a>
-        <a href="<?php echo esc_url($route($campaignPath . '/locations')); ?>">Open Keeper’s Gazetteer</a>
-        <a href="<?php echo esc_url($route($campaignPath . '/personae')); ?>">Open Dramatis Personae</a>
-        <a href="<?php echo esc_url($route($campaignPath . '/evidence')); ?>">Open Evidence Register</a>
-        <a href="<?php echo esc_url($route('dungeon-master/monsters')); ?>">Bestiary</a>
-    </nav>
+    <section class="gmrc-command-centre__instruments" aria-labelledby="gmrc-campaign-instruments-title">
+        <div class="gmrc-dm-desk__section-heading"><div><p class="gmrc-dm-desk__eyebrow">Campaign Workspace</p><h2 id="gmrc-campaign-instruments-title">Take the Chair</h2></div><p>Everything below already belongs to <strong><?php echo esc_html($campaign->name()); ?></strong>. No campaign selection required.</p></div>
+        <div class="gmrc-command-centre__instrument-grid">
+            <?php
+            $instruments = [
+                ['📖','Session Ledger','Plan, run and preserve the campaign’s sessions.',$campaignPath . '/sessions','Open Session Ledger','open'],
+                ['⚔️','Encounter Board','Prepare encounters and carry them into initiative.',$campaignPath . '/encounters','Open Encounter Board','open'],
+                ['👥','Player Roster','Manage players and the adventurers attached to this campaign.',$campaignPath . '/players','Open Player Roster','open'],
+                ['🐉','Monster Ledger','Open the reusable Keeper bestiary for encounter building.','dungeon-master/monsters','Open Monster Ledger','open'],
+                ['📔','Campaign Journal','Keep campaign notes, secrets and pinned intelligence.',$campaignPath . '/journal','Open Campaign Journal','open'],
+                ['🗺️','Keeper’s Gazetteer','Record the places, regions, buildings and rooms of this campaign.',$campaignPath . '/locations','Open Keeper’s Gazetteer','open'],
+                ['🎭','Dramatis Personae','Keep the people and factions behind this campaign.',$campaignPath . '/personae','Open Dramatis Personae','open'],
+                ['🔎','Evidence Register','Connect clues, secrets and plot threads to campaign records.',$campaignPath . '/evidence','Open Evidence Register','open'],
+                ['🧷','Conspiracy Board','Arrange the campaign’s canonical records on the Keeper’s planning board.','','On the Desk','planned'],
+                ['🏘️','Cartographer’s Bench','Build playable scenes from campaign locations when the Tabletop workshop is ready.','','On the Desk','planned'],
+            ];
+            foreach ($instruments as [$icon,$label,$description,$instrumentRoute,$action,$status]) : ?>
+                <article class="gmrc-command-instrument<?php echo $status === 'planned' ? ' is-planned' : ''; ?>">
+                    <div class="gmrc-command-instrument__icon" aria-hidden="true"><?php echo esc_html($icon); ?></div>
+                    <p class="gmrc-command-instrument__status"><?php echo $status === 'planned' ? 'Planned' : 'Open'; ?></p>
+                    <h3><?php echo esc_html($label); ?></h3><p><?php echo esc_html($description); ?></p>
+                    <?php if ($instrumentRoute !== '') : ?><a href="<?php echo esc_url($route($instrumentRoute)); ?>"><?php echo esc_html($action); ?> <span aria-hidden="true">→</span></a><?php else : ?><span class="gmrc-command-instrument__waiting"><?php echo esc_html($action); ?></span><?php endif; ?>
+                </article>
+            <?php endforeach; ?>
+        </div>
+    </section>
 
     <nav class="gmrc-command-centre__return" aria-label="Dungeon Master navigation">
         <a href="<?php echo esc_url($registerUrl); ?>">← Campaign Register</a>

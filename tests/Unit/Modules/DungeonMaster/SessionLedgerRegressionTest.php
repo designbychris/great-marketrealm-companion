@@ -88,15 +88,15 @@ final class SessionLedgerRegressionTest extends TestCase
         self::assertStringContainsString("if (! \$campaign->isArchived())", $show);
     }
 
-    public function testCampaignAndDeskOpenSessionLedger(): void
+    public function testCampaignCommandCentreOpenSessionLedger(): void
     {
         $campaign = $this->source('app/Modules/DungeonMaster/Views/campaigns/show.php');
         $desk = $this->source('app/Modules/DungeonMaster/Views/index.php');
 
         self::assertStringContainsString('Open Session Ledger', $campaign);
         self::assertStringContainsString('/sessions', $campaign);
-        self::assertStringContainsString('Ledger II · Open', $desk);
-        self::assertStringContainsString('Choose Campaign', $desk);
+        self::assertStringContainsString('Your Campaigns', $desk);
+        self::assertStringContainsString('Open Campaign', $desk);
     }
 
     public function testSessionLedgerUsesSafeDmWorkspaceAndAccessibilityFallbacks(): void

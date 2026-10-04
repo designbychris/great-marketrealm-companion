@@ -95,7 +95,7 @@ final class PlayerRosterRegressionTest extends TestCase
         self::assertStringContainsString("current_user_can('gmrc_manage_campaigns')", $request);
     }
 
-    public function testCampaignAndDeskOpenThePlayerRoster(): void
+    public function testCampaignCommandCentreOpenThePlayerRoster(): void
     {
         $campaign = $this->source(
             'app/Modules/DungeonMaster/Views/campaigns/show.php'
@@ -106,8 +106,8 @@ final class PlayerRosterRegressionTest extends TestCase
 
         self::assertStringContainsString('Open Player Roster', $campaign);
         self::assertStringContainsString('/players', $campaign);
-        self::assertStringContainsString('Ledger IV · Open', $desk);
-        self::assertStringContainsString('Choose Campaign', $desk);
+        self::assertStringContainsString('Your Campaigns', $desk);
+        self::assertStringContainsString('Open Campaign', $desk);
     }
 
     public function testRosterKeepsDmWorkspaceScopingAndAccessibilityFallbacks(): void

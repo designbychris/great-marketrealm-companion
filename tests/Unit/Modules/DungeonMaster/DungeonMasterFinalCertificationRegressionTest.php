@@ -8,13 +8,17 @@ use PHPUnit\Framework\TestCase;
 
 final class DungeonMasterFinalCertificationRegressionTest extends TestCase
 {
-    public function testDeskPresentsEveryCertifiedLedgerAsOpen(): void
+    public function testDeskChoosesCampaignBeforeCertifiedLedgersOpen(): void
     {
-        $view = $this->source('app/Modules/DungeonMaster/Views/index.php');
-        foreach (['Campaign Register', 'Session Ledger', 'Encounter Board', 'Player Roster', 'Monster Ledger', 'Campaign Journal'] as $label) {
-            self::assertStringContainsString($label, $view);
+        $desk = $this->source('app/Modules/DungeonMaster/Views/index.php');
+        $campaign = $this->source('app/Modules/DungeonMaster/Views/campaigns/show.php');
+        self::assertStringContainsString('Your Campaigns', $desk);
+        self::assertStringContainsString('Start New Campaign', $desk);
+        self::assertStringContainsString('Campaign Register', $desk);
+        foreach (['Session Ledger', 'Encounter Board', 'Player Roster', 'Monster Ledger', 'Campaign Journal'] as $label) {
+            self::assertStringContainsString($label, $campaign);
         }
-        self::assertStringNotContainsString('Coming soon', $view);
+        self::assertStringNotContainsString('Coming soon', $desk);
     }
 
     public function testCommandCentreProvidesExplicitRoutesBackToRegisterAndDesk(): void

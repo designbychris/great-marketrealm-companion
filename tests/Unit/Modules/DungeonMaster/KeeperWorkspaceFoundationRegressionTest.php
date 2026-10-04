@@ -8,18 +8,20 @@ use PHPUnit\Framework\TestCase;
 
 final class KeeperWorkspaceFoundationRegressionTest extends TestCase
 {
-    public function testDeskGrowsWithoutReplacingCertifiedLedgers(): void
+    public function testCampaignFirstDeskMovesCertifiedInstrumentsIntoCommandCentre(): void
     {
-        $view = $this->source('app/Modules/DungeonMaster/Views/index.php');
+        $desk = $this->source('app/Modules/DungeonMaster/Views/index.php');
+        $campaign = $this->source('app/Modules/DungeonMaster/Views/campaigns/show.php');
 
-        foreach (['Campaign Register', 'Session Ledger', 'Encounter Board', 'Player Roster', 'Monster Ledger', 'Campaign Journal'] as $ledger) {
-            self::assertStringContainsString($ledger, $view);
+        self::assertStringContainsString('Your Campaigns', $desk);
+        self::assertStringContainsString('Start New Campaign', $desk);
+        self::assertStringNotContainsString('Choose Campaign', $desk);
+        foreach (['Session Ledger', 'Encounter Board', 'Player Roster', 'Monster Ledger', 'Campaign Journal', 'Keeper’s Gazetteer', 'Dramatis Personae', 'Evidence Register'] as $instrument) {
+            self::assertStringContainsString($instrument, $campaign);
         }
-
-        self::assertStringContainsString('The Keeper’s Workshop', $view);
-        self::assertDoesNotMatchRegularExpression('/(?:Phase\s+)?(?:III|IV)\.\d+(?:\.\d+)*(?:[A-Z])?/i', $view);
-        self::assertStringContainsString('The Desk Grows', $view);
-        self::assertStringContainsString('campaign records remain the source of truth', $view);
+        self::assertStringContainsString('No campaign selection required.', $campaign);
+        self::assertDoesNotMatchRegularExpression('/(?:Phase\s+)?(?:III|IV)\.\d+(?:\.\d+)*(?:[A-Z])?/i', $desk);
+        self::assertDoesNotMatchRegularExpression('/(?:Phase\s+)?(?:III|IV)\.\d+(?:\.\d+)*(?:[A-Z])?/i', $campaign);
     }
 
     public function testWorkspaceCatalogueNamesThePlannedPreparationInstruments(): void

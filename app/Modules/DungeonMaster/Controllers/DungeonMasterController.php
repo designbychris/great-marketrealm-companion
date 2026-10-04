@@ -8,6 +8,7 @@ use GreatMarketrealmCompanion\Core\View\View;
 use GreatMarketrealmCompanion\Core\View\ViewFactory;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\DungeonMasterAccess;
 use GreatMarketrealmCompanion\Modules\DungeonMaster\Services\KeeperWorkspace;
+use GreatMarketrealmCompanion\Modules\DungeonMaster\Repositories\CampaignRepository;
 
 defined('ABSPATH') || exit;
 
@@ -19,7 +20,8 @@ final class DungeonMasterController
     public function __construct(
         private ViewFactory $views,
         private DungeonMasterAccess $access,
-        private KeeperWorkspace $workspace
+        private KeeperWorkspace $workspace,
+        private CampaignRepository $campaigns
     ) {
     }
 
@@ -42,6 +44,7 @@ final class DungeonMasterController
                     'displayName' => (string) $member->display_name,
                     'quickLinks' => $this->quickLinks(),
                     'forthcomingTools' => $this->workspace->forthcomingTools(),
+                    'campaigns' => $this->campaigns->allForOwner(get_current_user_id()),
                 ]
             )
         );
