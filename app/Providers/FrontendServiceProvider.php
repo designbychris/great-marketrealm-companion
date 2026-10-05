@@ -502,6 +502,18 @@ class FrontendServiceProvider extends ServiceProvider
                 . sanitize_text_field($evidenceMatch[1]);
         }
 
+        if (
+            $method === 'POST'
+            && preg_match(
+                '#^dungeon-master/campaigns/([^/]+)/conspiracy-board$#',
+                $route,
+                $conspiracyBoardMatch
+            )
+        ) {
+            return 'gmrc_dm_conspiracy_board_'
+                . sanitize_text_field($conspiracyBoardMatch[1]);
+        }
+
         if ($method === 'POST' && $route === 'market-pass') {
             return 'gmrc_market_pass_redeem';
         }
