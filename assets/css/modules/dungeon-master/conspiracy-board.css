@@ -75,3 +75,9 @@
 .gmrc-board-annotation:hover>.gmrc-board-annotation__resize,.gmrc-board-annotation:focus-within>.gmrc-board-annotation__resize{opacity:1}
 .gmrc-board-annotation--note,.gmrc-board-annotation--label,.gmrc-board-annotation--image{box-sizing:border-box;overflow:visible;min-width:160px;min-height:90px}
 .gmrc-board-annotation--note>div,.gmrc-board-annotation--label>div{overflow:auto;max-height:100%}
+
+/* III.17.5D.1 — Every Clue Finds Its Space */
+.gmrc-conspiracy-pin{transform:rotate(var(--gmrc-card-angle,0deg));transform-origin:50% 50%;box-sizing:border-box;min-width:160px;min-height:90px}
+.gmrc-conspiracy-pin:nth-of-type(even){transform:rotate(var(--gmrc-card-angle,0deg))}
+.gmrc-conspiracy-pin.is-dragging{transform:rotate(var(--gmrc-card-angle,0deg)) scale(1.03)}
+.gmrc-conspiracy-pin:hover>.gmrc-board-annotation__resize,.gmrc-conspiracy-pin:focus-within>.gmrc-board-annotation__resize{opacity:1}
