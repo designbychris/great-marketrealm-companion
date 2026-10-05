@@ -42,6 +42,18 @@
 /* III.17.5C.8C — The Board and the Keeper Agree on Where Things Are */
 .gmrc-board-context--screen{position:fixed;z-index:10000;transform:none!important;font-size:16px}
 
-/* III.17.5C.8D — Keep Your Eye on the Clue */
-.gmrc-conspiracy__viewport{scrollbar-width:none;-ms-overflow-style:none}
-.gmrc-conspiracy__viewport::-webkit-scrollbar{width:0;height:0}
+
+/* III.17.5C.8E — Give the Camera a Frame */
+.gmrc-conspiracy__viewport{
+  height:clamp(680px,72vh,960px);
+  max-height:none;
+  overflow:auto;
+}
+.gmrc-conspiracy__viewport:not(.is-board-zoomed){
+  overflow:hidden;
+}
+.gmrc-conspiracy__viewport.is-board-zoomed{
+  height:clamp(680px,72vh,960px);
+  max-height:none;
+  overflow:auto;
+}
