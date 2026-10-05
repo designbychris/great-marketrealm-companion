@@ -63,3 +63,6 @@
   .gmrc-conspiracy__viewport,
   .gmrc-conspiracy__viewport.is-board-zoomed{height:max(680px,calc(100vh - 9rem))}
 }
+
+/* III.17.5C.8G — The Cork Fills the Frame */
+.gmrc-conspiracy__stage,.gmrc-conspiracy__board{box-sizing:border-box}
