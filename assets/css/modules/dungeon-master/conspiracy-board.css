@@ -41,3 +41,7 @@
 
 /* III.17.5C.8C — The Board and the Keeper Agree on Where Things Are */
 .gmrc-board-context--screen{position:fixed;z-index:10000;transform:none!important;font-size:16px}
+
+/* III.17.5C.8D — Keep Your Eye on the Clue */
+.gmrc-conspiracy__viewport{scrollbar-width:none;-ms-overflow-style:none}
+.gmrc-conspiracy__viewport::-webkit-scrollbar{width:0;height:0}
