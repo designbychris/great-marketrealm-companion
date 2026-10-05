@@ -45,7 +45,7 @@
 
 /* III.17.5C.8E — Give the Camera a Frame */
 .gmrc-conspiracy__viewport{
-  height:clamp(680px,72vh,960px);
+  height:max(680px,calc(100dvh - 9rem));
   max-height:none;
   overflow:auto;
 }
@@ -53,7 +53,13 @@
   overflow:hidden;
 }
 .gmrc-conspiracy__viewport.is-board-zoomed{
-  height:clamp(680px,72vh,960px);
+  height:max(680px,calc(100dvh - 9rem));
   max-height:none;
   overflow:auto;
+}
+
+/* III.17.5C.8F — Give the Cork Some Room */
+@supports not (height:100dvh){
+  .gmrc-conspiracy__viewport,
+  .gmrc-conspiracy__viewport.is-board-zoomed{height:max(680px,calc(100vh - 9rem))}
 }
