@@ -16,3 +16,6 @@
 .gmrc-board-annotation--pin,.gmrc-board-annotation--pin.gmrc-board-annotation--parchment,.gmrc-board-annotation--pin.gmrc-board-annotation--yellow,.gmrc-board-annotation--pin.gmrc-board-annotation--scrap,.gmrc-board-annotation--pin.gmrc-board-annotation--warning{width:22px;height:22px;min-width:22px;min-height:22px;padding:0;border:0;background:transparent;clip-path:none;box-shadow:none;transform:none}
 .gmrc-board-annotation--pin .gmrc-board-annotation__tack{inset:0;top:0;left:0}
 .gmrc-board-annotation--scrap:not(.gmrc-board-annotation--pin){padding-bottom:1.15rem}
+
+/* III.17.5B.2: the torn scrap may be wonky; its tack still belongs at top centre. */
+.gmrc-board-annotation--scrap > .gmrc-board-annotation__tack{left:50%!important;right:auto!important;top:-12px!important;bottom:auto!important;transform:translateX(-50%)!important}
