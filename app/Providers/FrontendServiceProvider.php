@@ -1264,6 +1264,10 @@ class FrontendServiceProvider extends ServiceProvider
                 'path' => 'modules/dungeon-master/evidence-register.css',
             ],
             [
+                'handle' => 'gmrc-conspiracy-board',
+                'path' => 'modules/dungeon-master/conspiracy-board.css',
+            ],
+            [
                 'handle' => 'gmrc-command-centre',
                 'path' => 'modules/dungeon-master/command-centre.css',
             ],
@@ -1420,6 +1424,15 @@ class FrontendServiceProvider extends ServiceProvider
      */
     protected function enqueueScripts(): void
     {
+        $conspiracyBoardScriptPath = GMRC_PATH . 'assets/js/modules/dungeon-master/conspiracy-board.js';
+        wp_enqueue_script(
+            'gmrc-conspiracy-board',
+            GMRC_URL . 'assets/js/modules/dungeon-master/conspiracy-board.js',
+            [],
+            file_exists($conspiracyBoardScriptPath) ? (string) filemtime($conspiracyBoardScriptPath) : GMRC_VERSION,
+            true
+        );
+
         $initiativeScriptPath = GMRC_PATH . 'assets/js/modules/dungeon-master/initiative-table.js';
         wp_enqueue_script(
             'gmrc-initiative-table',
