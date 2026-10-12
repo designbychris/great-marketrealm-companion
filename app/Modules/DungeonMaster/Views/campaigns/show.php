@@ -190,7 +190,18 @@ $registerUrl = $route('dungeon-master/campaigns');
                     <div class="gmrc-command-instrument__icon" aria-hidden="true"><?php echo esc_html($icon); ?></div>
                     <p class="gmrc-command-instrument__status"><?php echo $status === 'planned' ? 'Planned' : 'Open'; ?></p>
                     <h3><?php echo esc_html($label); ?></h3><p><?php echo esc_html($description); ?></p>
-                    <?php if ($instrumentRoute !== '') : ?><a href="<?php echo esc_url($route($instrumentRoute)); ?>"><?php echo esc_html($action); ?> <span aria-hidden="true">→</span></a><?php else : ?><span class="gmrc-command-instrument__waiting"><?php echo esc_html($action); ?></span><?php endif; ?>
+                    <?php
+                    // Internal Companion paths go through the route builder; Cartographer's
+                    // absolute WordPress-admin URL must remain an absolute destination.
+                    $instrumentUrl = '';
+                    if ($instrumentRoute !== '') {
+                        $isAbsolute = (bool) preg_match('~^https?://~i', $instrumentRoute);
+                        $instrumentUrl = $isAbsolute
+                            ? (wp_validate_redirect($instrumentRoute, '') ?: '')
+                            : $route($instrumentRoute);
+                    }
+                    ?>
+                    <?php if ($instrumentUrl !== '') : ?><a href="<?php echo esc_url($instrumentUrl); ?>"><?php echo esc_html($action); ?> <span aria-hidden="true">→</span></a><?php else : ?><span class="gmrc-command-instrument__waiting"><?php echo esc_html($action); ?></span><?php endif; ?>
                 </article>
             <?php endforeach; ?>
         </div>
