@@ -1,0 +1,203 @@
+<?php
+use GreatMarketrealmCompanion\Core\Support\MarketRealmDate;
+
+defined('ABSPATH') || exit;
+$base = home_url('/companion/');
+$route = static fn (string $path): string => add_query_arg('gmrc_route', $path, $base);
+$campaignPath = 'dungeon-master/campaigns/' . $campaign->id();
+$currentSession = $commandCentre['currentSession'] ?? null;
+$nextSession = $commandCentre['nextSession'];
+$recentSession = $commandCentre['recentSession'];
+$liveEncounter = $commandCentre['liveEncounter'];
+$preparedEncounter = $commandCentre['preparedEncounter'];
+$archived = $campaign->isArchived();
+$deskUrl = $route('dungeon-master');
+$registerUrl = $route('dungeon-master/campaigns');
+?>
+<section class="gmrc-command-centre" aria-labelledby="gmrc-command-centre-title">
+    <header class="gmrc-command-centre__hero">
+        <div>
+            <p class="gmrc-dm-desk__eyebrow">Campaign Command Centre · <?php echo esc_html(ucfirst($campaign->status())); ?></p>
+            <h1 id="gmrc-command-centre-title"><?php echo esc_html($campaign->name()); ?></h1>
+            <p><?php echo nl2br(esc_html($campaign->description() ?: 'No chronicle summary has been written yet.')); ?></p>
+        </div>
+        <div class="gmrc-command-centre__hero-actions">
+            <a class="gmrc-campaign-button" href="<?php echo esc_url($registerUrl); ?>">Campaign Register</a>
+            <?php if (! $archived) : ?>
+                <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/edit')); ?>">Edit campaign</a>
+            <?php endif; ?>
+        </div>
+    </header>
+
+    <?php if (! empty($flash['success'])) : ?>
+        <p class="gmrc-command-centre__notice" role="status"><?php echo esc_html((string) $flash['success']); ?></p>
+    <?php endif; ?>
+    <?php if (! empty($flash['error'])) : ?>
+        <p class="gmrc-command-centre__notice" role="alert"><?php echo esc_html((string) $flash['error']); ?></p>
+    <?php endif; ?>
+
+    <?php if ($archived) : ?>
+        <p class="gmrc-command-centre__notice" role="status">This campaign is archived. Its Command Centre and campaign ledgers are preserved as read-only history.</p>
+    <?php endif; ?>
+
+    <div class="gmrc-command-centre__stats" aria-label="Campaign overview">
+        <a href="<?php echo esc_url($route($campaignPath . '/players')); ?>"><strong><?php echo esc_html((string) $commandCentre['playerCount']); ?></strong><span>Players</span></a>
+        <a href="<?php echo esc_url($route($campaignPath . '/players')); ?>"><strong><?php echo esc_html((string) $commandCentre['characterCount']); ?></strong><span>Characters</span></a>
+        <a href="<?php echo esc_url($route($campaignPath . '/sessions')); ?>"><strong><?php echo esc_html((string) $commandCentre['sessionCount']); ?></strong><span>Sessions</span></a>
+        <a href="<?php echo esc_url($route($campaignPath . '/encounters')); ?>"><strong><?php echo esc_html((string) $commandCentre['encounterCount']); ?></strong><span>Encounters</span></a>
+        <a href="<?php echo esc_url($route($campaignPath . '/journal')); ?>"><strong><?php echo esc_html((string) $commandCentre['journalCount']); ?></strong><span>Journal pages</span></a>
+    </div>
+
+    <div class="gmrc-command-centre__grid">
+        <article class="gmrc-command-card gmrc-command-card--session">
+            <p class="gmrc-dm-desk__eyebrow">At the table</p>
+            <h2><?php echo $currentSession ? 'Session in progress' : ($nextSession ? 'Next Session' : 'Session Ledger'); ?></h2>
+            <?php if ($currentSession) : ?>
+                <h3><?php echo esc_html('Session ' . $currentSession->number() . ' · ' . $currentSession->title()); ?></h3>
+                <p>Called from the linked Tabletop<?php if ($currentSession->startedAt() !== '') : ?> · <?php echo esc_html(MarketRealmDate::dateTime($currentSession->startedAt())); ?><?php endif; ?></p>
+                <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/sessions/' . $currentSession->id())); ?>">Open live Session record</a>
+            <?php elseif ($nextSession) : ?>
+                <h3><?php echo esc_html('Session ' . $nextSession->number() . ' · ' . $nextSession->title()); ?></h3>
+                <p><?php echo esc_html($nextSession->scheduledDate() !== '' ? MarketRealmDate::date($nextSession->scheduledDate()) : 'Date not yet set'); ?></p>
+                <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/sessions/' . $nextSession->id())); ?>">Open session</a>
+            <?php elseif ($recentSession) : ?>
+                <p>Your latest played session is <strong><?php echo esc_html($recentSession->title()); ?></strong>. The next page of the chronicle is ready to plan.</p>
+                <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/sessions/create')); ?>">Plan next session</a>
+            <?php else : ?>
+                <p>No session has been planned yet.</p>
+                <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/sessions/create')); ?>">Plan first session</a>
+            <?php endif; ?>
+        </article>
+
+        <article class="gmrc-command-card gmrc-command-card--tabletop">
+            <p class="gmrc-dm-desk__eyebrow">Cartographic oversight</p><h2>Great MarketRealm Tabletop</h2>
+            <?php if ((string) ($commandCentre['tabletopTableId'] ?? '') !== '') : ?>
+                <p>This Campaign is linked to its persistent Tabletop. Session starts and endings are written into this Ledger automatically.</p>
+                <strong>Linked · <?php echo esc_html((string) $commandCentre['tabletopTableId']); ?></strong>
+            <?php else : ?>
+                <p>No Tabletop is linked yet. Open Pippin's Table Atlas and link this Campaign from the Keeper's campaign card.</p>
+            <?php endif; ?>
+        </article>
+
+        <article class="gmrc-command-card gmrc-command-card--combat">
+            <p class="gmrc-dm-desk__eyebrow">Combat readiness</p>
+            <?php if ($liveEncounter) : ?>
+                <h2>Encounter in progress</h2><h3><?php echo esc_html($liveEncounter->title()); ?></h3>
+                <p><?php echo esc_html(ucfirst($liveEncounter->threat()) . ' threat · ' . ($liveEncounter->location() ?: 'Location unrecorded')); ?></p>
+                <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/encounters/' . $liveEncounter->id() . '/initiative')); ?>">Continue combat</a>
+            <?php elseif ($preparedEncounter) : ?>
+                <h2>Prepared Encounter</h2><h3><?php echo esc_html($preparedEncounter->title()); ?></h3>
+                <p><?php echo esc_html(ucfirst($preparedEncounter->threat()) . ' threat · ready when the party arrives.'); ?></p>
+                <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/encounters/' . $preparedEncounter->id() . '/initiative')); ?>">Run encounter</a>
+            <?php else : ?>
+                <h2>Encounter Board</h2><p>No encounter is currently waiting in the wings.</p>
+                <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/encounters/create')); ?>">Prepare encounter</a>
+            <?php endif; ?>
+        </article>
+
+        <article class="gmrc-command-card gmrc-command-card--journal">
+            <p class="gmrc-dm-desk__eyebrow">Pinned intelligence</p><h2>Campaign Journal</h2>
+            <?php if ($commandCentre['pinnedJournal']) : ?>
+                <ul class="gmrc-command-centre__notes">
+                    <?php foreach ($commandCentre['pinnedJournal'] as $entry) : ?>
+                        <li><a href="<?php echo esc_url($route($campaignPath . '/journal/' . $entry->id())); ?>"><span><?php echo esc_html($entry->categoryLabel()); ?></span><strong><?php echo esc_html($entry->title()); ?></strong></a></li>
+                    <?php endforeach; ?>
+                </ul>
+                <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/journal')); ?>">Open journal</a>
+            <?php else : ?>
+                <p>Pin important NPCs, secrets, locations or plot threads and they will surface here.</p>
+                <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/journal/create')); ?>">Write campaign note</a>
+            <?php endif; ?>
+        </article>
+
+        <article class="gmrc-command-card gmrc-command-card--roster">
+            <p class="gmrc-dm-desk__eyebrow">Party muster</p><h2>Player Roster</h2>
+            <p><strong><?php echo esc_html((string) $commandCentre['playerCount']); ?></strong> players and <strong><?php echo esc_html((string) $commandCentre['characterCount']); ?></strong> attached characters are recorded for this campaign.</p>
+            <a class="gmrc-campaign-button" href="<?php echo esc_url($route($campaignPath . '/players')); ?>"><?php echo $commandCentre['playerCount'] ? 'Review roster' : 'Add players'; ?></a>
+        </article>
+
+
+        <article class="gmrc-command-card gmrc-command-card--almanacs">
+            <p class="gmrc-dm-desk__eyebrow">Shared sourcebooks</p>
+            <h2>Campaign Almanacs</h2>
+            <p>Choose which active Great MarketRealm expansions this Campaign shares with its linked Players. Shared Character options appear automatically in their Companion generator.</p>
+
+            <?php $expansionShelf = is_array($expansionShelf ?? null) ? $expansionShelf : []; ?>
+            <?php if ($expansionShelf === []) : ?>
+                <p class="gmrc-campaign-almanacs__empty">No Character-facing Almanacs are currently available from the Expansions Library.</p>
+            <?php elseif ($archived) : ?>
+                <ul class="gmrc-campaign-almanacs__readonly">
+                    <?php foreach ($expansionShelf as $book) : ?>
+                        <?php if (! empty($book['enabled'])) : ?>
+                            <li><?php echo esc_html((string) ($book['label'] ?? $book['key'] ?? 'Expansion')); ?></li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else : ?>
+                <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" class="gmrc-campaign-almanacs">
+                    <?php wp_nonce_field('gmrc_dm_campaign_almanacs_' . $campaign->id(), 'gmrc_nonce'); ?>
+                    <input type="hidden" name="action" value="gmrc_app_request">
+                    <input type="hidden" name="gmrc_route" value="<?php echo esc_attr($campaignPath . '/almanacs'); ?>">
+                    <div class="gmrc-campaign-almanacs__list">
+                        <?php foreach ($expansionShelf as $book) : ?>
+                            <?php
+                            $bookKey = (string) ($book['key'] ?? '');
+                            $bookLabel = (string) ($book['label'] ?? $bookKey);
+                            $bookActive = ! empty($book['active']);
+                            $bookEnabled = ! empty($book['enabled']);
+                            ?>
+                            <label class="gmrc-campaign-almanacs__book<?php echo $bookEnabled ? ' is-shared' : ''; ?><?php echo ! $bookActive ? ' is-unavailable' : ''; ?>">
+                                <input
+                                    type="checkbox"
+                                    name="expansions[]"
+                                    value="<?php echo esc_attr($bookKey); ?>"
+                                    <?php checked($bookEnabled); ?>
+                                    <?php disabled(! $bookActive); ?>
+                                >
+                                <span>
+                                    <strong><?php echo esc_html($bookLabel); ?></strong>
+                                    <small><?php echo $bookActive ? 'Available to share' : 'Temporarily unavailable in Expansions'; ?></small>
+                                </span>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <button class="gmrc-campaign-button" type="submit">Share selected Almanacs</button>
+                </form>
+            <?php endif; ?>
+
+            <p class="gmrc-campaign-almanacs__boundary"><strong>Shared ≠ copied.</strong> The Expansions plugin remains the canonical source; this Campaign stores only the Almanac keys it is allowed to use.</p>
+        </article>
+    </div>
+
+    <section class="gmrc-command-centre__instruments" aria-labelledby="gmrc-campaign-instruments-title">
+        <div class="gmrc-dm-desk__section-heading"><div><p class="gmrc-dm-desk__eyebrow">Campaign Workspace</p><h2 id="gmrc-campaign-instruments-title">Take the Chair</h2></div><p>Everything below already belongs to <strong><?php echo esc_html($campaign->name()); ?></strong>. No campaign selection required.</p></div>
+        <div class="gmrc-command-centre__instrument-grid">
+            <?php
+            $instruments = [
+                ['📖','Session Ledger','Plan, run and preserve the campaign’s sessions.',$campaignPath . '/sessions','Open Session Ledger','open'],
+                ['⚔️','Encounter Board','Prepare encounters and carry them into initiative.',$campaignPath . '/encounters','Open Encounter Board','open'],
+                ['👥','Player Roster','Manage players and the adventurers attached to this campaign.',$campaignPath . '/players','Open Player Roster','open'],
+                ['🐉','Monster Ledger','Open the reusable Keeper bestiary for encounter building.','dungeon-master/monsters','Open Monster Ledger','open'],
+                ['📔','Campaign Journal','Keep campaign notes, secrets and pinned intelligence.',$campaignPath . '/journal','Open Campaign Journal','open'],
+                ['🗺️','Keeper’s Gazetteer','Record the places, regions, buildings and rooms of this campaign.',$campaignPath . '/locations','Open Keeper’s Gazetteer','open'],
+                ['🎭','Dramatis Personae','Keep the people and factions behind this campaign.',$campaignPath . '/personae','Open Dramatis Personae','open'],
+                ['🔎','Evidence Register','Connect clues, secrets and plot threads to campaign records.',$campaignPath . '/evidence','Open Evidence Register','open'],
+                ['🧷','Conspiracy Board','Arrange the campaign’s canonical records on the Keeper’s planning board.',$campaignPath . '/conspiracy-board','Open Conspiracy Board','open'],
+                ['🏘️','Cartographer’s Bench','Prepare private construction drafts for this campaign.',(function_exists('gmrcart_workshop_url') && function_exists('gmrcart_campaign_access') && gmrcart_campaign_access(get_current_user_id(), (string) $campaign->id())) ? gmrcart_workshop_url((string) $campaign->id()) : '', 'Open Cartographer',(function_exists('gmrcart_workshop_url') && function_exists('gmrcart_campaign_access') && gmrcart_campaign_access(get_current_user_id(), (string) $campaign->id())) ? 'open' : 'planned'],
+            ];
+            foreach ($instruments as [$icon,$label,$description,$instrumentRoute,$action,$status]) : ?>
+                <article class="gmrc-command-instrument<?php echo $status === 'planned' ? ' is-planned' : ''; ?>">
+                    <div class="gmrc-command-instrument__icon" aria-hidden="true"><?php echo esc_html($icon); ?></div>
+                    <p class="gmrc-command-instrument__status"><?php echo $status === 'planned' ? 'Planned' : 'Open'; ?></p>
+                    <h3><?php echo esc_html($label); ?></h3><p><?php echo esc_html($description); ?></p>
+                    <?php if ($instrumentRoute !== '') : ?><a href="<?php echo esc_url($route($instrumentRoute)); ?>"><?php echo esc_html($action); ?> <span aria-hidden="true">→</span></a><?php else : ?><span class="gmrc-command-instrument__waiting"><?php echo esc_html($action); ?></span><?php endif; ?>
+                </article>
+            <?php endforeach; ?>
+        </div>
+    </section>
+
+    <nav class="gmrc-command-centre__return" aria-label="Dungeon Master navigation">
+        <a href="<?php echo esc_url($registerUrl); ?>">← Campaign Register</a>
+        <a href="<?php echo esc_url($deskUrl); ?>">Dungeon Master’s Desk</a>
+    </nav>
+</section>
