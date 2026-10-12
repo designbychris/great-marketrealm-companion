@@ -183,7 +183,7 @@ $registerUrl = $route('dungeon-master/campaigns');
                 ['🎭','Dramatis Personae','Keep the people and factions behind this campaign.',$campaignPath . '/personae','Open Dramatis Personae','open'],
                 ['🔎','Evidence Register','Connect clues, secrets and plot threads to campaign records.',$campaignPath . '/evidence','Open Evidence Register','open'],
                 ['🧷','Conspiracy Board','Arrange the campaign’s canonical records on the Keeper’s planning board.',$campaignPath . '/conspiracy-board','Open Conspiracy Board','open'],
-                ['🏘️','Cartographer’s Bench','Build playable scenes from campaign locations when the Tabletop workshop is ready.','','On the Desk','planned'],
+                ['🏘️','Cartographer’s Bench','Prepare private construction drafts for this campaign.',(function_exists('gmrcart_workshop_url') && function_exists('gmrcart_campaign_access') && gmrcart_campaign_access(get_current_user_id(), (string) $campaign->id())) ? gmrcart_workshop_url((string) $campaign->id()) : '', 'Open Cartographer',(function_exists('gmrcart_workshop_url') && function_exists('gmrcart_campaign_access') && gmrcart_campaign_access(get_current_user_id(), (string) $campaign->id())) ? 'open' : 'planned'],
             ];
             foreach ($instruments as [$icon,$label,$description,$instrumentRoute,$action,$status]) : ?>
                 <article class="gmrc-command-instrument<?php echo $status === 'planned' ? ' is-planned' : ''; ?>">
